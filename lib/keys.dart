@@ -17,10 +17,14 @@ class PostsKeys {
   static Key postItem(String id) => Key('__postItem_$id\__');
   static Key postItemMessage(String id) => Key('__postItemMessage_$id\__');
   static Key postItemOwner(String id) => Key('__postItemOwner_$id\__');
-  static Key postItemOwnerAvatar(String id) => Key('__postItemOwnerAvatar_$id\__');
+  static Key postItemOwnerAvatar(String id) =>
+      Key('__postItemOwnerAvatar_$id\__');
   static Key postActionsBar(String id) => Key('__postActionsBar$id\__');
 
   static Key postDetailsScreen = const Key('__postDetailsScreen__');
-  static Key detailsPostItemMessage = const Key('__detailsPostItemMessage__');
-  static Key detailsPostItemOwner = const Key('__detailsPostItemOwner__');
+  static Key postDetails = const Key('__postDetails__');
+  static Key postDetailsMessage = const Key('__postDetailsMessage__');
+  static Key postDetailsHeader = const Key('__postDetailsHeader__');
+  static Key postDetailsOwner = const Key('__postDetailsOwner__');
+  static Key postDetailsOwnerAddress = const Key('__postDetailsOwnerAddress');
 }

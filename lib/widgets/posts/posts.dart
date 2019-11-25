@@ -29,13 +29,12 @@ class Posts extends StatelessWidget {
               final post = posts[index];
               return PostItem(
                 post: post,
-                onTap: () async {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) {
-                      return DetailsScreen(id: post.id);
-                    }),
-                  );
-                },
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                onTap: () async => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) {
+                    return DetailsScreen(post: post);
+                  }),
+                ),
               );
             },
           );

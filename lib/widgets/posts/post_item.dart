@@ -5,20 +5,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
-/// It is made of the following components: 
-/// - a [PostAvatar] object, containing the avatar of the post creator. 
-/// - a [PostHeader] object containing information such as the post
+/// It is made of the following components:
+/// - a [PostAvatar] object, containing the avatar of the post creator.
+/// - a [PostItemHeader] object containing information such as the post
 ///    creator's username, his address and the creation date
 /// - a [Text] containing the actual post message
 /// - a [PostActionBar] containing all the actions that can be performed
 ///    for such post
 class PostItem extends StatelessWidget {
   final GestureTapCallback onTap;
+  final EdgeInsets padding;
   final Post post;
 
   PostItem({
     Key key,
     @required this.onTap,
+    @required this.padding,
     @required this.post,
   }) : super(key: key);
 
@@ -27,16 +29,19 @@ class PostItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        padding: padding,
         child: Row(
           children: <Widget>[
-            PostAvatar(key: PostsKeys.postItemOwnerAvatar(post.id), url: ''),
+            PostAvatar(
+              key: PostsKeys.postItemOwnerAvatar(post.id),
+              user: post.owner,
+            ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  PostHeader(
+                  PostItemHeader(
                     key: PostsKeys.postItemOwner(post.id),
                     post: post,
                   ),

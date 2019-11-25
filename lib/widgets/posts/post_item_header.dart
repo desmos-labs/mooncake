@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 /// - the block height at which the post has been created
 ///
 /// TODO: Add the username (maybe using Starnames?)
-class PostHeader extends StatelessWidget {
+class PostItemHeader extends StatelessWidget {
   final Post post;
 
-  PostHeader({
+  PostItemHeader({
     @required this.post,
     Key key,
   }) : super(key: key);
@@ -22,11 +22,8 @@ class PostHeader extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: post.owner,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 15.0,
-            ),
+            text: post.owner.address,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
           ),
           TextSpan(
             text: ' Block heigh: ${post.created}',

@@ -7,9 +7,10 @@ environment:
 
 dependencies:
   cupertino_icons: ^0.1.2
-  equatable: ^1.0.0
+  dependencies: ^0.1.5
+  equatable: ^1.0.1
   flutter_bloc: ^2.0.1
-  flutter_screenutil: ^0.5.3
+  flutter_screenutil: ^0.6.1
   font_awesome_flutter: ^8.5.0
   meta: ">=1.1.0 <2.0.0"
 

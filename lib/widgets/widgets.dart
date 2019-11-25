@@ -1,6 +1,7 @@
-export 'post/export.dart';
+export 'posts/export.dart';
+export 'post_details/export.dart';
 export 'app.dart';
 export 'loading_indicator.dart';
-export 'posts.dart';
+export 'posts/posts.dart';
 export 'stats.dart';
 export 'tab_selector.dart';

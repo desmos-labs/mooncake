@@ -6,10 +6,12 @@ import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/repositories/repositories.dart';
 import 'package:meta/meta.dart';
 
+/// Implementation of [Bloc] that allows to properly deal with
+/// events and states related to the list of posts.
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
-  final PostsRepository postsRepository;
+  final PostsRepository repository;
 
-  PostsBloc({@required this.postsRepository});
+  PostsBloc({@required this.repository});
 
   @override
   PostsState get initialState => PostsLoading();
@@ -29,8 +31,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Stream<PostsState> _mapLoadPostsEventToState() async* {
     try {
-      final posts = await postsRepository.loadPosts();
-      yield PostsLoaded(posts);
+      final posts = await repository.loadPosts();
+      yield PostsLoaded(posts.where((p) => p.parentId == "0").toList());
     } catch (_) {
       yield PostsNotLoaded();
     }
@@ -41,20 +43,20 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       final List<Post> updatedPosts = List.from((state as PostsLoaded).posts)
         ..add(event.post);
       yield PostsLoaded(updatedPosts);
-      postsRepository.savePosts(updatedPosts);
+      repository.savePosts(updatedPosts);
     }
   }
 
   Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedLikes = await postsRepository.likePost(event.post);
+      final updatedLikes = await repository.likePost(event.post);
       _updatePostLikes(event.post.id, updatedLikes);
     }
   }
 
   Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedLikes = await postsRepository.unlikePost(event.post);
+      final updatedLikes = await repository.unlikePost(event.post);
       _updatePostLikes(event.post.id, updatedLikes);
     }
   }
@@ -65,6 +67,6 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         .map((post) => post.id == postId ? post.copyWith(likes: likes) : post);
 
     yield PostsLoaded(updatedPosts);
-    postsRepository.savePosts(updatedPosts);
+    repository.savePosts(updatedPosts);
   }
 }

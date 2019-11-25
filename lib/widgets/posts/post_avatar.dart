@@ -1,11 +1,12 @@
+import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 /// Represents an image (given its [url]) as a circular image.
 class PostAvatar extends StatelessWidget {
-  final String url;
+  final User user;
 
-  PostAvatar({@required this.url, Key key}) : super(key: key);
+  PostAvatar({@required this.user, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,9 @@ class PostAvatar extends StatelessWidget {
       decoration: BoxDecoration(
         color: PostsTheme.theme.accentColor,
         borderRadius: BorderRadius.circular(mediaQuery.size.width / 16),
-        image: url != null ? DecorationImage(image: NetworkImage(url)) : null,
+        image: user.hasAvatar
+            ? DecorationImage(image: NetworkImage(user.avatarUrl))
+            : null,
       ),
     );
   }

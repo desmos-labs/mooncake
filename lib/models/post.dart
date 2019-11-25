@@ -1,4 +1,5 @@
 import 'package:desmosdemo/models/like.dart';
+import 'package:desmosdemo/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -10,11 +11,11 @@ class Post implements Equatable {
   final String created;
   final String lastEdited;
   final bool allowsComments;
-  final String owner;
+  final User owner;
 
   final bool liked;
   final List<Like> likes;
-  final List<Post> children;
+  final List<String> commentsIds;
 
   Post({
     @required this.id,
@@ -26,7 +27,7 @@ class Post implements Equatable {
     @required this.owner,
     @required this.liked,
     @required this.likes,
-    @required this.children,
+    @required this.commentsIds,
   })  : assert(id != null),
         assert(parentId != null),
         assert(message != null),
@@ -35,19 +36,20 @@ class Post implements Equatable {
         assert(allowsComments != null),
         assert(owner != null),
         assert(likes != null),
-        assert(children != null);
+        assert(commentsIds != null);
 
   Post copyWith({
-    id,
-    parentId,
-    message,
-    created,
-    lastEdited,
-    allowsComments,
-    owner,
-    likes,
-    children,
+    String id,
+    String parentId,
+    String message,
+    String created,
+    String lastEdited,
+    bool allowsComments,
+    User owner,
+    List<Like> likes,
+    List<Post> children,
   }) {
+    final newOwner = owner ?? this.owner;
     return Post(
       id: id ?? this.id,
       parentId: parentId ?? this.parentId,
@@ -55,9 +57,12 @@ class Post implements Equatable {
       created: created ?? this.created,
       lastEdited: lastEdited ?? this.lastEdited,
       allowsComments: allowsComments ?? this.allowsComments,
-      owner: owner ?? this.owner,
+      owner: newOwner,
       likes: likes ?? this.likes,
-      children: children ?? this.children,
+      commentsIds: children ?? this.commentsIds,
+      liked: likes == null
+          ? this.liked
+          : likes.where((l) => l.owner == owner.address).first != null,
     );
   }
 
@@ -70,7 +75,24 @@ class Post implements Equatable {
       this.created,
       this.lastEdited,
       this.allowsComments,
-      this.owner
+      this.owner,
+      this.liked,
+      this.likes,
+      this.commentsIds,
     ];
   }
+
+  @override
+  String toString() => 'Post { '
+      'id: $id, '
+      'parentId: $parentId, '
+      'message: $message, '
+      'created: $created, '
+      'lastEdited: $lastEdited, '
+      'allowsComments: $allowsComments, '
+      'owner: $owner, '
+      'liked: $liked, '
+      'likes: $likes, '
+      'commentsIds: $commentsIds'
+      '}';
 }
