@@ -1,21 +1,48 @@
 import 'package:desmosdemo/models/like.dart';
 import 'package:desmosdemo/models/models.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+part 'post.g.dart';
+
 /// Represents a generic post
+@JsonSerializable(explicitToJson: true)
 class Post implements Equatable {
+  @JsonKey(name: "id")
   final String id;
+
+  @JsonKey(name: "parent_id")
   final String parentId;
+
+  @JsonKey(name: "message")
   final String message;
+
+  @JsonKey(name: "created")
   final String created;
+
+  @JsonKey(name: "lastEdited")
   final String lastEdited;
+
+  @JsonKey(name: "allowsComments")
   final bool allowsComments;
+
+  @JsonKey(name: "owner")
   final User owner;
 
-  final bool liked;
+  @JsonKey(ignore: true)
+  bool get liked =>
+      likes != null && likes.where((l) => l.owner == owner.address).isNotEmpty;
+
+  @JsonKey(name: "likes")
   final List<Like> likes;
+
+  @JsonKey(name: "comments_ids")
   final List<String> commentsIds;
+
+  /// Tells if the post has been synced with the blockchain or not
+  @JsonKey(name: "synced")
+  final bool synced;
 
   Post({
     @required this.id,
@@ -25,9 +52,9 @@ class Post implements Equatable {
     @required this.lastEdited,
     @required this.allowsComments,
     @required this.owner,
-    @required this.liked,
     @required this.likes,
     @required this.commentsIds,
+    @required this.synced,
   })  : assert(id != null),
         assert(parentId != null),
         assert(message != null),
@@ -48,6 +75,7 @@ class Post implements Equatable {
     User owner,
     List<Like> likes,
     List<Post> children,
+    bool synced,
   }) {
     final newOwner = owner ?? this.owner;
     return Post(
@@ -60,9 +88,7 @@ class Post implements Equatable {
       owner: newOwner,
       likes: likes ?? this.likes,
       commentsIds: children ?? this.commentsIds,
-      liked: likes == null
-          ? this.liked
-          : likes.where((l) => l.owner == owner.address).first != null,
+      synced: synced ?? this.synced,
     );
   }
 
@@ -79,6 +105,7 @@ class Post implements Equatable {
       this.liked,
       this.likes,
       this.commentsIds,
+      this.synced,
     ];
   }
 
@@ -93,6 +120,11 @@ class Post implements Equatable {
       'owner: $owner, '
       'liked: $liked, '
       'likes: $likes, '
-      'commentsIds: $commentsIds'
+      'commentsIds: $commentsIds '
+      'synced: $synced '
       '}';
+
+  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PostToJson(this);
 }

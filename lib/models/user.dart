@@ -1,10 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+part 'user.g.dart';
+
 /// Contains the data of a user.
+@JsonSerializable(explicitToJson: true)
 class User implements Equatable {
+  @JsonKey(name: "addres")
   final String address;
+
+  @JsonKey(name: "username")
   final String username;
+
+  @JsonKey(name: "avatar_url")
   final String avatarUrl;
 
   bool get hasUsername => username != null && username.isNotEmpty;
@@ -26,4 +35,8 @@ class User implements Equatable {
       'username: $username, '
       'avatarUrl : $avatarUrl '
       '}';
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

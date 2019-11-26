@@ -6,6 +6,8 @@ import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/repositories/repositories.dart';
 import 'package:meta/meta.dart';
 
+import '../blocs.dart';
+
 /// Implementation of [Bloc] that allows to properly deal with
 /// events and states related to the list of posts.
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
@@ -33,14 +35,16 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     try {
       final posts = await repository.loadPosts();
       yield PostsLoaded(posts.where((p) => p.parentId == "0").toList());
-    } catch (_) {
+    } catch (e) {
+      print(e);
       yield PostsNotLoaded();
     }
   }
 
   Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
     if (state is PostsLoaded) {
-      final updatedPosts = await repository.createPost(event.message);
+      final newPost = await repository.createPost(event.message);
+      final updatedPosts = (state as PostsLoaded).posts + [newPost];
       yield PostsLoaded(updatedPosts);
       repository.savePosts(updatedPosts);
     }

@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../localization.dart';
+
 /// Represents the screen that is shown to the user when he wants
 /// to visualize the details of a specific [post].
 class DetailsScreen extends StatelessWidget {
@@ -36,6 +38,9 @@ class DetailsScreen extends StatelessWidget {
         }
 
         return Scaffold(
+          appBar: AppBar(
+            title: Text(FlutterBlocLocalizations.of(context).post),
+          ),
           body: post == null
               ? Container(key: PostsKeys.emptyDetailsContainer)
               : Padding(

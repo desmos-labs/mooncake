@@ -19,6 +19,8 @@ class FlutterBlocLocalizations {
   String get newPostHint => "New post";
   String get emptyPostError => "Empty message";
   String get saveChanges => "Save changed";
+
+  String get post => "Post";
 }
 
 class FlutterBlocLocalizationsDelegate

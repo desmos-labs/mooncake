@@ -4,12 +4,13 @@ import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc/bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'dependency_injection/export.dart';
 
 void main() {
   // Setup the dependency injection
-  Injector.init();
+  Injector.init(getApplicationDocumentsDirectory);
 
   // Setup the BLoC delegate to observe transitions
   BlocSupervisor.delegate = SimpleBlocDelegate();
