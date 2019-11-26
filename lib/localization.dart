@@ -11,9 +11,14 @@ class FlutterBlocLocalizations {
   }
 
   String get appTitle => "Dwitter";
-  String get addPost => "Add post";
   String get posts => "Posts";
   String get stats => "Stats";
+
+  String get editPost => "Edit post";
+  String get createPost => "Create post";
+  String get newPostHint => "New post";
+  String get emptyPostError => "Empty message";
+  String get saveChanges => "Save changed";
 }
 
 class FlutterBlocLocalizationsDelegate

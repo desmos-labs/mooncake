@@ -1,42 +1,39 @@
+import 'package:desmosdemo/blocs/blocs.dart';
+import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-/// Represents a single option that can be tapped and is linked to a post.
-/// It is represented by an icon and an optional text value put next to the
-/// icon itself. When tapped it executes the given action.
-class PostAction extends StatelessWidget {
-  final IconData icon;
-  final String value;
-  final Function action;
+/// Represents the action bar containing all the actions that can be performed
+/// from a single post.
+class PostActionsBar extends StatelessWidget {
+  final Post post;
 
-  PostAction({
-    @required this.icon,
-    this.action,
-    this.value,
-    Key key,
-  }) : super(key: key);
+  const PostActionsBar({Key key, this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        children: <Widget>[
-          PostActionIcon(
-            icon: icon,
-            action: action,
-          ),
-          (value != null
-              ? Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Text(value, style: TextStyle(fontSize: 12.0)),
-          )
-              : Container()),
-        ],
-      ),
+    return Row(
+      children: <Widget>[
+        PostAction(
+          icon: FontAwesomeIcons.comments,
+          value: '${post.commentsIds.length > 0 ? post.commentsIds.length : ''}',
+        ),
+        SizedBox(width: 8),
+        PostAction(
+          icon:
+              post.liked ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+          action: () {
+            if (post.liked) {
+              BlocProvider.of<PostsBloc>(context).add(UnlikePost(post));
+            } else {
+              BlocProvider.of<PostsBloc>(context).add(LikePost(post));
+            }
+          },
+          value: '${post.likes.length > 0 ? post.likes.length : ''}',
+        ),
+      ],
     );
   }
 }

@@ -100,6 +100,12 @@ class PostsRepository {
     });
   }
 
+  /// Creates a new post having the given [message], returning the
+  /// new list of posts.
+  Future<List<Post>> createPost(String message) async {
+    return [];
+  }
+
   /// Saves the [updatedPosts] list into the local cache, that will later
   /// be used to determine which posts should be created using a blockchain
   /// transaction.

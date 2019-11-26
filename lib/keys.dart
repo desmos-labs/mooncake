@@ -27,4 +27,9 @@ class PostsKeys {
   static Key postDetailsHeader = const Key('__postDetailsHeader__');
   static Key postDetailsOwner = const Key('__postDetailsOwner__');
   static Key postDetailsOwnerAddress = const Key('__postDetailsOwnerAddress');
+
+  static Key postEditScreen = const Key('__postEditScreen__');
+  static Key postMessageField = const Key('__postEditScreenMessageField__');
+  static Key savePostFab = const Key('__savePostFab__');
+  static Key saveNewPost = const Key('__saveNewPost__');
 }

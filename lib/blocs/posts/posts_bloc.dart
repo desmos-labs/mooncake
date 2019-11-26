@@ -40,8 +40,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
     if (state is PostsLoaded) {
-      final List<Post> updatedPosts = List.from((state as PostsLoaded).posts)
-        ..add(event.post);
+      final updatedPosts = await repository.createPost(event.message);
       yield PostsLoaded(updatedPosts);
       repository.savePosts(updatedPosts);
     }

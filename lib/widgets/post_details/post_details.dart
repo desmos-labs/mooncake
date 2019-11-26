@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 /// Represents the widget that should be used when wanting to display
 /// the details of a [post]. It is made of:
-/// - a [PostAvatar] containing the owner profile picture
+/// - a [UserAvatar] containing the owner profile picture
 /// - a [PostDetailsOwner] containing the details of the post creator
 /// - a [Text] which contains the actual post message
 class PostDetails extends StatelessWidget {
@@ -19,7 +19,7 @@ class PostDetails extends StatelessWidget {
       children: <Widget>[
         Row(
           children: [
-            PostAvatar(
+            UserAvatar(
               user: post.owner,
               key: PostsKeys.postItemOwnerAvatar(post.id),
             ),

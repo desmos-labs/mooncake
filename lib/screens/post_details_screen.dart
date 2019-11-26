@@ -34,7 +34,6 @@ class DetailsScreen extends StatelessWidget {
         } else if (state is PostCommentsLoaded) {
           itemsLength += state.comments.length;
         }
-        print('Items length: $itemsLength');
 
         return Scaffold(
           body: post == null
@@ -69,7 +68,6 @@ class DetailsScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           onTap: () async => Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) {
-                              print("Comment id: ${comment.id}");
                               return DetailsScreen(post: comment);
                             }),
                           ),

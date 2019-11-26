@@ -3,10 +3,10 @@ import 'package:desmosdemo/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 /// Represents an image (given its [url]) as a circular image.
-class PostAvatar extends StatelessWidget {
+class UserAvatar extends StatelessWidget {
   final User user;
 
-  PostAvatar({@required this.user, Key key}) : super(key: key);
+  UserAvatar({@required this.user, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

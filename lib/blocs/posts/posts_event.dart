@@ -13,15 +13,15 @@ class LoadPosts extends PostsEvent {}
 
 /// Tells the Bloc that it needs to add a new post to the list of posts
 class AddPost extends PostsEvent {
-  final Post post;
+  final String message;
 
-  const AddPost(this.post);
-
-  @override
-  List<Object> get props => [post];
+  const AddPost(this.message);
 
   @override
-  String toString() => 'AddPost { post: $post }';
+  List<Object> get props => [message];
+
+  @override
+  String toString() => 'AddPost { message: $message }';
 }
 
 /// Tells the Bloc that it needs to set a post as liked.

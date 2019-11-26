@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:desmosdemo/blocs/blocs.dart';
 
+import '../blocs/blocs.dart';
+import '../keys.dart';
+import '../screens/screens.dart';
+
 /// Represents the overall application that is run
 class PostsApp extends StatelessWidget {
   @override
@@ -31,15 +35,13 @@ class PostsApp extends StatelessWidget {
           );
         },
         PostsRoutes.addPost: (context) {
-//          return AddEditScreen(
-//            key: ArchSampleKeys.addTodoScreen,
-//            onSave: (task, note) {
-//              BlocProvider.of<TodosBloc>(context).add(
-//                AddTodo(Todo(task, note: note)),
-//              );
-//            },
-//            isEditing: false,
-//          );
+          return AddEditPostScreen(
+            key: PostsKeys.postEditScreen,
+            onSave: (message) {
+              BlocProvider.of<PostsBloc>(context).add(AddPost(message));
+            },
+            isEditing: false,
+          );
         },
       },
     );

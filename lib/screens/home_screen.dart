@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, PostsRoutes.addPost);
             },
             child: Icon(Icons.add),
-            tooltip: FlutterBlocLocalizations.of(context).addPost,
+            tooltip: FlutterBlocLocalizations.of(context).editPost,
           ),
           bottomNavigationBar: TabSelector(
             activeTab: activeTab,
