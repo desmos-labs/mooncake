@@ -18,25 +18,12 @@ class PostAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(4.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        children: <Widget>[
-          PostActionIcon(
-            icon: icon,
-            action: action,
-          ),
-          (value != null
-              ? Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Text(value, style: TextStyle(fontSize: 12.0)),
-          )
-              : Container()),
-        ],
-      ),
+    return Row(
+      children: <Widget>[
+        PostActionIcon(icon: icon, action: action),
+        value != null ? SizedBox(width: 8) : null,
+        value != null ? Text(value, style: TextStyle(fontSize: 12.0)) : null,
+      ],
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 /// Loads and saves a List of Todos using a text file stored on the device.
@@ -8,15 +7,21 @@ import 'dart:io';
 /// Instead, the `getDirectory` method should be injected. This allows for
 /// testing.
 class FileStorage {
-  final Future<Directory> Function() getDirectory;
+  Future<Directory> Function() _getDirectory;
 
-  const FileStorage(this.getDirectory);
+  FileStorage(Future<Directory> Function() getDirectory) {
+    assert(getDirectory != null);
+    _getDirectory = () async {
+      final dir = await getDirectory();
+      if (!await dir.exists()) {
+        dir.createSync();
+      }
+      return dir;
+    };
+  }
 
   Future<File> _getFilePath(String fileName) async {
-    final dir = await getDirectory();
-    if (!await dir.exists()) {
-      dir.createSync();
-    }
+    final dir = await _getDirectory();
     return File('${dir.absolute.path}/$fileName');
   }
 
@@ -28,10 +33,15 @@ class FileStorage {
   }
 
   /// Reads the content of the file having the given [fileName],
-  /// returning it as a `String`.
+  /// returning it as a `String`. If no file with the given [fileName]
+  /// could be found, returns `null` instead.
   Future<String> read(String fileName) async {
     final file = await _getFilePath(fileName);
-    return await file.readAsString();
+    if (await file.exists()) {
+      return await file.readAsString();
+    } else {
+      return null;
+    }
   }
 
   /// Writes the given [value] inside the file having the given
@@ -51,7 +61,7 @@ class FileStorage {
   /// Lists all the files that are currently present inside
   /// the directory.
   Future<List<File>> listFiles() async {
-    final dir = await getDirectory();
+    final dir = await _getDirectory();
     return dir
         .list(followLinks: true)
         .where((entry) => entry is File)
@@ -61,7 +71,7 @@ class FileStorage {
 
   /// Removes all the contents of the directory.
   Future<FileSystemEntity> clean() async {
-    final file = await getDirectory();
+    final file = await _getDirectory();
     return file.delete(recursive: true);
   }
 }

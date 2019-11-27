@@ -1,5 +1,6 @@
 import 'package:desmosdemo/keys.dart';
 import 'package:desmosdemo/models/models.dart';
+import 'package:desmosdemo/theme/theme.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -15,30 +16,31 @@ class PostDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: [
-            UserAvatar(
-              user: post.owner,
-              key: PostsKeys.postItemOwnerAvatar(post.id),
-            ),
-            PostDetailsOwner(
-              user: post.owner,
-              key: PostsKeys.postDetailsOwner,
-            )
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          child: Text(
+    return Padding(
+      padding: PostsTheme.postItemPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: [
+              UserAvatar(
+                user: post.owner,
+                key: PostsKeys.postItemOwnerAvatar(post.id),
+              ),
+              PostDetailsOwner(
+                user: post.owner,
+                key: PostsKeys.postDetailsOwner,
+              )
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(
             post.message,
             key: PostsKeys.postDetailsMessage,
             style: Theme.of(context).textTheme.headline,
           ),
-        )
-      ],
+        ],
+      ),
     );
   }
 }

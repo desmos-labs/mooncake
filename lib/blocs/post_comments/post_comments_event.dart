@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 /// Represents a generic event that is related to the comments
 /// of a particular post.
@@ -21,4 +22,19 @@ class LoadPostComments extends PostCommentsEvent {
 
   @override
   String toString() => 'LoadPostComments { postId: $postId }';
+}
+
+/// Event that is emitted when a user wants to create a new
+/// comment for a specific post.
+class CreatePostComment extends PostCommentsEvent {
+  final String postId;
+  final String message;
+
+  CreatePostComment({@required this.postId, @required this.message});
+
+  @override
+  List<Object> get props => [postId, message];
+
+  @override
+  String toString() => 'CreatePostComment { postId: $postId, message: $message }';
 }

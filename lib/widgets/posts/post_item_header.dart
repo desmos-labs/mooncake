@@ -17,19 +17,14 @@ class PostItemHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      overflow: TextOverflow.ellipsis,
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: post.owner.address,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
-          ),
-          TextSpan(
-            text: ' Block heigh: ${post.created}',
-          ),
-        ],
-      ),
+    return Row(
+      children: <Widget>[
+        Text(
+          post.owner.hasUsername ? post.owner.username : post.owner.address,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+        ),
+      ],
     );
   }
 }

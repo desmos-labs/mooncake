@@ -21,6 +21,9 @@ class FlutterBlocLocalizations {
   String get saveChanges => "Save changed";
 
   String get post => "Post";
+
+  String get newComment => "New comment";
+  String get commentHint => "Text";
 }
 
 class FlutterBlocLocalizationsDelegate

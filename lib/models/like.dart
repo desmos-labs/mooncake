@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 
 part 'like.g.dart';
 
@@ -9,12 +10,10 @@ class Like extends Equatable {
   @JsonKey(name: "owner")
   final String owner;
 
-  Like(this.owner) : assert(owner != null);
+  Like({@required this.owner}) : assert(owner != null);
 
   @override
-  List<Object> get props {
-    return [this.owner];
-  }
+  List<Object> get props => [this.owner];
 
   factory Like.fromJson(Map<String, dynamic> json) => _$LikeFromJson(json);
 

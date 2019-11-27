@@ -1,5 +1,6 @@
 import 'package:desmosdemo/keys.dart';
 import 'package:desmosdemo/models/models.dart';
+import 'package:desmosdemo/theme/theme.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +15,11 @@ import 'package:flutter/material.dart';
 ///    for such post
 class PostItem extends StatelessWidget {
   final GestureTapCallback onTap;
-  final EdgeInsets padding;
   final Post post;
 
   PostItem({
     Key key,
     @required this.onTap,
-    @required this.padding,
     @required this.post,
   }) : super(key: key);
 
@@ -29,7 +28,7 @@ class PostItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: padding,
+        padding: PostsTheme.postItemPadding,
         child: Row(
           children: <Widget>[
             UserAvatar(
@@ -50,6 +49,7 @@ class PostItem extends StatelessWidget {
                     post.message,
                     key: PostsKeys.postItemMessage(post.id),
                   ),
+                  SizedBox(height: 8),
                   PostActionsBar(
                     key: PostsKeys.postActionsBar(post.id),
                     post: post,

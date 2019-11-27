@@ -23,6 +23,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
         ?.toList(),
     commentsIds:
         (json['comments_ids'] as List)?.map((e) => e as String)?.toList(),
+    synced: json['synced'] as bool,
   );
 }
 
@@ -36,4 +37,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'owner': instance.owner?.toJson(),
       'likes': instance.likes?.map((e) => e?.toJson())?.toList(),
       'comments_ids': instance.commentsIds,
+      'synced': instance.synced,
     };

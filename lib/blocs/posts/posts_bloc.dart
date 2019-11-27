@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:desmosdemo/blocs/posts/bloc.dart';
-import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/repositories/repositories.dart';
 import 'package:meta/meta.dart';
 
@@ -33,7 +32,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Stream<PostsState> _mapLoadPostsEventToState() async* {
     try {
-      final posts = await repository.loadPosts();
+      final posts = await repository.getPosts();
       yield PostsLoaded(posts.where((p) => p.parentId == "0").toList());
     } catch (e) {
       print(e);
@@ -44,32 +43,33 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
     if (state is PostsLoaded) {
       final newPost = await repository.createPost(event.message);
-      final updatedPosts = (state as PostsLoaded).posts + [newPost];
+      await repository.savePost(newPost);
+      final updatedPosts = [newPost] + (state as PostsLoaded).posts;
       yield PostsLoaded(updatedPosts);
-      repository.savePosts(updatedPosts);
     }
   }
 
   Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedLikes = await repository.likePost(event.post);
-      _updatePostLikes(event.post.id, updatedLikes);
+      final updatedPost = await repository.likePost(event.post);
+      final updatedPosts = (state as PostsLoaded)
+          .posts
+          .map((p) => p.id == updatedPost.id ? updatedPost : p)
+          .toList();
+      yield PostsLoaded(updatedPosts);
+      await repository.savePost(updatedPost);
     }
   }
 
   Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedLikes = await repository.unlikePost(event.post);
-      _updatePostLikes(event.post.id, updatedLikes);
+      final updatedPost = await repository.unlikePost(event.post);
+      final updatedPosts = (state as PostsLoaded)
+          .posts
+          .map((p) => p.id == updatedPost.id ? updatedPost : p)
+          .toList();
+      yield PostsLoaded(updatedPosts);
+      await repository.savePost(updatedPost);
     }
-  }
-
-  Stream<PostsState> _updatePostLikes(String postId, List<Like> likes) async* {
-    final List<Post> updatedPosts = (state as PostsLoaded)
-        .posts
-        .map((post) => post.id == postId ? post.copyWith(likes: likes) : post);
-
-    yield PostsLoaded(updatedPosts);
-    repository.savePosts(updatedPosts);
   }
 }

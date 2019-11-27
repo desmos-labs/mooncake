@@ -11,9 +11,15 @@ class SourcesModule implements Module {
   @override
   void configure(Binder binder) {
     binder
-      ..bindSingleton(FileStorage(getDirectory))
       ..bindLazySingleton((injector, params) => LocalPostsSource(
-        fileStorage: injector.get(),
-      ));
+            postsStorage: FileStorage(() async {
+              final root = await getDirectory();
+              return Directory('${root.path}/posts');
+            }),
+            likesStorage: FileStorage(() async {
+              final root = await getDirectory();
+              return Directory('${root.path}/likes');
+            }),
+          ));
   }
 }

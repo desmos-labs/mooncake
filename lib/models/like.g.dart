@@ -8,7 +8,7 @@ part of 'like.dart';
 
 Like _$LikeFromJson(Map<String, dynamic> json) {
   return Like(
-    json['owner'] as String,
+    owner: json['owner'] as String,
   );
 }
 

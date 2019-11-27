@@ -17,6 +17,7 @@ Currently there is **no interaction** with the blockchain and **all the posts ar
 To run a local version of this application, you need to execute the following commands: 
 
 ```shell
+flutter pub run build_runner build
 flutter run
 ``` 
 

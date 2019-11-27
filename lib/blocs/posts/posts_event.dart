@@ -15,7 +15,7 @@ class LoadPosts extends PostsEvent {}
 class AddPost extends PostsEvent {
   final String message;
 
-  const AddPost(this.message);
+  AddPost(this.message);
 
   @override
   List<Object> get props => [message];
@@ -28,24 +28,24 @@ class AddPost extends PostsEvent {
 class LikePost extends PostsEvent {
   final Post post;
 
-  const LikePost(this.post);
+  LikePost(this.post);
 
   @override
   List<Object> get props => [post];
 
   @override
-  String toString() => 'LikePost { post: $post }';
+  String toString() => 'LikePost { post: ${post.id} }';
 }
 
 /// Tells the Bloc that it needs to set the given post as unliked
 class UnlikePost extends PostsEvent {
   final Post post;
 
-  const UnlikePost(this.post);
+  UnlikePost(this.post);
 
   @override
   List<Object> get props => [post];
 
   @override
-  String toString() => 'UnlikePost { post: $post }';
+  String toString() => 'UnlikePost { post: ${post.id} }';
 }

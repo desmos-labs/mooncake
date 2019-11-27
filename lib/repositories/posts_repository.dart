@@ -1,12 +1,8 @@
-import 'dart:math';
-
 import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/sources/sources.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/models.dart';
-import '../models/models.dart';
-import 'repositories.dart';
 import 'repositories.dart';
 
 /// Represents the repository that can be used in order to read
@@ -24,30 +20,34 @@ class PostsRepository {
         _userRepository = userRepository;
 
   /// Returns the full list of posts available.
-  Future<List<Post>> loadPosts() async {
+  Future<List<Post>> getPosts() async {
     return _localSource.getPosts();
   }
 
   /// Returns all the comments details for the post having the given [postId].
   Future<List<Post>> getCommentsForPost(String postId) async {
-    final post = await _localSource.getPostById(postId);
+    final post = await _localSource.getPost(postId);
     return Future.wait(post.commentsIds
-        .map((comment) => _localSource.getPostById(comment))
+        .map((commentId) => _localSource.getPost(commentId))
         .where((p) => p != null));
   }
 
-  /// Creates a new post having the given [message], returning it.
-  Future<Post> createPost(String message) async {
+  /// Creates a new post having the given [message], without saving it.
+  /// In order to properly save it, use [savePost] instead.
+  Future<Post> createPost(
+    String message, {
+    String parentId = "0",
+    bool allowsComments = true,
+  }) async {
     final user = await _userRepository.getUser();
     final date = DateTime.now().toIso8601String();
     return Post(
       id: date,
-      parentId: "0",
+      parentId: parentId,
       message: message,
       created: "-1",
       lastEdited: "-1",
-      // TODO: Allow to set this
-      allowsComments: true,
+      allowsComments: allowsComments,
       owner: user,
       likes: [],
       commentsIds: [],
@@ -55,29 +55,45 @@ class PostsRepository {
     );
   }
 
-  /// Saves the [updatedPosts] list into the local cache, that will later
-  /// be used to determine which posts should be created using a blockchain
-  /// transaction.
-  Future<List<Post>> savePosts(List<Post> updatedPosts) async {
-    return _localSource.savePosts(updatedPosts);
+  /// Saves the given post locally, also updating any existing parent's
+  /// comments array to include this post.
+  Future<void> savePost(Post post) async {
+    // Save the post
+    await _localSource.savePost(post);
+
+    // Update the parent comments
+    Post parent = await _localSource.getPost(post.parentId);
+    if (parent != null) {
+      parent = parent.copyWith(commentsIds: [post.id] + parent.commentsIds);
+      await _localSource.savePost(parent);
+    }
   }
 
   /// Checks if a like from this user already exists for the provided [post].
-  /// If it exists, it does nothing and returns the current likes list for this
-  /// post.
-  /// Otherwise, it creates a new [Like] object, adds it to the cache of likes
-  /// that needs to be sent to the blockchain and returns the updated list.
-  Future<List<Like>> likePost(Post post) async {
-    return [];
+  /// If it exists, it does nothing.
+  /// Otherwise, updates the posts, stores it and returns it.
+  Future<Post> likePost(Post post) async {
+    // Save the like
+    await _localSource.likePost(post.id);
+
+    // Update and save the post
+    final user = await _userRepository.getUser();
+    final like = Like(owner: user.address);
+    return post.copyWith(likes: [like] + post.likes);
   }
 
-  /// Checks if a like from this user exists for the provided [post]-
+  /// Checks if a like from this user exists for the provided [post].
   /// If it exists, it removes it from the list and stores locally a reference
-  /// so that a new transaction unliking the post will be performed later. After
-  /// that it returns the updated list of likes for the post.
-  /// If the like does not exist, returns the current list of likes for
-  /// the post.
-  Future<List<Like>> unlikePost(Post post) async {
-    return [];
+  /// so that a new transaction unliking the post will be performed later.
+  /// If the like does not exist, does nothing.
+  /// In both cases, returns the updated post.
+  Future<Post> unlikePost(Post post) async {
+    // Remove the like
+    await _localSource.unlikePost(post.id);
+
+    // Update the post
+    final user = await _userRepository.getUser();
+    final likes = post.likes.where((like) => like.owner != user.address).toList();
+    return post.copyWith(likes: likes);
   }
 }

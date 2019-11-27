@@ -22,24 +22,28 @@ class _PostActionIconState extends State<PostActionIcon> {
   bool isSelected = false;
   @override
   Widget build(BuildContext context) {
-    final child = Icon(
-      this.widget.icon,
-      size: 16,
-      color: isSelected ? PostsTheme.primaryColor : PostsTheme.accentColor,
-    );
+    Color iconColor = PostsTheme.textColor;
+    if (isSelected) {
+      iconColor = PostsTheme.primaryColor;
+    } else if (widget.action != null) {
+      iconColor = PostsTheme.accentColor;
+    }
 
-    return this.widget.action == null ? child : GestureDetector(
-      onTap: this.widget.action,
-      onTapDown: (_) => setState(() {
-        isSelected = true;
-      }),
-      onTapUp: (_) => setState(() {
-        isSelected = false;
-      }),
-      onTapCancel: () => setState(() {
-        isSelected = false;
-      }),
-      child: child,
-    );
+    final icon = Icon(this.widget.icon, size: 16, color: iconColor);
+    return this.widget.action == null
+        ? icon
+        : GestureDetector(
+            onTap: this.widget.action,
+            onTapDown: (_) => setState(() {
+              isSelected = true;
+            }),
+            onTapUp: (_) => setState(() {
+              isSelected = false;
+            }),
+            onTapCancel: () => setState(() {
+              isSelected = false;
+            }),
+            child: icon,
+          );
   }
 }

@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 part 'post.g.dart';
 
 /// Represents a generic post
+@immutable
 @JsonSerializable(explicitToJson: true)
 class Post implements Equatable {
   @JsonKey(name: "id")
@@ -31,8 +32,7 @@ class Post implements Equatable {
   final User owner;
 
   @JsonKey(ignore: true)
-  bool get liked =>
-      likes != null && likes.where((l) => l.owner == owner.address).isNotEmpty;
+  bool get liked => likes.where((l) => l.owner == owner.address).isNotEmpty;
 
   @JsonKey(name: "likes")
   final List<Like> likes;
@@ -74,7 +74,7 @@ class Post implements Equatable {
     bool allowsComments,
     User owner,
     List<Like> likes,
-    List<Post> children,
+    List<String> commentsIds,
     bool synced,
   }) {
     final newOwner = owner ?? this.owner;
@@ -87,27 +87,25 @@ class Post implements Equatable {
       allowsComments: allowsComments ?? this.allowsComments,
       owner: newOwner,
       likes: likes ?? this.likes,
-      commentsIds: children ?? this.commentsIds,
+      commentsIds: commentsIds ?? this.commentsIds,
       synced: synced ?? this.synced,
     );
   }
 
   @override
-  List<Object> get props {
-    return [
-      this.id,
-      this.parentId,
-      this.message,
-      this.created,
-      this.lastEdited,
-      this.allowsComments,
-      this.owner,
-      this.liked,
-      this.likes,
-      this.commentsIds,
-      this.synced,
-    ];
-  }
+  List<Object> get props => [
+        this.id,
+        this.parentId,
+        this.message,
+        this.created,
+        this.lastEdited,
+        this.allowsComments,
+        this.owner,
+        this.liked,
+        this.likes,
+        this.commentsIds,
+        this.synced,
+      ];
 
   @override
   String toString() => 'Post { '
