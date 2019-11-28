@@ -1,16 +1,19 @@
 # Dwitter
-Dwitter is a decentralized version of [Twitter](https://twitter.com), entirely based on the 
+[![](https://img.shields.io/badge/100%25-flutter-blue)](https://flutter.dev)
+[![](https://img.shields.io/badge/based%20on-desmos-red)](https://desmos.network)
+
+Dwitter is a decentralized version of [Twitter](https://twitter.com) (with less functions), entirely based on the 
 [Desmos blockchain](https://github.com/desmos-labs/desmos).
 
 It allows to post freely any kind of message, and see what all the users are writing, no follow needed. 
 Everyone knows everything.
 
 ## Current state
-Currently there is **no interaction** with the blockchain and **all the posts are mocked and non-interactive**.
+Currently there is **no interaction** with the blockchain but **all the posts and comments are stored locally**.
 
 ## Development
 ### Requirements
-- [Flutter](https://flutter.dev): to know how to install it, please reference the [installation guide](https://flutter.dev/docs/get-started/install).
+- [Flutter](https://flutter.dev): to know how to install it, please refer to the [installation guide](https://flutter.dev/docs/get-started/install).
 - An Android/iOS emulator or physical device. 
 
 ### Run the app
