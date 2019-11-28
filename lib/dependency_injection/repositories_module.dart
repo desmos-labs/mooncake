@@ -9,8 +9,8 @@ class RepositoriesModule implements Module {
     binder
       ..bindSingleton(UserRepository())
       ..bindLazySingleton((injector, params) => PostsRepository(
-        userRepository: injector.get(),
-        localSource: injector.get(),
-      ));
+            userRepository: injector.get(),
+            localSource: injector.get(),
+          ));
   }
 }

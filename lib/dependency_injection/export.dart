@@ -1,2 +1,2 @@
-export 'repositories_module.dart';
 export 'injector.dart';
+export 'repositories_module.dart';

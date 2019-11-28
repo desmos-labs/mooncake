@@ -18,9 +18,9 @@ void main() {
   // Run the app
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<CommentInputBloc>(
-        builder: (context) => CommentInputBloc(),
-      )
+      BlocProvider<PostsBloc>(
+        builder: (context) => PostsBloc(repository: Injector.get()),
+      ),
     ],
     child: PostsApp(),
   ));

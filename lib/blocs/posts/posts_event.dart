@@ -1,5 +1,5 @@
-import 'package:desmosdemo/models/models.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 abstract class PostsEvent extends Equatable {
   const PostsEvent();
@@ -14,38 +14,42 @@ class LoadPosts extends PostsEvent {}
 /// Tells the Bloc that it needs to add a new post to the list of posts
 class AddPost extends PostsEvent {
   final String message;
+  final String parentId;
 
-  AddPost(this.message);
+  AddPost({
+    @required this.message,
+    this.parentId,
+  });
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, parentId];
 
   @override
-  String toString() => 'AddPost { message: $message }';
+  String toString() => 'AddPost { message: $message, parentId: $parentId }';
 }
 
 /// Tells the Bloc that it needs to set a post as liked.
 class LikePost extends PostsEvent {
-  final Post post;
+  final String postId;
 
-  LikePost(this.post);
-
-  @override
-  List<Object> get props => [post];
+  LikePost(this.postId);
 
   @override
-  String toString() => 'LikePost { post: ${post.id} }';
+  List<Object> get props => [postId];
+
+  @override
+  String toString() => 'LikePost { postId: $postId }';
 }
 
 /// Tells the Bloc that it needs to set the given post as unliked
 class UnlikePost extends PostsEvent {
-  final Post post;
+  final String postId;
 
-  UnlikePost(this.post);
-
-  @override
-  List<Object> get props => [post];
+  UnlikePost(this.postId);
 
   @override
-  String toString() => 'UnlikePost { post: ${post.id} }';
+  List<Object> get props => [postId];
+
+  @override
+  String toString() => 'UnlikePost { postId: $postId }';
 }

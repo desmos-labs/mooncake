@@ -65,7 +65,7 @@ class LocalPostsSource {
         .toList();
   }
 
-  String  get _likesFileName => 'likes.json';
+  String get _likesFileName => 'likes.json';
 
   Future<List<String>> _getLikesPostsIds() async {
     final content = await _likesStorage.read(_likesFileName) ?? "[]";

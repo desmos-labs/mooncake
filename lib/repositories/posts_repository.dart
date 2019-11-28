@@ -32,16 +32,17 @@ class PostsRepository {
         .where((p) => p != null));
   }
 
-  /// Creates a new post having the given [message], without saving it.
-  /// In order to properly save it, use [savePost] instead.
-  Future<Post> createPost(
+  /// Creates a new post having the given [message], [parentId] and
+  /// [allowsComments] saving it inside the local cache so that is can
+  /// be later sent to the chain.
+  Future<void> createPost(
     String message, {
-    String parentId = "0",
+    @required String parentId,
     bool allowsComments = true,
   }) async {
     final user = await _userRepository.getUser();
     final date = DateTime.now().toIso8601String();
-    return Post(
+    final post = Post(
       id: date,
       parentId: parentId,
       message: message,
@@ -53,6 +54,7 @@ class PostsRepository {
       commentsIds: [],
       synced: false,
     );
+    await _localSource.savePost(post);
   }
 
   /// Saves the given post locally, also updating any existing parent's
@@ -72,14 +74,22 @@ class PostsRepository {
   /// Checks if a like from this user already exists for the provided [post].
   /// If it exists, it does nothing.
   /// Otherwise, updates the posts, stores it and returns it.
-  Future<Post> likePost(Post post) async {
+  Future<Post> likePost(String postId) async {
     // Save the like
-    await _localSource.likePost(post.id);
+    await _localSource.likePost(postId);
 
-    // Update and save the post
+    // Get the user and the post data
     final user = await _userRepository.getUser();
-    final like = Like(owner: user.address);
-    return post.copyWith(likes: [like] + post.likes);
+    Post post = await _localSource.getPost(postId);
+
+    // Update the post if the like is not present
+    if (!post.containsLikeFromUser(user.address)) {
+      final like = Like(owner: user.address);
+      post = post.copyWith(likes: [like] + post.likes);
+      await _localSource.savePost(post);
+    }
+
+    return post;
   }
 
   /// Checks if a like from this user exists for the provided [post].
@@ -87,13 +97,22 @@ class PostsRepository {
   /// so that a new transaction unliking the post will be performed later.
   /// If the like does not exist, does nothing.
   /// In both cases, returns the updated post.
-  Future<Post> unlikePost(Post post) async {
+  Future<Post> unlikePost(String postId) async {
     // Remove the like
-    await _localSource.unlikePost(post.id);
+    await _localSource.unlikePost(postId);
 
-    // Update the post
+    // Get the user and the post data
     final user = await _userRepository.getUser();
-    final likes = post.likes.where((like) => like.owner != user.address).toList();
-    return post.copyWith(likes: likes);
+    Post post = await _localSource.getPost(postId);
+
+    // Update the post if the like exists
+    if (post.containsLikeFromUser(user.address)) {
+      final likes =
+          post.likes.where((like) => like.owner != user.address).toList();
+      post = post.copyWith(likes: likes);
+      await _localSource.savePost(post);
+    }
+
+    return post;
   }
 }

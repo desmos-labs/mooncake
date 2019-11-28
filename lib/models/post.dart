@@ -16,6 +16,10 @@ class Post implements Equatable {
   @JsonKey(name: "parent_id")
   final String parentId;
 
+  /// Tells if this post has a valid parent post or not.
+  @JsonKey(ignore: true)
+  bool get hasParent => parentId != null && parentId != "0";
+
   @JsonKey(name: "message")
   final String message;
 
@@ -37,6 +41,11 @@ class Post implements Equatable {
   @JsonKey(name: "likes")
   final List<Like> likes;
 
+  /// Tells is this post has already been liked from the user
+  /// having the given [address] or not.
+  bool containsLikeFromUser(String address) =>
+      likes.where((l) => l.owner == address).isNotEmpty;
+
   @JsonKey(name: "comments_ids")
   final List<String> commentsIds;
 
@@ -56,7 +65,6 @@ class Post implements Equatable {
     @required this.commentsIds,
     @required this.synced,
   })  : assert(id != null),
-        assert(parentId != null),
         assert(message != null),
         assert(created != null),
         assert(lastEdited != null),

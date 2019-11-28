@@ -26,6 +26,9 @@ class PostsApp extends StatelessWidget {
               BlocProvider<TabsBloc>(
                 builder: (context) => TabsBloc(),
               ),
+              BlocProvider<PostsBloc>(
+                  builder: (context) =>
+                      BlocProvider.of(context)..add(LoadPosts()))
             ],
             child: HomeScreen(),
           );

@@ -33,43 +33,42 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   Stream<PostsState> _mapLoadPostsEventToState() async* {
     try {
       final posts = await repository.getPosts();
-      yield PostsLoaded(posts.where((p) => p.parentId == "0").toList());
+      yield PostsLoaded(posts);
     } catch (e) {
-      print(e);
       yield PostsNotLoaded();
     }
   }
 
   Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
     if (state is PostsLoaded) {
-      final newPost = await repository.createPost(event.message);
-      await repository.savePost(newPost);
-      final updatedPosts = [newPost] + (state as PostsLoaded).posts;
+      await repository.createPost(
+        event.message,
+        parentId: event.parentId,
+      );
+      final updatedPosts = await repository.getPosts();
       yield PostsLoaded(updatedPosts);
     }
   }
 
   Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedPost = await repository.likePost(event.post);
+      final updatedPost = await repository.likePost(event.postId);
       final updatedPosts = (state as PostsLoaded)
           .posts
           .map((p) => p.id == updatedPost.id ? updatedPost : p)
           .toList();
       yield PostsLoaded(updatedPosts);
-      await repository.savePost(updatedPost);
     }
   }
 
   Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedPost = await repository.unlikePost(event.post);
+      final updatedPost = await repository.unlikePost(event.postId);
       final updatedPosts = (state as PostsLoaded)
           .posts
           .map((p) => p.id == updatedPost.id ? updatedPost : p)
           .toList();
       yield PostsLoaded(updatedPosts);
-      await repository.savePost(updatedPost);
     }
   }
 }

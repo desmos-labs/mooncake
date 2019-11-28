@@ -1,5 +1,4 @@
 import 'package:desmosdemo/blocs/blocs.dart';
-import 'package:desmosdemo/dependency_injection/export.dart';
 import 'package:desmosdemo/keys.dart';
 import 'package:desmosdemo/screens/screens.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
@@ -16,33 +15,32 @@ class Posts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PostsBloc>(
-      builder: (_) => PostsBloc(repository: Injector.get())..add(LoadPosts()),
-      child: BlocBuilder<PostsBloc, PostsState>(
-        builder: (context, state) {
-          if (state is PostsLoading) {
-            return LoadingIndicator(key: PostsKeys.postsLoading);
-          } else if (state is PostsLoaded) {
-            final posts = state.posts;
-            return ListView.separated(
-              key: PostsKeys.postsList,
-              itemCount: posts.length,
-              separatorBuilder: (context, index) => Divider(height: 1),
-              itemBuilder: (context, index) {
-                final post = posts[index];
-                return PostItem(
-                  post: post,
-                  onTap: () async => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => DetailsScreen(post)),
+    return BlocBuilder<PostsBloc, PostsState>(
+      builder: (context, state) {
+        if (state is PostsLoading) {
+          return LoadingIndicator(key: PostsKeys.postsLoading);
+        } else if (state is PostsLoaded) {
+          final posts = state.posts.where((p) => !p.hasParent).toList();
+          return ListView.separated(
+            key: PostsKeys.postsList,
+            itemCount: posts.length,
+            separatorBuilder: (context, index) => Divider(height: 1),
+            itemBuilder: (context, index) {
+              final post = posts[index];
+              return PostItem(
+                postId: post.id,
+                onTap: () async => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => DetailsScreen(postId: post.id),
                   ),
-                );
-              },
-            );
-          } else {
-            return Container(key: PostsKeys.postsEmptyContainer);
-          }
-        },
-      ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Container(key: PostsKeys.postsEmptyContainer);
+        }
+      },
     );
   }
 }

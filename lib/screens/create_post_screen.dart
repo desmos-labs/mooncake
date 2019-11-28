@@ -1,9 +1,9 @@
+import 'package:desmosdemo/blocs/blocs.dart';
 import 'package:desmosdemo/keys.dart';
+import 'package:desmosdemo/localization.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-
-import '../keys.dart';
-import '../localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({Key key}) : super(key: key);
@@ -13,36 +13,44 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  String _message;
-
   @override
   Widget build(BuildContext context) {
     final localizations = FlutterBlocLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(localizations.createPost),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: CommentForm(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        key: PostsKeys.saveNewPost,
-        tooltip: localizations.createPost,
-        child: Icon(Icons.add),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-
-
-            Navigator.pop(context);
-          }
+    return BlocProvider(
+      builder: (context) => PostInputBloc(),
+      child: BlocBuilder<PostInputBloc, PostInputState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(localizations.createPost),
+            ),
+            body: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: PostForm(),
+            ),
+            floatingActionButton: FloatingActionButton(
+              key: PostsKeys.saveNewPost,
+              tooltip: localizations.createPost,
+              child: Icon(Icons.add),
+              onPressed:
+                  !state.isValid ? null : () => _createPost(context, state),
+            ),
+          );
         },
       ),
     );
+  }
+
+  void _createPost(BuildContext context, PostInputState state) {
+    // Create the comment
+    // ignore:close_sinks
+    final bloc = BlocProvider.of<PostsBloc>(context);
+    bloc.add(AddPost(
+      parentId: null,
+      message: state.message,
+    ));
+
+    Navigator.pop(context);
   }
 }

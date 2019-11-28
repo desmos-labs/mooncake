@@ -1,27 +1,30 @@
 import 'package:desmosdemo/blocs/blocs.dart';
 import 'package:desmosdemo/keys.dart';
 import 'package:desmosdemo/localization.dart';
-import 'package:desmosdemo/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Form that is used while creating a new comment to the given [post].
-class CommentForm extends StatefulWidget {
-  final Post post;
+/// Form that is used while creating a new post, or a comment for the
+/// given [postId].
+class PostForm extends StatefulWidget {
+  final String postId;
 
-  const CommentForm({Key key, @required this.post}) : super(key: key);
+  const PostForm({
+    Key key,
+    this.postId,
+  }) : super(key: key);
 
   @override
-  _CommentFormState createState() => _CommentFormState();
+  _PostFormState createState() => _PostFormState();
 }
 
-class _CommentFormState extends State<CommentForm> {
+class _PostFormState extends State<PostForm> {
   TextEditingController _messageController = TextEditingController();
 
-  CommentInputBloc _bloc;
+  PostInputBloc _bloc;
 
-  bool isCommentButtonEnabled(CommentInputState state) {
-    return state.isMessageValid;
+  bool isCommentButtonEnabled(PostInputState state) {
+    return state.isValid;
   }
 
   @override
@@ -33,8 +36,12 @@ class _CommentFormState extends State<CommentForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentInputBloc, CommentInputState>(
+    return BlocBuilder<PostInputBloc, PostInputState>(
       builder: (context, state) {
+        if (state == PostInputState.empty()) {
+          _reset();
+        }
+
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Form(
@@ -49,12 +56,6 @@ class _CommentFormState extends State<CommentForm> {
                     hintText: FlutterBlocLocalizations.of(context).newComment,
                   ),
                   autocorrect: false,
-                ),
-                FlatButton(
-                  child: Text(FlutterBlocLocalizations.of(context).commentHint),
-                  onPressed: !state.isMessageValid
-                      ? null
-                      : () => _onCommentClicked(context),
                 ),
               ],
             ),
@@ -71,15 +72,7 @@ class _CommentFormState extends State<CommentForm> {
   }
 
   /// Called when the comment button has been clicked.
-  void _onCommentClicked(BuildContext context) {
-    // Create the comment
-    // ignore:close_sinks
-    final bloc = BlocProvider.of<PostCommentsBloc>(context);
-    bloc.add(CreatePostComment(
-      postId: widget.post.id,
-      message: _messageController.text,
-    ));
-
+  void _reset() {
     // Reset the form and close the keyboard
     _messageController.clear();
     FocusScope.of(context).requestFocus(FocusNode());

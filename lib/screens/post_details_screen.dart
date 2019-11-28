@@ -1,7 +1,6 @@
 import 'package:desmosdemo/blocs/blocs.dart';
 import 'package:desmosdemo/dependency_injection/export.dart';
 import 'package:desmosdemo/keys.dart';
-import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,23 +8,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../localization.dart';
 
 /// Represents the screen that is shown to the user when he wants
-/// to visualize the details of a specific [post].
+/// to visualize the details of a specific [postId].
 class DetailsScreen extends StatelessWidget {
-  final Post post;
+  final String postId;
 
-  DetailsScreen(this.post) : super(key: PostsKeys.postDetailsScreen(post.id));
+  DetailsScreen({
+    Key key,
+    @required this.postId,
+  })  : assert(postId != null),
+        super(key: key ?? PostsKeys.postDetailsScreen(postId));
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PostCommentsBloc>(
-          builder: (_) => PostCommentsBloc(repository: Injector.get())
-            ..add(LoadPostComments(post.id)),
+          builder: (context) => PostCommentsBloc(
+            postsBloc: BlocProvider.of(context),
+            repository: Injector.get(),
+          )..add(LoadPostComments(postId)),
         ),
-        BlocProvider<PostsBloc>(
-          builder: (_) => BlocProvider.of<PostsBloc>(context),
-        )
+        BlocProvider<PostInputBloc>(
+          builder: (context) => PostInputBloc(),
+        ),
       ],
       child: BlocBuilder<PostCommentsBloc, PostCommentsState>(
         builder: (context, state) {
@@ -33,56 +38,43 @@ class DetailsScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text(FlutterBlocLocalizations.of(context).post),
             ),
-            body: post == null
-                ? Container(key: PostsKeys.emptyDetailsContainer)
-                : _body(state, BlocProvider.of(context)),
+            body: Padding(
+              padding: EdgeInsets.all(0),
+              child: Column(
+                children: <Widget>[
+                  _body(state),
+                  _commentInput(),
+                ],
+              ),
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _body(PostCommentsState state, PostsBloc bloc) {
-    return Padding(
-      padding: EdgeInsets.all(0),
-      child: Column(
+  Widget _body(PostCommentsState state) {
+    return Flexible(
+      child: ListView(
         children: <Widget>[
-          Flexible(
-            child: ListView(
-              children: <Widget>[
-                _postHeader(),
-                const Divider(height: 1),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: PostActionsBar(
-                    post: post,
-                    onLikedChanged: (liked) {
-                      if (liked) {
-                        bloc.add(UnlikePost(post));
-                      } else {
-                        bloc.add(LikePost(post));
-                      }
-                    },
-                  ),
-                ),
-                const Divider(height: 1),
-                _comments(state),
-              ],
-            ),
+          PostDetails(
+            key: PostsKeys.postDetails,
+            postId: postId,
           ),
-          CommentForm(post: post),
+          const Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: PostActionsBar(postId: postId),
+          ),
+          const Divider(height: 1),
+          _comments(state),
         ],
       ),
     );
   }
-
-  Widget _postHeader() => PostDetails(
-        key: PostsKeys.postDetails,
-        post: post,
-      );
 
   Widget _comments(PostCommentsState state) {
     // The comments are being loaded
@@ -105,9 +97,11 @@ class DetailsScreen extends StatelessWidget {
           // Build the comment item
           final comment = comments[index];
           return PostItem(
-            post: comment,
+            postId: comment.id,
             onTap: () async => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => DetailsScreen(comment)),
+              MaterialPageRoute(
+                builder: (_) => DetailsScreen(postId: comment.id),
+              ),
             ),
           );
         },
@@ -115,5 +109,33 @@ class DetailsScreen extends StatelessWidget {
     } else {
       return Container();
     }
+  }
+
+  Widget _commentInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        PostForm(postId: postId),
+        BlocBuilder<PostInputBloc, PostInputState>(
+          builder: (context, state) => FlatButton(
+            child: Text("Comment"),
+            onPressed:
+                !state.isValid ? null : () => _submitComment(context, state),
+          ),
+        )
+      ],
+    );
+  }
+
+  void _submitComment(BuildContext context, PostInputState state) {
+    // Create the comment
+    // ignore: close_sinks
+    final bloc = BlocProvider.of<PostsBloc>(context);
+    bloc.add(AddPost(message: state.message, parentId: postId));
+
+    // Reset the state
+    // ignore: close_sinks
+    final inputBloc = BlocProvider.of<PostInputBloc>(context);
+    inputBloc.add(ResetForm());
   }
 }

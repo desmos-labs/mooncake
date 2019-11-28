@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:desmosdemo/blocs/blocs.dart';
 import 'package:desmosdemo/repositories/posts_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -10,7 +11,19 @@ import './bloc.dart';
 class PostCommentsBloc extends Bloc<PostCommentsEvent, PostCommentsState> {
   final PostsRepository repository;
 
-  PostCommentsBloc({@required this.repository});
+  /// [PostsBloc] that is used in order to observe for new [PostsLoaded]
+  /// states so that each time a new post is created the refresh the
+  /// comments list.
+  final PostsBloc postsBloc;
+  StreamSubscription _subscription;
+
+  PostCommentsBloc({@required this.repository, @required this.postsBloc}) {
+    _subscription = postsBloc.listen((state) {
+      if (state is PostsLoaded) {
+        add(RefreshComments());
+      }
+    });
+  }
 
   @override
   PostCommentsState get initialState => PostCommentsLoading();
@@ -19,33 +32,31 @@ class PostCommentsBloc extends Bloc<PostCommentsEvent, PostCommentsState> {
   Stream<PostCommentsState> mapEventToState(PostCommentsEvent event) async* {
     if (event is LoadPostComments) {
       yield* _mapLoadPostCommentsEventToState(event);
-    } else if (event is CreatePostComment) {
-      yield* _mapCreatePostCommentEventToState(event);
+    } else if (event is RefreshComments) {
+      yield* _mapRefreshCommentsEventToState(event);
     }
   }
 
-  /// Maps a single [LoadPostComments] event to a series of [PostCommentState]s.
   Stream<PostCommentsState> _mapLoadPostCommentsEventToState(
     LoadPostComments event,
   ) async* {
     final comments = await repository.getCommentsForPost(event.postId);
-    yield PostCommentsLoaded(comments);
+    yield PostCommentsLoaded(postId: event.postId, comments: comments);
   }
 
-  Stream<PostCommentsState> _mapCreatePostCommentEventToState(
-    CreatePostComment event,
+  Stream<PostCommentsState> _mapRefreshCommentsEventToState(
+    RefreshComments event,
   ) async* {
     if (state is PostCommentsLoaded) {
-      // Create the comment with the proper parent id and save it
-      final comment = await repository.createPost(
-        event.message,
-        parentId: event.postId,
-      );
-      await repository.savePost(comment);
-
-      // Update the comments
-      final comments = (state as PostCommentsLoaded).comments;
-      yield PostCommentsLoaded([comment] + comments);
+      add(LoadPostComments((state as PostCommentsLoaded).postId));
     }
+  }
+
+  /// Overridden close method in order to properly cancel the
+  /// [_subscription] we have with the posts bloc.
+  @override
+  Future<void> close() {
+    _subscription.cancel();
+    return super.close();
   }
 }

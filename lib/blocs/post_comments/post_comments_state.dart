@@ -1,5 +1,6 @@
 import 'package:desmosdemo/models/models.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 /// State related to the comments of a particular post.
 abstract class PostCommentsState extends Equatable {
@@ -17,9 +18,10 @@ class PostCommentsLoading extends PostCommentsState {
 
 /// Tells that the comments have been properly loaded from the repository.
 class PostCommentsLoaded extends PostCommentsState {
+  final String postId;
   final List<Post> comments;
 
-  PostCommentsLoaded(this.comments);
+  PostCommentsLoaded({@required this.postId, @required this.comments});
 
   @override
   List<Object> get props => [comments];
