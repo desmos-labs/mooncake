@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/sources/sources.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,15 +11,37 @@ import 'repositories.dart';
 /// and write data related to posts, comments and likes.
 class PostsRepository {
   final LocalPostsSource _localSource;
+  final RemotePostsSource _remotePostsSource;
   final UserRepository _userRepository;
 
-  const PostsRepository({
+  // TODO: We should probably cancel this
+  // ignore: cancel_subscriptions
+  StreamSubscription _postsSubscription;
+  final StreamController<Post> _postsStream = StreamController();
+
+  PostsRepository({
     @required LocalPostsSource localSource,
+    @required RemotePostsSource remoteSource,
     @required UserRepository userRepository,
   })  : assert(localSource != null),
         assert(userRepository != null),
         _localSource = localSource,
+        _remotePostsSource = remoteSource,
         _userRepository = userRepository;
+
+  /// Returns a [Stream] that emits new posts each time they
+  /// are fetched from the blockchain and stored inside the
+  /// device.
+  Stream<Post> get postsStream {
+    if (_postsSubscription == null) {
+      print("Initializing repository stream");
+      _postsSubscription = _remotePostsSource.postsStream.listen((post) async {
+        await _localSource.savePost(post);
+        _postsStream.add(post);
+      });
+    }
+    return _postsStream.stream;
+  }
 
   /// Returns the full list of posts available.
   Future<List<Post>> getPosts() async {

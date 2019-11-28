@@ -4,7 +4,7 @@ import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/sources/sources.dart';
 import 'package:meta/meta.dart';
 
-import '../models/models.dart';
+import '../../models/models.dart';
 
 class LocalPostsSource {
   final FileStorage _postsStorage;

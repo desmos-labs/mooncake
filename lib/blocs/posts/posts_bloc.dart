@@ -11,8 +11,14 @@ import '../blocs.dart';
 /// events and states related to the list of posts.
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final PostsRepository repository;
+  StreamSubscription _postsSubscription;
 
-  PostsBloc({@required this.repository});
+  PostsBloc({@required this.repository}) {
+    _postsSubscription = repository.postsStream.listen((post) {
+      print("Received new post: $post");
+      add(LoadPosts());
+    });
+  }
 
   @override
   PostsState get initialState => PostsLoading();
@@ -70,5 +76,11 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
           .toList();
       yield PostsLoaded(updatedPosts);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _postsSubscription.cancel();
+    return super.close();
   }
 }

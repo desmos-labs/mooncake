@@ -1,6 +1,6 @@
 name: desmosdemo
-description: A new Flutter project.
-version: 1.0.0+1
+description: A decentralized Twitter based on Desmos
+version: 0.1.0+1
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -16,6 +16,7 @@ dependencies:
   json_serializable: ^3.2.3
   meta: ">=1.1.0 <2.0.0"
   path_provider: ^1.4.5
+  web_socket_channel: ^1.1.0
 
   flutter:
     sdk: flutter

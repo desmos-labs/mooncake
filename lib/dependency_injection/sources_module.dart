@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dependencies/dependencies.dart';
 import 'package:desmosdemo/sources/sources.dart';
+import 'package:http/http.dart' as http;
 
 class SourcesModule implements Module {
   final Future<Directory> Function() getDirectory;
@@ -20,6 +21,9 @@ class SourcesModule implements Module {
               final root = await getDirectory();
               return Directory('${root.path}/likes');
             }),
+          ))
+      ..bindLazySingleton((injector, params) => RemotePostsSource(
+            httpClient: http.Client(),
           ));
   }
 }
