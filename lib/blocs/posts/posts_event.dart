@@ -53,3 +53,7 @@ class UnlikePost extends PostsEvent {
   @override
   String toString() => 'UnlikePost { postId: $postId }';
 }
+
+class SyncPosts extends PostsEvent {}
+
+class SyncPostsCompleted extends PostsEvent {}

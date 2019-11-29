@@ -8,7 +8,7 @@ environment:
 dependencies:
   cupertino_icons: ^0.1.2
   dependencies: ^0.1.5
-  equatable: ^1.0.1
+  equatable: ^0.5.0
   flutter_bloc: ^2.0.1
   flutter_screenutil: ^0.6.1
   font_awesome_flutter: ^8.5.0
@@ -16,7 +16,9 @@ dependencies:
   json_serializable: ^3.2.3
   meta: ">=1.1.0 <2.0.0"
   path_provider: ^1.4.5
+  sacco: ^0.0.13
   web_socket_channel: ^1.1.0
+  workmanager: ^0.1.5
 
   flutter:
     sdk: flutter

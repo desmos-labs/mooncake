@@ -4,8 +4,6 @@ import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/sources/sources.dart';
 import 'package:meta/meta.dart';
 
-import '../../models/models.dart';
-
 class LocalPostsSource {
   final FileStorage _postsStorage;
   final FileStorage _likesStorage;
@@ -66,23 +64,34 @@ class LocalPostsSource {
   }
 
   String get _likesFileName => 'likes.json';
+  String get _unlikesFileName => 'unlikes.json';
 
-  Future<List<String>> _getLikesPostsIds() async {
+  /// Returns all the ids of the posts that have been marked as to like.
+  Future<List<String>> getPostsToLikeIds() async {
     final content = await _likesStorage.read(_likesFileName) ?? "[]";
     List<dynamic> postIds = jsonDecode(content);
     return postIds.map((entry) => entry.toString()).toList();
   }
 
+  /// Returns all the ids of the posts that have been marked as to unlike.
+  Future<List<String>> getPostsToUnlikeIds() async {
+    final content = await _likesStorage.read(_unlikesFileName) ?? "[]";
+    List<dynamic> postIds = jsonDecode(content);
+    return postIds.map((entry) => entry.toString()).toList();
+  }
+
+  /// Marks the post with the given [postId] as a post to be liked.
   Future<void> likePost(String postId) async {
-    final postIds = await _getLikesPostsIds();
+    final postIds = await getPostsToLikeIds();
     if (!postIds.contains(postId)) {
       final newIds = [postId] + postIds;
       await _likesStorage.write(_likesFileName, jsonEncode(newIds));
     }
   }
 
+  /// Sets the post having the given [postId] as a post to be unliked.
   Future<void> unlikePost(String postId) async {
-    final postIds = await _getLikesPostsIds();
+    final postIds = await getPostsToLikeIds();
     if (postIds.contains(postId)) {
       final newIds = postIds.where((id) => id != postId).toList();
       await _likesStorage.write(_likesFileName, jsonEncode(newIds));

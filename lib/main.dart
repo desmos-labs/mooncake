@@ -4,13 +4,12 @@ import 'package:desmosdemo/simple_bloc_delegate.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'dependency_injection/export.dart';
 
-void main() {
+void main() async {
   // Setup the dependency injection
-  Injector.init(getApplicationDocumentsDirectory);
+  Injector.init();
 
   // Setup the BLoC delegate to observe transitions
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -19,7 +18,7 @@ void main() {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<PostsBloc>(
-        builder: (context) => PostsBloc(repository: Injector.get()),
+        create: (context) => PostsBloc(repository: Injector.get()),
       ),
     ],
     child: PostsApp(),

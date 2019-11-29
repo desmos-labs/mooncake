@@ -1,3 +1,3 @@
 export 'file_storage.dart';
-export 'local/export.dart';
-export 'remote/export.dart';
+export 'posts/export.dart';
+export 'wallet/export.dart';

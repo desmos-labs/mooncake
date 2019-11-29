@@ -10,13 +10,20 @@ import '../blocs.dart';
 /// Implementation of [Bloc] that allows to properly deal with
 /// events and states related to the list of posts.
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
-  final PostsRepository repository;
+  final PostsRepository _repository;
   StreamSubscription _postsSubscription;
 
-  PostsBloc({@required this.repository}) {
+  PostsBloc({@required PostsRepository repository})
+      : assert(repository != null),
+        this._repository = repository {
+    // Observe for new posts from the chain
     _postsSubscription = repository.postsStream.listen((post) {
-      print("Received new post: $post");
       add(LoadPosts());
+    });
+
+    // Sync the activities of the user every 15 seconds
+    Timer.periodic(Duration(seconds: 15), (t) {
+      add(SyncPosts());
     });
   }
 
@@ -33,13 +40,15 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       yield* _mapLikePostEventToState(event);
     } else if (event is UnlikePost) {
       yield* _mapUnlikePostEventToState(event);
+    } else if (event is SyncPosts) {
+      yield* _mapSyncPostsEventToState();
     }
   }
 
   Stream<PostsState> _mapLoadPostsEventToState() async* {
     try {
-      final posts = await repository.getPosts();
-      yield PostsLoaded(posts);
+      final posts = await _repository.getPosts();
+      yield PostsLoaded(posts: posts);
     } catch (e) {
       yield PostsNotLoaded();
     }
@@ -47,34 +56,42 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
     if (state is PostsLoaded) {
-      await repository.createPost(
+      await _repository.createPost(
         event.message,
         parentId: event.parentId,
       );
-      final updatedPosts = await repository.getPosts();
-      yield PostsLoaded(updatedPosts);
+      final updatedPosts = await _repository.getPosts();
+      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
     }
   }
 
   Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedPost = await repository.likePost(event.postId);
+      final updatedPost = await _repository.likePost(event.postId);
       final updatedPosts = (state as PostsLoaded)
           .posts
           .map((p) => p.id == updatedPost.id ? updatedPost : p)
           .toList();
-      yield PostsLoaded(updatedPosts);
+      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
     }
   }
 
   Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedPost = await repository.unlikePost(event.postId);
+      final updatedPost = await _repository.unlikePost(event.postId);
       final updatedPosts = (state as PostsLoaded)
           .posts
           .map((p) => p.id == updatedPost.id ? updatedPost : p)
           .toList();
-      yield PostsLoaded(updatedPosts);
+      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+    }
+  }
+
+  Stream<PostsState> _mapSyncPostsEventToState() async* {
+    if (state is PostsLoaded) {
+      yield (state as PostsLoaded).copyWith(showSnackbar: true);
+      await _repository.syncActivities();
+      yield (state as PostsLoaded).copyWith(showSnackbar: false);
     }
   }
 

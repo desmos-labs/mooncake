@@ -139,4 +139,22 @@ class PostsRepository {
 
     return post;
   }
+
+  /// Syncs all the user activities performing the correct transactions
+  /// on the blockchain.
+  Future<void> syncActivities() async {
+    // TODO: List all the posts to be uploaded, and set their status as "In sync"
+    // In this way we can later know which one should be locally updated even
+    // if there are new posts being created in the mean time.
+    // We should also skip posts with the same text as one already handled
+    // and upload them at the next iteration.
+
+    // Send the like and unlike transactions
+    final postsToLikeIds = await _localSource.getPostsToLikeIds();
+    final postsToUnlikeIds = await _localSource.getPostsToUnlikeIds();
+    await _remotePostsSource.updateLikesAndUnlikes(
+      postsToLikeIds,
+      postsToUnlikeIds,
+    );
+  }
 }

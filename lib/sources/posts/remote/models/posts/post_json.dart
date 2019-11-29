@@ -1,4 +1,4 @@
-import 'package:desmosdemo/sources/remote/models/models.dart';
+import 'package:desmosdemo/sources/sources.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_json.g.dart';

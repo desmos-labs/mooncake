@@ -25,6 +25,8 @@ class FlutterBlocLocalizations {
   String get newComment => "New comment";
   String get commentHint => "Comment";
   String get commentsDisabled => "Comments disabled by the post owner";
+
+  String get syncingActivities => "Syncing activities...";
 }
 
 class FlutterBlocLocalizationsDelegate

@@ -1,12 +1,11 @@
 import 'package:desmosdemo/blocs/blocs.dart';
 import 'package:desmosdemo/dependency_injection/export.dart';
 import 'package:desmosdemo/keys.dart';
+import 'package:desmosdemo/localization.dart';
+import 'package:desmosdemo/models/models.dart';
 import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:desmosdemo/localization.dart';
-import 'package:desmosdemo/models/models.dart';
 
 /// Represents the screen that is shown to the user when he wants
 /// to visualize the details of a specific [postId].
@@ -24,13 +23,13 @@ class PostDetailsScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PostCommentsBloc>(
-          builder: (context) => PostCommentsBloc(
+          create: (context) => PostCommentsBloc(
             postsBloc: BlocProvider.of(context),
             repository: Injector.get(),
           )..add(LoadPostComments(postId)),
         ),
         BlocProvider<PostInputBloc>(
-          builder: (context) => PostInputBloc(),
+          create: (context) => PostInputBloc(),
         ),
       ],
       child: BlocBuilder<PostCommentsBloc, PostCommentsState>(
