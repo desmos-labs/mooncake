@@ -14,6 +14,6 @@ extension IntExt on int {
   /// Converts this value into a [String] if it's greater than zero,
   /// otherwise returns an empty string.
   String toStringOrEmpty() {
-    return '${this > 0 ? this : ''}';
+    return this > 0 ? '$this' : null;
   }
 }

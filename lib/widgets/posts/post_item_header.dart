@@ -19,10 +19,12 @@ class PostItemHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Text(
-          post.owner.hasUsername ? post.owner.username : post.owner.address,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+        Flexible(
+          child: Text(
+            post.owner.hasUsername ? post.owner.username : post.owner.address,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+          ),
         ),
       ],
     );

@@ -17,7 +17,7 @@ class RemotePostsSource {
 
   final _channel = IOWebSocketChannel.connect('$_RPC_ENDPOINT/websocket');
 
-  // TODO: We should probably cancel this 
+  // TODO: We should probably cancel this
   // ignore: cancel_subscriptions
   StreamSubscription _subscription;
 

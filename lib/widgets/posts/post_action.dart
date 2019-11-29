@@ -21,8 +21,8 @@ class PostAction extends StatelessWidget {
     return Row(
       children: <Widget>[
         PostActionIcon(icon: icon, action: action),
-        value != null ? SizedBox(width: 8) : null,
-        value != null ? Text(value, style: TextStyle(fontSize: 12.0)) : null,
+        if (value != null) SizedBox(width: 8),
+        if (value != null) Text(value, style: TextStyle(fontSize: 12.0)),
       ],
     );
   }

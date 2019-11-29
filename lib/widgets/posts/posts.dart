@@ -31,7 +31,7 @@ class Posts extends StatelessWidget {
                 postId: post.id,
                 onTap: () async => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => DetailsScreen(postId: post.id),
+                    builder: (_) => PostDetailsScreen(postId: post.id),
                   ),
                 ),
               );

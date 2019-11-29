@@ -5,14 +5,15 @@ import 'package:desmosdemo/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../localization.dart';
+import 'package:desmosdemo/localization.dart';
+import 'package:desmosdemo/models/models.dart';
 
 /// Represents the screen that is shown to the user when he wants
 /// to visualize the details of a specific [postId].
-class DetailsScreen extends StatelessWidget {
+class PostDetailsScreen extends StatelessWidget {
   final String postId;
 
-  DetailsScreen({
+  PostDetailsScreen({
     Key key,
     @required this.postId,
   })  : assert(postId != null),
@@ -34,6 +35,9 @@ class DetailsScreen extends StatelessWidget {
       ],
       child: BlocBuilder<PostCommentsBloc, PostCommentsState>(
         builder: (context, state) {
+          // ignore: close_sinks
+          final postBloc = BlocProvider.of<PostsBloc>(context);
+          final post = (postBloc.state as PostsLoaded).posts.findById(postId);
           return Scaffold(
             appBar: AppBar(
               title: Text(FlutterBlocLocalizations.of(context).post),
@@ -43,7 +47,9 @@ class DetailsScreen extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   _body(state),
-                  _commentInput(),
+                  post.allowsComments
+                      ? _commentInput()
+                      : _commentDisabled(context),
                 ],
               ),
             ),
@@ -100,7 +106,7 @@ class DetailsScreen extends StatelessWidget {
             postId: comment.id,
             onTap: () async => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => DetailsScreen(postId: comment.id),
+                builder: (_) => PostDetailsScreen(postId: comment.id),
               ),
             ),
           );
@@ -111,6 +117,7 @@ class DetailsScreen extends StatelessWidget {
     }
   }
 
+  /// Contains the input that allows a user to create a comment
   Widget _commentInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -118,12 +125,23 @@ class DetailsScreen extends StatelessWidget {
         PostForm(postId: postId),
         BlocBuilder<PostInputBloc, PostInputState>(
           builder: (context, state) => FlatButton(
-            child: Text("Comment"),
+            child: Text(FlutterBlocLocalizations.of(context).commentHint),
             onPressed:
                 !state.isValid ? null : () => _submitComment(context, state),
           ),
         )
       ],
+    );
+  }
+
+  /// Contains the text telling the user that he cannot post a comment
+  Widget _commentDisabled(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Text(
+        FlutterBlocLocalizations.of(context).commentsDisabled,
+        style: TextStyle(fontSize: 16),
+      ),
     );
   }
 

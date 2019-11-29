@@ -8,7 +8,7 @@ void main() {
     source.postsStream.listen((post) {
       print(post);
     });
-    await Future.delayed(const Duration(seconds: 20), (){});
+    await Future.delayed(const Duration(seconds: 20), () {});
     expect(true, true);
   });
 }

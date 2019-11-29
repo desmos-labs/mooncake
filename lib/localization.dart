@@ -23,7 +23,8 @@ class FlutterBlocLocalizations {
   String get post => "Post";
 
   String get newComment => "New comment";
-  String get commentHint => "Text";
+  String get commentHint => "Comment";
+  String get commentsDisabled => "Comments disabled by the post owner";
 }
 
 class FlutterBlocLocalizationsDelegate

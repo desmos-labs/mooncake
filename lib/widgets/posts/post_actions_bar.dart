@@ -32,7 +32,9 @@ class PostActionsBar extends StatelessWidget {
             ),
             SizedBox(width: 16),
             PostAction(
-              icon: FontAwesomeIcons.comments,
+              icon: post.allowsComments
+                  ? FontAwesomeIcons.comment
+                  : FontAwesomeIcons.commentSlash,
               value: post.commentsIds.length.toStringOrEmpty(),
             ),
             SizedBox(width: 16),

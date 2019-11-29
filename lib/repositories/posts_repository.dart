@@ -29,6 +29,45 @@ class PostsRepository {
         _remotePostsSource = remoteSource,
         _userRepository = userRepository;
 
+  /// Saves the given post locally, also updating any existing parent's
+  /// comments array to include this post.
+  Future<void> _savePost(Post post) async {
+    // Save the post
+    await _localSource.savePost(post);
+
+    // Update the parent comments
+    Post parent = await _localSource.getPost(post.parentId);
+    if (parent != null) {
+      parent = parent.copyWith(commentsIds: [post.id] + parent.commentsIds);
+      await _localSource.savePost(parent);
+    }
+  }
+
+  /// Creates a new post having the given [message], [parentId] and
+  /// [allowsComments] saving it inside the local cache so that is can
+  /// be later sent to the chain.
+  Future<void> createPost(
+    String message, {
+    @required String parentId,
+    bool allowsComments = true,
+  }) async {
+    final user = await _userRepository.getUser();
+    final date = DateTime.now().toIso8601String();
+    final post = Post(
+      id: date,
+      parentId: parentId,
+      message: message,
+      created: "-1",
+      lastEdited: "-1",
+      allowsComments: allowsComments,
+      owner: user,
+      likes: [],
+      commentsIds: [],
+      synced: false,
+    );
+    await _savePost(post);
+  }
+
   /// Returns a [Stream] that emits new posts each time they
   /// are fetched from the blockchain and stored inside the
   /// device.
@@ -54,45 +93,6 @@ class PostsRepository {
     return Future.wait(post.commentsIds
         .map((commentId) => _localSource.getPost(commentId))
         .where((p) => p != null));
-  }
-
-  /// Creates a new post having the given [message], [parentId] and
-  /// [allowsComments] saving it inside the local cache so that is can
-  /// be later sent to the chain.
-  Future<void> createPost(
-    String message, {
-    @required String parentId,
-    bool allowsComments = true,
-  }) async {
-    final user = await _userRepository.getUser();
-    final date = DateTime.now().toIso8601String();
-    final post = Post(
-      id: date,
-      parentId: parentId,
-      message: message,
-      created: "-1",
-      lastEdited: "-1",
-      allowsComments: allowsComments,
-      owner: user,
-      likes: [],
-      commentsIds: [],
-      synced: false,
-    );
-    await _localSource.savePost(post);
-  }
-
-  /// Saves the given post locally, also updating any existing parent's
-  /// comments array to include this post.
-  Future<void> savePost(Post post) async {
-    // Save the post
-    await _localSource.savePost(post);
-
-    // Update the parent comments
-    Post parent = await _localSource.getPost(post.parentId);
-    if (parent != null) {
-      parent = parent.copyWith(commentsIds: [post.id] + parent.commentsIds);
-      await _localSource.savePost(parent);
-    }
   }
 
   /// Checks if a like from this user already exists for the provided [post].
