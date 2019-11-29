@@ -46,7 +46,23 @@ class PostDetailsScreen extends StatelessWidget {
               padding: EdgeInsets.all(0),
               child: Column(
                 children: <Widget>[
-                  _body(state),
+                  Flexible(
+                    child: ListView(
+                      children: <Widget>[
+                        PostDetails(key: PostsKeys.postDetails, postId: postId),
+                        const Divider(height: 1),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: PostActionsBar(postId: postId),
+                        ),
+                        const Divider(height: 1),
+                        _comments(state),
+                      ],
+                    ),
+                  ),
                   post.allowsComments
                       ? _commentInput()
                       : _commentDisabled(context),
@@ -59,29 +75,7 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _body(PostCommentsState state) {
-    return Flexible(
-      child: ListView(
-        children: <Widget>[
-          PostDetails(
-            key: PostsKeys.postDetails,
-            postId: postId,
-          ),
-          const Divider(height: 1),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            child: PostActionsBar(postId: postId),
-          ),
-          const Divider(height: 1),
-          _comments(state),
-        ],
-      ),
-    );
-  }
-
+  /// Represents the part of the screen that displays the list of comments
   Widget _comments(PostCommentsState state) {
     // The comments are being loaded
     if (state is PostCommentsLoading) {
@@ -112,9 +106,10 @@ class PostDetailsScreen extends StatelessWidget {
           );
         },
       );
-    } else {
-      return Container();
     }
+
+    // Default case
+    return Container();
   }
 
   /// Contains the input that allows a user to create a comment
