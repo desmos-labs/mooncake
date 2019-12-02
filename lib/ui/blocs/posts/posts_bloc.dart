@@ -1,0 +1,136 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:desmosdemo/dependency_injection/dependency_injection.dart';
+import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:meta/meta.dart';
+
+import '../export.dart';
+
+/// Implementation of [Bloc] that allows to properly deal with
+/// events and states related to the list of posts.
+class PostsBloc extends Bloc<PostsEvent, PostsState> {
+  final CreatePostUseCase _createPostUseCase;
+  final LikePostUseCase _likePostUseCase;
+  final UnlikePostUseCase _unlikePostUseCase;
+  final GetPostsUseCase _getPostsUseCase;
+  final SyncPostsUseCase _syncPostsUseCase;
+
+  StreamSubscription _postsSubscription;
+
+  PostsBloc({
+    @required int syncPeriod,
+    @required CreatePostUseCase createPostUseCase,
+    @required LikePostUseCase likePostUseCase,
+    @required UnlikePostUseCase unlikePostUseCase,
+    @required GetPostsUseCase getPostsUseCase,
+    @required SyncPostsUseCase syncPostsUseCase,
+  })  : assert(createPostUseCase != null),
+        _createPostUseCase = createPostUseCase,
+        assert(likePostUseCase != null),
+        _likePostUseCase = likePostUseCase,
+        assert(unlikePostUseCase != null),
+        _unlikePostUseCase = unlikePostUseCase,
+        assert(getPostsUseCase != null),
+        _getPostsUseCase = getPostsUseCase,
+        assert(syncPostsUseCase != null),
+        _syncPostsUseCase = syncPostsUseCase {
+    // Observe for new posts
+    _postsSubscription = getPostsUseCase.stream().listen((post) {
+      add(LoadPosts());
+    });
+
+    // Sync the activities of the user every 15 seconds
+    Timer.periodic(Duration(seconds: syncPeriod), (t) {
+      add(SyncPosts());
+    });
+  }
+
+  factory PostsBloc.create({int syncPeriod = 20}) {
+    return PostsBloc(
+      syncPeriod: syncPeriod,
+      createPostUseCase: Injector.get(),
+      likePostUseCase: Injector.get(),
+      unlikePostUseCase: Injector.get(),
+      getPostsUseCase: Injector.get(),
+      syncPostsUseCase: Injector.get(),
+    );
+  }
+
+  @override
+  PostsState get initialState => PostsLoading();
+
+  @override
+  Stream<PostsState> mapEventToState(PostsEvent event) async* {
+    if (event is LoadPosts) {
+      yield* _mapLoadPostsEventToState();
+    } else if (event is AddPost) {
+      yield* _mapAddPostEventToState(event);
+    } else if (event is LikePost) {
+      yield* _mapLikePostEventToState(event);
+    } else if (event is UnlikePost) {
+      yield* _mapUnlikePostEventToState(event);
+    } else if (event is SyncPosts) {
+      yield* _mapSyncPostsEventToState();
+    }
+  }
+
+  Stream<PostsState> _mapLoadPostsEventToState() async* {
+    try {
+      final posts = await _getPostsUseCase.get();
+      yield PostsLoaded(posts: posts);
+    } catch (e) {
+      yield PostsNotLoaded();
+    }
+  }
+
+  Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
+    if (state is PostsLoaded) {
+      await _createPostUseCase.create(event.message, parentId: event.parentId);
+      final updatedPosts = await _getPostsUseCase.get();
+      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+    }
+  }
+
+  Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
+    if (state is PostsLoaded) {
+      final updatedPost = await _likePostUseCase.like(event.postId);
+      final updatedPosts = (state as PostsLoaded)
+          .posts
+          .map((p) => p.id == updatedPost.id ? updatedPost : p)
+          .toList();
+      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+    }
+  }
+
+  Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
+    if (state is PostsLoaded) {
+      final updatedPost = await _unlikePostUseCase.unlike(event.postId);
+      final updatedPosts = (state as PostsLoaded)
+          .posts
+          .map((p) => p.id == updatedPost.id ? updatedPost : p)
+          .toList();
+      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+    }
+  }
+
+  Stream<PostsState> _mapSyncPostsEventToState() async* {
+    if (state is PostsLoaded) {
+      yield (state as PostsLoaded).copyWith(showSnackbar: true);
+      try {
+        await _syncPostsUseCase.sync();
+        final updatedPosts = await _getPostsUseCase.get();
+        yield PostsLoaded(posts: updatedPosts);
+      } catch (e) {
+        print(e);
+        yield (state as PostsLoaded).copyWith(showSnackbar: false);
+      }
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _postsSubscription.cancel();
+    return super.close();
+  }
+}

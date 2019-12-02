@@ -1,26 +1,29 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:desmosdemo/models/models.dart';
+import 'package:desmosdemo/entities/entities.dart';
+import 'package:desmosdemo/repositories/repositories.dart';
 import 'package:desmosdemo/sources/sources.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:sacco/sacco.dart';
 import 'package:web_socket_channel/io.dart';
+
+import 'post_converter.dart';
 
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
-class RemotePostsSource {
+class RemotePostsSource implements PostsSource {
   final String _lcdEndpoint;
   final String _rpcEndpoint;
   final http.Client _httpClient;
   final WalletSource _walletSource;
 
-  IOWebSocketChannel _channel;
-
-  // TODO: We should probably cancel this
   // ignore: cancel_subscriptions
   StreamSubscription _subscription;
+  IOWebSocketChannel _channel;
 
+  final converter = PostConverter();
   final StreamController<Post> _postsStream = StreamController();
 
   RemotePostsSource({
@@ -33,8 +36,8 @@ class RemotePostsSource {
         assert(rpcEndpoint != null && rpcEndpoint.isNotEmpty),
         _rpcEndpoint = rpcEndpoint,
         assert(httpClient != null),
-        assert(walletSource != null),
         _httpClient = httpClient,
+        assert(walletSource != null),
         _walletSource = walletSource {
     _channel = IOWebSocketChannel.connect('$_rpcEndpoint/websocket');
   }
@@ -69,16 +72,6 @@ class RemotePostsSource {
         .listen((data) => _handleMessage(data));
   }
 
-  /// Returns a [Stream] emitting new posts each time they are sent
-  /// to the chain.
-  Stream<Post> get postsStream {
-    if (_subscription == null) {
-      print("Initializing remote source posts stream");
-      _subscription = _initObserve();
-    }
-    return _postsStream.stream;
-  }
-
   /// Handles the message contained inside the given [TxData].
   void _handleMessage(TxData data) async {
     final events = data.result.events;
@@ -86,10 +79,17 @@ class RemotePostsSource {
       print(events);
       switch (events["message.action"][0]) {
         case "create_post":
-          _handlePostCreated(events);
+          _handlePostCreatedMsg(events);
           break;
       }
     }
+  }
+
+  /// Handles the messages telling that a new post has been created.
+  void _handlePostCreatedMsg(Map<String, List<String>> events) async {
+    final id = events["create_post.post_id"][0];
+    final post = await getPostById(id);
+    _postsStream.add(post);
   }
 
   /// Utility method to easily query any chain endpoint and
@@ -103,60 +103,60 @@ class RemotePostsSource {
     return LcdResponse.fromJson(json.decode(data.body));
   }
 
-  Post _convertPost(PostJson json) {
-    return Post(
-      id: json.id,
-      parentId: json.parentId,
-      message: json.message,
-      created: json.created,
-      lastEdited: json.lastEdited,
-      allowsComments: json.allowsComments,
-      owner: User(
-        address: json.owner,
-        username: null, // TODO: Get this from somewhere
-        avatarUrl: null, // TODO: Get this from somewhere
-      ),
-      likes: json.likes.map((l) {
-        // TODO: Map the likes
-      }).toList(),
-      commentsIds: json.commentsIds,
-      synced: true,
-    );
-  }
-
-  /// Handles the messages telling that a new post has been created.
-  void _handlePostCreated(Map<String, List<String>> events) async {
-    final id = events["create_post.post_id"][0];
-    final data = await _queryChain("/posts/$id");
-    final post = _convertPost(PostJson.fromJson(data.result));
-    _postsStream.add(post);
-  }
-
-  /// Creates the chain messages required to like and like the posts
-  Future<void> updateLikesAndUnlikes(
-    List<String> postsToLikeIds,
-    List<String> postsToUnlikeIds,
-  ) async {
-    final wallet = await _walletSource.getWallet();
-
-    final List<StdMsg> likesMsgs = postsToLikeIds
-        // Like only the posts not marked as unliked
-        .where((id) => !postsToUnlikeIds.contains(id))
-        .map((id) => MsgLikePost(postId: id, liker: wallet.bech32Address))
-        .toList();
-
-    final List<StdMsg> unlikesMsgs = postsToUnlikeIds
-        .where((id) => !postsToLikeIds.contains(id))
-        .map((id) => MsgUnLikePost(postId: id, liker: wallet.bech32Address))
-        .toList();
-
-    final result = await _walletSource.sendTx(
-      messages: likesMsgs + unlikesMsgs,
-      wallet: wallet,
-    );
-
+  /// Creates, sings and sends a transaction having the given [messages]
+  /// and using the given [wallet].
+  Future<void> _sendTx(List<StdMsg> messages, Wallet wallet) async {
+    final tx = TxBuilder.buildStdTx(stdMsgs: messages);
+    final signTx = await TxSigner.signStdTx(wallet: wallet, stdTx: tx);
+    final result = await TxSender.broadcastStdTx(wallet: wallet, stdTx: signTx);
     if (!result.success) {
       throw Exception(result.error.errorMessage);
     }
+  }
+
+  @override
+  Stream<Post> get postsStream {
+    if (_subscription == null) {
+      print("Initializing remote source posts stream");
+      _subscription = _initObserve();
+    }
+    return _postsStream.stream;
+  }
+
+  @override
+  Future<Post> getPostById(String postId) async {
+    try {
+      final data = await _queryChain("/posts/$postId");
+      final post = converter.toPost(PostJson.fromJson(data.result));
+      return post;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<List<Post>> getPosts() {
+    // TODO: implement getPosts
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> savePost(Post post) async {
+    final wallet = await _walletSource.getWallet();
+    final msg = converter.toMsgCreatePost(post);
+    return _sendTx([msg], wallet);
+  }
+
+  @override
+  Future<void> savePosts(List<Post> posts) async {
+    final wallet = await _walletSource.getWallet();
+    final msgs = posts.map((post) => converter.toMsgCreatePost(post)).toList();
+    return _sendTx(msgs, wallet);
+  }
+
+  @override
+  Future<void> deletePost(String postId) {
+    throw UnimplementedError("Cannot delete a remote post");
   }
 }

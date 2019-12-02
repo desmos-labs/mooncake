@@ -1,12 +1,17 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:desmosdemo/models/models.dart';
+import 'package:desmosdemo/entities/entities.dart';
+import 'package:desmosdemo/repositories/repositories.dart';
 import 'package:desmosdemo/sources/sources.dart';
 import 'package:meta/meta.dart';
 
-class LocalPostsSource {
+/// Implementation of [PostsSource] that deals with local data.
+class LocalPostsSource implements PostsSource {
   final FileStorage _postsStorage;
   final FileStorage _likesStorage;
+
+  final _streamController = StreamController<Post>();
 
   LocalPostsSource({
     @required FileStorage postsStorage,
@@ -20,17 +25,15 @@ class LocalPostsSource {
     return '$postId.json';
   }
 
-  /// Saves the given [post], either creating a new entry, or
-  /// replacing the existing contents if a post with the same id
-  /// already exists.
-  Future<void> savePost(Post post) async {
-    final fileName = _getPostFileName(post.id);
-    await _postsStorage.write(fileName, jsonEncode(post.toJson()));
-  }
+  String get _likesFileName => 'likes.json';
 
-  /// Returns the post having the given [postId] or `null` if no such
-  /// post was found.
-  Future<Post> getPost(String postId) async {
+  String get _unlikesFileName => 'unlikes.json';
+
+  @override
+  Stream<Post> get postsStream => _streamController.stream;
+
+  @override
+  Future<Post> getPostById(String postId) async {
     final fileName = _getPostFileName(postId);
     if (await _postsStorage.exits(fileName)) {
       final contents = await _postsStorage.read(fileName);
@@ -40,20 +43,7 @@ class LocalPostsSource {
     }
   }
 
-  /// Removes the given [post] from the cache of the posts that still
-  /// needs to be sent to the blockchain.
-  /// If the post has already been sent to the chain, throws an
-  /// [Exception].
-  Future<void> deleteCachedPost(Post post) async {
-    final foundPost = await getPost(post.id);
-    if (!foundPost.synced) {
-      await _postsStorage.delete(_getPostFileName(foundPost.id));
-    } else {
-      throw Exception("Cannot deleted an already synced post");
-    }
-  }
-
-  /// Returns the full list of locally stored posts.
+  @override
   Future<List<Post>> getPosts() async {
     final files = await _postsStorage.listFiles();
     final strings = await Future.wait(files.map((file) => file.readAsString()));
@@ -63,8 +53,40 @@ class LocalPostsSource {
         .toList();
   }
 
-  String get _likesFileName => 'likes.json';
-  String get _unlikesFileName => 'unlikes.json';
+  @override
+  Future<void> savePost(Post post) async {
+    // TODO: Check if the likes have been updated (add/remove new/old likes)
+
+    // Check if there's a post with the same message and syncing, in
+    // this case we need to replace the existing one
+    final posts = await getPosts();
+    final postToBeReplaced = posts.find(
+      message: post.message,
+      status: PostStatus.SYNCING,
+    );
+
+    // Save the post
+    final fileName = _getPostFileName(postToBeReplaced?.id ?? post.id);
+    await _postsStorage.write(fileName, jsonEncode(post.toJson()));
+
+    // Emit the saved post
+    _streamController.add(post);
+
+    return post;
+  }
+
+  @override
+  Future<void> savePosts(List<Post> posts) {
+    return Future.wait(posts.map((post) => savePost(post)));
+  }
+
+  @override
+  Future<void> deletePost(String postId) {
+    final fileName = _getPostFileName(postId);
+    return _postsStorage.delete(fileName);
+  }
+
+  // TODO: Do something with the methods below
 
   /// Returns all the ids of the posts that have been marked as to like.
   Future<List<String>> getPostsToLikeIds() async {

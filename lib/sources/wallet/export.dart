@@ -1,3 +1,3 @@
 export 'package:sacco/models/export.dart';
 
-export 'wallet_source.dart';
+export 'impl_wallet_source.dart';

@@ -7,7 +7,13 @@ part of 'like_json.dart';
 // **************************************************************************
 
 LikeJson _$LikeJsonFromJson(Map<String, dynamic> json) {
-  return LikeJson();
+  return LikeJson(
+    owner: json['owner'] as String,
+    created: json['createod'] as String,
+  );
 }
 
-Map<String, dynamic> _$LikeJsonToJson(LikeJson instance) => <String, dynamic>{};
+Map<String, dynamic> _$LikeJsonToJson(LikeJson instance) => <String, dynamic>{
+      'createod': instance.created,
+      'owner': instance.owner,
+    };

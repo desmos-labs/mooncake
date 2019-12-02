@@ -8,19 +8,48 @@ Dwitter is a decentralized version of [Twitter](https://twitter.com) (with less 
 It allows to post freely any kind of message, and see what all the users are writing, no follow needed. 
 Everyone knows everything.
 
-## Current state
-Currently there is **no interaction** with the blockchain but **all the posts and comments are stored locally**.
+## Syncing
+Currently the syncing of posts is performed **once every 20 seconds**.  
+This is due to avoid uploading or downloading new content too much quickly. 
+The speed of sync can be changed from withing the `main.dart` file, setting the desired `syncPeriod` when creating the `PostsBloc` instance.  
 
 ## Development
 ### Requirements
 - [Flutter](https://flutter.dev): to know how to install it, please refer to the [installation guide](https://flutter.dev/docs/get-started/install).
 - An Android/iOS emulator or physical device. 
 
+### Architecture
+The whole code architecture follows the [Clean Architecture pattern](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) mixed with the [BLoC pattern for the UI part](https://bloclibrary.dev/#/whybloc). 
+
+The directories are separated using the Clean Architecture layers. From the inner to the outer one:
+
+- `entities` contains the data structure definition;
+- `usecases` contains the different use cases definition;
+- `repositories` act as interface adapters; 
+- `sources` and `ui` contain respectively the database/network interfaces and all the views definition.
+
+To make the code more simple to maintain, we used the [dependency injection technique](https://en.wikipedia.org/wiki/Dependency_injection). The whole injection is handled using the [`dependencies` Pub package](https://pub.dev/packages/dependencies) and you can find the injector definition inside the `dependency_injection` folder. 
+
+### Code generation
+To properly handle JSON marshaling and unmarshaling, we used the [`json_serializable`](https://pub.dev/packages/json_serializable) and [`json_annotation`](https://pub.dev/packages/json_annotation) packages.
+ 
+If you change the definition of classes marked with `@JsonSerializable()` remember to run the following command to toggle the code generation and update the generated `fromJson`/`toJson` methods as well:
+
+```shell
+flutter pub run build_runner build
+``` 
+
+### Formatting
+When writing code we follow the [Flutter formatting guideline](https://flutter.dev/docs/development/tools/formatting). To ensure your files also follow the same formatting, please run the given commands once you edited or added new files:
+
+```shell
+flutter format. 
+``` 
+
 ### Run the app
 To run a local version of this application, you need to execute the following commands: 
 
 ```shell
-flutter pub run build_runner build
 flutter run
 ``` 
 
