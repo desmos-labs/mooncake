@@ -15,7 +15,16 @@ void main() async {
   // Run the app
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<PostsBloc>(create: (_) => PostsBloc.create(syncPeriod: 20)),
+      BlocProvider<NavigatorBloc>(
+        create: (_) => NavigatorBloc(),
+      ),
+      BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(
+          navigatorBloc: BlocProvider.of(context),
+          checkLoginUseCase: Injector.get(),
+          saveWalletUseCase: Injector.get(),
+        )..add(CheckStatus()),
+      ),
     ],
     child: PostsApp(),
   ));

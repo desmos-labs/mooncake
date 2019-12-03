@@ -1,5 +1,6 @@
 export 'app/export.dart';
 export 'loading_indicator.dart';
+export 'login/export.dart';
 export 'posts/export.dart';
 export 'stats/export.dart';
 export 'tab_selector.dart';

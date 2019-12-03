@@ -9,12 +9,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TabsBloc, AppTab>(
+    return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, activeTab) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(FlutterBlocLocalizations.of(context).appTitle),
-            actions: [],
+            title: Text(PostsLocalizations.of(context).appTitle),
+            actions: [
+              IconButton(
+                icon: Icon(FontAwesomeIcons.signOutAlt),
+                onPressed: () {
+                  BlocProvider.of<HomeBloc>(context).add(SignOut());
+                },
+                tooltip: PostsLocalizations.of(context).signOut,
+              )
+            ],
           ),
           body: activeTab == AppTab.posts ? PostsList() : Stats(),
           floatingActionButton: FloatingActionButton(
@@ -23,12 +31,12 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, PostsRoutes.addPost);
             },
             child: Icon(Icons.add),
-            tooltip: FlutterBlocLocalizations.of(context).editPost,
+            tooltip: PostsLocalizations.of(context).editPost,
           ),
           bottomNavigationBar: TabSelector(
             activeTab: activeTab,
             onTabSelected: (tab) {
-              BlocProvider.of<TabsBloc>(context).add(UpdateTab(tab));
+              BlocProvider.of<HomeBloc>(context).add(UpdateTab(tab));
             },
           ),
         );

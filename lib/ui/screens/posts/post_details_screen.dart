@@ -33,7 +33,7 @@ class PostDetailsScreen extends StatelessWidget {
           final post = (postBloc.state as PostsLoaded).posts.find(id: postId);
           return Scaffold(
             appBar: AppBar(
-              title: Text(FlutterBlocLocalizations.of(context).post),
+              title: Text(PostsLocalizations.of(context).post),
             ),
             body: Padding(
               padding: EdgeInsets.all(0),
@@ -113,7 +113,7 @@ class PostDetailsScreen extends StatelessWidget {
         PostForm(postId: postId),
         BlocBuilder<PostInputBloc, PostInputState>(
           builder: (context, state) => FlatButton(
-            child: Text(FlutterBlocLocalizations.of(context).commentHint),
+            child: Text(PostsLocalizations.of(context).commentHint),
             onPressed:
                 !state.isValid ? null : () => _submitComment(context, state),
           ),
@@ -127,7 +127,7 @@ class PostDetailsScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Text(
-        FlutterBlocLocalizations.of(context).commentsDisabled,
+        PostsLocalizations.of(context).commentsDisabled,
         style: TextStyle(fontSize: 16),
       ),
     );

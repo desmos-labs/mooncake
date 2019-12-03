@@ -5,6 +5,13 @@ class UseCaseModule implements Module {
   @override
   void configure(Binder binder) {
     binder
+      // Login use cases
+      ..bindFactory((injector, params) => CheckLoginUseCase(
+            walletRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => LogoutUseCase(
+            walletRepository: injector.get(),
+          ))
       // Posts use cases
       ..bindFactory((injector, params) => CreatePostUseCase(
             walletRepository: injector.get(),
@@ -25,6 +32,10 @@ class UseCaseModule implements Module {
           ))
       ..bindFactory((injector, params) => UnlikePostUseCase(
             postsRepository: injector.get(),
+            walletRepository: injector.get(),
+          ))
+      // Wallet use cases
+      ..bindFactory((injector, params) => SaveWalletUseCase(
             walletRepository: injector.get(),
           ));
   }

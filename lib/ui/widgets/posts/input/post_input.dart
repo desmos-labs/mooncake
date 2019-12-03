@@ -51,7 +51,7 @@ class _PostFormState extends State<PostForm> {
                   key: PostsKeys.postMessageField,
                   autofocus: false,
                   decoration: InputDecoration(
-                    hintText: FlutterBlocLocalizations.of(context).newComment,
+                    hintText: PostsLocalizations.of(context).newComment,
                   ),
                   autocorrect: false,
                 ),

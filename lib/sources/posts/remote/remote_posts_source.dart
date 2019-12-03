@@ -69,6 +69,7 @@ class RemotePostsSource implements PostsSource {
         // We need to skip the initial messages answering OK for the queries
         .skip(queryList.length)
         .map((data) => TxData.fromJson(jsonDecode(data)))
+        .handleError((error) => print('Remote posts channel exception: $error'))
         .listen((data) => _handleMessage(data));
   }
 

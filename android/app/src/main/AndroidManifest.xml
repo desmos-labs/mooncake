@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".Application"
+            android:name="io.flutter.app.FlutterApplication"
         android:label="desmosdemo"
         android:icon="@mipmap/ic_launcher">
         <activity

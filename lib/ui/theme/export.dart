@@ -19,11 +19,12 @@ class PostsTheme {
 
       // Define the default font family.
       fontFamily: 'Roboto',
+      buttonColor: accentColor,
       textTheme: TextTheme(
         body1: TextStyle(color: textColor),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: primaryColor,
+        buttonColor: accentColor,
       ),
     );
   }

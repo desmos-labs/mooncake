@@ -54,7 +54,7 @@ class PostsList extends StatelessWidget {
         children: <Widget>[
           Icon(FontAwesomeIcons.cloudUploadAlt, size: 16),
           SizedBox(width: 16),
-          Text(FlutterBlocLocalizations.of(context).syncingActivities),
+          Text(PostsLocalizations.of(context).syncingActivities),
         ],
       ),
     );

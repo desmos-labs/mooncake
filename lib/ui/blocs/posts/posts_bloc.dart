@@ -10,12 +10,14 @@ import '../export.dart';
 /// Implementation of [Bloc] that allows to properly deal with
 /// events and states related to the list of posts.
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
+  final int _syncPeriod;
   final CreatePostUseCase _createPostUseCase;
   final LikePostUseCase _likePostUseCase;
   final UnlikePostUseCase _unlikePostUseCase;
   final GetPostsUseCase _getPostsUseCase;
   final SyncPostsUseCase _syncPostsUseCase;
 
+  Timer _syncTimer;
   StreamSubscription _postsSubscription;
 
   PostsBloc({
@@ -25,7 +27,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     @required UnlikePostUseCase unlikePostUseCase,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
-  })  : assert(createPostUseCase != null),
+  })  : _syncPeriod = syncPeriod,
+        assert(createPostUseCase != null),
         _createPostUseCase = createPostUseCase,
         assert(likePostUseCase != null),
         _likePostUseCase = likePostUseCase,
@@ -34,17 +37,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         assert(getPostsUseCase != null),
         _getPostsUseCase = getPostsUseCase,
         assert(syncPostsUseCase != null),
-        _syncPostsUseCase = syncPostsUseCase {
-    // Observe for new posts
-    _postsSubscription = getPostsUseCase.stream().listen((post) {
-      add(LoadPosts());
-    });
-
-    // Sync the activities of the user every 15 seconds
-    Timer.periodic(Duration(seconds: syncPeriod), (t) {
-      add(SyncPosts());
-    });
-  }
+        _syncPostsUseCase = syncPostsUseCase;
 
   factory PostsBloc.create({int syncPeriod = 20}) {
     return PostsBloc(
@@ -79,6 +72,20 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     try {
       final posts = await _getPostsUseCase.get();
       yield PostsLoaded(posts: posts);
+
+      // Observe for new posts
+      if (_postsSubscription == null) {
+        _postsSubscription = _getPostsUseCase.stream().listen((post) {
+          add(LoadPosts());
+        });
+      }
+
+      // Sync the activities of the user every 15 seconds
+      if (_syncTimer == null) {
+        _syncTimer = Timer.periodic(Duration(seconds: _syncPeriod), (t) {
+          add(SyncPosts());
+        });
+      }
     } catch (e) {
       yield PostsNotLoaded();
     }

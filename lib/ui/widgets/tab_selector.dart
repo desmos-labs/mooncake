@@ -28,8 +28,8 @@ class TabSelector extends StatelessWidget {
             key: tab == AppTab.posts ? PostsKeys.postsTab : PostsKeys.statsTab,
           ),
           title: Text(tab == AppTab.stats
-              ? FlutterBlocLocalizations.of(context).stats
-              : FlutterBlocLocalizations.of(context).posts),
+              ? PostsLocalizations.of(context).stats
+              : PostsLocalizations.of(context).posts),
         );
       }).toList(),
     );

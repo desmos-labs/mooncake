@@ -7,11 +7,9 @@ import 'package:flutter/cupertino.dart';
 class PostInputState extends Equatable {
   final String message;
 
-  bool get isValid => message != null && message.isNotEmpty;
+  PostInputState({@required this.message});
 
-  PostInputState({
-    @required this.message,
-  });
+  bool get isValid => message != null && message.isNotEmpty;
 
   /// Builds an empty state.
   factory PostInputState.empty() => PostInputState(
@@ -41,7 +39,7 @@ class PostInputState extends Equatable {
 
   @override
   String toString() {
-    return 'CommentInputState'
+    return 'CommentInputState {'
         'message: $message '
         '}';
   }

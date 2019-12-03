@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 class PostsKeys {
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
   static final statsLoadingIndicator = const Key('__statsLoadingIndicator__');
   static final emptyStatsContainer = const Key('__emptyStatsContainer__');
   static final emptyDetailsContainer = const Key('__emptyDetailsContainer__');
@@ -32,4 +34,6 @@ class PostsKeys {
   static Key postMessageField = const Key('__postEditScreenMessageField__');
   static Key savePostFab = const Key('__savePostFab__');
   static Key saveNewPost = const Key('__saveNewPost__');
+
+  static Key mnemonicField = const Key('__mnemonciField__');
 }

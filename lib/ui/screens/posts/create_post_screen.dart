@@ -12,7 +12,7 @@ class CreatePostScreen extends StatefulWidget {
 class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
-    final localizations = FlutterBlocLocalizations.of(context);
+    final localizations = PostsLocalizations.of(context);
 
     return BlocProvider(
       create: (context) => PostInputBloc.create(),

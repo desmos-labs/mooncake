@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
-class FlutterBlocLocalizations {
-  static FlutterBlocLocalizations of(BuildContext context) {
-    return Localizations.of<FlutterBlocLocalizations>(
+class PostsLocalizations {
+  static PostsLocalizations of(BuildContext context) {
+    return Localizations.of<PostsLocalizations>(
       context,
-      FlutterBlocLocalizations,
+      PostsLocalizations,
     );
   }
 
   String get appTitle => "Dwitter";
   String get posts => "Posts";
   String get stats => "Stats";
+  String get signOut => "Sign out";
 
   String get editPost => "Edit post";
   String get createPost => "Create post";
@@ -27,13 +28,21 @@ class FlutterBlocLocalizations {
   String get commentsDisabled => "Comments disabled by the post owner";
 
   String get syncingActivities => "Syncing activities...";
+
+  String get recoverFromMnemonic => "Recover from mnemonic";
+  String get generateNewAccount => "Generate new account";
+  String get mnemonicRecoverInstructions =>
+      "Write here your mnemonic code, space separated";
+  String get mnemonicHint => "Mnemonic";
+  String get recoverAccount => "Recover account";
+  String get invalidMnemonic => "Invalid mnemonic";
 }
 
 class FlutterBlocLocalizationsDelegate
-    extends LocalizationsDelegate<FlutterBlocLocalizations> {
+    extends LocalizationsDelegate<PostsLocalizations> {
   @override
-  Future<FlutterBlocLocalizations> load(Locale locale) =>
-      Future(() => FlutterBlocLocalizations());
+  Future<PostsLocalizations> load(Locale locale) =>
+      Future(() => PostsLocalizations());
 
   @override
   bool shouldReload(FlutterBlocLocalizationsDelegate old) => false;

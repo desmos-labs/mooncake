@@ -11,7 +11,18 @@ class WalletRepositoryImpl extends WalletRepository {
       : assert(walletSource != null),
         _walletSource = walletSource;
 
+  @override
+  Future<void> saveWallet(String mnemonic) {
+    return _walletSource.saveWallet(mnemonic);
+  }
+
+  @override
   Future<Wallet> getWallet() {
     return _walletSource.getWallet();
+  }
+
+  @override
+  Future<void> deleteWallet() {
+    return _walletSource.deleteWallet();
   }
 }
