@@ -36,11 +36,6 @@ class SplashScreen extends StatelessWidget {
   Widget _homeScreen() {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PostsBloc>(
-          // Override the provider to load the posts initially
-          create: (context) =>
-              PostsBloc.create(syncPeriod: 20)..add(LoadPosts()),
-        ),
         BlocProvider<HomeBloc>(
           create: (context) => HomeBloc(
             loginBloc: BlocProvider.of(context),

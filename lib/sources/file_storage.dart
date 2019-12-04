@@ -55,7 +55,9 @@ class FileStorage {
   /// and [Exception] is something goes wrong.
   Future<void> delete(String fileName) async {
     final file = await _getFilePath(fileName);
-    await file.delete();
+    if (await file.exists()) {
+      await file.delete();
+    }
   }
 
   /// Lists all the files that are currently present inside

@@ -19,7 +19,19 @@ class SyncPostsUseCase {
     // Get the posts
     final posts = await _postsRepository.getPosts();
     final syncingPosts = posts
-        .where((post) => post.status == PostStatus.TO_BE_SYNCED)
+        .where((post) {
+          bool needsSync = post.status == PostStatus.TO_BE_SYNCED;
+
+          // Sync all those posts that are stored as SYNCING
+          // but have not yet been synced in the last 2 minutes
+          if (post.status == PostStatus.SYNCING) {
+            final creationData = DateTime.parse(post.created);
+            final syncTimeout = DateTime.now().subtract(Duration(minutes: 2));
+            needsSync = creationData.isBefore(syncTimeout);
+          }
+
+          return needsSync;
+        })
         .map((post) => post.copyWith(status: PostStatus.SYNCING))
         .toList();
 

@@ -9,8 +9,10 @@ import 'package:sacco/sacco.dart';
 /// using the [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)
 /// plugin that stores it inside the secure hardware of the device.
 class WalletSourceImpl extends WalletSource {
+  static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
   static const _WALLET_KEY = "mnemonic";
-  final _storage = new FlutterSecureStorage();
+
+  final FlutterSecureStorage _storage = new FlutterSecureStorage();
   final NetworkInfo _networkInfo;
 
   WalletSourceImpl({@required NetworkInfo networkInfo})
@@ -25,7 +27,7 @@ class WalletSourceImpl extends WalletSource {
     }
 
     // Save it safely
-    await _storage.write(key: _WALLET_KEY, value: mnemonic);
+    await _storage.write(key: _WALLET_KEY, value: mnemonic.trim());
   }
 
   @override
@@ -38,7 +40,11 @@ class WalletSourceImpl extends WalletSource {
     }
 
     // Derive the wallet
-    return Wallet.derive(mnemonic.split(" "), _networkInfo);
+    return Wallet.derive(
+      mnemonic.split(" "),
+      _networkInfo,
+      derivationPath: _WALLET_DERIVATION_PATH,
+    );
   }
 
   @override

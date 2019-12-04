@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:desmosdemo/entities/entities.dart';
 import 'package:desmosdemo/repositories/repositories.dart';
+import 'package:desmosdemo/sources/posts/remote/models/chain_event_converter.dart';
 import 'package:desmosdemo/sources/sources.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:sacco/sacco.dart';
@@ -23,7 +25,8 @@ class RemotePostsSource implements PostsSource {
   StreamSubscription _subscription;
   IOWebSocketChannel _channel;
 
-  final converter = PostConverter();
+  final eventConverter = ChainEventsConverter();
+  final postConverter = PostConverter();
   final StreamController<Post> _postsStream = StreamController();
 
   RemotePostsSource({
@@ -75,21 +78,17 @@ class RemotePostsSource implements PostsSource {
 
   /// Handles the message contained inside the given [TxData].
   void _handleMessage(TxData data) async {
-    final events = data.result.events;
-    if (events != null) {
-      print(events);
-      switch (events["message.action"][0]) {
-        case "create_post":
-          _handlePostCreatedMsg(events);
-          break;
+    final Map<String, List<String>> events = data.result.events ?? {};
+    eventConverter.convert(events).forEach((event) {
+      if (event is CreatePostEvent) {
+        _handlePostCreatedMsg(event);
       }
-    }
+    });
   }
 
   /// Handles the messages telling that a new post has been created.
-  void _handlePostCreatedMsg(Map<String, List<String>> events) async {
-    final id = events["create_post.post_id"][0];
-    final post = await getPostById(id);
+  void _handlePostCreatedMsg(CreatePostEvent event) async {
+    final post = await getPostById(event.postId);
     _postsStream.add(post);
   }
 
@@ -107,8 +106,17 @@ class RemotePostsSource implements PostsSource {
   /// Creates, sings and sends a transaction having the given [messages]
   /// and using the given [wallet].
   Future<void> _sendTx(List<StdMsg> messages, Wallet wallet) async {
-    final tx = TxBuilder.buildStdTx(stdMsgs: messages);
+    if (messages.isEmpty) {
+      // No messages to send, simply return
+      return;
+    }
+
+    final tx = TxBuilder.buildStdTx(
+      stdMsgs: messages,
+      fee: StdFee(gas: (200000 * messages.length).toString(), amount: []),
+    );
     final signTx = await TxSigner.signStdTx(wallet: wallet, stdTx: tx);
+
     final result = await TxSender.broadcastStdTx(wallet: wallet, stdTx: signTx);
     if (!result.success) {
       throw Exception(result.error.errorMessage);
@@ -128,7 +136,7 @@ class RemotePostsSource implements PostsSource {
   Future<Post> getPostById(String postId) async {
     try {
       final data = await _queryChain("/posts/$postId");
-      final post = converter.toPost(PostJson.fromJson(data.result));
+      final post = postConverter.toPost(PostJson.fromJson(data.result));
       return post;
     } catch (e) {
       print(e);
@@ -145,15 +153,64 @@ class RemotePostsSource implements PostsSource {
   @override
   Future<void> savePost(Post post) async {
     final wallet = await _walletSource.getWallet();
-    final msg = converter.toMsgCreatePost(post);
+    final msg = postConverter.toMsgCreatePost(post);
     return _sendTx([msg], wallet);
   }
 
   @override
   Future<void> savePosts(List<Post> posts) async {
     final wallet = await _walletSource.getWallet();
-    final msgs = posts.map((post) => converter.toMsgCreatePost(post)).toList();
-    return _sendTx(msgs, wallet);
+
+    // Get the existing posts list
+    final List<Post> existingPosts =
+        await Future.wait(posts.map((p) => getPostById(p.id)));
+
+    // Divide the posts into the ones that need to be created, the
+    // ones that need to be liked and the ones from which the like
+    // should be removed.
+    final List<Post> postsToCreate = [];
+    final List<String> postsToLike = [];
+    final List<String> postsToUnlike = [];
+    for (int index = 0; index < posts.length; index++) {
+      final post = posts[index];
+      final existingPost = existingPosts[index];
+
+      // The post needs to be created
+      if (existingPost == null) {
+        postsToCreate.add(posts[index]);
+        continue;
+      }
+
+      final isPostLiked = post.containsLikeFromUser(wallet.bech32Address);
+      final isExistingPostLiked =
+          post.containsLikeFromUser(wallet.bech32Address);
+
+      // The user has liked this post
+      if (isPostLiked && !isExistingPostLiked) {
+        postsToLike.add(post.id);
+        continue;
+      }
+
+      // The user has removed the like from this post
+      if (isExistingPostLiked && !isPostLiked) {
+        postsToUnlike.add(post.id);
+        continue;
+      }
+    }
+
+    final List<StdMsg> messages = [];
+    messages.addAll(
+        postsToCreate.map((post) => postConverter.toMsgCreatePost(post)).toList());
+
+    messages.addAll(postsToLike
+        .map((id) => MsgLikePost(postId: id, liker: wallet.bech32Address))
+        .toList());
+
+    messages.addAll(postsToUnlike
+        .map((id) => MsgUnLikePost(postId: id, liker: wallet.bech32Address))
+        .toList());
+
+    return _sendTx(messages, wallet);
   }
 
   @override

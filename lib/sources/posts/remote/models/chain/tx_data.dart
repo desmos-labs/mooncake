@@ -18,6 +18,9 @@ class TxData extends Equatable {
   factory TxData.fromJson(Map<String, dynamic> json) => _$TxDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$TxDataToJson(this);
+
+  @override
+  String toString() => 'TxData { result: $result }';
 }
 
 /// Contains the data present inside the "result" field of
@@ -35,4 +38,7 @@ class TxResult extends Equatable {
       _$TxResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$TxResultToJson(this);
+
+  @override
+  String toString() => 'TxResult { events: $events }';
 }

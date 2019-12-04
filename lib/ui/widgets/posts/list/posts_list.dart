@@ -11,6 +11,7 @@ class PostsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostsBloc, PostsState>(
+      bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),
       builder: (context, state) {
         if (state is PostsLoading) {
           return LoadingIndicator(key: PostsKeys.postsLoading);

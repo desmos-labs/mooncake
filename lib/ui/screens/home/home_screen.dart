@@ -27,9 +27,7 @@ class HomeScreen extends StatelessWidget {
           body: activeTab == AppTab.posts ? PostsList() : Stats(),
           floatingActionButton: FloatingActionButton(
             key: PostsKeys.addPost,
-            onPressed: () {
-              Navigator.pushNamed(context, PostsRoutes.addPost);
-            },
+            onPressed: () => Navigator.of(context).push(_createRoute()),
             child: Icon(Icons.add),
             tooltip: PostsLocalizations.of(context).editPost,
           ),
@@ -42,5 +40,15 @@ class HomeScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Route _createRoute() {
+    return MaterialPageRoute(builder: (BuildContext context) {
+      return CreatePostScreen(callback: (_, message) {
+        // ignore: close_sinks
+        final bloc = BlocProvider.of<PostsBloc>(context);
+        bloc.add(AddPost(parentId: null, message: message));
+      });
+    });
   }
 }

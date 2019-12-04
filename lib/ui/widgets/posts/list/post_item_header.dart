@@ -21,7 +21,6 @@ class PostItemHeader extends StatelessWidget {
       children: <Widget>[
         Flexible(
           child: Text(
-            // TODO: Implement the username
             post.owner,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),

@@ -8,38 +8,40 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PostsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: PostsKeys.navigatorKey,
-      title: PostsLocalizations().appTitle,
-      theme: PostsTheme.theme,
-      localizationsDelegates: [
-        FlutterBlocLocalizationsDelegate(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MnemonicInputBloc>(
+          create: (_) => MnemonicInputBloc(),
+        ),
+        BlocProvider<RecoverAccountBloc>(
+          create: (context) => RecoverAccountBloc(
+            mnemonicInputBloc: BlocProvider.of(context),
+            loginBloc: BlocProvider.of(context),
+          ),
+        ),
+        BlocProvider<GenerateMnemonicBloc>(
+          create: (context) => GenerateMnemonicBloc(
+            navigatorBloc: BlocProvider.of(context),
+            generateMnemonicUseCase: Injector.get(),
+          ),
+        ),
+        BlocProvider<PostsBloc>(
+          create: (context) => PostsBloc.create(syncPeriod: 20),
+        )
       ],
-      routes: {
-        PostsRoutes.home: (context) => SplashScreen(),
-        PostsRoutes.addPost: (context) => CreatePostScreen(),
-        PostsRoutes.recoverAccount: (context) => MultiBlocProvider(
-              providers: [
-                BlocProvider<MnemonicInputBloc>(
-                  create: (_) => MnemonicInputBloc(),
-                ),
-                BlocProvider<RecoverAccountBloc>(
-                  create: (context) => RecoverAccountBloc(
-                    mnemonicInputBloc: BlocProvider.of(context),
-                    loginBloc: BlocProvider.of(context),
-                  ),
-                )
-              ],
-              child: RecoverAccountScreen(),
-            ),
-        PostsRoutes.createAccount: (context) => BlocProvider(
-              create: (context) => GenerateMnemonicBloc(
-                navigatorBloc: BlocProvider.of(context),
-                generateMnemonicUseCase: Injector.get(),
-              ),
-              child: GenerateMnemonicScreen(),
-            ),
-      },
+      child: MaterialApp(
+        navigatorKey: PostsKeys.navigatorKey,
+        title: PostsLocalizations().appTitle,
+        theme: PostsTheme.theme,
+        localizationsDelegates: [
+          FlutterBlocLocalizationsDelegate(),
+        ],
+        routes: {
+          PostsRoutes.home: (context) => SplashScreen(),
+          PostsRoutes.recoverAccount: (context) => RecoverAccountScreen(),
+          PostsRoutes.createAccount: (context) => GenerateMnemonicScreen(),
+        },
+      ),
     );
   }
 }

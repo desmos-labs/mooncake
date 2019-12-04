@@ -28,7 +28,7 @@ class PostsLoaded extends PostsState {
 
   @override
   String toString() => 'PostsLoaded { '
-      'posts: $posts, '
+      'posts: ${posts.length}, '
       'showSnackbar: $showSnackbar '
       '}';
 }

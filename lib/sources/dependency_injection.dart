@@ -27,10 +27,6 @@ class SourcesModule implements Module {
             final root = await getApplicationDocumentsDirectory();
             return Directory('${root.path}/posts');
           }),
-          likesStorage: FileStorage(() async {
-            final root = await getApplicationDocumentsDirectory();
-            return Directory('${root.path}/likes');
-          }),
         ),
         name: "local",
       )

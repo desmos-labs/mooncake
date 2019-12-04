@@ -511,10 +511,12 @@ packages:
   sacco:
     dependency: "direct main"
     description:
-      name: sacco
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.13"
+      path: "."
+      ref: HEAD
+      resolved-ref: "4d29e6564aeab421c45df7b46ca82d0485338fab"
+      url: "https://github.com/RiccardoM/sacco.dart"
+    source: git
+    version: "0.0.14"
   shelf:
     dependency: transitive
     description:

@@ -37,7 +37,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         assert(getPostsUseCase != null),
         _getPostsUseCase = getPostsUseCase,
         assert(syncPostsUseCase != null),
-        _syncPostsUseCase = syncPostsUseCase;
+        _syncPostsUseCase = syncPostsUseCase {
+    print('Creting new post bloc');
+  }
 
   factory PostsBloc.create({int syncPeriod = 20}) {
     return PostsBloc(
@@ -81,7 +83,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       }
 
       // Sync the activities of the user every 15 seconds
-      if (_syncTimer == null) {
+      if (_syncTimer?.isActive != true) {
+        _syncTimer?.cancel();
         _syncTimer = Timer.periodic(Duration(seconds: _syncPeriod), (t) {
           add(SyncPosts());
         });
@@ -137,6 +140,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   @override
   Future<void> close() {
+    print('Closing post bloc');
     _postsSubscription?.cancel();
     _syncTimer?.cancel();
     return super.close();

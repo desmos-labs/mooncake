@@ -2,8 +2,15 @@ import 'package:desmosdemo/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+typedef OnSaveCallback = Function(String parentId, String message);
+
 class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({Key key}) : super(key: key);
+  final OnSaveCallback callback;
+
+  const CreatePostScreen({
+    Key key,
+    @required this.callback,
+  }) : super(key: key);
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -40,14 +47,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _createPost(BuildContext context, PostInputState state) {
-    // Create the comment
-    // ignore:close_sinks
-    final bloc = BlocProvider.of<PostsBloc>(context);
-    bloc.add(AddPost(
-      parentId: null,
-      message: state.message,
-    ));
-
+    widget.callback(null, state.message);
     Navigator.pop(context);
   }
 }

@@ -36,7 +36,6 @@ class LoginScreen extends StatelessWidget {
               FlatButton(
                 color: PostsTheme.accentColor,
                 child: Text(PostsLocalizations.of(context).generateNewAccount),
-                // TODO: Handle this
                 onPressed: () => _onCreateAccountClicked(context),
               )
             ],
