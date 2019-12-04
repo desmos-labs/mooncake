@@ -1,3 +1,4 @@
+import 'package:desmosdemo/dependency_injection/dependency_injection.dart';
 import 'package:desmosdemo/ui/screens/splash/splash_screen.dart';
 import 'package:desmosdemo/ui/ui.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,13 @@ class PostsApp extends StatelessWidget {
                 )
               ],
               child: RecoverAccountScreen(),
+            ),
+        PostsRoutes.createAccount: (context) => BlocProvider(
+              create: (context) => GenerateMnemonicBloc(
+                navigatorBloc: BlocProvider.of(context),
+                generateMnemonicUseCase: Injector.get(),
+              ),
+              child: GenerateMnemonicScreen(),
             ),
       },
     );

@@ -15,7 +15,10 @@ class MnemonicInputBloc extends Bloc<MnemonicInputEvent, MnemonicInputState> {
     MnemonicInputEvent event,
   ) async* {
     if (event is MnemonicChanged) {
-      yield state.update(mnemonic: event.mnemonic);
+      yield state.update(
+        mnemonic: event.insertedMnemonic,
+        verificationMnemonic: event.verificationMnemonic,
+      );
     } else if (event is Reset) {
       yield MnemonicInputState.empty();
     }

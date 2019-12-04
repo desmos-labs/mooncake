@@ -2,17 +2,25 @@ import 'package:desmosdemo/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Screen that allows the user to recover the account from a mnemonic
-/// phrase.
-/// If the optional [mnemonic] is given, the mnemonic inserted
-/// by the user must match it in order to be considered valid.
-class RecoverAccountScreen extends StatelessWidget {
+/// Represents the arguments that can be passed to a [RecoverAccountScreen].
+class RecoverAccountArguments {
+  /// Optional [mnemonic] that, when given, should match the one written
+  /// by the user in order to consider this last one valid.
   final String mnemonic;
 
-  RecoverAccountScreen({this.mnemonic});
+  RecoverAccountArguments({this.mnemonic});
+}
+
+/// Screen that allows the user to recover the account from a mnemonic
+/// phrase.
+class RecoverAccountScreen extends StatelessWidget {
+  RecoverAccountScreen();
 
   @override
   Widget build(BuildContext context) {
+    RecoverAccountArguments args = ModalRoute.of(context).settings.arguments;
+    final String mnemonic = args?.mnemonic;
+
     return BlocBuilder<RecoverAccountBloc, RecoverAccountState>(
       builder: (context, state) {
         return Scaffold(

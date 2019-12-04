@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
                 color: PostsTheme.accentColor,
                 child: Text(PostsLocalizations.of(context).generateNewAccount),
                 // TODO: Handle this
-                onPressed: true ? null : () => _onCreateAccountClicked(context),
+                onPressed: () => _onCreateAccountClicked(context),
               )
             ],
           )

@@ -137,7 +137,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   @override
   Future<void> close() {
-    _postsSubscription.cancel();
+    _postsSubscription?.cancel();
+    _syncTimer?.cancel();
     return super.close();
   }
 }

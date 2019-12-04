@@ -12,6 +12,8 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => LogoutUseCase(
             walletRepository: injector.get(),
           ))
+      // Mnemonic use cases
+      ..bindFactory((injector, params) => GenerateMnemonicUseCase())
       // Posts use cases
       ..bindFactory((injector, params) => CreatePostUseCase(
             walletRepository: injector.get(),

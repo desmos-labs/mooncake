@@ -19,14 +19,6 @@ class _MnemonicInputState extends State<MnemonicInput> {
   TextEditingController _textController = TextEditingController();
   MnemonicInputBloc _bloc;
 
-  bool isRecoverButtonEnabled(MnemonicInputState state) {
-    // If given, the state mnemonic should match the verification one
-    bool mnemonicValid = widget.verificationMnemonic == null ||
-        widget.verificationMnemonic == state.mnemonic;
-
-    return state.isValid && mnemonicValid;
-  }
-
   @override
   void initState() {
     _bloc = BlocProvider.of(context);
@@ -52,9 +44,9 @@ class _MnemonicInputState extends State<MnemonicInput> {
                   expands: true,
                   autovalidate: true,
                   validator: (value) {
-                    return !state.isEmpty && !isRecoverButtonEnabled(state)
-                        ? PostsLocalizations.of(context).invalidMnemonic
-                        : null;
+                    return (state.isEmpty || state.isValid)
+                        ? null
+                        : PostsLocalizations.of(context).invalidMnemonic;
                   },
                   decoration: InputDecoration(
                     hintText: PostsLocalizations.of(context).mnemonicHint,
@@ -76,6 +68,9 @@ class _MnemonicInputState extends State<MnemonicInput> {
   }
 
   void _onMessageChanged() {
-    _bloc.add(MnemonicChanged(_textController.text));
+    _bloc.add(MnemonicChanged(
+      insertedMnemonic: _textController.text,
+      verificationMnemonic: widget.verificationMnemonic,
+    ));
   }
 }

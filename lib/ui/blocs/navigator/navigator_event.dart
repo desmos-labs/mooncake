@@ -1,3 +1,4 @@
+import 'package:desmosdemo/ui/screens/export.dart';
 import 'package:equatable/equatable.dart';
 
 /// Represents a generic event that is emitted when the user wants to
@@ -18,6 +19,10 @@ class NavigateToHome extends NavigatorEvent {
 /// Tells the bloc to navigate to the screen that allows to recover
 /// an existing account using a mnemonic phrase.
 class NavigateToRecoverAccount extends NavigatorEvent {
+  final RecoverAccountArguments args;
+
+  NavigateToRecoverAccount({this.args});
+
   @override
   String toString() => 'NavigateToRecoverAccount';
 }

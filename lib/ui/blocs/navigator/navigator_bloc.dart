@@ -12,12 +12,31 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   @override
   Stream<void> mapEventToState(NavigatorEvent event) async* {
     if (event is NavigateToHome) {
-      _navigatorKey.currentState.pushNamedAndRemoveUntil(
-        PostsRoutes.home,
-        (_) => false,
-      );
+      _mapNavigateToHomeEventToState();
     } else if (event is NavigateToRecoverAccount) {
-      _navigatorKey.currentState.pushNamed(PostsRoutes.recoverAccount);
+      _mapNavigateToRecoverAccountEventToState(event);
+    } else if (event is NavigateToCreateAccount) {
+      _mapNavigateToCreateAccountEventToState();
     }
+  }
+
+  void _mapNavigateToHomeEventToState() {
+    _navigatorKey.currentState.pushNamedAndRemoveUntil(
+      PostsRoutes.home,
+      (_) => false,
+    );
+  }
+
+  void _mapNavigateToRecoverAccountEventToState(
+    NavigateToRecoverAccount event,
+  ) {
+    _navigatorKey.currentState.pushNamed(
+      PostsRoutes.recoverAccount,
+      arguments: event.args,
+    );
+  }
+
+  void _mapNavigateToCreateAccountEventToState() {
+    _navigatorKey.currentState.pushNamed(PostsRoutes.createAccount);
   }
 }
