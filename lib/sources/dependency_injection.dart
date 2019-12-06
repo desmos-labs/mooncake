@@ -27,6 +27,7 @@ class SourcesModule implements Module {
             final root = await getApplicationDocumentsDirectory();
             return Directory('${root.path}/posts');
           }),
+          walletSource: injector.get(),
         ),
         name: "local",
       )

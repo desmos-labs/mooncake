@@ -9,6 +9,8 @@ import 'package:sacco/sacco.dart';
 /// using the [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)
 /// plugin that stores it inside the secure hardware of the device.
 class WalletSourceImpl extends WalletSource {
+  static String _address;
+
   static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
   static const _WALLET_KEY = "mnemonic";
 
@@ -28,6 +30,13 @@ class WalletSourceImpl extends WalletSource {
 
     // Save it safely
     await _storage.write(key: _WALLET_KEY, value: mnemonic.trim());
+  }
+
+  Future<String> getAddress() async {
+    if (_address == null) {
+      _address = (await getWallet()).bech32Address;
+    }
+    return _address;
   }
 
   @override

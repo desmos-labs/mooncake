@@ -7,6 +7,9 @@ abstract class WalletSource {
   /// allowing it to be retrieved later.
   Future<void> saveWallet(String mnemonic);
 
+  /// Returns the address associated with the current wallet.
+  Future<String> getAddress();
+
   /// Returns the [Wallet] instance associated with the current
   /// application user.
   Future<Wallet> getWallet();

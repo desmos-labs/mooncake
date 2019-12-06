@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:desmosdemo/dependency_injection/dependency_injection.dart';
+import 'package:desmosdemo/entities/entities.dart';
 import 'package:desmosdemo/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
@@ -70,9 +71,15 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
+  Future<List<Post>> _getPosts() async {
+    final posts = await _getPostsUseCase.get();
+    posts.sort((p1, p2) => p2.compareTo(p1));
+    return posts;
+  }
+
   Stream<PostsState> _mapLoadPostsEventToState() async* {
     try {
-      final posts = await _getPostsUseCase.get();
+      final posts = await _getPosts();
       yield PostsLoaded(posts: posts);
 
       // Observe for new posts
@@ -97,7 +104,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
     if (state is PostsLoaded) {
       await _createPostUseCase.create(event.message, parentId: event.parentId);
-      final updatedPosts = await _getPostsUseCase.get();
+      final updatedPosts = await _getPosts();
       yield (state as PostsLoaded).copyWith(posts: updatedPosts);
     }
   }
@@ -129,7 +136,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       yield (state as PostsLoaded).copyWith(showSnackbar: true);
       try {
         await _syncPostsUseCase.sync();
-        final updatedPosts = await _getPostsUseCase.get();
+        final updatedPosts = await _getPosts();
         yield PostsLoaded(posts: updatedPosts);
       } catch (e) {
         print(e);

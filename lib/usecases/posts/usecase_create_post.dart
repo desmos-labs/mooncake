@@ -35,6 +35,7 @@ class CreatePostUseCase {
       externalReference: "",
       owner: wallet.bech32Address,
       likes: [],
+      liked: false,
       commentsIds: [],
       status: PostStatus.TO_BE_SYNCED,
     );

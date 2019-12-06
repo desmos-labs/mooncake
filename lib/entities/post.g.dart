@@ -20,6 +20,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Like.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    liked: json['liked'] as bool,
     commentsIds:
         (json['comments_ids'] as List)?.map((e) => e as String)?.toList(),
     status: _$enumDecodeNullable(_$PostStatusEnumMap, json['status']),
@@ -35,6 +36,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'allowsComments': instance.allowsComments,
       'externalReference': instance.externalReference,
       'owner': instance.owner,
+      'liked': instance.liked,
       'likes': instance.likes?.map((e) => e?.toJson())?.toList(),
       'comments_ids': instance.commentsIds,
       'status': _$PostStatusEnumMap[instance.status],

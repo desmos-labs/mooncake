@@ -11,7 +11,7 @@ class MsgUnLikePost extends StdMsg {
     @required this.liker,
   })  : assert(postId != null),
         super(
-          type: "desmos/MsgUnLikePost",
+          type: "desmos/MsgUnlikePost",
           value: {
             "post_id": postId,
             "liker": liker,

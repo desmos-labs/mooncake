@@ -16,6 +16,7 @@ class PostConverter {
       externalReference: json.externalReference,
       owner: json.owner,
       likes: json.likes.map((l) => Like(owner: l.owner)).toList(),
+      liked: false,
       commentsIds: json.commentsIds,
       status: PostStatus.SYNCED,
     );

@@ -6,18 +6,18 @@ import 'package:meta/meta.dart';
 part 'post.g.dart';
 
 enum PostStatus {
-  @JsonValue("synced")
-  SYNCED,
   @JsonValue("to_be_synced")
   TO_BE_SYNCED,
   @JsonValue("syncing")
-  SYNCING
+  SYNCING,
+  @JsonValue("synced")
+  SYNCED,
 }
 
 /// Represents a generic post
 @immutable
 @JsonSerializable(explicitToJson: true)
-class Post implements Equatable {
+class Post implements Equatable, Comparable<Post> {
   @JsonKey(name: "id")
   final String id;
 
@@ -46,8 +46,8 @@ class Post implements Equatable {
   @JsonKey(name: "owner")
   final String owner;
 
-  @JsonKey(ignore: true)
-  bool get liked => likes.where((l) => l.owner == owner).isNotEmpty;
+  @JsonKey(name: "liked")
+  final bool liked;
 
   @JsonKey(name: "likes")
   final List<Like> likes;
@@ -74,6 +74,7 @@ class Post implements Equatable {
     @required this.externalReference,
     @required this.owner,
     @required this.likes,
+    @required this.liked,
     @required this.commentsIds,
     @required this.status,
   })  : assert(id != null),
@@ -95,10 +96,10 @@ class Post implements Equatable {
     String externalReference,
     String owner,
     List<Like> likes,
+    bool liked,
     List<String> commentsIds,
     PostStatus status,
   }) {
-    final newOwner = owner ?? this.owner;
     return Post(
       id: id ?? this.id,
       parentId: parentId ?? this.parentId,
@@ -107,11 +108,51 @@ class Post implements Equatable {
       lastEdited: lastEdited ?? this.lastEdited,
       allowsComments: allowsComments ?? this.allowsComments,
       externalReference: externalReference ?? this.externalReference,
-      owner: newOwner,
+      owner: owner ?? this.owner,
       likes: likes ?? this.likes,
+      liked: liked ?? this.liked,
       commentsIds: commentsIds ?? this.commentsIds,
       status: status ?? this.status,
     );
+  }
+
+  ///
+
+  /// Updates the contents of this post with the one of the new post.
+  /// If the new one has the likes or comments changed, the status of this post
+  /// will be preserved.
+  /// Otherwise, the status of this post will become the one of the updated
+  /// one.
+  Post updateWith(Post updated) {
+    final areLikesChanged = this.likes == updated.likes;
+    final areCommentsChanged = this.commentsIds == updated.commentsIds;
+    final shouldStatusBeConserved = areLikesChanged || areCommentsChanged;
+
+    return this.copyWith(
+      status: shouldStatusBeConserved ? this.status : updated.status,
+      likes: (this.likes + updated.likes).toSet().toList(),
+      commentsIds: (this.commentsIds + updated.commentsIds).toSet().toList(),
+    );
+  }
+
+  @override
+  int compareTo(Post other) {
+    int statusCompare = 0;
+
+    bool onChain = DateTime.tryParse(created) == null;
+    bool otherOnChain = DateTime.tryParse(other.created) == null;
+
+    if (!onChain && otherOnChain) {
+      statusCompare = 1;
+    } else if (onChain && !otherOnChain) {
+      statusCompare = -1;
+    }
+
+    if (statusCompare != 0) {
+      return statusCompare;
+    } else {
+      return created.compareTo(other.created);
+    }
   }
 
   @override
@@ -124,8 +165,8 @@ class Post implements Equatable {
         this.allowsComments,
         this.externalReference,
         this.owner,
-        this.liked,
         this.likes,
+        this.liked,
         this.commentsIds,
         this.status,
       ];
@@ -140,8 +181,8 @@ class Post implements Equatable {
       'allowsComments: $allowsComments, '
       'externalRerence: $externalReference, '
       'owner: $owner, '
-      'liked: $liked, '
       'likes: $likes, '
+      'liked: $liked, '
       'commentsIds: $commentsIds '
       'synced: $status '
       '}';

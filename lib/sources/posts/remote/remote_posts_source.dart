@@ -27,6 +27,7 @@ class RemotePostsSource implements PostsSource {
 
   final eventConverter = ChainEventsConverter();
   final postConverter = PostConverter();
+
   final StreamController<Post> _postsStream = StreamController();
 
   RemotePostsSource({
@@ -53,6 +54,7 @@ class RemotePostsSource implements PostsSource {
       "message.action='create_post'",
       "message.action='edit_post'",
       "message.action='like_post'",
+      "message.action='unlike_post'",
     ];
 
     // Send a subscription message for each query
@@ -80,14 +82,28 @@ class RemotePostsSource implements PostsSource {
   void _handleMessage(TxData data) async {
     final Map<String, List<String>> events = data.result.events ?? {};
     eventConverter.convert(events).forEach((event) {
-      if (event is CreatePostEvent) {
-        _handlePostCreatedMsg(event);
+      if (event is PostCreatedEvent) {
+        _handlePostCreatedEvent(event);
+      } else if (event is PostLikedEvent) {
+        _handlePostLikedEvent(event);
+      } else if (event is PostUnlikedEvent) {
+        _handlePostUnLikedEvent(event);
       }
     });
   }
 
   /// Handles the messages telling that a new post has been created.
-  void _handlePostCreatedMsg(CreatePostEvent event) async {
+  void _handlePostCreatedEvent(PostCreatedEvent event) async {
+    final post = await getPostById(event.postId);
+    _postsStream.add(post);
+  }
+
+  void _handlePostLikedEvent(PostLikedEvent event) async {
+    final post = await getPostById(event.postId);
+    _postsStream.add(post);
+  }
+
+  void _handlePostUnLikedEvent(PostUnlikedEvent event) async {
     final post = await getPostById(event.postId);
     _postsStream.add(post);
   }
@@ -183,7 +199,7 @@ class RemotePostsSource implements PostsSource {
 
       final isPostLiked = post.containsLikeFromUser(wallet.bech32Address);
       final isExistingPostLiked =
-          post.containsLikeFromUser(wallet.bech32Address);
+          existingPost.containsLikeFromUser(wallet.bech32Address);
 
       // The user has liked this post
       if (isPostLiked && !isExistingPostLiked) {
@@ -199,8 +215,9 @@ class RemotePostsSource implements PostsSource {
     }
 
     final List<StdMsg> messages = [];
-    messages.addAll(
-        postsToCreate.map((post) => postConverter.toMsgCreatePost(post)).toList());
+    messages.addAll(postsToCreate
+        .map((post) => postConverter.toMsgCreatePost(post))
+        .toList());
 
     messages.addAll(postsToLike
         .map((id) => MsgLikePost(postId: id, liker: wallet.bech32Address))

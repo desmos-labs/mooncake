@@ -9,11 +9,11 @@ part of 'like_json.dart';
 LikeJson _$LikeJsonFromJson(Map<String, dynamic> json) {
   return LikeJson(
     owner: json['owner'] as String,
-    created: json['createod'] as String,
+    created: json['created'] as String,
   );
 }
 
 Map<String, dynamic> _$LikeJsonToJson(LikeJson instance) => <String, dynamic>{
-      'createod': instance.created,
+      'created': instance.created,
       'owner': instance.owner,
     };

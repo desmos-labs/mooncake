@@ -5,7 +5,7 @@ part 'like_json.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class LikeJson {
-  @JsonKey(name: "createod")
+  @JsonKey(name: "created")
   final String created;
 
   @JsonKey(name: "owner")

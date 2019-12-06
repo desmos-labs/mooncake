@@ -15,6 +15,10 @@ class UseCaseModule implements Module {
       // Mnemonic use cases
       ..bindFactory((injector, params) => GenerateMnemonicUseCase())
       // Posts use cases
+      ..bindFactory((injector, params) => IsPostLikedUseCase(
+            walletRepository: injector.get(),
+            postsRepository: injector.get(),
+          ))
       ..bindFactory((injector, params) => CreatePostUseCase(
             walletRepository: injector.get(),
             postsRepository: injector.get(),
