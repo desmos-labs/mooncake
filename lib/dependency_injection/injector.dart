@@ -1,16 +1,16 @@
-import 'dart:io';
-
 import 'package:dependencies/dependencies.dart' as di;
-import 'package:desmosdemo/dependency_injection/export.dart';
-import 'package:desmosdemo/dependency_injection/sources_module.dart';
+import 'package:desmosdemo/repositories/dependency_injection.dart';
+import 'package:desmosdemo/sources/dependency_injection.dart';
+import 'package:desmosdemo/usecases/dependency_injection.dart';
 
 /// Utility class used to provide instances of different objects.
 class Injector {
   /// Initializes the injector. Should be called inside the main method.
-  static init(Future<Directory> Function() getDirectory) {
+  static init() {
     final builder = di.Injector.builder()
-      ..install(SourcesModule(getDirectory))
-      ..install(RepositoriesModule());
+      ..install(SourcesModule())
+      ..install(RepositoriesModule())
+      ..install(UseCaseModule());
     final injector = builder.build();
     di.InjectorRegistry.instance.register(injector);
   }

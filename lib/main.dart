@@ -1,16 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:desmosdemo/blocs/blocs.dart';
-import 'package:desmosdemo/simple_bloc_delegate.dart';
-import 'package:desmosdemo/widgets/widgets.dart';
+import 'package:desmosdemo/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 
-import 'dependency_injection/export.dart';
+import 'dependency_injection/dependency_injection.dart';
 
-void main() {
+void main() async {
   // Setup the dependency injection
-  Injector.init(getApplicationDocumentsDirectory);
+  Injector.init();
 
   // Setup the BLoC delegate to observe transitions
   BlocSupervisor.delegate = SimpleBlocDelegate();
@@ -18,8 +15,15 @@ void main() {
   // Run the app
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<PostsBloc>(
-        builder: (context) => PostsBloc(repository: Injector.get()),
+      BlocProvider<NavigatorBloc>(
+        create: (_) => NavigatorBloc(),
+      ),
+      BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(
+          navigatorBloc: BlocProvider.of(context),
+          checkLoginUseCase: Injector.get(),
+          saveWalletUseCase: Injector.get(),
+        )..add(CheckStatus()),
       ),
     ],
     child: PostsApp(),
