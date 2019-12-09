@@ -97,6 +97,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         });
       }
     } catch (e) {
+      print(e);
       yield PostsNotLoaded();
     }
   }

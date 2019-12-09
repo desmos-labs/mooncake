@@ -110,7 +110,10 @@ class PostDetailsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        PostForm(postId: postId),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: PostForm(postId: postId),
+        ),
         BlocBuilder<PostInputBloc, PostInputState>(
           builder: (context, state) => FlatButton(
             child: Text(PostsLocalizations.of(context).commentHint),

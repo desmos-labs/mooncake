@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:dependencies/dependencies.dart';
 import 'package:desmosdemo/repositories/repositories.dart';
 import 'package:desmosdemo/sources/sources.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 import 'package:sacco/sacco.dart';
 
 class SourcesModule implements Module {
@@ -23,19 +20,19 @@ class SourcesModule implements Module {
       )
       ..bindLazySingleton<PostsSource>(
         (injector, params) => LocalPostsSource(
-          postsStorage: FileStorage(() async {
-            final root = await getApplicationDocumentsDirectory();
-            return Directory('${root.path}/posts');
-          }),
           walletSource: injector.get(),
         ),
         name: "local",
       )
       ..bindLazySingleton<PostsSource>(
         (injector, params) => RemotePostsSource(
-          lcdEndpoint: _lcdUrl,
-          rpcEndpoint: _rpcUrl,
-          httpClient: http.Client(),
+          chainEventHelper: ChainEventHelper(
+            rpcEndpoint: _rpcUrl,
+          ),
+          chainHelper: ChainHelper(
+            lcdEndpoint: _lcdUrl,
+            httpClient: http.Client(),
+          ),
           walletSource: injector.get(),
         ),
         name: "remote",

@@ -53,5 +53,10 @@ class SyncPostsUseCase {
 
     // Send the post transactions
     await _postsRepository.syncPosts(syncingPosts);
+
+    // Delete the sent posts
+    syncingPosts.forEach((post) async {
+      await _postsRepository.deletePost(post.id);
+    });
   }
 }

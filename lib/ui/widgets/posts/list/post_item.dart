@@ -31,6 +31,10 @@ class PostItem extends StatelessWidget {
         assert(state is PostsLoaded);
 
         final post = (state as PostsLoaded).posts.find(id: postId);
+        if (post == null) {
+          return Container();
+        }
+
         return InkWell(
           onTap: onTap,
           child: Container(

@@ -24,7 +24,13 @@ class HomeScreen extends StatelessWidget {
               )
             ],
           ),
-          body: activeTab == AppTab.posts ? PostsList() : Stats(),
+          body: activeTab == AppTab.posts
+              ? PostsList(
+                  filter: (p) => p.status == PostStatus.SYNCED && !p.hasParent,
+                )
+              : PostsList(
+                  filter: (p) => p.status != PostStatus.SYNCED,
+                ),
           floatingActionButton: FloatingActionButton(
             key: PostsKeys.addPost,
             onPressed: () => Navigator.of(context).push(_createRoute()),

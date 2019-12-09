@@ -21,7 +21,7 @@ class Post implements Equatable, Comparable<Post> {
   @JsonKey(name: "id")
   final String id;
 
-  @JsonKey(name: "parent_id")
+  @JsonKey(name: "parentId")
   final String parentId;
 
   /// Tells if this post has a valid parent post or not.
@@ -87,7 +87,6 @@ class Post implements Equatable, Comparable<Post> {
         assert(status != null);
 
   Post copyWith({
-    String id,
     String parentId,
     String message,
     String created,
@@ -101,7 +100,7 @@ class Post implements Equatable, Comparable<Post> {
     PostStatus status,
   }) {
     return Post(
-      id: id ?? this.id,
+      id: this.id,
       parentId: parentId ?? this.parentId,
       message: message ?? this.message,
       created: created ?? this.created,
@@ -115,8 +114,6 @@ class Post implements Equatable, Comparable<Post> {
       status: status ?? this.status,
     );
   }
-
-  ///
 
   /// Updates the contents of this post with the one of the new post.
   /// If the new one has the likes or comments changed, the status of this post

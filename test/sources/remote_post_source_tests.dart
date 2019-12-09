@@ -6,9 +6,13 @@ import 'package:sacco/network_info.dart';
 void main() {
   test("Websocket subscription is created properly", () async {
     final source = RemotePostsSource(
-      httpClient: http.Client(),
-      lcdEndpoint: "http://localhost:1317",
-      rpcEndpoint: "ws://localhost:26657",
+      chainHelper: ChainHelper(
+        lcdEndpoint: "http://localhost:1317",
+        httpClient: http.Client(),
+      ),
+      chainEventHelper: ChainEventHelper(
+        rpcEndpoint: "ws://localhost:26657",
+      ),
       walletSource: WalletSourceImpl(
         networkInfo: NetworkInfo(
           lcdUrl: "http://localhost:1317",

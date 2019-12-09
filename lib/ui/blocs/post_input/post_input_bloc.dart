@@ -24,6 +24,8 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       yield PostInputState.empty();
     } else if (event is MessageChanged) {
       yield state.update(message: event.message);
+    } else if (event is SavePost) {
+      yield state.update(saving: true);
     }
   }
 }

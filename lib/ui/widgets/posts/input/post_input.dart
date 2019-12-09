@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// Form that is used while creating a new post, or a comment for the
 /// given [postId].
 class PostForm extends StatefulWidget {
+  final bool expanded;
   final String postId;
 
   const PostForm({
     Key key,
     this.postId,
+    this.expanded = false,
   }) : super(key: key);
 
   @override
@@ -40,23 +42,25 @@ class _PostFormState extends State<PostForm> {
           _reset();
         }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                TextFormField(
-                  controller: _messageController,
-                  key: PostsKeys.postMessageField,
-                  autofocus: false,
-                  decoration: InputDecoration(
-                    hintText: PostsLocalizations.of(context).newComment,
-                  ),
-                  autocorrect: false,
-                ),
-              ],
-            ),
+        final textInput = TextFormField(
+          expands: widget.expanded,
+          maxLines: widget.expanded ? null : 1,
+          minLines: widget.expanded ? null : 1,
+          controller: _messageController,
+          key: PostsKeys.postMessageField,
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: PostsLocalizations.of(context).newComment,
+          ),
+          autocorrect: false,
+        );
+
+        return Form(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              if (widget.expanded) Expanded(child: textInput) else textInput
+            ],
           ),
         );
       },

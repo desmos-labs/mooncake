@@ -1,12 +1,19 @@
+import 'package:desmosdemo/entities/entities.dart';
 import 'package:desmosdemo/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+typedef Filter = bool Function(Post);
 
 /// Represents a list of [Post] objects.
 /// It simply builds a list using the [ListView.separated] builder
 /// and the [PostItem] class as the object representing each post.
 class PostsList extends StatelessWidget {
-  PostsList({Key key}) : super(key: key);
+  final Filter _filter;
+
+  PostsList({Key key, Filter filter})
+      : _filter = filter,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,10 @@ class PostsList extends StatelessWidget {
         if (state is PostsLoading) {
           return LoadingIndicator(key: PostsKeys.postsLoading);
         } else if (state is PostsLoaded) {
-          final posts = state.posts.where((p) => !p.hasParent).toList();
+          // Filter the posts based on the filter set
+          final posts = state.posts
+              .where((p) => _filter != null ? _filter(p) : true)
+              .toList();
           return Column(
             children: <Widget>[
               Flexible(

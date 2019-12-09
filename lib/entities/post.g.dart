@@ -9,7 +9,7 @@ part of 'post.dart';
 Post _$PostFromJson(Map<String, dynamic> json) {
   return Post(
     id: json['id'] as String,
-    parentId: json['parent_id'] as String,
+    parentId: json['parentId'] as String,
     message: json['message'] as String,
     created: json['created'] as String,
     lastEdited: json['lastEdited'] as String,
@@ -29,7 +29,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'id': instance.id,
-      'parent_id': instance.parentId,
+      'parentId': instance.parentId,
       'message': instance.message,
       'created': instance.created,
       'lastEdited': instance.lastEdited,
@@ -75,7 +75,7 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$PostStatusEnumMap = {
-  PostStatus.SYNCED: 'synced',
   PostStatus.TO_BE_SYNCED: 'to_be_synced',
   PostStatus.SYNCING: 'syncing',
+  PostStatus.SYNCED: 'synced',
 };

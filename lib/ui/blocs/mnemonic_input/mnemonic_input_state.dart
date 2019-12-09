@@ -5,22 +5,27 @@ import 'package:meta/meta.dart';
 /// Represents the state of the text input that allows a user to type a mnemonic
 /// phrase to properly recover an account.
 class MnemonicInputState extends Equatable {
-  final String verificationMnemonic;
-  final String mnemonic;
+  final String _verificationMnemonic;
+  final String _mnemonic;
 
   MnemonicInputState({
-    @required this.mnemonic,
-    @required this.verificationMnemonic,
-  });
+    @required String mnemonic,
+    @required String verificationMnemonic,
+  })  : _mnemonic = mnemonic,
+        _verificationMnemonic = verificationMnemonic;
+
+  String get mnemonic => _mnemonic?.toLowerCase();
+
+  String get verificationMnemonic => _verificationMnemonic?.toLowerCase();
 
   /// Tells if the state can be considered empty
-  bool get isEmpty => mnemonic == null || mnemonic.isEmpty;
+  bool get isEmpty => _mnemonic == null || _mnemonic.isEmpty;
 
   /// Tells if the state is valid
   bool get isValid =>
       mnemonic != null &&
       (verificationMnemonic == null || mnemonic == verificationMnemonic) &&
-      bip39.validateMnemonic(mnemonic.toLowerCase());
+      bip39.validateMnemonic(mnemonic);
 
   /// Creates a new empty state.
   factory MnemonicInputState.empty() => MnemonicInputState(
@@ -34,19 +39,19 @@ class MnemonicInputState extends Equatable {
     String verificationMnemonic,
   }) {
     return MnemonicInputState(
-      mnemonic: mnemonic ?? this.mnemonic,
-      verificationMnemonic: verificationMnemonic ?? this.verificationMnemonic,
+      mnemonic: mnemonic ?? this._mnemonic,
+      verificationMnemonic: verificationMnemonic ?? this._verificationMnemonic,
     );
   }
 
   @override
-  List<Object> get props => [mnemonic, verificationMnemonic];
+  List<Object> get props => [_mnemonic, _verificationMnemonic];
 
   @override
   String toString() {
     return 'LoginInputState {'
-        'mnemonic: $mnemonic '
-        'verificationMnemonic: $verificationMnemonic '
+        'mnemonic: $_mnemonic '
+        'verificationMnemonic: $_verificationMnemonic '
         '}';
   }
 }
