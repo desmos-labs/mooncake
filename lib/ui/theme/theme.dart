@@ -22,9 +22,7 @@ class PostsTheme {
         body1: TextStyle(color: textColor),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: accentColor,
-        textTheme: ButtonTextTheme.normal
-      ),
+          buttonColor: accentColor, textTheme: ButtonTextTheme.normal),
     );
   }
 }
