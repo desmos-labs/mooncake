@@ -10,7 +10,7 @@ class PostsKeys {
   static final addPost = const Key('__addPost__');
   static final tabs = const Key('__tabs__');
   static final chainPostsTab = const Key('__chainPostsTab__');
-  static final localPostsStab = const Key('__localPostsStab__');
+  static final historyTab = const Key('__historyTab__');
 
   static final postsList = const Key('__postsList__');
   static final postsLoading = const Key('__postsLoading__');

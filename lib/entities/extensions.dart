@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 
 /// Defines useful extensions methods for list of posts
 extension PostsExt on List<Post> {

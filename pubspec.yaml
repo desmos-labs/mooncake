@@ -1,4 +1,4 @@
-name: desmosdemo
+name: dwitter
 description: A decentralized Twitter based on Desmos
 version: 0.1.0+1
 
@@ -17,7 +17,6 @@ dependencies:
   json_annotation: ^3.0.0
   json_serializable: ^3.2.3
   meta: ">=1.1.0 <2.0.0"
-  path_provider: ^1.5.0
   sacco:
     git: https://github.com/RiccardoM/sacco.dart
   sqflite: ^1.1.7+3

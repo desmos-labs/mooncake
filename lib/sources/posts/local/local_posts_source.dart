@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/repositories/repositories.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/repositories/repositories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:sqflite/sqflite.dart';
@@ -23,6 +23,31 @@ class LocalPostsSource implements PostsSource {
   Future<void> _insertPost(Post post) async {
     final database = await helper.database;
 
+    // Check if there is a post with the same external reference
+    // We are using it to reference the internal id of the post
+    final externalId = getPostIdByReference(post.externalReference);
+    if (externalId == null) {
+      // The post is being created from outside, so we need to create a new
+      // external reference so that we can store it locally
+      post = post.copyWith(
+        externalReference: createPostExternalReference(post.externalReference),
+      );
+    } else {
+      // The post does already exist locally so we need to remove it before
+      // reinserting it. This allows us to have a more clean local history without
+      // duplicated likes or comments
+      await deletePost(externalId);
+    }
+
+    // Insert the post
+    // This will automatically update any conflicting post that has the same
+    // external reference (and thus the same local id)
+    await database.insert(
+      DbHelper.TABLE_POSTS,
+      helper.postToMap(post),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
     // Insert the likes
     for (int index = 0; index < post.likes.length; index++) {
       await database.insert(
@@ -31,22 +56,6 @@ class LocalPostsSource implements PostsSource {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
-
-    // Insert the comments
-    for (int index = 0; index < post.commentsIds.length; index++) {
-      await database.insert(
-        DbHelper.TABLE_COMMENTS,
-        helper.commentToMap(post.id, post.commentsIds[index]),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
-
-    // Insert the post
-    await database.insert(
-      DbHelper.TABLE_POSTS,
-      helper.postToMap(post),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
   }
 
   Future<Post> _getPostData(Map<String, dynamic> dbPost) async {
@@ -65,15 +74,16 @@ class LocalPostsSource implements PostsSource {
 
     // Get the comments
     final dbComments = await database.query(
-      DbHelper.TABLE_COMMENTS,
-      where: "${DbHelper.KEY_COMMENTED_POST_ID} = ?",
+      DbHelper.TABLE_POSTS,
+      where: "${DbHelper.KEY_PARENT_ID} = ?",
       whereArgs: [post.id],
     );
-    final comments = dbComments.map((m) => helper.commentIdFromMap(m)).toList();
+    final commentsIds =
+        dbComments.map((m) => m[DbHelper.KEY_ID] as String).toList();
 
     return post.copyWith(
       likes: likes,
-      commentsIds: comments,
+      commentsIds: commentsIds,
     );
   }
 
@@ -105,6 +115,25 @@ class LocalPostsSource implements PostsSource {
   }
 
   @override
+  Future<List<Post>> getPostComments(String postId) async {
+    final database = await helper.database;
+
+    // Get all the comments
+    final dbComments = await database.query(
+      DbHelper.TABLE_POSTS,
+      where: "${DbHelper.KEY_PARENT_ID} = ?",
+      whereArgs: [postId],
+    );
+    final commentsIds =
+        dbComments.map((m) => m[DbHelper.KEY_ID] as String).toList();
+
+    // Get the comments details
+    return Future.wait(commentsIds.map((id) async {
+      return getPostById(id);
+    }).toList());
+  }
+
+  @override
   Future<List<Post>> getPosts() async {
     final database = await helper.database;
     final dbPosts = await database.query(DbHelper.TABLE_POSTS);
@@ -122,6 +151,9 @@ class LocalPostsSource implements PostsSource {
     // Update the liked field
     final address = await _walletSource.getAddress();
     post = post.copyWith(liked: post.containsLikeFromUser(address));
+
+    // Update the isUserOwner field
+    post = post.copyWith(ownerIsUser: post.owner == address);
 
     // Save the post
     print('Saving post with id ${post.id}');
@@ -143,14 +175,7 @@ class LocalPostsSource implements PostsSource {
     // Delete the post
     await database.delete(
       DbHelper.TABLE_POSTS,
-      where: "${DbHelper.KEY_ID} = ?",
-      whereArgs: [postId],
-    );
-
-    // Deleted the comments entries
-    await database.delete(
-      DbHelper.TABLE_COMMENTS,
-      where: "${DbHelper.KEY_COMMENTED_POST_ID} = ? OR ${DbHelper.KEY_COMMENT_ID} = ?",
+      where: "${DbHelper.KEY_ID} = ? OR ${DbHelper.KEY_PARENT_ID} = ?",
       whereArgs: [postId, postId],
     );
 

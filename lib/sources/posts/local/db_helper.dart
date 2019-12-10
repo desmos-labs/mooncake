@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -13,16 +13,13 @@ class DbHelper {
   static const String KEY_ALLOWS_COMMENTS = "allows_comments";
   static const String KEY_EXTERNAL_REFERENCE = "external_reference";
   static const String KEY_OWNER = "owner";
+  static const String KEY_OWNER_IS_USER = "owner_is_user";
   static const String KEY_LIKED = "liked";
   static const String KEY_STATUS = "status";
 
   static const String TABLE_LIKES = "likes";
   static const String KEY_LIKED_POST_ID = "post_id";
   static const String KEY_LIKE_OWNER = "like_owner";
-
-  static const String TABLE_COMMENTS = "comments";
-  static const String KEY_COMMENTED_POST_ID = "post_id";
-  static const String KEY_COMMENT_ID = "comment_id";
 
   Future<Database> get database async {
     return openDatabase(
@@ -31,27 +28,20 @@ class DbHelper {
         await db.execute(
           """
           CREATE TABLE $TABLE_POSTS (
-          $KEY_ID TEXT PRIMARY KEY NOT NULL,
+          $KEY_ID TEXT NOT NULL,
           $KEY_PARENT_ID TEXT,
           $KEY_MESSAGE TEXT,
           $KEY_CREATED TEXT,
           $KEY_LAST_EDITED TEXT,
           $KEY_ALLOWS_COMMENTS INTEGER,
-          $KEY_EXTERNAL_REFERENCE TEXT,
+          $KEY_EXTERNAL_REFERENCE TEXT PRIMARY KEY,
           $KEY_OWNER TEXT,
+          $KEY_OWNER_IS_USER INTEGER,
           $KEY_LIKED INTEGER,
           $KEY_STATUS TEXT
           );
           """,
         );
-
-        await db.execute("""
-        CREATE TABLE $TABLE_COMMENTS (
-        $KEY_COMMENTED_POST_ID TEXT NOT NULL,
-        $KEY_COMMENT_ID TEXT NOT NULL,
-        PRIMARY KEY($KEY_COMMENTED_POST_ID, $KEY_COMMENT_ID)
-        );
-        """);
 
         await db.execute("""
         CREATE TABLE $TABLE_LIKES (
@@ -75,6 +65,7 @@ class DbHelper {
       KEY_ALLOWS_COMMENTS: post.allowsComments ? 1 : 0,
       KEY_EXTERNAL_REFERENCE: post.externalReference,
       KEY_OWNER: post.owner,
+      KEY_OWNER_IS_USER: post.ownerIsUser ? 1 : 0,
       KEY_LIKED: post.liked ? 1 : 0,
       KEY_STATUS: post.status.toString(),
     };
@@ -94,6 +85,7 @@ class DbHelper {
       allowsComments: map[KEY_ALLOWS_COMMENTS] == 1,
       externalReference: map[KEY_EXTERNAL_REFERENCE] as String,
       owner: map[KEY_OWNER] as String,
+      ownerIsUser: map[KEY_OWNER_IS_USER] == 1,
       liked: map[KEY_LIKED] == 1,
       status:
           PostStatus.values.firstWhere((i) => i.toString() == map[KEY_STATUS]),
@@ -113,16 +105,5 @@ class DbHelper {
     return Like(
       owner: map[KEY_LIKE_OWNER] as String,
     );
-  }
-
-  Map<String, dynamic> commentToMap(String postId, String commentId) {
-    return {
-      KEY_COMMENTED_POST_ID: postId,
-      KEY_COMMENT_ID: commentId
-    };
-  }
-
-  String commentIdFromMap(Map<String, dynamic> map) {
-    return map[KEY_COMMENT_ID] as String;
   }
 }

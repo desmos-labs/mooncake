@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Implementation of [PostsRepository].
@@ -24,6 +24,11 @@ class PostsRepositoryImpl extends PostsRepository {
   @override
   Future<Post> getPostById(String postId) {
     return _localPostsSource.getPostById(postId);
+  }
+
+  @override
+  Future<List<Post>> getPostComments(String postId) {
+    return _localPostsSource.getPostComments(postId);
   }
 
   @override

@@ -1,10 +1,14 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 
 /// Represents the source that should be used when dealing with posts.
 abstract class PostsSource {
   /// Returns the post having the given [id].
   /// If no post with the given id was found, returns `null` instead.
   Future<Post> getPostById(String postId);
+
+  /// Returns the list of all posts that represent comments to
+  /// the post having the given [postId].
+  Future<List<Post>> getPostComments(String postId);
 
   /// Returns the list of all the currently stored posts.
   Future<List<Post>> getPosts();

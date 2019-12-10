@@ -1,6 +1,6 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:http/http.dart' as http;
 import 'package:sacco/sacco.dart';
 

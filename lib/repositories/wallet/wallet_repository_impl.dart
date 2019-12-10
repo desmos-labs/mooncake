@@ -1,5 +1,5 @@
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 import 'package:sacco/sacco.dart';
 

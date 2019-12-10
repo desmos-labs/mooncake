@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:sacco/sacco.dart';
@@ -49,6 +49,8 @@ class ChainHelper {
       wallet: wallet,
       stdTx: tx,
     );
+
+    print('Sending a new tx to the chain: \n ${jsonEncode(signTx)}');
 
     // Send the tx to the chain
     final result = await TxSender.broadcastStdTx(

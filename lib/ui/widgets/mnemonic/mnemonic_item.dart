@@ -1,3 +1,4 @@
+import 'package:dwitter/ui/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 /// Represents a single mnemonic word item that is shown inside the
@@ -15,6 +16,7 @@ class MnemonicItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
+      backgroundColor: PostsTheme.primaryColor,
       label: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

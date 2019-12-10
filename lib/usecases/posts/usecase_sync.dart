@@ -1,6 +1,6 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/usecases/posts/posts.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/usecases/posts/posts.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to sync all the posts that have been created offline as well as
@@ -53,10 +53,5 @@ class SyncPostsUseCase {
 
     // Send the post transactions
     await _postsRepository.syncPosts(syncingPosts);
-
-    // Delete the sent posts
-    syncingPosts.forEach((post) async {
-      await _postsRepository.deletePost(post.id);
-    });
   }
 }

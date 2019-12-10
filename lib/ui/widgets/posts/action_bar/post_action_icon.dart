@@ -1,4 +1,4 @@
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Represents an icon of a post action, that changes color when tapped

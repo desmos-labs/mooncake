@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to convert data into messages that can be sent to the chain.

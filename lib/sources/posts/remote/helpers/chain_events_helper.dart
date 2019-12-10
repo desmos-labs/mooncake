@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:meta/meta.dart';
 import 'package:web_socket_channel/io.dart';
 

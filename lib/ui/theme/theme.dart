@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
-  static Color get primaryColor => Colors.lightBlue[800];
-  static Color get accentColor => Colors.cyan[600];
+  static Color get primaryColor => Color(0xFFD03576);
+  static Color get accentColor => Color(0xFFF45E3E);
 
   static Color get textColor => Colors.white;
   static Color get textColorLight => Colors.grey[500];
@@ -12,19 +12,18 @@ class PostsTheme {
 
   static ThemeData get theme {
     return ThemeData(
-      // Define the default brightness and colors.
       brightness: Brightness.dark,
       primaryColor: primaryColor,
       accentColor: accentColor,
 
       // Define the default font family.
       fontFamily: 'Roboto',
-      buttonColor: accentColor,
       textTheme: TextTheme(
         body1: TextStyle(color: textColor),
       ),
       buttonTheme: ButtonThemeData(
         buttonColor: accentColor,
+        textTheme: ButtonTextTheme.normal
       ),
     );
   }

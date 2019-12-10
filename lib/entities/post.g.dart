@@ -9,13 +9,14 @@ part of 'post.dart';
 Post _$PostFromJson(Map<String, dynamic> json) {
   return Post(
     id: json['id'] as String,
-    parentId: json['parentId'] as String,
     message: json['message'] as String,
     created: json['created'] as String,
+    owner: json['owner'] as String,
+    parentId: json['parentId'] as String,
     lastEdited: json['lastEdited'] as String,
     allowsComments: json['allowsComments'] as bool,
     externalReference: json['externalReference'] as String,
-    owner: json['owner'] as String,
+    ownerIsUser: json['owner_is_user'] as bool,
     likes: (json['likes'] as List)
         ?.map(
             (e) => e == null ? null : Like.fromJson(e as Map<String, dynamic>))
@@ -36,6 +37,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'allowsComments': instance.allowsComments,
       'externalReference': instance.externalReference,
       'owner': instance.owner,
+      'owner_is_user': instance.ownerIsUser,
       'liked': instance.liked,
       'likes': instance.likes?.map((e) => e?.toJson())?.toList(),
       'comments_ids': instance.commentsIds,

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:desmosdemo/dependency_injection/dependency_injection.dart';
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/dependency_injection/dependency_injection.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 import '../export.dart';

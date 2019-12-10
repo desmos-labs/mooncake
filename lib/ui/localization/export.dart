@@ -13,7 +13,7 @@ class PostsLocalizations {
 
   String get appTitle => "Dwitter";
   String get onChainPosts => "On-chain posts";
-  String get offChainPosts => "Off-chain posts";
+  String get history => "History";
   String get signOut => "Sign out";
 
   String get editPost => "Edit post";

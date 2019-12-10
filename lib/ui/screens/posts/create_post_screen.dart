@@ -1,4 +1,4 @@
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,7 +33,12 @@ class CreatePostScreen extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
-                  Expanded(child: PostForm(expanded: true)),
+                  Expanded(
+                    child: PostForm(
+                      hint: PostsLocalizations.of(context).newPostHint,
+                      expanded: true,
+                    ),
+                  ),
                   if (!state.saving)
                     _createPostButton(context, state)
                   else
@@ -51,10 +56,9 @@ class CreatePostScreen extends StatelessWidget {
     return Row(
       children: <Widget>[
         Expanded(
-          child: FlatButton(
+          child: RaisedButton(
             key: PostsKeys.saveNewPost,
             child: Text(PostsLocalizations.of(context).createPost),
-            color: PostsTheme.accentColor,
             onPressed:
                 !state.isValid ? null : () => _createPost(context, state),
           ),

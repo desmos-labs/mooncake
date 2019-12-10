@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
@@ -12,6 +12,20 @@ enum PostStatus {
   SYNCING,
   @JsonValue("synced")
   SYNCED,
+}
+
+String createPostExternalReference(String postId) {
+  return "dwitter-$postId";
+}
+
+String getPostIdByReference(String externalReference) {
+  if (externalReference == null ||
+      externalReference.isEmpty ||
+      !externalReference.contains("dwitter")) {
+    return null;
+  }
+
+  return externalReference.split("dwitter-")[1];
 }
 
 /// Represents a generic post
@@ -46,6 +60,9 @@ class Post implements Equatable, Comparable<Post> {
   @JsonKey(name: "owner")
   final String owner;
 
+  @JsonKey(name: "owner_is_user")
+  final bool ownerIsUser;
+
   @JsonKey(name: "liked")
   final bool liked;
 
@@ -66,17 +83,18 @@ class Post implements Equatable, Comparable<Post> {
 
   Post({
     @required this.id,
-    @required this.parentId,
     @required this.message,
     @required this.created,
-    @required this.lastEdited,
-    @required this.allowsComments,
-    @required this.externalReference,
     @required this.owner,
-    @required this.likes,
-    @required this.liked,
-    @required this.commentsIds,
-    @required this.status,
+    this.parentId = "0",
+    this.lastEdited,
+    this.allowsComments = false,
+    this.externalReference = "",
+    this.ownerIsUser = false,
+    this.likes = const [],
+    this.liked = false,
+    this.commentsIds = const [],
+    this.status = PostStatus.TO_BE_SYNCED,
   })  : assert(id != null),
         assert(message != null),
         assert(created != null),
@@ -94,6 +112,7 @@ class Post implements Equatable, Comparable<Post> {
     bool allowsComments,
     String externalReference,
     String owner,
+    bool ownerIsUser,
     List<Like> likes,
     bool liked,
     List<String> commentsIds,
@@ -108,6 +127,7 @@ class Post implements Equatable, Comparable<Post> {
       allowsComments: allowsComments ?? this.allowsComments,
       externalReference: externalReference ?? this.externalReference,
       owner: owner ?? this.owner,
+      ownerIsUser: ownerIsUser ?? this.ownerIsUser,
       likes: likes ?? this.likes,
       liked: liked ?? this.liked,
       commentsIds: commentsIds ?? this.commentsIds,
@@ -162,6 +182,7 @@ class Post implements Equatable, Comparable<Post> {
         this.allowsComments,
         this.externalReference,
         this.owner,
+        this.ownerIsUser,
         this.likes,
         this.liked,
         this.commentsIds,
@@ -178,6 +199,7 @@ class Post implements Equatable, Comparable<Post> {
       'allowsComments: $allowsComments, '
       'externalRerence: $externalReference, '
       'owner: $owner, '
+      'ownerIsUser: $ownerIsUser, '
       'likes: $likes, '
       'liked: $liked, '
       'commentsIds: $commentsIds '

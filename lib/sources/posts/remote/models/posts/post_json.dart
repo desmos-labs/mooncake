@@ -1,4 +1,4 @@
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_json.g.dart';

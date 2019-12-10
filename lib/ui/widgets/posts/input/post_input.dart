@@ -1,15 +1,17 @@
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Form that is used while creating a new post, or a comment for the
 /// given [postId].
 class PostForm extends StatefulWidget {
+  final String hint;
   final bool expanded;
   final String postId;
 
   const PostForm({
     Key key,
+    @required this.hint,
     this.postId,
     this.expanded = false,
   }) : super(key: key);
@@ -50,7 +52,7 @@ class _PostFormState extends State<PostForm> {
           key: PostsKeys.postMessageField,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: PostsLocalizations.of(context).newComment,
+            hintText: widget.hint,
           ),
           autocorrect: false,
         );

@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to unlike a post having a given id.

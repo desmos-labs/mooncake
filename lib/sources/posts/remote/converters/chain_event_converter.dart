@@ -1,4 +1,4 @@
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/sources/sources.dart';
 
 /// Allows to convert the events received from the chain into a list
 /// of [ChainEvent] objects.

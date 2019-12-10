@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 
 /// Represents the repository that allows to perform common operations
 /// related to the users profiles.

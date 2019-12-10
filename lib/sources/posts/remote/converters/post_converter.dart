@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/sources/posts/remote/models/models.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/sources/posts/remote/models/models.dart';
 
 import '../../export.dart';
 import '../export.dart';
@@ -19,7 +19,6 @@ class RemotePostConverter {
       externalReference: json.externalReference,
       owner: json.owner,
       likes: json.likes.map((l) => Like(owner: l.owner)).toList(),
-      liked: false,
       commentsIds: json.commentsIds,
       status: PostStatus.SYNCED,
     );

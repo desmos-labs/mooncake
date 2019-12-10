@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 import 'package:flutter/material.dart';
 
 /// Contains the info that are shown on top of a [PostItem]. The following

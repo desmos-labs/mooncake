@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 
 /// Represents the repository that should be used when dealing with the
 /// user wallet.

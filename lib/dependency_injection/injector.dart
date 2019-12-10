@@ -1,7 +1,7 @@
 import 'package:dependencies/dependencies.dart' as di;
-import 'package:desmosdemo/repositories/dependency_injection.dart';
-import 'package:desmosdemo/sources/dependency_injection.dart';
-import 'package:desmosdemo/usecases/dependency_injection.dart';
+import 'package:dwitter/repositories/dependency_injection.dart';
+import 'package:dwitter/sources/dependency_injection.dart';
+import 'package:dwitter/usecases/dependency_injection.dart';
 
 /// Utility class used to provide instances of different objects.
 class Injector {

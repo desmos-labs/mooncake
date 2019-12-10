@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:desmosdemo/ui/ui.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/ui/ui.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Represents the bloc that handles event emitted while generating a new

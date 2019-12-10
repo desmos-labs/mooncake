@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 
 /// Represents the repository that can be used in order to read
 /// and write data related to posts, comments and likes.
@@ -6,6 +6,10 @@ abstract class PostsRepository {
   /// Returns the post having the given [postId], or `null` if no
   /// such post could be found.
   Future<Post> getPostById(String postId);
+
+  /// Returns the list of all posts that represent comments to
+  /// the post having the given [postId].
+  Future<List<Post>> getPostComments(String postId);
 
   /// Returns the full list of posts available.
   Future<List<Post>> getPosts();

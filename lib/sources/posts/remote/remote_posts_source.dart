@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -53,6 +53,14 @@ class RemotePostsSource implements PostsSource {
   /// Handles the messages telling that a new post has been created.
   void _handlePostCreatedEvent(PostCreatedEvent event) async {
     final post = await getPostById(event.postId);
+
+    // Emit the updated parent
+    if (post.hasParent) {
+      final parent = await getPostById(post.parentId);
+      _postsStream.add(parent);
+    }
+
+    // Emit the updated post
     _postsStream.add(post);
   }
 
@@ -90,6 +98,12 @@ class RemotePostsSource implements PostsSource {
   @override
   Future<List<Post>> getPosts() {
     // TODO: implement getPosts
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Post>> getPostComments(String postId) {
+    // TODO: implement getPostComments
     throw UnimplementedError();
   }
 

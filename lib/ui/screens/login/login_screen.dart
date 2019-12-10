@@ -1,4 +1,4 @@
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
-      color: PostsTheme.primaryColor,
+      color: PostsTheme.theme.scaffoldBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -21,20 +21,20 @@ class LoginScreen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   PostsLocalizations.of(context).appTitle,
-                  style: PostsTheme.theme.textTheme.display1,
+                  style: PostsTheme.theme.textTheme.display1.apply(
+                    color: PostsTheme.primaryColor,
+                  ),
                 ),
               ],
             ),
           ),
           Column(
             children: <Widget>[
-              FlatButton(
-                color: PostsTheme.accentColor,
+              RaisedButton(
                 child: Text(PostsLocalizations.of(context).recoverFromMnemonic),
                 onPressed: () => _onRecoverAccount(context),
               ),
-              FlatButton(
-                color: PostsTheme.accentColor,
+              RaisedButton(
                 child: Text(PostsLocalizations.of(context).generateNewAccount),
                 onPressed: () => _onCreateAccountClicked(context),
               )

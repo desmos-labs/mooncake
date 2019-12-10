@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="network.desmos.demos.desmosdemo">
+    package="network.desmos.dwitter">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:name="io.flutter.app.FlutterApplication"
-        android:label="desmosdemo"
+        android:label="Dwitter"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

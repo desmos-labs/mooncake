@@ -1,6 +1,6 @@
-import 'package:desmosdemo/dependency_injection/dependency_injection.dart';
-import 'package:desmosdemo/ui/screens/splash/splash_screen.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/dependency_injection/dependency_injection.dart';
+import 'package:dwitter/ui/screens/splash/splash_screen.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

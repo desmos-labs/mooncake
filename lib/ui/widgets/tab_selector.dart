@@ -1,7 +1,7 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/ui/keys/export.dart';
-import 'package:desmosdemo/ui/localization/export.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/keys/export.dart';
+import 'package:dwitter/ui/localization/export.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Allows the user to select which tab should be visible inside
@@ -27,14 +27,14 @@ class TabSelector extends StatelessWidget {
           icon: Icon(
             tab == AppTab.posts
                 ? FontAwesomeIcons.diceD6
-                : FontAwesomeIcons.database,
+                : FontAwesomeIcons.history,
             key: tab == AppTab.posts
                 ? PostsKeys.chainPostsTab
-                : PostsKeys.localPostsStab,
+                : PostsKeys.historyTab,
           ),
           title: Text(tab == AppTab.posts
               ? PostsLocalizations.of(context).onChainPosts
-              : PostsLocalizations.of(context).offChainPosts),
+              : PostsLocalizations.of(context).history),
         );
       }).toList(),
     );

@@ -1,5 +1,5 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/usecases/usecases.dart';
 
 class UseCaseModule implements Module {
   @override
