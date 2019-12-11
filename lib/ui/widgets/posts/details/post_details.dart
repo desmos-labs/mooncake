@@ -34,6 +34,7 @@ class PostDetails extends StatelessWidget {
                     user: post.owner,
                     key: PostsKeys.postItemOwnerAvatar(post.id),
                   ),
+                  SizedBox(width: 16),
                   PostDetailsOwner(
                     user: post.owner,
                     key: PostsKeys.postDetailsOwner,

@@ -8,6 +8,19 @@ abstract class PostsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// Tells the bloc to start fetching the posts that are present inside
+/// the chain.
+class FetchPosts extends PostsEvent {
+  @override
+  String toString() => 'FetchPosts';
+}
+
+/// Tells the bloc that the posts have been fetched from the chain.
+class FetchPostsCompleted extends PostsEvent {
+  @override
+  String toString() => 'FetchPostsCompleted';
+}
+
 /// Tells the Bloc that it needs to load posts from the [PostsRepository].
 class LoadPosts extends PostsEvent {}
 
@@ -54,6 +67,16 @@ class UnlikePost extends PostsEvent {
   String toString() => 'UnlikePost { postId: $postId }';
 }
 
-class SyncPosts extends PostsEvent {}
+/// Tells the bloc to start the synchronization of locally stored
+/// posts so that they can be uploaded to the chain.
+class SyncPosts extends PostsEvent {
+  @override
+  String toString() => 'SyncPosts';
+}
 
-class SyncPostsCompleted extends PostsEvent {}
+/// Tells the bloc that the synchronization of the locally stored posts
+/// have been completed.
+class SyncPostsCompleted extends PostsEvent {
+  @override
+  String toString() => 'SyncPostsCompleted';
+}

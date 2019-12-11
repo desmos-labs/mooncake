@@ -7,15 +7,15 @@ import 'package:flutter/cupertino.dart';
 
 /// Implementation of [PostsRepository].
 class PostsRepositoryImpl extends PostsRepository {
-  final PostsSource _localPostsSource;
-  final PostsSource _remotePostsSource;
+  final LocalPostsSource _localPostsSource;
+  final RemotePostsSource _remotePostsSource;
 
   // ignore: cancel_subscriptions
   StreamSubscription _postsSubscription;
 
   PostsRepositoryImpl({
-    @required PostsSource localSource,
-    @required PostsSource remoteSource,
+    @required LocalPostsSource localSource,
+    @required RemotePostsSource remoteSource,
   })  : assert(localSource != null),
         _localPostsSource = localSource,
         assert(remoteSource != null),
@@ -34,6 +34,11 @@ class PostsRepositoryImpl extends PostsRepository {
   @override
   Future<List<Post>> getPosts() async {
     return _localPostsSource.getPosts();
+  }
+
+  @override
+  Future<List<Post>> getPostsToSync() async {
+    return _localPostsSource.getPostsToSync();
   }
 
   @override
@@ -58,6 +63,11 @@ class PostsRepositoryImpl extends PostsRepository {
       parent = parent.copyWith(commentsIds: [post.id] + parent.commentsIds);
       await _localPostsSource.savePost(parent);
     }
+  }
+
+  @override
+  Future<void> fetchPosts() async {
+    await _remotePostsSource.startSyncPosts();
   }
 
   @override

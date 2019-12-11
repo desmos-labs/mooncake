@@ -19,13 +19,12 @@ String createPostExternalReference(String postId) {
 }
 
 String getPostIdByReference(String externalReference) {
-  if (externalReference == null ||
-      externalReference.isEmpty ||
-      !externalReference.contains("dwitter")) {
+  final ref = externalReference?.trim();
+  if (ref == null || ref.isEmpty || !ref.contains("dwitter")) {
     return null;
   }
 
-  return externalReference.split("dwitter-")[1];
+  return ref.split("dwitter-")[1];
 }
 
 /// Represents a generic post
@@ -40,13 +39,17 @@ class Post implements Equatable, Comparable<Post> {
 
   /// Tells if this post has a valid parent post or not.
   @JsonKey(ignore: true)
-  bool get hasParent => parentId != null && parentId != "0";
+  bool get hasParent =>
+      parentId != null && parentId.isNotEmpty && parentId != "0";
 
   @JsonKey(name: "message")
   final String message;
 
   @JsonKey(name: "created")
   final String created;
+
+  @JsonKey(ignore: true)
+  bool get isCreateBlockHeight => DateTime.tryParse(created) == null;
 
   @JsonKey(name: "lastEdited")
   final String lastEdited;
@@ -167,6 +170,8 @@ class Post implements Equatable, Comparable<Post> {
 
     if (statusCompare != 0) {
       return statusCompare;
+    } else if (onChain && otherOnChain) {
+      return double.parse(created).compareTo(double.parse(other.created));
     } else {
       return created.compareTo(other.created);
     }

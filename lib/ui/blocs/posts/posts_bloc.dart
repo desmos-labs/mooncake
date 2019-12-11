@@ -12,6 +12,8 @@ import '../export.dart';
 /// events and states related to the list of posts.
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final int _syncPeriod;
+
+  final FetchPostsUseCase _fetchPostsUseCase;
   final CreatePostUseCase _createPostUseCase;
   final LikePostUseCase _likePostUseCase;
   final UnlikePostUseCase _unlikePostUseCase;
@@ -23,12 +25,15 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   PostsBloc({
     @required int syncPeriod,
+    @required FetchPostsUseCase fetchPostsUseCase,
     @required CreatePostUseCase createPostUseCase,
     @required LikePostUseCase likePostUseCase,
     @required UnlikePostUseCase unlikePostUseCase,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
   })  : _syncPeriod = syncPeriod,
+        assert(fetchPostsUseCase != null),
+        _fetchPostsUseCase = fetchPostsUseCase,
         assert(createPostUseCase != null),
         _createPostUseCase = createPostUseCase,
         assert(likePostUseCase != null),
@@ -45,6 +50,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   factory PostsBloc.create({int syncPeriod = 20}) {
     return PostsBloc(
       syncPeriod: syncPeriod,
+      fetchPostsUseCase: Injector.get(),
       createPostUseCase: Injector.get(),
       likePostUseCase: Injector.get(),
       unlikePostUseCase: Injector.get(),
@@ -58,7 +64,11 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   @override
   Stream<PostsState> mapEventToState(PostsEvent event) async* {
-    if (event is LoadPosts) {
+    if (event is FetchPosts) {
+      yield* _mapFetchPostsEventToState();
+    } else if (event is FetchPostsCompleted) {
+      yield* _mapFetchPostsCompletedEventToState();
+    } else if (event is LoadPosts) {
       yield* _mapLoadPostsEventToState();
     } else if (event is AddPost) {
       yield* _mapAddPostEventToState(event);
@@ -68,6 +78,36 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       yield* _mapUnlikePostEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsEventToState();
+    } else if (event is SyncPostsCompleted) {
+      yield* _mapSyncPostsCompletedEventToState();
+    }
+  }
+
+  Stream<PostsState> _mapFetchPostsEventToState() async* {
+    // Subscribe to the stream of posts
+    _postsSubscription = _getPostsUseCase.stream().listen((post) {
+      add(LoadPosts());
+    });
+
+    // Show the fetching snackbar
+    if (state is PostsLoaded) {
+      yield (state as PostsLoaded).copyWith(fetchingPosts: true);
+    } else {
+      yield PostsLoaded(posts: [], fetchingPosts: true);
+    }
+
+    // Wait for new posts
+    _fetchPostsUseCase.fetch().then((_) {
+      add(FetchPostsCompleted());
+    });
+  }
+
+  Stream<PostsState> _mapFetchPostsCompletedEventToState() async* {
+    // Hide the snackbar
+    if (state is PostsLoaded) {
+      yield (state as PostsLoaded).copyWith(fetchingPosts: false);
+    } else {
+      yield state;
     }
   }
 
@@ -78,27 +118,27 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   Stream<PostsState> _mapLoadPostsEventToState() async* {
-    try {
-      final posts = await _getPosts();
+    // Start fetching new post
+    if (_postsSubscription == null) {
+      add(FetchPosts());
+    }
+
+    // Get the posts
+    final posts = await _getPosts();
+
+    // Update the state
+    if (state is PostsLoaded) {
+      yield (state as PostsLoaded).copyWith(posts: posts);
+    } else {
       yield PostsLoaded(posts: posts);
+    }
 
-      // Observe for new posts
-      if (_postsSubscription == null) {
-        _postsSubscription = _getPostsUseCase.stream().listen((post) {
-          add(LoadPosts());
-        });
-      }
-
-      // Sync the activities of the user every 15 seconds
-      if (_syncTimer?.isActive != true) {
-        _syncTimer?.cancel();
-        _syncTimer = Timer.periodic(Duration(seconds: _syncPeriod), (t) {
-          add(SyncPosts());
-        });
-      }
-    } catch (e) {
-      print(e);
-      yield PostsNotLoaded();
+    // Sync the activities of the user every _syncPeriod seconds
+    if (_syncTimer?.isActive != true) {
+      _syncTimer?.cancel();
+      _syncTimer = Timer.periodic(Duration(seconds: _syncPeriod), (t) {
+        add(SyncPosts());
+      });
     }
   }
 
@@ -134,15 +174,25 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Stream<PostsState> _mapSyncPostsEventToState() async* {
     if (state is PostsLoaded) {
-      yield (state as PostsLoaded).copyWith(showSnackbar: true);
-      try {
-        await _syncPostsUseCase.sync();
-        final updatedPosts = await _getPosts();
-        yield PostsLoaded(posts: updatedPosts);
-      } catch (e) {
-        print(e);
-        yield (state as PostsLoaded).copyWith(showSnackbar: false);
-      }
+      // Show the snackbar
+      yield (state as PostsLoaded).copyWith(syncingPosts: true);
+
+      // Wait for the sync
+      _syncPostsUseCase.sync().then((_) {
+        add(SyncPostsCompleted());
+      });
+    }
+  }
+
+  Stream<PostsState> _mapSyncPostsCompletedEventToState() async* {
+    if (state is PostsLoaded) {
+      final updatedPosts = await _getPosts();
+
+      // Hide the snackbar and update the posts list
+      yield (state as PostsLoaded).copyWith(
+        posts: updatedPosts,
+        syncingPosts: false,
+      );
     }
   }
 

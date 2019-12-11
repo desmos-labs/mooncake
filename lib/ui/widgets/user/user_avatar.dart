@@ -12,7 +12,6 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Container(
-      margin: EdgeInsets.only(right: 16.0),
       width: mediaQuery.size.width / 8,
       height: mediaQuery.size.width / 8,
       decoration: BoxDecoration(

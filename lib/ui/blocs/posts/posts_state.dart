@@ -12,24 +12,35 @@ class PostsLoading extends PostsState {}
 
 class PostsLoaded extends PostsState {
   final List<Post> posts;
-  final bool showSnackbar;
+  final bool syncingPosts;
+  final bool fetchingPosts;
 
-  PostsLoaded({this.posts, this.showSnackbar = false});
+  PostsLoaded({
+    this.posts,
+    this.syncingPosts = false,
+    this.fetchingPosts = false,
+  });
 
-  PostsLoaded copyWith({List<Post> posts, bool showSnackbar}) {
+  PostsLoaded copyWith({
+    List<Post> posts,
+    bool syncingPosts,
+    bool fetchingPosts,
+  }) {
     return PostsLoaded(
       posts: posts ?? this.posts,
-      showSnackbar: showSnackbar ?? this.showSnackbar,
+      syncingPosts: syncingPosts ?? this.syncingPosts,
+      fetchingPosts: fetchingPosts ?? this.fetchingPosts,
     );
   }
 
   @override
-  List<Object> get props => [posts, showSnackbar];
+  List<Object> get props => [posts, syncingPosts, fetchingPosts];
 
   @override
   String toString() => 'PostsLoaded { '
       'posts: ${posts.length}, '
-      'showSnackbar: $showSnackbar '
+      'syncingPosts: $syncingPosts, '
+      'fetchingPosts: $fetchingPosts '
       '}';
 }
 

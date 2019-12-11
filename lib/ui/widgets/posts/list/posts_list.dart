@@ -47,7 +47,8 @@ class PostsList extends StatelessWidget {
                   },
                 ),
               ),
-              if (state.showSnackbar) _syncSnackbar(context),
+              if (state.syncingPosts) _syncSnackbar(context),
+              if (state.fetchingPosts) _fetchingSnackbar(context),
             ],
           );
         } else {
@@ -66,6 +67,20 @@ class PostsList extends StatelessWidget {
           Icon(FontAwesomeIcons.cloudUploadAlt, size: 16),
           SizedBox(width: 16),
           Text(PostsLocalizations.of(context).syncingActivities),
+        ],
+      ),
+    );
+  }
+
+  Widget _fetchingSnackbar(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      color: Colors.blue,
+      child: Row(
+        children: <Widget>[
+          Icon(FontAwesomeIcons.cloudDownloadAlt, size: 16),
+          SizedBox(width: 16),
+          Text("Fetching posts"),
         ],
       ),
     );

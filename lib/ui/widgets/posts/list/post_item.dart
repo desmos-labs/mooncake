@@ -41,10 +41,18 @@ class PostItem extends StatelessWidget {
             padding: PostsTheme.postItemPadding,
             child: Row(
               children: <Widget>[
-                UserAvatar(
-                  key: PostsKeys.postItemOwnerAvatar(postId),
-                  user: post.owner,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    UserAvatar(
+                      key: PostsKeys.postItemOwnerAvatar(postId),
+                      user: post.owner,
+                    ),
+                    SizedBox(height: 8),
+                    Text(post.isCreateBlockHeight ? post.created : "N.A")
+                  ],
                 ),
+                SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

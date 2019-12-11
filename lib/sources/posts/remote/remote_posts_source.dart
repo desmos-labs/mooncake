@@ -1,18 +1,22 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/repositories/repositories.dart';
 import 'package:dwitter/sources/sources.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_socket_channel/io.dart';
 
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
-class RemotePostsSource implements PostsSource {
-  // Helpers
-  final ChainHelper _chainHelper;
-  final ChainEventHelper _chainEventHelper;
+class RemotePostsSourceImpl implements RemotePostsSource {
+  // Constants
+  static const _BLOCK_HEIGHT_KEY = "block_height";
 
+  final String _rpcEndpoint;
+  final ChainHelper _chainHelper;
   final WalletSource _walletSource;
 
   // Streams
@@ -22,64 +26,121 @@ class RemotePostsSource implements PostsSource {
   // Converters
   final _msgConverter = MsgConverter();
   final _postConverter = RemotePostConverter();
+  final _eventsConverter = ChainEventsConverter();
 
   /// Public constructor
-  RemotePostsSource({
-    @required ChainEventHelper chainEventHelper,
+  RemotePostsSourceImpl({
+    @required String rpcEndpoint,
     @required ChainHelper chainHelper,
     @required WalletSource walletSource,
-  })  : assert(walletSource != null),
+  })  : assert(rpcEndpoint != null),
+        _rpcEndpoint = rpcEndpoint,
+        assert(walletSource != null),
         _walletSource = walletSource,
-        assert(chainEventHelper != null),
-        _chainEventHelper = chainEventHelper,
         assert(chainHelper != null),
         _chainHelper = chainHelper;
 
   /// Observes the chain events
-  StreamSubscription<List<ChainEvent>> _observeEvents() {
-    return _chainEventHelper.initObserve().listen((events) async {
-      events.forEach((event) {
-        if (event is PostCreatedEvent) {
-          _handlePostCreatedEvent(event);
-        } else if (event is PostLikedEvent) {
-          _handlePostLikedEvent(event);
-        } else if (event is PostUnlikedEvent) {
-          _handlePostUnLikedEvent(event);
+  StreamSubscription _observeEvents() {
+    // Setup the channel
+    final channel = IOWebSocketChannel.connect('$_rpcEndpoint/websocket');
+
+    // Get the given query list or use the default set
+    final queryList = [
+      "tm.event='Tx'",
+    ];
+
+    // Send a subscription message for each query
+    queryList.forEach((query) {
+      channel.sink.add(jsonEncode({
+        "jsonrpc": "2.0",
+        "method": "subscribe",
+        "id": "0",
+        "params": {
+          "query": query,
         }
+      }));
+    });
+
+    // Observe each new message and handle it properly
+    return channel.stream
+        // We need to skip the initial messages answering OK for the queries
+        .skip(queryList.length)
+        .map((data) => TxEvent.fromJson(jsonDecode(data)))
+        .handleError((error) => print('Remote posts channel exception: $error'))
+        .listen((query) async {
+      final height = query.result.data.value.txResult.height;
+      await _parseBlock(height);
+    });
+  }
+
+  Future<void> _parseBlock(String height) async {
+    final endpoint = "/txs?tx.height=$height";
+    final response = await _chainHelper.queryChainRaw(endpoint);
+    final txData = TxResponse.fromJson(response);
+
+    // Store the latest synced block height
+    await _saveLatestBlockHeight(height);
+
+    if (txData.txs.isEmpty) {
+      // No txs, nothing to do
+      return;
+    }
+
+    print('Parsing block at height $height');
+    txData.txs.forEach((tx) {
+      final events = _eventsConverter.convert(height, tx.events);
+      events.forEach((event) async {
+        await _handleEvent(event);
       });
     });
   }
 
+  Future<void> _handleEvent(ChainEvent event) async {
+    // Handle the event properly
+    if (event is PostCreatedEvent) {
+      return _handlePostCreatedEvent(event);
+    } else if (event is PostLikedEvent) {
+      return _handlePostLikedEvent(event);
+    } else if (event is PostUnlikedEvent) {
+      return _handlePostUnLikedEvent(event);
+    }
+  }
+
   /// Handles the messages telling that a new post has been created.
-  void _handlePostCreatedEvent(PostCreatedEvent event) async {
+  Future<void> _handlePostCreatedEvent(PostCreatedEvent event) async {
     final post = await getPostById(event.postId);
 
     // Emit the updated parent
-    if (post.hasParent) {
+    if (post?.hasParent == true) {
       final parent = await getPostById(post.parentId);
-      _postsStream.add(parent);
+      if (parent != null) {
+        _postsStream.add(parent);
+      }
     }
 
     // Emit the updated post
     _postsStream.add(post);
   }
 
-  void _handlePostLikedEvent(PostLikedEvent event) async {
+  Future<void> _handlePostLikedEvent(PostLikedEvent event) async {
     final post = await getPostById(event.postId);
     _postsStream.add(post);
   }
 
-  void _handlePostUnLikedEvent(PostUnlikedEvent event) async {
+  Future<void> _handlePostUnLikedEvent(PostUnlikedEvent event) async {
     final post = await getPostById(event.postId);
     _postsStream.add(post);
+  }
+
+  /// Allows to store the latest synced block height
+  Future<void> _saveLatestBlockHeight(String height) async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    await sharedPrefs.setString(_BLOCK_HEIGHT_KEY, height);
   }
 
   @override
   Stream<Post> get postsStream {
-    if (_subscription == null) {
-      print("Initializing remote source posts stream");
-      _subscription = _observeEvents();
-    }
     return _postsStream.stream;
   }
 
@@ -96,9 +157,30 @@ class RemotePostsSource implements PostsSource {
   }
 
   @override
-  Future<List<Post>> getPosts() {
-    // TODO: implement getPosts
-    throw UnimplementedError();
+  Future<void> startSyncPosts() async {
+    if (_subscription == null) {
+      print("Initializing remote source posts stream");
+      _subscription = _observeEvents();
+    }
+
+    // Get the latest queried block height
+    final sharedPrefs = await SharedPreferences.getInstance();
+    final initBlockHeight = double.parse(
+      sharedPrefs.getString(_BLOCK_HEIGHT_KEY) ?? "0",
+    );
+
+    // Get the current block height
+    final response = await _chainHelper.queryChainRaw("/blocks/latest");
+    final blockResponse = BlockResponse.fromJson(response);
+    final endBlockHeight = double.parse(
+      blockResponse.blockMeta.header.height,
+    );
+
+    // For each block height, get the transactions
+    for (double height = initBlockHeight; height <= endBlockHeight; height++) {
+      _parseBlock(height.toInt().toString());
+      await Future.delayed(Duration(milliseconds: 50));
+    }
   }
 
   @override

@@ -14,11 +14,18 @@ abstract class PostsRepository {
   /// Returns the full list of posts available.
   Future<List<Post>> getPosts();
 
+  /// Returns the list of posts to sync.
+  Future<List<Post>> getPostsToSync();
+
   /// Returns a [Stream] that emits new posts as they are created.
   Stream<Post> get postsStream;
 
   /// Saves the given [post].
   Future<void> savePost(Post post);
+
+  /// Asynchronously fetches new posts that have not yet been
+  /// downloaded locally.
+  Future<void> fetchPosts();
 
   /// Syncs the given posts by sending them to the blockchain.
   Future<void> syncPosts(List<Post> posts);

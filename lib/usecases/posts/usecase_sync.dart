@@ -17,7 +17,7 @@ class SyncPostsUseCase {
   /// Local data contains posts as well as likes and unlikes.
   Future<void> sync() async {
     // Get the posts
-    final posts = await _postsRepository.getPosts();
+    final posts = await _postsRepository.getPostsToSync();
     final syncingPosts = posts
         .where((post) {
           // The post has a TO_BE_SYNCED status so it must be synced

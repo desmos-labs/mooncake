@@ -18,17 +18,15 @@ class SourcesModule implements Module {
           networkInfo: _networkInfo,
         ),
       )
-      ..bindLazySingleton<PostsSource>(
-        (injector, params) => LocalPostsSource(
+      ..bindLazySingleton<LocalPostsSource>(
+        (injector, params) => LocalPostsSourceImpl(
           walletSource: injector.get(),
         ),
         name: "local",
       )
-      ..bindLazySingleton<PostsSource>(
-        (injector, params) => RemotePostsSource(
-          chainEventHelper: ChainEventHelper(
-            rpcEndpoint: _rpcUrl,
-          ),
+      ..bindLazySingleton<RemotePostsSource>(
+        (injector, params) => RemotePostsSourceImpl(
+          rpcEndpoint: _rpcUrl,
           chainHelper: ChainHelper(
             lcdEndpoint: _lcdUrl,
             httpClient: http.Client(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dwitter/sources/sources.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:sacco/sacco.dart';
@@ -18,6 +19,17 @@ class ChainHelper {
         _lcdEndpoint = lcdEndpoint,
         assert(httpClient != null),
         _httpClient = httpClient;
+
+  /// Queries the chain status using the given endpoint and returns
+  /// the raw body response.
+  Future<Map<String, dynamic>> queryChainRaw(String endpoint) async {
+    final url = _lcdEndpoint + endpoint;
+    final data = await _httpClient.get(url);
+    if (data.statusCode != 200) {
+      throw Exception("Expected response code 200, got: ${data.statusCode}");
+    }
+    return json.decode(data.body);
+  }
 
   /// Utility method to easily query any chain endpoint and
   /// read the response as an [LcdResponse] object instance.

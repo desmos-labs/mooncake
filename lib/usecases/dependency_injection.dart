@@ -23,6 +23,9 @@ class UseCaseModule implements Module {
             walletRepository: injector.get(),
             postsRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => FetchPostsUseCase(
+            repository: injector.get(),
+          ))
       ..bindFactory((injector, params) => GetCommentsUseCase(
             postsRepository: injector.get(),
           ))

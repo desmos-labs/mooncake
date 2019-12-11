@@ -22,6 +22,12 @@ class LcdResponse extends Equatable {
   @override
   List<Object> get props => [height, result];
 
+  @override
+  String toString() => 'LcdResponse {'
+      'height: $height, '
+      'result: $result '
+      '}';
+
   factory LcdResponse.fromJson(Map<String, dynamic> json) =>
       _$LcdResponseFromJson(json);
 
