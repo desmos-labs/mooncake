@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
-  static Color get primaryColor => Color(0xFFD03576);
-  static Color get accentColor => Color(0xFFF45E3E);
+  static Color get primaryColor => Color(0xFFE6559C);
+  static Color get accentColor => Color(0xFFD10E6E);
 
   static Color get textColor => Colors.white;
   static Color get textColorLight => Colors.grey[500];

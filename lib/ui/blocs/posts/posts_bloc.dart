@@ -5,6 +5,7 @@ import 'package:dwitter/dependency_injection/dependency_injection.dart';
 import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 import '../export.dart';
 
@@ -43,9 +44,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         assert(getPostsUseCase != null),
         _getPostsUseCase = getPostsUseCase,
         assert(syncPostsUseCase != null),
-        _syncPostsUseCase = syncPostsUseCase {
-    print('Creting new post bloc');
-  }
+        _syncPostsUseCase = syncPostsUseCase;
 
   factory PostsBloc.create({int syncPeriod = 20}) {
     return PostsBloc(
@@ -60,6 +59,17 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   @override
+  Stream<PostsState> transformEvents(
+    Stream<PostsEvent> events,
+    Stream<PostsState> Function(PostsEvent event) next,
+  ) {
+    return super.transformEvents(
+      events.debounce(Duration(milliseconds: 500)),
+      next,
+    );
+  }
+
+  @override
   PostsState get initialState => PostsLoading();
 
   @override
@@ -69,7 +79,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     } else if (event is FetchPostsCompleted) {
       yield* _mapFetchPostsCompletedEventToState();
     } else if (event is LoadPosts) {
-      yield* _mapLoadPostsEventToState();
+      yield* _mapLoadPostsEventToState(event);
     } else if (event is AddPost) {
       yield* _mapAddPostEventToState(event);
     } else if (event is LikePost) {
@@ -83,17 +93,20 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
+  /// Handles the event that is emitted when there's the need to fetch
+  /// all the stored posts on the chain since the last sync
   Stream<PostsState> _mapFetchPostsEventToState() async* {
     // Subscribe to the stream of posts
     _postsSubscription = _getPostsUseCase.stream().listen((post) {
-      add(LoadPosts());
+      // When we get new posts, simply reload the
+      // currently shown list of posts
+      add(LoadPosts(nextPage: false));
     });
 
     // Show the fetching snackbar
-    if (state is PostsLoaded) {
-      yield (state as PostsLoaded).copyWith(fetchingPosts: true);
-    } else {
-      yield PostsLoaded(posts: [], fetchingPosts: true);
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      yield currentState.copyWith(fetchingPosts: true);
     }
 
     // Wait for new posts
@@ -102,35 +115,29 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     });
   }
 
+  /// Handles the event that is emitted when the posts are completely
+  /// synced and all the previously stored posts have been downloaded
+  /// from the chain
   Stream<PostsState> _mapFetchPostsCompletedEventToState() async* {
-    // Hide the snackbar
-    if (state is PostsLoaded) {
-      yield (state as PostsLoaded).copyWith(fetchingPosts: false);
-    } else {
-      yield state;
+    // Once the fetch has completed simply hide the snackbar
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      yield currentState.copyWith(fetchingPosts: false);
     }
   }
 
-  Future<List<Post>> _getPosts() async {
-    final posts = await _getPostsUseCase.get();
+  /// Allows to fetch the given [page] of posts objects
+  Future<List<Post>> _getPosts({int page = 0}) async {
+    final posts = await _getPostsUseCase.get(page: page);
     posts.sort((p1, p2) => p2.compareTo(p1));
     return posts;
   }
 
-  Stream<PostsState> _mapLoadPostsEventToState() async* {
+  /// Handles the event emitted when the posts list should be refreshed
+  Stream<PostsState> _mapLoadPostsEventToState(LoadPosts event) async* {
     // Start fetching new post
     if (_postsSubscription == null) {
       add(FetchPosts());
-    }
-
-    // Get the posts
-    final posts = await _getPosts();
-
-    // Update the state
-    if (state is PostsLoaded) {
-      yield (state as PostsLoaded).copyWith(posts: posts);
-    } else {
-      yield PostsLoaded(posts: posts);
     }
 
     // Sync the activities of the user every _syncPeriod seconds
@@ -140,16 +147,64 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         add(SyncPosts());
       });
     }
-  }
 
-  Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
-    if (state is PostsLoaded) {
-      await _createPostUseCase.create(event.message, parentId: event.parentId);
-      final updatedPosts = await _getPosts();
-      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      // We have already loaded some posts, we need to define in which
+      // case we are right now
+
+      if (event.nextPage) {
+        // Show the loading bar
+        yield currentState.copyWith(isLoadingNewPage: true);
+
+        // We're at the end of a page, just load the next one
+        final posts = await _getPosts(page: currentState.page + 1);
+        yield currentState.copyWith(
+          page: currentState.page + 1,
+          posts: currentState.posts + posts,
+          hasReachedMax: posts.isEmpty,
+          isLoadingNewPage: false,
+        );
+      } else {
+        // We're not at the end, but someone else has triggered to load the
+        // posts again
+        final newPosts = await _getPosts(page: currentState.page);
+        final posts = currentState.posts.map((post) {
+          // Find a post with the same id but new data
+          final newPostWithSameId = newPosts.firstWhere(
+            (p) => p.id == post.id,
+            orElse: () => null,
+          );
+
+          // If the posts exists, return that one. Otherwise
+          // return the old one
+          if (newPostWithSameId != null) {
+            return newPostWithSameId;
+          } else {
+            return post;
+          }
+        }).toList();
+
+        yield currentState.copyWith(posts: posts);
+      }
+    } else {
+      // We never loaded any post before, so load the first page
+      final posts = await _getPosts(page: 0);
+      yield PostsLoaded(page: 0, posts: posts);
     }
   }
 
+  /// Handles the event that is emitted when the user creates a new post
+  Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
+    if (state is PostsLoaded) {
+      // When a post is added, simply save it and refresh the list
+      // of currently shown posts
+      await _createPostUseCase.create(event.message, parentId: event.parentId);
+      add(LoadPosts(nextPage: false));
+    }
+  }
+
+  /// Handles the event emitted when the user likes a post
   Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
     if (state is PostsLoaded) {
       final updatedPost = await _likePostUseCase.like(event.postId);
@@ -161,6 +216,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
+  /// Handles the event telling that the user has unliked a previously
+  /// liked post
   Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
     if (state is PostsLoaded) {
       final updatedPost = await _unlikePostUseCase.unlike(event.postId);
@@ -172,10 +229,13 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
+  /// Handles the event emitted when the posts must be synced uploading
+  /// all the changes stored locally to the chain
   Stream<PostsState> _mapSyncPostsEventToState() async* {
-    if (state is PostsLoaded) {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
       // Show the snackbar
-      yield (state as PostsLoaded).copyWith(syncingPosts: true);
+      yield currentState.copyWith(syncingPosts: true);
 
       // Wait for the sync
       _syncPostsUseCase.sync().then((_) {
@@ -184,21 +244,18 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
+  /// Handles the event that tells the bloc the synchronization has completed
   Stream<PostsState> _mapSyncPostsCompletedEventToState() async* {
-    if (state is PostsLoaded) {
-      final updatedPosts = await _getPosts();
-
-      // Hide the snackbar and update the posts list
-      yield (state as PostsLoaded).copyWith(
-        posts: updatedPosts,
-        syncingPosts: false,
-      );
+    // Once the sync has been completed, hide the bar and load the posts again
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      yield currentState.copyWith(syncingPosts: false);
+      add(LoadPosts(nextPage: false));
     }
   }
 
   @override
   Future<void> close() {
-    print('Closing post bloc');
     _postsSubscription?.cancel();
     _syncTimer?.cancel();
     return super.close();

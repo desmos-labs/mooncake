@@ -26,15 +26,15 @@ class TabSelector extends StatelessWidget {
         return BottomNavigationBarItem(
           icon: Icon(
             tab == AppTab.posts
-                ? FontAwesomeIcons.diceD6
-                : FontAwesomeIcons.history,
+                ? FontAwesomeIcons.list
+                : FontAwesomeIcons.userAlt,
             key: tab == AppTab.posts
-                ? PostsKeys.chainPostsTab
-                : PostsKeys.historyTab,
+                ? PostsKeys.allPostsTab
+                : PostsKeys.yourPostsTab,
           ),
           title: Text(tab == AppTab.posts
-              ? PostsLocalizations.of(context).onChainPosts
-              : PostsLocalizations.of(context).history),
+              ? PostsLocalizations.of(context).allPosts
+              : PostsLocalizations.of(context).yourPosts),
         );
       }).toList(),
     );

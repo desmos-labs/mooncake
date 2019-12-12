@@ -49,7 +49,13 @@ class PostItem extends StatelessWidget {
                       user: post.owner,
                     ),
                     SizedBox(height: 8),
-                    Text(post.isCreateBlockHeight ? post.created : "N.A")
+                    Row(
+                      children: <Widget>[
+                        Icon(FontAwesomeIcons.diceD6, size: 12),
+                        SizedBox(width: 4),
+                        Text(post.isCreateBlockHeight ? post.created : "N.A")
+                      ],
+                    )
                   ],
                 ),
                 SizedBox(width: 16),

@@ -565,7 +565,7 @@ packages:
     source: hosted
     version: "2.0.0"
   stream_transform:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stream_transform
       url: "https://pub.dartlang.org"

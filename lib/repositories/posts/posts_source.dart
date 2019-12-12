@@ -11,7 +11,7 @@ abstract class LocalPostsSource {
   Future<List<Post>> getPostComments(String postId);
 
   /// Returns the list of all the currently stored posts.
-  Future<List<Post>> getPosts({int page = 0});
+  Future<List<Post>> getPosts(int page);
 
   /// Returns the list of all the posts to be synced.
   Future<List<Post>> getPostsToSync();

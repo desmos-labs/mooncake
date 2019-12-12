@@ -12,8 +12,8 @@ class PostsLocalizations {
   }
 
   String get appTitle => "Dwitter";
-  String get onChainPosts => "On-chain posts";
-  String get history => "History";
+  String get allPosts => "All posts";
+  String get yourPosts => "Your posts";
   String get signOut => "Sign out";
 
   String get editPost => "Edit post";
@@ -30,6 +30,7 @@ class PostsLocalizations {
   String get commentsDisabled => "Comments disabled by the post owner";
 
   String get syncingActivities => "Syncing activities...";
+  String get fetchingPosts => "Checking for new posts...";
 
   String get recoverFromMnemonic => "Recover from mnemonic";
   String get generateNewAccount => "Generate new account";

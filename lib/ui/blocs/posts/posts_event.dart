@@ -22,7 +22,17 @@ class FetchPostsCompleted extends PostsEvent {
 }
 
 /// Tells the Bloc that it needs to load posts from the [PostsRepository].
-class LoadPosts extends PostsEvent {}
+class LoadPosts extends PostsEvent {
+  final bool nextPage;
+
+  LoadPosts({this.nextPage = false});
+
+  @override
+  List<Object> get props => [nextPage];
+
+  @override
+  String toString() => 'LoadPosts { nextPage: $nextPage }';
+}
 
 /// Tells the Bloc that it needs to add a new post to the list of posts
 class AddPost extends PostsEvent {
