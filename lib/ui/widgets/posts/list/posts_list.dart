@@ -53,9 +53,8 @@ class _PostsListState extends State<PostsList> {
                 child: ListView.separated(
                   key: PostsKeys.postsList,
                   controller: _scrollController,
-                  itemCount: state.isLoadingNewPage
-                      ? posts.length + 1
-                      : posts.length,
+                  itemCount:
+                      state.isLoadingNewPage ? posts.length + 1 : posts.length,
                   separatorBuilder: (context, index) => Divider(height: 1),
                   itemBuilder: (context, index) {
                     return index >= posts.length
