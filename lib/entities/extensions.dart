@@ -4,7 +4,12 @@ import 'package:dwitter/entities/entities.dart';
 extension PostsExt on List<Post> {
   /// Returns the post having the given [id], [message] or [status]
   /// inside this list, or `null` if no post with such id was found.
-  Post find({String id, String message, PostStatus status}) {
+  Post firstBy({
+    String id,
+    String message,
+    PostStatus status,
+    String externalReference,
+  }) {
     return this.firstWhere((post) {
       bool condition = true;
 
@@ -18,6 +23,10 @@ extension PostsExt on List<Post> {
 
       if (status != null) {
         condition &= post.status == status;
+      }
+
+      if (externalReference != null) {
+        condition &= post.externalReference == externalReference;
       }
 
       return condition;

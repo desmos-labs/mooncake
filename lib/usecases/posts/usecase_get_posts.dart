@@ -11,8 +11,8 @@ class GetPostsUseCase {
         _postsRepository = postsRepository;
 
   /// Returns the currently stored posts as a list.
-  Future<List<Post>> get({int page = 0}) {
-    return _postsRepository.getPosts(page);
+  Future<List<Post>> get() {
+    return _postsRepository.getPosts();
   }
 
   /// Returns a [Stream] that emits new posts as they are created.

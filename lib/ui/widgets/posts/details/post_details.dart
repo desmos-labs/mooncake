@@ -22,7 +22,7 @@ class PostDetails extends StatelessWidget {
         // Make sure we have loaded the posts properly
         assert(state is PostsLoaded);
 
-        final post = (state as PostsLoaded).posts.find(id: postId);
+        final post = (state as PostsLoaded).posts.firstBy(id: postId);
         return Padding(
           padding: PostsTheme.postItemPadding,
           child: Column(

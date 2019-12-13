@@ -30,7 +30,7 @@ class PostItem extends StatelessWidget {
         // Make sure we loaded the posts properly
         assert(state is PostsLoaded);
 
-        final post = (state as PostsLoaded).posts.find(id: postId);
+        final post = (state as PostsLoaded).posts.firstBy(id: postId);
         if (post == null) {
           return Container();
         }

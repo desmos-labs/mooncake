@@ -10,8 +10,6 @@ import 'db_helper.dart';
 
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
-  static const _PAGE_SIZE = 20;
-
   final WalletSource _walletSource;
 
   final DbHelper _helper = DbHelper();
@@ -152,13 +150,11 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<List<Post>> getPosts(int page) async {
+  Future<List<Post>> getPosts() async {
     final database = await _helper.database;
     final dbPosts = await database.query(
       DbHelper.TABLE_POSTS,
       orderBy: "cast(${DbHelper.KEY_ID} as int) DESC",
-      limit: _PAGE_SIZE,
-      offset: page * _PAGE_SIZE,
     );
 
     final List<Post> posts = [];

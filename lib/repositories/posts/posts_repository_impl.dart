@@ -32,8 +32,8 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<List<Post>> getPosts(int page) async {
-    return _localPostsSource.getPosts(page);
+  Future<List<Post>> getPosts() async {
+    return _localPostsSource.getPosts();
   }
 
   @override

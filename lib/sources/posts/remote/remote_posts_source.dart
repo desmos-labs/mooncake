@@ -167,18 +167,19 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     final sharedPrefs = await SharedPreferences.getInstance();
     final initBlockHeight = double.parse(
       sharedPrefs.getString(_BLOCK_HEIGHT_KEY) ?? "0",
-    );
+    ).toInt();
 
     // Get the current block height
     final response = await _chainHelper.queryChainRaw("/blocks/latest");
     final blockResponse = BlockResponse.fromJson(response);
     final endBlockHeight = double.parse(
       blockResponse.blockMeta.header.height,
-    );
+    ).toInt();
 
+    print('Syncing from block $initBlockHeight to $endBlockHeight');
     // For each block height, get the transactions
-    for (double height = initBlockHeight; height <= endBlockHeight; height++) {
-      _parseBlock(height.toInt().toString());
+    for (int height = initBlockHeight; height <= endBlockHeight; height++) {
+      _parseBlock(height.toString());
       await Future.delayed(Duration(milliseconds: 50));
     }
   }
@@ -187,13 +188,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   Future<List<Post>> getPostComments(String postId) {
     // TODO: implement getPostComments
     throw UnimplementedError();
-  }
-
-  @override
-  Future<void> savePost(Post post) async {
-    final wallet = await _walletSource.getWallet();
-    final msg = _msgConverter.toMsgCreatePost(post);
-    return _chainHelper.sendTx([msg], wallet);
   }
 
   @override

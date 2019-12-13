@@ -5,7 +5,6 @@ import 'package:dwitter/dependency_injection/dependency_injection.dart';
 import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
-import 'package:stream_transform/stream_transform.dart';
 
 import '../export.dart';
 
@@ -59,17 +58,6 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   @override
-  Stream<PostsState> transformEvents(
-    Stream<PostsEvent> events,
-    Stream<PostsState> Function(PostsEvent event) next,
-  ) {
-    return super.transformEvents(
-      events.debounce(Duration(milliseconds: 500)),
-      next,
-    );
-  }
-
-  @override
   PostsState get initialState => PostsLoading();
 
   @override
@@ -89,7 +77,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsEventToState();
     } else if (event is SyncPostsCompleted) {
-      yield* _mapSyncPostsCompletedEventToState();
+      yield* _mapSyncPostsCompletedEventToState(event);
     }
   }
 
@@ -100,7 +88,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     _postsSubscription = _getPostsUseCase.stream().listen((post) {
       // When we get new posts, simply reload the
       // currently shown list of posts
-      add(LoadPosts(nextPage: false));
+      add(LoadPosts());
     });
 
     // Show the fetching snackbar
@@ -110,7 +98,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
 
     // Wait for new posts
-    _fetchPostsUseCase.fetch().then((_) {
+    _fetchPostsUseCase.fetch().catchError((error) {
+      print('Error while fecthing posts: $error');
+    }).then((_) {
       add(FetchPostsCompleted());
     });
   }
@@ -127,8 +117,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   /// Allows to fetch the given [page] of posts objects
-  Future<List<Post>> _getPosts({int page = 0}) async {
-    final posts = await _getPostsUseCase.get(page: page);
+  Future<List<Post>> _getPosts() async {
+    final posts = await _getPostsUseCase.get();
     posts.sort((p1, p2) => p2.compareTo(p1));
     return posts;
   }
@@ -150,47 +140,13 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
     final currentState = state;
     if (currentState is PostsLoaded) {
-      // We have already loaded some posts, we need to define in which
-      // case we are right now
-
-      if (event.nextPage) {
-        // Show the loading bar
-        yield currentState.copyWith(isLoadingNewPage: true);
-
-        // We're at the end of a page, just load the next one
-        final posts = await _getPosts(page: currentState.page + 1);
-        yield currentState.copyWith(
-          page: currentState.page + 1,
-          posts: currentState.posts + posts,
-          hasReachedMax: posts.isEmpty,
-          isLoadingNewPage: false,
-        );
-      } else {
-        // We're not at the end, but someone else has triggered to load the
-        // posts again
-        final newPosts = await _getPosts(page: currentState.page);
-        final posts = currentState.posts.map((post) {
-          // Find a post with the same id but new data
-          final newPostWithSameId = newPosts.firstWhere(
-            (p) => p.id == post.id,
-            orElse: () => null,
-          );
-
-          // If the posts exists, return that one. Otherwise
-          // return the old one
-          if (newPostWithSameId != null) {
-            return newPostWithSameId;
-          } else {
-            return post;
-          }
-        }).toList();
-
-        yield currentState.copyWith(posts: posts);
-      }
+      // We have already loaded some posts
+      final newPosts = await _getPosts();
+      yield currentState.copyWith(posts: newPosts);
     } else {
-      // We never loaded any post before, so load the first page
-      final posts = await _getPosts(page: 0);
-      yield PostsLoaded(page: 0, posts: posts);
+      // We never loaded any post before
+      final posts = await _getPosts();
+      yield PostsLoaded(posts: posts);
     }
   }
 
@@ -200,7 +156,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       // When a post is added, simply save it and refresh the list
       // of currently shown posts
       await _createPostUseCase.create(event.message, parentId: event.parentId);
-      add(LoadPosts(nextPage: false));
+      add(LoadPosts());
     }
   }
 
@@ -238,19 +194,24 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       yield currentState.copyWith(syncingPosts: true);
 
       // Wait for the sync
-      _syncPostsUseCase.sync().then((_) {
+      _syncPostsUseCase.sync().catchError((error) {
+        print("Sync error: $error");
+        add(SyncPostsCompleted());
+      }).then((syncedPosts) {
         add(SyncPostsCompleted());
       });
     }
   }
 
   /// Handles the event that tells the bloc the synchronization has completed
-  Stream<PostsState> _mapSyncPostsCompletedEventToState() async* {
-    // Once the sync has been completed, hide the bar and load the posts again
+  Stream<PostsState> _mapSyncPostsCompletedEventToState(
+    SyncPostsCompleted event,
+  ) async* {
+    // Once the sync has been completed, hide the bar and load the new posts
     final currentState = state;
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(syncingPosts: false);
-      add(LoadPosts(nextPage: false));
+      add(LoadPosts());
     }
   }
 

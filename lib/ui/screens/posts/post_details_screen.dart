@@ -30,7 +30,7 @@ class PostDetailsScreen extends StatelessWidget {
         builder: (context, state) {
           // ignore: close_sinks
           final postBloc = BlocProvider.of<PostsBloc>(context);
-          final post = (postBloc.state as PostsLoaded).posts.find(id: postId);
+          final post = (postBloc.state as PostsLoaded).posts.firstBy(id: postId);
           return Scaffold(
             appBar: AppBar(
               title: Text(PostsLocalizations.of(context).post),

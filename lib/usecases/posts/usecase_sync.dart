@@ -14,7 +14,6 @@ class SyncPostsUseCase {
         _postsRepository = postsRepository;
 
   /// Syncs the locally stored data to the chain.
-  /// Local data contains posts as well as likes and unlikes.
   Future<void> sync() async {
     // Get the posts
     final posts = await _postsRepository.getPostsToSync();

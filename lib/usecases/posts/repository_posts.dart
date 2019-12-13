@@ -12,7 +12,7 @@ abstract class PostsRepository {
   Future<List<Post>> getPostComments(String postId);
 
   /// Returns the full list of posts available.
-  Future<List<Post>> getPosts(int page);
+  Future<List<Post>> getPosts();
 
   /// Returns the list of posts to sync.
   Future<List<Post>> getPostsToSync();
