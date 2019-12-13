@@ -44,6 +44,9 @@ class UseCaseModule implements Module {
             walletRepository: injector.get(),
           ))
       // Wallet use cases
+      ..bindFactory((injector, params) => GetAddressUseCase(
+            walletRepository: injector.get(),
+          ))
       ..bindFactory((injector, params) => SaveWalletUseCase(
             walletRepository: injector.get(),
           ));

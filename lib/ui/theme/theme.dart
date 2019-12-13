@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
   static Color get primaryColor => Color(0xFFE6559C);
-  static Color get accentColor => Color(0xFFD10E6E);
+  static Color get accentColor => Color(0xFFB9F45A);
 
   static Color get textColor => Colors.white;
   static Color get textColorLight => Colors.grey[500];
@@ -18,7 +18,7 @@ class PostsTheme {
 
       // Define the default font family.
       fontFamily: 'Roboto',
-      textTheme: TextTheme(
+      textTheme: Typography.englishLike2018.copyWith(
         body1: TextStyle(color: textColor),
       ),
       buttonTheme: ButtonThemeData(

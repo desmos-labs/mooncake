@@ -12,8 +12,8 @@ class PostsLocalizations {
   }
 
   String get appTitle => "Dwitter";
-  String get allPosts => "All posts";
-  String get yourPosts => "Your posts";
+  String get allPosts => "Posts";
+  String get yourAccount => "Your account";
   String get signOut => "Sign out";
 
   String get editPost => "Edit post";
@@ -22,6 +22,9 @@ class PostsLocalizations {
   String get emptyPostError => "Empty message";
   String get saveChanges => "Save changes";
   String get savingPost => "Saving post";
+
+  String get accountTitle => "Your account";
+  String get yourAddress => "Your address:";
 
   String get post => "Post";
 

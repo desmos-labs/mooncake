@@ -17,6 +17,11 @@ class WalletRepositoryImpl extends WalletRepository {
   }
 
   @override
+  Future<String> getAddress() {
+    return _walletSource.getAddress();
+  }
+
+  @override
   Future<Wallet> getWallet() {
     return _walletSource.getWallet();
   }

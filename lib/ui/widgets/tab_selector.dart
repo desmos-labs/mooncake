@@ -34,7 +34,7 @@ class TabSelector extends StatelessWidget {
           ),
           title: Text(tab == AppTab.posts
               ? PostsLocalizations.of(context).allPosts
-              : PostsLocalizations.of(context).yourPosts),
+              : PostsLocalizations.of(context).yourAccount),
         );
       }).toList(),
     );

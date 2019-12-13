@@ -25,12 +25,8 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           body: activeTab == AppTab.posts
-              ? PostsList(
-                  filter: (p) => !p.hasParent,
-                )
-              : PostsList(
-                  filter: (p) => p.ownerIsUser,
-                ),
+              ? PostsList(filter: (p) => !p.hasParent)
+              : Account(),
           floatingActionButton: FloatingActionButton(
             key: PostsKeys.addPost,
             onPressed: () => Navigator.of(context).push(_createRoute()),
