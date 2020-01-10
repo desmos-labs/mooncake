@@ -1,6 +1,6 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/usecases/posts/posts.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/usecases/posts/posts.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to sync all the posts that have been created offline as well as
@@ -14,10 +14,9 @@ class SyncPostsUseCase {
         _postsRepository = postsRepository;
 
   /// Syncs the locally stored data to the chain.
-  /// Local data contains posts as well as likes and unlikes.
   Future<void> sync() async {
     // Get the posts
-    final posts = await _postsRepository.getPosts();
+    final posts = await _postsRepository.getPostsToSync();
     final syncingPosts = posts
         .where((post) {
           // The post has a TO_BE_SYNCED status so it must be synced

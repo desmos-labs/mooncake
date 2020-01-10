@@ -1,5 +1,5 @@
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 import 'package:sacco/sacco.dart';
 
@@ -14,6 +14,11 @@ class WalletRepositoryImpl extends WalletRepository {
   @override
   Future<void> saveWallet(String mnemonic) {
     return _walletSource.saveWallet(mnemonic);
+  }
+
+  @override
+  Future<String> getAddress() {
+    return _walletSource.getAddress();
   }
 
   @override

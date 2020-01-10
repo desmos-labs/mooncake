@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/ui.dart';
 
 class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   final _navigatorKey = PostsKeys.navigatorKey;

@@ -1,5 +1,5 @@
-import 'package:desmosdemo/ui/localization/export.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/localization/export.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,9 +29,8 @@ class GenerateMnemonicScreen extends StatelessWidget {
                 (state is MnemonicGenerated)
                     ? _mnemonicBody(context, state)
                     : _loadingMnemonic(context),
-                FlatButton(
+                RaisedButton(
                   child: Text(PostsLocalizations.of(context).mnemonicWritten),
-                  color: PostsTheme.accentColor,
                   onPressed: (state is MnemonicGenerated)
                       ? () => _mnemonicWrittenClicked(context)
                       : null,

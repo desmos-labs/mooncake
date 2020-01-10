@@ -1,65 +1,58 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/sources/posts/remote/models/chain_event_converter.dart';
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:sacco/sacco.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
-
-import 'post_converter.dart';
 
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
-class RemotePostsSource implements PostsSource {
-  final String _lcdEndpoint;
+class RemotePostsSourceImpl implements RemotePostsSource {
+  // Constants
+  static const _BLOCK_HEIGHT_KEY = "block_height";
+
   final String _rpcEndpoint;
-  final http.Client _httpClient;
+  final ChainHelper _chainHelper;
   final WalletSource _walletSource;
 
-  // ignore: cancel_subscriptions
-  StreamSubscription _subscription;
-  IOWebSocketChannel _channel;
+  // Streams
+  final _postsStream = StreamController<Post>();
+  StreamSubscription _subscription; // ignore: cancel_subscriptions
 
-  final eventConverter = ChainEventsConverter();
-  final postConverter = PostConverter();
+  // Converters
+  final _msgConverter = MsgConverter();
+  final _postConverter = RemotePostConverter();
+  final _eventsConverter = ChainEventsConverter();
 
-  final StreamController<Post> _postsStream = StreamController();
-
-  RemotePostsSource({
-    @required String lcdEndpoint,
+  /// Public constructor
+  RemotePostsSourceImpl({
     @required String rpcEndpoint,
-    @required http.Client httpClient,
+    @required ChainHelper chainHelper,
     @required WalletSource walletSource,
-  })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
-        _lcdEndpoint = lcdEndpoint,
-        assert(rpcEndpoint != null && rpcEndpoint.isNotEmpty),
+  })  : assert(rpcEndpoint != null),
         _rpcEndpoint = rpcEndpoint,
-        assert(httpClient != null),
-        _httpClient = httpClient,
         assert(walletSource != null),
-        _walletSource = walletSource {
-    _channel = IOWebSocketChannel.connect('$_rpcEndpoint/websocket');
-  }
+        _walletSource = walletSource,
+        assert(chainHelper != null),
+        _chainHelper = chainHelper;
 
-  /// Initializes the web socket connection and starts observing new
-  /// messages.
-  StreamSubscription _initObserve() {
+  /// Observes the chain events
+  StreamSubscription _observeEvents() {
+    // Setup the channel
+    final channel = IOWebSocketChannel.connect('$_rpcEndpoint/websocket');
+
     // Get the given query list or use the default set
     final queryList = [
-      "message.action='create_post'",
-      "message.action='edit_post'",
-      "message.action='like_post'",
-      "message.action='unlike_post'",
+      "tm.event='Tx'",
     ];
 
     // Send a subscription message for each query
     queryList.forEach((query) {
-      _channel.sink.add(jsonEncode({
+      channel.sink.add(jsonEncode({
         "jsonrpc": "2.0",
         "method": "subscribe",
         "id": "0",
@@ -70,89 +63,92 @@ class RemotePostsSource implements PostsSource {
     });
 
     // Observe each new message and handle it properly
-    return _channel.stream
+    return channel.stream
         // We need to skip the initial messages answering OK for the queries
         .skip(queryList.length)
-        .map((data) => TxData.fromJson(jsonDecode(data)))
+        .map((data) => TxEvent.fromJson(jsonDecode(data)))
         .handleError((error) => print('Remote posts channel exception: $error'))
-        .listen((data) => _handleMessage(data));
-  }
-
-  /// Handles the message contained inside the given [TxData].
-  void _handleMessage(TxData data) async {
-    final Map<String, List<String>> events = data.result.events ?? {};
-    eventConverter.convert(events).forEach((event) {
-      if (event is PostCreatedEvent) {
-        _handlePostCreatedEvent(event);
-      } else if (event is PostLikedEvent) {
-        _handlePostLikedEvent(event);
-      } else if (event is PostUnlikedEvent) {
-        _handlePostUnLikedEvent(event);
-      }
+        .listen((query) async {
+      final height = query.result.data.value.txResult.height;
+      await _parseBlock(height);
     });
   }
 
-  /// Handles the messages telling that a new post has been created.
-  void _handlePostCreatedEvent(PostCreatedEvent event) async {
-    final post = await getPostById(event.postId);
-    _postsStream.add(post);
-  }
+  Future<void> _parseBlock(String height) async {
+    final endpoint = "/txs?tx.height=$height";
+    final response = await _chainHelper.queryChainRaw(endpoint);
+    final txData = TxResponse.fromJson(response);
 
-  void _handlePostLikedEvent(PostLikedEvent event) async {
-    final post = await getPostById(event.postId);
-    _postsStream.add(post);
-  }
+    // Store the latest synced block height
+    await _saveLatestBlockHeight(height);
 
-  void _handlePostUnLikedEvent(PostUnlikedEvent event) async {
-    final post = await getPostById(event.postId);
-    _postsStream.add(post);
-  }
-
-  /// Utility method to easily query any chain endpoint and
-  /// read the response as an [LcdResponse] object instance.
-  Future<LcdResponse> _queryChain(String endpoint) async {
-    final url = _lcdEndpoint + endpoint;
-    final data = await _httpClient.get(url);
-    if (data.statusCode != 200) {
-      throw Exception("Expected response code 200, got: ${data.statusCode}");
-    }
-    return LcdResponse.fromJson(json.decode(data.body));
-  }
-
-  /// Creates, sings and sends a transaction having the given [messages]
-  /// and using the given [wallet].
-  Future<void> _sendTx(List<StdMsg> messages, Wallet wallet) async {
-    if (messages.isEmpty) {
-      // No messages to send, simply return
+    if (txData.txs.isEmpty) {
+      // No txs, nothing to do
       return;
     }
 
-    final tx = TxBuilder.buildStdTx(
-      stdMsgs: messages,
-      fee: StdFee(gas: (200000 * messages.length).toString(), amount: []),
-    );
-    final signTx = await TxSigner.signStdTx(wallet: wallet, stdTx: tx);
+    print('Parsing block at height $height');
+    txData.txs.forEach((tx) {
+      final events = _eventsConverter.convert(height, tx.events);
+      events.forEach((event) async {
+        await _handleEvent(event);
+      });
+    });
+  }
 
-    final result = await TxSender.broadcastStdTx(wallet: wallet, stdTx: signTx);
-    if (!result.success) {
-      throw Exception(result.error.errorMessage);
+  Future<void> _handleEvent(ChainEvent event) async {
+    // Handle the event properly
+    if (event is PostCreatedEvent) {
+      return _handlePostCreatedEvent(event);
+    } else if (event is PostLikedEvent) {
+      return _handlePostLikedEvent(event);
+    } else if (event is PostUnlikedEvent) {
+      return _handlePostUnLikedEvent(event);
     }
+  }
+
+  /// Handles the messages telling that a new post has been created.
+  Future<void> _handlePostCreatedEvent(PostCreatedEvent event) async {
+    final post = await getPostById(event.postId);
+
+    // Emit the updated parent
+    if (post?.hasParent == true) {
+      final parent = await getPostById(post.parentId);
+      if (parent != null) {
+        _postsStream.add(parent);
+      }
+    }
+
+    // Emit the updated post
+    _postsStream.add(post);
+  }
+
+  Future<void> _handlePostLikedEvent(PostLikedEvent event) async {
+    final post = await getPostById(event.postId);
+    _postsStream.add(post);
+  }
+
+  Future<void> _handlePostUnLikedEvent(PostUnlikedEvent event) async {
+    final post = await getPostById(event.postId);
+    _postsStream.add(post);
+  }
+
+  /// Allows to store the latest synced block height
+  Future<void> _saveLatestBlockHeight(String height) async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    await sharedPrefs.setString(_BLOCK_HEIGHT_KEY, height);
   }
 
   @override
   Stream<Post> get postsStream {
-    if (_subscription == null) {
-      print("Initializing remote source posts stream");
-      _subscription = _initObserve();
-    }
     return _postsStream.stream;
   }
 
   @override
   Future<Post> getPostById(String postId) async {
     try {
-      final data = await _queryChain("/posts/$postId");
-      final post = postConverter.toPost(PostJson.fromJson(data.result));
+      final data = await _chainHelper.queryChain("/posts/$postId");
+      final post = _postConverter.toPost(PostJson.fromJson(data.result));
       return post;
     } catch (e) {
       print(e);
@@ -161,16 +157,37 @@ class RemotePostsSource implements PostsSource {
   }
 
   @override
-  Future<List<Post>> getPosts() {
-    // TODO: implement getPosts
-    throw UnimplementedError();
+  Future<void> startSyncPosts() async {
+    if (_subscription == null) {
+      print("Initializing remote source posts stream");
+      _subscription = _observeEvents();
+    }
+
+    // Get the latest queried block height
+    final sharedPrefs = await SharedPreferences.getInstance();
+    final initBlockHeight = double.parse(
+      sharedPrefs.getString(_BLOCK_HEIGHT_KEY) ?? "0",
+    ).toInt();
+
+    // Get the current block height
+    final response = await _chainHelper.queryChainRaw("/blocks/latest");
+    final blockResponse = BlockResponse.fromJson(response);
+    final endBlockHeight = double.parse(
+      blockResponse.blockMeta.header.height,
+    ).toInt();
+
+    print('Syncing from block $initBlockHeight to $endBlockHeight');
+    // For each block height, get the transactions
+    for (int height = initBlockHeight; height <= endBlockHeight; height++) {
+      _parseBlock(height.toString());
+      await Future.delayed(Duration(milliseconds: 50));
+    }
   }
 
   @override
-  Future<void> savePost(Post post) async {
-    final wallet = await _walletSource.getWallet();
-    final msg = postConverter.toMsgCreatePost(post);
-    return _sendTx([msg], wallet);
+  Future<List<Post>> getPostComments(String postId) {
+    // TODO: implement getPostComments
+    throw UnimplementedError();
   }
 
   @override
@@ -181,53 +198,15 @@ class RemotePostsSource implements PostsSource {
     final List<Post> existingPosts =
         await Future.wait(posts.map((p) => getPostById(p.id)));
 
-    // Divide the posts into the ones that need to be created, the
-    // ones that need to be liked and the ones from which the like
-    // should be removed.
-    final List<Post> postsToCreate = [];
-    final List<String> postsToLike = [];
-    final List<String> postsToUnlike = [];
-    for (int index = 0; index < posts.length; index++) {
-      final post = posts[index];
-      final existingPost = existingPosts[index];
+    // Convert the posts into messages
+    final messages = _msgConverter.convertPostsToMsg(
+      posts: posts,
+      existingPosts: existingPosts,
+      wallet: wallet,
+    );
 
-      // The post needs to be created
-      if (existingPost == null) {
-        postsToCreate.add(posts[index]);
-        continue;
-      }
-
-      final isPostLiked = post.containsLikeFromUser(wallet.bech32Address);
-      final isExistingPostLiked =
-          existingPost.containsLikeFromUser(wallet.bech32Address);
-
-      // The user has liked this post
-      if (isPostLiked && !isExistingPostLiked) {
-        postsToLike.add(post.id);
-        continue;
-      }
-
-      // The user has removed the like from this post
-      if (isExistingPostLiked && !isPostLiked) {
-        postsToUnlike.add(post.id);
-        continue;
-      }
-    }
-
-    final List<StdMsg> messages = [];
-    messages.addAll(postsToCreate
-        .map((post) => postConverter.toMsgCreatePost(post))
-        .toList());
-
-    messages.addAll(postsToLike
-        .map((id) => MsgLikePost(postId: id, liker: wallet.bech32Address))
-        .toList());
-
-    messages.addAll(postsToUnlike
-        .map((id) => MsgUnLikePost(postId: id, liker: wallet.bech32Address))
-        .toList());
-
-    return _sendTx(messages, wallet);
+    // Get the result of the transactions
+    await _chainHelper.sendTx(messages, wallet);
   }
 
   @override

@@ -1,6 +1,6 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/usecases/posts/posts.dart';
-import 'package:desmosdemo/usecases/wallet/wallet.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/usecases/posts/posts.dart';
+import 'package:dwitter/usecases/wallet/wallet.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to create a new post.
@@ -30,14 +30,9 @@ class CreatePostUseCase {
       parentId: parentId,
       message: message,
       created: date,
-      lastEdited: null,
       allowsComments: allowsComments,
-      externalReference: "",
+      externalReference: createPostExternalReference(date),
       owner: wallet.bech32Address,
-      likes: [],
-      liked: false,
-      commentsIds: [],
-      status: PostStatus.TO_BE_SYNCED,
     );
     await _postsRepository.savePost(post);
     return post;

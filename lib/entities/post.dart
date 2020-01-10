@@ -1,4 +1,4 @@
-import 'package:desmosdemo/entities/entities.dart';
+import 'package:dwitter/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
@@ -14,6 +14,19 @@ enum PostStatus {
   SYNCED,
 }
 
+String createPostExternalReference(String postId) {
+  return "dwitter-$postId";
+}
+
+String getPostIdByReference(String externalReference) {
+  final ref = externalReference?.trim();
+  if (ref == null || ref.isEmpty || !ref.contains("dwitter")) {
+    return null;
+  }
+
+  return ref.split("dwitter-")[1];
+}
+
 /// Represents a generic post
 @immutable
 @JsonSerializable(explicitToJson: true)
@@ -21,18 +34,22 @@ class Post implements Equatable, Comparable<Post> {
   @JsonKey(name: "id")
   final String id;
 
-  @JsonKey(name: "parent_id")
+  @JsonKey(name: "parentId")
   final String parentId;
 
   /// Tells if this post has a valid parent post or not.
   @JsonKey(ignore: true)
-  bool get hasParent => parentId != null && parentId != "0";
+  bool get hasParent =>
+      parentId != null && parentId.isNotEmpty && parentId != "0";
 
   @JsonKey(name: "message")
   final String message;
 
   @JsonKey(name: "created")
   final String created;
+
+  @JsonKey(ignore: true)
+  bool get isCreateBlockHeight => DateTime.tryParse(created) == null;
 
   @JsonKey(name: "lastEdited")
   final String lastEdited;
@@ -45,6 +62,9 @@ class Post implements Equatable, Comparable<Post> {
 
   @JsonKey(name: "owner")
   final String owner;
+
+  @JsonKey(name: "owner_is_user")
+  final bool ownerIsUser;
 
   @JsonKey(name: "liked")
   final bool liked;
@@ -66,17 +86,18 @@ class Post implements Equatable, Comparable<Post> {
 
   Post({
     @required this.id,
-    @required this.parentId,
     @required this.message,
     @required this.created,
-    @required this.lastEdited,
-    @required this.allowsComments,
-    @required this.externalReference,
     @required this.owner,
-    @required this.likes,
-    @required this.liked,
-    @required this.commentsIds,
-    @required this.status,
+    this.parentId = "0",
+    this.lastEdited,
+    this.allowsComments = false,
+    this.externalReference = "",
+    this.ownerIsUser = false,
+    this.likes = const [],
+    this.liked = false,
+    this.commentsIds = const [],
+    this.status = PostStatus.TO_BE_SYNCED,
   })  : assert(id != null),
         assert(message != null),
         assert(created != null),
@@ -87,7 +108,6 @@ class Post implements Equatable, Comparable<Post> {
         assert(status != null);
 
   Post copyWith({
-    String id,
     String parentId,
     String message,
     String created,
@@ -95,13 +115,14 @@ class Post implements Equatable, Comparable<Post> {
     bool allowsComments,
     String externalReference,
     String owner,
+    bool ownerIsUser,
     List<Like> likes,
     bool liked,
     List<String> commentsIds,
     PostStatus status,
   }) {
     return Post(
-      id: id ?? this.id,
+      id: this.id,
       parentId: parentId ?? this.parentId,
       message: message ?? this.message,
       created: created ?? this.created,
@@ -109,14 +130,13 @@ class Post implements Equatable, Comparable<Post> {
       allowsComments: allowsComments ?? this.allowsComments,
       externalReference: externalReference ?? this.externalReference,
       owner: owner ?? this.owner,
+      ownerIsUser: ownerIsUser ?? this.ownerIsUser,
       likes: likes ?? this.likes,
       liked: liked ?? this.liked,
       commentsIds: commentsIds ?? this.commentsIds,
       status: status ?? this.status,
     );
   }
-
-  ///
 
   /// Updates the contents of this post with the one of the new post.
   /// If the new one has the likes or comments changed, the status of this post
@@ -150,6 +170,8 @@ class Post implements Equatable, Comparable<Post> {
 
     if (statusCompare != 0) {
       return statusCompare;
+    } else if (onChain && otherOnChain) {
+      return double.parse(created).compareTo(double.parse(other.created));
     } else {
       return created.compareTo(other.created);
     }
@@ -165,6 +187,7 @@ class Post implements Equatable, Comparable<Post> {
         this.allowsComments,
         this.externalReference,
         this.owner,
+        this.ownerIsUser,
         this.likes,
         this.liked,
         this.commentsIds,
@@ -181,6 +204,7 @@ class Post implements Equatable, Comparable<Post> {
       'allowsComments: $allowsComments, '
       'externalRerence: $externalReference, '
       'owner: $owner, '
+      'ownerIsUser: $ownerIsUser, '
       'likes: $likes, '
       'liked: $liked, '
       'commentsIds: $commentsIds '

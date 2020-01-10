@@ -1,16 +1,12 @@
-import 'dart:io';
-
 import 'package:dependencies/dependencies.dart';
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 import 'package:sacco/sacco.dart';
 
 class SourcesModule implements Module {
-  // TODO: Change this to real RPC endpoints
-  static const _lcdUrl = "http://10.0.2.2:1317";
-  static const _rpcUrl = "ws://10.0.2.2:26657";
+  static const _lcdUrl = "http://34.74.131.47:1317";
+  static const _rpcUrl = "ws://34.74.131.47:26657";
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
   @override
@@ -21,21 +17,19 @@ class SourcesModule implements Module {
           networkInfo: _networkInfo,
         ),
       )
-      ..bindLazySingleton<PostsSource>(
-        (injector, params) => LocalPostsSource(
-          postsStorage: FileStorage(() async {
-            final root = await getApplicationDocumentsDirectory();
-            return Directory('${root.path}/posts');
-          }),
+      ..bindLazySingleton<LocalPostsSource>(
+        (injector, params) => LocalPostsSourceImpl(
           walletSource: injector.get(),
         ),
         name: "local",
       )
-      ..bindLazySingleton<PostsSource>(
-        (injector, params) => RemotePostsSource(
-          lcdEndpoint: _lcdUrl,
+      ..bindLazySingleton<RemotePostsSource>(
+        (injector, params) => RemotePostsSourceImpl(
           rpcEndpoint: _rpcUrl,
-          httpClient: http.Client(),
+          chainHelper: ChainHelper(
+            lcdEndpoint: _lcdUrl,
+            httpClient: http.Client(),
+          ),
           walletSource: injector.get(),
         ),
         name: "remote",

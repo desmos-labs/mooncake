@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,7 +30,7 @@ class PostDetailsScreen extends StatelessWidget {
         builder: (context, state) {
           // ignore: close_sinks
           final postBloc = BlocProvider.of<PostsBloc>(context);
-          final post = (postBloc.state as PostsLoaded).posts.find(id: postId);
+          final post = (postBloc.state as PostsLoaded).posts.firstBy(id: postId);
           return Scaffold(
             appBar: AppBar(
               title: Text(PostsLocalizations.of(context).post),
@@ -57,7 +57,7 @@ class PostDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   post.allowsComments
-                      ? _commentInput()
+                      ? _commentInput(context)
                       : _commentDisabled(context),
                 ],
               ),
@@ -106,13 +106,19 @@ class PostDetailsScreen extends StatelessWidget {
   }
 
   /// Contains the input that allows a user to create a comment
-  Widget _commentInput() {
+  Widget _commentInput(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        PostForm(postId: postId),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: PostForm(
+            postId: postId,
+            hint: PostsLocalizations.of(context).commentHint,
+          ),
+        ),
         BlocBuilder<PostInputBloc, PostInputState>(
-          builder: (context, state) => FlatButton(
+          builder: (context, state) => RaisedButton(
             child: Text(PostsLocalizations.of(context).commentHint),
             onPressed:
                 !state.isValid ? null : () => _submitComment(context, state),

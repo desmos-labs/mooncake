@@ -1,3 +1,4 @@
+export 'account/bloc.dart';
 export 'generate_mnemonic/bloc.dart';
 export 'home/bloc.dart';
 export 'login/bloc.dart';

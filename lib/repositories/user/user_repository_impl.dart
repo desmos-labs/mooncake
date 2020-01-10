@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/usecases/user/user.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/usecases/user/user.dart';
 
 /// Allows to easily perform user-related operations.
 class UserRepositoryImpl extends UserRepository {

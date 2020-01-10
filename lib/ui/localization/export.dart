@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
+/// Contains all the localized texts that appear inside the application.
 class PostsLocalizations {
   static PostsLocalizations of(BuildContext context) {
     return Localizations.of<PostsLocalizations>(
@@ -11,15 +12,19 @@ class PostsLocalizations {
   }
 
   String get appTitle => "Dwitter";
-  String get posts => "Posts";
-  String get stats => "Stats";
+  String get allPosts => "Posts";
+  String get yourAccount => "Your account";
   String get signOut => "Sign out";
 
   String get editPost => "Edit post";
   String get createPost => "Create post";
   String get newPostHint => "New post";
   String get emptyPostError => "Empty message";
-  String get saveChanges => "Save changed";
+  String get saveChanges => "Save changes";
+  String get savingPost => "Saving post";
+
+  String get accountTitle => "Your account";
+  String get yourAddress => "Your address:";
 
   String get post => "Post";
 
@@ -28,6 +33,7 @@ class PostsLocalizations {
   String get commentsDisabled => "Comments disabled by the post owner";
 
   String get syncingActivities => "Syncing activities...";
+  String get fetchingPosts => "Checking for new posts...";
 
   String get recoverFromMnemonic => "Recover from mnemonic";
   String get generateNewAccount => "Generate new account";

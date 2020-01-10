@@ -1,12 +1,21 @@
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/ui.dart';
+import 'package:dwitter/ui/widgets/posts/list/fetching_snackbar.dart';
+import 'package:dwitter/ui/widgets/posts/list/sync_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+typedef Filter = bool Function(Post);
 
 /// Represents a list of [Post] objects.
 /// It simply builds a list using the [ListView.separated] builder
 /// and the [PostItem] class as the object representing each post.
 class PostsList extends StatelessWidget {
-  PostsList({Key key}) : super(key: key);
+  final Filter _filter;
+
+  PostsList({Key key, Filter filter})
+      : _filter = filter,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +25,10 @@ class PostsList extends StatelessWidget {
         if (state is PostsLoading) {
           return LoadingIndicator(key: PostsKeys.postsLoading);
         } else if (state is PostsLoaded) {
-          final posts = state.posts.where((p) => !p.hasParent).toList();
+          // Filter the posts based on the filter set
+          final posts = state.posts
+              .where((p) => _filter != null ? _filter(p) : true)
+              .toList();
           return Column(
             children: <Widget>[
               Flexible(
@@ -25,19 +37,12 @@ class PostsList extends StatelessWidget {
                   itemCount: posts.length,
                   separatorBuilder: (context, index) => Divider(height: 1),
                   itemBuilder: (context, index) {
-                    final post = posts[index];
-                    return PostItem(
-                      postId: post.id,
-                      onTap: () async => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => PostDetailsScreen(postId: post.id),
-                        ),
-                      ),
-                    );
+                    return _postWidget(context, posts[index]);
                   },
                 ),
               ),
-              if (state.showSnackbar) _syncSnackbar(context),
+              if (state.syncingPosts) SyncSnackBar(),
+              if (state.fetchingPosts) FetchingSnackbar(),
             ],
           );
         } else {
@@ -47,16 +52,13 @@ class PostsList extends StatelessWidget {
     );
   }
 
-  Widget _syncSnackbar(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      color: Colors.orange,
-      child: Row(
-        children: <Widget>[
-          Icon(FontAwesomeIcons.cloudUploadAlt, size: 16),
-          SizedBox(width: 16),
-          Text(PostsLocalizations.of(context).syncingActivities),
-        ],
+  Widget _postWidget(BuildContext context, Post post) {
+    return PostItem(
+      postId: post.id,
+      onTap: () async => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => PostDetailsScreen(postId: post.id),
+        ),
       ),
     );
   }

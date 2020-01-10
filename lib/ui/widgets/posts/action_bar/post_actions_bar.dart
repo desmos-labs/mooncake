@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +19,7 @@ class PostActionsBar extends StatelessWidget {
         // Make sure we have loaded the posts properly
         assert(state is PostsLoaded);
 
-        final post = (state as PostsLoaded).posts.find(id: postId);
+        final post = (state as PostsLoaded).posts.firstBy(id: postId);
         IconData statusIcon = FontAwesomeIcons.circle;
         if (post.status == PostStatus.SYNCING) {
           statusIcon = FontAwesomeIcons.dotCircle;

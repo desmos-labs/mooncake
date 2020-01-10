@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:meta/meta.dart';
 
 /// Bloc that allows to properly handle the recovering account events

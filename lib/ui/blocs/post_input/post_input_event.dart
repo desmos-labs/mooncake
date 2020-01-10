@@ -22,5 +22,8 @@ class MessageChanged extends PostInputEvent {
   String toString() => 'MessageChanged { message: $message }';
 }
 
+/// Tells the input that the post is being saved
+class SavePost extends PostInputEvent {}
+
 /// Tells the input that it needs to be reset
 class ResetForm extends PostInputEvent {}

@@ -1,5 +1,5 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/usecases/usecases.dart';
 
 class UseCaseModule implements Module {
   @override
@@ -23,6 +23,9 @@ class UseCaseModule implements Module {
             walletRepository: injector.get(),
             postsRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => FetchPostsUseCase(
+            repository: injector.get(),
+          ))
       ..bindFactory((injector, params) => GetCommentsUseCase(
             postsRepository: injector.get(),
           ))
@@ -41,6 +44,9 @@ class UseCaseModule implements Module {
             walletRepository: injector.get(),
           ))
       // Wallet use cases
+      ..bindFactory((injector, params) => GetAddressUseCase(
+            walletRepository: injector.get(),
+          ))
       ..bindFactory((injector, params) => SaveWalletUseCase(
             walletRepository: injector.get(),
           ));

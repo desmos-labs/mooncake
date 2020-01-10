@@ -1,10 +1,13 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/sources/posts/remote/models/models.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/sources/posts/remote/models/models.dart';
 
+import '../../export.dart';
 import '../export.dart';
-import 'export.dart';
 
-class PostConverter {
+/// Allows to convert an on-chain post to a locally stored post.
+/// Also converts a locally stored post to a [MsgCreatePost] instance.
+class RemotePostConverter {
+  /// Converts the given [PostJson] object into a [Post] instance.
   Post toPost(PostJson json) {
     return Post(
       id: json.id,
@@ -16,19 +19,8 @@ class PostConverter {
       externalReference: json.externalReference,
       owner: json.owner,
       likes: json.likes.map((l) => Like(owner: l.owner)).toList(),
-      liked: false,
       commentsIds: json.commentsIds,
       status: PostStatus.SYNCED,
-    );
-  }
-
-  MsgCreatePost toMsgCreatePost(Post post) {
-    return MsgCreatePost(
-      parentId: post.parentId ?? "0",
-      message: post.message,
-      allowsComments: post.allowsComments ?? false,
-      externalReference: post.externalReference ?? "",
-      creator: post.owner,
     );
   }
 }

@@ -3,6 +3,9 @@ import 'package:meta/meta.dart';
 
 abstract class MnemonicInputEvent extends Equatable {
   const MnemonicInputEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class MnemonicChanged extends MnemonicInputEvent {

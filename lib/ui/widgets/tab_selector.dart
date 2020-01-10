@@ -1,6 +1,7 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/ui/keys/export.dart';
-import 'package:desmosdemo/ui/localization/export.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/keys/export.dart';
+import 'package:dwitter/ui/localization/export.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Allows the user to select which tab should be visible inside
@@ -24,12 +25,16 @@ class TabSelector extends StatelessWidget {
       items: AppTab.values.map((tab) {
         return BottomNavigationBarItem(
           icon: Icon(
-            tab == AppTab.posts ? Icons.list : Icons.show_chart,
-            key: tab == AppTab.posts ? PostsKeys.postsTab : PostsKeys.statsTab,
+            tab == AppTab.posts
+                ? FontAwesomeIcons.list
+                : FontAwesomeIcons.userAlt,
+            key: tab == AppTab.posts
+                ? PostsKeys.allPostsTab
+                : PostsKeys.yourPostsTab,
           ),
-          title: Text(tab == AppTab.stats
-              ? PostsLocalizations.of(context).stats
-              : PostsLocalizations.of(context).posts),
+          title: Text(tab == AppTab.posts
+              ? PostsLocalizations.of(context).allPosts
+              : PostsLocalizations.of(context).yourAccount),
         );
       }).toList(),
     );

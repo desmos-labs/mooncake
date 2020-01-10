@@ -1,4 +1,4 @@
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class RecoverAccountState extends Equatable {

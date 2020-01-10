@@ -9,13 +9,14 @@ part of 'post.dart';
 Post _$PostFromJson(Map<String, dynamic> json) {
   return Post(
     id: json['id'] as String,
-    parentId: json['parent_id'] as String,
     message: json['message'] as String,
     created: json['created'] as String,
+    owner: json['owner'] as String,
+    parentId: json['parentId'] as String,
     lastEdited: json['lastEdited'] as String,
     allowsComments: json['allowsComments'] as bool,
     externalReference: json['externalReference'] as String,
-    owner: json['owner'] as String,
+    ownerIsUser: json['owner_is_user'] as bool,
     likes: (json['likes'] as List)
         ?.map(
             (e) => e == null ? null : Like.fromJson(e as Map<String, dynamic>))
@@ -29,13 +30,14 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'id': instance.id,
-      'parent_id': instance.parentId,
+      'parentId': instance.parentId,
       'message': instance.message,
       'created': instance.created,
       'lastEdited': instance.lastEdited,
       'allowsComments': instance.allowsComments,
       'externalReference': instance.externalReference,
       'owner': instance.owner,
+      'owner_is_user': instance.ownerIsUser,
       'liked': instance.liked,
       'likes': instance.likes?.map((e) => e?.toJson())?.toList(),
       'comments_ids': instance.commentsIds,
@@ -75,7 +77,7 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$PostStatusEnumMap = {
-  PostStatus.SYNCED: 'synced',
   PostStatus.TO_BE_SYNCED: 'to_be_synced',
   PostStatus.SYNCING: 'syncing',
+  PostStatus.SYNCED: 'synced',
 };

@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,17 +30,35 @@ class PostItem extends StatelessWidget {
         // Make sure we loaded the posts properly
         assert(state is PostsLoaded);
 
-        final post = (state as PostsLoaded).posts.find(id: postId);
+        final post = (state as PostsLoaded).posts.firstBy(id: postId);
+        if (post == null) {
+          return Container();
+        }
+
         return InkWell(
           onTap: onTap,
           child: Container(
             padding: PostsTheme.postItemPadding,
             child: Row(
               children: <Widget>[
-                UserAvatar(
-                  key: PostsKeys.postItemOwnerAvatar(postId),
-                  user: post.owner,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    UserAvatar(
+                      key: PostsKeys.postItemOwnerAvatar(postId),
+                      user: post.owner,
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Icon(FontAwesomeIcons.diceD6, size: 12),
+                        SizedBox(width: 4),
+                        Text(post.isCreateBlockHeight ? post.created : "N.A")
+                      ],
+                    )
+                  ],
                 ),
+                SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

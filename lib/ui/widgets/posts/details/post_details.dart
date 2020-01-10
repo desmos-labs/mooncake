@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +22,7 @@ class PostDetails extends StatelessWidget {
         // Make sure we have loaded the posts properly
         assert(state is PostsLoaded);
 
-        final post = (state as PostsLoaded).posts.find(id: postId);
+        final post = (state as PostsLoaded).posts.firstBy(id: postId);
         return Padding(
           padding: PostsTheme.postItemPadding,
           child: Column(
@@ -34,6 +34,7 @@ class PostDetails extends StatelessWidget {
                     user: post.owner,
                     key: PostsKeys.postItemOwnerAvatar(post.id),
                   ),
+                  SizedBox(width: 16),
                   PostDetailsOwner(
                     user: post.owner,
                     key: PostsKeys.postDetailsOwner,

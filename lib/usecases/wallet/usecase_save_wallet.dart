@@ -1,4 +1,4 @@
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to save a mnemonic phrase as the current user's wallet into the

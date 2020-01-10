@@ -1,21 +1,21 @@
 import 'dart:async';
 
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/repositories/repositories.dart';
-import 'package:desmosdemo/usecases/usecases.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/repositories/repositories.dart';
+import 'package:dwitter/usecases/usecases.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Implementation of [PostsRepository].
 class PostsRepositoryImpl extends PostsRepository {
-  final PostsSource _localPostsSource;
-  final PostsSource _remotePostsSource;
+  final LocalPostsSource _localPostsSource;
+  final RemotePostsSource _remotePostsSource;
 
   // ignore: cancel_subscriptions
   StreamSubscription _postsSubscription;
 
   PostsRepositoryImpl({
-    @required PostsSource localSource,
-    @required PostsSource remoteSource,
+    @required LocalPostsSource localSource,
+    @required RemotePostsSource remoteSource,
   })  : assert(localSource != null),
         _localPostsSource = localSource,
         assert(remoteSource != null),
@@ -27,8 +27,18 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
+  Future<List<Post>> getPostComments(String postId) {
+    return _localPostsSource.getPostComments(postId);
+  }
+
+  @override
   Future<List<Post>> getPosts() async {
     return _localPostsSource.getPosts();
+  }
+
+  @override
+  Future<List<Post>> getPostsToSync() async {
+    return _localPostsSource.getPostsToSync();
   }
 
   @override
@@ -53,6 +63,11 @@ class PostsRepositoryImpl extends PostsRepository {
       parent = parent.copyWith(commentsIds: [post.id] + parent.commentsIds);
       await _localPostsSource.savePost(parent);
     }
+  }
+
+  @override
+  Future<void> fetchPosts() async {
+    await _remotePostsSource.startSyncPosts();
   }
 
   @override

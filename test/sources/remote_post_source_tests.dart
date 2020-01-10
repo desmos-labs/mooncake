@@ -1,13 +1,15 @@
-import 'package:desmosdemo/sources/sources.dart';
+import 'package:dwitter/sources/sources.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:sacco/network_info.dart';
 
 void main() {
   test("Websocket subscription is created properly", () async {
-    final source = RemotePostsSource(
-      httpClient: http.Client(),
-      lcdEndpoint: "http://localhost:1317",
+    final source = RemotePostsSourceImpl(
+      chainHelper: ChainHelper(
+        lcdEndpoint: "http://localhost:1317",
+        httpClient: http.Client(),
+      ),
       rpcEndpoint: "ws://localhost:26657",
       walletSource: WalletSourceImpl(
         networkInfo: NetworkInfo(

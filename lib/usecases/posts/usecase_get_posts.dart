@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/usecases/posts/posts.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/usecases/posts/posts.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to read all the posts.

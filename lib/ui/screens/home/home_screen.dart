@@ -1,5 +1,5 @@
-import 'package:desmosdemo/entities/entities.dart';
-import 'package:desmosdemo/ui/ui.dart';
+import 'package:dwitter/entities/entities.dart';
+import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +24,9 @@ class HomeScreen extends StatelessWidget {
               )
             ],
           ),
-          body: activeTab == AppTab.posts ? PostsList() : Stats(),
+          body: activeTab == AppTab.posts
+              ? PostsList(filter: (p) => !p.hasParent)
+              : Account(),
           floatingActionButton: FloatingActionButton(
             key: PostsKeys.addPost,
             onPressed: () => Navigator.of(context).push(_createRoute()),
