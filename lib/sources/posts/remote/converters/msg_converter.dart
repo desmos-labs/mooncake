@@ -2,6 +2,13 @@ import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/sources/sources.dart';
 import 'package:meta/meta.dart';
 
+class ReactionData {
+  final String postId;
+  final String value;
+
+  ReactionData({@required this.postId, @required this.value});
+}
+
 /// Allows to convert data into messages that can be sent to the chain.
 class MsgConverter {
   /// Converts the given [post] into a [MsgCreatePost] allowing it
@@ -10,8 +17,9 @@ class MsgConverter {
     return MsgCreatePost(
       parentId: post.parentId ?? "0",
       message: post.message,
-      allowsComments: post.allowsComments ?? false,
-      externalReference: post.externalReference ?? "",
+      allowsComments: post.allowsComments,
+      optionalData: post.optionalData,
+      subspace: post.subspace,
       creator: post.owner,
     );
   }
@@ -28,8 +36,8 @@ class MsgConverter {
     // ones that need to be liked and the ones from which the like
     // should be removed.
     final List<Post> postsToCreate = [];
-    final List<String> postsToLike = [];
-    final List<String> postsToUnlike = [];
+    final List<ReactionData> reactionsToAdd = [];
+    final List<ReactionData> reactionsToRemove = [];
     for (int index = 0; index < posts.length; index++) {
       final post = posts[index];
       final existingPost = existingPosts[index];
@@ -40,20 +48,25 @@ class MsgConverter {
         continue;
       }
 
-      final isPostLiked = post.containsLikeFromUser(wallet.bech32Address);
-      final isExistingPostLiked =
-          existingPost.containsLikeFromUser(wallet.bech32Address);
-
-      // The user has liked this post
-      if (isPostLiked && !isExistingPostLiked) {
-        postsToLike.add(post.id);
-        continue;
+      // Iterate over the existing reactions to find the ones that have been
+      // deleted
+      for (final exReaction in existingPost.reactions) {
+        if (!post.reactions.contains(exReaction)) {
+          reactionsToRemove.add(ReactionData(
+            postId: post.id,
+            value: exReaction.value,
+          ));
+        }
       }
 
-      // The user has removed the like from this post
-      if (isExistingPostLiked && !isPostLiked) {
-        postsToUnlike.add(post.id);
-        continue;
+      // Iterate over the local reactions to find the ones that have been
+      // added new
+      for (final localReaction in post.reactions) {
+        if (!existingPost.reactions.contains(localReaction)) {
+          reactionsToAdd.add(
+            ReactionData(postId: post.id, value: localReaction.value),
+          );
+        }
       }
     }
 
@@ -61,12 +74,20 @@ class MsgConverter {
     messages
         .addAll(postsToCreate.map((post) => toMsgCreatePost(post)).toList());
 
-    messages.addAll(postsToLike
-        .map((id) => MsgLikePost(postId: id, liker: wallet.bech32Address))
+    messages.addAll(reactionsToAdd
+        .map((reaction) => MsgAddPostReaction(
+              postId: reaction.postId,
+              user: wallet.bech32Address,
+              reaction: reaction.value,
+            ))
         .toList());
 
-    messages.addAll(postsToUnlike
-        .map((id) => MsgUnLikePost(postId: id, liker: wallet.bech32Address))
+    messages.addAll(reactionsToRemove
+        .map((reaction) => MsgRemovePostReaction(
+              postId: reaction.postId,
+              user: wallet.bech32Address,
+              reaction: reaction.value,
+            ))
         .toList());
 
     return messages;

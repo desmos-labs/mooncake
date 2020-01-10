@@ -2,12 +2,12 @@ import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
-/// Allows to like a post having a specific id.
-class LikePostUseCase {
+/// Allows to react a post having a specific id.
+class AddReactionToPostUseCase {
   final WalletRepository _walletRepository;
   final PostsRepository _postsRepository;
 
-  LikePostUseCase({
+  AddReactionToPostUseCase({
     @required WalletRepository walletRepository,
     @required PostsRepository postsRepository,
   })  : assert(walletRepository != null),
@@ -17,24 +17,23 @@ class LikePostUseCase {
 
   /// Likes the post having the given [postId] and returns the
   /// updated [Post] object.
-  Future<Post> like(String postId) async {
+  Future<Post> react(String postId, String reaction) async {
     Post post = await _postsRepository.getPostById(postId);
-
     if (post == null) {
-      // The post does not exist, returns null
       return post;
     }
 
-    // Update the post if the like is not present
-    final wallet = await _walletRepository.getWallet();
-    if (!post.containsLikeFromUser(wallet.bech32Address)) {
-      post = post.copyWith(
-        likes: [Like(owner: wallet.bech32Address)] + post.likes,
-        status: PostStatus.TO_BE_SYNCED,
-      );
+    // Build the reaction object
+    final address = await _walletRepository.getAddress();
+    final reactionObj = Reaction(owner: address, value: reaction);
+    
+    // Add it to the list of reactions if not present and save the new post
+    if (!post.reactions.contains(reactionObj)) {
+      post = post.copyWith(reactions: post.reactions + [reactionObj]);
       await _postsRepository.savePost(post);
     }
 
+    // Return the (updated) post
     return post;
   }
 }

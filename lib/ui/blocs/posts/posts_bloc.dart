@@ -15,8 +15,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   final FetchPostsUseCase _fetchPostsUseCase;
   final CreatePostUseCase _createPostUseCase;
-  final LikePostUseCase _likePostUseCase;
-  final UnlikePostUseCase _unlikePostUseCase;
+  final AddReactionToPostUseCase _addReactionToPostUseCase;
+  final RemoveReactionFromPostUseCase _removeReactionFromPostUseCase;
   final GetPostsUseCase _getPostsUseCase;
   final SyncPostsUseCase _syncPostsUseCase;
 
@@ -27,8 +27,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     @required int syncPeriod,
     @required FetchPostsUseCase fetchPostsUseCase,
     @required CreatePostUseCase createPostUseCase,
-    @required LikePostUseCase likePostUseCase,
-    @required UnlikePostUseCase unlikePostUseCase,
+    @required AddReactionToPostUseCase likePostUseCase,
+    @required RemoveReactionFromPostUseCase unlikePostUseCase,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
   })  : _syncPeriod = syncPeriod,
@@ -37,9 +37,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         assert(createPostUseCase != null),
         _createPostUseCase = createPostUseCase,
         assert(likePostUseCase != null),
-        _likePostUseCase = likePostUseCase,
+        _addReactionToPostUseCase = likePostUseCase,
         assert(unlikePostUseCase != null),
-        _unlikePostUseCase = unlikePostUseCase,
+        _removeReactionFromPostUseCase = unlikePostUseCase,
         assert(getPostsUseCase != null),
         _getPostsUseCase = getPostsUseCase,
         assert(syncPostsUseCase != null),
@@ -163,26 +163,26 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   /// Handles the event emitted when the user likes a post
   Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
     if (state is PostsLoaded) {
-      final updatedPost = await _likePostUseCase.like(event.postId);
-      final updatedPosts = (state as PostsLoaded)
-          .posts
-          .map((p) => p.id == updatedPost.id ? updatedPost : p)
-          .toList();
-      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+//      final updatedPost = await _addReactionToPostUseCase.react(event.postId);
+//      final updatedPosts = (state as PostsLoaded)
+//          .posts
+//          .map((p) => p.id == updatedPost.id ? updatedPost : p)
+//          .toList();
+//      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
     }
   }
 
   /// Handles the event telling that the user has unliked a previously
   /// liked post
   Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
-    if (state is PostsLoaded) {
-      final updatedPost = await _unlikePostUseCase.unlike(event.postId);
-      final updatedPosts = (state as PostsLoaded)
-          .posts
-          .map((p) => p.id == updatedPost.id ? updatedPost : p)
-          .toList();
-      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
-    }
+//    if (state is PostsLoaded) {
+//      final updatedPost = await _removeReactionFromPostUseCase.remove(event.postId);
+//      final updatedPosts = (state as PostsLoaded)
+//          .posts
+//          .map((p) => p.id == updatedPost.id ? updatedPost : p)
+//          .toList();
+//      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+//    }
   }
 
   /// Handles the event emitted when the posts must be synced uploading

@@ -431,6 +431,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.4"
+  path_provider:
+    dependency: "direct main"
+    description:
+      name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.1"
   pedantic:
     dependency: transitive
     description:
@@ -445,6 +452,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   pointycastle:
     dependency: transitive
     description:
@@ -503,6 +517,13 @@ packages:
       url: "https://github.com/RiccardoM/sacco.dart"
     source: git
     version: "0.0.14"
+  sembast:
+    dependency: "direct main"
+    description:
+      name: sembast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.2+3"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -543,13 +564,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.5"
-  sqflite:
-    dependency: "direct main"
-    description:
-      name: sqflite
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.8"
   stack_trace:
     dependency: transitive
     description:
@@ -650,4 +664,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.6.0 <3.0.0"
-  flutter: ">=1.9.1 <2.0.0"
+  flutter: ">=1.10.0 <2.0.0"

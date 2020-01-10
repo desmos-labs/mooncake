@@ -31,7 +31,8 @@ class CreatePostUseCase {
       message: message,
       created: date,
       allowsComments: allowsComments,
-      externalReference: createPostExternalReference(date),
+      // This is the app subspace
+      subspace: "mooncake",
       owner: wallet.bech32Address,
     );
     await _postsRepository.savePost(post);

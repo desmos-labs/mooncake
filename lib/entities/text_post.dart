@@ -3,29 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
-part 'post.g.dart';
-
-enum PostStatus {
-  @JsonValue("to_be_synced")
-  TO_BE_SYNCED,
-  @JsonValue("syncing")
-  SYNCING,
-  @JsonValue("synced")
-  SYNCED,
-}
-
-String createPostExternalReference(String postId) {
-  return "dwitter-$postId";
-}
-
-String getPostIdByReference(String externalReference) {
-  final ref = externalReference?.trim();
-  if (ref == null || ref.isEmpty || !ref.contains("dwitter")) {
-    return null;
-  }
-
-  return ref.split("dwitter-")[1];
-}
+part 'text_post.g.dart';
 
 /// Represents a generic post
 @immutable
@@ -34,7 +12,7 @@ class Post implements Equatable, Comparable<Post> {
   @JsonKey(name: "id")
   final String id;
 
-  @JsonKey(name: "parentId")
+  @JsonKey(name: "parent_id")
   final String parentId;
 
   /// Tells if this post has a valid parent post or not.
@@ -45,37 +23,30 @@ class Post implements Equatable, Comparable<Post> {
   @JsonKey(name: "message")
   final String message;
 
+  /// RFC3339-formatted creation date
   @JsonKey(name: "created")
   final String created;
 
   @JsonKey(ignore: true)
   bool get isCreateBlockHeight => DateTime.tryParse(created) == null;
 
-  @JsonKey(name: "lastEdited")
+  @JsonKey(name: "last_edited")
   final String lastEdited;
 
-  @JsonKey(name: "allowsComments")
+  @JsonKey(name: "allows_comments")
   final bool allowsComments;
 
-  @JsonKey(name: "externalReference")
-  final String externalReference;
+  @JsonKey(name: "subspace")
+  final String subspace;
 
-  @JsonKey(name: "owner")
+  @JsonKey(name: "creator")
   final String owner;
 
-  @JsonKey(name: "owner_is_user")
-  final bool ownerIsUser;
+  @JsonKey(name: "optional_data")
+  final Map<String, String> optionalData;
 
-  @JsonKey(name: "liked")
-  final bool liked;
-
-  @JsonKey(name: "likes")
-  final List<Like> likes;
-
-  /// Tells is this post has already been liked from the user
-  /// having the given [address] or not.
-  bool containsLikeFromUser(String address) =>
-      likes.where((l) => l.owner == address).isNotEmpty;
+  @JsonKey(name: "reactions")
+  final List<Reaction> reactions;
 
   @JsonKey(name: "comments_ids")
   final List<String> commentsIds;
@@ -86,26 +57,22 @@ class Post implements Equatable, Comparable<Post> {
 
   Post({
     @required this.id,
+    this.parentId = "0",
     @required this.message,
     @required this.created,
-    @required this.owner,
-    this.parentId = "0",
     this.lastEdited,
     this.allowsComments = false,
-    this.externalReference = "",
-    this.ownerIsUser = false,
-    this.likes = const [],
-    this.liked = false,
+    @required this.subspace,
+    this.optionalData = const {},
+    @required this.owner,
+    this.reactions = const [],
     this.commentsIds = const [],
     this.status = PostStatus.TO_BE_SYNCED,
   })  : assert(id != null),
         assert(message != null),
         assert(created != null),
-        assert(allowsComments != null),
-        assert(owner != null),
-        assert(likes != null),
-        assert(commentsIds != null),
-        assert(status != null);
+        assert(subspace != null),
+        assert(owner != null);
 
   Post copyWith({
     String parentId,
@@ -113,11 +80,10 @@ class Post implements Equatable, Comparable<Post> {
     String created,
     String lastEdited,
     bool allowsComments,
-    String externalReference,
+    String subspace,
+    Map<String, String> optionalData,
     String owner,
-    bool ownerIsUser,
-    List<Like> likes,
-    bool liked,
+    List<Reaction> reactions,
     List<String> commentsIds,
     PostStatus status,
   }) {
@@ -128,30 +94,12 @@ class Post implements Equatable, Comparable<Post> {
       created: created ?? this.created,
       lastEdited: lastEdited ?? this.lastEdited,
       allowsComments: allowsComments ?? this.allowsComments,
-      externalReference: externalReference ?? this.externalReference,
+      subspace: subspace ?? this.subspace,
+      optionalData: optionalData ?? this.optionalData,
       owner: owner ?? this.owner,
-      ownerIsUser: ownerIsUser ?? this.ownerIsUser,
-      likes: likes ?? this.likes,
-      liked: liked ?? this.liked,
+      reactions: reactions ?? this.reactions,
       commentsIds: commentsIds ?? this.commentsIds,
       status: status ?? this.status,
-    );
-  }
-
-  /// Updates the contents of this post with the one of the new post.
-  /// If the new one has the likes or comments changed, the status of this post
-  /// will be preserved.
-  /// Otherwise, the status of this post will become the one of the updated
-  /// one.
-  Post updateWith(Post updated) {
-    final areLikesChanged = this.likes == updated.likes;
-    final areCommentsChanged = this.commentsIds == updated.commentsIds;
-    final shouldStatusBeConserved = areLikesChanged || areCommentsChanged;
-
-    return this.copyWith(
-      status: shouldStatusBeConserved ? this.status : updated.status,
-      likes: (this.likes + updated.likes).toSet().toList(),
-      commentsIds: (this.commentsIds + updated.commentsIds).toSet().toList(),
     );
   }
 
@@ -185,11 +133,10 @@ class Post implements Equatable, Comparable<Post> {
         this.created,
         this.lastEdited,
         this.allowsComments,
-        this.externalReference,
+        this.subspace,
+        this.optionalData,
         this.owner,
-        this.ownerIsUser,
-        this.likes,
-        this.liked,
+        this.reactions,
         this.commentsIds,
         this.status,
       ];
@@ -202,11 +149,10 @@ class Post implements Equatable, Comparable<Post> {
       'created: $created, '
       'lastEdited: $lastEdited, '
       'allowsComments: $allowsComments, '
-      'externalRerence: $externalReference, '
+      'subspace: $subspace, '
+      'optionalData: $optionalData, '
       'owner: $owner, '
-      'ownerIsUser: $ownerIsUser, '
-      'likes: $likes, '
-      'liked: $liked, '
+      'reactions: $reactions, '
       'commentsIds: $commentsIds '
       'synced: $status '
       '}';

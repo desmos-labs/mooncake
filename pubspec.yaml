@@ -17,10 +17,11 @@ dependencies:
   json_annotation: ^3.0.0
   json_serializable: ^3.2.3
   meta: ">=1.1.0 <2.0.0"
+  path_provider: ^1.5.1
   sacco:
     git: https://github.com/RiccardoM/sacco.dart
+  sembast: ^2.1.2+3
   shared_preferences: ^0.4.0
-  sqflite: ^1.1.8
   stream_transform: any
   web_socket_channel: ^1.1.0
 

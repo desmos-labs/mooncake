@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post.dart';
+part of 'text_post.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -9,19 +9,20 @@ part of 'post.dart';
 Post _$PostFromJson(Map<String, dynamic> json) {
   return Post(
     id: json['id'] as String,
+    parentId: json['parent_id'] as String,
     message: json['message'] as String,
     created: json['created'] as String,
-    owner: json['owner'] as String,
-    parentId: json['parentId'] as String,
-    lastEdited: json['lastEdited'] as String,
-    allowsComments: json['allowsComments'] as bool,
-    externalReference: json['externalReference'] as String,
-    ownerIsUser: json['owner_is_user'] as bool,
-    likes: (json['likes'] as List)
-        ?.map(
-            (e) => e == null ? null : Like.fromJson(e as Map<String, dynamic>))
+    lastEdited: json['last_edited'] as String,
+    allowsComments: json['allows_comments'] as bool,
+    subspace: json['subspace'] as String,
+    optionalData: (json['optional_data'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as String),
+    ),
+    owner: json['creator'] as String,
+    reactions: (json['reactions'] as List)
+        ?.map((e) =>
+            e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    liked: json['liked'] as bool,
     commentsIds:
         (json['comments_ids'] as List)?.map((e) => e as String)?.toList(),
     status: _$enumDecodeNullable(_$PostStatusEnumMap, json['status']),
@@ -30,16 +31,15 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'id': instance.id,
-      'parentId': instance.parentId,
+      'parent_id': instance.parentId,
       'message': instance.message,
       'created': instance.created,
-      'lastEdited': instance.lastEdited,
-      'allowsComments': instance.allowsComments,
-      'externalReference': instance.externalReference,
-      'owner': instance.owner,
-      'owner_is_user': instance.ownerIsUser,
-      'liked': instance.liked,
-      'likes': instance.likes?.map((e) => e?.toJson())?.toList(),
+      'last_edited': instance.lastEdited,
+      'allows_comments': instance.allowsComments,
+      'subspace': instance.subspace,
+      'creator': instance.owner,
+      'optional_data': instance.optionalData,
+      'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
       'comments_ids': instance.commentsIds,
       'status': _$PostStatusEnumMap[instance.status],
     };

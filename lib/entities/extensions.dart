@@ -8,7 +8,6 @@ extension PostsExt on List<Post> {
     String id,
     String message,
     PostStatus status,
-    String externalReference,
   }) {
     return this.firstWhere((post) {
       bool condition = true;
@@ -23,10 +22,6 @@ extension PostsExt on List<Post> {
 
       if (status != null) {
         condition &= post.status == status;
-      }
-
-      if (externalReference != null) {
-        condition &= post.externalReference == externalReference;
       }
 
       return condition;

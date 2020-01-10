@@ -12,7 +12,6 @@ import 'package:web_socket_channel/io.dart';
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
 class RemotePostsSourceImpl implements RemotePostsSource {
-  // Constants
   static const _BLOCK_HEIGHT_KEY = "block_height";
 
   final String _rpcEndpoint;
@@ -21,11 +20,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   // Streams
   final _postsStream = StreamController<Post>();
-  StreamSubscription _subscription; // ignore: cancel_subscriptions
+  StreamSubscription _subscription;
 
   // Converters
   final _msgConverter = MsgConverter();
-  final _postConverter = RemotePostConverter();
   final _eventsConverter = ChainEventsConverter();
 
   /// Public constructor
@@ -148,8 +146,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   Future<Post> getPostById(String postId) async {
     try {
       final data = await _chainHelper.queryChain("/posts/$postId");
-      final post = _postConverter.toPost(PostJson.fromJson(data.result));
-      return post;
+      return Post.fromJson(data.result);
     } catch (e) {
       print(e);
       return null;

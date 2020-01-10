@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:sacco/sacco.dart';
 
 class SourcesModule implements Module {
-  static const _lcdUrl = "http://34.74.131.47:1317";
-  static const _rpcUrl = "ws://34.74.131.47:26657";
+  static const _lcdUrl = "http://10.0.2.2:1317";
+  static const _rpcUrl = "ws://10.0.2.2:26657";
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
   @override
@@ -18,9 +18,7 @@ class SourcesModule implements Module {
         ),
       )
       ..bindLazySingleton<LocalPostsSource>(
-        (injector, params) => LocalPostsSourceImpl(
-          walletSource: injector.get(),
-        ),
+        (injector, params) => LocalPostsSourceImpl(dbPath: "posts.db"),
         name: "local",
       )
       ..bindLazySingleton<RemotePostsSource>(
