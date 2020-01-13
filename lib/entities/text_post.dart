@@ -65,14 +65,16 @@ class Post implements Equatable, Comparable<Post> {
     @required this.subspace,
     this.optionalData = const {},
     @required this.owner,
-    this.reactions = const [],
-    this.commentsIds = const [],
+    List<Reaction> reactions = const [],
+    List<String> commentsIds = const [],
     this.status = PostStatus.TO_BE_SYNCED,
   })  : assert(id != null),
         assert(message != null),
         assert(created != null),
         assert(subspace != null),
-        assert(owner != null);
+        assert(owner != null),
+        this.reactions = reactions ?? [],
+        this.commentsIds = commentsIds ?? [];
 
   Post copyWith({
     String parentId,
@@ -153,7 +155,7 @@ class Post implements Equatable, Comparable<Post> {
       'optionalData: $optionalData, '
       'owner: $owner, '
       'reactions: $reactions, '
-      'commentsIds: $commentsIds '
+      'commentsIds: $commentsIds, '
       'synced: $status '
       '}';
 

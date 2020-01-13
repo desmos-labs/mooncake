@@ -16,15 +16,26 @@ MsgCreatePost _$MsgCreatePostFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(k, e as String),
     ),
     creator: json['creator'] as String,
+    creationDate: json['creation_date'] as String,
   );
 }
 
-Map<String, dynamic> _$MsgCreatePostToJson(MsgCreatePost instance) =>
-    <String, dynamic>{
-      'parent_id': instance.parentId,
-      'message': instance.message,
-      'allows_comments': instance.allowsComments,
-      'subspace': instance.subspace,
-      'optional_data': instance.optionalData,
-      'creator': instance.creator,
-    };
+Map<String, dynamic> _$MsgCreatePostToJson(MsgCreatePost instance) {
+  final val = <String, dynamic>{
+    'parent_id': instance.parentId,
+    'message': instance.message,
+    'allows_comments': instance.allowsComments,
+    'subspace': instance.subspace,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('optional_data', instance.optionalData);
+  val['creator'] = instance.creator;
+  val['creation_date'] = instance.creationDate;
+  return val;
+}

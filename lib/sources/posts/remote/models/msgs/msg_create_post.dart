@@ -6,7 +6,6 @@ part 'msg_create_post.g.dart';
 
 @JsonSerializable()
 class MsgCreatePost implements StdMsg {
-
   @JsonKey(name: "parent_id")
   final String parentId;
 
@@ -19,11 +18,14 @@ class MsgCreatePost implements StdMsg {
   @JsonKey(name: "subspace")
   final String subspace;
 
-  @JsonKey(name: "optional_data", includeIfNull: true)
+  @JsonKey(name: "optional_data", includeIfNull: false)
   final Map<String, String> optionalData;
 
   @JsonKey(name: "creator")
   final String creator;
+
+  @JsonKey(name: "creation_date")
+  final String creationDate;
 
   MsgCreatePost({
     @required this.parentId,
@@ -32,11 +34,13 @@ class MsgCreatePost implements StdMsg {
     @required this.subspace,
     @required this.optionalData,
     @required this.creator,
+    @required this.creationDate,
   })  : assert(parentId != null),
         assert(message != null),
         assert(allowsComments != null),
         assert(subspace != null),
-        assert(creator != null);
+        assert(creator != null),
+        assert(creationDate != null);
 
   @override
   Map<String, dynamic> toJson() => _$MsgCreatePostToJson(this);

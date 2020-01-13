@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/repositories/repositories.dart';
 import 'package:dwitter/usecases/usecases.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 
 /// Implementation of [PostsRepository].
 class PostsRepositoryImpl extends PostsRepository {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
@@ -19,14 +17,10 @@ class TxEvent extends Equatable {
   List<Object> get props => [result];
 
   @override
-  String toString() => 'TxEvent { '
-      'result: $result '
-      '}';
+  String toString() => 'TxEvent { result: $result }';
 
-  factory TxEvent.fromJson(Map<String, dynamic> json) {
-    print(jsonEncode(json));
-    return _$TxEventFromJson(json);
-  }
+  factory TxEvent.fromJson(Map<String, dynamic> json) =>
+      _$TxEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$TxEventToJson(this);
 }
@@ -96,9 +90,7 @@ class TxEventResultDataValue extends Equatable {
   List<Object> get props => [txResult];
 
   @override
-  String toString() => 'TxEventResultDataValue { '
-      'txResult: $txResult '
-      '}';
+  String toString() => 'TxEventResultDataValue { txResult: $txResult }';
 
   factory TxEventResultDataValue.fromJson(Map<String, dynamic> json) =>
       _$TxEventResultDataValueFromJson(json);

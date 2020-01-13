@@ -1,6 +1,7 @@
 import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/usecases/posts/posts.dart';
 import 'package:dwitter/usecases/wallet/wallet.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to create a new post.
@@ -24,7 +25,9 @@ class CreatePostUseCase {
     bool allowsComments = false,
   }) async {
     final wallet = await _walletRepository.getWallet();
-    final date = DateTime.now().toIso8601String();
+    final formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    final date = formatter.format(DateTime.now().toUtc());
+
     final post = Post(
       id: date,
       parentId: parentId,

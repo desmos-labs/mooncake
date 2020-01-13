@@ -2,6 +2,7 @@ import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/sources/sources.dart';
 import 'package:meta/meta.dart';
 
+/// Contains the data of a reaction that should be added or removed from a post.
 class ReactionData {
   final String postId;
   final String value;
@@ -18,9 +19,11 @@ class MsgConverter {
       parentId: post.parentId ?? "0",
       message: post.message,
       allowsComments: post.allowsComments,
-      optionalData: post.optionalData,
+      optionalData:
+          post.optionalData?.isNotEmpty == true ? post.optionalData : null,
       subspace: post.subspace,
       creator: post.owner,
+      creationDate: post.created,
     );
   }
 

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/repositories/repositories.dart';
 import 'package:dwitter/sources/sources.dart';
-import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
@@ -118,7 +117,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     }
 
     // Emit the updated post
-    _postsStream.add(post);
+    _postsStream.add(post.copyWith(created: event.height));
   }
 
   Future<void> _handlePostLikedEvent(PostLikedEvent event) async {
@@ -146,7 +145,8 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   Future<Post> getPostById(String postId) async {
     try {
       final data = await _chainHelper.queryChain("/posts/$postId");
-      return Post.fromJson(data.result);
+      final post = Post.fromJson(data.result);
+      return post.copyWith(status: PostStatus.SYNCED);
     } catch (e) {
       print(e);
       return null;
