@@ -1,11 +1,20 @@
+import 'package:dwitter/entities/entities.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-import 'package:sacco/models/export.dart';
+
+part 'msg_add_post_reaction.g.dart';
 
 /// Represents the message that must be used when add a reaction
 /// to a post.
-class MsgAddPostReaction extends StdMsg {
+@JsonSerializable()
+class MsgAddPostReaction implements StdMsg {
+  @JsonKey(name: "post_id")
   final String postId;
+
+  @JsonKey(name: "value")
   final String reaction;
+
+  @JsonKey(name: "user")
   final String user;
 
   MsgAddPostReaction({
@@ -13,14 +22,9 @@ class MsgAddPostReaction extends StdMsg {
     @required this.reaction,
     @required this.user,
   })  : assert(postId != null),
-        assert(value != null),
-        assert(user != null),
-        super(
-          type: "desmos/MsgAddPostReaction",
-          value: {
-            "post_id": postId,
-            "value": reaction,
-            "user": user,
-          },
-        );
+        assert(reaction != null),
+        assert(user != null);
+
+  @override
+  Map<String, dynamic> toJson() => _$MsgAddPostReactionToJson(this);
 }

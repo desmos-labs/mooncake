@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/sources/sources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:sacco/sacco.dart';
 
 /// Allows to easily perform chain-related actions such as querying the
 /// chain state or sending transactions to it.

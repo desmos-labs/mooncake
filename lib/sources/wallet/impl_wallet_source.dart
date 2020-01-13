@@ -1,9 +1,9 @@
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/repositories/repositories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
-import 'package:sacco/sacco.dart';
 
 /// Implementation of [WalletSource] that saves the mnemonic into a safe place
 /// using the [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)

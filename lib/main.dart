@@ -1,9 +1,11 @@
+import 'package:alan/alan.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dwitter/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dependency_injection/dependency_injection.dart';
+import 'sources/sources.dart';
 
 void main() async {
   // Setup the dependency injection
@@ -11,6 +13,11 @@ void main() async {
 
   // Setup the BLoC delegate to observe transitions
   BlocSupervisor.delegate = SimpleBlocDelegate();
+
+  // Register custom messages
+  Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+  Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
+  Codec.registerMsgType("desmos/MsgRemovePostReaction", MsgRemovePostReaction);
 
   // Run the app
   runApp(MultiBlocProvider(

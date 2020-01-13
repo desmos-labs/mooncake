@@ -1,8 +1,8 @@
 import 'package:dependencies/dependencies.dart';
+import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/repositories/repositories.dart';
 import 'package:dwitter/sources/sources.dart';
 import 'package:http/http.dart' as http;
-import 'package:sacco/sacco.dart';
 
 class SourcesModule implements Module {
   static const _lcdUrl = "http://10.0.2.2:1317";

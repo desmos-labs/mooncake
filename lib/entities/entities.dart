@@ -1,4 +1,4 @@
-export 'package:sacco/wallet.dart';
+export 'package:alan/alan.dart';
 
 export 'app_tab.dart';
 export 'extensions.dart';

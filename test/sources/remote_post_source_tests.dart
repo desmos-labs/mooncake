@@ -1,7 +1,7 @@
+import 'package:dwitter/entities/entities.dart';
 import 'package:dwitter/sources/sources.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:sacco/network_info.dart';
 
 void main() {
   test("Websocket subscription is created properly", () async {
