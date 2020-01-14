@@ -17,15 +17,13 @@ class SplashScreen extends StatelessWidget {
         }
 
         return Container(
+          padding: EdgeInsets.all(16.0),
           color: PostsTheme.primaryColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                PostsLocalizations.of(context).appTitle,
-                style: Theme.of(context).textTheme.display1,
-              ),
+              Image.asset('assets/images/logo.png', width: 200),
             ],
           ),
         );

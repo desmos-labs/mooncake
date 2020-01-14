@@ -19,12 +19,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  PostsLocalizations.of(context).appTitle,
-                  style: Theme.of(context).textTheme.display1.apply(
-                    color: PostsTheme.primaryColor,
-                  ),
-                ),
+                Image.asset('assets/images/logo.png', width: 200),
               ],
             ),
           ),
