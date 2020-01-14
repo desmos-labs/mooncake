@@ -1,6 +1,6 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/repositories/repositories.dart';
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Implementation of [WalletRepository].

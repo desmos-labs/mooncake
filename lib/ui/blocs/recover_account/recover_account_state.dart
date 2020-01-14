@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class RecoverAccountState extends Equatable {

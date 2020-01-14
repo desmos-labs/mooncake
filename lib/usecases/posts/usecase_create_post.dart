@@ -1,7 +1,6 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/usecases/posts/posts.dart';
-import 'package:dwitter/usecases/wallet/wallet.dart';
-import 'package:intl/intl.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/posts/posts.dart';
+import 'package:mooncake/usecases/wallet/wallet.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to create a new post.
@@ -25,14 +24,13 @@ class CreatePostUseCase {
     bool allowsComments = false,
   }) async {
     final wallet = await _walletRepository.getWallet();
-    final formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    final date = formatter.format(DateTime.now().toUtc());
+    final date = Post.getDateStringNow();
 
     final post = Post(
       id: date,
+      created: date,
       parentId: parentId,
       message: message,
-      created: date,
       allowsComments: allowsComments,
       // This is the app subspace
       subspace: "mooncake",

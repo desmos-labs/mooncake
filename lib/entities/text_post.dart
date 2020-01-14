@@ -1,5 +1,6 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
@@ -9,6 +10,17 @@ part 'text_post.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class Post implements Equatable, Comparable<Post> {
+  /// Represents the date format that should be used to format and parse
+  /// post-realated date values.
+  static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+  /// Returns the current date and time in UTC time zone, formatted as
+  /// it should be to be used as a post creation date or last edit date.
+  static String getDateStringNow() {
+    final formatter = DateFormat(DATE_FORMAT);
+    return formatter.format(DateTime.now().toUtc());
+  }
+
   @JsonKey(name: "id")
   final String id;
 
@@ -28,7 +40,9 @@ class Post implements Equatable, Comparable<Post> {
   final String created;
 
   @JsonKey(ignore: true)
-  bool get isCreateBlockHeight => DateTime.tryParse(created) == null;
+  DateTime get dateTime {
+    return DateTime.parse(created);
+  }
 
   @JsonKey(name: "last_edited")
   final String lastEdited;
@@ -107,24 +121,7 @@ class Post implements Equatable, Comparable<Post> {
 
   @override
   int compareTo(Post other) {
-    int statusCompare = 0;
-
-    bool onChain = DateTime.tryParse(created) == null;
-    bool otherOnChain = DateTime.tryParse(other.created) == null;
-
-    if (!onChain && otherOnChain) {
-      statusCompare = 1;
-    } else if (onChain && !otherOnChain) {
-      statusCompare = -1;
-    }
-
-    if (statusCompare != 0) {
-      return statusCompare;
-    } else if (onChain && otherOnChain) {
-      return double.parse(created).compareTo(double.parse(other.created));
-    } else {
-      return created.compareTo(other.created);
-    }
+    return created.compareTo(other.created);
   }
 
   @override

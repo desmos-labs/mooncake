@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 class PostDetailsOwner extends StatelessWidget {
@@ -16,20 +16,8 @@ class PostDetailsOwner extends StatelessWidget {
           Text(
             user,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             key: PostsKeys.postDetailsOwnerAddress,
           ),
-          SizedBox(
-            height: 4,
-          ),
-// TODO: Implement this again
-//          user.hasUsername
-//              ? Text(
-//                  user.username,
-//                  overflow: TextOverflow.ellipsis,
-//                  style: TextStyle(color: PostsTheme.textColorLight),
-//                )
-//              : Container(),
         ],
       ),
     );

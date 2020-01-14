@@ -11,7 +11,7 @@ class PostsLocalizations {
     );
   }
 
-  String get appTitle => "Dwitter";
+  String get appTitle => "Mooncake";
   String get allPosts => "Posts";
   String get yourAccount => "Your account";
   String get signOut => "Sign out";

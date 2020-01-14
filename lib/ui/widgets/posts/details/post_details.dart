@@ -1,5 +1,5 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,24 +28,25 @@ class PostDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Text(
+                post.message,
+                key: PostsKeys.postDetailsMessage,
+                style: Theme.of(context).textTheme.headline,
+              ),
+              SizedBox(height: 16),
               Row(
                 children: [
                   UserAvatar(
+                    iconSize: 10,
                     user: post.owner,
                     key: PostsKeys.postItemOwnerAvatar(post.id),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 8),
                   PostDetailsOwner(
                     user: post.owner,
                     key: PostsKeys.postDetailsOwner,
                   )
                 ],
-              ),
-              SizedBox(height: 16),
-              Text(
-                post.message,
-                key: PostsKeys.postDetailsMessage,
-                style: Theme.of(context).textTheme.headline,
               ),
             ],
           ),

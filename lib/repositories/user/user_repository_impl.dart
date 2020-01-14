@@ -1,5 +1,5 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/usecases/user/user.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/user/user.dart';
 
 /// Allows to easily perform user-related operations.
 class UserRepositoryImpl extends UserRepository {

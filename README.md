@@ -1,8 +1,8 @@
-# Dwitter
+# Mooncake
 [![](https://img.shields.io/badge/100%25-flutter-blue)](https://flutter.dev)
 [![](https://img.shields.io/badge/based%20on-desmos-red)](https://desmos.network)
 
-Dwitter is a decentralized version of [Twitter](https://twitter.com) (with less functions), entirely based on the 
+Mooncake is a decentralized version of [Twitter](https://twitter.com) (with less functions), entirely based on the 
 [Desmos blockchain](https://github.com/desmos-labs/desmos).
 
 It allows to post freely any kind of message, and see what all the users are writing, no follow needed. 

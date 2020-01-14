@@ -1,5 +1,5 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,7 +30,8 @@ class PostDetailsScreen extends StatelessWidget {
         builder: (context, state) {
           // ignore: close_sinks
           final postBloc = BlocProvider.of<PostsBloc>(context);
-          final post = (postBloc.state as PostsLoaded).posts.firstBy(id: postId);
+          final post =
+              (postBloc.state as PostsLoaded).posts.firstBy(id: postId);
           return Scaffold(
             appBar: AppBar(
               title: Text(PostsLocalizations.of(context).post),
@@ -43,7 +44,6 @@ class PostDetailsScreen extends StatelessWidget {
                     child: ListView(
                       children: <Widget>[
                         PostDetails(key: PostsKeys.postDetails, postId: postId),
-                        const Divider(height: 1),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
@@ -107,24 +107,26 @@ class PostDetailsScreen extends StatelessWidget {
 
   /// Contains the input that allows a user to create a comment
   Widget _commentInput(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: PostForm(
-            postId: postId,
-            hint: PostsLocalizations.of(context).commentHint,
-          ),
+    return BlocBuilder<PostInputBloc, PostInputState>(
+      builder: (context, state) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            PostForm(
+              postId: postId,
+              hint: PostsLocalizations.of(context).commentHint,
+            ),
+            BlocBuilder<PostInputBloc, PostInputState>(
+              builder: (context, state) => RaisedButton(
+                child: Text(PostsLocalizations.of(context).commentHint),
+                onPressed:
+                    !state.isValid ? null : () => _submitComment(context, state),
+              ),
+            )
+          ],
         ),
-        BlocBuilder<PostInputBloc, PostInputState>(
-          builder: (context, state) => RaisedButton(
-            child: Text(PostsLocalizations.of(context).commentHint),
-            onPressed:
-                !state.isValid ? null : () => _submitComment(context, state),
-          ),
-        )
-      ],
+      ),
     );
   }
 

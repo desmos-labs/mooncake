@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents the source that should be used when dealing with posts.
 abstract class LocalPostsSource {

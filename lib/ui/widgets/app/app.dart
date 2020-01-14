@@ -1,6 +1,6 @@
-import 'package:dwitter/dependency_injection/dependency_injection.dart';
-import 'package:dwitter/ui/screens/splash/splash_screen.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/ui/screens/splash/splash_screen.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

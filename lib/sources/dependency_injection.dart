@@ -1,7 +1,7 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/repositories/repositories.dart';
-import 'package:dwitter/sources/sources.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:http/http.dart' as http;
 
 class SourcesModule implements Module {

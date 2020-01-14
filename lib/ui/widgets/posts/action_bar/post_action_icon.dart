@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Represents an icon of a post action, that changes color when tapped
@@ -22,7 +22,7 @@ class _PostActionIconState extends State<PostActionIcon> {
   bool isSelected = false;
   @override
   Widget build(BuildContext context) {
-    Color iconColor = PostsTheme.textColor;
+    Color iconColor = Theme.of(context).iconTheme.color;
     if (isSelected) {
       iconColor = PostsTheme.primaryColor;
     } else if (widget.action != null) {

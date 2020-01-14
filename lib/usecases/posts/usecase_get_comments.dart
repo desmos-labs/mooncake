@@ -1,5 +1,5 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/usecases/posts/posts.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/posts/posts.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to read the comments of a post having a specific id.

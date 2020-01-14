@@ -1,6 +1,6 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/usecases/posts/posts.dart';
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/posts/posts.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to sync all the posts that have been created offline as well as

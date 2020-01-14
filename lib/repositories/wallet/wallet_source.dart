@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents the source that should be used when wanting to get
 /// the wallet of the current application user.

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dwitter/ui/ui.dart';
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Handles the login events and emits the proper state instances.

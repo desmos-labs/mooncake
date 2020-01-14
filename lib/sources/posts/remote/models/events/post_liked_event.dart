@@ -1,4 +1,4 @@
-import 'package:dwitter/sources/posts/export.dart';
+import 'package:mooncake/sources/posts/export.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

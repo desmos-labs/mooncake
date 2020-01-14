@@ -1,5 +1,5 @@
-import 'package:dwitter/dependency_injection/dependency_injection.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
             children: <Widget>[
               Text(
                 PostsLocalizations.of(context).appTitle,
-                style: PostsTheme.theme.textTheme.display1,
+                style: Theme.of(context).textTheme.display1,
               ),
             ],
           ),

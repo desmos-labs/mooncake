@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
-      color: PostsTheme.theme.scaffoldBackgroundColor,
+      color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   PostsLocalizations.of(context).appTitle,
-                  style: PostsTheme.theme.textTheme.display1.apply(
+                  style: Theme.of(context).textTheme.display1.apply(
                     color: PostsTheme.primaryColor,
                   ),
                 ),

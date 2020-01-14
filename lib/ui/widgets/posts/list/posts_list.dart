@@ -1,7 +1,7 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/ui/ui.dart';
-import 'package:dwitter/ui/widgets/posts/list/fetching_snackbar.dart';
-import 'package:dwitter/ui/widgets/posts/list/sync_snackbar.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/widgets/posts/list/fetching_snackbar.dart';
+import 'package:mooncake/ui/widgets/posts/list/sync_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,17 +32,17 @@ class PostsList extends StatelessWidget {
           return Column(
             children: <Widget>[
               Flexible(
-                child: ListView.separated(
+                child: ListView.builder(
                   key: PostsKeys.postsList,
                   itemCount: posts.length,
-                  separatorBuilder: (context, index) => Divider(height: 1),
                   itemBuilder: (context, index) {
                     return _postWidget(context, posts[index]);
                   },
                 ),
               ),
-              if (state.syncingPosts) SyncSnackBar(),
-              if (state.fetchingPosts) FetchingSnackbar(),
+              if (state.syncingPosts)
+                SyncSnackBar(),
+//              if (state.fetchingPosts) FetchingSnackbar(),
             ],
           );
         } else {

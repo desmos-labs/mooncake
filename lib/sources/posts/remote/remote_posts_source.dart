@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/repositories/repositories.dart';
-import 'package:dwitter/sources/sources.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
@@ -117,7 +117,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     }
 
     // Emit the updated post
-    _postsStream.add(post.copyWith(created: event.height));
+    _postsStream.add(post);
   }
 
   Future<void> _handlePostLikedEvent(PostLikedEvent event) async {

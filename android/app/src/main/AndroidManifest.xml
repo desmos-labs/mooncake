@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="network.desmos.dwitter">
+    package="network.desmos.mooncake">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
             android:name="io.flutter.app.FlutterApplication"
-        android:label="Dwitter"
+        android:label="Mooncake"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

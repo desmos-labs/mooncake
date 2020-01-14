@@ -1,4 +1,4 @@
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to easily check whether the user has already logged in into the

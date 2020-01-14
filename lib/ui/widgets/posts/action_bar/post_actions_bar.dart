@@ -1,11 +1,15 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 /// Represents the action bar containing all the actions that can be performed
 /// from a single post.
 class PostActionsBar extends StatelessWidget {
+  static const ICON_SIZE = 16.0;
+  static const ICON_SPACING = 16.0;
+
   final String postId;
 
   const PostActionsBar({Key key, @required this.postId})
@@ -27,17 +31,21 @@ class PostActionsBar extends StatelessWidget {
           statusIcon = FontAwesomeIcons.checkCircle;
         }
 
+        final showFormatter = DateFormat.yMMMd().add_Hm();
+
         return Row(
           children: <Widget>[
-            Icon(statusIcon, size: 16),
-            SizedBox(width: 16),
+            Icon(statusIcon, size: ICON_SIZE),
+            SizedBox(width: ICON_SPACING / 2),
+            Text(showFormatter.format(post.dateTime)),
+            SizedBox(width: ICON_SPACING),
             PostAction(
               icon: post.allowsComments
                   ? FontAwesomeIcons.comment
                   : FontAwesomeIcons.commentSlash,
               value: post.commentsIds.length.toStringOrEmpty(),
             ),
-            SizedBox(width: 16),
+            SizedBox(width: ICON_SPACING),
 //            PostAction(
 //              icon: post.liked
 //                  ? FontAwesomeIcons.solidHeart

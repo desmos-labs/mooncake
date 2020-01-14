@@ -1,5 +1,5 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/sources/sources.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:meta/meta.dart';
 
 /// Contains the data of a reaction that should be added or removed from a post.
