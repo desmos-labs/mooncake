@@ -3,11 +3,11 @@ import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to react a post having a specific id.
-class AddReactionToPostUseCase {
+class AddPostReactionUseCase {
   final WalletRepository _walletRepository;
   final PostsRepository _postsRepository;
 
-  AddReactionToPostUseCase({
+  AddPostReactionUseCase({
     @required WalletRepository walletRepository,
     @required PostsRepository postsRepository,
   })  : assert(walletRepository != null),
@@ -26,11 +26,13 @@ class AddReactionToPostUseCase {
     // Build the reaction object
     final address = await _walletRepository.getAddress();
     final reactionObj = Reaction(owner: address, value: reaction);
-    
+
     // Add it to the list of reactions if not present and save the new post
     if (!post.reactions.contains(reactionObj)) {
       post = post.copyWith(reactions: post.reactions + [reactionObj]);
-      await _postsRepository.savePost(post);
+      await _postsRepository.savePost(post.copyWith(
+        status: PostStatus.TO_BE_SYNCED,
+      ));
     }
 
     // Return the (updated) post

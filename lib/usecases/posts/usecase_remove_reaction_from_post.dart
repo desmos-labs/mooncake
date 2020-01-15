@@ -29,15 +29,17 @@ class RemoveReactionFromPostUseCase {
 
     // Remove the reaction if present
     final updatedPost = post.copyWith(
-      reactions: post.reactions.where((r) => r == reactionObj).toList(),
+      reactions: post.reactions.where((r) => r != reactionObj).toList(),
     );
 
     // Save the updated post, if the reaction was removed
     if (updatedPost.reactions.length != post.reactions.length) {
-      await _postsRepository.savePost(post);
+      await _postsRepository.savePost(updatedPost.copyWith(
+        status: PostStatus.TO_BE_SYNCED,
+      ));
     }
 
     // Return the (updated) post
-    return post;
+    return updatedPost;
   }
 }

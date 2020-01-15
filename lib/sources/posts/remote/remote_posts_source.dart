@@ -130,14 +130,13 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     });
   }
 
+  /// Handles properly the given [event].
   Future<void> _handleEvent(ChainEvent event) async {
     // Handle the event properly
     if (event is PostCreatedEvent) {
       return _handlePostCreatedEvent(event);
-    } else if (event is PostLikedEvent) {
-      return _handlePostLikedEvent(event);
-    } else if (event is PostUnlikedEvent) {
-      return _handlePostUnLikedEvent(event);
+    } else if (event is PostEvent) {
+      return _handlePostEvent(event);
     }
   }
 
@@ -157,12 +156,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     _postsStream.add(post);
   }
 
-  Future<void> _handlePostLikedEvent(PostLikedEvent event) async {
-    final post = await getPostById(event.postId);
-    _postsStream.add(post);
-  }
-
-  Future<void> _handlePostUnLikedEvent(PostUnlikedEvent event) async {
+  Future<void> _handlePostEvent(PostEvent event) async {
     final post = await getPostById(event.postId);
     _postsStream.add(post);
   }

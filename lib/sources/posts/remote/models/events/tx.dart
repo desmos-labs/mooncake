@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
-part 'tx_event.g.dart';
+part 'tx.g.dart';
 
 /// Contains the data that are sent from the websocket each time
 /// a new transaction is added to the chain.

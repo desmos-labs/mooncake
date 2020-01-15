@@ -12,10 +12,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final NavigatorBloc _navigatorBloc;
   StreamSubscription _recoverAccountSubscription;
 
-  LoginBloc({
-    @required NavigatorBloc navigatorBloc,
-    @required CheckLoginUseCase checkLoginUseCase
-  })  : assert(navigatorBloc != null),
+  LoginBloc(
+      {@required NavigatorBloc navigatorBloc,
+      @required CheckLoginUseCase checkLoginUseCase})
+      : assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(checkLoginUseCase != null),
         _checkLoginUseCase = checkLoginUseCase;

@@ -7,10 +7,12 @@ environment:
 
 dependencies:
   bip39:
+  collection:
   cupertino_icons:
   dependencies:
   equatable:
   flutter_bloc:
+  flutter_emoji:
   flutter_markdown:
   flutter_screenutil:
   flutter_secure_storage:

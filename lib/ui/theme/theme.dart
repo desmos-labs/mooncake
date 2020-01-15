@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class PostsTheme {
   static Color get primaryColor => Color(0xFF946FAE);
   static Color get accentColor => Color(0xFFA94E89);
+  static Color get accentColorLight => Color(0xFFC77BAC);
 
   static Color get textColor => Colors.grey[800];
   static Color get textColorLight => Colors.grey[500];
@@ -26,12 +27,11 @@ class PostsTheme {
         body1: TextStyle(color: textColor),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: accentColor,
-        textTheme: ButtonTextTheme.normal,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        )
-      ),
+          buttonColor: accentColor,
+          textTheme: ButtonTextTheme.normal,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          )),
     );
   }
 }

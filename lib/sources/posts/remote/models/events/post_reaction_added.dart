@@ -3,18 +3,18 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 /// Represents an event that is emitted when a post is liked.
-class PostLikedEvent extends ChainEvent implements Equatable {
+class PostReactionAdded extends ChainEvent implements Equatable {
   final String postId;
-  final String liker;
+  final String user;
 
-  PostLikedEvent({
+  PostReactionAdded({
     @required this.postId,
-    @required this.liker,
+    @required this.user,
     @required String height,
   })  : assert(postId != null),
-        assert(liker != null),
+        assert(user != null),
         super(height: height);
 
   @override
-  List<Object> get props => [postId, liker];
+  List<Object> get props => [postId, user];
 }

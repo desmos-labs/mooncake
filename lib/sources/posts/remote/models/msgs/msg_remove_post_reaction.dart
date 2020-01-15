@@ -8,7 +8,6 @@ part 'msg_remove_post_reaction.g.dart';
 /// when removing a reaction from a post.
 @JsonSerializable()
 class MsgRemovePostReaction extends StdMsg {
-
   @JsonKey(name: "post_id")
   final String postId;
 

@@ -32,7 +32,7 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetPostsUseCase(
             postsRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => AddReactionToPostUseCase(
+      ..bindFactory((injector, params) => AddPostReactionUseCase(
             postsRepository: injector.get(),
             walletRepository: injector.get(),
           ))
