@@ -43,15 +43,12 @@ class PostDetailsScreen extends StatelessWidget {
                   Flexible(
                     child: ListView(
                       children: <Widget>[
-                        PostDetails(key: PostsKeys.postDetails, postId: postId),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          child: PostActionsBar(postId: postId),
+                        PostItem(
+                          onTap: null,
+                          postId: postId,
+                          messageFontSize: 20,
+                          key: PostsKeys.postDetails,
                         ),
-                        const Divider(height: 1),
                         _comments(state),
                       ],
                     ),
@@ -81,11 +78,10 @@ class PostDetailsScreen extends StatelessWidget {
     // The comments have been loaded properly
     else if (state is PostCommentsLoaded) {
       final comments = state.comments;
-      return ListView.separated(
+      return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemCount: comments.length,
-        separatorBuilder: (context, index) => const Divider(height: 1),
         itemBuilder: (context, index) {
           // Build the comment item
           final comment = comments[index];
@@ -96,6 +92,7 @@ class PostDetailsScreen extends StatelessWidget {
                 builder: (_) => PostDetailsScreen(postId: comment.id),
               ),
             ),
+            margin: EdgeInsets.symmetric(horizontal: 26, vertical: 8),
           );
         },
       );
@@ -120,8 +117,9 @@ class PostDetailsScreen extends StatelessWidget {
             BlocBuilder<PostInputBloc, PostInputState>(
               builder: (context, state) => RaisedButton(
                 child: Text(PostsLocalizations.of(context).commentHint),
-                onPressed:
-                    !state.isValid ? null : () => _submitComment(context, state),
+                onPressed: !state.isValid
+                    ? null
+                    : () => _submitComment(context, state),
               ),
             )
           ],

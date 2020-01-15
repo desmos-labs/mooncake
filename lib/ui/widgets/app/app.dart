@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/ui/screens/splash/splash_screen.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Represents the overall application that is run
 class PostsApp extends StatelessWidget {
@@ -17,6 +17,8 @@ class PostsApp extends StatelessWidget {
           create: (context) => RecoverAccountBloc(
             mnemonicInputBloc: BlocProvider.of(context),
             loginBloc: BlocProvider.of(context),
+            saveWalletUseCase: Injector.get(),
+            getAddressUseCase: Injector.get(),
           ),
         ),
         BlocProvider<GenerateMnemonicBloc>(

@@ -45,7 +45,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         assert(syncPostsUseCase != null),
         _syncPostsUseCase = syncPostsUseCase;
 
-  factory PostsBloc.create({int syncPeriod = 20}) {
+  factory PostsBloc.create({int syncPeriod = 30}) {
     return PostsBloc(
       syncPeriod: syncPeriod,
       fetchPostsUseCase: Injector.get(),

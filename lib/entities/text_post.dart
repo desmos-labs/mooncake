@@ -11,7 +11,7 @@ part 'text_post.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Post implements Equatable, Comparable<Post> {
   /// Represents the date format that should be used to format and parse
-  /// post-realated date values.
+  /// post-related date values.
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
   /// Returns the current date and time in UTC time zone, formatted as
@@ -62,7 +62,7 @@ class Post implements Equatable, Comparable<Post> {
   @JsonKey(name: "reactions")
   final List<Reaction> reactions;
 
-  @JsonKey(name: "comments_ids")
+  @JsonKey(name: "children")
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not

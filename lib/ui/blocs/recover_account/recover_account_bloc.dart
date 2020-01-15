@@ -1,13 +1,18 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 /// Bloc that allows to properly handle the recovering account events
 /// and emits the correct states.
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
+  final SaveWalletUseCase _saveWalletUseCase;
+  final GetAddressUseCase _getAddressUseCase;
+
   MnemonicInputBloc _mnemonicInputBloc;
   LoginBloc _loginBloc;
 
@@ -16,10 +21,16 @@ class RecoverAccountBloc
   RecoverAccountBloc({
     @required MnemonicInputBloc mnemonicInputBloc,
     @required LoginBloc loginBloc,
+    @required SaveWalletUseCase saveWalletUseCase,
+    @required GetAddressUseCase getAddressUseCase,
   })  : assert(mnemonicInputBloc != null),
         _mnemonicInputBloc = mnemonicInputBloc,
         assert(loginBloc != null),
-        _loginBloc = loginBloc {
+        _loginBloc = loginBloc,
+        assert(saveWalletUseCase != null),
+        this._saveWalletUseCase = saveWalletUseCase,
+        assert(getAddressUseCase != null),
+        this._getAddressUseCase = getAddressUseCase {
     // Observe the mnemonic changes to react tot them
     _mnemonicBlocSubscription = mnemonicInputBloc.listen((mnemonicState) {
       add(MnemonicInputChanged(mnemonicState));
@@ -45,9 +56,15 @@ class RecoverAccountBloc
     RecoverAccount event,
   ) async* {
     yield RecoveringAccount();
-    if (_mnemonicInputBloc.state.isValid) {
-      yield RecoveredAccount(_mnemonicInputBloc.state.mnemonic);
-      _loginBloc.add(LogIn(_mnemonicInputBloc.state.mnemonic));
+
+    final state = _mnemonicInputBloc.state;
+    if (state.isValid) {
+      await _saveWalletUseCase.save(state.mnemonic);
+      final address = await _getAddressUseCase.get();
+      assert(address.isNotEmpty);
+
+      yield RecoveredAccount(state.mnemonic);
+      _loginBloc.add(LogIn(state.mnemonic));
     }
   }
 

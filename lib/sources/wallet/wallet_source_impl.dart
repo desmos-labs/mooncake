@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 /// plugin that stores it inside the secure hardware of the device.
 class WalletSourceImpl extends WalletSource {
   static String _address;
+  static Wallet _wallet;
 
   static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
   static const _WALLET_KEY = "mnemonic";
@@ -40,23 +41,27 @@ class WalletSourceImpl extends WalletSource {
 
   @override
   Future<Wallet> getWallet() async {
-    final mnemonic = await _storage.read(key: _WALLET_KEY);
+    if (_wallet == null) {
+      final mnemonic = await _storage.read(key: _WALLET_KEY);
+      if (mnemonic == null) {
+        // The mnemonic does not exist, no wallet can be created.
+        return null;
+      }
 
-    if (mnemonic == null) {
-      // The mnemonic does not exist, no wallet can be created.
-      return null;
+      // Derive the wallet
+      _wallet = Wallet.derive(
+        mnemonic.split(" "),
+        _networkInfo,
+        derivationPath: _WALLET_DERIVATION_PATH,
+      );
     }
 
-    // Derive the wallet
-    return Wallet.derive(
-      mnemonic.split(" "),
-      _networkInfo,
-      derivationPath: _WALLET_DERIVATION_PATH,
-    );
+    return _wallet;
   }
 
   @override
   Future<void> deleteWallet() async {
+    _wallet = null;
     await _storage.delete(key: _WALLET_KEY);
   }
 }

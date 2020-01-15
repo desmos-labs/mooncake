@@ -29,7 +29,6 @@ void main() async {
         create: (context) => LoginBloc(
           navigatorBloc: BlocProvider.of(context),
           checkLoginUseCase: Injector.get(),
-          saveWalletUseCase: Injector.get(),
         )..add(CheckStatus()),
       ),
     ],

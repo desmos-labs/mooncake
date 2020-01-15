@@ -1,3 +1,4 @@
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,16 @@ class PostItem extends StatelessWidget {
   final GestureTapCallback onTap;
   final String postId;
 
+  // Theming
+  final double messageFontSize;
+  final EdgeInsets margin;
+
   PostItem({
     Key key,
     @required this.onTap,
     @required this.postId,
+    this.messageFontSize = 0.0,
+    this.margin = const EdgeInsets.all(16.0),
   }) : super(key: key);
 
   @override
@@ -35,8 +42,18 @@ class PostItem extends StatelessWidget {
           return Container();
         }
 
+        final theme = Theme.of(context);
+        double fontSize = theme.textTheme.body1.fontSize;
+        if (this.messageFontSize > 0.0) {
+          fontSize = this.messageFontSize;
+        }
+
+        final messageTheme = theme.textTheme.body1.copyWith(fontSize: fontSize);
+        final mdStyle =
+            MarkdownStyleSheet.fromTheme(theme).copyWith(p: messageTheme);
+
         return Card(
-          margin: EdgeInsets.all(16),
+          margin: this.margin,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -58,10 +75,10 @@ class PostItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              post.message,
-                              style: Theme.of(context).textTheme.title,
+                            MarkdownBody(
+                              data: post.message,
                               key: PostsKeys.postItemMessage(post.id),
+                              styleSheet: mdStyle,
                             ),
                             SizedBox(height: 4),
                             PostItemHeader(

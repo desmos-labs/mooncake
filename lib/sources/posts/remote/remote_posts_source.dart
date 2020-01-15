@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -40,7 +40,8 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   /// Observes the chain events
   StreamSubscription _observeEvents() {
     // Setup the channel
-    final channel = IOWebSocketChannel.connect('$_rpcEndpoint/websocket');
+    final rpcUrl = _rpcEndpoint.replaceAll(RegExp('http(s)?:\/\/'), "");
+    final channel = IOWebSocketChannel.connect('ws://$rpcUrl/websocket');
 
     // Get the given query list or use the default set
     final queryList = [
@@ -69,6 +70,42 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       final height = query.result.data.value.txResult.height;
       await _parseBlock(height);
     });
+  }
+
+  Future<void> _parseGenesis() async {
+    final endpoint = "/genesis";
+    final response = await _chainHelper.queryRpc(endpoint);
+    final genesisResponse = GenesisResponse.fromJson(response);
+
+    final posts =
+        genesisResponse.result.genesis.appState.postsState.posts ?? [];
+    final reactions =
+        genesisResponse.result.genesis.appState.postsState.reactions ?? {};
+
+    // Get all the children of the posts
+    final Map<String, List<String>> children = {};
+    posts.where((post) => post.hasParent).forEach((post) {
+      final existingChildren = children[post.parentId] ?? [];
+      existingChildren.add(post.id);
+      children[post.parentId] = existingChildren;
+    });
+
+    // Combine posts with reactions and add all the children to the posts
+    posts.map((post) {
+      Post completePost = post;
+
+      // Add reactions
+      if (reactions[post.id] != null) {
+        completePost = completePost.copyWith(reactions: reactions[post.id]);
+      }
+
+      // Add children
+      if (children[post.id] != null) {
+        completePost = completePost.copyWith(commentsIds: children[post.id]);
+      }
+
+      return completePost.copyWith(status: PostStatus.SYNCED);
+    }).forEach((post) => _postsStream.add(post));
   }
 
   Future<void> _parseBlock(String height) async {
@@ -165,6 +202,11 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     final initBlockHeight = double.parse(
       sharedPrefs.getString(_BLOCK_HEIGHT_KEY) ?? "0",
     ).toInt();
+
+    // If we never synced a block, we need to parse the genesis too
+    if (initBlockHeight == 0) {
+      await _parseGenesis();
+    }
 
     // Get the current block height
     final response = await _chainHelper.queryChainRaw("/blocks/latest");

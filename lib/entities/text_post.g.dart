@@ -23,8 +23,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    commentsIds:
-        (json['comments_ids'] as List)?.map((e) => e as String)?.toList(),
+    commentsIds: (json['children'] as List)?.map((e) => e as String)?.toList(),
     status: _$enumDecodeNullable(_$PostStatusEnumMap, json['status']),
   );
 }
@@ -40,7 +39,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'creator': instance.owner,
       'optional_data': instance.optionalData,
       'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
-      'comments_ids': instance.commentsIds,
+      'children': instance.commentsIds,
       'status': _$PostStatusEnumMap[instance.status],
     };
 
