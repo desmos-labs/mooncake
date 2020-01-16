@@ -68,13 +68,14 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<void> savePost(Post post) async {
+  Future<void> savePost(Post post, {bool emit = true}) async {
     final database = await this.database;
     final key = post.owner + post.created;
     await store.record(key).put(database, post.toJson());
 
-    // Emit the saved post
-    _streamController.add(post);
+    if (emit) {
+      _streamController.add(post);
+    }
   }
 
   @override

@@ -22,7 +22,9 @@ abstract class LocalPostsSource {
 
   /// Saves the given [post] inside the source, returning it
   /// after it has being created.
-  Future<void> savePost(Post post);
+  /// If [emit] is `true`, the new post will be emitted to the posts
+  /// stream.
+  Future<void> savePost(Post post, {bool emit = true});
 
   /// Saves the given list of [posts] into the source.
   Future<void> savePosts(List<Post> posts);
