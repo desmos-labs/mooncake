@@ -3,7 +3,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/ui/widgets/posts/list/post_reactions_list.dart';
+import 'package:mooncake/ui/widgets/posts/list/post_reactions_bar.dart';
 
 import 'post_item_header.dart';
 
@@ -97,25 +97,17 @@ class PostItem extends StatelessWidget {
                     key: PostsKeys.postActionsBar(post.id),
                     postId: postId,
                   ),
-                  if (post.reactions?.isNotEmpty == true) _reactions(post)
+                  SizedBox(height: 16),
+                  PostReactionsBar(
+                    key: PostsKeys.postsReactionBar(post.id),
+                    postId: post.id,
+                  )
                 ],
               ),
             ),
           ),
         );
       },
-    );
-  }
-
-  Widget _reactions(Post post) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 16),
-        PostReactionsList(
-          key: PostsKeys.postsReactionBar(post.id),
-          postId: post.id,
-        )
-      ],
     );
   }
 }

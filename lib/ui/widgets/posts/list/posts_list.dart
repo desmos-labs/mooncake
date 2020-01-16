@@ -19,36 +19,44 @@ class PostsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostsBloc, PostsState>(
-      bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),
-      builder: (context, state) {
-        if (state is PostsLoading) {
-          return LoadingIndicator(key: PostsKeys.postsLoading);
-        } else if (state is PostsLoaded) {
-          // Filter the posts based on the filter set
-          final posts = state.posts
-              .where((p) => _filter != null ? _filter(p) : true)
-              .toList();
-          return Column(
-            children: <Widget>[
-              Flexible(
-                child: ListView.builder(
-                  key: PostsKeys.postsList,
-                  itemCount: posts.length,
-                  itemBuilder: (context, index) {
-                    return _postWidget(context, posts[index]);
-                  },
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/pattern.png"),
+          repeat: ImageRepeat.repeat
+        ),
+      ),
+      child: BlocBuilder<PostsBloc, PostsState>(
+        bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),
+        builder: (context, state) {
+          if (state is PostsLoading) {
+            return LoadingIndicator(key: PostsKeys.postsLoading);
+          } else if (state is PostsLoaded) {
+            // Filter the posts based on the filter set
+            final posts = state.posts
+                .where((p) => _filter != null ? _filter(p) : true)
+                .toList();
+            return Column(
+              children: <Widget>[
+                Flexible(
+                  child: ListView.builder(
+                    key: PostsKeys.postsList,
+                    itemCount: posts.length,
+                    itemBuilder: (context, index) {
+                      return _postWidget(context, posts[index]);
+                    },
+                  ),
                 ),
-              ),
-              if (state.syncingPosts)
-                SyncSnackBar(),
+                if (state.syncingPosts)
+                  SyncSnackBar(),
 //              if (state.fetchingPosts) FetchingSnackbar(),
-            ],
-          );
-        } else {
-          return Container(key: PostsKeys.postsEmptyContainer);
-        }
-      },
+              ],
+            );
+          } else {
+            return Container(key: PostsKeys.postsEmptyContainer);
+          }
+        },
+      ),
     );
   }
 

@@ -23,6 +23,11 @@ class AddPostReactionUseCase {
       return post;
     }
 
+    if (reaction == null || reaction.trim().isEmpty) {
+      // Reaction is invalid, do nothing
+      return post;
+    }
+
     // Build the reaction object
     final address = await _walletRepository.getAddress();
     final reactionObj = Reaction(owner: address, value: reaction);

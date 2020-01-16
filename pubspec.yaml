@@ -10,12 +10,13 @@ dependencies:
   collection:
   cupertino_icons:
   dependencies:
+  emoji_picker:
   equatable:
   flutter_bloc:
-  flutter_emoji:
   flutter_markdown:
   flutter_screenutil:
   flutter_secure_storage:
+  flutter_svg:
   font_awesome_flutter:
   intl:
   json_annotation:
@@ -42,3 +43,20 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+  fonts:
+    - family: Dosis
+      fonts:
+        - asset: assets/fonts/Dosis-ExtraLight.ttf
+          weight: 100
+        - asset: assets/fonts/Dosis-Light.ttf
+          weight: 200
+        - asset: assets/fonts/Dosis-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Dosis-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Dosis-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Dosis-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Dosis-ExtraBold.ttf
+          weight: 800
