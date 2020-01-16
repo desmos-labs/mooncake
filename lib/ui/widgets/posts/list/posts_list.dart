@@ -22,9 +22,8 @@ class PostsList extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/pattern.png"),
-          repeat: ImageRepeat.repeat
-        ),
+            image: AssetImage("assets/images/pattern.png"),
+            repeat: ImageRepeat.repeat),
       ),
       child: BlocBuilder<PostsBloc, PostsState>(
         bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),

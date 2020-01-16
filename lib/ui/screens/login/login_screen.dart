@@ -31,10 +31,10 @@ class LoginScreen extends StatelessWidget {
                   Text(
                     PostsLocalizations.of(context).appPhrase,
                     style: Theme.of(context).textTheme.headline.copyWith(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   SizedBox(height: 16),
                   Row(
@@ -45,9 +45,9 @@ class LoginScreen extends StatelessWidget {
                           PostsLocalizations.of(context).appDescription,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.body2.copyWith(
-                            color: Colors.grey[300],
-                            fontSize: 16,
-                          ),
+                                color: Colors.grey[300],
+                                fontSize: 16,
+                              ),
                         ),
                       ),
                     ],
@@ -58,14 +58,12 @@ class LoginScreen extends StatelessWidget {
             RaisedButton(
               color: Theme.of(context).primaryColorLight,
               textColor: Theme.of(context).primaryColor,
-              child: Text(
-                  PostsLocalizations.of(context).recoverFromMnemonic),
+              child: Text(PostsLocalizations.of(context).recoverFromMnemonic),
               onPressed: () => _onRecoverAccount(context),
             ),
             FlatButton(
               textColor: Theme.of(context).primaryColorLight,
-              child:
-                  Text(PostsLocalizations.of(context).generateNewAccount),
+              child: Text(PostsLocalizations.of(context).generateNewAccount),
               onPressed: () => _onCreateAccountClicked(context),
             )
           ],

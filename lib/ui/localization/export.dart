@@ -13,7 +13,8 @@ class PostsLocalizations {
 
   String get appTitle => "Mooncake";
   String get appPhrase => "Hello, dreamer!";
-  String get appDescription => "Welcome to a new world of decentralized social networks";
+  String get appDescription =>
+      "Welcome to a new world of decentralized social networks";
   String get loadingData => "Loading data...";
 
   String get allPosts => "Posts";

@@ -36,7 +36,10 @@ class Account extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     PostsLocalizations.of(context).accountTitle,
-                    style: Theme.of(context).textTheme.headline.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline
+                        .copyWith(fontWeight: FontWeight.bold),
                   )
                 ],
               ),
