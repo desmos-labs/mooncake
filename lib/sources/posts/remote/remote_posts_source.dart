@@ -218,9 +218,11 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   }
 
   @override
-  Future<List<Post>> getPostComments(String postId) {
-    // TODO: implement getPostComments
-    throw UnimplementedError();
+  Future<List<Post>> getPostComments(String postId) async {
+    final post = await getPostById(postId);
+    return Future.wait(post.commentsIds.map((comment) async {
+      return await getPostById(postId);
+    }).toList());
   }
 
   @override

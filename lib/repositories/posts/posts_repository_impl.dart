@@ -27,7 +27,12 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<List<Post>> getPostComments(String postId) {
+  Future<List<Post>> getPostComments(String postId) async {
+    final comments = await _remotePostsSource.getPostComments(postId);
+    comments.forEach((comment) async {
+      await _localPostsSource.savePost(comment);
+    });
+
     return _localPostsSource.getPostComments(postId);
   }
 
