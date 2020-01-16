@@ -26,6 +26,16 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    signingConfigs {
+        release {
+            Properties localProps = new Properties()
+            localProps.load(new FileInputStream(file('../local.properties')))
+            storeFile file(localProps["signing.storeFile"])
+            storePassword localProps["signing.storePassword"]
+            keyPassword localProps["signing.keyPassword"]
+            keyAlias localProps["signing.keyAlias"]
+        }
+    }
     compileSdkVersion 28
 
     sourceSets {
@@ -47,9 +57,7 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
