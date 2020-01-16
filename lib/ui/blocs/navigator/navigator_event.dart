@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/screens/export.dart';
+import 'package:mooncake/ui/screens/export.dart';
 import 'package:equatable/equatable.dart';
 
 /// Represents a generic event that is emitted when the user wants to

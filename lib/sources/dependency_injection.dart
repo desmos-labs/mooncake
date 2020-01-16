@@ -1,12 +1,15 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:dwitter/repositories/repositories.dart';
-import 'package:dwitter/sources/sources.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:http/http.dart' as http;
-import 'package:sacco/sacco.dart';
 
 class SourcesModule implements Module {
-  static const _lcdUrl = "http://34.74.131.47:1317";
-  static const _rpcUrl = "ws://34.74.131.47:26657";
+  static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
+  static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";
+//  static const _lcdUrl = "http://10.0.2.2:1317";
+//  static const _rpcUrl = "http://10.0.2.2:26657";
+
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
   @override
@@ -18,9 +21,7 @@ class SourcesModule implements Module {
         ),
       )
       ..bindLazySingleton<LocalPostsSource>(
-        (injector, params) => LocalPostsSourceImpl(
-          walletSource: injector.get(),
-        ),
+        (injector, params) => LocalPostsSourceImpl(dbPath: "posts.db"),
         name: "local",
       )
       ..bindLazySingleton<RemotePostsSource>(
@@ -28,6 +29,7 @@ class SourcesModule implements Module {
           rpcEndpoint: _rpcUrl,
           chainHelper: ChainHelper(
             lcdEndpoint: _lcdUrl,
+            rpcEndpoint: _rpcUrl,
             httpClient: http.Client(),
           ),
           walletSource: injector.get(),

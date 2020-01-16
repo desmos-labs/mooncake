@@ -1,28 +1,24 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dwitter/ui/ui.dart';
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Handles the login events and emits the proper state instances.
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final CheckLoginUseCase _checkLoginUseCase;
-  final SaveWalletUseCase _saveWalletUseCase;
 
   final NavigatorBloc _navigatorBloc;
   StreamSubscription _recoverAccountSubscription;
 
-  LoginBloc({
-    @required NavigatorBloc navigatorBloc,
-    @required CheckLoginUseCase checkLoginUseCase,
-    @required SaveWalletUseCase saveWalletUseCase,
-  })  : assert(navigatorBloc != null),
+  LoginBloc(
+      {@required NavigatorBloc navigatorBloc,
+      @required CheckLoginUseCase checkLoginUseCase})
+      : assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(checkLoginUseCase != null),
-        _checkLoginUseCase = checkLoginUseCase,
-        assert(saveWalletUseCase != null),
-        _saveWalletUseCase = saveWalletUseCase;
+        _checkLoginUseCase = checkLoginUseCase;
 
   @override
   LoginState get initialState => Loading();
@@ -47,7 +43,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapLogInEventToState(LogIn event) async* {
-    await _saveWalletUseCase.save(event.mnemonic);
     yield LoggedIn();
     _navigatorBloc.add(NavigateToHome());
   }

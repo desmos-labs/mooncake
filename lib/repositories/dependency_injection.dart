@@ -1,7 +1,7 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:dwitter/usecases/posts/posts.dart';
-import 'package:dwitter/usecases/user/user.dart';
-import 'package:dwitter/usecases/wallet/wallet.dart';
+import 'package:mooncake/usecases/posts/posts.dart';
+import 'package:mooncake/usecases/user/user.dart';
+import 'package:mooncake/usecases/wallet/wallet.dart';
 
 import 'posts/posts_repository_impl.dart';
 import 'user/user_repository_impl.dart';

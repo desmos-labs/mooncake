@@ -2,27 +2,36 @@ import 'package:flutter/material.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
-  static Color get primaryColor => Color(0xFFE6559C);
-  static Color get accentColor => Color(0xFFB9F45A);
+  static Color get primaryColor => Color(0xFF946FAE);
+  static Color get accentColor => Color(0xFFA94E89);
 
-  static Color get textColor => Colors.white;
+  static Color get textColor => Colors.grey[800];
   static Color get textColorLight => Colors.grey[500];
 
   static EdgeInsets get postItemPadding => EdgeInsets.all(16);
 
   static ThemeData get theme {
     return ThemeData(
-      brightness: Brightness.dark,
+      iconTheme: IconThemeData(
+        color: accentColor,
+      ),
+      brightness: Brightness.light,
       primaryColor: primaryColor,
       accentColor: accentColor,
+      primaryColorLight: Colors.white,
+      scaffoldBackgroundColor: Colors.grey[200],
 
       // Define the default font family.
-      fontFamily: 'Roboto',
+      fontFamily: 'Dosis',
       textTheme: Typography.englishLike2018.copyWith(
-        body1: TextStyle(color: textColor),
+        body1: TextStyle(color: textColor, fontWeight: FontWeight.w500),
       ),
       buttonTheme: ButtonThemeData(
-          buttonColor: accentColor, textTheme: ButtonTextTheme.normal),
+        buttonColor: accentColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+      ),
     );
   }
 }

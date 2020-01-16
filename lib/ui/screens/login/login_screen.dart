@@ -1,4 +1,5 @@
-import 'package:dwitter/ui/ui.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,38 +10,66 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      color: PostsTheme.theme.scaffoldBackgroundColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  PostsLocalizations.of(context).appTitle,
-                  style: PostsTheme.theme.textTheme.display1.apply(
-                    color: PostsTheme.primaryColor,
+    return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 32, horizontal: 64),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 40),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'assets/images/logo.svg',
+                    width: 100,
+                    color: Colors.white,
                   ),
-                ),
-              ],
-            ),
-          ),
-          Column(
-            children: <Widget>[
-              RaisedButton(
-                child: Text(PostsLocalizations.of(context).recoverFromMnemonic),
-                onPressed: () => _onRecoverAccount(context),
+                  SizedBox(height: 32),
+                  Text(
+                    PostsLocalizations.of(context).appPhrase,
+                    style: Theme.of(context).textTheme.headline.copyWith(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          PostsLocalizations.of(context).appDescription,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                            color: Colors.grey[300],
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              RaisedButton(
-                child: Text(PostsLocalizations.of(context).generateNewAccount),
-                onPressed: () => _onCreateAccountClicked(context),
-              )
-            ],
-          )
-        ],
+            ),
+            RaisedButton(
+              color: Theme.of(context).primaryColorLight,
+              textColor: Theme.of(context).primaryColor,
+              child: Text(
+                  PostsLocalizations.of(context).recoverFromMnemonic),
+              onPressed: () => _onRecoverAccount(context),
+            ),
+            FlatButton(
+              textColor: Theme.of(context).primaryColorLight,
+              child:
+                  Text(PostsLocalizations.of(context).generateNewAccount),
+              onPressed: () => _onCreateAccountClicked(context),
+            )
+          ],
+        ),
       ),
     );
   }

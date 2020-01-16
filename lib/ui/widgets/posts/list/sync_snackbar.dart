@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Represents the snackbar that is shown during the synchronization
@@ -8,12 +8,19 @@ class SyncSnackBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
-      color: Colors.orange,
+      color: Theme.of(context).primaryColor,
       child: Row(
         children: <Widget>[
-          Icon(FontAwesomeIcons.cloudUploadAlt, size: 16),
+          Icon(
+            FontAwesomeIcons.cloudUploadAlt,
+            size: 16,
+            color: Colors.white,
+          ),
           SizedBox(width: 16),
-          Text(PostsLocalizations.of(context).syncingActivities),
+          Text(
+            PostsLocalizations.of(context).syncingActivities,
+            style: TextStyle(color: Colors.white),
+          ),
         ],
       ),
     );

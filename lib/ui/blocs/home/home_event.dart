@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class HomeEvent extends Equatable {

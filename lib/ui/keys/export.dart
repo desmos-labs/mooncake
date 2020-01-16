@@ -22,6 +22,7 @@ class PostsKeys {
   static Key postItemOwnerAvatar(String id) =>
       Key('__postItemOwnerAvatar_$id\__');
   static Key postActionsBar(String id) => Key('__postActionsBar$id\__');
+  static Key postsReactionBar(String id) => Key('__postReactionsBar$id\__');
 
   static Key postDetailsScreen(String id) => Key('__postDetailsScreen$id\__');
   static Key postDetails = const Key('__postDetails__');

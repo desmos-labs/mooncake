@@ -1,5 +1,5 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 class UseCaseModule implements Module {
   @override
@@ -15,7 +15,7 @@ class UseCaseModule implements Module {
       // Mnemonic use cases
       ..bindFactory((injector, params) => GenerateMnemonicUseCase())
       // Posts use cases
-      ..bindFactory((injector, params) => IsPostLikedUseCase(
+      ..bindFactory((injector, params) => GetUserReactionsToPost(
             walletRepository: injector.get(),
             postsRepository: injector.get(),
           ))
@@ -32,14 +32,14 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetPostsUseCase(
             postsRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => LikePostUseCase(
+      ..bindFactory((injector, params) => AddPostReactionUseCase(
             postsRepository: injector.get(),
             walletRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => SyncPostsUseCase(
             postsRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => UnlikePostUseCase(
+      ..bindFactory((injector, params) => RemoveReactionFromPostUseCase(
             postsRepository: injector.get(),
             walletRepository: injector.get(),
           ))

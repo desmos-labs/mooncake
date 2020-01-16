@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Represents the loader shown to the user while a new page of posts

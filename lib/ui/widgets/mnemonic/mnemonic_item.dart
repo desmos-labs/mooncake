@@ -1,4 +1,4 @@
-import 'package:dwitter/ui/theme/theme.dart';
+import 'package:mooncake/ui/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 /// Represents a single mnemonic word item that is shown inside the

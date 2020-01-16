@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents the repository that can be used in order to read
 /// and write data related to posts, comments and likes.

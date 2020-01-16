@@ -1,5 +1,5 @@
-import 'package:dwitter/ui/blocs/account/account_bloc.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/ui/blocs/account/account_bloc.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,14 +36,14 @@ class Account extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     PostsLocalizations.of(context).accountTitle,
-                    style: PostsTheme.theme.textTheme.title,
+                    style: Theme.of(context).textTheme.headline.copyWith(fontWeight: FontWeight.bold),
                   )
                 ],
               ),
               SizedBox(height: 8),
               Text(
                 PostsLocalizations.of(context).yourAddress,
-                style: PostsTheme.theme.textTheme.subtitle,
+                style: Theme.of(context).textTheme.title,
               ),
               Text(currentState.address),
             ],

@@ -50,29 +50,37 @@ class AddPost extends PostsEvent {
 }
 
 /// Tells the Bloc that it needs to set a post as liked.
-class LikePost extends PostsEvent {
+class AddPostReaction extends PostsEvent {
   final String postId;
+  final String reaction;
 
-  LikePost(this.postId);
-
-  @override
-  List<Object> get props => [postId];
+  AddPostReaction(this.postId, this.reaction);
 
   @override
-  String toString() => 'LikePost { postId: $postId }';
+  List<Object> get props => [postId, reaction];
+
+  @override
+  String toString() => 'AddPostReaction { '
+      'postId: $postId, '
+      'reaction: $reaction '
+      '}';
 }
 
 /// Tells the Bloc that it needs to set the given post as unliked
-class UnlikePost extends PostsEvent {
+class RemovePostReaction extends PostsEvent {
   final String postId;
+  final String reaction;
 
-  UnlikePost(this.postId);
-
-  @override
-  List<Object> get props => [postId];
+  RemovePostReaction(this.postId, this.reaction);
 
   @override
-  String toString() => 'UnlikePost { postId: $postId }';
+  List<Object> get props => [postId, reaction];
+
+  @override
+  String toString() => 'RemovePostReaction { '
+      'postId: $postId, '
+      'reaction: $reaction '
+      '}';
 }
 
 /// Tells the bloc to start the synchronization of locally stored

@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents the repository that allows to perform common operations
 /// related to the users profiles.

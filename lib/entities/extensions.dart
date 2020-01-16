@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Defines useful extensions methods for list of posts
 extension PostsExt on List<Post> {
@@ -8,7 +8,6 @@ extension PostsExt on List<Post> {
     String id,
     String message,
     PostStatus status,
-    String externalReference,
   }) {
     return this.firstWhere((post) {
       bool condition = true;
@@ -23,10 +22,6 @@ extension PostsExt on List<Post> {
 
       if (status != null) {
         condition &= post.status == status;
-      }
-
-      if (externalReference != null) {
-        condition &= post.externalReference == externalReference;
       }
 
       return condition;

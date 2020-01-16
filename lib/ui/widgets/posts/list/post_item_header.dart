@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:flutter/material.dart';
 
 /// Contains the info that are shown on top of a [PostItem]. The following
@@ -23,7 +23,10 @@ class PostItemHeader extends StatelessWidget {
           child: Text(
             post.owner,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.grey[500],
+            ),
           ),
         ),
       ],

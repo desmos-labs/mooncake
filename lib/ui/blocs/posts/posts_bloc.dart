@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
-import 'package:dwitter/dependency_injection/dependency_injection.dart';
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 import '../export.dart';
@@ -13,10 +14,11 @@ import '../export.dart';
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final int _syncPeriod;
 
+  final GetAddressUseCase _getAddressUseCase;
   final FetchPostsUseCase _fetchPostsUseCase;
   final CreatePostUseCase _createPostUseCase;
-  final LikePostUseCase _likePostUseCase;
-  final UnlikePostUseCase _unlikePostUseCase;
+  final AddPostReactionUseCase _addReactionToPostUseCase;
+  final RemoveReactionFromPostUseCase _removeReactionFromPostUseCase;
   final GetPostsUseCase _getPostsUseCase;
   final SyncPostsUseCase _syncPostsUseCase;
 
@@ -27,25 +29,28 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     @required int syncPeriod,
     @required FetchPostsUseCase fetchPostsUseCase,
     @required CreatePostUseCase createPostUseCase,
-    @required LikePostUseCase likePostUseCase,
-    @required UnlikePostUseCase unlikePostUseCase,
+    @required AddPostReactionUseCase likePostUseCase,
+    @required RemoveReactionFromPostUseCase unlikePostUseCase,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
+    @required GetAddressUseCase getAddressUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(fetchPostsUseCase != null),
         _fetchPostsUseCase = fetchPostsUseCase,
         assert(createPostUseCase != null),
         _createPostUseCase = createPostUseCase,
         assert(likePostUseCase != null),
-        _likePostUseCase = likePostUseCase,
+        _addReactionToPostUseCase = likePostUseCase,
         assert(unlikePostUseCase != null),
-        _unlikePostUseCase = unlikePostUseCase,
+        _removeReactionFromPostUseCase = unlikePostUseCase,
         assert(getPostsUseCase != null),
         _getPostsUseCase = getPostsUseCase,
         assert(syncPostsUseCase != null),
-        _syncPostsUseCase = syncPostsUseCase;
+        _syncPostsUseCase = syncPostsUseCase,
+        assert(getAddressUseCase != null),
+        _getAddressUseCase = getAddressUseCase;
 
-  factory PostsBloc.create({int syncPeriod = 20}) {
+  factory PostsBloc.create({int syncPeriod = 30}) {
     return PostsBloc(
       syncPeriod: syncPeriod,
       fetchPostsUseCase: Injector.get(),
@@ -54,6 +59,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       unlikePostUseCase: Injector.get(),
       getPostsUseCase: Injector.get(),
       syncPostsUseCase: Injector.get(),
+      getAddressUseCase: Injector.get(),
     );
   }
 
@@ -70,10 +76,10 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       yield* _mapLoadPostsEventToState(event);
     } else if (event is AddPost) {
       yield* _mapAddPostEventToState(event);
-    } else if (event is LikePost) {
-      yield* _mapLikePostEventToState(event);
-    } else if (event is UnlikePost) {
-      yield* _mapUnlikePostEventToState(event);
+    } else if (event is AddPostReaction) {
+      yield* _mapAddPostReactionEventToState(event);
+    } else if (event is RemovePostReaction) {
+      yield* _mapRemovePostReactionEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsEventToState();
     } else if (event is SyncPostsCompleted) {
@@ -138,15 +144,17 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       });
     }
 
+    final address = await _getAddressUseCase.get();
+
     final currentState = state;
     if (currentState is PostsLoaded) {
       // We have already loaded some posts
       final newPosts = await _getPosts();
-      yield currentState.copyWith(posts: newPosts);
+      yield currentState.copyWith(posts: newPosts, address: address);
     } else {
       // We never loaded any post before
       final posts = await _getPosts();
-      yield PostsLoaded(posts: posts);
+      yield PostsLoaded(address: address, posts: posts);
     }
   }
 
@@ -161,9 +169,14 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   /// Handles the event emitted when the user likes a post
-  Stream<PostsState> _mapLikePostEventToState(LikePost event) async* {
+  Stream<PostsState> _mapAddPostReactionEventToState(
+    AddPostReaction event,
+  ) async* {
     if (state is PostsLoaded) {
-      final updatedPost = await _likePostUseCase.like(event.postId);
+      final updatedPost = await _addReactionToPostUseCase.react(
+        event.postId,
+        event.reaction,
+      );
       final updatedPosts = (state as PostsLoaded)
           .posts
           .map((p) => p.id == updatedPost.id ? updatedPost : p)
@@ -174,9 +187,14 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   /// Handles the event telling that the user has unliked a previously
   /// liked post
-  Stream<PostsState> _mapUnlikePostEventToState(UnlikePost event) async* {
+  Stream<PostsState> _mapRemovePostReactionEventToState(
+    RemovePostReaction event,
+  ) async* {
     if (state is PostsLoaded) {
-      final updatedPost = await _unlikePostUseCase.unlike(event.postId);
+      final updatedPost = await _removeReactionFromPostUseCase.remove(
+        event.postId,
+        event.reaction,
+      );
       final updatedPosts = (state as PostsLoaded)
           .posts
           .map((p) => p.id == updatedPost.id ? updatedPost : p)

@@ -1,7 +1,7 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/ui/keys/export.dart';
-import 'package:dwitter/ui/localization/export.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/keys/export.dart';
+import 'package:mooncake/ui/localization/export.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Allows the user to select which tab should be visible inside

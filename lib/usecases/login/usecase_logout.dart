@@ -1,4 +1,4 @@
-import 'package:dwitter/usecases/usecases.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to easily log out the user from the application.

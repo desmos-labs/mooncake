@@ -1,7 +1,9 @@
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/ui/widgets/posts/list/post_reactions_bar.dart';
 
 import 'post_item_header.dart';
 
@@ -17,10 +19,16 @@ class PostItem extends StatelessWidget {
   final GestureTapCallback onTap;
   final String postId;
 
+  // Theming
+  final double messageFontSize;
+  final EdgeInsets margin;
+
   PostItem({
     Key key,
     @required this.onTap,
     @required this.postId,
+    this.messageFontSize = 0.0,
+    this.margin = const EdgeInsets.all(16.0),
   }) : super(key: key);
 
   @override
@@ -35,53 +43,67 @@ class PostItem extends StatelessWidget {
           return Container();
         }
 
-        return InkWell(
-          onTap: onTap,
-          child: Container(
-            padding: PostsTheme.postItemPadding,
-            child: Row(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    UserAvatar(
-                      key: PostsKeys.postItemOwnerAvatar(postId),
-                      user: post.owner,
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: <Widget>[
-                        Icon(FontAwesomeIcons.diceD6, size: 12),
-                        SizedBox(width: 4),
-                        Text(post.isCreateBlockHeight ? post.created : "N.A")
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        final theme = Theme.of(context);
+        double fontSize = theme.textTheme.body1.fontSize;
+        if (this.messageFontSize > 0.0) {
+          fontSize = this.messageFontSize;
+        }
+
+        final messageTheme = theme.textTheme.body1.copyWith(fontSize: fontSize);
+        final mdStyle =
+            MarkdownStyleSheet.fromTheme(theme).copyWith(p: messageTheme);
+
+        return Card(
+          margin: this.margin,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: InkWell(
+            onTap: onTap,
+            child: Container(
+              padding: PostsTheme.postItemPadding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      PostItemHeader(
-                        key: PostsKeys.postItemOwner(post.id),
-                        post: post,
+                      UserAvatar(
+                        key: PostsKeys.postItemOwnerAvatar(postId),
+                        user: post.owner,
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        post.message,
-                        key: PostsKeys.postItemMessage(post.id),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            MarkdownBody(
+                              data: post.message,
+                              key: PostsKeys.postItemMessage(post.id),
+                              styleSheet: mdStyle,
+                            ),
+                            SizedBox(height: 4),
+                            PostItemHeader(
+                              key: PostsKeys.postItemOwner(post.id),
+                              post: post,
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 8),
-                      PostActionsBar(
-                        key: PostsKeys.postActionsBar(post.id),
-                        postId: postId,
-                      )
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 16),
+                  PostActionsBar(
+                    key: PostsKeys.postActionsBar(post.id),
+                    postId: postId,
+                  ),
+                  SizedBox(height: 16),
+                  PostReactionsBar(
+                    key: PostsKeys.postsReactionBar(post.id),
+                    postId: post.id,
+                  )
+                ],
+              ),
             ),
           ),
         );

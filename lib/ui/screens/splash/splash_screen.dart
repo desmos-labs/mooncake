@@ -1,5 +1,6 @@
-import 'package:dwitter/dependency_injection/dependency_injection.dart';
-import 'package:dwitter/ui/ui.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,14 +18,28 @@ class SplashScreen extends StatelessWidget {
         }
 
         return Container(
+          padding: EdgeInsets.all(16.0),
           color: PostsTheme.primaryColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SvgPicture.asset(
+                'assets/images/logo.svg',
+                width: 100,
+                color: Colors.white,
+              ),
               Text(
                 PostsLocalizations.of(context).appTitle,
-                style: PostsTheme.theme.textTheme.display1,
+                style: PostsTheme.theme.textTheme.body1.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 16),
+              Text(
+                PostsLocalizations.of(context).loadingData,
+                style: PostsTheme.theme.textTheme.body1
+                    .copyWith(color: Colors.white, fontSize: 16),
               ),
             ],
           ),

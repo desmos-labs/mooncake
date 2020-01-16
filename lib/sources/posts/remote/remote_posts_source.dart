@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/repositories/repositories.dart';
-import 'package:dwitter/sources/sources.dart';
-import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
 class RemotePostsSourceImpl implements RemotePostsSource {
-  // Constants
   static const _BLOCK_HEIGHT_KEY = "block_height";
 
   final String _rpcEndpoint;
@@ -21,11 +19,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   // Streams
   final _postsStream = StreamController<Post>();
-  StreamSubscription _subscription; // ignore: cancel_subscriptions
+  StreamSubscription _subscription;
 
   // Converters
   final _msgConverter = MsgConverter();
-  final _postConverter = RemotePostConverter();
   final _eventsConverter = ChainEventsConverter();
 
   /// Public constructor
@@ -43,7 +40,8 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   /// Observes the chain events
   StreamSubscription _observeEvents() {
     // Setup the channel
-    final channel = IOWebSocketChannel.connect('$_rpcEndpoint/websocket');
+    final rpcUrl = _rpcEndpoint.replaceAll(RegExp('http(s)?:\/\/'), "");
+    final channel = IOWebSocketChannel.connect('ws://$rpcUrl/websocket');
 
     // Get the given query list or use the default set
     final queryList = [
@@ -74,6 +72,42 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     });
   }
 
+  Future<void> _parseGenesis() async {
+    final endpoint = "/genesis";
+    final response = await _chainHelper.queryRpc(endpoint);
+    final genesisResponse = GenesisResponse.fromJson(response);
+
+    final posts =
+        genesisResponse.result.genesis.appState.postsState.posts ?? [];
+    final reactions =
+        genesisResponse.result.genesis.appState.postsState.reactions ?? {};
+
+    // Get all the children of the posts
+    final Map<String, List<String>> children = {};
+    posts.where((post) => post.hasParent).forEach((post) {
+      final existingChildren = children[post.parentId] ?? [];
+      existingChildren.add(post.id);
+      children[post.parentId] = existingChildren;
+    });
+
+    // Combine posts with reactions and add all the children to the posts
+    posts.map((post) {
+      Post completePost = post;
+
+      // Add reactions
+      if (reactions[post.id] != null) {
+        completePost = completePost.copyWith(reactions: reactions[post.id]);
+      }
+
+      // Add children
+      if (children[post.id] != null) {
+        completePost = completePost.copyWith(commentsIds: children[post.id]);
+      }
+
+      return completePost.copyWith(status: PostStatus.SYNCED);
+    }).forEach((post) => _postsStream.add(post));
+  }
+
   Future<void> _parseBlock(String height) async {
     final endpoint = "/txs?tx.height=$height";
     final response = await _chainHelper.queryChainRaw(endpoint);
@@ -96,14 +130,13 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     });
   }
 
+  /// Handles properly the given [event].
   Future<void> _handleEvent(ChainEvent event) async {
     // Handle the event properly
     if (event is PostCreatedEvent) {
       return _handlePostCreatedEvent(event);
-    } else if (event is PostLikedEvent) {
-      return _handlePostLikedEvent(event);
-    } else if (event is PostUnlikedEvent) {
-      return _handlePostUnLikedEvent(event);
+    } else if (event is PostEvent) {
+      return _handlePostEvent(event);
     }
   }
 
@@ -123,12 +156,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     _postsStream.add(post);
   }
 
-  Future<void> _handlePostLikedEvent(PostLikedEvent event) async {
-    final post = await getPostById(event.postId);
-    _postsStream.add(post);
-  }
-
-  Future<void> _handlePostUnLikedEvent(PostUnlikedEvent event) async {
+  Future<void> _handlePostEvent(PostEvent event) async {
     final post = await getPostById(event.postId);
     _postsStream.add(post);
   }
@@ -148,8 +176,8 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   Future<Post> getPostById(String postId) async {
     try {
       final data = await _chainHelper.queryChain("/posts/$postId");
-      final post = _postConverter.toPost(PostJson.fromJson(data.result));
-      return post;
+      final post = Post.fromJson(data.result);
+      return post.copyWith(status: PostStatus.SYNCED);
     } catch (e) {
       print(e);
       return null;
@@ -169,6 +197,11 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       sharedPrefs.getString(_BLOCK_HEIGHT_KEY) ?? "0",
     ).toInt();
 
+    // If we never synced a block, we need to parse the genesis too
+    if (initBlockHeight == 0) {
+      await _parseGenesis();
+    }
+
     // Get the current block height
     final response = await _chainHelper.queryChainRaw("/blocks/latest");
     final blockResponse = BlockResponse.fromJson(response);
@@ -185,9 +218,11 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   }
 
   @override
-  Future<List<Post>> getPostComments(String postId) {
-    // TODO: implement getPostComments
-    throw UnimplementedError();
+  Future<List<Post>> getPostComments(String postId) async {
+    final post = await getPostById(postId);
+    return Future.wait(post.commentsIds.map((comment) async {
+      return await getPostById(postId);
+    }).toList());
   }
 
   @override

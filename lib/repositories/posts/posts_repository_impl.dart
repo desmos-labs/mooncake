@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:dwitter/entities/entities.dart';
-import 'package:dwitter/repositories/repositories.dart';
-import 'package:dwitter/usecases/usecases.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/usecases/usecases.dart';
+import 'package:meta/meta.dart';
 
 /// Implementation of [PostsRepository].
 class PostsRepositoryImpl extends PostsRepository {
@@ -27,7 +27,12 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<List<Post>> getPostComments(String postId) {
+  Future<List<Post>> getPostComments(String postId) async {
+    final comments = await _remotePostsSource.getPostComments(postId);
+    comments.forEach((comment) async {
+      await _localPostsSource.savePost(comment, emit: false);
+    });
+
     return _localPostsSource.getPostComments(postId);
   }
 

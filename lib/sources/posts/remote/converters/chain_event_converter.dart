@@ -1,4 +1,4 @@
-import 'package:dwitter/sources/sources.dart';
+import 'package:mooncake/sources/sources.dart';
 
 /// Convenient type that represents a converter for a list of attributes
 /// into a list of ChainEvent.
@@ -9,8 +9,8 @@ typedef EventConverter = List<ChainEvent> Function(
 /// of [ChainEvent] objects.
 class ChainEventsConverter {
   static const EVENT_POST_CREATED = "post_created";
-  static const EVENT_POST_LIKED = "post_liked";
-  static const EVENT_POST_UNLIKED = "post_unliked";
+  static const EVENT_POST_REACTION_ADDED = "post_reaction_added";
+  static const EVENT_POST_REACTION_REMOVED = "post_reaction_removed";
 
   /// Converts the given [events] into a list of [ChainEvent] objects.
   List<ChainEvent> convert(String height, List<MsgEvent> events) {
@@ -22,8 +22,8 @@ class ChainEventsConverter {
     // Create a map telling which converter should be used for each action
     final Map<String, EventConverter> converters = {
       EVENT_POST_CREATED: _convertPostCreatedEvents,
-      EVENT_POST_LIKED: _convertPostLikedEvents,
-      EVENT_POST_UNLIKED: _convertPostUnlikedEvent,
+      EVENT_POST_REACTION_ADDED: _convertPostReactionAddedEvents,
+      EVENT_POST_REACTION_REMOVED: _convertPostReactionRemovedEvents,
     };
 
     final List<ChainEvent> chainEvents = [];
@@ -62,34 +62,32 @@ class ChainEventsConverter {
   }
 
   /// Converts the given [attrs] for the block at the given [height]
-  /// into a list of [PostLikedEvent].
-  List<ChainEvent> _convertPostLikedEvents(
+  /// into a list of [PostReactionAdded].
+  List<ChainEvent> _convertPostReactionAddedEvents(
     String height,
     List<Map<String, String>> attrs,
   ) {
     List<ChainEvent> events = [];
-    for (int index = 0; index < attrs.length; index += 2) {
-      events.add(PostLikedEvent(
+    for (int index = 0; index < attrs.length; index += 3) {
+      events.add(PostEvent(
         height: height,
         postId: attrs[index]["value"],
-        liker: attrs[index + 1]["value"],
       ));
     }
     return events;
   }
 
   /// Converts the given [attrs] for the block at the given [height]
-  /// into a list of [PostUnlikedEvent].
-  List<ChainEvent> _convertPostUnlikedEvent(
+  /// into a list of [PostReactionRemovedEvent].
+  List<ChainEvent> _convertPostReactionRemovedEvents(
     String height,
     List<Map<String, String>> attrs,
   ) {
     List<ChainEvent> events = [];
-    for (int index = 0; index < attrs.length; index += 2) {
-      events.add(PostUnlikedEvent(
+    for (int index = 0; index < attrs.length; index += 3) {
+      events.add(PostEvent(
         height: height,
         postId: attrs[index]["value"],
-        liker: attrs[index + 1]["value"],
       ));
     }
     return events;

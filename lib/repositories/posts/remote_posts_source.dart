@@ -1,4 +1,4 @@
-import 'package:dwitter/entities/entities.dart';
+import 'package:mooncake/entities/entities.dart';
 
 abstract class RemotePostsSource {
   /// Returns the post having the given [id].

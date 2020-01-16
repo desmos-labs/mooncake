@@ -1,45 +1,56 @@
 import 'dart:convert';
 
-import 'package:dwitter/sources/sources.dart';
+import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:sacco/sacco.dart';
 
 /// Allows to easily perform chain-related actions such as querying the
 /// chain state or sending transactions to it.
 class ChainHelper {
   final String _lcdEndpoint;
+  final String _rpcEndpoint;
   final http.Client _httpClient;
 
   ChainHelper({
     @required String lcdEndpoint,
+    @required String rpcEndpoint,
     @required http.Client httpClient,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
         _lcdEndpoint = lcdEndpoint,
+        assert(rpcEndpoint != null && rpcEndpoint.isNotEmpty),
+        this._rpcEndpoint = rpcEndpoint,
         assert(httpClient != null),
         _httpClient = httpClient;
+
+  Future<Map<String, dynamic>> _query(String url) async {
+    final data = await _httpClient.get(url);
+    if (data.statusCode != 200) {
+      throw Exception("Expected response code 200, got: ${data.statusCode}");
+    }
+    return json.decode(utf8.decode(data.bodyBytes));
+  }
+
+  /// Queries the RPC to the specified [endpoint].
+  Future<Map<String, dynamic>> queryRpc(String endpoint) async {
+    final url = _rpcEndpoint + endpoint;
+    return _query(url);
+  }
 
   /// Queries the chain status using the given endpoint and returns
   /// the raw body response.
   Future<Map<String, dynamic>> queryChainRaw(String endpoint) async {
     final url = _lcdEndpoint + endpoint;
-    final data = await _httpClient.get(url);
-    if (data.statusCode != 200) {
-      throw Exception("Expected response code 200, got: ${data.statusCode}");
-    }
-    return json.decode(data.body);
+    return _query(url);
   }
 
   /// Utility method to easily query any chain endpoint and
   /// read the response as an [LcdResponse] object instance.
   Future<LcdResponse> queryChain(String endpoint) async {
     final url = _lcdEndpoint + endpoint;
-    final data = await _httpClient.get(url);
-    if (data.statusCode != 200) {
-      throw Exception("Expected response code 200, got: ${data.statusCode}");
-    }
-    return LcdResponse.fromJson(json.decode(data.body));
+    final json = await _query(url);
+    return LcdResponse.fromJson(json);
   }
 
   /// Creates, sings and sends a transaction having the given [messages]
