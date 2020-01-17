@@ -4,11 +4,11 @@ import 'package:meta/meta.dart';
 
 /// Allows to remove a reaction from a post having a given id.
 class RemoveReactionFromPostUseCase {
-  final WalletRepository _walletRepository;
+  final UserRepository _walletRepository;
   final PostsRepository _postsRepository;
 
   RemoveReactionFromPostUseCase({
-    @required WalletRepository walletRepository,
+    @required UserRepository walletRepository,
     @required PostsRepository postsRepository,
   })  : assert(walletRepository != null),
         _walletRepository = walletRepository,

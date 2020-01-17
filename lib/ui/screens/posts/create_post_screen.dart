@@ -97,12 +97,12 @@ class CreatePostScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SizedBox(
+        const SizedBox(
             height: 16,
             width: 16,
-            child: LoadingIndicator(),
+            child: const LoadingIndicator(),
           ),
-          SizedBox(width: 16),
+        const SizedBox(width: 16),
           Text(PostsLocalizations.of(context).savingPost)
         ],
       ),

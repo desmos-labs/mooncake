@@ -12,7 +12,7 @@ class FetchingSnackbar extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Icon(FontAwesomeIcons.cloudDownloadAlt, size: 16),
-          SizedBox(width: 16),
+        const SizedBox(width: 16),
           Text(PostsLocalizations.of(context).fetchingPosts),
         ],
       ),

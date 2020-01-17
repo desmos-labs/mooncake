@@ -38,16 +38,16 @@ class PostActionsBar extends StatelessWidget {
         return Row(
           children: <Widget>[
             Icon(statusIcon, size: ICON_SIZE),
-            SizedBox(width: ICON_SPACING / 2),
+          const SizedBox(width: ICON_SPACING / 2),
             Text(showFormatter.format(post.dateTime)),
-            SizedBox(width: ICON_SPACING),
+          const SizedBox(width: ICON_SPACING),
             PostAction(
               icon: post.allowsComments
                   ? FontAwesomeIcons.comment
                   : FontAwesomeIcons.commentSlash,
               value: post.commentsIds.length.toStringOrEmpty(),
             ),
-            SizedBox(width: ICON_SPACING),
+          const SizedBox(width: ICON_SPACING),
 //            PostAction(
 //              icon: post.liked
 //                  ? FontAwesomeIcons.solidHeart

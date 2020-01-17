@@ -4,9 +4,9 @@ import 'package:meta/meta.dart';
 /// Allows to save a mnemonic phrase as the current user's wallet into the
 /// encrypted storage of the mobile device the user is using.
 class SaveWalletUseCase {
-  final WalletRepository _walletRepository;
+  final UserRepository _walletRepository;
 
-  SaveWalletUseCase({@required WalletRepository walletRepository})
+  SaveWalletUseCase({@required UserRepository walletRepository})
       : assert(walletRepository != null),
         _walletRepository = walletRepository;
 

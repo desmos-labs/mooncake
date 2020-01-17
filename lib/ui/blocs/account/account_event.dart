@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic event that is emitted from the account data screen
 abstract class AccountEvent extends Equatable {
@@ -17,13 +18,13 @@ class LoadAccount extends AccountEvent {
 
 /// Event that is loaded once the address has been successfully computed.
 class AddressLoaded extends AccountEvent {
-  final String address;
+  final AccountData account;
 
-  AddressLoaded(this.address);
-
-  @override
-  String toString() => 'AddressLoaded { address: $address }';
+  AddressLoaded(this.account);
 
   @override
-  List<Object> get props => [address];
+  String toString() => 'AddressLoaded { address: $account }';
+
+  @override
+  List<Object> get props => [account];
 }

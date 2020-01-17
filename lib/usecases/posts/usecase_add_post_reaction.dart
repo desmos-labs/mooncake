@@ -4,11 +4,11 @@ import 'package:meta/meta.dart';
 
 /// Allows to react a post having a specific id.
 class AddPostReactionUseCase {
-  final WalletRepository _walletRepository;
+  final UserRepository _walletRepository;
   final PostsRepository _postsRepository;
 
   AddPostReactionUseCase({
-    @required WalletRepository walletRepository,
+    @required UserRepository walletRepository,
     @required PostsRepository postsRepository,
   })  : assert(walletRepository != null),
         _walletRepository = walletRepository,

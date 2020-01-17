@@ -5,10 +5,10 @@ import 'package:meta/meta.dart';
 /// Allows to get the reactions from the current app user to a post
 /// having a specific id.
 class GetUserReactionsToPost {
-  final WalletRepository _walletRepository;
+  final UserRepository _walletRepository;
 
   GetUserReactionsToPost(
-      {@required WalletRepository walletRepository,
+      {@required UserRepository walletRepository,
       @required PostsRepository postsRepository})
       : assert(walletRepository != null),
         _walletRepository = walletRepository;

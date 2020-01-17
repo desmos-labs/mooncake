@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic state for screen that shows the user
 /// the details about his account.
@@ -27,7 +28,13 @@ class LoadingAccount extends AccountState {
 /// Represents the state in which the user data has been
 /// properly loaded.
 class AccountLoaded extends AccountState {
-  final String address;
+  final AccountData account;
 
-  AccountLoaded({@required this.address});
+  AccountLoaded({@required this.account});
+
+  @override
+  String toString() => 'AccountLoaded { account: $account }';
+
+  @override
+  List<Object> get props => [account];
 }

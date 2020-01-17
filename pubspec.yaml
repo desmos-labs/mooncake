@@ -6,6 +6,8 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
+  alan:
+    git: https://github.com/alan-sdk/alan.dart
   bip39:
   collection:
   cupertino_icons:
@@ -23,11 +25,10 @@ dependencies:
   json_serializable:
   meta:
   path_provider:
-  alan:
-    git: https://github.com/alan-sdk/alan.dart
   sembast:
   shared_preferences:
-  stream_transform: any
+  stream_transform:
+  url_launcher:
   web_socket_channel:
 
   flutter:

@@ -1,18 +1,17 @@
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/usecases/posts/posts.dart';
-import 'package:mooncake/usecases/wallet/wallet.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 /// Allows to create a new post.
 class CreatePostUseCase {
-  final WalletRepository _walletRepository;
+  final UserRepository _userRepository;
   final PostsRepository _postsRepository;
 
   CreatePostUseCase({
-    @required WalletRepository walletRepository,
+    @required UserRepository walletRepository,
     @required PostsRepository postsRepository,
   })  : assert(walletRepository != null),
-        _walletRepository = walletRepository,
+        _userRepository = walletRepository,
         assert(postsRepository != null),
         _postsRepository = postsRepository;
 
@@ -23,7 +22,7 @@ class CreatePostUseCase {
     @required String parentId,
     @required bool allowsComments,
   }) async {
-    final wallet = await _walletRepository.getWallet();
+    final wallet = await _userRepository.getWallet();
     final date = Post.getDateStringNow();
 
     final post = Post(

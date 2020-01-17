@@ -15,23 +15,33 @@ class SourcesModule implements Module {
   @override
   void configure(Binder binder) {
     binder
-      ..bindLazySingleton<WalletSource>(
-        (injector, params) => WalletSourceImpl(
-          networkInfo: _networkInfo,
-        ),
-      )
+      // Utilities
+      ..bindSingleton(ChainHelper(
+        lcdEndpoint: _lcdUrl,
+        rpcEndpoint: _rpcUrl,
+        httpClient: http.Client(),
+      ))
+      // User sources
+      ..bindLazySingleton<LocalUserSource>(
+          (injector, params) => LocalUserSourceImpl(
+                networkInfo: _networkInfo,
+                dbName: "account.db",
+              ))
+      ..bindLazySingleton<RemoteUserSource>(
+          (injector, params) => RemoteUserSourceImpl(
+                chainHelper: injector.get(),
+              ))
+      // Post sources
       ..bindLazySingleton<LocalPostsSource>(
-        (injector, params) => LocalPostsSourceImpl(dbName: "posts.db"),
+        (injector, params) => LocalPostsSourceImpl(
+          dbName: "posts.db",
+        ),
         name: "local",
       )
       ..bindLazySingleton<RemotePostsSource>(
         (injector, params) => RemotePostsSourceImpl(
           rpcEndpoint: _rpcUrl,
-          chainHelper: ChainHelper(
-            lcdEndpoint: _lcdUrl,
-            rpcEndpoint: _rpcUrl,
-            httpClient: http.Client(),
-          ),
+          chainHelper: injector.get(),
           walletSource: injector.get(),
         ),
         name: "remote",

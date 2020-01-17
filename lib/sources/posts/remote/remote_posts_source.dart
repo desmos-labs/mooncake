@@ -15,7 +15,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   final String _rpcEndpoint;
   final ChainHelper _chainHelper;
-  final WalletSource _walletSource;
+  final LocalUserSource _walletSource;
 
   // Streams
   final _postsStream = StreamController<Post>();
@@ -30,7 +30,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   RemotePostsSourceImpl({
     @required String rpcEndpoint,
     @required ChainHelper chainHelper,
-    @required WalletSource walletSource,
+    @required LocalUserSource walletSource,
   })  : assert(rpcEndpoint != null),
         _rpcEndpoint = rpcEndpoint,
         assert(walletSource != null),

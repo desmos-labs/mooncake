@@ -35,11 +35,11 @@ class RecoverAccountScreen extends StatelessWidget {
                 Text(
                   PostsLocalizations.of(context).mnemonicRecoverInstructions,
                 ),
-                SizedBox(height: 16),
+              const SizedBox(height: 16),
                 Expanded(
                   child: MnemonicInput(verificationMnemonic: mnemonic),
                 ),
-                SizedBox(height: 16),
+              const SizedBox(height: 16),
                 if (state is TypingMnemonic) _recoverButton(context, state),
                 if (state is RecoveringAccount) _recoverLoading(),
               ],
@@ -75,12 +75,12 @@ class RecoverAccountScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(
+      const SizedBox(
           height: 16,
           width: 16,
-          child: LoadingIndicator(),
+          child: const LoadingIndicator(),
         ),
-        SizedBox(width: 16),
+      const SizedBox(width: 16),
         Text("Recovering account...")
       ],
     );

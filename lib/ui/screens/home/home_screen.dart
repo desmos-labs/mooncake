@@ -27,12 +27,14 @@ class HomeScreen extends StatelessWidget {
           body: activeTab == AppTab.posts
               ? PostsList(filter: (p) => !p.hasParent)
               : Account(),
-          floatingActionButton: FloatingActionButton(
-            key: PostsKeys.addPost,
-            onPressed: () => Navigator.of(context).push(_createRoute()),
-            child: Icon(Icons.add),
-            tooltip: PostsLocalizations.of(context).editPost,
-          ),
+          floatingActionButton: activeTab == AppTab.posts
+              ? FloatingActionButton(
+                  key: PostsKeys.addPost,
+                  onPressed: () => Navigator.of(context).push(_createRoute()),
+                  child: Icon(Icons.add),
+                  tooltip: PostsLocalizations.of(context).editPost,
+                )
+              : null,
           bottomNavigationBar: TabSelector(
             activeTab: activeTab,
             onTabSelected: (tab) {

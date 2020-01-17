@@ -9,14 +9,14 @@ import 'package:meta/meta.dart';
 /// Represents the bloc associated to the screen displaying the user's
 /// account data.
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
-  final GetAddressUseCase _getAddressUseCase;
+  final GetAccountUseCase _getAccountUseCase;
 
-  AccountBloc({@required GetAddressUseCase getAddressUseCase})
-      : assert(getAddressUseCase != null),
-        _getAddressUseCase = getAddressUseCase;
+  AccountBloc({@required GetAccountUseCase getAccountUseCase})
+      : assert(getAccountUseCase != null),
+        _getAccountUseCase = getAccountUseCase;
 
   factory AccountBloc.create() => AccountBloc(
-        getAddressUseCase: Injector.get(),
+        getAccountUseCase: Injector.get(),
       );
 
   @override
@@ -33,14 +33,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapLoadAccountEventToState() async* {
     // Load the data
-    _getAddressUseCase.get().then((address) {
-      add(AddressLoaded(address));
+    _getAccountUseCase.get().then((account) {
+      add(AddressLoaded(account));
     });
   }
 
   Stream<AccountState> _mapAddressLoadedEventToState(
     AddressLoaded event,
   ) async* {
-    yield (AccountLoaded(address: event.address));
+    yield (AccountLoaded(account: event.account));
   }
 }

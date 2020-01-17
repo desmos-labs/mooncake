@@ -10,20 +10,21 @@ import 'package:sembast/sembast_io.dart';
 
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
-  final String dbName;
+  final String _dbName;
 
   final store = StoreRef.main();
   final StreamController<Post> _streamController = StreamController<Post>();
 
   /// Public constructor
   LocalPostsSourceImpl({
-    @required this.dbName,
-  });
+    @required String dbName,
+  })  : assert(dbName != null && dbName.isNotEmpty),
+        this._dbName = dbName;
 
-  Future<Database> get database async {
+  Future<Database> get _database async {
     final path = await getApplicationDocumentsDirectory();
     await path.create(recursive: true);
-    return databaseFactoryIo.openDatabase(join(path.path, this.dbName));
+    return databaseFactoryIo.openDatabase(join(path.path, this._dbName));
   }
 
   @override
@@ -31,20 +32,20 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Future<Post> getPostById(String postId) async {
-    final database = await this.database;
+    final database = await this._database;
     final finder = Finder(filter: Filter.equals("id", postId));
 
-    final records = await store.find(database, finder: finder);
-    if (records.isEmpty) {
+    final record = await store.findFirst(database, finder: finder);
+    if (record == null) {
       return null;
     }
 
-    return Post.fromJson(records[0].value);
+    return Post.fromJson(record.value);
   }
 
   @override
   Future<List<Post>> getPostComments(String postId) async {
-    final database = await this.database;
+    final database = await this._database;
     final finder = Finder(filter: Filter.equals("parent_id", postId));
 
     final records = await store.find(database, finder: finder);
@@ -53,9 +54,10 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Future<List<Post>> getPostsToSync() async {
-    final database = await this.database;
+    final database = await this._database;
     final finder = Finder(
-      filter: Filter.notEquals("status.value", PostStatusValue.SYNCED.toString()),
+      filter:
+          Filter.notEquals("status.value", PostStatusValue.SYNCED.toString()),
     );
 
     final records = await store.find(database, finder: finder);
@@ -64,14 +66,14 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Future<List<Post>> getPosts() async {
-    final database = await this.database;
+    final database = await this._database;
     final records = await store.find(database);
     return records.map((record) => Post.fromJson(record.value)).toList();
   }
 
   @override
   Future<void> savePost(Post post, {bool emit = true}) async {
-    final database = await this.database;
+    final database = await this._database;
     final key = post.owner + post.created;
     await store.record(key).put(database, post.toJson());
 
@@ -87,7 +89,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Future<void> deletePost(String postId) async {
-    final database = await this.database;
+    final database = await this._database;
     final finder = Finder(filter: Filter.equals("id", postId));
 
     await store.delete(database, finder: finder);

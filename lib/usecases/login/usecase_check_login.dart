@@ -4,9 +4,9 @@ import 'package:meta/meta.dart';
 /// Allows to easily check whether the user has already logged in into the
 /// application or not.
 class CheckLoginUseCase {
-  final WalletRepository _walletRepository;
+  final UserRepository _walletRepository;
 
-  CheckLoginUseCase({@required WalletRepository walletRepository})
+  CheckLoginUseCase({@required UserRepository walletRepository})
       : assert(walletRepository != null),
         _walletRepository = walletRepository;
 

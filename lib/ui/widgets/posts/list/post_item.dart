@@ -76,7 +76,7 @@ class PostItem extends StatelessWidget {
                         key: PostsKeys.postItemOwnerAvatar(postId),
                         user: post.owner,
                       ),
-                      SizedBox(width: 16),
+                    const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -87,7 +87,7 @@ class PostItem extends StatelessWidget {
                               key: PostsKeys.postItemMessage(post.id),
                               styleSheet: mdStyle,
                             ),
-                            SizedBox(height: 4),
+                          const SizedBox(height: 4),
                             PostItemHeader(
                               key: PostsKeys.postItemOwner(post.id),
                               post: post,
@@ -97,12 +97,12 @@ class PostItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
+                const SizedBox(height: 16),
                   PostActionsBar(
                     key: PostsKeys.postActionsBar(post.id),
                     postId: postId,
                   ),
-                  SizedBox(height: 16),
+                const SizedBox(height: 16),
                   PostReactionsBar(
                     key: PostsKeys.postsReactionBar(post.id),
                     postId: post.id,
@@ -134,11 +134,11 @@ class PostItem extends StatelessWidget {
                     PostsLocalizations.of(buildContext).syncErrorTitle,
                     style: Theme.of(buildContext).textTheme.title,
                   ),
-                  SizedBox(height: 16),
+                const SizedBox(height: 16),
                   Text(PostsLocalizations.of(buildContext).syncErrorDesc),
-                  SizedBox(height: 16),
+                const SizedBox(height: 16),
                   Text(post.status.error),
-                  SizedBox(height: 16),
+                const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[

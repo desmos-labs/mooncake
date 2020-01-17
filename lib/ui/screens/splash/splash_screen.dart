@@ -35,7 +35,7 @@ class SplashScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 16),
+            const SizedBox(height: 16),
               Text(
                 PostsLocalizations.of(context).loadingData,
                 style: PostsTheme.theme.textTheme.body1

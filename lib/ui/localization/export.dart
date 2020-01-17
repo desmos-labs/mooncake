@@ -30,6 +30,8 @@ class PostsLocalizations {
 
   String get accountTitle => "Your account";
   String get yourAddress => "Your address:";
+  String get yourFunds => "Your funds:";
+  String get openInExplorer => "Open in explorer";
 
   String get post => "Post";
 
