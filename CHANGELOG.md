@@ -2,6 +2,8 @@
 ## Changes
 - Implemented the showing of sync errors using a long press on a post item
 - Improved the initial fetch of posts to take less time
+- Added more data inside the account page 
+- Added the possibility of visualizing the account inside the explorer
 
 # Version 0.0.1
 ## Changes
