@@ -26,14 +26,21 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> mapEventToState(AccountEvent event) async* {
     if (event is LoadAccount) {
       yield* _mapLoadAccountEventToState();
+    } else if (event is AddressLoaded) {
+      yield* _mapAddressLoadedEventToState(event);
     }
   }
 
   Stream<AccountState> _mapLoadAccountEventToState() async* {
     // Load the data
-    final address = await _getAddressUseCase.get();
-    yield AccountLoaded(
-      address: address,
-    );
+    _getAddressUseCase.get().then((address) {
+      add(AddressLoaded(address));
+    });
+  }
+
+  Stream<AccountState> _mapAddressLoadedEventToState(
+    AddressLoaded event,
+  ) async* {
+    yield (AccountLoaded(address: event.address));
   }
 }

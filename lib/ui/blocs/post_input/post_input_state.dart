@@ -6,10 +6,12 @@ import 'package:flutter/cupertino.dart';
 @immutable
 class PostInputState extends Equatable {
   final String message;
+  final bool allowsComments;
   final bool saving;
 
   PostInputState({
     @required this.message,
+    @required this.allowsComments,
     @required this.saving,
   });
 
@@ -18,24 +20,27 @@ class PostInputState extends Equatable {
   /// Builds an empty state.
   factory PostInputState.empty() => PostInputState(
         message: null,
+        allowsComments: true,
         saving: false,
       );
 
   /// Updates this state setting the specified values properly.
-  PostInputState update({String message, bool saving}) {
+  PostInputState update({String message, bool allowsComments, bool saving}) {
     return PostInputState(
       message: message ?? this.message,
+      allowsComments: allowsComments ?? this.allowsComments,
       saving: saving ?? this.saving,
     );
   }
 
   @override
-  List<Object> get props => [message, saving];
+  List<Object> get props => [message, saving, allowsComments];
 
   @override
   String toString() {
     return 'CommentInputState {'
         'message: $message ,'
+        'allowsComments: $allowsComments, '
         'saving: $saving'
         '}';
   }

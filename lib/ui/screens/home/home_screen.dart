@@ -46,10 +46,14 @@ class HomeScreen extends StatelessWidget {
 
   Route _createRoute() {
     return MaterialPageRoute(builder: (BuildContext context) {
-      return CreatePostScreen(callback: (_, message) {
+      return CreatePostScreen(callback: (_, message, allowsComments) {
         // ignore: close_sinks
         final bloc = BlocProvider.of<PostsBloc>(context);
-        bloc.add(AddPost(parentId: null, message: message));
+        bloc.add(AddPost(
+          parentId: null,
+          message: message,
+          allowsComments: allowsComments,
+        ));
       });
     });
   }

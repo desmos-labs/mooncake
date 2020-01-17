@@ -1,7 +1,8 @@
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'post_json.g.dart';
+part 'post_response.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class PostJson {
@@ -23,17 +24,20 @@ class PostJson {
   @JsonKey(name: "allows_comments")
   final bool allowsComments;
 
-  @JsonKey(name: "external_reference")
-  final String externalReference;
+  @JsonKey(name: "subspace")
+  final String subspace;
 
-  @JsonKey(name: "owner")
-  final String owner;
+  @JsonKey(name: "creator")
+  final String creator;
 
-  @JsonKey(name: "likes")
-  final List<LikeJson> likes;
+  @JsonKey(name: "reactions")
+  final List<Reaction> reactions;
 
   @JsonKey(name: "children")
   final List<String> commentsIds;
+
+  @JsonKey(name: "optional_data")
+  final Map<String, String> optionalData;
 
   PostJson({
     this.id,
@@ -42,19 +46,20 @@ class PostJson {
     this.created,
     this.lastEdited,
     this.allowsComments,
-    this.externalReference,
-    this.owner,
-    this.likes,
+    this.subspace,
+    this.creator,
+    this.reactions,
     this.commentsIds,
+    this.optionalData,
   })  : assert(id != null),
         assert(parentId != null),
         assert(message != null),
         assert(created != null),
         assert(lastEdited != null),
         assert(allowsComments != null),
-        assert(externalReference != null),
-        assert(owner != null),
-        assert(likes != null),
+        assert(subspace != null),
+        assert(creator != null),
+        assert(reactions != null),
         assert(commentsIds != null);
 
   factory PostJson.fromJson(Map<String, dynamic> json) =>

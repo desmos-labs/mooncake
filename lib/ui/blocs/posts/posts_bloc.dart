@@ -163,7 +163,11 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     if (state is PostsLoaded) {
       // When a post is added, simply save it and refresh the list
       // of currently shown posts
-      await _createPostUseCase.create(event.message, parentId: event.parentId);
+      await _createPostUseCase.create(
+        message: event.message,
+        parentId: event.parentId,
+        allowsComments: event.allowsComments,
+      );
       add(LoadPosts());
     }
   }

@@ -22,6 +22,22 @@ class MessageChanged extends PostInputEvent {
   String toString() => 'MessageChanged { message: $message }';
 }
 
+/// Event that is emitted when the user changes whether or not the post
+/// should allow comments.
+class AllowsCommentsChanged extends PostInputEvent {
+  final bool allowsComments;
+
+  AllowsCommentsChanged(this.allowsComments);
+
+  @override
+  List<Object> get props => [allowsComments];
+
+  @override
+  String toString() => 'AllowsCommentsChanged { '
+      'allowsComments: $allowsComments '
+      '}';
+}
+
 /// Tells the input that the post is being saved
 class SavePost extends PostInputEvent {}
 

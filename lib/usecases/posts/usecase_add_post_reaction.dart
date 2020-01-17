@@ -36,7 +36,7 @@ class AddPostReactionUseCase {
     if (!post.reactions.contains(reactionObj)) {
       post = post.copyWith(reactions: post.reactions + [reactionObj]);
       await _postsRepository.savePost(post.copyWith(
-        status: PostStatus.TO_BE_SYNCED,
+        status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
       ));
     }
 

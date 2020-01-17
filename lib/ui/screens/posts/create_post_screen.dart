@@ -2,9 +2,13 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// Represents the callback that is used to return the id of the post
-/// parent and the message of the newly created post.
-typedef OnSaveCallback = Function(String parentId, String message);
+/// Represents the callback that is used to return the data of the created
+/// post.
+typedef OnSaveCallback = Function(
+  String parentId,
+  String message,
+  bool allowsComments,
+);
 
 /// Screen that is shown to the user in order to allow him to input the
 /// message of a new post.
@@ -39,6 +43,18 @@ class CreatePostScreen extends StatelessWidget {
                       expanded: true,
                     ),
                   ),
+                  Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: state.allowsComments,
+                        onChanged: (value) {
+                          final bloc = BlocProvider.of<PostInputBloc>(context);
+                          bloc.add(AllowsCommentsChanged(value));
+                        },
+                      ),
+                      Text("Allows comments"),
+                    ],
+                  ),
                   if (!state.saving)
                     _createPostButton(context, state)
                   else
@@ -71,7 +87,7 @@ class CreatePostScreen extends StatelessWidget {
     // ignore: close_sinks
     final bloc = BlocProvider.of<PostInputBloc>(context);
     bloc.add(SavePost());
-    callback(null, state.message);
+    callback(null, state.message, state.allowsComments);
     Navigator.pop(context);
   }
 

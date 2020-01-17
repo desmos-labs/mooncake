@@ -53,7 +53,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   Future<List<Post>> getPostsToSync() async {
     final database = await this.database;
     final finder = Finder(
-      filter: Filter.notEquals("status", PostStatus.SYNCED.toString()),
+      filter: Filter.notEquals("status.value", PostStatusValue.SYNCED.toString()),
     );
 
     final records = await store.find(database, finder: finder);

@@ -35,7 +35,7 @@ class RemoveReactionFromPostUseCase {
     // Save the updated post, if the reaction was removed
     if (updatedPost.reactions.length != post.reactions.length) {
       await _postsRepository.savePost(updatedPost.copyWith(
-        status: PostStatus.TO_BE_SYNCED,
+        status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
       ));
     }
 

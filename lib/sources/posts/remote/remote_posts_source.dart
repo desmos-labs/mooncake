@@ -22,6 +22,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   StreamSubscription _subscription;
 
   // Converters
+  final _postJsonConverter = PostJsonConverter();
   final _msgConverter = MsgConverter();
   final _eventsConverter = ChainEventsConverter();
 
@@ -72,49 +73,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     });
   }
 
-  Future<void> _parseGenesis() async {
-    final endpoint = "/genesis";
-    final response = await _chainHelper.queryRpc(endpoint);
-    final genesisResponse = GenesisResponse.fromJson(response);
-
-    final posts =
-        genesisResponse.result.genesis.appState.postsState.posts ?? [];
-    final reactions =
-        genesisResponse.result.genesis.appState.postsState.reactions ?? {};
-
-    // Get all the children of the posts
-    final Map<String, List<String>> children = {};
-    posts.where((post) => post.hasParent).forEach((post) {
-      final existingChildren = children[post.parentId] ?? [];
-      existingChildren.add(post.id);
-      children[post.parentId] = existingChildren;
-    });
-
-    // Combine posts with reactions and add all the children to the posts
-    posts.map((post) {
-      Post completePost = post;
-
-      // Add reactions
-      if (reactions[post.id] != null) {
-        completePost = completePost.copyWith(reactions: reactions[post.id]);
-      }
-
-      // Add children
-      if (children[post.id] != null) {
-        completePost = completePost.copyWith(commentsIds: children[post.id]);
-      }
-
-      return completePost.copyWith(status: PostStatus.SYNCED);
-    }).forEach((post) => _postsStream.add(post));
-  }
-
   Future<void> _parseBlock(String height) async {
     final endpoint = "/txs?tx.height=$height";
     final response = await _chainHelper.queryChainRaw(endpoint);
     final txData = TxResponse.fromJson(response);
-
-    // Store the latest synced block height
-    await _saveLatestBlockHeight(height);
 
     if (txData.txs.isEmpty) {
       // No txs, nothing to do
@@ -161,12 +123,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     _postsStream.add(post);
   }
 
-  /// Allows to store the latest synced block height
-  Future<void> _saveLatestBlockHeight(String height) async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    await sharedPrefs.setString(_BLOCK_HEIGHT_KEY, height);
-  }
-
   @override
   Stream<Post> get postsStream {
     return _postsStream.stream;
@@ -177,7 +133,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     try {
       final data = await _chainHelper.queryChain("/posts/$postId");
       final post = Post.fromJson(data.result);
-      return post.copyWith(status: PostStatus.SYNCED);
+      return post.copyWith(
+          status: PostStatus(
+        value: PostStatusValue.SYNCED,
+      ));
     } catch (e) {
       print(e);
       return null;
@@ -191,29 +150,21 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       _subscription = _observeEvents();
     }
 
-    // Get the latest queried block height
-    final sharedPrefs = await SharedPreferences.getInstance();
-    final initBlockHeight = double.parse(
-      sharedPrefs.getString(_BLOCK_HEIGHT_KEY) ?? "0",
-    ).toInt();
+    int page = 1;
+    bool fetchNext = true;
 
-    // If we never synced a block, we need to parse the genesis too
-    if (initBlockHeight == 0) {
-      await _parseGenesis();
-    }
+    while (fetchNext) {
+      final endpoint = "/posts?limit=100&page=${page++}";
+      final response = await _chainHelper.queryChainRaw(endpoint);
+      final postsResponse = PostsResponse.fromJson(response);
 
-    // Get the current block height
-    final response = await _chainHelper.queryChainRaw("/blocks/latest");
-    final blockResponse = BlockResponse.fromJson(response);
-    final endBlockHeight = double.parse(
-      blockResponse.blockMeta.header.height,
-    ).toInt();
+      // Stream all the posts
+      for (final postJson in postsResponse.posts) {
+        _postsStream.add(_postJsonConverter.toPost(postJson));
+      }
 
-    print('Syncing from block $initBlockHeight to $endBlockHeight');
-    // For each block height, get the transactions
-    for (int height = initBlockHeight; height <= endBlockHeight; height++) {
-      _parseBlock(height.toString());
-      await Future.delayed(Duration(milliseconds: 50));
+      // Tell whether or not to stop
+      fetchNext = postsResponse.posts?.isNotEmpty == true;
     }
   }
 

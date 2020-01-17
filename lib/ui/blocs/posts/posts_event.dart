@@ -36,17 +36,23 @@ class LoadPosts extends PostsEvent {
 class AddPost extends PostsEvent {
   final String message;
   final String parentId;
+  final bool allowsComments;
 
   AddPost({
     @required this.message,
+    @required this.allowsComments,
     this.parentId,
   });
 
   @override
-  List<Object> get props => [message, parentId];
+  List<Object> get props => [message, parentId, allowsComments];
 
   @override
-  String toString() => 'AddPost { message: $message, parentId: $parentId }';
+  String toString() => 'AddPost { '
+      'message: $message, '
+      'parentId: $parentId, '
+      'allowsComments: $allowsComments '
+      '}';
 }
 
 /// Tells the Bloc that it needs to set a post as liked.

@@ -17,10 +17,12 @@ class SyncPostsUseCase {
   Future<void> sync() async {
     // Get the posts
     final posts = await _postsRepository.getPostsToSync();
+    final syncingStatus = PostStatus(value: PostStatusValue.SYNCING);
     final syncingPosts = posts
         .where((post) {
           // The post has a TO_BE_SYNCED status so it must be synced
-          if (post.status == PostStatus.TO_BE_SYNCED) {
+          if (post.status.value == PostStatusValue.TO_BE_SYNCED ||
+              post.status.value == PostStatusValue.ERRORED) {
             return true;
           }
 
@@ -28,7 +30,7 @@ class SyncPostsUseCase {
 
           // The post has a SYNCING status so we must check how long it
           // passed till its creation
-          if (creationData != null && post.status == PostStatus.SYNCING) {
+          if (post.status.value == PostStatusValue.SYNCING) {
             // If more than two minutes have been passed, sync again the
             // post
             final syncTimeout = DateTime.now().subtract(Duration(minutes: 2));
@@ -37,7 +39,7 @@ class SyncPostsUseCase {
 
           return false;
         })
-        .map((post) => post.copyWith(status: PostStatus.SYNCING))
+        .map((post) => post.copyWith(status: syncingStatus))
         .toList();
 
     if (syncingPosts.isEmpty) {
@@ -51,6 +53,19 @@ class SyncPostsUseCase {
     });
 
     // Send the post transactions
-    await _postsRepository.syncPosts(syncingPosts);
+    try {
+      await _postsRepository.syncPosts(syncingPosts);
+    } catch (error) {
+      print("Sync error: $error");
+      final status = PostStatus(
+        value: PostStatusValue.ERRORED,
+        error: error.toString(),
+      );
+
+      // Set the posts state to failed
+      syncingPosts.forEach((post) async {
+        await _postsRepository.savePost(post.copyWith(status: status));
+      });
+    }
   }
 }

@@ -81,7 +81,7 @@ class Post implements Equatable, Comparable<Post> {
     @required this.owner,
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
-    this.status = PostStatus.TO_BE_SYNCED,
+    this.status = const PostStatus(value: PostStatusValue.TO_BE_SYNCED),
   })  : assert(id != null),
         assert(message != null),
         assert(created != null),

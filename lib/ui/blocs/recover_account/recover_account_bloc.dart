@@ -49,6 +49,8 @@ class RecoverAccountBloc
       yield TypingMnemonic(event.mnemonicInputState);
     } else if (event is RecoverAccount) {
       yield* _mapRecoverAccountToState(event);
+    } else if (event is AccountRecoveredSuccessfully) {
+      yield* _mapAccountRecoveredSuccessfullyEventToState(event);
     }
   }
 
@@ -59,13 +61,19 @@ class RecoverAccountBloc
 
     final state = _mnemonicInputBloc.state;
     if (state.isValid) {
-      await _saveWalletUseCase.save(state.mnemonic);
-      final address = await _getAddressUseCase.get();
-      assert(address.isNotEmpty);
-
-      yield RecoveredAccount(state.mnemonic);
-      _loginBloc.add(LogIn(state.mnemonic));
+      _saveWalletUseCase
+          .save(state.mnemonic)
+          .then((_) => _getAddressUseCase.get())
+          .then((address) => add(AccountRecoveredSuccessfully(address)));
     }
+  }
+
+  Stream<RecoverAccountState> _mapAccountRecoveredSuccessfullyEventToState(
+    AccountRecoveredSuccessfully event,
+  ) async* {
+    final state = _mnemonicInputBloc.state;
+    yield RecoveredAccount(state.mnemonic);
+    _loginBloc.add(LogIn(state.mnemonic));
   }
 
   @override

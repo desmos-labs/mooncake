@@ -32,3 +32,18 @@ class RecoverAccount extends RecoverAccountEvent {
   @override
   String toString() => 'RecoverAccount';
 }
+
+/// Event that is emitted upon the account has been successfully recovered.
+class AccountRecoveredSuccessfully extends RecoverAccountEvent {
+  final String address;
+
+  AccountRecoveredSuccessfully(this.address);
+
+  @override
+  String toString() => 'AccountRecoveredSuccessfully { '
+      'address: $address '
+      '}';
+
+  @override
+  List<Object> get props => [address];
+}

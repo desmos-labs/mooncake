@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
@@ -60,6 +62,9 @@ class PostItem extends StatelessWidget {
           ),
           child: InkWell(
             onTap: onTap,
+            onLongPress: post.status.value == PostStatusValue.ERRORED
+                ? () => _showPostError(context, post)
+                : null,
             child: Container(
               padding: PostsTheme.postItemPadding,
               child: Column(
@@ -109,5 +114,54 @@ class PostItem extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _showPostError(BuildContext context, Post post) {
+    showDialog(
+        context: context,
+        builder: (buildContext) {
+          return Dialog(
+            key: PostsKeys.syncErrorDialog,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    PostsLocalizations.of(buildContext).syncErrorTitle,
+                    style: Theme.of(buildContext).textTheme.title,
+                  ),
+                  SizedBox(height: 16),
+                  Text(PostsLocalizations.of(buildContext).syncErrorDesc),
+                  SizedBox(height: 16),
+                  Text(post.status.error),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text("Copy error"),
+                        onPressed: () => _copyError(context, post),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void _copyError(BuildContext context, Post post) {
+    Clipboard.setData(ClipboardData(text: post.status.error)).then((_) {
+      final snackBar = SnackBar(
+        content: Text(PostsLocalizations.of(context).syncErrorCopied),
+      );
+      Navigator.pop(context);
+      Scaffold.of(context).showSnackBar(snackBar);
+    });
   }
 }

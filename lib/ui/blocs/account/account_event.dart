@@ -14,3 +14,16 @@ class LoadAccount extends AccountEvent {
   @override
   String toString() => 'LoadAccount';
 }
+
+/// Event that is loaded once the address has been successfully computed.
+class AddressLoaded extends AccountEvent {
+  final String address;
+
+  AddressLoaded(this.address);
+
+  @override
+  String toString() => 'AddressLoaded { address: $address }';
+
+  @override
+  List<Object> get props => [address];
+}

@@ -24,7 +24,9 @@ Post _$PostFromJson(Map<String, dynamic> json) {
             e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     commentsIds: (json['children'] as List)?.map((e) => e as String)?.toList(),
-    status: _$enumDecodeNullable(_$PostStatusEnumMap, json['status']),
+    status: json['status'] == null
+        ? null
+        : PostStatus.fromJson(json['status'] as Map<String, dynamic>),
   );
 }
 
@@ -40,43 +42,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'optional_data': instance.optionalData,
       'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
       'children': instance.commentsIds,
-      'status': _$PostStatusEnumMap[instance.status],
+      'status': instance.status?.toJson(),
     };
-
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
-}
-
-const _$PostStatusEnumMap = {
-  PostStatus.TO_BE_SYNCED: 'to_be_synced',
-  PostStatus.SYNCING: 'syncing',
-  PostStatus.SYNCED: 'synced',
-};

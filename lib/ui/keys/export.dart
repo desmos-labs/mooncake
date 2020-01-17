@@ -37,4 +37,6 @@ class PostsKeys {
   static Key saveNewPost = const Key('__saveNewPost__');
 
   static Key mnemonicField = const Key('__mnemonciField__');
+
+  static Key syncErrorDialog = const Key('__syncingErrorDialog__');
 }

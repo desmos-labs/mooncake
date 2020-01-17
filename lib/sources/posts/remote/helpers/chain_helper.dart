@@ -25,9 +25,11 @@ class ChainHelper {
         _httpClient = httpClient;
 
   Future<Map<String, dynamic>> _query(String url) async {
+    print("Querying $url");
+
     final data = await _httpClient.get(url);
     if (data.statusCode != 200) {
-      throw Exception("Expected response code 200, got: ${data.statusCode}");
+      throw Exception("Call to $url returned status code ${data.statusCode}");
     }
     return json.decode(utf8.decode(data.bodyBytes));
   }
@@ -82,7 +84,9 @@ class ChainHelper {
     );
 
     if (!result.success) {
-      throw Exception(result.error.errorMessage);
+      final jsonTx = jsonEncode(signTx);
+      final error = result.error.errorMessage;
+      throw Exception("Error while sending transaction $jsonTx: $error");
     }
 
     return result;

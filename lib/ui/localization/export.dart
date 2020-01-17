@@ -39,6 +39,9 @@ class PostsLocalizations {
 
   String get syncingActivities => "Syncing activities...";
   String get fetchingPosts => "Checking for new posts...";
+  String get syncErrorTitle => "Syncing error";
+  String get syncErrorDesc => "An error has verified when syncing the posts to the chain:";
+  String get syncErrorCopied => "Sync error copied to clipboard";
 
   String get recoverFromMnemonic => "Recover from mnemonic";
   String get generateNewAccount => "Generate new account";

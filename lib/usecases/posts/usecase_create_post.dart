@@ -18,10 +18,10 @@ class CreatePostUseCase {
 
   /// Creates a new [Post] object having the given data inside.
   /// Returns the newly created object.
-  Future<Post> create(
-    String message, {
-    String parentId,
-    bool allowsComments = false,
+  Future<Post> create({
+    @required String message,
+    @required String parentId,
+    @required bool allowsComments,
   }) async {
     final wallet = await _walletRepository.getWallet();
     final date = Post.getDateStringNow();

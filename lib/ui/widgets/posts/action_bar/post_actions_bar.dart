@@ -25,10 +25,12 @@ class PostActionsBar extends StatelessWidget {
 
         final post = (state as PostsLoaded).posts.firstBy(id: postId);
         IconData statusIcon = FontAwesomeIcons.circle;
-        if (post.status == PostStatus.SYNCING) {
+        if (post.status.value == PostStatusValue.SYNCING) {
           statusIcon = FontAwesomeIcons.dotCircle;
-        } else if (post.status == PostStatus.SYNCED) {
+        } else if (post.status.value == PostStatusValue.SYNCED) {
           statusIcon = FontAwesomeIcons.checkCircle;
+        } else if (post.status.value == PostStatusValue.ERRORED) {
+          statusIcon = FontAwesomeIcons.timesCircle;
         }
 
         final showFormatter = DateFormat.yMMMd().add_Hm();
