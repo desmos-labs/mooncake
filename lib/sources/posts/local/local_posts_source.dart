@@ -3,25 +3,27 @@ import 'dart:async';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
-  final String dbPath;
+  final String dbName;
 
   final store = StoreRef.main();
   final StreamController<Post> _streamController = StreamController<Post>();
 
   /// Public constructor
   LocalPostsSourceImpl({
-    @required this.dbPath,
+    @required this.dbName,
   });
 
   Future<Database> get database async {
     final path = await getApplicationDocumentsDirectory();
-    return databaseFactoryIo.openDatabase(path.path + this.dbPath);
+    await path.create(recursive: true);
+    return databaseFactoryIo.openDatabase(join(path.path, this.dbName));
   }
 
   @override

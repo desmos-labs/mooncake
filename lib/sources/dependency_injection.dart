@@ -21,7 +21,7 @@ class SourcesModule implements Module {
         ),
       )
       ..bindLazySingleton<LocalPostsSource>(
-        (injector, params) => LocalPostsSourceImpl(dbPath: "posts.db"),
+        (injector, params) => LocalPostsSourceImpl(dbName: "posts.db"),
         name: "local",
       )
       ..bindLazySingleton<RemotePostsSource>(
