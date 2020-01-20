@@ -27,7 +27,7 @@ class CreatePostUseCase {
       message: message,
       allowsComments: allowsComments,
       // This is the app subspace
-      subspace: "mooncake",
+      subspace: Constants.SUBSPACE,
       owner: address,
     );
   }

@@ -15,7 +15,7 @@ Everyone reads everything, but none knows who is who.
 If so, create your account by generating a mnemonic (or importing an existing one), ask some tokens using our [faucet](https://faucet.desmos.network/) and start posting! 
 
 ## Downloads
-* Android: [Download the APK](./.build/mooncake-0.0.1.apk)
+You can get all the latest builds on the [release page](https://github.com/desmos-labs/mooncake/releases).
 
 ## Caveats
 ### Syncing

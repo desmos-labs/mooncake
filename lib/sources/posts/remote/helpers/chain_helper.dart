@@ -79,7 +79,8 @@ class ChainHelper {
     // Register custom messages
     Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
     Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
-    Codec.registerMsgType("desmos/MsgRemovePostReaction", MsgRemovePostReaction);
+    Codec.registerMsgType(
+        "desmos/MsgRemovePostReaction", MsgRemovePostReaction);
 
     // Build the tx
     final tx = TxBuilder.buildStdTx(

@@ -96,7 +96,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     bool fetchNext = true;
 
     while (fetchNext) {
-      final endpoint = "/posts?limit=100&page=${page++}";
+      final endpoint = "/posts?subspace=mooncake&limit=100&page=${page++}";
       final response = await _chainHelper.queryChainRaw(endpoint);
       final postsResponse = await compute(_convertResponse, response);
       posts.addAll(postsResponse.posts

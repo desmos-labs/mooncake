@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-          const SizedBox(height: 40),
+            const SizedBox(height: 40),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
                     width: 100,
                     color: Colors.white,
                   ),
-                const SizedBox(height: 32),
+                  const SizedBox(height: 32),
                   Text(
                     PostsLocalizations.of(context).loginTitle,
                     style: Theme.of(context).textTheme.headline.copyWith(
@@ -36,7 +36,7 @@ class LoginScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

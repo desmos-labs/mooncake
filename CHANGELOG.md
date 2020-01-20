@@ -6,6 +6,7 @@
 - Added the possibility of visualizing the account inside the explorer
 - Improved the UX on older devices during the account recovery and post creation 
 - Improved the account recovering indicator UI
+- Added posts filtering to shown only the ones from Mooncake
 
 # Version 0.0.1
 ## Changes

@@ -49,7 +49,7 @@ class GenerateMnemonicScreen extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(PostsLocalizations.of(context).generatedMnemonicText),
-        const SizedBox(height: 16),
+          const SizedBox(height: 16),
           Flexible(
             child: ListView(
               children: [
@@ -78,7 +78,7 @@ class GenerateMnemonicScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(PostsLocalizations.of(context).generatingMnemonic),
-        const SizedBox(height: 16),
+          const SizedBox(height: 16),
           Expanded(
             child: LoadingIndicator(),
           ),

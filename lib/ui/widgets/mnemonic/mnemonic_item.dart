@@ -21,7 +21,7 @@ class MnemonicItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text('$index.'),
-        const SizedBox(width: 4),
+          const SizedBox(width: 4),
           Text(word),
         ],
       ),

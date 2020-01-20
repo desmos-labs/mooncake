@@ -30,6 +30,7 @@ class PostsList extends StatelessWidget {
         builder: (context, state) {
           if (state is PostsLoading) {
             return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(PostsLocalizations.of(context).splashLoadingData),
                 LoadingIndicator(key: PostsKeys.postsLoading),
@@ -51,8 +52,7 @@ class PostsList extends StatelessWidget {
                     },
                   ),
                 ),
-                if (state.syncingPosts)
-                  SyncSnackBar(),
+                if (state.syncingPosts) SyncSnackBar(),
               ],
             );
           } else {

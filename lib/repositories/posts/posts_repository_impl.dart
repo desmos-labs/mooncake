@@ -31,7 +31,8 @@ class PostsRepositoryImpl extends PostsRepository {
             return [];
           }
         })
-        .expand((posts) => posts)
+        .expand((posts) => posts as List<Post>)
+        .where((p) => p.subspace == Constants.SUBSPACE)
         .listen((post) async {
           _localPostsSource.savePost(post, emit: true);
         });
