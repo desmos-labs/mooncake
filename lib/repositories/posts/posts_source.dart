@@ -27,7 +27,7 @@ abstract class LocalPostsSource {
   Future<void> savePost(Post post, {bool emit = true});
 
   /// Saves the given list of [posts] into the source.
-  Future<void> savePosts(List<Post> posts);
+  Future<void> savePosts(List<Post> posts, {bool emit = true});
 
   /// Deleted the post having the given [postId].
   Future<void> deletePost(String postId);

@@ -28,7 +28,8 @@ class PostsApp extends StatelessWidget {
           ),
         ),
         BlocProvider<PostsBloc>(
-          create: (context) => PostsBloc.create(syncPeriod: 20),
+          create: (context) =>
+              PostsBloc.create(syncPeriod: 20)..add(FetchPosts()),
         )
       ],
       child: MaterialApp(

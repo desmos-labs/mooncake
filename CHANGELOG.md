@@ -4,6 +4,8 @@
 - Improved the initial fetch of posts to take less time
 - Added more data inside the account page 
 - Added the possibility of visualizing the account inside the explorer
+- Improved the UX on older devices during the account recovery and post creation 
+- Improved the account recovering indicator UI
 
 # Version 0.0.1
 ## Changes

@@ -12,52 +12,64 @@ class PostsLocalizations {
   }
 
   String get appTitle => "Mooncake";
-  String get appPhrase => "Hello, dreamer!";
-  String get appDescription =>
-      "Welcome to a new world of decentralized social networks";
-  String get loadingData => "Loading data...";
+  String get splashLoadingData => "Loading data...";
 
+  // Login
+  String get loginTitle => "Hello, dreamer!";
+  String get loginText =>
+      "Welcome to a new world of decentralized social networks";
+  String get recoverFromMnemonic => "Recover from mnemonic";
+  String get generateNewAccount => "Generate new account";
+
+  // Mnemonic generation screen
+  String get createAccount => "Create account";
+  String get generatingMnemonic => "Generating mnemonic";
+  String get generatedMnemonicText =>
+      "Here is your mnemonic code. Please write it down on a piece of paper.";
+  String get mnemonicWritten => "I've written down the mnemonic phrase";
+
+  // Mnemonic recover screen
+  String get mnemonicRecoverInstructions =>
+      "Write here your mnemonic code, space separated";
+  String get mnemonicHint => "Mnemonic";
+  String get recoverAccount => "Recover account";
+  String get invalidMnemonic => "Invalid mnemonic";
+  String get recoverPopupTitle => "Recovering account...";
+  String get recoverPopupText =>
+      "Your account is being recovered. This operation might take a while, please wait.";
+
+  // Main screen
   String get allPosts => "Posts";
   String get yourAccount => "Your account";
   String get signOut => "Sign out";
+  String get floatingButtonTip => "Create post";
 
-  String get editPost => "Edit post";
+  // Syncing
+  String get syncingActivities => "Syncing activities...";
+  String get fetchingPosts => "Checking for new posts...";
+  String get syncErrorTitle => "Syncing error";
+  String get syncErrorDesc =>
+      "An error has verified when syncing the posts to the chain:";
+  String get syncErrorCopied => "Sync error copied to clipboard";
+
+  // Create post screen
   String get createPost => "Create post";
   String get newPostHint => "New post";
   String get emptyPostError => "Empty message";
   String get saveChanges => "Save changes";
   String get savingPost => "Saving post";
 
+  // Account screen
   String get accountTitle => "Your account";
   String get yourAddress => "Your address:";
   String get yourFunds => "Your funds:";
   String get openInExplorer => "Open in explorer";
 
+  // Post details
   String get post => "Post";
-
-  String get newComment => "New comment";
   String get commentHint => "Comment";
+  String get newComment => "New comment";
   String get commentsDisabled => "Comments disabled by the post owner";
-
-  String get syncingActivities => "Syncing activities...";
-  String get fetchingPosts => "Checking for new posts...";
-  String get syncErrorTitle => "Syncing error";
-  String get syncErrorDesc => "An error has verified when syncing the posts to the chain:";
-  String get syncErrorCopied => "Sync error copied to clipboard";
-
-  String get recoverFromMnemonic => "Recover from mnemonic";
-  String get generateNewAccount => "Generate new account";
-  String get mnemonicRecoverInstructions =>
-      "Write here your mnemonic code, space separated";
-  String get mnemonicHint => "Mnemonic";
-  String get recoverAccount => "Recover account";
-  String get invalidMnemonic => "Invalid mnemonic";
-
-  String get createAccount => "Create account";
-  String get generatingMnemonic => "Generating mnemonic";
-  String get generatedMnemonicText =>
-      "Here is your mnemonic code. Please write it down on a piece of paper.";
-  String get mnemonicWritten => "I've written down the mnemonic phrase";
 }
 
 class FlutterBlocLocalizationsDelegate

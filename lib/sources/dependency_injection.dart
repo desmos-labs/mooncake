@@ -1,4 +1,5 @@
 import 'package:dependencies/dependencies.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
@@ -26,6 +27,7 @@ class SourcesModule implements Module {
           (injector, params) => LocalUserSourceImpl(
                 networkInfo: _networkInfo,
                 dbName: "account.db",
+                secureStorage: FlutterSecureStorage(),
               ))
       ..bindLazySingleton<RemoteUserSource>(
           (injector, params) => RemoteUserSourceImpl(

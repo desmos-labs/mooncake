@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 
 abstract class PostsEvent extends Equatable {
   const PostsEvent();
@@ -34,25 +35,15 @@ class LoadPosts extends PostsEvent {
 
 /// Tells the Bloc that it needs to add a new post to the list of posts
 class AddPost extends PostsEvent {
-  final String message;
-  final String parentId;
-  final bool allowsComments;
+  final Post post;
 
-  AddPost({
-    @required this.message,
-    @required this.allowsComments,
-    this.parentId,
-  });
+  AddPost(this.post);
 
   @override
-  List<Object> get props => [message, parentId, allowsComments];
+  List<Object> get props => [post];
 
   @override
-  String toString() => 'AddPost { '
-      'message: $message, '
-      'parentId: $parentId, '
-      'allowsComments: $allowsComments '
-      '}';
+  String toString() => 'AddPost { post: $post }';
 }
 
 /// Tells the Bloc that it needs to set a post as liked.

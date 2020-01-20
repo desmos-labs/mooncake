@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                   key: PostsKeys.addPost,
                   onPressed: () => Navigator.of(context).push(_createRoute()),
                   child: Icon(Icons.add),
-                  tooltip: PostsLocalizations.of(context).editPost,
+                  tooltip: PostsLocalizations.of(context).floatingButtonTip,
                 )
               : null,
           bottomNavigationBar: TabSelector(
@@ -48,14 +48,10 @@ class HomeScreen extends StatelessWidget {
 
   Route _createRoute() {
     return MaterialPageRoute(builder: (BuildContext context) {
-      return CreatePostScreen(callback: (_, message, allowsComments) {
+      return CreatePostScreen(callback: (post) {
         // ignore: close_sinks
         final bloc = BlocProvider.of<PostsBloc>(context);
-        bloc.add(AddPost(
-          parentId: null,
-          message: message,
-          allowsComments: allowsComments,
-        ));
+        bloc.add(AddPost(post));
       });
     });
   }

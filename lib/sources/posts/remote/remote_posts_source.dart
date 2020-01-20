@@ -1,25 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
 class RemotePostsSourceImpl implements RemotePostsSource {
-  static const _BLOCK_HEIGHT_KEY = "block_height";
-
   final String _rpcEndpoint;
   final ChainHelper _chainHelper;
   final LocalUserSource _walletSource;
-
-  // Streams
-  final _postsStream = StreamController<Post>();
-  StreamSubscription _subscription;
 
   // Converters
   final _postJsonConverter = PostJsonConverter();
@@ -38,8 +32,9 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         assert(chainHelper != null),
         _chainHelper = chainHelper;
 
-  /// Observes the chain events
-  StreamSubscription _observeEvents() {
+  @override
+  Stream<ChainEvent> getEventsStream() {
+    print("Initializing remote source posts stream");
     // Setup the channel
     final rpcUrl = _rpcEndpoint.replaceAll(RegExp('http(s)?:\/\/'), "");
     final channel = IOWebSocketChannel.connect('ws://$rpcUrl/websocket');
@@ -67,65 +62,51 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         .skip(queryList.length)
         .map((data) => TxEvent.fromJson(jsonDecode(data)))
         .handleError((error) => print('Remote posts channel exception: $error'))
-        .listen((query) async {
-      final height = query.result.data.value.txResult.height;
-      await _parseBlock(height);
-    });
+        .map((txEvent) => txEvent.result.data.value.txResult.height)
+        .asyncMap((height) => _parseBlock(height))
+        .where((list) => list.isNotEmpty)
+        .expand((list) => list);
   }
 
-  Future<void> _parseBlock(String height) async {
+  /// Parses the block at the given [height, handling all the contained
+  /// events.
+  Future<List<ChainEvent>> _parseBlock(String height) async {
     final endpoint = "/txs?tx.height=$height";
     final response = await _chainHelper.queryChainRaw(endpoint);
     final txData = TxResponse.fromJson(response);
 
     if (txData.txs.isEmpty) {
       // No txs, nothing to do
-      return;
+      return [];
     }
 
-    print('Parsing block at height $height');
-    txData.txs.forEach((tx) {
-      final events = _eventsConverter.convert(height, tx.events);
-      events.forEach((event) async {
-        await _handleEvent(event);
-      });
-    });
+    return txData.txs
+        .expand((tx) => _eventsConverter.convert(height, tx.events))
+        .toList();
   }
 
-  /// Handles properly the given [event].
-  Future<void> _handleEvent(ChainEvent event) async {
-    // Handle the event properly
-    if (event is PostCreatedEvent) {
-      return _handlePostCreatedEvent(event);
-    } else if (event is PostEvent) {
-      return _handlePostEvent(event);
-    }
-  }
-
-  /// Handles the messages telling that a new post has been created.
-  Future<void> _handlePostCreatedEvent(PostCreatedEvent event) async {
-    final post = await getPostById(event.postId);
-
-    // Emit the updated parent
-    if (post?.hasParent == true) {
-      final parent = await getPostById(post.parentId);
-      if (parent != null) {
-        _postsStream.add(parent);
-      }
-    }
-
-    // Emit the updated post
-    _postsStream.add(post);
-  }
-
-  Future<void> _handlePostEvent(PostEvent event) async {
-    final post = await getPostById(event.postId);
-    _postsStream.add(post);
+  static PostsResponse _convertResponse(Map<String, dynamic> json) {
+    return PostsResponse.fromJson(json);
   }
 
   @override
-  Stream<Post> get postsStream {
-    return _postsStream.stream;
+  Future<List<Post>> getPosts() async {
+    final posts = List<Post>();
+    int page = 1;
+    bool fetchNext = true;
+
+    while (fetchNext) {
+      final endpoint = "/posts?limit=100&page=${page++}";
+      final response = await _chainHelper.queryChainRaw(endpoint);
+      final postsResponse = await compute(_convertResponse, response);
+      posts.addAll(postsResponse.posts
+          .map((p) => _postJsonConverter.toPost(p))
+          .toList());
+
+      fetchNext = postsResponse.posts.isNotEmpty;
+    }
+
+    return posts;
   }
 
   @override
@@ -133,38 +114,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     try {
       final data = await _chainHelper.queryChain("/posts/$postId");
       final post = Post.fromJson(data.result);
-      return post.copyWith(
-          status: PostStatus(
-        value: PostStatusValue.SYNCED,
-      ));
+      return post.copyWith(status: PostStatus(value: PostStatusValue.SYNCED));
     } catch (e) {
       print(e);
       return null;
-    }
-  }
-
-  @override
-  Future<void> startSyncPosts() async {
-    if (_subscription == null) {
-      print("Initializing remote source posts stream");
-      _subscription = _observeEvents();
-    }
-
-    int page = 1;
-    bool fetchNext = true;
-
-    while (fetchNext) {
-      final endpoint = "/posts?limit=100&page=${page++}";
-      final response = await _chainHelper.queryChainRaw(endpoint);
-      final postsResponse = PostsResponse.fromJson(response);
-
-      // Stream all the posts
-      for (final postJson in postsResponse.posts) {
-        _postsStream.add(_postJsonConverter.toPost(postJson));
-      }
-
-      // Tell whether or not to stop
-      fetchNext = postsResponse.posts?.isNotEmpty == true;
     }
   }
 

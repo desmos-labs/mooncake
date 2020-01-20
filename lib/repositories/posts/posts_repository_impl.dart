@@ -2,16 +2,15 @@ import 'dart:async';
 
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
+import 'package:web_socket_channel/status.dart';
 
 /// Implementation of [PostsRepository].
 class PostsRepositoryImpl extends PostsRepository {
   final LocalPostsSource _localPostsSource;
   final RemotePostsSource _remotePostsSource;
-
-  // ignore: cancel_subscriptions
-  StreamSubscription _postsSubscription;
 
   PostsRepositoryImpl({
     @required LocalPostsSource localSource,
@@ -19,12 +18,60 @@ class PostsRepositoryImpl extends PostsRepository {
   })  : assert(localSource != null),
         _localPostsSource = localSource,
         assert(remoteSource != null),
-        _remotePostsSource = remoteSource;
+        _remotePostsSource = remoteSource {
+    // Initialize the events update
+    _remotePostsSource
+        .getEventsStream()
+        .asyncMap((event) {
+          if (event is PostCreatedEvent) {
+            return _mapPostCreatedEventToPosts(event);
+          } else if (event is PostEvent) {
+            return _mapPostEventToPosts(event);
+          } else {
+            return [];
+          }
+        })
+        .expand((posts) => posts)
+        .listen((post) async {
+          _localPostsSource.savePost(post, emit: true);
+        });
+  }
+
+  /// Transforms the given [event] to the list of posts to be updated.
+  Future<List<Post>> _mapPostCreatedEventToPosts(PostCreatedEvent event) async {
+    final posts = List<Post>();
+    final post = await _remotePostsSource.getPostById(event.postId);
+
+    if (post != null) {
+      posts.add(post);
+    }
+
+    // Emit the updated parent
+    if (post?.hasParent == true) {
+      final parent = await _remotePostsSource.getPostById(post.parentId);
+      if (parent != null) {
+        posts.add(parent);
+      }
+    }
+
+    return posts;
+  }
+
+  /// Maps the given [event] to the list of posts that should be updated.
+  Future<List<Post>> _mapPostEventToPosts(PostEvent event) async {
+    final posts = List<Post>();
+
+    final post = await _remotePostsSource.getPostById(event.postId);
+    if (post != null) {
+      posts.add(post);
+    }
+
+    return posts;
+  }
 
   @override
-  Future<Post> getPostById(String postId) {
-    return _localPostsSource.getPostById(postId);
-  }
+  Future<Post> getPostById(String postId) =>
+      _localPostsSource.getPostById(postId);
 
   @override
   Future<List<Post>> getPostComments(String postId) async {
@@ -37,24 +84,20 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<List<Post>> getPosts() async {
+  Future<List<Post>> getPosts({bool forceOnline = false}) async {
+    if (forceOnline) {
+      final posts = await _remotePostsSource.getPosts();
+      await _localPostsSource.savePosts(posts, emit: false);
+    }
+
     return _localPostsSource.getPosts();
   }
 
   @override
-  Future<List<Post>> getPostsToSync() async {
-    return _localPostsSource.getPostsToSync();
-  }
+  Future<List<Post>> getPostsToSync() => _localPostsSource.getPostsToSync();
 
   @override
-  Stream<Post> get postsStream {
-    if (_postsSubscription == null) {
-      _postsSubscription = _remotePostsSource.postsStream.listen((post) async {
-        await _localPostsSource.savePost(post);
-      });
-    }
-    return _localPostsSource.postsStream;
-  }
+  Stream<Post> get postsStream => _localPostsSource.postsStream;
 
   @override
   Future<void> savePost(Post post) async {
@@ -71,17 +114,10 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<void> fetchPosts() async {
-    await _remotePostsSource.startSyncPosts();
-  }
+  Future<void> syncPosts(List<Post> posts) =>
+      _remotePostsSource.savePosts(posts);
 
   @override
-  Future<void> syncPosts(List<Post> posts) {
-    return _remotePostsSource.savePosts(posts);
-  }
-
-  @override
-  Future<void> deletePost(String postId) {
-    return _localPostsSource.deletePost(postId);
-  }
+  Future<void> deletePost(String postId) =>
+      _localPostsSource.deletePost(postId);
 }

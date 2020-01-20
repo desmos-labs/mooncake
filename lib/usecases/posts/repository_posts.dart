@@ -12,7 +12,7 @@ abstract class PostsRepository {
   Future<List<Post>> getPostComments(String postId);
 
   /// Returns the full list of posts available.
-  Future<List<Post>> getPosts();
+  Future<List<Post>> getPosts({bool forceOnline = false});
 
   /// Returns the list of posts to sync.
   Future<List<Post>> getPostsToSync();
@@ -22,10 +22,6 @@ abstract class PostsRepository {
 
   /// Saves the given [post].
   Future<void> savePost(Post post);
-
-  /// Asynchronously fetches new posts that have not yet been
-  /// downloaded locally.
-  Future<void> fetchPosts();
 
   /// Syncs the given posts by sending them to the blockchain.
   Future<void> syncPosts(List<Post> posts);

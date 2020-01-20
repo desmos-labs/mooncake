@@ -1,7 +1,9 @@
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/usecases/posts/posts.dart';
 
 /// Represents the screen that is shown to the user when he wants
 /// to visualize the details of a specific [postId].
@@ -88,9 +90,9 @@ class PostDetailsScreen extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         itemCount: comments.length,
         itemBuilder: (context, index) {
-          // Build the comment item
           final comment = comments[index];
           return PostItem(
+            key: PostsKeys.postItem(comment.id),
             postId: comment.id,
             onTap: () async => Navigator.of(context).push(
               MaterialPageRoute(
@@ -121,14 +123,13 @@ class PostDetailsScreen extends StatelessWidget {
                 postId: postId,
                 hint: PostsLocalizations.of(context).commentHint,
               ),
-              BlocBuilder<PostInputBloc, PostInputState>(
-                builder: (context, state) => RaisedButton(
-                  child: Text(PostsLocalizations.of(context).commentHint),
-                  onPressed: !state.isValid
-                      ? null
-                      : () => _submitComment(context, state),
-                ),
-              )
+              RaisedButton(
+                child: Text(PostsLocalizations.of(context).commentHint),
+                onPressed: !state.isValid
+                    ? null
+                    : () => _submitComment(context, state),
+              ),
+              if (state.saving) LoadingIndicator()
             ],
           ),
         ),
@@ -147,15 +148,28 @@ class PostDetailsScreen extends StatelessWidget {
     );
   }
 
-  void _submitComment(BuildContext context, PostInputState state) {
+  void _submitComment(BuildContext context, PostInputState state) async {
+    // ignore: close_sinks
+    final inputBloc = BlocProvider.of<PostInputBloc>(context);
+    inputBloc.add(SavePost());
+
     // Create the comment
+    final createUseCase = Injector.get<CreatePostUseCase>();
+    final post = await createUseCase.create(
+      message: state.message,
+      parentId: postId,
+      allowsComments: state.allowsComments,
+    );
+
+    final saveUseCase = Injector.get<SavePostUseCase>();
+    await saveUseCase.save(post);
+
     // ignore: close_sinks
     final bloc = BlocProvider.of<PostsBloc>(context);
-    bloc.add(AddPost(message: state.message, parentId: postId));
+    bloc.add(AddPost(post));
 
     // Reset the state
     // ignore: close_sinks
-    final inputBloc = BlocProvider.of<PostInputBloc>(context);
     inputBloc.add(ResetForm());
   }
 }

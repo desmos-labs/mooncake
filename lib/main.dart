@@ -14,11 +14,6 @@ void main() async {
   // Setup the BLoC delegate to observe transitions
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
-  // Register custom messages
-  Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
-  Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
-  Codec.registerMsgType("desmos/MsgRemovePostReaction", MsgRemovePostReaction);
-
   // Run the app
   runApp(MultiBlocProvider(
     providers: [

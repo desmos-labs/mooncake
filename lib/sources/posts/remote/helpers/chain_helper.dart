@@ -1,10 +1,18 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+
+class _TxData {
+  final List<StdMsg> messages;
+  final Wallet wallet;
+
+  _TxData(this.messages, this.wallet);
+}
 
 /// Allows to easily perform chain-related actions such as querying the
 /// chain state or sending transactions to it.
@@ -24,14 +32,18 @@ class ChainHelper {
         assert(httpClient != null),
         _httpClient = httpClient;
 
-  Future<Map<String, dynamic>> _query(String url) async {
-    print("Querying $url");
-
-    final data = await _httpClient.get(url);
+  static Future<Map<String, dynamic>> _queryBackground(String url) async {
+    final httpClient = http.Client();
+    final data = await httpClient.get(url);
     if (data.statusCode != 200) {
       throw Exception("Call to $url returned status code ${data.statusCode}");
     }
     return json.decode(utf8.decode(data.bodyBytes));
+  }
+
+  Future<Map<String, dynamic>> _query(String url) async {
+    print("Querying $url");
+    return compute(_queryBackground, url);
   }
 
   /// Queries the RPC to the specified [endpoint].
@@ -55,13 +67,19 @@ class ChainHelper {
     return LcdResponse.fromJson(json);
   }
 
-  /// Creates, sings and sends a transaction having the given [messages]
-  /// and using the given [wallet].
-  Future<TransactionResult> sendTx(List<StdMsg> messages, Wallet wallet) async {
+  static Future<TransactionResult> _sendTx(_TxData data) async {
+    final messages = data.messages;
+    final wallet = data.wallet;
+
     if (messages.isEmpty) {
       // No messages to send, simply return
       return null;
     }
+
+    // Register custom messages
+    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+    Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
+    Codec.registerMsgType("desmos/MsgRemovePostReaction", MsgRemovePostReaction);
 
     // Build the tx
     final tx = TxBuilder.buildStdTx(
@@ -90,5 +108,12 @@ class ChainHelper {
     }
 
     return result;
+  }
+
+  /// Creates, sings and sends a transaction having the given [messages]
+  /// and using the given [wallet].
+  Future<TransactionResult> sendTx(List<StdMsg> messages, Wallet wallet) async {
+    final data = _TxData(messages, wallet);
+    return compute(_sendTx, data);
   }
 }

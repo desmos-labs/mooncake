@@ -15,8 +15,6 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final int _syncPeriod;
 
   final GetAddressUseCase _getAddressUseCase;
-  final FetchPostsUseCase _fetchPostsUseCase;
-  final CreatePostUseCase _createPostUseCase;
   final AddPostReactionUseCase _addReactionToPostUseCase;
   final RemoveReactionFromPostUseCase _removeReactionFromPostUseCase;
   final GetPostsUseCase _getPostsUseCase;
@@ -27,18 +25,12 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   PostsBloc({
     @required int syncPeriod,
-    @required FetchPostsUseCase fetchPostsUseCase,
-    @required CreatePostUseCase createPostUseCase,
     @required AddPostReactionUseCase likePostUseCase,
     @required RemoveReactionFromPostUseCase unlikePostUseCase,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
     @required GetAddressUseCase getAddressUseCase,
   })  : _syncPeriod = syncPeriod,
-        assert(fetchPostsUseCase != null),
-        _fetchPostsUseCase = fetchPostsUseCase,
-        assert(createPostUseCase != null),
-        _createPostUseCase = createPostUseCase,
         assert(likePostUseCase != null),
         _addReactionToPostUseCase = likePostUseCase,
         assert(unlikePostUseCase != null),
@@ -53,8 +45,6 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   factory PostsBloc.create({int syncPeriod = 30}) {
     return PostsBloc(
       syncPeriod: syncPeriod,
-      fetchPostsUseCase: Injector.get(),
-      createPostUseCase: Injector.get(),
       likePostUseCase: Injector.get(),
       unlikePostUseCase: Injector.get(),
       getPostsUseCase: Injector.get(),
@@ -102,13 +92,6 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(fetchingPosts: true);
     }
-
-    // Wait for new posts
-    _fetchPostsUseCase.fetch().catchError((error) {
-      print('Error while fecthing posts: $error');
-    }).then((_) {
-      add(FetchPostsCompleted());
-    });
   }
 
   /// Handles the event that is emitted when the posts are completely
@@ -122,20 +105,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
-  /// Allows to fetch the given [page] of posts objects
-  Future<List<Post>> _getPosts() async {
-    final posts = await _getPostsUseCase.get();
-    posts.sort((p1, p2) => p2.compareTo(p1));
-    return posts;
-  }
-
   /// Handles the event emitted when the posts list should be refreshed
   Stream<PostsState> _mapLoadPostsEventToState(LoadPosts event) async* {
-    // Start fetching new post
-    if (_postsSubscription == null) {
-      add(FetchPosts());
-    }
-
     // Sync the activities of the user every _syncPeriod seconds
     if (_syncTimer?.isActive != true) {
       _syncTimer?.cancel();
@@ -149,11 +120,11 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     final currentState = state;
     if (currentState is PostsLoaded) {
       // We have already loaded some posts
-      final newPosts = await _getPosts();
+      final newPosts = await _getPostsUseCase.get();
       yield currentState.copyWith(posts: newPosts, address: address);
     } else {
       // We never loaded any post before
-      final posts = await _getPosts();
+      final posts = await _getPostsUseCase.get(forceOnline: true);
       yield PostsLoaded(address: address, posts: posts);
     }
   }
@@ -163,12 +134,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     if (state is PostsLoaded) {
       // When a post is added, simply save it and refresh the list
       // of currently shown posts
-      await _createPostUseCase.create(
-        message: event.message,
-        parentId: event.parentId,
-        allowsComments: event.allowsComments,
+      yield (state as PostsLoaded).copyWith(
+        posts: [event.post] + (state as PostsLoaded).posts,
       );
-      add(LoadPosts());
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:meta/meta.dart';
@@ -56,8 +57,10 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   Future<List<Post>> getPostsToSync() async {
     final database = await this._database;
     final finder = Finder(
-      filter:
-          Filter.notEquals("status.value", PostStatusValue.SYNCED.toString()),
+      filter: Filter.notEquals(
+        "status.value",
+        PostStatusValue.SYNCED.toString(),
+      ),
     );
 
     final records = await store.find(database, finder: finder);
@@ -68,14 +71,19 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   Future<List<Post>> getPosts() async {
     final database = await this._database;
     final records = await store.find(database);
-    return records.map((record) => Post.fromJson(record.value)).toList();
+    final posts = records.map((record) => Post.fromJson(record.value)).toList();
+    posts.sort((p1, p2) => p2.compareTo(p1));
+    return posts;
   }
+
+  /// Returns the keys that should be used inside the database to store the
+  /// given [post].
+  String _getPostKey(Post post) => post.created + post.owner;
 
   @override
   Future<void> savePost(Post post, {bool emit = true}) async {
     final database = await this._database;
-    final key = post.owner + post.created;
-    await store.record(key).put(database, post.toJson());
+    await store.record(_getPostKey(post)).put(database, post.toJson());
 
     if (emit) {
       _streamController.add(post);
@@ -83,8 +91,15 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<void> savePosts(List<Post> posts) async {
-    await Future.wait(posts.map((post) => savePost(post)));
+  Future<void> savePosts(List<Post> posts, {bool emit = true}) async {
+    final database = await this._database;
+    final keys = posts.map((p) => _getPostKey(p)).toList();
+    final values = posts.map((p) => p.toJson()).toList();
+    store.records(keys).add(database, values);
+
+    if (emit) {
+      posts.forEach((p) => _streamController.add(p));
+    }
   }
 
   @override

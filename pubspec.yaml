@@ -14,6 +14,7 @@ dependencies:
   dependencies:
   emoji_picker:
   equatable:
+  f_logs:
   flutter_bloc:
   flutter_markdown:
   flutter_screenutil:
@@ -25,6 +26,7 @@ dependencies:
   json_serializable:
   meta:
   path_provider:
+  rxdart:
   sembast:
   shared_preferences:
   stream_transform:

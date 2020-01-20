@@ -29,7 +29,12 @@ class PostsList extends StatelessWidget {
         bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),
         builder: (context, state) {
           if (state is PostsLoading) {
-            return LoadingIndicator(key: PostsKeys.postsLoading);
+            return Column(
+              children: <Widget>[
+                Text(PostsLocalizations.of(context).splashLoadingData),
+                LoadingIndicator(key: PostsKeys.postsLoading),
+              ],
+            );
           } else if (state is PostsLoaded) {
             // Filter the posts based on the filter set
             final posts = state.posts
@@ -48,7 +53,6 @@ class PostsList extends StatelessWidget {
                 ),
                 if (state.syncingPosts)
                   SyncSnackBar(),
-//              if (state.fetchingPosts) FetchingSnackbar(),
               ],
             );
           } else {

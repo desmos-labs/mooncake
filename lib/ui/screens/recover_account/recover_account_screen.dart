@@ -23,28 +23,33 @@ class RecoverAccountScreen extends StatelessWidget {
 
     return BlocBuilder<RecoverAccountBloc, RecoverAccountState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("Recover mnemonic"),
-          ),
-          body: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  PostsLocalizations.of(context).mnemonicRecoverInstructions,
+        return Stack(
+          children: <Widget>[
+            Scaffold(
+              appBar: AppBar(
+                title: Text("Recover mnemonic"),
+              ),
+              body: Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      PostsLocalizations.of(context)
+                          .mnemonicRecoverInstructions,
+                    ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: MnemonicInput(verificationMnemonic: mnemonic),
+                    ),
+                    const SizedBox(height: 16),
+                    if (state is TypingMnemonic) _recoverButton(context, state),
+                  ],
                 ),
-              const SizedBox(height: 16),
-                Expanded(
-                  child: MnemonicInput(verificationMnemonic: mnemonic),
-                ),
-              const SizedBox(height: 16),
-                if (state is TypingMnemonic) _recoverButton(context, state),
-                if (state is RecoveringAccount) _recoverLoading(),
-              ],
+              ),
             ),
-          ),
+            if (state is RecoveringAccount) _recoverLoading(context),
+          ],
         );
       },
     );
@@ -56,9 +61,11 @@ class RecoverAccountScreen extends StatelessWidget {
         Expanded(
           child: RaisedButton(
             child: Text(PostsLocalizations.of(context).recoverAccount),
-            onPressed: !state.mnemonicInputState.isValid
+            onPressed:
+                /*!state.mnemonicInputState.isValid
                 ? null
-                : () => _onRecoverPressed(context),
+                :*/
+                () => _onRecoverPressed(context),
           ),
         ),
       ],
@@ -71,18 +78,37 @@ class RecoverAccountScreen extends StatelessWidget {
     bloc.add(RecoverAccount());
   }
 
-  Widget _recoverLoading() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-      const SizedBox(
-          height: 16,
-          width: 16,
-          child: const LoadingIndicator(),
+  Widget _recoverLoading(BuildContext context) {
+    return Container(
+      color: Color(0x50FFFFFF),
+      child: Center(
+        child: Card(
+          margin: EdgeInsets.symmetric(horizontal: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  PostsLocalizations.of(context).recoverPopupTitle,
+                  style: Theme.of(context).textTheme.title,
+                ),
+                SizedBox(height: 16),
+                Text(PostsLocalizations.of(context).recoverPopupText),
+                SizedBox(height: 16),
+                SizedBox(
+                  child: LoadingIndicator(),
+                  width: 20,
+                  height: 20,
+                ),
+              ],
+            ),
+          ),
         ),
-      const SizedBox(width: 16),
-        Text("Recovering account...")
-      ],
+      ),
     );
   }
 }

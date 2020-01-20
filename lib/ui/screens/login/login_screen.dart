@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 const SizedBox(height: 32),
                   Text(
-                    PostsLocalizations.of(context).appPhrase,
+                    PostsLocalizations.of(context).loginTitle,
                     style: Theme.of(context).textTheme.headline.copyWith(
                           color: Colors.white,
                           fontSize: 30,
@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          PostsLocalizations.of(context).appDescription,
+                          PostsLocalizations.of(context).loginText,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.body2.copyWith(
                                 color: Colors.grey[300],

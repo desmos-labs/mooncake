@@ -8,6 +8,7 @@ abstract class LocalUserSource {
   Future<void> saveWallet(String mnemonic);
 
   /// Returns the address associated with the current wallet.
+  /// Returns `null` if no wallet has been saved yet.
   Future<String> getAddress();
 
   /// Returns the [Wallet] instance associated with the current
