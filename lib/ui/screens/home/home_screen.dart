@@ -1,3 +1,4 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,13 @@ class HomeScreen extends StatelessWidget {
             title: Text(PostsLocalizations.of(context).appTitle),
             actions: [
               IconButton(
-                icon: Icon(FontAwesomeIcons.signOutAlt),
+                icon: SizedBox(
+                  height: 16,
+                  child: SvgPicture.asset(
+                    "assets/images/logout.svg",
+                    color: Colors.white,
+                  ),
+                ),
                 onPressed: () {
                   BlocProvider.of<HomeBloc>(context).add(SignOut());
                 },

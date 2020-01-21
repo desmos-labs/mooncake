@@ -1,3 +1,7 @@
+# Version 0.0.3
+## Changes 
+- Updated the logout icon
+
 # Version 0.0.2
 ## Changes
 - Implemented the showing of sync errors using a long press on a post item
