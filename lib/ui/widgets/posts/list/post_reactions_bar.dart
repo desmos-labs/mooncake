@@ -52,10 +52,8 @@ class PostReactionsBar extends StatelessWidget {
                 final userReacted = _hasUserReacted(post, reactValue, state);
 
                 return ActionChip(
-                  label: Text(
-                    "$reactValue ${reacts.length}",
-                    style: Theme.of(context).textTheme.body1
-                  ),
+                  label: Text("$reactValue ${reacts.length}",
+                      style: Theme.of(context).textTheme.body1),
                   onPressed: () {
                     _postReactionClicked(context, userReacted, reactValue);
                   },
