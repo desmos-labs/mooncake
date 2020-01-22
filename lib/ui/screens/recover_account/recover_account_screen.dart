@@ -80,9 +80,10 @@ class RecoverAccountScreen extends StatelessWidget {
 
   Widget _recoverLoading(BuildContext context) {
     return Container(
-      color: Color(0x50FFFFFF),
+      color: Color(0x90000000),
       child: Center(
         child: Card(
+          elevation: 4,
           margin: EdgeInsets.symmetric(horizontal: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),

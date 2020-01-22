@@ -13,8 +13,15 @@ class RemoteUserSourceImpl implements RemoteUserSource {
 
   @override
   Future<AccountData> getAccountData(String address) async {
-    final endpoint = "/auth/accounts/$address";
-    final response = await _chainHelper.queryChain(endpoint);
-    return AccountDataResponse.fromJson(response.result).accountData;
+    try {
+      final endpoint = "/auth/accounts/$address";
+      final response = await _chainHelper.queryChain(endpoint);
+      final accountData =
+          AccountDataResponse.fromJson(response.result).accountData;
+      return accountData.address == address ? accountData : null;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

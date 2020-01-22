@@ -33,6 +33,7 @@ class PostsList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(PostsLocalizations.of(context).splashLoadingData),
+                SizedBox(height: 16),
                 LoadingIndicator(key: PostsKeys.postsLoading),
               ],
             );

@@ -30,10 +30,12 @@ android {
         release {
             Properties localProps = new Properties()
             localProps.load(new FileInputStream(file('../local.properties')))
-            storeFile file(localProps["signing.storeFile"])
-            storePassword localProps["signing.storePassword"]
-            keyPassword localProps["signing.keyPassword"]
-            keyAlias localProps["signing.keyAlias"]
+            if (localProps["signing.storeFile"] != null) {
+                storeFile file(localProps["signing.storeFile"])
+                storePassword localProps["signing.storePassword"]
+                keyPassword localProps["signing.keyPassword"]
+                keyAlias localProps["signing.keyAlias"]
+            }
         }
     }
     compileSdkVersion 28

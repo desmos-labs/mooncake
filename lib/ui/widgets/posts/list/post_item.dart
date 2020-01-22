@@ -56,6 +56,7 @@ class PostItem extends StatelessWidget {
             MarkdownStyleSheet.fromTheme(theme).copyWith(p: messageTheme);
 
         return Card(
+          elevation: 4,
           margin: this.margin,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
