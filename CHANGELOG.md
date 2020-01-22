@@ -1,3 +1,12 @@
+# Version 0.0.4
+## Changes 
+- Improved the recovering account UI
+- Improved the post item UI
+
+## Big fix
+- Fixed a misconfiguration for Android
+- Fixed an error that occurred only on Samsung devices
+
 # Version 0.0.3
 ## Changes 
 - Updated the logout icon
