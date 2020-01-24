@@ -1,3 +1,7 @@
+# Version 0.0.5
+## Changes
+- Improved the reactions UI
+
 # Version 0.0.4
 ## Changes 
 - Improved the recovering account UI
