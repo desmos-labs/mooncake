@@ -1,4 +1,4 @@
-![Cover image](../.img/cover.png)
+![Cover image](.img/cover.png)
 
 [![](https://img.shields.io/badge/100%25-flutter-blue)](https://flutter.dev)
 [![](https://img.shields.io/badge/based%20on-desmos-orange)](https://desmos.network)
@@ -14,8 +14,9 @@ Everyone reads everything, but none knows who is who.
 
 If so, create your account by generating a mnemonic (or importing an existing one), ask some tokens using our [faucet](https://faucet.desmos.network/) and start posting! 📜
 
-## Downloads
-You can get all the latest builds on the [release page](https://github.com/desmos-labs/mooncake/releases).
+<img src="./.img/screen_login.png" alt="Login screen" width="200">
+<img src="./.img/screen_list.png" alt="List screen" width="200">
+<img src="./.img/screen_detail.png" alt="Detail screen" width="200">
 
 ## Caveats
 ### Syncing
@@ -23,7 +24,3 @@ As of today, the syncing of posts and reactions is performed **once every 30 sec
 This is due to avoid uploading or downloading new content too much quickly. 
 
 For users, this means that everything you do **will stay on your device for 30 seconds**. After that time, it will be sent to the chain and will be public.  
-
-
-#### Developers
-If you want to try a faster sync time, you can change it from withing the `main.dart` file, setting the desired `syncPeriod` when creating the `PostsBloc` instance.
