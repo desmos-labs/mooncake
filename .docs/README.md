@@ -1,11 +1,4 @@
----
-permalink: /core/overview
----
-
-![Cover image](../.img/cover.png)
-
-[![](https://img.shields.io/badge/100%25-flutter-blue)](https://flutter.dev)
-[![](https://img.shields.io/badge/based%20on-desmos-orange)](https://desmos.network)
+<img :src="$withBase('/assets/cover.png')" alt="foo">
 
 ## Introduction
 Mooncake, which name derives from the homonym [chinese bakery product](https://en.wikipedia.org/wiki/Mooncake), is a decentralized social application based on the [Desmos blockchain](https://github.com/desmos-labs/desmos).
@@ -18,8 +11,10 @@ Everyone reads everything, but none knows who is who.
 
 If so, create your account by generating a mnemonic (or importing an existing one), ask some tokens using our [faucet](https://faucet.desmos.network/) and start posting! 📜
 
-## Downloads
-You can get all the latest builds on the [release page](https://github.com/desmos-labs/mooncake/releases).
+## Useful links
+- [Download guide for Android](download-android.md)
+- [Download guide for iOS](download-ios.md)
+- [Developers guide](development.md)
 
 ## Caveats
 ### Syncing
@@ -28,6 +23,3 @@ This is due to avoid uploading or downloading new content too much quickly.
 
 For users, this means that everything you do **will stay on your device for 30 seconds**. After that time, it will be sent to the chain and will be public.  
 
-
-#### Developers
-If you want to try a faster sync time, you can change it from withing the `main.dart` file, setting the desired `syncPeriod` when creating the `PostsBloc` instance.
