@@ -28,9 +28,8 @@ class PostReactionsBar extends StatelessWidget {
           return Container();
         }
 
-        final validReactions = post.reactions
-            .where((r) => r.value.contains(RegExp("[^\w+-:]")))
-            .toList();
+        final validReactions =
+            post.reactions.where((r) => r.value.runes.length == 1).toList();
         final reactMap =
             groupBy<Reaction, String>(validReactions, (r) => r.value);
 
@@ -51,17 +50,34 @@ class PostReactionsBar extends StatelessWidget {
                 final reactValue = reacts[0].value;
                 final userReacted = _hasUserReacted(post, reactValue, state);
 
-                final textStyle = Theme.of(context)
-                    .textTheme
-                    .body1
-                    .copyWith(color: userReacted ? Colors.white : Colors.black);
+                final textStyle = Theme.of(context).textTheme.body1.copyWith(
+                      color: userReacted ? Theme.of(context).accentColor : null,
+                      fontWeight: userReacted ? FontWeight.bold : null,
+                    );
 
                 return ActionChip(
-                  label: Text("$reactValue ${reacts.length}", style: textStyle),
+                  label: Row(
+                    children: <Widget>[
+                      Text(reactValue),
+                      SizedBox(width: 8),
+                      Text(
+                        reacts.length.toString(),
+                        style: textStyle,
+                      )
+                    ],
+                  ),
                   onPressed: () {
                     _postReactionClicked(context, userReacted, reactValue);
                   },
-                  backgroundColor: userReacted ? PostsTheme.accentColor : null,
+                  backgroundColor:
+                      userReacted ? PostsTheme.accentColor.withAlpha(50) : null,
+                  shape: StadiumBorder(
+                    side: BorderSide(
+                      color: userReacted
+                          ? Theme.of(context).accentColor
+                          : Colors.grey[400],
+                    ),
+                  ),
                 );
               },
             ));
@@ -71,6 +87,11 @@ class PostReactionsBar extends StatelessWidget {
 
   Widget _addEmojiButton(BuildContext context, String postId) {
     return ActionChip(
+      shape: StadiumBorder(
+        side: BorderSide(
+          color: Colors.grey[400],
+        ),
+      ),
       label: Icon(FontAwesomeIcons.plus, size: 16),
       onPressed: () {
         showDialog(

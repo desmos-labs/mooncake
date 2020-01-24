@@ -73,11 +73,11 @@ class PostItem extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      UserAvatar(
-                        key: PostsKeys.postItemOwnerAvatar(postId),
-                        user: post.owner,
-                      ),
-                      const SizedBox(width: 16),
+//                      UserAvatar(
+//                        key: PostsKeys.postItemOwnerAvatar(postId),
+//                        user: post.owner,
+//                      ),
+//                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,

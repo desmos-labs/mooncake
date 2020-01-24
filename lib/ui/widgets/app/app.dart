@@ -33,6 +33,7 @@ class PostsApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: PostsKeys.navigatorKey,
         title: PostsLocalizations().appTitle,
         theme: PostsTheme.theme,
