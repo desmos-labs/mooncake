@@ -1,6 +1,5 @@
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/posts/list/fetching_snackbar.dart';
 import 'package:mooncake/ui/widgets/posts/list/sync_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
