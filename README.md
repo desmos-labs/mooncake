@@ -1,7 +1,3 @@
----
-permalink: /core/overview
----
-
 ![Cover image](../.img/cover.png)
 
 [![](https://img.shields.io/badge/100%25-flutter-blue)](https://flutter.dev)

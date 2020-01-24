@@ -50,8 +50,7 @@ module.exports = {
         ],
         sidebarDepth: 2,
         sidebar: [
-            ["download-android", "Download on Android"],
-            ["download-ios", "Download on iOS"],
+            ["download", "Download"],
             ["development", "Development"],
         ],
     }
