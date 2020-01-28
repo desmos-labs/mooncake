@@ -34,7 +34,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   final NetworkInfo _networkInfo;
   final FlutterSecureStorage _storage;
 
-  final store = StoreRef.main();
+  final _store = StoreRef.main();
 
   LocalUserSourceImpl({
     @required String dbName,
@@ -53,17 +53,6 @@ class LocalUserSourceImpl extends LocalUserSource {
     return databaseFactoryIo.openDatabase(join(path.path, this._dbName));
   }
 
-  @override
-  Future<void> saveWallet(String mnemonic) async {
-    // Make sure the mnemonic is valid
-    if (!bip39.validateMnemonic(mnemonic)) {
-      throw Exception("Invalid mnemonic: $mnemonic");
-    }
-
-    // Save it safely
-    await _storage.write(key: _MNEMONIC_KEY, value: mnemonic.trim());
-  }
-
   /// Allows to derive a [Wallet] instance from the given [_WalletInfo] object.
   /// This method is static so that it can be called using the [compute] method
   /// to run it in a different isolate.
@@ -73,6 +62,17 @@ class LocalUserSourceImpl extends LocalUserSource {
       info.networkInfo,
       derivationPath: info.derivationPath,
     );
+  }
+
+  @override
+  Future<void> saveWallet(String mnemonic) async {
+    // Make sure the mnemonic is valid
+    if (!bip39.validateMnemonic(mnemonic)) {
+      throw Exception("Invalid mnemonic: $mnemonic");
+    }
+
+    // Save it safely
+    await _storage.write(key: _MNEMONIC_KEY, value: mnemonic.trim());
   }
 
   @override
@@ -103,16 +103,16 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<void> saveData(AccountData data) async {
+  Future<void> saveAccountData(AccountData data) async {
     final database = await this._database;
-    await store.record(_ACCOUNT_DATA_KEY).put(database, data.toJson());
+    await _store.record(_ACCOUNT_DATA_KEY).put(database, data.toJson());
   }
 
   @override
   Future<AccountData> getAccountData() async {
     final database = await this._database;
 
-    final record = await store.findFirst(database);
+    final record = await _store.findFirst(database);
     if (record == null) {
       return null;
     }
@@ -121,8 +121,8 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<void> deleteData() async {
+  Future<void> wipeData() async {
     await _storage.delete(key: _MNEMONIC_KEY);
-    await store.delete(await _database);
+    await _store.delete(await _database);
   }
 }

@@ -43,5 +43,16 @@ class MsgCreatePost implements StdMsg {
         assert(creationDate != null);
 
   @override
+  List<Object> get props => [
+        parentId,
+        message,
+        allowsComments,
+        subspace,
+        optionalData,
+        creator,
+        creationDate,
+      ];
+
+  @override
   Map<String, dynamic> toJson() => _$MsgCreatePostToJson(this);
 }

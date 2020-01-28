@@ -18,7 +18,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
       final response = await _chainHelper.queryChain(endpoint);
       final accountData =
           AccountDataResponse.fromJson(response.result).accountData;
-      return accountData.address == address ? accountData : null;
+      return accountData.address?.isEmpty == true ? null : accountData;
     } catch (e) {
       print(e);
       return null;

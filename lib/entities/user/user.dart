@@ -6,7 +6,7 @@ part 'user.g.dart';
 
 /// Contains the data of a user.
 @JsonSerializable(explicitToJson: true)
-class User implements Equatable {
+class User extends Equatable {
   @JsonKey(name: "addres")
   final String address;
 
@@ -30,7 +30,7 @@ class User implements Equatable {
   List<Object> get props => [address, username, avatarUrl];
 
   @override
-  String toString() => 'User: { '
+  String toString() => 'User { '
       'address: $address, '
       'username: $username, '
       'avatarUrl : $avatarUrl '

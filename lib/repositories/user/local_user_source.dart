@@ -16,12 +16,12 @@ abstract class LocalUserSource {
   Future<Wallet> getWallet();
 
   /// Saves the given [data] as the current local user data.
-  Future<void> saveData(AccountData data);
+  Future<void> saveAccountData(AccountData data);
 
   /// Returns the currently stored [AccountData], or `null` if no data
   /// are currently stored.
   Future<AccountData> getAccountData();
 
   /// Completely wipes the currently stored wallet for the user.
-  Future<void> deleteData();
+  Future<void> wipeData();
 }

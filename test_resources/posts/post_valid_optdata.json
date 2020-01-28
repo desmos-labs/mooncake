@@ -1,0 +1,15 @@
+{
+  "id": "1",
+  "parent_id": "0",
+  "message": "This is a post",
+  "created": "2019-12-11T07:57:54.03384Z",
+  "last_edited": "0001-01-01T00:00:00Z",
+  "allows_comments": false,
+  "subspace": "",
+  "optional_data": {
+    "external_reference": "dwitter-2019-12-13T08:51:32.262217"
+  },
+  "creator": "desmos17573axzcrmq6w5jwx27qlf9d90lcgkfmsrjycg",
+  "reactions": [],
+  "children": []
+}

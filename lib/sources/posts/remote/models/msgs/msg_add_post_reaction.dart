@@ -26,5 +26,8 @@ class MsgAddPostReaction implements StdMsg {
         assert(user != null);
 
   @override
+  List<Object> get props => [postId, reaction, user];
+
+  @override
   Map<String, dynamic> toJson() => _$MsgAddPostReactionToJson(this);
 }

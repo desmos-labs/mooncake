@@ -32,7 +32,7 @@ extension PostsExt on List<Post> {
 /// Defines useful extensions methods for the [Int] type.
 extension IntExt on int {
   /// Converts this value into a [String] if it's greater than zero,
-  /// otherwise returns an empty string.
+  /// otherwise returns null.
   String toStringOrEmpty() {
     return this > 0 ? '$this' : null;
   }

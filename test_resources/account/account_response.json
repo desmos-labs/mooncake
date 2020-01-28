@@ -1,0 +1,21 @@
+{
+  "height": "217386",
+  "result": {
+    "type": "cosmos-sdk/Account",
+    "value": {
+      "address": "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
+      "coins": [
+        {
+          "denom": "udaric",
+          "amount": "10000000"
+        }
+      ],
+      "public_key": {
+        "type": "tendermint/PubKeySecp256k1",
+        "value": "A735NvHpqbi+AboXD2win9kHAVGJo+O1VeuKUASypGe3"
+      },
+      "account_number": "54",
+      "sequence": "39"
+    }
+  }
+}

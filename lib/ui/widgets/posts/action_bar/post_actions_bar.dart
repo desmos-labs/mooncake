@@ -48,18 +48,6 @@ class PostActionsBar extends StatelessWidget {
               value: post.commentsIds.length.toStringOrEmpty(),
             ),
             const SizedBox(width: ICON_SPACING),
-//            PostAction(
-//              icon: post.liked
-//                  ? FontAwesomeIcons.solidHeart
-//                  : FontAwesomeIcons.heart,
-//              value: post.likes.length.toStringOrEmpty(),
-//              action: () {
-//                final id = post.id;
-//                // ignore: close_sinks
-//                final bloc = BlocProvider.of<PostsBloc>(context);
-//                bloc.add(post.liked ? UnlikePost(id) : LikePost(id));
-//              },
-//            ),
           ],
         );
       },

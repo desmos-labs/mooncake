@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
-part 'text_post.g.dart';
+part 'post.g.dart';
 
 /// Represents a generic post
 @immutable
 @JsonSerializable(explicitToJson: true)
-class Post implements Equatable, Comparable<Post> {
+class Post extends Equatable implements Comparable<Post> {
   /// Represents the date format that should be used to format and parse
   /// post-related date values.
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

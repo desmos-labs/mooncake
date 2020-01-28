@@ -36,7 +36,7 @@ class UserRepositoryImpl extends UserRepository {
             sequence: "-1",
             coins: [],
           );
-      await _localUserSource.saveData(data);
+      await _localUserSource.saveAccountData(data);
     }
   }
 
@@ -55,6 +55,6 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<void> deleteData() {
-    return _localUserSource.deleteData();
+    return _localUserSource.wipeData();
   }
 }
