@@ -1,3 +1,8 @@
+# Version 0.0.6
+## Changes
+- Added the automatic account funding upon login. 
+  `10000udaric` will be sent upon the first login. Please note that if you log into the app more than once per day, from the second login you will be granted no token.
+
 # Version 0.0.5
 ## Changes
 - Improved the reactions UI
