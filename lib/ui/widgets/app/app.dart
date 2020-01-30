@@ -17,7 +17,7 @@ class PostsApp extends StatelessWidget {
           create: (context) => RecoverAccountBloc(
             mnemonicInputBloc: BlocProvider.of(context),
             loginBloc: BlocProvider.of(context),
-            saveWalletUseCase: Injector.get(),
+            loginUseCase: Injector.get(),
             getAddressUseCase: Injector.get(),
           ),
         ),

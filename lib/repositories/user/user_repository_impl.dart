@@ -54,6 +54,11 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
+  Future<void> fundAccount(AccountData account) {
+    return _remoteUserSource.fundAccount(account);
+  }
+
+  @override
   Future<void> deleteData() {
     return _localUserSource.wipeData();
   }

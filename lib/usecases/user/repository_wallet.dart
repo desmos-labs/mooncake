@@ -20,6 +20,9 @@ abstract class UserRepository {
   /// cannot be retrieved, returns `null` instead.
   Future<AccountData> getAccount();
 
+  /// Allows to sends funds from the faucet to the specified [account].
+  Future<void> fundAccount(AccountData account);
+
   /// Deletes entirely the currently stored account data.
   Future<void> deleteData();
 }

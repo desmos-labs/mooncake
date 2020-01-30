@@ -10,7 +10,7 @@ import 'package:mooncake/usecases/usecases.dart';
 /// and emits the correct states.
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
-  final SaveWalletUseCase _saveWalletUseCase;
+  final LoginUseCase _loginUseCase;
   final GetAddressUseCase _getAddressUseCase;
 
   MnemonicInputBloc _mnemonicInputBloc;
@@ -21,14 +21,14 @@ class RecoverAccountBloc
   RecoverAccountBloc({
     @required MnemonicInputBloc mnemonicInputBloc,
     @required LoginBloc loginBloc,
-    @required SaveWalletUseCase saveWalletUseCase,
+    @required LoginUseCase loginUseCase,
     @required GetAddressUseCase getAddressUseCase,
   })  : assert(mnemonicInputBloc != null),
         _mnemonicInputBloc = mnemonicInputBloc,
         assert(loginBloc != null),
         _loginBloc = loginBloc,
-        assert(saveWalletUseCase != null),
-        this._saveWalletUseCase = saveWalletUseCase,
+        assert(loginUseCase != null),
+        this._loginUseCase = loginUseCase,
         assert(getAddressUseCase != null),
         this._getAddressUseCase = getAddressUseCase {
     // Observe the mnemonic changes to react tot them
@@ -61,8 +61,8 @@ class RecoverAccountBloc
 
     final state = _mnemonicInputBloc.state;
     if (state.isValid) {
-      _saveWalletUseCase
-          .save(state.mnemonic)
+      _loginUseCase
+          .login(state.mnemonic)
           .then((_) => _getAddressUseCase.get())
           .then((address) => add(AccountRecoveredSuccessfully(address)));
     }

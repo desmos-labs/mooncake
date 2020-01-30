@@ -19,18 +19,14 @@ class _TxData {
 class ChainHelper {
   final String _lcdEndpoint;
   final String _rpcEndpoint;
-  final http.Client _httpClient;
 
   ChainHelper({
     @required String lcdEndpoint,
     @required String rpcEndpoint,
-    @required http.Client httpClient,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
         _lcdEndpoint = lcdEndpoint,
         assert(rpcEndpoint != null && rpcEndpoint.isNotEmpty),
-        this._rpcEndpoint = rpcEndpoint,
-        assert(httpClient != null),
-        _httpClient = httpClient;
+        this._rpcEndpoint = rpcEndpoint;
 
   static Future<Map<String, dynamic>> _queryBackground(String url) async {
     final httpClient = http.Client();
