@@ -23,10 +23,12 @@ dependencies:
   flutter_secure_storage:
   flutter_svg:
   font_awesome_flutter:
+  image_picker:
   intl:
   json_annotation:
   json_serializable:
   meta:
+  mime_type:
   path_provider:
   rxdart:
   sembast:

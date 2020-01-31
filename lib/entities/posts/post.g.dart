@@ -19,11 +19,8 @@ Post _$PostFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(k, e as String),
     ),
     owner: json['creator'] as String,
-    reactions: (json['reactions'] as List)
-        ?.map((e) =>
-            e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    commentsIds: (json['children'] as List)?.map((e) => e as String)?.toList(),
+    reactions: json['reactions'],
+    commentsIds: json['children'],
     status: json['status'] == null
         ? null
         : PostStatus.fromJson(json['status'] as Map<String, dynamic>),
@@ -40,7 +37,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'subspace': instance.subspace,
       'creator': instance.owner,
       'optional_data': instance.optionalData,
-      'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
+      'reactions': instance.reactions,
       'children': instance.commentsIds,
       'status': instance.status?.toJson(),
     };

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -7,40 +9,51 @@ import 'package:flutter/cupertino.dart';
 class PostInputState extends Equatable {
   final String message;
   final bool allowsComments;
+  final List<File> images;
   final bool saving;
 
   PostInputState({
     @required this.message,
     @required this.allowsComments,
+    @required this.images,
     @required this.saving,
   });
 
-  bool get isValid => message != null && message.isNotEmpty;
+  bool get isValid =>
+      (message != null && message.isNotEmpty) || images.isNotEmpty;
 
   /// Builds an empty state.
   factory PostInputState.empty() => PostInputState(
         message: null,
         allowsComments: true,
+        images: [],
         saving: false,
       );
 
   /// Updates this state setting the specified values properly.
-  PostInputState update({String message, bool allowsComments, bool saving}) {
+  PostInputState update({
+    String message,
+    bool allowsComments,
+    List<File> images,
+    bool saving,
+  }) {
     return PostInputState(
       message: message ?? this.message,
       allowsComments: allowsComments ?? this.allowsComments,
       saving: saving ?? this.saving,
+      images: images ?? this.images,
     );
   }
 
   @override
-  List<Object> get props => [message, saving, allowsComments];
+  List<Object> get props => [message, allowsComments, images, saving];
 
   @override
   String toString() {
     return 'CommentInputState {'
         'message: $message ,'
         'allowsComments: $allowsComments, '
+        'imagesPaths: $images, '
         'saving: $saving'
         '}';
   }

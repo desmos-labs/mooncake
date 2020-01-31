@@ -47,6 +47,10 @@ class MsgConverter {
 
       // The post needs to be created
       if (existingPost == null) {
+        // TODO: Upload the medias to IPFS before adding the post
+        // Media posts should be uploaded to IPFS, and then the URIs should be
+        // changed to the one that IPFS returns using
+        // Infura (https://ipfs.infura.io/ipfs/) or other similar services.
         postsToCreate.add(posts[index]);
         continue;
       }

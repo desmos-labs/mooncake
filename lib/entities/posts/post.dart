@@ -59,6 +59,9 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "optional_data")
   final Map<String, String> optionalData;
 
+  @JsonKey(name: "medias")
+  final List<PostMedia> medias;
+
   @JsonKey(name: "reactions")
   final List<Reaction> reactions;
 
@@ -79,6 +82,7 @@ class Post extends Equatable implements Comparable<Post> {
     @required this.subspace,
     this.optionalData = const {},
     @required this.owner,
+    List<PostMedia> medias = const [],
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
     this.status = const PostStatus(value: PostStatusValue.TO_BE_SYNCED),
@@ -87,6 +91,7 @@ class Post extends Equatable implements Comparable<Post> {
         assert(created != null),
         assert(subspace != null),
         assert(owner != null),
+        this.medias = medias ?? [],
         this.reactions = reactions ?? [],
         this.commentsIds = commentsIds ?? [];
 
@@ -99,6 +104,7 @@ class Post extends Equatable implements Comparable<Post> {
     String subspace,
     Map<String, String> optionalData,
     String owner,
+    List<PostMedia> medias,
     List<Reaction> reactions,
     List<String> commentsIds,
     PostStatus status,
@@ -113,6 +119,7 @@ class Post extends Equatable implements Comparable<Post> {
       subspace: subspace ?? this.subspace,
       optionalData: optionalData ?? this.optionalData,
       owner: owner ?? this.owner,
+      medias: medias ?? this.medias,
       reactions: reactions ?? this.reactions,
       commentsIds: commentsIds ?? this.commentsIds,
       status: status ?? this.status,
@@ -135,6 +142,7 @@ class Post extends Equatable implements Comparable<Post> {
         this.subspace,
         this.optionalData,
         this.owner,
+        this.medias,
         this.reactions,
         this.commentsIds,
         this.status,
@@ -151,6 +159,7 @@ class Post extends Equatable implements Comparable<Post> {
       'subspace: $subspace, '
       'optionalData: $optionalData, '
       'owner: $owner, '
+      'medias: $medias, '
       'reactions: $reactions, '
       'commentsIds: $commentsIds, '
       'synced: $status '

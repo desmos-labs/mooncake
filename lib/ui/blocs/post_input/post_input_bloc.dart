@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 
 import '../export.dart';
 
@@ -26,8 +28,20 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       yield state.update(message: event.message);
     } else if (event is AllowsCommentsChanged) {
       yield state.update(allowsComments: event.allowsComments);
+    } else if (event is ImageAdded) {
+      final images = _removeFileIfPresent(state.images, event.file);
+      yield state.update(images: images + [event.file]);
+    } else if (event is ImageRemoved) {
+      final images = _removeFileIfPresent(state.images, event.file);
+      yield state.update(images: images);
     } else if (event is SavePost) {
       yield state.update(saving: true);
     }
+  }
+
+  List<File> _removeFileIfPresent(List<File> files, File file) {
+    return files
+        .where((f) => !listEquals(f.readAsBytesSync(), file.readAsBytesSync()))
+        .toList();
   }
 }

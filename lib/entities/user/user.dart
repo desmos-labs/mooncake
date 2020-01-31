@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 part 'user.g.dart';
 
 /// Contains the data of a user.
+@immutable
 @JsonSerializable(explicitToJson: true)
 class User extends Equatable {
   @JsonKey(name: "addres")

@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 part 'reaction.g.dart';
 
 /// Represents a reaction for a post that has been inserted by a specific user.
+@immutable
 @JsonSerializable(explicitToJson: true)
 class Reaction extends Equatable {
   @JsonKey(name: "owner")

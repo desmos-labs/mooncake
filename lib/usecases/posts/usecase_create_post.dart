@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:mime_type/mime_type.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
@@ -17,16 +20,27 @@ class CreatePostUseCase {
     @required String message,
     @required String parentId,
     @required bool allowsComments,
+    List<File> images,
   }) async {
     final address = await _userRepository.getAddress();
     final date = Post.getDateStringNow();
+
+    // We perform a simple conversion to PostMedia using the File absolute
+    // paths as these will need to be uploaded later
+    final postMedias = images
+        .map((f) => PostMedia(
+              url: f.absolute.path,
+              mimeType: mime(f.absolute.path),
+            ))
+        .toList();
+
     return Post(
       id: date,
       created: date,
       parentId: parentId,
       message: message,
       allowsComments: allowsComments,
-      // This is the app subspace
+      medias: postMedias,
       subspace: Constants.SUBSPACE,
       owner: address,
     );

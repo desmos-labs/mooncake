@@ -1,1 +1,1 @@
-export 'post_input.dart';
+export '../post_input.dart';
