@@ -68,7 +68,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   Future<void> saveWallet(String mnemonic) async {
     // Make sure the mnemonic is valid
     if (!bip39.validateMnemonic(mnemonic)) {
-      throw Exception("Invalid mnemonic: $mnemonic");
+      throw Exception("Evver while saving wallet: invalid mnemonic.");
     }
 
     // Save it safely

@@ -48,7 +48,18 @@ class RecoverAccountScreen extends StatelessWidget {
                 ),
               ),
             ),
-            if (state is RecoveringAccount) _recoverLoading(context),
+            if (state is RecoveringAccount)
+              RecoverPopup(
+                title: PostsLocalizations.of(context).recoveringPopupTitle,
+                message: PostsLocalizations.of(context).recoveringPopupText,
+              ),
+            if (state is RecoverError)
+              RecoverPopup(
+                title: PostsLocalizations.of(context).recoverPopupErrorTitle,
+                message: state.error.toString(),
+                loading: false,
+                onTap: () => _dismissErrorPopup(context),
+              )
           ],
         );
       },
@@ -61,11 +72,7 @@ class RecoverAccountScreen extends StatelessWidget {
         Expanded(
           child: RaisedButton(
             child: Text(PostsLocalizations.of(context).recoverAccount),
-            onPressed:
-                /*!state.mnemonicInputState.isValid
-                ? null
-                :*/
-                () => _onRecoverPressed(context),
+            onPressed: () => _onRecoverPressed(context),
           ),
         ),
       ],
@@ -78,38 +85,9 @@ class RecoverAccountScreen extends StatelessWidget {
     bloc.add(RecoverAccount());
   }
 
-  Widget _recoverLoading(BuildContext context) {
-    return Container(
-      color: Color(0x90000000),
-      child: Center(
-        child: Card(
-          elevation: 4,
-          margin: EdgeInsets.symmetric(horizontal: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  PostsLocalizations.of(context).recoverPopupTitle,
-                  style: Theme.of(context).textTheme.title,
-                ),
-                SizedBox(height: 16),
-                Text(PostsLocalizations.of(context).recoverPopupText),
-                SizedBox(height: 16),
-                SizedBox(
-                  child: LoadingIndicator(),
-                  width: 20,
-                  height: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+  void _dismissErrorPopup(BuildContext context) {
+    // ignore: close_sinks
+    final bloc = BlocProvider.of<RecoverAccountBloc>(context);
+    bloc.add(CloseErrorPopup());
   }
 }

@@ -1,3 +1,8 @@
+# Version 0.0.8
+## Changes
+- Implemented the visualization of login errors as a dismissible popup
+- Implemented the remote logging of errors
+
 # Version 0.0.7
 ## Big fixes
 - Fixed a bug that caused the multiple sending of the same message

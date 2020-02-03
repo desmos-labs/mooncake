@@ -34,9 +34,10 @@ class PostsLocalizations {
   String get mnemonicHint => "Mnemonic";
   String get recoverAccount => "Recover account";
   String get invalidMnemonic => "Invalid mnemonic";
-  String get recoverPopupTitle => "Recovering account...";
-  String get recoverPopupText =>
+  String get recoveringPopupTitle => "Recovering account...";
+  String get recoveringPopupText =>
       "Your account is being recovered. This operation might take a while, please wait.";
+  String get recoverPopupErrorTitle => "Error while recovering the account";
 
   // Main screen
   String get allPosts => "Posts";
