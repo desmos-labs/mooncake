@@ -14,6 +14,10 @@ Everyone reads everything, but none knows who is who.
 
 If so, create your account by generating a mnemonic (or importing an existing one), ask some tokens using our [faucet](https://faucet.desmos.network/) and start posting! 📜
 
+## Download
+Downloads and documentation can both be found on the [official website](https://mooncake.space)
+
+## Screens
 <img src="./.img/screen_login.png" alt="Login screen" width="200"> <img src="./.img/screen_list.png" alt="List screen" width="200"> <img src="./.img/screen_detail.png" alt="Detail screen" width="200">
 
 ## Caveats
