@@ -1,3 +1,7 @@
+# Version 0.0.7
+## Big fixes
+- Fixed a bug that caused the multiple sending of the same message
+
 # Version 0.0.6
 ## Changes
 - Added the automatic account funding upon login. 
