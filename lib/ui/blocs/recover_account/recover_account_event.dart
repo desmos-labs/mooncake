@@ -40,10 +40,27 @@ class AccountRecoveredSuccessfully extends RecoverAccountEvent {
   AccountRecoveredSuccessfully(this.address);
 
   @override
-  String toString() => 'AccountRecoveredSuccessfully { '
-      'address: $address '
-      '}';
+  String toString() => 'AccountRecoveredSuccessfully { address: $address }';
 
   @override
   List<Object> get props => [address];
+}
+
+/// Event that is emitted when the recovering of an account fails.
+class AccountRecoveredError extends RecoverAccountEvent {
+  final dynamic error;
+
+  AccountRecoveredError(this.error);
+
+  @override
+  String toString() => 'AccountRecoveredError { error: $error }';
+
+  @override
+  List<Object> get props => [error];
+}
+
+/// Event that is emitted when the user wants to close the error popup.
+class CloseErrorPopup extends RecoverAccountEvent {
+  @override
+  String toString() => 'CloseErrorPopup';
 }

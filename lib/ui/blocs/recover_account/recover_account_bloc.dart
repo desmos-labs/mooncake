@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
+import 'package:mooncake/utils/utils.dart';
 
 /// Bloc that allows to properly handle the recovering account events
 /// and emits the correct states.
@@ -51,6 +52,10 @@ class RecoverAccountBloc
       yield* _mapRecoverAccountToState(event);
     } else if (event is AccountRecoveredSuccessfully) {
       yield* _mapAccountRecoveredSuccessfullyEventToState(event);
+    } else if (event is AccountRecoveredError) {
+      yield* _mapAccountRecoveredErrorToState(event);
+    } else if (event is CloseErrorPopup) {
+      yield* _mapCloseErrorPopupToState();
     }
   }
 
@@ -64,7 +69,11 @@ class RecoverAccountBloc
       _loginUseCase
           .login(state.mnemonic)
           .then((_) => _getAddressUseCase.get())
-          .then((address) => add(AccountRecoveredSuccessfully(address)));
+          .then((address) => add(AccountRecoveredSuccessfully(address)))
+          .catchError((error) {
+        Logger.log(error);
+        add(AccountRecoveredError(error));
+      });
     }
   }
 
@@ -74,6 +83,21 @@ class RecoverAccountBloc
     final state = _mnemonicInputBloc.state;
     yield RecoveredAccount(state.mnemonic);
     _loginBloc.add(LogIn(state.mnemonic));
+  }
+
+  Stream<RecoverAccountState> _mapAccountRecoveredErrorToState(
+      AccountRecoveredError event) async* {
+    yield RecoverError(event.error);
+  }
+
+  Stream<RecoverAccountState> _mapCloseErrorPopupToState() async* {
+    final state = _mnemonicInputBloc.state;
+    if (state.isValid) {
+      add(MnemonicInputChanged(MnemonicInputState(
+        mnemonic: state.mnemonic,
+        verificationMnemonic: state.verificationMnemonic,
+      )));
+    }
   }
 
   @override

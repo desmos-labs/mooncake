@@ -32,10 +32,12 @@ module.exports = {
     },
     plugins: [
         'vuepress-plugin-element-tabs',
-        '@vuepress/google-analytics',
-        {
-            'ga': 'UA-108489905-8' // UA-00000000-0
-        }
+        [
+            '@vuepress/google-analytics',
+            {
+                'ga': 'UA-108489905-10' // UA-00000000-0
+            }
+        ]
     ],
     themeConfig: {
         repo: "desmos-labs/mooncake",
