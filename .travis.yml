@@ -9,6 +9,7 @@ install:
 
 script:
   - npm run docs:build
+  - echo 'mooncake.space' > .docs/.vuepress/dist/CNAME
 
 deploy:
   provider: pages
