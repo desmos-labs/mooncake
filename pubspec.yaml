@@ -7,7 +7,9 @@ environment:
 
 dependencies:
   alan:
-    git: https://github.com/alan-sdk/alan.dart
+    git:
+      url: git://github.com/alan-sdk/alan.dart.git
+      ref: master
   bip39:
   collection:
   cupertino_icons:
