@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "608378430363",
+    "firebase_url": "https://mooncake-16aaa.firebaseio.com",
+    "project_id": "mooncake-16aaa",
+    "storage_bucket": "mooncake-16aaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:608378430363:android:2fc0e495e1df22f06f373e",
+        "android_client_info": {
+          "package_name": "network.desmos.mooncake"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "608378430363-9f9qfmpj66a18aia9urjk0dm9cdgsk24.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTy07gj5fjJhDkCdyLTuZGaEVpq4QjFew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "608378430363-9f9qfmpj66a18aia9urjk0dm9cdgsk24.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "608378430363-mfp7o75vh6tuham2qgakri0f1782boie.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "network.desmos.mooncake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

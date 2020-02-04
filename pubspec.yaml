@@ -16,6 +16,8 @@ dependencies:
   dependencies:
   emoji_picker:
   equatable:
+  firebase_core:
+  firebase_analytics:
   f_logs:
   flutter:
     sdk: flutter
