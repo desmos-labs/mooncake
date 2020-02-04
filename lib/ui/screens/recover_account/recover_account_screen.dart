@@ -52,6 +52,7 @@ class RecoverAccountScreen extends StatelessWidget {
               RecoverPopup(
                 title: PostsLocalizations.of(context).recoveringPopupTitle,
                 message: PostsLocalizations.of(context).recoveringPopupText,
+                loading: true,
               ),
             if (state is RecoverError)
               RecoverPopup(

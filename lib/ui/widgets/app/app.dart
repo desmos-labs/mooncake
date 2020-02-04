@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
@@ -22,10 +23,7 @@ class PostsApp extends StatelessWidget {
           ),
         ),
         BlocProvider<GenerateMnemonicBloc>(
-          create: (context) => GenerateMnemonicBloc(
-            navigatorBloc: BlocProvider.of(context),
-            generateMnemonicUseCase: Injector.get(),
-          ),
+          create: (context) => GenerateMnemonicBloc.create(context),
         ),
         BlocProvider<PostsBloc>(
           create: (context) =>
@@ -39,6 +37,9 @@ class PostsApp extends StatelessWidget {
         theme: PostsTheme.theme,
         localizationsDelegates: [
           FlutterBlocLocalizationsDelegate(),
+        ],
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: Injector.get()),
         ],
         routes: {
           PostsRoutes.home: (context) => SplashScreen(),

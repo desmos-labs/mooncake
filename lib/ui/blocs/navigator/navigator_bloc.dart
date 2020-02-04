@@ -3,8 +3,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
+/// BloC that controls the navigation to the different screens of the app.
 class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   final _navigatorKey = PostsKeys.navigatorKey;
+
+  NavigatorBloc();
+
+  factory NavigatorBloc.create() {
+    return NavigatorBloc();
+  }
 
   @override
   void get initialState => null;

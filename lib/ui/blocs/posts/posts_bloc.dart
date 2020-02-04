@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
@@ -19,6 +20,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final RemoveReactionFromPostUseCase _removeReactionFromPostUseCase;
   final GetPostsUseCase _getPostsUseCase;
   final SyncPostsUseCase _syncPostsUseCase;
+  final FirebaseAnalytics _analytics;
 
   Timer _syncTimer;
   StreamSubscription _postsSubscription;
@@ -30,6 +32,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
     @required GetAddressUseCase getAddressUseCase,
+    @required FirebaseAnalytics analytics,
   })  : _syncPeriod = syncPeriod,
         assert(likePostUseCase != null),
         _addReactionToPostUseCase = likePostUseCase,
@@ -40,7 +43,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         assert(syncPostsUseCase != null),
         _syncPostsUseCase = syncPostsUseCase,
         assert(getAddressUseCase != null),
-        _getAddressUseCase = getAddressUseCase;
+        _getAddressUseCase = getAddressUseCase,
+        assert(analytics != null),
+        _analytics = analytics;
 
   factory PostsBloc.create({int syncPeriod = 30}) {
     return PostsBloc(
@@ -50,6 +55,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       getPostsUseCase: Injector.get(),
       syncPostsUseCase: Injector.get(),
       getAddressUseCase: Injector.get(),
+      analytics: Injector.get(),
     );
   }
 
@@ -65,10 +71,15 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     } else if (event is LoadPosts) {
       yield* _mapLoadPostsEventToState(event);
     } else if (event is AddPost) {
+      _analytics.logEvent(name: Constants.EVENT_SAVE_POST, parameters: {
+        Constants.POST_PARAM_OWNER: event.post.owner,
+      });
       yield* _mapAddPostEventToState(event);
     } else if (event is AddPostReaction) {
+      _analytics.logEvent(name: Constants.EVENT_ADD_REACTION);
       yield* _mapAddPostReactionEventToState(event);
     } else if (event is RemovePostReaction) {
+      _analytics.logEvent(name: Constants.EVENT_REMOVE_REACTION);
       yield* _mapRemovePostReactionEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsEventToState();

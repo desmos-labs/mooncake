@@ -15,9 +15,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       : assert(getAccountUseCase != null),
         _getAccountUseCase = getAccountUseCase;
 
-  factory AccountBloc.create() => AccountBloc(
-        getAccountUseCase: Injector.get(),
-      );
+  factory AccountBloc.create() {
+    return AccountBloc(
+      getAccountUseCase: Injector.get(),
+    );
+  }
 
   @override
   AccountState get initialState => LoadingAccount();

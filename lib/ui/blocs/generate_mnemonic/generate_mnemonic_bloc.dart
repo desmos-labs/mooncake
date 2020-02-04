@@ -1,6 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
@@ -11,14 +16,26 @@ class GenerateMnemonicBloc
     extends Bloc<GenerateMnemonicEvent, GenerateMnemonicState> {
   final NavigatorBloc _navigatorBloc;
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
+  final FirebaseAnalytics _analytics;
 
-  GenerateMnemonicBloc(
-      {@required NavigatorBloc navigatorBloc,
-      @required GenerateMnemonicUseCase generateMnemonicUseCase})
-      : assert(navigatorBloc != null),
+  GenerateMnemonicBloc({
+    @required NavigatorBloc navigatorBloc,
+    @required GenerateMnemonicUseCase generateMnemonicUseCase,
+    @required FirebaseAnalytics analytics,
+  })  : assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(generateMnemonicUseCase != null),
-        _generateMnemonicUseCase = generateMnemonicUseCase;
+        _generateMnemonicUseCase = generateMnemonicUseCase,
+        assert(analytics != null),
+        _analytics = analytics;
+
+  factory GenerateMnemonicBloc.create(BuildContext context) {
+    return GenerateMnemonicBloc(
+      navigatorBloc: BlocProvider.of(context),
+      generateMnemonicUseCase: Injector.get(),
+      analytics: Injector.get(),
+    );
+  }
 
   @override
   GenerateMnemonicState get initialState => GeneratingMnemonic();
@@ -28,6 +45,7 @@ class GenerateMnemonicBloc
     GenerateMnemonicEvent event,
   ) async* {
     if (event is GenerateMnemonic) {
+      _analytics.logEvent(name: Constants.EVENT_MNEMONIC_GENERATE);
       yield* _mapGenerateMnemonicEventToState();
     } else if (event is MnemonicWritten) {
       yield* _mapMnemonicWrittenEventToState();

@@ -24,7 +24,7 @@ class PostsTheme {
       // Define the default font family.
       fontFamily: 'Dosis',
       textTheme: Typography.englishLike2018.copyWith(
-        body1: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+        bodyText2: TextStyle(color: textColor, fontWeight: FontWeight.w500),
       ),
       buttonTheme: ButtonThemeData(
         buttonColor: accentColor,

@@ -42,13 +42,10 @@ void _runApp() {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<NavigatorBloc>(
-        create: (_) => NavigatorBloc(),
+        create: (_) => NavigatorBloc.create(),
       ),
       BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(
-          navigatorBloc: BlocProvider.of(context),
-          checkLoginUseCase: Injector.get(),
-        )..add(CheckStatus()),
+        create: (context) => LoginBloc.create(context)..add(CheckStatus()),
       ),
     ],
     child: PostsApp(),

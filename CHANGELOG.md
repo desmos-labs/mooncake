@@ -1,3 +1,8 @@
+# Version 0.0.9 
+## Changes
+- Implemented analytics
+- Updated iOS app icons to remove the alpha channel
+
 # Version 0.0.8
 ## Changes
 - Implemented the visualization of login errors as a dismissible popup

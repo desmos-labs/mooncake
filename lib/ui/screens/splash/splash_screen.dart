@@ -31,15 +31,17 @@ class SplashScreen extends StatelessWidget {
               ),
               Text(
                 PostsLocalizations.of(context).appTitle,
-                style: PostsTheme.theme.textTheme.body1.copyWith(
+                style: PostsTheme.theme.textTheme.bodyText2.copyWith(
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 16),
               Text(
                 PostsLocalizations.of(context).splashLoadingData,
-                style: PostsTheme.theme.textTheme.body1
-                    .copyWith(color: Colors.white, fontSize: 16),
+                style: PostsTheme.theme.textTheme.bodyText2.copyWith(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
               ),
             ],
           ),
@@ -49,15 +51,8 @@ class SplashScreen extends StatelessWidget {
   }
 
   Widget _homeScreen() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(
-            loginBloc: BlocProvider.of(context),
-            logoutUseCase: Injector.get(),
-          ),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => HomeBloc.create(context),
       child: HomeScreen(),
     );
   }

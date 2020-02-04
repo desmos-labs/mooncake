@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:mooncake/utils/utils.dart';
@@ -13,6 +15,7 @@ class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
   final LoginUseCase _loginUseCase;
   final GetAddressUseCase _getAddressUseCase;
+  final FirebaseAnalytics _analytics;
 
   MnemonicInputBloc _mnemonicInputBloc;
   LoginBloc _loginBloc;
@@ -24,6 +27,7 @@ class RecoverAccountBloc
     @required LoginBloc loginBloc,
     @required LoginUseCase loginUseCase,
     @required GetAddressUseCase getAddressUseCase,
+    @required FirebaseAnalytics analytics,
   })  : assert(mnemonicInputBloc != null),
         _mnemonicInputBloc = mnemonicInputBloc,
         assert(loginBloc != null),
@@ -31,7 +35,9 @@ class RecoverAccountBloc
         assert(loginUseCase != null),
         this._loginUseCase = loginUseCase,
         assert(getAddressUseCase != null),
-        this._getAddressUseCase = getAddressUseCase {
+        this._getAddressUseCase = getAddressUseCase,
+        assert(analytics != null),
+        _analytics = analytics {
     // Observe the mnemonic changes to react tot them
     _mnemonicBlocSubscription = mnemonicInputBloc.listen((mnemonicState) {
       add(MnemonicInputChanged(mnemonicState));
@@ -51,6 +57,7 @@ class RecoverAccountBloc
     } else if (event is RecoverAccount) {
       yield* _mapRecoverAccountToState(event);
     } else if (event is AccountRecoveredSuccessfully) {
+      _analytics.logEvent(name: Constants.EVENT_ACCOUNT_RECOVERED);
       yield* _mapAccountRecoveredSuccessfullyEventToState(event);
     } else if (event is AccountRecoveredError) {
       yield* _mapAccountRecoveredErrorToState(event);

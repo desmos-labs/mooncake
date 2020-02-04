@@ -1,16 +1,20 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
 
 import '../export.dart';
 
+/// Represents the BLoC associated with the home screen.
 class HomeBloc extends Bloc<HomeEvent, AppTab> {
-  final LogoutUseCase _logoutUseCase;
-
   final LoginBloc _loginBloc;
+  final LogoutUseCase _logoutUseCase;
 
   HomeBloc({
     @required LoginBloc loginBloc,
@@ -19,6 +23,13 @@ class HomeBloc extends Bloc<HomeEvent, AppTab> {
         _loginBloc = loginBloc,
         assert(logoutUseCase != null),
         _logoutUseCase = logoutUseCase;
+
+  factory HomeBloc.create(BuildContext context) {
+    return HomeBloc(
+      loginBloc: BlocProvider.of(context),
+      logoutUseCase: Injector.get(),
+    );
+  }
 
   @override
   AppTab get initialState => AppTab.posts;
