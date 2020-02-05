@@ -6,28 +6,32 @@ executors:
       - image: cirrusci/flutter:v1.5.8
 
 jobs:
-  build:
+  setup:
     executor: flutter
     steps:
       - checkout
       - run:
           name: Run Flutter doctor
           command: flutter doctor
+
+  format:
+    executor: flutter
+    steps:
       - run:
-          name: Run Flutter foramt
+          name: Run Flutter format
           command: flutter format . --dry-run
+
+  test:
+    executor: flutter
+    steps:
       - run:
           name: Run the application tests
           command: flutter test test
 
-# TODO: Add this once we find out how to include the proper signing data
-#      - run:
-#          name: Build the Android version
-#          command: flutter build apk
-#      - store_artifacts:
-#          path: build/app/outputs/apk/release/app-release.apk
-
 workflows:
   version: 2
   test-suite:
-    - build
+    jobs:
+      - setup
+      - format
+      - test
