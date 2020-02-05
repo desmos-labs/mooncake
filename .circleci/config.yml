@@ -25,3 +25,7 @@ workflows:
   test-suite:
     jobs:
       - test
+          filters:
+            branches:
+              ignore:
+                - gh-pages
