@@ -13,17 +13,9 @@ jobs:
       - run:
           name: Run Flutter doctor
           command: flutter doctor
-
-  format:
-    executor: flutter
-    steps:
       - run:
           name: Run Flutter format
           command: flutter format . --dry-run
-
-  test:
-    executor: flutter
-    steps:
       - run:
           name: Run the application tests
           command: flutter test test
@@ -32,6 +24,4 @@ workflows:
   version: 2
   test-suite:
     jobs:
-      - setup
-      - format
       - test
