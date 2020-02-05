@@ -3,7 +3,7 @@ version: 2.1
 executors:
   flutter:
     docker:
-      - image: cirrusci/flutter:v1.5.8
+      - image: cirrusci/flutter
 
 jobs:
   test:
