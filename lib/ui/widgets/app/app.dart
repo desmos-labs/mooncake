@@ -15,19 +15,14 @@ class PostsApp extends StatelessWidget {
           create: (_) => MnemonicInputBloc(),
         ),
         BlocProvider<RecoverAccountBloc>(
-          create: (context) => RecoverAccountBloc(
-            mnemonicInputBloc: BlocProvider.of(context),
-            loginBloc: BlocProvider.of(context),
-            loginUseCase: Injector.get(),
-            getAddressUseCase: Injector.get(),
-          ),
+          create: (context) => RecoverAccountBloc.create(context),
         ),
         BlocProvider<GenerateMnemonicBloc>(
           create: (context) => GenerateMnemonicBloc.create(context),
         ),
         BlocProvider<PostsBloc>(
           create: (context) =>
-              PostsBloc.create(syncPeriod: 20)..add(FetchPosts()),
+              PostsBloc.create(syncPeriod: 30)..add(FetchPosts()),
         )
       ],
       child: MaterialApp(

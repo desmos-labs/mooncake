@@ -1,3 +1,7 @@
+# Version 0.0.10
+## Bug fixes
+- Fixed a bug during the account recovering
+
 # Version 0.0.9 
 ## Changes
 - Implemented analytics
