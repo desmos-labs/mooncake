@@ -35,3 +35,4 @@ lib/generated_plugin_registrant.dart
 
 # Secret data
 **/google-services.json
+**/GoogleService-Info.plist

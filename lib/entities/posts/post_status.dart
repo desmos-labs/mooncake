@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 part 'post_status.g.dart';
 
 /// Represents the status of a post.
+@immutable
 @JsonSerializable(explicitToJson: true)
 class PostStatus extends Equatable {
   @JsonKey(name: "value")

@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:mooncake/utils/utils.dart';
 import 'package:web_socket_channel/io.dart';
 
 /// Source that is responsible for handling the communication with the
@@ -13,10 +14,9 @@ import 'package:web_socket_channel/io.dart';
 class RemotePostsSourceImpl implements RemotePostsSource {
   final String _rpcEndpoint;
   final ChainHelper _chainHelper;
-  final LocalUserSource _walletSource;
+  final LocalUserSource _userSource;
 
   // Converters
-  final _postJsonConverter = PostJsonConverter();
   final _msgConverter = MsgConverter();
   final _eventsConverter = ChainEventsConverter();
 
@@ -24,17 +24,18 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   RemotePostsSourceImpl({
     @required String rpcEndpoint,
     @required ChainHelper chainHelper,
-    @required LocalUserSource walletSource,
+    @required LocalUserSource userSource,
   })  : assert(rpcEndpoint != null),
         _rpcEndpoint = rpcEndpoint,
-        assert(walletSource != null),
-        _walletSource = walletSource,
+        assert(userSource != null),
+        _userSource = userSource,
         assert(chainHelper != null),
         _chainHelper = chainHelper;
 
   @override
   Stream<ChainEvent> getEventsStream() {
     print("Initializing remote source posts stream");
+
     // Setup the channel
     final rpcUrl = _rpcEndpoint.replaceAll(RegExp('http(s)?:\/\/'), "");
     final channel = IOWebSocketChannel.connect('ws://$rpcUrl/websocket');
@@ -85,36 +86,38 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         .toList();
   }
 
-  static PostsResponse _convertResponse(Map<String, dynamic> json) {
-    return PostsResponse.fromJson(json);
-  }
-
   @override
   Future<List<Post>> getPosts() async {
-    final posts = List<Post>();
-    int page = 1;
-    bool fetchNext = true;
+    try {
+      final posts = List<Post>();
+      int page = 1;
+      bool fetchNext = true;
 
-    while (fetchNext) {
-      final endpoint = "/posts?subspace=mooncake&limit=100&page=${page++}";
-      final response = await _chainHelper.queryChainRaw(endpoint);
-      final postsResponse = await compute(_convertResponse, response);
-      posts.addAll(postsResponse.posts
-          .map((p) => _postJsonConverter.toPost(p))
-          .toList());
+      while (fetchNext) {
+        final endpoint = "/posts?subspace=mooncake&limit=100&page=${page++}";
+        final response = await _chainHelper.queryChainRaw(endpoint);
+        final postsResponse = await compute(_convertResponse, response);
+        posts.addAll(postsResponse.posts);
+        fetchNext = postsResponse.posts.isNotEmpty;
+      }
 
-      fetchNext = postsResponse.posts.isNotEmpty;
+      return posts;
+    } catch (error) {
+      Logger.log(error);
+      return [];
     }
+  }
 
-    return posts;
+  /// This method allows for background response conversion.
+  static PostsResponse _convertResponse(Map<String, dynamic> json) {
+    return PostsResponse.fromJson(json);
   }
 
   @override
   Future<Post> getPostById(String postId) async {
     try {
       final data = await _chainHelper.queryChain("/posts/$postId");
-      final post = Post.fromJson(data.result);
-      return post.copyWith(status: PostStatus(value: PostStatusValue.SYNCED));
+      return data?.result == null ? null : Post.fromJson(data.result);
     } catch (e) {
       print(e);
       return null;
@@ -131,7 +134,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   @override
   Future<void> savePosts(List<Post> posts) async {
-    final wallet = await _walletSource.getWallet();
+    final wallet = await _userSource.getWallet();
 
     // Get the existing posts list
     final List<Post> existingPosts =

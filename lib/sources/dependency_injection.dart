@@ -43,7 +43,7 @@ class SourcesModule implements Module {
         (injector, params) => RemotePostsSourceImpl(
           rpcEndpoint: _rpcUrl,
           chainHelper: injector.get(),
-          walletSource: injector.get(),
+          userSource: injector.get(),
         ),
         name: "remote",
       );

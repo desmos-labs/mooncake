@@ -65,7 +65,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "creator")
   final String owner;
 
-  @JsonKey(name: "optional_data")
+  @JsonKey(name: "optional_data", defaultValue: {})
   final Map<String, String> optionalData;
 
   @JsonKey(name: "reactions")
@@ -75,8 +75,18 @@ class Post extends Equatable implements Comparable<Post> {
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
-  @JsonKey(name: "status")
+  @JsonKey(
+    name: "status",
+    fromJson: _postStatusFromJson,
+  )
   final PostStatus status;
+
+  /// Static method used to implement a custom deserialization of posts.
+  static PostStatus _postStatusFromJson(Map<String, dynamic> json) {
+    return json == null
+        ? PostStatus(value: PostStatusValue.SYNCED)
+        : PostStatus.fromJson(json);
+  }
 
   Post({
     @required this.id,

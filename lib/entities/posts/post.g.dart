@@ -16,17 +16,16 @@ Post _$PostFromJson(Map<String, dynamic> json) {
     allowsComments: json['allows_comments'] as bool,
     subspace: json['subspace'] as String,
     optionalData: (json['optional_data'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
-    ),
+          (k, e) => MapEntry(k, e as String),
+        ) ??
+        {},
     owner: json['creator'] as String,
     reactions: (json['reactions'] as List)
         ?.map((e) =>
             e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     commentsIds: (json['children'] as List)?.map((e) => e as String)?.toList(),
-    status: json['status'] == null
-        ? null
-        : PostStatus.fromJson(json['status'] as Map<String, dynamic>),
+    status: Post._postStatusFromJson(json['status'] as Map<String, dynamic>),
   );
 }
 

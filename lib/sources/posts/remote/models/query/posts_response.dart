@@ -14,7 +14,7 @@ class PostsResponse {
   final String height;
 
   @JsonKey(name: "result")
-  final List<PostJson> posts;
+  final List<Post> posts;
 
   PostsResponse({
     @required this.height,
