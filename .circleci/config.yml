@@ -24,7 +24,7 @@ workflows:
   version: 2
   test-suite:
     jobs:
-      - test
+      - test:
           filters:
             branches:
               ignore:
