@@ -1,12 +1,13 @@
-version: 2
-jobs:
-  build:
+version: 2.1
+
+executors:
+  flutter:
     docker:
       - image: cirrusci/flutter:v1.5.8
 
-    branches:
-      only: master
-
+jobs:
+  build:
+    executor: flutter
     steps:
       - checkout
       - run:
@@ -25,3 +26,8 @@ jobs:
 #          command: flutter build apk
 #      - store_artifacts:
 #          path: build/app/outputs/apk/release/app-release.apk
+
+workflows:
+  version: 2
+  build:
+    - build
