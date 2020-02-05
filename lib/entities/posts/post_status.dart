@@ -9,6 +9,8 @@ part 'post_status.g.dart';
 class PostStatus extends Equatable {
   @JsonKey(name: "value")
   final PostStatusValue value;
+
+  @JsonKey(name: "error")
   final String error;
 
   const PostStatus({
@@ -35,4 +37,10 @@ enum PostStatusValue {
   SYNCED,
   @JsonValue("errored")
   ERRORED
+}
+
+extension PostStatusExt on PostStatusValue {
+  String get value {
+    return _$PostStatusValueEnumMap[this];
+  }
 }

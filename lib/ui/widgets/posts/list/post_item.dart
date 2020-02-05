@@ -46,12 +46,13 @@ class PostItem extends StatelessWidget {
         }
 
         final theme = Theme.of(context);
-        double fontSize = theme.textTheme.body1.fontSize;
+        double fontSize = theme.textTheme.bodyText2.fontSize;
         if (this.messageFontSize > 0.0) {
           fontSize = this.messageFontSize;
         }
 
-        final messageTheme = theme.textTheme.body1.copyWith(fontSize: fontSize);
+        final messageTheme =
+            theme.textTheme.bodyText2.copyWith(fontSize: fontSize);
         final mdStyle =
             MarkdownStyleSheet.fromTheme(theme).copyWith(p: messageTheme);
 
@@ -133,7 +134,7 @@ class PostItem extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     PostsLocalizations.of(buildContext).syncErrorTitle,
-                    style: Theme.of(buildContext).textTheme.title,
+                    style: Theme.of(buildContext).textTheme.headline6,
                   ),
                   const SizedBox(height: 16),
                   Text(PostsLocalizations.of(buildContext).syncErrorDesc),

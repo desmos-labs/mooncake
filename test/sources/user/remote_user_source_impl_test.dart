@@ -16,8 +16,8 @@ void main() {
     source = RemoteUserSourceImpl(chainHelper: chainHelper);
   });
 
-  group('getAccountData', () {
-    test('getAccountData returns null when response is wrong', () async {
+  group('AccountData', () {
+    test('reading returns null when response is wrong', () async {
       final response = LcdResponse(height: "1", result: {});
       when(chainHelper.queryChain(any))
           .thenAnswer((_) => Future.value(response));
@@ -25,7 +25,7 @@ void main() {
       expect(await source.getAccountData(""), isNull);
     });
 
-    test('getAccountData returns valid data with correct response', () async {
+    test('reading returns valid data with correct response', () async {
       final file = File("test_resources/account/account_response.json");
       final json = jsonDecode(file.readAsStringSync());
       final accountResponse = LcdResponse.fromJson(json);

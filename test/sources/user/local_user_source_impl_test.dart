@@ -13,29 +13,30 @@ class MockSecureStorage extends Mock implements FlutterSecureStorage {}
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  final testDir = "./tmp";
+  // Temporary directory in which all the databases will be saved
+  final tempDir = Directory("./tmp");
   final lcdUrl = "http://lcd.morpheus.desmos.network:1317";
   final networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: lcdUrl);
   FlutterSecureStorage storage;
   LocalUserSourceImpl source;
 
   setUpAll(() {
-    final tempDir = Directory(testDir);
+    // Mock for the path provider
+    final channel = MethodChannel('plugins.flutter.io/path_provider');
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      return tempDir.path;
+    });
+
+    // Create the temporary directory
     tempDir.createSync();
   });
 
   tearDownAll(() {
-    final tempDir = Directory(testDir);
+    // Delete the temp dir after all the tests
     tempDir.deleteSync(recursive: true);
   });
 
   setUp(() {
-    // Mock for the path provider
-    final channel = MethodChannel('plugins.flutter.io/path_provider');
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return testDir;
-    });
-
     storage = MockSecureStorage();
     source = LocalUserSourceImpl(
       dbName: DateTime.now().toIso8601String(),
@@ -44,15 +45,15 @@ void main() {
     );
   });
 
-  group('saveWallet and getWallet', () {
-    test('saveWallet throws error with invalid mnemonic', () async {
+  group('Wallet', () {
+    test('saving throws error with invalid mnemonic', () async {
       final mnemonic = "1234567689";
       expect(() => source.saveWallet(mnemonic), throwsException);
 
       verifyZeroInteractions(storage);
     });
 
-    test('saveWallet works properly with valid mnemonic', () async {
+    test('saving works properly with valid mnemonic', () async {
       final mnemonic = [
         "potato",
         "already",
@@ -83,7 +84,7 @@ void main() {
       verify(storage.write(key: "mnemonic", value: mnemonic));
     });
 
-    test('getWallet works properly', () async {
+    test('reading works properly', () async {
       final mnemonic = [
         "potato",
         "already",
@@ -122,8 +123,8 @@ void main() {
     });
   });
 
-  group('getAddress', () {
-    test('getAddress uses wallet if AccountData is null', () async {
+  group('Address', () {
+    test('reading uses wallet if AccountData is null', () async {
       final mnemonic = [
         "potato",
         "already",
@@ -160,7 +161,7 @@ void main() {
       expect(address, "desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv");
     });
 
-    test('getAddress uses AccountData if found', () async {
+    test('reading uses AccountData if found', () async {
       when(storage.read(key: "mnemonic")).thenAnswer((_) => Future.value(null));
       expect(await source.getWallet(), isNull);
 
@@ -177,12 +178,12 @@ void main() {
     });
   });
 
-  group('saveAccountData and getAccountData', () {
-    test('getAccountData returns null when no data is saved', () async {
+  group('AccountData', () {
+    test('reading returns null when no data is saved', () async {
       expect(await source.getAccountData(), isNull);
     });
 
-    test('saveAccountData and getAccountData work properly', () async {
+    test('saving and getAccountData work properly', () async {
       final accountData = AccountData(
         address: "address",
         accountNumber: "1",
@@ -196,8 +197,8 @@ void main() {
     });
   });
 
-  group('wipeData', () {
-    test('wipeData correctly deletes data', () async {
+  group('Data wiping', () {
+    test('correctly deletes data', () async {
       final accountData = AccountData(
         address: "address",
         accountNumber: "1",

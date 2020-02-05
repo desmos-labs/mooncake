@@ -19,8 +19,12 @@ class RemoteUserSourceImpl implements RemoteUserSource {
     try {
       final endpoint = "/auth/accounts/$address";
       final response = await _chainHelper.queryChain(endpoint);
-      final accountData =
-          AccountDataResponse.fromJson(response.result).accountData;
+      final result = response.result;
+      if (result.isEmpty) {
+        throw Exception("Empty account result");
+      }
+
+      final accountData = AccountDataResponse.fromJson(result).accountData;
       return accountData.address?.isEmpty == true ? null : accountData;
     } catch (e) {
       print(e);

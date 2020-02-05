@@ -14,6 +14,15 @@ class Post extends Equatable implements Comparable<Post> {
   /// post-related date values.
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
+  /// Identifier used to reference posts status value.
+  static const STATUS_FIELD = "status.value";
+
+  /// Identifier used to reference post creation date.
+  static const DATE_FIELD = "created";
+
+  /// Identifier used to reference post ids.
+  static const ID_FIELD = "id";
+
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
   static String getDateStringNow() {
@@ -21,7 +30,7 @@ class Post extends Equatable implements Comparable<Post> {
     return formatter.format(DateTime.now().toUtc());
   }
 
-  @JsonKey(name: "id")
+  @JsonKey(name: ID_FIELD)
   final String id;
 
   @JsonKey(name: "parent_id")
@@ -36,7 +45,7 @@ class Post extends Equatable implements Comparable<Post> {
   final String message;
 
   /// RFC3339-formatted creation date
-  @JsonKey(name: "created")
+  @JsonKey(name: DATE_FIELD)
   final String created;
 
   @JsonKey(ignore: true)
@@ -153,7 +162,7 @@ class Post extends Equatable implements Comparable<Post> {
       'owner: $owner, '
       'reactions: $reactions, '
       'commentsIds: $commentsIds, '
-      'synced: $status '
+      'status: $status '
       '}';
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
