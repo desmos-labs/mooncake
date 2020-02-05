@@ -15,7 +15,7 @@ jobs:
           command: flutter doctor
       - run:
           name: Run Flutter format
-          command: flutter format . --dry-run
+          command: flutter format --dry-run .
       - run:
           name: Run the application tests
           command: flutter test test
