@@ -6,7 +6,7 @@ executors:
       - image: cirrusci/flutter:v1.5.8
 
 jobs:
-  setup:
+  test:
     executor: flutter
     steps:
       - checkout
