@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mooncake/entities/entities.dart';
 
+import '../sources/posts/mocks.dart';
+
 void main() {
   group('fromJson', () {
     /// Allows to load a post from the JSON file having the given name.
@@ -50,5 +52,54 @@ void main() {
         ),
       ]);
     });
+  });
+
+  test('toJson', () {
+    final json = testPost.toJson();
+    expect(json["hasParent"], isNull);
+    expect(json["dateTime"], isNull);
+
+    final recovered = Post.fromJson(json);
+    expect(recovered, testPost);
+  });
+
+  test('getDateStringNow', () {
+    expect(Post.getDateStringNow() == Post.getDateStringNow(), isFalse);
+  });
+
+  test('hasParent', () {
+    expect(
+      testPost.copyWith(parentId: null).hasParent,
+      isFalse,
+      reason: "null parent should return false",
+    );
+
+    expect(
+      testPost.copyWith(parentId: "  ").hasParent,
+      isFalse,
+      reason: "empty parent should return false",
+    );
+
+    expect(
+      testPost.copyWith(parentId: "0").hasParent,
+      isFalse,
+      reason: "parent 0 should return false",
+    );
+
+    expect(testPost.copyWith(parentId: "10").hasParent, true);
+  });
+
+  test('dateTime', () {
+    final post = testPost.copyWith(created: "2020-01-01T15:00:00.000Z");
+    expect(post.dateTime, DateTime.utc(2020, 1, 1, 15, 0, 0, 0, 0));
+  });
+
+  test('compareTo', () {
+    final first = testPost.copyWith(created: "2020-01-01T15:00:00.000Z");
+    final second = testPost.copyWith(created: "2019-12-31T18:00:00.000Z");
+
+    expect(-1, second.compareTo(first));
+    expect(0, first.compareTo(first));
+    expect(1, first.compareTo(second));
   });
 }

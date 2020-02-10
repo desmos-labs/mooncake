@@ -16,7 +16,7 @@ TxResponse _$TxResponseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$TxResponseToJson(TxResponse instance) =>
     <String, dynamic>{
-      'txs': instance.txs,
+      'txs': instance.txs?.map((e) => e?.toJson())?.toList(),
     };
 
 Tx _$TxFromJson(Map<String, dynamic> json) {

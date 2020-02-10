@@ -6,7 +6,7 @@ part 'tx_response.g.dart';
 
 /// Represents the response that is returned upon querying the chain
 /// for a specific transaction.
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TxResponse implements Equatable {
   @JsonKey(name: "txs")
   final List<Tx> txs;
@@ -17,9 +17,7 @@ class TxResponse implements Equatable {
   List<Object> get props => [txs];
 
   @override
-  String toString() => 'TxResponse {'
-      'txs: $txs '
-      '}';
+  String toString() => 'TxResponse { txs: $txs }';
 
   factory TxResponse.fromJson(Map<String, dynamic> json) =>
       _$TxResponseFromJson(json);

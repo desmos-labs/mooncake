@@ -20,7 +20,4 @@ abstract class RemotePostsSource {
 
   /// Saves the given list of [posts] into the source.
   Future<void> savePosts(List<Post> posts);
-
-  /// Deleted the post having the given [postId].
-  Future<void> deletePost(String postId);
 }

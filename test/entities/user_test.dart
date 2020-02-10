@@ -56,4 +56,15 @@ void main() {
       reason: "non-empty avatar url should return true",
     );
   });
+
+  test('toJson', () {
+    final user = User(
+      address: "address",
+      username: "random-username",
+      avatarUrl: "http://localhost/photo",
+    );
+    final json = user.toJson();
+    final recovered = User.fromJson(json);
+    expect(recovered, user);
+  });
 }

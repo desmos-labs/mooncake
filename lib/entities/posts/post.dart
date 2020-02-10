@@ -39,7 +39,7 @@ class Post extends Equatable implements Comparable<Post> {
   /// Tells if this post has a valid parent post or not.
   @JsonKey(ignore: true)
   bool get hasParent =>
-      parentId != null && parentId.isNotEmpty && parentId != "0";
+      parentId != null && parentId.trim().isNotEmpty && parentId != "0";
 
   @JsonKey(name: "message")
   final String message;

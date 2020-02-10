@@ -7,7 +7,7 @@ part 'msg_add_post_reaction.g.dart';
 /// Represents the message that must be used when add a reaction
 /// to a post.
 @JsonSerializable()
-class MsgAddPostReaction implements StdMsg {
+class MsgAddPostReaction extends StdMsg {
   @JsonKey(name: "post_id")
   final String postId;
 

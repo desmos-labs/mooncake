@@ -43,6 +43,8 @@ class SourcesModule implements Module {
           rpcEndpoint: _rpcUrl,
           chainHelper: injector.get(),
           userSource: injector.get(),
+          eventsConverter: ChainEventsConverter(),
+          msgConverter: MsgConverter(),
         ),
         name: "remote",
       );

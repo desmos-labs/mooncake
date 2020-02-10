@@ -17,20 +17,26 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   final LocalUserSource _userSource;
 
   // Converters
-  final _msgConverter = MsgConverter();
-  final _eventsConverter = ChainEventsConverter();
+  final ChainEventsConverter _eventsConverter;
+  final MsgConverter _msgConverter;
 
   /// Public constructor
   RemotePostsSourceImpl({
     @required String rpcEndpoint,
     @required ChainHelper chainHelper,
     @required LocalUserSource userSource,
+    @required ChainEventsConverter eventsConverter,
+    @required MsgConverter msgConverter,
   })  : assert(rpcEndpoint != null),
         _rpcEndpoint = rpcEndpoint,
         assert(userSource != null),
         _userSource = userSource,
         assert(chainHelper != null),
-        _chainHelper = chainHelper;
+        _chainHelper = chainHelper,
+        assert(eventsConverter != null),
+        _eventsConverter = eventsConverter,
+        assert(msgConverter != null),
+        _msgConverter = msgConverter;
 
   @override
   Stream<ChainEvent> getEventsStream() {
@@ -64,26 +70,38 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         .map((data) => TxEvent.fromJson(jsonDecode(data)))
         .handleError((error) => print('Remote posts channel exception: $error'))
         .map((txEvent) => txEvent.result.data.value.txResult.height)
-        .asyncMap((height) => _parseBlock(height))
+        .asyncMap((height) => parseBlock(height))
         .where((list) => list.isNotEmpty)
         .expand((list) => list);
   }
 
   /// Parses the block at the given [height, handling all the contained
   /// events.
-  Future<List<ChainEvent>> _parseBlock(String height) async {
-    final endpoint = "/txs?tx.height=$height";
-    final response = await _chainHelper.queryChainRaw(endpoint);
-    final txData = TxResponse.fromJson(response);
+  @visibleForTesting
+  Future<List<ChainEvent>> parseBlock(String height) async {
+    try {
+      final endpoint = "/txs?tx.height=$height";
+      final response = await _chainHelper.queryChainRaw(endpoint);
+      final txData = TxResponse.fromJson(response);
 
-    if (txData.txs.isEmpty) {
-      // No txs, nothing to do
+      if (txData.txs.isEmpty) {
+        // No txs, nothing to do
+        return [];
+      }
+
+      return txData.txs
+          .expand((tx) => _eventsConverter.convert(height, tx.events))
+          .toList();
+    } catch (error) {
+      Logger.log(error);
       return [];
     }
+  }
 
-    return txData.txs
-        .expand((tx) => _eventsConverter.convert(height, tx.events))
-        .toList();
+  /// This method allows for background response conversion.
+  @visibleForTesting
+  static PostsResponse convertResponse(Map<String, dynamic> json) {
+    return PostsResponse.fromJson(json);
   }
 
   @override
@@ -96,7 +114,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       while (fetchNext) {
         final endpoint = "/posts?subspace=mooncake&limit=100&page=${page++}";
         final response = await _chainHelper.queryChainRaw(endpoint);
-        final postsResponse = await compute(_convertResponse, response);
+        final postsResponse = await compute(convertResponse, response);
         posts.addAll(postsResponse.posts);
         fetchNext = postsResponse.posts.isNotEmpty;
       }
@@ -106,11 +124,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       Logger.log(error);
       return [];
     }
-  }
-
-  /// This method allows for background response conversion.
-  static PostsResponse _convertResponse(Map<String, dynamic> json) {
-    return PostsResponse.fromJson(json);
   }
 
   @override
@@ -128,7 +141,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   Future<List<Post>> getPostComments(String postId) async {
     final post = await getPostById(postId);
     return Future.wait(post.commentsIds.map((comment) async {
-      return await getPostById(postId);
+      return await getPostById(comment);
     }).toList());
   }
 
@@ -149,10 +162,5 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
     // Get the result of the transactions
     await _chainHelper.sendTx(messages, wallet);
-  }
-
-  @override
-  Future<void> deletePost(String postId) {
-    throw UnimplementedError("Cannot delete a remote post");
   }
 }

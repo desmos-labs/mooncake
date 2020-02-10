@@ -7,7 +7,7 @@ part 'msg_create_post.g.dart';
 /// Represents the message that should be used when creating a new post or
 /// comment.
 @JsonSerializable()
-class MsgCreatePost implements StdMsg {
+class MsgCreatePost extends StdMsg {
   @JsonKey(name: "parent_id")
   final String parentId;
 
