@@ -24,6 +24,7 @@ jobs:
           command: flutter test --coverage test
       - codecov/upload:
           file: coverage/lcov.info
+          token: $CODECOV_TOKEN
 
 workflows:
   version: 2
