@@ -1,4 +1,4 @@
-package network.desmos.mooncake
+package com.forbole.mooncake
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity

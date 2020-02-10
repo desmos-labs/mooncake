@@ -269,13 +269,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  f_logs:
-    dependency: "direct main"
-    description:
-      name: f_logs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.2"
   firebase:
     dependency: transitive
     description:
@@ -592,13 +585,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0+1"
-  permission_handler:
-    dependency: transitive
-    description:
-      name: permission_handler
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.2.0+hotfix.3"
   petitparser:
     dependency: transitive
     description:
@@ -663,7 +649,7 @@ packages:
     source: hosted
     version: "2.0.5"
   rxdart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
@@ -919,13 +905,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.5.0"
-  xxtea:
-    dependency: transitive
-    description:
-      name: xxtea
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   yaml:
     dependency: transitive
     description:
