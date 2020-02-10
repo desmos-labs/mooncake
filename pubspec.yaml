@@ -26,6 +26,7 @@ dependencies:
   flutter_secure_storage:
   flutter_svg:
   font_awesome_flutter:
+  http:
   intl:
   json_annotation:
   json_serializable:
@@ -44,6 +45,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito:
+  mock_web_server:
 
 flutter:
   uses-material-design: true

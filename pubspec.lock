@@ -13,7 +13,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: fd9a4acf435edf1682b6c8ec9a04bdd5796047b5
+      resolved-ref: "17701b4675321e9296d7ca91325fb7e5cad2807a"
       url: "git://github.com/alan-sdk/alan.dart.git"
     source: git
     version: "0.0.1"
@@ -128,7 +128,7 @@ packages:
       name: build_config
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1+1"
+    version: "0.4.2"
   build_daemon:
     dependency: transitive
     description:
@@ -142,21 +142,21 @@ packages:
       name: build_resolvers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.2"
+    version: "1.3.3"
   build_runner:
     dependency: "direct dev"
     description:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.3"
+    version: "1.7.4"
   build_runner_core:
     dependency: transitive
     description:
       name: build_runner_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.0"
+    version: "4.4.0"
   built_collection:
     dependency: transitive
     description:
@@ -170,7 +170,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.8"
+    version: "7.0.9"
   charcode:
     dependency: transitive
     description:
@@ -397,7 +397,7 @@ packages:
     source: hosted
     version: "0.14.0+3"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -494,6 +494,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.6+3"
+  mock_web_server:
+    dependency: "direct dev"
+    description:
+      name: mock_web_server
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.1"
   mockito:
     dependency: "direct dev"
     description:
@@ -626,7 +633,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.2"
+    version: "4.0.3"
   pub_semver:
     dependency: transitive
     description:
@@ -862,7 +869,7 @@ packages:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0+2"
+    version: "0.1.1"
   usage:
     dependency: transitive
     description:

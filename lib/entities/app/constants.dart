@@ -3,6 +3,9 @@ class Constants {
   /// Subspace that should be used to create and read posts
   static const SUBSPACE = "mooncake";
 
+  /// Token denom that should be used to pay for fees
+  static const FEE_TOKEN = "udaric";
+
   // Analytics constants
   static const EVENT_MNEMONIC_GENERATE = "mnemonic_generated";
   static const EVENT_ACCOUNT_RECOVERED = "account_recovered";

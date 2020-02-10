@@ -19,7 +19,6 @@ class SourcesModule implements Module {
       // Utilities
       ..bindSingleton(ChainHelper(
         lcdEndpoint: _lcdUrl,
-        rpcEndpoint: _rpcUrl,
       ))
       // User sources
       ..bindLazySingleton<LocalUserSource>(

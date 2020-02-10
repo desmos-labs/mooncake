@@ -30,4 +30,13 @@ class MsgAddPostReaction implements StdMsg {
 
   @override
   Map<String, dynamic> toJson() => _$MsgAddPostReactionToJson(this);
+
+  @override
+  Exception validate() {
+    if (postId.isEmpty || reaction.isEmpty || user.isEmpty) {
+      return Exception("Malformed MsgAddPostReaction");
+    }
+
+    return null;
+  }
 }

@@ -4,6 +4,8 @@ import 'package:meta/meta.dart';
 
 part 'msg_create_post.g.dart';
 
+/// Represents the message that should be used when creating a new post or
+/// comment.
 @JsonSerializable()
 class MsgCreatePost implements StdMsg {
   @JsonKey(name: "parent_id")
@@ -55,4 +57,17 @@ class MsgCreatePost implements StdMsg {
 
   @override
   Map<String, dynamic> toJson() => _$MsgCreatePostToJson(this);
+
+  @override
+  Exception validate() {
+    if (parentId.isEmpty ||
+        message.isEmpty ||
+        subspace.isEmpty ||
+        creator.isEmpty ||
+        creationDate.isEmpty) {
+      return Exception("Malformed MsgCreatePost");
+    }
+
+    return null;
+  }
 }

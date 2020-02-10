@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'lcd_response.g.dart';
@@ -14,8 +15,8 @@ class LcdResponse extends Equatable {
   final Map<String, dynamic> result;
 
   LcdResponse({
-    this.height,
-    this.result,
+    @required this.height,
+    @required this.result,
   })  : assert(height != null),
         assert(result != null);
 

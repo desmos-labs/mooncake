@@ -7,7 +7,7 @@ part 'user.g.dart';
 /// Contains the data of a user.
 @JsonSerializable(explicitToJson: true)
 class User extends Equatable {
-  @JsonKey(name: "addres")
+  @JsonKey(name: "address")
   final String address;
 
   @JsonKey(name: "username")
@@ -21,8 +21,8 @@ class User extends Equatable {
 
   User({
     @required this.address,
-    @required this.username,
-    @required this.avatarUrl,
+    this.username,
+    this.avatarUrl,
   })  : assert(address != null),
         assert(address.isNotEmpty);
 

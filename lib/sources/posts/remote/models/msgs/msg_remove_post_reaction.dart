@@ -30,4 +30,13 @@ class MsgRemovePostReaction extends StdMsg {
 
   @override
   Map<String, dynamic> toJson() => _$MsgRemovePostReactionToJson(this);
+
+  @override
+  Exception validate() {
+    if (postId.isEmpty || reaction.isEmpty || user.isEmpty) {
+      return Exception("Malformed MsgRemovePostReaction");
+    }
+
+    return null;
+  }
 }

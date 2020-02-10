@@ -5,6 +5,9 @@ executors:
     docker:
       - image: cirrusci/flutter
 
+orbs:
+  codecov: codecov/codecov@1.0.2
+
 jobs:
   test:
     executor: flutter
@@ -18,7 +21,9 @@ jobs:
           command: flutter format --dry-run .
       - run:
           name: Run the application tests
-          command: flutter test test
+          command: flutter test --coverage test
+      - codecov/upload:
+          file: coverage/lcov.info
 
 workflows:
   version: 2
