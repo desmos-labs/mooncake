@@ -68,11 +68,11 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         // We need to skip the initial messages answering OK for the queries
         .skip(queryList.length)
         .map((data) => TxEvent.fromJson(jsonDecode(data)))
-        .handleError((error) => print('Remote posts channel exception: $error'))
         .map((txEvent) => txEvent.result.data.value.txResult.height)
         .asyncMap((height) => parseBlock(height))
         .where((list) => list.isNotEmpty)
-        .expand((list) => list);
+        .expand((list) => list)
+        .handleError((e) => print('Remote posts channel exception: $e'));
   }
 
   /// Parses the block at the given [height, handling all the contained

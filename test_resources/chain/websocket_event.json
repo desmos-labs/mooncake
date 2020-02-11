@@ -1,0 +1,14 @@
+{
+  "result": {
+    "data": {
+      "type": "Tx",
+      "value": {
+        "TxResult": {
+          "height": "15914",
+          "index": 0,
+          "tx": "10BF44337A7D0A54169D9C057E013BCD8B2694C970479DFD2068445217CF155C"
+        }
+      }
+    }
+  }
+}

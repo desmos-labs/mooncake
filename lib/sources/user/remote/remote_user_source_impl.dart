@@ -7,12 +7,16 @@ import 'package:http/http.dart' as http;
 
 /// Implementation of [RemoteUserSource]
 class RemoteUserSourceImpl implements RemoteUserSource {
+  final String _faucetEndpoint;
   final ChainHelper _chainHelper;
 
   RemoteUserSourceImpl({
     @required ChainHelper chainHelper,
+    @required String faucetEndpoint,
   })  : assert(chainHelper != null),
-        this._chainHelper = chainHelper;
+        this._chainHelper = chainHelper,
+        assert(faucetEndpoint != null),
+        _faucetEndpoint = faucetEndpoint;
 
   @override
   Future<AccountData> getAccountData(String address) async {
@@ -34,9 +38,8 @@ class RemoteUserSourceImpl implements RemoteUserSource {
 
   @override
   Future<void> fundAccount(AccountData account) async {
-    final endpoint = "https://faucet.desmos.network/airdrop";
     await http.Client().post(
-      endpoint,
+      _faucetEndpoint,
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"address": account.address}),
     );

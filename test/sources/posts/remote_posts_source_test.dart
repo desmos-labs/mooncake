@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:web_socket_channel/io.dart';
 
 import 'mocks.dart';
 
@@ -19,24 +20,127 @@ class MockChainEventsConverter extends Mock implements ChainEventsConverter {}
 class MockMsgConverter extends Mock implements MsgConverter {}
 
 void main() {
+  final rpcEndpoint = "localhost";
+  HttpServer server;
   ChainHelper chainHelper;
   LocalUserSource userSource;
   RemotePostsSourceImpl source;
   ChainEventsConverter eventsConverter;
   MsgConverter msgConverter;
 
-  setUp(() {
+  setUp(() async {
+    server = await HttpServer.bind(rpcEndpoint, 0);
     chainHelper = MockChainHelper();
     userSource = MockLocalUserSource();
     eventsConverter = MockChainEventsConverter();
     msgConverter = MockMsgConverter();
     source = RemotePostsSourceImpl(
-      rpcEndpoint: "",
+      rpcEndpoint: "$rpcEndpoint:${server.port}",
       chainHelper: chainHelper,
       userSource: userSource,
       eventsConverter: eventsConverter,
       msgConverter: msgConverter,
     );
+  });
+
+  tearDown(() async {
+    await server?.close();
+  });
+
+  group('getEventsStream', () {
+    test('emits correct events when everything goes all right', () async {
+      final file = File("test_resources/chain/websocket_event.json");
+      final wsEventContents = file.readAsStringSync();
+
+      server.transform(WebSocketTransformer()).listen((webSocket) {
+        var channel = IOWebSocketChannel(webSocket);
+        channel.stream.listen((request) {
+          // Initialize connection
+          expect(
+              request,
+              jsonEncode({
+                "jsonrpc": "2.0",
+                "method": "subscribe",
+                "id": "0",
+                "params": {
+                  "query": "tm.event='Tx'",
+                }
+              }));
+          channel.sink.add('OK');
+
+          // Send an event
+          channel.sink.add(wsEventContents);
+
+          // Close the channel
+          channel.sink.close();
+        });
+      });
+
+      // Mock the tx query response
+      final txFile = File("test_resources/chain/tx_with_events_response.json");
+      final txContents = txFile.readAsStringSync();
+      final tx = Tx.fromJson(jsonDecode(txContents));
+      final txResponse = TxResponse(txs: [tx]);
+      when(chainHelper.queryChainRaw(any))
+          .thenAnswer((_) => Future.value(txResponse.toJson()));
+
+      // Mock the events conversion
+      final events = <ChainEvent>[PostEvent(height: "0", postId: "1")];
+      when(eventsConverter.convert(any, any)).thenReturn(events);
+
+      final channel = source.getEventsStream();
+      var n = 0;
+      channel.listen((message) {
+        if (n < 1) {
+          expect(message, equals(events[0]));
+        } else {
+          fail('Only expected one event.');
+        }
+        n++;
+      }, onDone: expectAsync0(() {}));
+    });
+
+    test('intercepts errors', () async {
+      final file = File("test_resources/chain/websocket_event.json");
+      final wsEventContents = file.readAsStringSync();
+
+      server.transform(WebSocketTransformer()).listen((webSocket) {
+        var channel = IOWebSocketChannel(webSocket);
+        channel.stream.listen((request) {
+          // Initialize connection
+          expect(
+              request,
+              jsonEncode({
+                "jsonrpc": "2.0",
+                "method": "subscribe",
+                "id": "0",
+                "params": {
+                  "query": "tm.event='Tx'",
+                }
+              }));
+          channel.sink.add('OK');
+
+          // Send an event
+          channel.sink.add(wsEventContents);
+
+          // Close the channel
+          channel.sink.close();
+        });
+      });
+
+      // Mock the tx query response
+      when(chainHelper.queryChainRaw(any))
+          .thenThrow(Exception("WebSocket exception"));
+
+      final stream = source.getEventsStream();
+      var n = 0;
+      stream.handleError((e) => fail('Expected no errors')).listen((message) {
+        if (n > 0) {
+          fail('Expected no events.');
+        }
+        n++;
+      }, onDone: expectAsync0(() {}));
+    });
   });
 
   group('parseBlock', () {

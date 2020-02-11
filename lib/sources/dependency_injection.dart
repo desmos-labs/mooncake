@@ -6,6 +6,7 @@ import 'package:mooncake/sources/sources.dart';
 import 'package:http/http.dart' as http;
 
 class SourcesModule implements Module {
+  static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
   static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";
 //  static const _lcdUrl = "http://10.0.2.2:1317";
@@ -30,6 +31,7 @@ class SourcesModule implements Module {
       ..bindLazySingleton<RemoteUserSource>(
           (injector, params) => RemoteUserSourceImpl(
                 chainHelper: injector.get(),
+                faucetEndpoint: _faucetEndpoint,
               ))
       // Post sources
       ..bindLazySingleton<LocalPostsSource>(

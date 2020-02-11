@@ -29,6 +29,7 @@ class User extends Equatable {
   @override
   List<Object> get props => [address, username, avatarUrl];
 
+  // DONT COVER
   @override
   String toString() => 'User { '
       'address: $address, '
