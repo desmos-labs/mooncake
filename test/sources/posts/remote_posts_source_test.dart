@@ -9,6 +9,7 @@ import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:web_socket_channel/io.dart';
 
+import 'remote_posts_source_test.reflectable.dart';
 import 'mocks.dart';
 
 class MockChainHelper extends Mock implements ChainHelper {}
@@ -27,6 +28,11 @@ void main() {
   RemotePostsSourceImpl source;
   ChainEventsConverter eventsConverter;
   MsgConverter msgConverter;
+
+  setUpAll(() {
+    initializeReflectable();
+    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+  });
 
   setUp(() async {
     server = await HttpServer.bind(rpcEndpoint, 0);
@@ -79,8 +85,8 @@ void main() {
       // Mock the tx query response
       final txFile = File("test_resources/chain/tx_with_events_response.json");
       final txContents = txFile.readAsStringSync();
-      final tx = Tx.fromJson(jsonDecode(txContents));
-      final txResponse = TxResponse(txs: [tx]);
+      final tx = Transaction.fromJson(jsonDecode(txContents));
+      final txResponse = TransactionsResponse(txs: [tx]);
       when(chainHelper.queryChainRaw(any))
           .thenAnswer((_) => Future.value(txResponse.toJson()));
 
@@ -152,7 +158,7 @@ void main() {
     });
 
     test('returns an empty list if response does not contain txs', () async {
-      final response = TxResponse(txs: []);
+      final response = TransactionsResponse(txs: []);
       when(chainHelper.queryChainRaw(any))
           .thenAnswer((_) => Future.value(response.toJson()));
 
@@ -163,11 +169,9 @@ void main() {
     test('returns the proper data when everything goes ok', () async {
       final txFile = File("test_resources/chain/txs_response_success.json");
       final txContents = txFile.readAsStringSync();
-      final tx = Tx.fromJson(jsonDecode(txContents));
-
-      final txResponse = TxResponse(txs: [tx, tx, tx]);
-      when(chainHelper.queryChainRaw(any))
-          .thenAnswer((_) => Future.value(txResponse.toJson()));
+      final tx = Transaction.fromJson(jsonDecode(txContents));
+      when(chainHelper.getTxsByHeight(any))
+          .thenAnswer((_) => Future.value([tx, tx, tx]));
 
       final txEvents = [
         PostCreatedEvent(

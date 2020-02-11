@@ -29,28 +29,7 @@ void main() {
     chainHelper = ChainHelper(lcdEndpoint: server.url);
   });
 
-  group('queryChainBackground', () {
-    test('returns an error if an exception is thrown', () async {
-      server.enqueue(httpCode: 500, body: null);
-      final url = server.url;
-      final result = await ChainHelper.queryChainBackground(url);
-      final expected = RequestResult<Map<String, dynamic>>(
-        error: "Call to $url returned status code 500",
-      );
-      expect(result, expected);
-    });
-
-    test('returns proper value if no exception is thrown', () async {
-      final data = {"key": "value"};
-      server.enqueue(httpCode: 200, body: jsonEncode(data));
-
-      final result = await ChainHelper.queryChainBackground(server.url);
-      final expected = RequestResult<Map<String, dynamic>>(value: data);
-      expect(result, expected);
-    });
-  });
-
-  group('queryChainRan', () {
+  group('queryChainRaw', () {
     test('returns null when exception is thrown', () async {
       server.enqueue(body: null, httpCode: 500);
 

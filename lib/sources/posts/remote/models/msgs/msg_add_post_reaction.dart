@@ -6,6 +6,8 @@ part 'msg_add_post_reaction.g.dart';
 
 /// Represents the message that must be used when add a reaction
 /// to a post.
+@immutable
+@reflector
 @JsonSerializable()
 class MsgAddPostReaction extends StdMsg {
   @JsonKey(name: "post_id")
@@ -29,7 +31,10 @@ class MsgAddPostReaction extends StdMsg {
   List<Object> get props => [postId, reaction, user];
 
   @override
-  Map<String, dynamic> toJson() => _$MsgAddPostReactionToJson(this);
+  Map<String, dynamic> asJson() => _$MsgAddPostReactionToJson(this);
+
+  factory MsgAddPostReaction.fromJson(Map<String, dynamic> json) =>
+      _$MsgAddPostReactionFromJson(json);
 
   @override
   Exception validate() {

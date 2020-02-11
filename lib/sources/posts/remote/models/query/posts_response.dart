@@ -2,8 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
-import 'post_response.dart';
-
 part 'posts_response.g.dart';
 
 /// Represents the content of the response that is returned from the LCD
@@ -23,6 +21,4 @@ class PostsResponse {
 
   factory PostsResponse.fromJson(Map<String, dynamic> json) =>
       _$PostsResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PostsResponseToJson(this);
 }

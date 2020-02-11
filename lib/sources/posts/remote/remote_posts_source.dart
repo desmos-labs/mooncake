@@ -80,16 +80,13 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   @visibleForTesting
   Future<List<ChainEvent>> parseBlock(String height) async {
     try {
-      final endpoint = "/txs?tx.height=$height";
-      final response = await _chainHelper.queryChainRaw(endpoint);
-      final txData = TxResponse.fromJson(response);
-
-      if (txData.txs.isEmpty) {
+      final transactions = await _chainHelper.getTxsByHeight(height);
+      if (transactions.isEmpty) {
         // No txs, nothing to do
         return [];
       }
 
-      return txData.txs
+      return transactions
           .expand((tx) => _eventsConverter.convert(height, tx.events))
           .toList();
     } catch (error) {

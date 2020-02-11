@@ -6,6 +6,8 @@ part 'msg_create_post.g.dart';
 
 /// Represents the message that should be used when creating a new post or
 /// comment.
+@immutable
+@reflector
 @JsonSerializable()
 class MsgCreatePost extends StdMsg {
   @JsonKey(name: "parent_id")
@@ -56,7 +58,10 @@ class MsgCreatePost extends StdMsg {
       ];
 
   @override
-  Map<String, dynamic> toJson() => _$MsgCreatePostToJson(this);
+  Map<String, dynamic> asJson() => _$MsgCreatePostToJson(this);
+
+  factory MsgCreatePost.fromJson(Map<String, dynamic> json) =>
+      _$MsgCreatePostFromJson(json);
 
   @override
   Exception validate() {

@@ -6,6 +6,8 @@ part 'msg_remove_post_reaction.g.dart';
 
 /// Represents the message that must be used
 /// when removing a reaction from a post.
+@immutable
+@reflector
 @JsonSerializable()
 class MsgRemovePostReaction extends StdMsg {
   @JsonKey(name: "post_id")
@@ -29,7 +31,10 @@ class MsgRemovePostReaction extends StdMsg {
   List<Object> get props => [postId, reaction, user];
 
   @override
-  Map<String, dynamic> toJson() => _$MsgRemovePostReactionToJson(this);
+  Map<String, dynamic> asJson() => _$MsgRemovePostReactionToJson(this);
+
+  factory MsgRemovePostReaction.fromJson(Map<String, dynamic> json) =>
+      _$MsgRemovePostReactionFromJson(json);
 
   @override
   Exception validate() {
@@ -40,3 +45,4 @@ class MsgRemovePostReaction extends StdMsg {
     return null;
   }
 }
+

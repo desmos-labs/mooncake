@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      reflectable:
+        generate_for:
+          # Generate the reflectable initializer only for the main class and the tests we need
+          - lib/main.dart
+          - test/sources/posts/remote_posts_source_test.dart
+        options:
+          formatted: true
