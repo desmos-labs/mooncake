@@ -44,6 +44,7 @@ class PostsLocalizations {
   String get yourAccount => "Your account";
   String get signOut => "Sign out";
   String get floatingButtonTip => "Create post";
+  String get loadingPosts => "Loading posts";
 
   // Syncing
   String get syncingActivities => "Syncing activities...";

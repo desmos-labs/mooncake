@@ -25,10 +25,16 @@
 .packages
 .pub-cache/
 .pub/
-/build/
+build/
+coverage/
 
 # Web related
 lib/generated_plugin_registrant.dart
+node_modules/
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Secret data
+**/google-services.json
+**/GoogleService-Info.plist

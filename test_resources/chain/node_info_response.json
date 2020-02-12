@@ -1,0 +1,28 @@
+{
+  "node_info": {
+    "protocol_version": {
+      "p2p": "7",
+      "block": "10",
+      "app": "0"
+    },
+    "id": "8307c16191e249d6d3871ce764262d40d9cf249f",
+    "listen_addr": "tcp://0.0.0.0:26656",
+    "network": "morpheus-1001",
+    "version": "0.32.7",
+    "channels": "4020212223303800",
+    "moniker": "validator-node",
+    "other": {
+      "tx_index": "on",
+      "rpc_address": "tcp://0.0.0.0:26657"
+    }
+  },
+  "application_version": {
+    "name": "Desmos",
+    "server_name": "desmosd",
+    "client_name": "desmoscli",
+    "version": "0.2.0-5-g9b1c68f",
+    "commit": "9b1c68fb3779857bd04bb713b497643f0c7f0641",
+    "build_tags": "netgo ledger",
+    "go": "go version go1.13.5 linux/amd64"
+  }
+}

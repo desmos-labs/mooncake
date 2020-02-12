@@ -5,10 +5,13 @@ import 'package:meta/meta.dart';
 part 'post_status.g.dart';
 
 /// Represents the status of a post.
+@immutable
 @JsonSerializable(explicitToJson: true)
 class PostStatus extends Equatable {
   @JsonKey(name: "value")
   final PostStatusValue value;
+
+  @JsonKey(name: "error")
   final String error;
 
   const PostStatus({
@@ -35,4 +38,10 @@ enum PostStatusValue {
   SYNCED,
   @JsonValue("errored")
   ERRORED
+}
+
+extension PostStatusExt on PostStatusValue {
+  String get value {
+    return _$PostStatusValueEnumMap[this];
+  }
 }

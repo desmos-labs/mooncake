@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="network.desmos.mooncake">
+          package="com.forbole.mooncake">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -8,7 +8,8 @@
             android:label="Mooncake"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:fullBackupContent="@xml/backup_rules">
+            android:allowBackup="false"
+            android:fullBackupContent="false">
         <activity
                 android:name=".MainActivity"
                 android:launchMode="singleTop"

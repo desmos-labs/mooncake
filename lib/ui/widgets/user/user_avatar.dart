@@ -1,4 +1,3 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 
 /// Represents an image (given its [url]) as a circular image.

@@ -1,8 +1,12 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:mooncake/utils/utils.dart';
@@ -12,7 +16,7 @@ import 'package:mooncake/utils/utils.dart';
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
   final LoginUseCase _loginUseCase;
-  final GetAddressUseCase _getAddressUseCase;
+  final FirebaseAnalytics _analytics;
 
   MnemonicInputBloc _mnemonicInputBloc;
   LoginBloc _loginBloc;
@@ -23,19 +27,28 @@ class RecoverAccountBloc
     @required MnemonicInputBloc mnemonicInputBloc,
     @required LoginBloc loginBloc,
     @required LoginUseCase loginUseCase,
-    @required GetAddressUseCase getAddressUseCase,
+    @required FirebaseAnalytics analytics,
   })  : assert(mnemonicInputBloc != null),
         _mnemonicInputBloc = mnemonicInputBloc,
         assert(loginBloc != null),
         _loginBloc = loginBloc,
         assert(loginUseCase != null),
         this._loginUseCase = loginUseCase,
-        assert(getAddressUseCase != null),
-        this._getAddressUseCase = getAddressUseCase {
+        assert(analytics != null),
+        _analytics = analytics {
     // Observe the mnemonic changes to react tot them
     _mnemonicBlocSubscription = mnemonicInputBloc.listen((mnemonicState) {
       add(MnemonicInputChanged(mnemonicState));
     });
+  }
+
+  factory RecoverAccountBloc.create(BuildContext context) {
+    return RecoverAccountBloc(
+      mnemonicInputBloc: BlocProvider.of(context),
+      loginBloc: BlocProvider.of(context),
+      loginUseCase: Injector.get(),
+      analytics: Injector.get(),
+    );
   }
 
   @override
@@ -50,10 +63,6 @@ class RecoverAccountBloc
       yield TypingMnemonic(event.mnemonicInputState);
     } else if (event is RecoverAccount) {
       yield* _mapRecoverAccountToState(event);
-    } else if (event is AccountRecoveredSuccessfully) {
-      yield* _mapAccountRecoveredSuccessfullyEventToState(event);
-    } else if (event is AccountRecoveredError) {
-      yield* _mapAccountRecoveredErrorToState(event);
     } else if (event is CloseErrorPopup) {
       yield* _mapCloseErrorPopupToState();
     }
@@ -62,32 +71,19 @@ class RecoverAccountBloc
   Stream<RecoverAccountState> _mapRecoverAccountToState(
     RecoverAccount event,
   ) async* {
-    yield RecoveringAccount();
-
     final state = _mnemonicInputBloc.state;
     if (state.isValid) {
-      _loginUseCase
-          .login(state.mnemonic)
-          .then((_) => _getAddressUseCase.get())
-          .then((address) => add(AccountRecoveredSuccessfully(address)))
-          .catchError((error) {
+      yield RecoveringAccount();
+      try {
+        await _loginUseCase.login(state.mnemonic);
+        _analytics.logEvent(name: Constants.EVENT_ACCOUNT_RECOVERED);
+        yield RecoveredAccount(state.mnemonic);
+        _loginBloc.add(LogIn(state.mnemonic));
+      } catch (error) {
         Logger.log(error);
-        add(AccountRecoveredError(error));
-      });
+        yield RecoverError(error);
+      }
     }
-  }
-
-  Stream<RecoverAccountState> _mapAccountRecoveredSuccessfullyEventToState(
-    AccountRecoveredSuccessfully event,
-  ) async* {
-    final state = _mnemonicInputBloc.state;
-    yield RecoveredAccount(state.mnemonic);
-    _loginBloc.add(LogIn(state.mnemonic));
-  }
-
-  Stream<RecoverAccountState> _mapAccountRecoveredErrorToState(
-      AccountRecoveredError event) async* {
-    yield RecoverError(event.error);
   }
 
   Stream<RecoverAccountState> _mapCloseErrorPopupToState() async* {

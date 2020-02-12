@@ -1,116 +1,102 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
+import 'package:mooncake/utils/logger.dart';
 
-class _TxData {
+/// Contains all the data needed to perform a transaction.
+@visibleForTesting
+class TxData extends Equatable {
   final List<StdMsg> messages;
   final Wallet wallet;
 
-  _TxData(this.messages, this.wallet);
+  TxData(this.messages, this.wallet);
+
+  @override
+  List<Object> get props => [messages, wallet];
 }
 
 /// Allows to easily perform chain-related actions such as querying the
 /// chain state or sending transactions to it.
 class ChainHelper {
   final String _lcdEndpoint;
-  final String _rpcEndpoint;
 
   ChainHelper({
     @required String lcdEndpoint,
-    @required String rpcEndpoint,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
-        _lcdEndpoint = lcdEndpoint,
-        assert(rpcEndpoint != null && rpcEndpoint.isNotEmpty),
-        this._rpcEndpoint = rpcEndpoint;
-
-  static Future<Map<String, dynamic>> _queryBackground(String url) async {
-    final httpClient = http.Client();
-    final data = await httpClient.get(url);
-    if (data.statusCode != 200) {
-      throw Exception("Call to $url returned status code ${data.statusCode}");
-    }
-    return json.decode(utf8.decode(data.bodyBytes));
+        _lcdEndpoint = lcdEndpoint {
+    // This code is duplicated here due to the fact that [sendTxBackground]
+    // will be run on a different isolate and Dart singletons are not
+    // cross-threads so this Codec is another instance from the one
+    // used inside the sendTxBackground method.
+    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+    Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
+    Codec.registerMsgType(
+      "desmos/MsgRemovePostReaction",
+      MsgRemovePostReaction,
+    );
   }
 
-  Future<Map<String, dynamic>> _query(String url) async {
-    print("Querying $url");
-    return compute(_queryBackground, url);
-  }
+  @visibleForTesting
+  static Future<TransactionResult> sendTxBackground(TxData txData) async {
+    // Register custom messages
+    // This needs to be done here as this method can run on different isolates.
+    // We cannot rely on the initialization done inside the constructor as
+    // this Codec instance will not be the same as that one.
+    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+    Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
+    Codec.registerMsgType(
+      "desmos/MsgRemovePostReaction",
+      MsgRemovePostReaction,
+    );
 
-  /// Queries the RPC to the specified [endpoint].
-  Future<Map<String, dynamic>> queryRpc(String endpoint) async {
-    final url = _rpcEndpoint + endpoint;
-    return _query(url);
+    return TxHelper.sendTx(txData.messages, txData.wallet);
   }
 
   /// Queries the chain status using the given endpoint and returns
   /// the raw body response.
+  /// If an exception is thrown, returns `null`.
   Future<Map<String, dynamic>> queryChainRaw(String endpoint) async {
-    final url = _lcdEndpoint + endpoint;
-    return _query(url);
+    final result = await compute(
+      QueryHelper.queryChain,
+      _lcdEndpoint + endpoint,
+    );
+    if (!result.isSuccessful) {
+      print(result.error);
+      return null;
+    }
+    return result.value;
   }
 
   /// Utility method to easily query any chain endpoint and
   /// read the response as an [LcdResponse] object instance.
+  /// If any exception is thrown, returns `null`.
   Future<LcdResponse> queryChain(String endpoint) async {
-    final url = _lcdEndpoint + endpoint;
-    final json = await _query(url);
-    return LcdResponse.fromJson(json);
-  }
-
-  static Future<TransactionResult> _sendTx(_TxData data) async {
-    final messages = data.messages;
-    final wallet = data.wallet;
-
-    if (messages.isEmpty) {
-      // No messages to send, simply return
+    try {
+      final result = await queryChainRaw(endpoint);
+      return result == null ? result : LcdResponse.fromJson(result);
+    } catch (e) {
+      print("LcdResponse parsing exception: $e");
       return null;
     }
-
-    // Register custom messages
-    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
-    Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
-    Codec.registerMsgType(
-        "desmos/MsgRemovePostReaction", MsgRemovePostReaction);
-
-    // Build the tx
-    final tx = TxBuilder.buildStdTx(
-      stdMsgs: messages,
-      fee: StdFee(gas: (200000 * messages.length).toString(), amount: []),
-    );
-
-    // Sign the tx
-    final signTx = await TxSigner.signStdTx(
-      wallet: wallet,
-      stdTx: tx,
-    );
-
-    print('Sending a new tx to the chain: \n ${jsonEncode(signTx)}');
-
-    // Send the tx to the chain
-    final result = await TxSender.broadcastStdTx(
-      wallet: wallet,
-      stdTx: signTx,
-    );
-
-    if (!result.success) {
-      final jsonTx = jsonEncode(signTx);
-      final error = result.error.errorMessage;
-      throw Exception("Error while sending transaction $jsonTx: $error");
-    }
-
-    return result;
   }
 
   /// Creates, sings and sends a transaction having the given [messages]
   /// and using the given [wallet].
   Future<TransactionResult> sendTx(List<StdMsg> messages, Wallet wallet) async {
-    final data = _TxData(messages, wallet);
-    return compute(_sendTx, data);
+    final data = TxData(messages, wallet);
+    return compute(sendTxBackground, data);
+  }
+
+  Future<List<Transaction>> getTxsByHeight(String height) async {
+    try {
+      return await QueryHelper.getTxsByHeight(_lcdEndpoint, height);
+    } catch (e) {
+      Logger.log(e);
+      return null;
+    }
   }
 }

@@ -1,7 +1,7 @@
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/posts/posts.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:meta/meta.dart';
 
 /// Allows to sync all the posts that have been created offline as well as
 /// all the likes and unlikes that have been set to posts.
@@ -18,12 +18,8 @@ class SyncPostsUseCase {
     // Get the posts
     final posts = await _postsRepository.getPostsToSync();
     final syncingStatus = PostStatus(value: PostStatusValue.SYNCING);
-    final syncingPosts = posts
-        .where((post) =>
-            post.status.value == PostStatusValue.TO_BE_SYNCED ||
-            post.status.value == PostStatusValue.ERRORED)
-        .map((post) => post.copyWith(status: syncingStatus))
-        .toList();
+    final syncingPosts =
+        posts.map((post) => post.copyWith(status: syncingStatus)).toList();
 
     if (syncingPosts.isEmpty) {
       // We do not have any post to be synced, so return.

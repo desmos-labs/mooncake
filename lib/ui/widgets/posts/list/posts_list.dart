@@ -1,15 +1,17 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/posts/list/sync_snackbar.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 typedef Filter = bool Function(Post);
 
 /// Represents a list of [Post] objects.
 /// It simply builds a list using the [ListView.separated] builder
 /// and the [PostItem] class as the object representing each post.
-class PostsList extends StatelessWidget {
+class PostsList extends StatefulWidget {
   final Filter _filter;
 
   PostsList({Key key, Filter filter})
@@ -17,48 +19,71 @@ class PostsList extends StatelessWidget {
         super(key: key);
 
   @override
+  _PostsListState createState() => _PostsListState();
+}
+
+class _PostsListState extends State<PostsList> {
+  Completer<void> _refreshCompleter;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshCompleter = Completer<void>();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("assets/images/pattern.png"),
-            repeat: ImageRepeat.repeat),
-      ),
-      child: BlocBuilder<PostsBloc, PostsState>(
-        bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),
-        builder: (context, state) {
-          if (state is PostsLoading) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(PostsLocalizations.of(context).splashLoadingData),
-                SizedBox(height: 16),
-                LoadingIndicator(key: PostsKeys.postsLoading),
-              ],
-            );
-          } else if (state is PostsLoaded) {
-            // Filter the posts based on the filter set
-            final posts = state.posts
-                .where((p) => _filter != null ? _filter(p) : true)
-                .toList();
-            return Column(
-              children: <Widget>[
-                Flexible(
-                  child: ListView.builder(
-                    key: PostsKeys.postsList,
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      return _postWidget(context, posts[index]);
-                    },
-                  ),
-                ),
-                if (state.syncingPosts) SyncSnackBar(),
-              ],
-            );
-          } else {
-            return Container(key: PostsKeys.postsEmptyContainer);
-          }
+      decoration: PostsTheme.pattern,
+      child: RefreshIndicator(
+        onRefresh: () {
+          BlocProvider.of<PostsBloc>(context).add(RefreshPosts());
+          return _refreshCompleter.future;
         },
+        child: BlocBuilder<PostsBloc, PostsState>(
+          bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),
+          builder: (context, state) {
+            if (state is PostsLoaded) {
+              // Hide the refresh indicator
+              if (!state.refreshing) {
+                _refreshCompleter?.complete();
+                _refreshCompleter = Completer();
+              }
+
+              // Filter the posts based on the filter set
+              final posts = state.posts
+                  .where((p) => widget._filter?.call(p) ?? true)
+                  .toList();
+              return Column(
+                children: <Widget>[
+                  Flexible(
+                    child: ListView.builder(
+                      key: PostsKeys.postsList,
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        return _postWidget(context, posts[index]);
+                      },
+                    ),
+                  ),
+                  if (state.syncingPosts) SyncSnackBar(),
+                ],
+              );
+            } else {
+              return Container(
+                key: PostsKeys.postsEmptyContainer,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    LoadingIndicator(),
+                    SizedBox(height: 16),
+                    Text(PostsLocalizations.of(context).loadingPosts)
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

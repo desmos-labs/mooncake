@@ -1,0 +1,37 @@
+version: 2.1
+
+executors:
+  flutter:
+    docker:
+      - image: cirrusci/flutter
+
+orbs:
+  codecov: codecov/codecov@1.0.2
+
+jobs:
+  test:
+    executor: flutter
+    steps:
+      - checkout
+      - run:
+          name: Run Flutter doctor
+          command: flutter doctor
+      - run:
+          name: Run Flutter format
+          command: flutter format --dry-run .
+      - run:
+          name: Run the application tests
+          command: flutter test --coverage test
+      - codecov/upload:
+          file: coverage/lcov.info
+          token: $CODECOV_TOKEN
+
+workflows:
+  version: 2
+  test-suite:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore:
+                - gh-pages

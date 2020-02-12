@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:sentry/sentry.dart';
 
 /// Represents a logger that allows to log the errors on the remote system.
@@ -10,6 +11,11 @@ class Logger {
   /// Remotely logs the given [error] and the optional [stackTrace] on the
   /// server.
   static log(dynamic error, {dynamic stackTrace}) {
+    if (kDebugMode) {
+      print(error);
+      return;
+    }
+
     sentry.captureException(
       exception: error,
       stackTrace: stackTrace,

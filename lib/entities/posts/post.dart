@@ -1,8 +1,8 @@
-import 'package:mooncake/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 
 part 'post.g.dart';
 
@@ -14,6 +14,15 @@ class Post extends Equatable implements Comparable<Post> {
   /// post-related date values.
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
+  /// Identifier used to reference posts status value.
+  static const STATUS_FIELD = "status.value";
+
+  /// Identifier used to reference post creation date.
+  static const DATE_FIELD = "created";
+
+  /// Identifier used to reference post ids.
+  static const ID_FIELD = "id";
+
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
   static String getDateStringNow() {
@@ -21,7 +30,7 @@ class Post extends Equatable implements Comparable<Post> {
     return formatter.format(DateTime.now().toUtc());
   }
 
-  @JsonKey(name: "id")
+  @JsonKey(name: ID_FIELD)
   final String id;
 
   @JsonKey(name: "parent_id")
@@ -30,13 +39,13 @@ class Post extends Equatable implements Comparable<Post> {
   /// Tells if this post has a valid parent post or not.
   @JsonKey(ignore: true)
   bool get hasParent =>
-      parentId != null && parentId.isNotEmpty && parentId != "0";
+      parentId != null && parentId.trim().isNotEmpty && parentId != "0";
 
   @JsonKey(name: "message")
   final String message;
 
   /// RFC3339-formatted creation date
-  @JsonKey(name: "created")
+  @JsonKey(name: DATE_FIELD)
   final String created;
 
   @JsonKey(ignore: true)
@@ -56,7 +65,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "creator")
   final String owner;
 
-  @JsonKey(name: "optional_data")
+  @JsonKey(name: "optional_data", defaultValue: {})
   final Map<String, String> optionalData;
 
   @JsonKey(name: "medias")
@@ -69,8 +78,18 @@ class Post extends Equatable implements Comparable<Post> {
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
-  @JsonKey(name: "status")
+  @JsonKey(
+    name: "status",
+    fromJson: _postStatusFromJson,
+  )
   final PostStatus status;
+
+  /// Static method used to implement a custom deserialization of posts.
+  static PostStatus _postStatusFromJson(Map<String, dynamic> json) {
+    return json == null
+        ? PostStatus(value: PostStatusValue.SYNCED)
+        : PostStatus.fromJson(json);
+  }
 
   Post({
     @required this.id,
@@ -162,7 +181,7 @@ class Post extends Equatable implements Comparable<Post> {
       'medias: $medias, '
       'reactions: $reactions, '
       'commentsIds: $commentsIds, '
-      'synced: $status '
+      'status: $status '
       '}';
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);

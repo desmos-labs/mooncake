@@ -1,6 +1,6 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents the text input that allows a user to input a mnemonic phrase
 /// having a real time validation feedback.

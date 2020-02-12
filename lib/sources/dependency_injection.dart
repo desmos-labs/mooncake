@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:http/http.dart' as http;
 
 class SourcesModule implements Module {
 //  static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
@@ -20,7 +19,6 @@ class SourcesModule implements Module {
       // Utilities
       ..bindSingleton(ChainHelper(
         lcdEndpoint: _lcdUrl,
-        rpcEndpoint: _rpcUrl,
       ))
       // User sources
       ..bindLazySingleton<LocalUserSource>(
@@ -32,6 +30,7 @@ class SourcesModule implements Module {
       ..bindLazySingleton<RemoteUserSource>(
           (injector, params) => RemoteUserSourceImpl(
                 chainHelper: injector.get(),
+                faucetEndpoint: _faucetEndpoint,
               ))
       // Post sources
       ..bindLazySingleton<LocalPostsSource>(
@@ -44,7 +43,9 @@ class SourcesModule implements Module {
         (injector, params) => RemotePostsSourceImpl(
           rpcEndpoint: _rpcUrl,
           chainHelper: injector.get(),
-          walletSource: injector.get(),
+          userSource: injector.get(),
+          eventsConverter: ChainEventsConverter(),
+          msgConverter: MsgConverter(),
         ),
         name: "remote",
       );

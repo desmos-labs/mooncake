@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:meta/meta.dart';
 
 /// Represents the bloc associated to the screen displaying the user's
 /// account data.
@@ -15,9 +15,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       : assert(getAccountUseCase != null),
         _getAccountUseCase = getAccountUseCase;
 
-  factory AccountBloc.create() => AccountBloc(
-        getAccountUseCase: Injector.get(),
-      );
+  factory AccountBloc.create() {
+    return AccountBloc(
+      getAccountUseCase: Injector.get(),
+    );
+  }
 
   @override
   AccountState get initialState => LoadingAccount();

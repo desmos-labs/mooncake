@@ -1,5 +1,5 @@
-import 'package:mooncake/ui/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:mooncake/ui/theme/theme.dart';
 
 /// Represents a single mnemonic word item that is shown inside the
 /// list of words of a new mnemonic.

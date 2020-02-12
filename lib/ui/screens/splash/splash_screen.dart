@@ -1,8 +1,7 @@
-import 'package:flutter_svg/svg.dart';
-import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents the screen that is shown to the user during the application
 /// loading before having defined whether the user is authenticated or not.
@@ -31,15 +30,17 @@ class SplashScreen extends StatelessWidget {
               ),
               Text(
                 PostsLocalizations.of(context).appTitle,
-                style: PostsTheme.theme.textTheme.body1.copyWith(
+                style: PostsTheme.theme.textTheme.bodyText2.copyWith(
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 16),
               Text(
                 PostsLocalizations.of(context).splashLoadingData,
-                style: PostsTheme.theme.textTheme.body1
-                    .copyWith(color: Colors.white, fontSize: 16),
+                style: PostsTheme.theme.textTheme.bodyText2.copyWith(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
               ),
             ],
           ),
@@ -49,15 +50,8 @@ class SplashScreen extends StatelessWidget {
   }
 
   Widget _homeScreen() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<HomeBloc>(
-          create: (context) => HomeBloc(
-            loginBloc: BlocProvider.of(context),
-            logoutUseCase: Injector.get(),
-          ),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => HomeBloc.create(context),
       child: HomeScreen(),
     );
   }

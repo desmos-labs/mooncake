@@ -1,3 +1,19 @@
+# Version 0.0.11
+## Changes 
+- Added the pull-to-refresh inside the posts list
+
+## Bug fixes
+- Fixed a bug that caused incoherent comments to be shown inside the post details
+
+# Version 0.0.10
+## Bug fixes
+- Fixed a bug during the account recovering
+
+# Version 0.0.9 
+## Changes
+- Implemented analytics
+- Updated iOS app icons to remove the alpha channel
+
 # Version 0.0.8
 ## Changes
 - Implemented the visualization of login errors as a dismissible popup

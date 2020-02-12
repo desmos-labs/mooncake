@@ -1,5 +1,5 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents an icon of a post action, that changes color when tapped
 /// and resets when not tapped anymore.

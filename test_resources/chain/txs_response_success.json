@@ -1,0 +1,112 @@
+{
+  "height": "15914",
+  "txhash": "10BF44337A7D0A54169D9C057E013BCD8B2694C970479DFD2068445217CF155C",
+  "data": "0141",
+  "raw_log": "[{\"msg_index\":0,\"success\":true,\"log\":\"\",\"events\":[{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"create_post\"}]},{\"type\":\"post_created\",\"attributes\":[{\"key\":\"post_id\",\"value\":\"65\"},{\"key\":\"post_parent_id\",\"value\":\"54\"},{\"key\":\"creation_time\",\"value\":\"2020-01-15 10:33:19.982 +0000 UTC\"},{\"key\":\"post_owner\",\"value\":\"desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl\"}]}]}]",
+  "logs": [
+    {
+      "msg_index": 0,
+      "success": true,
+      "log": "",
+      "events": [
+        {
+          "type": "message",
+          "attributes": [
+            {
+              "key": "action",
+              "value": "create_post"
+            }
+          ]
+        },
+        {
+          "type": "post_created",
+          "attributes": [
+            {
+              "key": "post_id",
+              "value": "65"
+            },
+            {
+              "key": "post_parent_id",
+              "value": "54"
+            },
+            {
+              "key": "creation_time",
+              "value": "2020-01-15 10:33:19.982 +0000 UTC"
+            },
+            {
+              "key": "post_owner",
+              "value": "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "gas_wanted": "200000",
+  "gas_used": "25415",
+  "tx": {
+    "type": "cosmos-sdk/StdTx",
+    "value": {
+      "msg": [
+        {
+          "type": "desmos/MsgCreatePost",
+          "value": {
+            "parent_id": "54",
+            "message": "Hello!",
+            "allows_comments": false,
+            "subspace": "mooncake",
+            "creator": "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
+            "creation_date": "2020-01-15T10:33:19.982Z"
+          }
+        }
+      ],
+      "fee": {
+        "amount": [],
+        "gas": "200000"
+      },
+      "signatures": [
+        {
+          "pub_key": {
+            "type": "tendermint/PubKeySecp256k1",
+            "value": "A735NvHpqbi+AboXD2win9kHAVGJo+O1VeuKUASypGe3"
+          },
+          "signature": "jdTrPJKCWX5X4ozrgZUAPNv5Ya+RyMd9rndUyphCVZsDIniRqGOqBdQVUNFOKeDCC2CvgrV7+hop6RLWpgKdng=="
+        }
+      ],
+      "memo": ""
+    }
+  },
+  "timestamp": "2020-01-15T10:36:41Z",
+  "events": [
+    {
+      "type": "message",
+      "attributes": [
+        {
+          "key": "action",
+          "value": "create_post"
+        }
+      ]
+    },
+    {
+      "type": "post_created",
+      "attributes": [
+        {
+          "key": "post_id",
+          "value": "65"
+        },
+        {
+          "key": "post_parent_id",
+          "value": "54"
+        },
+        {
+          "key": "creation_time",
+          "value": "2020-01-15 10:33:19.982 +0000 UTC"
+        },
+        {
+          "key": "post_owner",
+          "value": "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"
+        }
+      ]
+    }
+  ]
+}

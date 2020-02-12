@@ -10,8 +10,8 @@ PostsResponse _$PostsResponseFromJson(Map<String, dynamic> json) {
   return PostsResponse(
     height: json['height'] as String,
     posts: (json['result'] as List)
-        ?.map((e) =>
-            e == null ? null : PostJson.fromJson(e as Map<String, dynamic>))
+        ?.map(
+            (e) => e == null ? null : Post.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }

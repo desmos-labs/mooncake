@@ -1,0 +1,78 @@
+{
+  "height": "371707",
+  "txhash": "7640121B3E6F46AE9816633E4234376514872457214E436D47EF26E92B7D2BCB",
+  "events": [
+    {
+      "type": "message",
+      "attributes": [
+        {
+          "key": "action",
+          "value": "remove_post_reaction"
+        },
+        {
+          "key": "action",
+          "value": "create_post"
+        },
+        {
+          "key": "action",
+          "value": "add_post_reaction"
+        }
+      ]
+    },
+    {
+      "type": "post_reaction_removed",
+      "attributes": [
+        {
+          "key": "post_id",
+          "value": "192"
+        },
+        {
+          "key": "user",
+          "value": "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"
+        },
+        {
+          "key": "reaction",
+          "value": "😍"
+        }
+      ]
+    },
+    {
+      "type": "post_created",
+      "attributes": [
+        {
+          "key": "post_id",
+          "value": "193"
+        },
+        {
+          "key": "post_parent_id",
+          "value": "0"
+        },
+        {
+          "key": "creation_time",
+          "value": "2020-02-07 06:58:59.303 +0000 UTC"
+        },
+        {
+          "key": "post_owner",
+          "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+        }
+      ]
+    },
+    {
+      "type": "post_reaction_added",
+      "attributes": [
+        {
+          "key": "post_id",
+          "value": "192"
+        },
+        {
+          "key": "user",
+          "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+        },
+        {
+          "key": "reaction",
+          "value": "🤩"
+        }
+      ]
+    }
+  ]
+}

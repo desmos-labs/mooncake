@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:meta/meta.dart';
-import 'package:web_socket_channel/status.dart';
 
 /// Implementation of [PostsRepository].
 class PostsRepositoryImpl extends PostsRepository {

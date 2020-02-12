@@ -1,11 +1,15 @@
-import 'package:mooncake/entities/entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 
 part 'msg_create_post.g.dart';
 
+/// Represents the message that should be used when creating a new post or
+/// comment.
+@immutable
+@reflector
 @JsonSerializable()
-class MsgCreatePost implements StdMsg {
+class MsgCreatePost extends StdMsg {
   @JsonKey(name: "parent_id")
   final String parentId;
 
@@ -54,5 +58,21 @@ class MsgCreatePost implements StdMsg {
       ];
 
   @override
-  Map<String, dynamic> toJson() => _$MsgCreatePostToJson(this);
+  Map<String, dynamic> asJson() => _$MsgCreatePostToJson(this);
+
+  factory MsgCreatePost.fromJson(Map<String, dynamic> json) =>
+      _$MsgCreatePostFromJson(json);
+
+  @override
+  Exception validate() {
+    if (parentId.isEmpty ||
+        message.isEmpty ||
+        subspace.isEmpty ||
+        creator.isEmpty ||
+        creationDate.isEmpty) {
+      return Exception("Malformed MsgCreatePost");
+    }
+
+    return null;
+  }
 }

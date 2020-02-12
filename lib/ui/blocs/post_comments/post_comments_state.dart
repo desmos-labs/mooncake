@@ -1,6 +1,6 @@
-import 'package:mooncake/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// State related to the comments of a particular post.
 abstract class PostCommentsState extends Equatable {

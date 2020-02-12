@@ -1,6 +1,6 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Form that is used while creating a new post, or a comment for the
 /// given [postId].

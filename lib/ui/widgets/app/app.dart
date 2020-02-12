@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
@@ -14,22 +15,14 @@ class PostsApp extends StatelessWidget {
           create: (_) => MnemonicInputBloc(),
         ),
         BlocProvider<RecoverAccountBloc>(
-          create: (context) => RecoverAccountBloc(
-            mnemonicInputBloc: BlocProvider.of(context),
-            loginBloc: BlocProvider.of(context),
-            loginUseCase: Injector.get(),
-            getAddressUseCase: Injector.get(),
-          ),
+          create: (context) => RecoverAccountBloc.create(context),
         ),
         BlocProvider<GenerateMnemonicBloc>(
-          create: (context) => GenerateMnemonicBloc(
-            navigatorBloc: BlocProvider.of(context),
-            generateMnemonicUseCase: Injector.get(),
-          ),
+          create: (context) => GenerateMnemonicBloc.create(context),
         ),
         BlocProvider<PostsBloc>(
           create: (context) =>
-              PostsBloc.create(syncPeriod: 20)..add(FetchPosts()),
+              PostsBloc.create(syncPeriod: 30)..add(LoadPosts()),
         )
       ],
       child: MaterialApp(
@@ -39,6 +32,9 @@ class PostsApp extends StatelessWidget {
         theme: PostsTheme.theme,
         localizationsDelegates: [
           FlutterBlocLocalizationsDelegate(),
+        ],
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: Injector.get()),
         ],
         routes: {
           PostsRoutes.home: (context) => SplashScreen(),

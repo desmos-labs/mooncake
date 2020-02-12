@@ -1,15 +1,17 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:flutter/foundation.dart' as Foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart' as Foundation;
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/main.reflectable.dart';
+import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/utils/utils.dart';
 
-import 'dependency_injection/dependency_injection.dart';
-import 'utils/utils.dart';
+void main() {
+  initializeReflectable();
 
-void main() async {
   // Setup the dependency injection
   Injector.init();
 
@@ -29,7 +31,8 @@ void main() async {
   };
 
   // Run the app
-  runZoned<Future<void>>(() async {
+  // ignore: missing_return
+  runZoned<Future<void>>(() {
     _runApp();
   }, onError: (error, stackTrace) {
     // Whenever an error occurs, call the `_reportError` function. This sends
@@ -42,13 +45,10 @@ void _runApp() {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<NavigatorBloc>(
-        create: (_) => NavigatorBloc(),
+        create: (_) => NavigatorBloc.create(),
       ),
       BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(
-          navigatorBloc: BlocProvider.of(context),
-          checkLoginUseCase: Injector.get(),
-        )..add(CheckStatus()),
+        create: (context) => LoginBloc.create(context)..add(CheckStatus()),
       ),
     ],
     child: PostsApp(),

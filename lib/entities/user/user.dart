@@ -8,7 +8,7 @@ part 'user.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class User extends Equatable {
-  @JsonKey(name: "addres")
+  @JsonKey(name: "address")
   final String address;
 
   @JsonKey(name: "username")
@@ -22,14 +22,15 @@ class User extends Equatable {
 
   User({
     @required this.address,
-    @required this.username,
-    @required this.avatarUrl,
+    this.username,
+    this.avatarUrl,
   })  : assert(address != null),
         assert(address.isNotEmpty);
 
   @override
   List<Object> get props => [address, username, avatarUrl];
 
+  // DONT COVER
   @override
   String toString() => 'User { '
       'address: $address, '

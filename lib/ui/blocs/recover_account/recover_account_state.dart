@@ -1,5 +1,5 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:equatable/equatable.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic state for the account recovery screen.
 abstract class RecoverAccountState extends Equatable {

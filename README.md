@@ -2,6 +2,10 @@
 
 [![](https://img.shields.io/badge/100%25-flutter-blue)](https://flutter.dev)
 [![](https://img.shields.io/badge/based%20on-desmos-orange)](https://desmos.network)
+[![CircleCI](https://img.shields.io/circleci/build/github/desmos-labs/mooncake)](https://app.circleci.com/github/desmos-labs/mooncake/pipelines)
+[![Codecov](https://img.shields.io/codecov/c/github/desmos-labs/mooncake)](https://codecov.io/gh/desmos-labs/mooncake)
+[![](https://img.shields.io/badge/compatible-Android-green)](https://desmos.network)
+[![](https://img.shields.io/badge/compatible-iOS-lightgray)](https://desmos.network)
 
 ## Introduction
 Mooncake, which name derives from the homonym [chinese bakery product](https://en.wikipedia.org/wiki/Mooncake), is a decentralized social application based on the [Desmos blockchain](https://github.com/desmos-labs/desmos).
