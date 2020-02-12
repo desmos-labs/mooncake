@@ -9,6 +9,7 @@ import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:web_socket_channel/io.dart';
 
+import 'common.dart';
 import 'remote_posts_source_test.reflectable.dart';
 import 'mocks.dart';
 
@@ -31,7 +32,7 @@ void main() {
 
   setUpAll(() {
     initializeReflectable();
-    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+    initializeCodec();
   });
 
   setUp(() async {

@@ -9,7 +9,7 @@ dependencies:
   alan:
     git:
       url: git://github.com/alan-sdk/alan.dart.git
-      ref: master
+      ref: cosmos-v0.38.0
   bip39:
   collection:
   cupertino_icons:

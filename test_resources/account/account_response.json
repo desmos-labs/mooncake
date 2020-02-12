@@ -14,8 +14,8 @@
         "type": "tendermint/PubKeySecp256k1",
         "value": "A735NvHpqbi+AboXD2win9kHAVGJo+O1VeuKUASypGe3"
       },
-      "account_number": "54",
-      "sequence": "39"
+      "account_number": 54,
+      "sequence": 39
     }
   }
 }

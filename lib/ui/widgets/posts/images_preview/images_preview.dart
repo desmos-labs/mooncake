@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'image_preview_item.dart';
 
 /// Represents the list of images previews associated with a post.

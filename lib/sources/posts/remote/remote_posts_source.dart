@@ -87,7 +87,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       }
 
       return transactions
-          .expand((tx) => _eventsConverter.convert(height, tx.events))
+          .expand((tx) => _eventsConverter.convert(height, tx.logs))
           .toList();
     } catch (error) {
       Logger.log(error);

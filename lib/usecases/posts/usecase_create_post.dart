@@ -1,7 +1,9 @@
+import 'dart:io';
+
+import 'package:meta/meta.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:meta/meta.dart';
 
 /// Allows to create a new post.
 class CreatePostUseCase {
@@ -26,11 +28,11 @@ class CreatePostUseCase {
     // We perform a simple conversion to PostMedia using the File absolute
     // paths as these will need to be uploaded later
     final postMedias = images
-        .map((f) => PostMedia(
+        ?.map((f) => PostMedia(
               url: f.absolute.path,
               mimeType: mime(f.absolute.path),
             ))
-        .toList();
+        ?.toList();
 
     return Post(
       id: date,

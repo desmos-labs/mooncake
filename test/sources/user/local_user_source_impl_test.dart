@@ -167,8 +167,8 @@ void main() {
 
       final accountData = AccountData(
         address: "address",
-        accountNumber: "1",
-        sequence: "1",
+        accountNumber: 1,
+        sequence: 1,
         coins: [],
       );
       await source.saveAccountData(accountData);
@@ -186,8 +186,8 @@ void main() {
     test('saving and getAccountData work properly', () async {
       final accountData = AccountData(
         address: "address",
-        accountNumber: "1",
-        sequence: "1",
+        accountNumber: 1,
+        sequence: 1,
         coins: [],
       );
 
@@ -201,8 +201,8 @@ void main() {
     test('correctly deletes data', () async {
       final accountData = AccountData(
         address: "address",
-        accountNumber: "1",
-        sequence: "1",
+        accountNumber: 1,
+        sequence: 1,
         coins: [],
       );
       await source.saveAccountData(accountData);

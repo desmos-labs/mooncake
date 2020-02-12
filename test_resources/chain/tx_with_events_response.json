@@ -1,14 +1,227 @@
 {
   "height": "371707",
   "txhash": "7640121B3E6F46AE9816633E4234376514872457214E436D47EF26E92B7D2BCB",
+  "data": "02C1015265616374696F6E2061646465642070726F7065726C79",
+  "raw_log": "[{\"msg_index\":0,\"success\":true,\"log\":\"\",\"events\":[{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"create_post\"}]},{\"type\":\"post_created\",\"attributes\":[{\"key\":\"post_id\",\"value\":\"193\"},{\"key\":\"post_parent_id\",\"value\":\"0\"},{\"key\":\"creation_time\",\"value\":\"2020-02-07 06:58:59.303 +0000 UTC\"},{\"key\":\"post_owner\",\"value\":\"desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x\"}]}]},{\"msg_index\":1,\"success\":true,\"log\":\"\",\"events\":[{\"type\":\"message\",\"attributes\":[{\"key\":\"action\",\"value\":\"create_post\"},{\"key\":\"action\",\"value\":\"add_post_reaction\"}]},{\"type\":\"post_created\",\"attributes\":[{\"key\":\"post_id\",\"value\":\"193\"},{\"key\":\"post_parent_id\",\"value\":\"0\"},{\"key\":\"creation_time\",\"value\":\"2020-02-07 06:58:59.303 +0000 UTC\"},{\"key\":\"post_owner\",\"value\":\"desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x\"}]},{\"type\":\"post_reaction_added\",\"attributes\":[{\"key\":\"post_id\",\"value\":\"192\"},{\"key\":\"user\",\"value\":\"desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x\"},{\"key\":\"reaction\",\"value\":\"🤩\"}]}]}]",
+  "logs": [
+    {
+      "msg_index": 0,
+      "success": true,
+      "log": "",
+      "events": [
+        {
+          "type": "message",
+          "attributes": [
+            {
+              "key": "action",
+              "value": "create_post"
+            }
+          ]
+        },
+        {
+          "type": "post_created",
+          "attributes": [
+            {
+              "key": "post_id",
+              "value": "193"
+            },
+            {
+              "key": "post_parent_id",
+              "value": "0"
+            },
+            {
+              "key": "creation_time",
+              "value": "2020-02-07 06:58:59.303 +0000 UTC"
+            },
+            {
+              "key": "post_owner",
+              "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "msg_index": 1,
+      "success": true,
+      "log": "",
+      "events": [
+        {
+          "type": "message",
+          "attributes": [
+            {
+              "key": "action",
+              "value": "create_post"
+            },
+            {
+              "key": "action",
+              "value": "add_post_reaction"
+            }
+          ]
+        },
+        {
+          "type": "post_created",
+          "attributes": [
+            {
+              "key": "post_id",
+              "value": "193"
+            },
+            {
+              "key": "post_parent_id",
+              "value": "0"
+            },
+            {
+              "key": "creation_time",
+              "value": "2020-02-07 06:58:59.303 +0000 UTC"
+            },
+            {
+              "key": "post_owner",
+              "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+            }
+          ]
+        },
+        {
+          "type": "post_reaction_added",
+          "attributes": [
+            {
+              "key": "post_id",
+              "value": "192"
+            },
+            {
+              "key": "user",
+              "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+            },
+            {
+              "key": "reaction",
+              "value": "🤩"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "msg_index": 2,
+      "success": true,
+      "log": "",
+      "events": [
+        {
+          "type": "message",
+          "attributes": [
+            {
+              "key": "action",
+              "value": "create_post"
+            },
+            {
+              "key": "action",
+              "value": "add_post_reaction"
+            }
+          ]
+        },
+        {
+          "type": "post_created",
+          "attributes": [
+            {
+              "key": "post_id",
+              "value": "193"
+            },
+            {
+              "key": "post_parent_id",
+              "value": "0"
+            },
+            {
+              "key": "creation_time",
+              "value": "2020-02-07 06:58:59.303 +0000 UTC"
+            },
+            {
+              "key": "post_owner",
+              "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+            }
+          ]
+        },
+        {
+          "type": "post_reaction_added",
+          "attributes": [
+            {
+              "key": "post_id",
+              "value": "192"
+            },
+            {
+              "key": "user",
+              "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+            },
+            {
+              "key": "reaction",
+              "value": "🤩"
+            }
+          ]
+        },
+        {
+          "type": "post_reaction_removed",
+          "attributes": [
+            {
+              "key": "post_id",
+              "value": "192"
+            },
+            {
+              "key": "user",
+              "value": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+            },
+            {
+              "key": "reaction",
+              "value": "🤩"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "gas_wanted": "400000",
+  "gas_used": "28861",
+  "tx": {
+    "type": "cosmos-sdk/StdTx",
+    "value": {
+      "msg": [
+        {
+          "type": "desmos/MsgCreatePost",
+          "value": {
+            "parent_id": "0",
+            "message": "Give me liberty, or give me death!",
+            "allows_comments": true,
+            "subspace": "mooncake",
+            "creator": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x",
+            "creation_date": "2020-02-07T06:58:59.303Z"
+          }
+        },
+        {
+          "type": "desmos/MsgAddPostReaction",
+          "value": {
+            "post_id": "192",
+            "value": "🤩",
+            "user": "desmos1xzg3en5c6zt73qefkytw7xjlp5kl57spjphf2x"
+          }
+        }
+      ],
+      "fee": {
+        "amount": [],
+        "gas": "400000"
+      },
+      "signatures": [
+        {
+          "pub_key": {
+            "type": "tendermint/PubKeySecp256k1",
+            "value": "Az8clN2ALVxKY5vcW/aWMkX881PVNcLhmFC2y5LfL2z6"
+          },
+          "signature": "CRLqQmn3wZ2Mxe6md5KEtiyUp1IUqfj+RJfmFWyho7BmvBLxJjRDQxA5hCKKQruvWtmTrPqmEdG0TkEmrG0LUA=="
+        }
+      ],
+      "memo": ""
+    }
+  },
+  "timestamp": "2020-02-07T15:51:14Z",
   "events": [
     {
       "type": "message",
       "attributes": [
-        {
-          "key": "action",
-          "value": "remove_post_reaction"
-        },
         {
           "key": "action",
           "value": "create_post"
@@ -16,23 +229,6 @@
         {
           "key": "action",
           "value": "add_post_reaction"
-        }
-      ]
-    },
-    {
-      "type": "post_reaction_removed",
-      "attributes": [
-        {
-          "key": "post_id",
-          "value": "192"
-        },
-        {
-          "key": "user",
-          "value": "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"
-        },
-        {
-          "key": "reaction",
-          "value": "😍"
         }
       ]
     },

@@ -48,8 +48,8 @@ void main() {
       final account = await source.getAccountData("");
       expect(account, isNotNull);
       expect(account.address, "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");
-      expect(account.sequence, "39");
-      expect(account.accountNumber, "54");
+      expect(account.sequence, 39);
+      expect(account.accountNumber, 54);
       expect(account.coins, [StdCoin(amount: "10000000", denom: "udaric")]);
     });
   });
@@ -57,8 +57,8 @@ void main() {
   group('fundAccount', () {
     final account = AccountData(
       address: "address",
-      sequence: "0",
-      accountNumber: "0",
+      sequence: 0,
+      accountNumber: 0,
       coins: [],
     );
 

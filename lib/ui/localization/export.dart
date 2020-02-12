@@ -61,7 +61,8 @@ class PostsLocalizations {
   String get saveChanges => "Save changes";
   String get savingPost => "Saving post";
   String get commentsEnabledTip => "Comments will be enabled - Tap to disable";
-  String get commentsDisabledTip => "Comments will be disabled - Tap to enabled them";
+  String get commentsDisabledTip =>
+      "Comments will be disabled - Tap to enabled them";
   String get cameraTip => "Take a picture using the camera";
   String get galleryTip => "Select an image from the gallery";
 

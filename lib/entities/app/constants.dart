@@ -1,7 +1,8 @@
 /// Contains the application-wide constants.
 class Constants {
   /// Subspace that should be used to create and read posts
-  static const SUBSPACE = "mooncake";
+  static const SUBSPACE =
+      "2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88";
 
   /// Token denom that should be used to pay for fees
   static const FEE_TOKEN = "udaric";

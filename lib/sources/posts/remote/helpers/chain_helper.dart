@@ -19,6 +19,15 @@ class TxData extends Equatable {
   List<Object> get props => [messages, wallet];
 }
 
+void initCodec() {
+  Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+  Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
+  Codec.registerMsgType(
+    "desmos/MsgRemovePostReaction",
+    MsgRemovePostReaction,
+  );
+}
+
 /// Allows to easily perform chain-related actions such as querying the
 /// chain state or sending transactions to it.
 class ChainHelper {
@@ -28,16 +37,11 @@ class ChainHelper {
     @required String lcdEndpoint,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
         _lcdEndpoint = lcdEndpoint {
-    // This code is duplicated here due to the fact that [sendTxBackground]
+    // This call is duplicated here due to the fact that [sendTxBackground]
     // will be run on a different isolate and Dart singletons are not
     // cross-threads so this Codec is another instance from the one
     // used inside the sendTxBackground method.
-    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
-    Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
-    Codec.registerMsgType(
-      "desmos/MsgRemovePostReaction",
-      MsgRemovePostReaction,
-    );
+    initCodec();
   }
 
   @visibleForTesting
@@ -46,13 +50,7 @@ class ChainHelper {
     // This needs to be done here as this method can run on different isolates.
     // We cannot rely on the initialization done inside the constructor as
     // this Codec instance will not be the same as that one.
-    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
-    Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
-    Codec.registerMsgType(
-      "desmos/MsgRemovePostReaction",
-      MsgRemovePostReaction,
-    );
-
+    initCodec();
     return TxHelper.sendTx(txData.messages, txData.wallet);
   }
 

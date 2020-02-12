@@ -32,8 +32,8 @@ class UserRepositoryImpl extends UserRepository {
       final data = (await _remoteUserSource.getAccountData(address)) ??
           AccountData(
             address: address,
-            accountNumber: "-1",
-            sequence: "-1",
+            accountNumber: 0,
+            sequence: 0,
             coins: [],
           );
       await _localUserSource.saveAccountData(data);

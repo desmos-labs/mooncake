@@ -3,7 +3,7 @@ import 'package:mooncake/sources/sources.dart';
 /// Convenient type that represents a converter for a list of attributes
 /// into a list of ChainEvent.
 typedef EventConverter = List<ChainEvent> Function(
-    String, List<Map<String, String>>);
+    String, List<LogEventAttribute>);
 
 /// Allows to convert the events received from the chain into a list
 /// of [ChainEvent] objects.
@@ -12,8 +12,10 @@ class ChainEventsConverter {
   static const EVENT_POST_REACTION_ADDED = "post_reaction_added";
   static const EVENT_POST_REACTION_REMOVED = "post_reaction_removed";
 
-  /// Converts the given [events] into a list of [ChainEvent] objects.
-  List<ChainEvent> convert(String height, List<MsgEvent> events) {
+  /// Converts the given [logs] into a list of [ChainEvent] objects.
+  List<ChainEvent> convert(String height, List<TransactionLog> logs) {
+    // Get all the events
+    final events = logs?.expand((log) => log.events) ?? [];
     if (events.isEmpty) {
       // No events, return an empty list
       return [];
@@ -34,9 +36,12 @@ class ChainEventsConverter {
       final type = converters.keys.toList()[index];
       final converter = converters.values.toList()[index];
 
-      final msg = events.firstWhere((e) => e.type == type, orElse: () => null);
-      if (msg != null) {
-        chainEvents.addAll(converter(height, msg.attributes));
+      final event = events.firstWhere(
+        (e) => e.type == type,
+        orElse: () => null,
+      );
+      if (event != null) {
+        chainEvents.addAll(converter(height, event.attributes));
       }
     }
 
@@ -47,15 +52,15 @@ class ChainEventsConverter {
   /// into a list of [PostCreatedEvent].
   List<ChainEvent> _convertPostCreatedEvents(
     String height,
-    List<Map<String, String>> attrs,
+    List<LogEventAttribute> attrs,
   ) {
     List<ChainEvent> events = [];
     for (int index = 0; index < attrs.length; index += 4) {
       events.add(PostCreatedEvent(
         height: height,
-        postId: attrs[index]["value"],
-        parentId: attrs[index + 1]["value"],
-        owner: attrs[index + 3]["value"],
+        postId: attrs[index].value,
+        parentId: attrs[index + 1].value,
+        owner: attrs[index + 3].value,
       ));
     }
     return events;
@@ -65,13 +70,13 @@ class ChainEventsConverter {
   /// into a list of [PostReactionAdded].
   List<ChainEvent> _convertPostReactionAddedEvents(
     String height,
-    List<Map<String, String>> attrs,
+    List<LogEventAttribute> attrs,
   ) {
     List<ChainEvent> events = [];
     for (int index = 0; index < attrs.length; index += 3) {
       events.add(PostEvent(
         height: height,
-        postId: attrs[index]["value"],
+        postId: attrs[index].value,
       ));
     }
     return events;
@@ -81,13 +86,13 @@ class ChainEventsConverter {
   /// into a list of [PostReactionRemovedEvent].
   List<ChainEvent> _convertPostReactionRemovedEvents(
     String height,
-    List<Map<String, String>> attrs,
+    List<LogEventAttribute> attrs,
   ) {
     List<ChainEvent> events = [];
     for (int index = 0; index < attrs.length; index += 3) {
       events.add(PostEvent(
         height: height,
-        postId: attrs[index]["value"],
+        postId: attrs[index].value,
       ));
     }
     return events;
