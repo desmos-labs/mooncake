@@ -20,14 +20,14 @@ class CreatePostUseCase {
     @required String message,
     @required String parentId,
     @required bool allowsComments,
-    List<File> images,
+    List<File> medias,
   }) async {
     final address = await _userRepository.getAddress();
     final date = Post.getDateStringNow();
 
     // We perform a simple conversion to PostMedia using the File absolute
     // paths as these will need to be uploaded later
-    final postMedias = images
+    final postMedias = medias
         ?.map((f) => PostMedia(
               url: f.absolute.path,
               mimeType: mime(f.absolute.path),

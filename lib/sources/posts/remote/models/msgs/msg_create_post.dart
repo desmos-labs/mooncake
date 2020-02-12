@@ -31,6 +31,9 @@ class MsgCreatePost extends StdMsg {
   @JsonKey(name: "creation_date")
   final String creationDate;
 
+  @JsonKey(name: "medias", includeIfNull: false)
+  final List<PostMedia> medias;
+
   MsgCreatePost({
     @required this.parentId,
     @required this.message,
@@ -39,6 +42,7 @@ class MsgCreatePost extends StdMsg {
     @required this.optionalData,
     @required this.creator,
     @required this.creationDate,
+    @required this.medias,
   })  : assert(parentId != null),
         assert(message != null),
         assert(allowsComments != null),
@@ -55,6 +59,7 @@ class MsgCreatePost extends StdMsg {
         optionalData,
         creator,
         creationDate,
+        medias,
       ];
 
   @override

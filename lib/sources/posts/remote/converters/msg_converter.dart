@@ -24,6 +24,7 @@ class MsgConverter {
       subspace: post.subspace,
       creator: creator,
       creationDate: post.created,
+      medias: post.medias?.isNotEmpty == true ? post.medias : null,
     );
   }
 

@@ -9,24 +9,24 @@ import 'package:flutter/cupertino.dart';
 class PostInputState extends Equatable {
   final String message;
   final bool allowsComments;
-  final List<File> images;
+  final List<File> medias;
   final bool saving;
 
   PostInputState({
     @required this.message,
     @required this.allowsComments,
-    @required this.images,
+    @required this.medias,
     @required this.saving,
   });
 
   bool get isValid =>
-      (message != null && message.isNotEmpty) || images.isNotEmpty;
+      (message != null && message.isNotEmpty) || medias.isNotEmpty;
 
   /// Builds an empty state.
   factory PostInputState.empty() => PostInputState(
         message: null,
         allowsComments: true,
-        images: [],
+        medias: [],
         saving: false,
       );
 
@@ -34,26 +34,26 @@ class PostInputState extends Equatable {
   PostInputState update({
     String message,
     bool allowsComments,
-    List<File> images,
+    List<File> medias,
     bool saving,
   }) {
     return PostInputState(
       message: message ?? this.message,
       allowsComments: allowsComments ?? this.allowsComments,
       saving: saving ?? this.saving,
-      images: images ?? this.images,
+      medias: medias ?? this.medias,
     );
   }
 
   @override
-  List<Object> get props => [message, allowsComments, images, saving];
+  List<Object> get props => [message, allowsComments, medias, saving];
 
   @override
   String toString() {
     return 'CommentInputState {'
         'message: $message ,'
         'allowsComments: $allowsComments, '
-        'imagesPaths: $images, '
+        'medias: $medias, '
         'saving: $saving'
         '}';
   }

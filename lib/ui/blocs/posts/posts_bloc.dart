@@ -140,11 +140,12 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   /// Handles the event that is emitted when the user creates a new post
   Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
-    if (state is PostsLoaded) {
-      // When a post is added, simply save it and refresh the list
-      // of currently shown posts
-      yield (state as PostsLoaded).copyWith(
-        posts: [event.post] + (state as PostsLoaded).posts,
+    final cState = state;
+    if (cState is PostsLoaded) {
+      final post = event.post;
+      yield cState.copyWith(
+        // Avoid to double show the new post
+        posts: [post] + cState.posts.where((p) => p.id != post.id).toList(),
       );
     }
   }

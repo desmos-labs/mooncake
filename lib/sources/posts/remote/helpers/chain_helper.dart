@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/utils/logger.dart';
+import 'package:http/http.dart' as http;
 
 /// Contains all the data needed to perform a transaction.
 @visibleForTesting
@@ -32,11 +33,15 @@ void initCodec() {
 /// chain state or sending transactions to it.
 class ChainHelper {
   final String _lcdEndpoint;
+  final String _ipfsEndpoint;
 
   ChainHelper({
+    @required String ipfsEndpoint,
     @required String lcdEndpoint,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
-        _lcdEndpoint = lcdEndpoint {
+        _lcdEndpoint = lcdEndpoint,
+        assert(ipfsEndpoint != null && ipfsEndpoint.isNotEmpty),
+        _ipfsEndpoint = ipfsEndpoint {
     // This call is duplicated here due to the fact that [sendTxBackground]
     // will be run on a different isolate and Dart singletons are not
     // cross-threads so this Codec is another instance from the one
@@ -89,6 +94,8 @@ class ChainHelper {
     return compute(sendTxBackground, data);
   }
 
+  /// Returns the list of transactions that are stored inside the block
+  /// having the given [height].
   Future<List<Transaction>> getTxsByHeight(String height) async {
     try {
       return await QueryHelper.getTxsByHeight(_lcdEndpoint, height);
@@ -96,5 +103,24 @@ class ChainHelper {
       Logger.log(e);
       return null;
     }
+  }
+
+  /// Uploads the given [media] to IPFS, returning the IPFS hash.
+  /// Throws an exception is something goes wrong.
+  Future<String> uploadMediaToIpfs(PostMedia media) async {
+    final url = "$_ipfsEndpoint/api/v0/add";
+    final multiPartFile = await http.MultipartFile.fromPath('file', media.url);
+    final request = new http.MultipartRequest("POST", Uri.parse(url));
+    request.files.add(multiPartFile);
+
+    final response = await request.send();
+    if (response.statusCode != 200) {
+      throw Exception(
+          "Ivalid IPFS answer. Expected 200, got ${response.statusCode}");
+    }
+
+    final body = await response.stream.bytesToString();
+    final uploadResponse = IpfsUploadResponse.fromJson(jsonDecode(body));
+    return "https://ipfs.io/ipfs/${uploadResponse.hash}";
   }
 }

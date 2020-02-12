@@ -45,6 +45,7 @@ class CreatePostButton extends StatelessWidget {
       message: state.message,
       parentId: null,
       allowsComments: state.allowsComments,
+      medias: state.medias,
     );
 
     final saveUseCase = Injector.get<SavePostUseCase>();

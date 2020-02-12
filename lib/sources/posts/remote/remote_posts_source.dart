@@ -109,7 +109,8 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       bool fetchNext = true;
 
       while (fetchNext) {
-        final endpoint = "/posts?subspace=mooncake&limit=100&page=${page++}";
+        final endpoint =
+            "/posts?subspace=${Constants.SUBSPACE}&limit=100&page=${page++}";
         final response = await _chainHelper.queryChainRaw(endpoint);
         final postsResponse = await compute(convertResponse, response);
         posts.addAll(postsResponse.posts);
@@ -142,17 +143,48 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     }).toList());
   }
 
+  Future<List<Post>> _uploadMediasIfNecessary(List<Post> posts) async {
+    final newPosts = List<Post>(posts.length);
+    for (int index = 0; index < posts.length; index++) {
+      final post = posts[index];
+
+      if (!post.containsLocalMedias) {
+        // No local medias, nothing to do
+        newPosts[index] = post;
+        continue;
+      }
+
+      // Upload the medias if necessary
+      final uploadedMedias = await Future.wait(post.medias.map((media) async {
+        if (!media.isLocal) {
+          // Already remote, do nothing
+          return media;
+        }
+
+        // Upload to IPFS and return a new media with the changed URL
+        final ipfsUrl = await _chainHelper.uploadMediaToIpfs(media);
+        return media.copyWith(url: ipfsUrl);
+      }));
+      newPosts[index] = post.copyWith(medias: uploadedMedias);
+    }
+
+    return newPosts;
+  }
+
   @override
   Future<void> savePosts(List<Post> posts) async {
     final wallet = await _userSource.getWallet();
 
     // Get the existing posts list
     final List<Post> existingPosts =
-        await Future.wait(posts.map((p) => getPostById(p.id)));
+        await Future.wait(posts.map((p) => getPostById(p.id)).toList());
+
+    // Upload the medias
+    final postsWithIpfsMedias = await _uploadMediasIfNecessary(posts);
 
     // Convert the posts into messages
     final messages = _msgConverter.convertPostsToMsg(
-      posts: posts,
+      posts: postsWithIpfsMedias,
       existingPosts: existingPosts,
       wallet: wallet,
     );

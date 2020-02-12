@@ -6,9 +6,11 @@ import 'package:mooncake/sources/sources.dart';
 
 class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
+  static const _ipfsEndpoint = "https://ipfs.desmos.network";
+
+  // TODO: Change this
 //  static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
 //  static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";
-  // TODO: Change this
   static const _lcdUrl = "http://10.0.2.2:1317";
   static const _rpcUrl = "http://10.0.2.2:26657";
 
@@ -20,6 +22,7 @@ class SourcesModule implements Module {
       // Utilities
       ..bindSingleton(ChainHelper(
         lcdEndpoint: _lcdUrl,
+        ipfsEndpoint: _ipfsEndpoint,
       ))
       // User sources
       ..bindLazySingleton<LocalUserSource>(

@@ -35,7 +35,7 @@ class CreatePostScreen extends StatelessWidget {
                       expanded: true,
                     ),
                   ),
-                  if (state.images?.isNotEmpty == true) _imagesPreview(state),
+                  if (state.medias?.isNotEmpty == true) _imagesPreview(state),
                   PostEditorActions(),
                   if (!state.saving)
                     CreatePostButton(callback: (post) {
@@ -57,7 +57,7 @@ class CreatePostScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         SizedBox(height: 16),
-        PostImagesPreview(images: state.images),
+        PostImagesPreview(images: state.medias),
       ],
     );
   }

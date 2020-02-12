@@ -29,11 +29,11 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     } else if (event is AllowsCommentsChanged) {
       yield state.update(allowsComments: event.allowsComments);
     } else if (event is ImageAdded) {
-      final images = _removeFileIfPresent(state.images, event.file);
-      yield state.update(images: images + [event.file]);
+      final images = _removeFileIfPresent(state.medias, event.file);
+      yield state.update(medias: images + [event.file]);
     } else if (event is ImageRemoved) {
-      final images = _removeFileIfPresent(state.images, event.file);
-      yield state.update(images: images);
+      final images = _removeFileIfPresent(state.medias, event.file);
+      yield state.update(medias: images);
     } else if (event is SavePost) {
       yield state.update(saving: true);
     }

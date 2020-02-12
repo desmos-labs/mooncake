@@ -71,6 +71,9 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "medias")
   final List<PostMedia> medias;
 
+  @JsonKey(ignore: true)
+  bool get containsLocalMedias => medias.any((media) => media.isLocal);
+
   @JsonKey(name: "reactions")
   final List<Reaction> reactions;
 
