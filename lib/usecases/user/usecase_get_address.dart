@@ -1,5 +1,5 @@
-import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to easily retrieve the address of the user's wallet.
 class GetAddressUseCase {

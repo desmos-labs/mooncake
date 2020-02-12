@@ -1,6 +1,6 @@
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:meta/meta.dart';
 
 /// Allows to create a new post.
 class CreatePostUseCase {

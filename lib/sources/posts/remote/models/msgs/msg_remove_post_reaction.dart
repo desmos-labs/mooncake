@@ -1,6 +1,6 @@
-import 'package:mooncake/entities/entities.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 
 part 'msg_remove_post_reaction.g.dart';
 

@@ -1,7 +1,7 @@
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Screen that is shown to the user when he needs to log into the application.
 /// From this screen, he can perform two actions in order to log in:
@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 32),
                   Text(
                     PostsLocalizations.of(context).loginTitle,
-                    style: Theme.of(context).textTheme.headline.copyWith(
+                    style: Theme.of(context).textTheme.headline5.copyWith(
                           color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
                         child: Text(
                           PostsLocalizations.of(context).loginText,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.body2.copyWith(
+                          style: Theme.of(context).textTheme.bodyText1.copyWith(
                                 color: Colors.grey[300],
                                 fontSize: 16,
                               ),

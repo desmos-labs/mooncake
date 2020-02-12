@@ -1,5 +1,5 @@
-import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to properly log in a user.
 class LoginUseCase {

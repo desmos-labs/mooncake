@@ -1,5 +1,5 @@
-import 'package:mooncake/usecases/usecases.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to easily check whether the user has already logged in into the
 /// application or not.

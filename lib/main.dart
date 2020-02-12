@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:mooncake/main.reflectable.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:flutter/foundation.dart' as Foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart' as Foundation;
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/main.reflectable.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/utils/utils.dart';
 
 void main() {

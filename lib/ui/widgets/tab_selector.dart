@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/keys/export.dart';
 import 'package:mooncake/ui/localization/export.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:flutter/material.dart';
 
 /// Allows the user to select which tab should be visible inside
 /// the [HomeScreen].

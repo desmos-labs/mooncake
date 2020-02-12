@@ -1,6 +1,6 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:equatable/equatable.dart';
 
 /// Represents a generic posts list state.
 abstract class PostsState extends Equatable {

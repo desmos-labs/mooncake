@@ -1,5 +1,5 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:equatable/equatable.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic event that is emitted when recovering an existing
 /// account using a mnemonic phrase.

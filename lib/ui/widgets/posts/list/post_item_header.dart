@@ -1,5 +1,5 @@
-import 'package:mooncake/entities/entities.dart';
 import 'package:flutter/material.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Contains the info that are shown on top of a [PostItem]. The following
 /// data are :

@@ -1,6 +1,6 @@
-import 'package:mooncake/sources/sources.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/sources/sources.dart';
 
 /// Represents the event that is emitted from the chain when a new post
 /// is created.

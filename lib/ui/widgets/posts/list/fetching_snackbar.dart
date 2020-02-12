@@ -1,5 +1,5 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents the snackbar that is shown to the user during the
 /// fetching of new posts from the chain.

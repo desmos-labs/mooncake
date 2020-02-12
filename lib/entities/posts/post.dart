@@ -1,8 +1,8 @@
-import 'package:mooncake/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 
 part 'post.g.dart';
 

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:http/http.dart' as http;
 
 /// Implementation of [RemoteUserSource]
 class RemoteUserSourceImpl implements RemoteUserSource {

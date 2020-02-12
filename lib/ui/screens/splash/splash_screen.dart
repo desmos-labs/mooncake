@@ -1,8 +1,7 @@
-import 'package:flutter_svg/svg.dart';
-import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents the screen that is shown to the user during the application
 /// loading before having defined whether the user is authenticated or not.

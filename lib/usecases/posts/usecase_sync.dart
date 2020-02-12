@@ -1,7 +1,7 @@
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/posts/posts.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:meta/meta.dart';
 
 /// Allows to sync all the posts that have been created offline as well as
 /// all the likes and unlikes that have been set to posts.

@@ -1,6 +1,6 @@
-import 'package:mooncake/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents the arguments that can be passed to a [RecoverAccountScreen].
 class RecoverAccountArguments {
