@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/posts/export.dart';
 
+/// Represents the remote source that needs to be called when wanting to
+/// download data from the blockchain.
 abstract class RemotePostsSource {
   /// Returns the stream emitting all the chain events.
   Stream<ChainEvent> getEventsStream();

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
+/// Represents a generic post-related event.
 abstract class PostsEvent extends Equatable {
   const PostsEvent();
 
@@ -9,28 +9,15 @@ abstract class PostsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the bloc to start fetching the posts that are present inside
-/// the chain.
-class FetchPosts extends PostsEvent {
-  @override
-  String toString() => 'FetchPosts';
-}
-
-/// Tells the bloc that the posts have been fetched from the chain.
-class FetchPostsCompleted extends PostsEvent {
-  @override
-  String toString() => 'FetchPostsCompleted';
-}
-
 /// Tells the Bloc that it needs to load posts from the [PostsRepository].
 class LoadPosts extends PostsEvent {
-  LoadPosts();
-
-  @override
-  List<Object> get props => [];
-
   @override
   String toString() => 'LoadPosts';
+}
+
+class RefreshPosts extends PostsEvent {
+  @override
+  String toString() => 'RefreshPosts';
 }
 
 /// Tells the Bloc that it needs to add a new post to the list of posts

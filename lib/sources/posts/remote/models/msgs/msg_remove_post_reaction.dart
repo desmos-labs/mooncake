@@ -45,4 +45,3 @@ class MsgRemovePostReaction extends StdMsg {
     return null;
   }
 }
-

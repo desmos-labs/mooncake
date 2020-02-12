@@ -10,6 +10,13 @@ class PostsTheme {
 
   static EdgeInsets get postItemPadding => EdgeInsets.all(16);
 
+  static BoxDecoration get pattern => const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/pattern.png"),
+          repeat: ImageRepeat.repeat,
+        ),
+      );
+
   static ThemeData get theme {
     return ThemeData(
       iconTheme: IconThemeData(

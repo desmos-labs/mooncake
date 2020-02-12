@@ -64,12 +64,10 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   @override
   Stream<PostsState> mapEventToState(PostsEvent event) async* {
-    if (event is FetchPosts) {
-      yield* _mapFetchPostsEventToState();
-    } else if (event is FetchPostsCompleted) {
-      yield* _mapFetchPostsCompletedEventToState();
-    } else if (event is LoadPosts) {
+    if (event is LoadPosts) {
       yield* _mapLoadPostsEventToState(event);
+    } else if (event is RefreshPosts) {
+      yield* _mapRefreshPostsEventToState(event);
     } else if (event is AddPost) {
       _analytics.logEvent(name: Constants.EVENT_SAVE_POST, parameters: {
         Constants.POST_PARAM_OWNER: event.post.owner,
@@ -88,43 +86,32 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
-  /// Handles the event that is emitted when there's the need to fetch
-  /// all the stored posts on the chain since the last sync
-  Stream<PostsState> _mapFetchPostsEventToState() async* {
-    // Subscribe to the stream of posts
-    _postsSubscription = _getPostsUseCase.stream().listen((post) {
-      // When we get new posts, simply reload the
-      // currently shown list of posts
-      add(LoadPosts());
-    });
-
-    // Show the fetching snackbar
-    final currentState = state;
-    if (currentState is PostsLoaded) {
-      yield currentState.copyWith(fetchingPosts: true);
+  /// Initializes the posts stream subscription if it wasn't before
+  void _initializeStreamListening() {
+    if (_postsSubscription == null) {
+      _postsSubscription = _getPostsUseCase.stream().listen((post) {
+        // When we get new posts, simply reload the
+        // currently shown list of posts
+        add(LoadPosts());
+      });
     }
   }
 
-  /// Handles the event that is emitted when the posts are completely
-  /// synced and all the previously stored posts have been downloaded
-  /// from the chain
-  Stream<PostsState> _mapFetchPostsCompletedEventToState() async* {
-    // Once the fetch has completed simply hide the snackbar
-    final currentState = state;
-    if (currentState is PostsLoaded) {
-      yield currentState.copyWith(fetchingPosts: false);
-    }
-  }
-
-  /// Handles the event emitted when the posts list should be refreshed
-  Stream<PostsState> _mapLoadPostsEventToState(LoadPosts event) async* {
-    // Sync the activities of the user every _syncPeriod seconds
+  /// Initializes the timer allowing us to sync the user activity once every
+  /// [syncPeriod] seconds if it hasn't been done before.
+  void _initializeSyncTimer() {
     if (_syncTimer?.isActive != true) {
       _syncTimer?.cancel();
       _syncTimer = Timer.periodic(Duration(seconds: _syncPeriod), (t) {
         add(SyncPosts());
       });
     }
+  }
+
+  /// Handles the event emitted when the posts list should be refreshed
+  Stream<PostsState> _mapLoadPostsEventToState(LoadPosts event) async* {
+    _initializeStreamListening();
+    _initializeSyncTimer();
 
     final address = await _getAddressUseCase.get();
 
@@ -137,6 +124,18 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       // We never loaded any post before
       final posts = await _getPostsUseCase.get(forceOnline: true);
       yield PostsLoaded(address: address, posts: posts);
+    }
+  }
+
+  /// Handles the posts refresh event.
+  Stream<PostsState> _mapRefreshPostsEventToState(RefreshPosts event) async* {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      yield currentState.copyWith(refreshing: true);
+      final posts = await _getPostsUseCase.get(forceOnline: true);
+      yield currentState.copyWith(refreshing: false, posts: posts);
+    } else {
+      yield currentState;
     }
   }
 

@@ -39,12 +39,7 @@ class PostDetailsScreen extends StatelessWidget {
               title: Text(PostsLocalizations.of(context).post),
             ),
             body: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/pattern.png"),
-                  repeat: ImageRepeat.repeat,
-                ),
-              ),
+              decoration: PostsTheme.pattern,
               child: Column(
                 children: <Widget>[
                   Flexible(

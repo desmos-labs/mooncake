@@ -27,12 +27,25 @@ class ChainHelper {
   ChainHelper({
     @required String lcdEndpoint,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
-        _lcdEndpoint = lcdEndpoint;
+        _lcdEndpoint = lcdEndpoint {
+    // This code is duplicated here due to the fact that [sendTxBackground]
+    // will be run on a different isolate and Dart singletons are not
+    // cross-threads so this Codec is another instance from the one
+    // used inside the sendTxBackground method.
+    Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
+    Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
+    Codec.registerMsgType(
+      "desmos/MsgRemovePostReaction",
+      MsgRemovePostReaction,
+    );
+  }
 
   @visibleForTesting
   static Future<TransactionResult> sendTxBackground(TxData txData) async {
     // Register custom messages
     // This needs to be done here as this method can run on different isolates.
+    // We cannot rely on the initialization done inside the constructor as
+    // this Codec instance will not be the same as that one.
     Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
     Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
     Codec.registerMsgType(
@@ -78,10 +91,10 @@ class ChainHelper {
     return compute(sendTxBackground, data);
   }
 
-  Future<List<Transaction>>getTxsByHeight(String height) async {
+  Future<List<Transaction>> getTxsByHeight(String height) async {
     try {
       return await QueryHelper.getTxsByHeight(_lcdEndpoint, height);
-    } catch(e) {
+    } catch (e) {
       Logger.log(e);
       return null;
     }
