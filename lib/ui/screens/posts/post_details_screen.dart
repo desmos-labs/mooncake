@@ -21,48 +21,62 @@ class PostDetailsScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PostCommentsBloc>(
-          create: (context) => PostCommentsBloc.create(BlocProvider.of(context))
-            ..add(LoadPostComments(postId)),
+          create: (context) =>
+              PostCommentsBloc.create(context)..add(LoadPostComments(postId)),
         ),
         BlocProvider<PostInputBloc>(
           create: (context) => PostInputBloc(),
         ),
       ],
-      child: BlocBuilder<PostCommentsBloc, PostCommentsState>(
-        builder: (context, state) {
-          // ignore: close_sinks
-          final postBloc = BlocProvider.of<PostsBloc>(context);
-          final post =
-              (postBloc.state as PostsLoaded).posts.firstBy(id: postId);
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(PostsLocalizations.of(context).post),
-            ),
-            body: Container(
-              decoration: PostsTheme.pattern,
-              child: Column(
-                children: <Widget>[
-                  Flexible(
-                    child: ListView(
-                      children: <Widget>[
-                        PostItem(
-                          onTap: null,
-                          postId: postId,
-                          messageFontSize: 20,
-                          key: PostsKeys.postDetails,
-                        ),
-                        _comments(state),
-                      ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(PostsLocalizations.of(context).post),
+        ),
+        body: Container(
+          decoration: PostsTheme.pattern,
+          child: BlocBuilder<PostsBloc, PostsState>(
+            builder: (context, state) {
+              final currentState = state;
+              if (currentState is PostsLoaded) {
+                final post = currentState.posts.firstBy(id: postId);
+                return Column(
+                  children: <Widget>[
+                    Flexible(
+                      child: ListView(
+                        children: <Widget>[
+                          PostItem(
+                            onTap: null,
+                            postId: postId,
+                            messageFontSize: 20,
+                            key: PostsKeys.postDetails,
+                          ),
+                          BlocBuilder<PostCommentsBloc, PostCommentsState>(
+                            builder: (context, state) {
+                              return _comments(state);
+                            },
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  post.allowsComments
-                      ? _commentInput(context)
-                      : _commentDisabled(context),
+                    post.allowsComments
+                        ? _commentInput(context)
+                        : _commentDisabled(context),
+                  ],
+                );
+              }
+
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  LoadingIndicator(),
+                  SizedBox(height: 16),
+                  Text(PostsLocalizations.of(context).loadingPost),
                 ],
-              ),
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

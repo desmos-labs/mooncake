@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mooncake/ui/screens/export.dart';
 
 /// Represents a generic event that is emitted when the user wants to
@@ -32,4 +33,16 @@ class NavigateToRecoverAccount extends NavigatorEvent {
 class NavigateToCreateAccount extends NavigatorEvent {
   @override
   String toString() => 'NavigateToCreateAccount';
+}
+
+/// Tells the BloC to navigate to the screen that displays the post
+/// having the specified id.
+class NavigateToPostDetails extends NavigatorEvent {
+  final BuildContext context;
+  final String postId;
+
+  NavigateToPostDetails(this.context, this.postId);
+
+  @override
+  String toString() => 'NavigateToPostdetail { postId: $postId }';
 }

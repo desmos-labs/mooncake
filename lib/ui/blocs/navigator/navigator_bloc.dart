@@ -1,16 +1,27 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 /// BloC that controls the navigation to the different screens of the app.
 class NavigatorBloc extends Bloc<NavigatorEvent, void> {
-  final _navigatorKey = PostsKeys.navigatorKey;
+  final GlobalKey<NavigatorState> _navigatorKey = PostsKeys.navigatorKey;
+  final CheckLoginUseCase _checkLoginUseCase;
 
-  NavigatorBloc();
+  NavigatorBloc({
+    @required CheckLoginUseCase checkLoginUseCase,
+  })  : assert(checkLoginUseCase != null),
+        _checkLoginUseCase = checkLoginUseCase;
 
   factory NavigatorBloc.create() {
-    return NavigatorBloc();
+    return NavigatorBloc(
+      checkLoginUseCase: Injector.get(),
+    );
   }
 
   @override
@@ -24,6 +35,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToRecoverAccountEventToState(event);
     } else if (event is NavigateToCreateAccount) {
       _mapNavigateToCreateAccountEventToState();
+    } else if (event is NavigateToPostDetails) {
+      _mapNavigateToPostDetailsEventToState(event);
     }
   }
 
@@ -45,5 +58,17 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
 
   void _mapNavigateToCreateAccountEventToState() {
     _navigatorKey.currentState.pushNamed(PostsRoutes.createAccount);
+  }
+
+  void _mapNavigateToPostDetailsEventToState(
+    NavigateToPostDetails event,
+  ) async {
+    final isLoggedIn = await _checkLoginUseCase.isLoggedIn();
+    if (isLoggedIn) {
+      print("Navingating to details");
+      _navigatorKey.currentState.push(MaterialPageRoute(
+        builder: (context) => PostDetailsScreen(postId: event.postId),
+      ));
+    }
   }
 }

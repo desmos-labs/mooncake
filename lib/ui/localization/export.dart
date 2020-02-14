@@ -73,6 +73,7 @@ class PostsLocalizations {
   String get openInExplorer => "Open in explorer";
 
   // Post details
+  String get loadingPost => "Loading post";
   String get post => "Post";
   String get commentHint => "Comment";
   String get newComment => "New comment";

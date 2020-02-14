@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/usecases/posts/posts.dart';
@@ -28,9 +30,9 @@ class PostCommentsBloc extends Bloc<PostCommentsEvent, PostCommentsState> {
     });
   }
 
-  factory PostCommentsBloc.create(PostsBloc postsBloc) {
+  factory PostCommentsBloc.create(BuildContext context) {
     return PostCommentsBloc(
-      postsBloc: postsBloc,
+      postsBloc: BlocProvider.of(context),
       getCommentsUseCase: Injector.get(),
     );
   }

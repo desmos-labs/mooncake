@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/utils/logger.dart';
-import 'package:http/http.dart' as http;
 
 /// Contains all the data needed to perform a transaction.
 @visibleForTesting
