@@ -28,6 +28,10 @@
 build/
 coverage/
 
+# Android releated
+*.apk
+*.aab
+
 # Web related
 lib/generated_plugin_registrant.dart
 node_modules/
