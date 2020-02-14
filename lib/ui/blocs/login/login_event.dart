@@ -25,7 +25,7 @@ class LogIn extends LoginEvent {
   List<Object> get props => [mnemonic];
 
   @override
-  String toString() => 'LogIn { mnemonic: $mnemonic }';
+  String toString() => 'LogIn';
 }
 
 class LogOut extends LoginEvent {

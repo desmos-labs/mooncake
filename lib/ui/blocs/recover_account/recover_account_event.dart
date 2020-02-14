@@ -22,7 +22,7 @@ class MnemonicInputChanged extends RecoverAccountEvent {
 
   @override
   String toString() {
-    return 'MnemonicInputChanged { mnemonicInputState: $mnemonicInputState }';
+    return 'MnemonicInputChanged';
   }
 }
 

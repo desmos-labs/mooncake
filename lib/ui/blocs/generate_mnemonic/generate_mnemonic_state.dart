@@ -24,5 +24,5 @@ class MnemonicGenerated extends GenerateMnemonicState {
   List<Object> get props => [mnemonic];
 
   @override
-  String toString() => 'MnemonicGenerated { mnemonic: $mnemonic }';
+  String toString() => 'MnemonicGenerated';
 }

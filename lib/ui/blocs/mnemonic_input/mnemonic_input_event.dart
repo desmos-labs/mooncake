@@ -23,10 +23,7 @@ class MnemonicChanged extends MnemonicInputEvent {
   List<Object> get props => [insertedMnemonic];
 
   @override
-  String toString() => 'MnemonicChanged { '
-      'mnemonic: $insertedMnemonic, '
-      'verificationMnemonic: $verificationMnemonic '
-      '}';
+  String toString() => 'MnemonicChanged';
 }
 
 /// Event that is emitted when the input must be reset.

@@ -46,12 +46,4 @@ class MnemonicInputState extends Equatable {
 
   @override
   List<Object> get props => [_mnemonic, _verificationMnemonic];
-
-  @override
-  String toString() {
-    return 'LoginInputState {'
-        'mnemonic: $_mnemonic '
-        'verificationMnemonic: $_verificationMnemonic '
-        '}';
-  }
 }
