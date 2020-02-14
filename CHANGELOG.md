@@ -1,3 +1,7 @@
+# Version 0.0.12
+## Bug fixes
+- Fixed a security bug while the app is in developer mode (thanks to Orthoepy)
+
 # Version 0.0.11
 ## Changes 
 - Added the pull-to-refresh inside the posts list
