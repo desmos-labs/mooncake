@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc:
+  flutter_local_notifications:
   flutter_markdown:
   flutter_screenutil:
   flutter_secure_storage:

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
@@ -7,6 +9,8 @@ import 'package:mooncake/usecases/usecases.dart';
 class UserRepositoryImpl extends UserRepository {
   final RemoteUserSource _remoteUserSource;
   final LocalUserSource _localUserSource;
+
+  final StreamController _accountController = StreamController<AccountData>();
 
   UserRepositoryImpl({
     @required LocalUserSource localUserSource,
@@ -37,6 +41,7 @@ class UserRepositoryImpl extends UserRepository {
             coins: [],
           );
       await _localUserSource.saveAccountData(data);
+      _accountController.add(data);
     }
   }
 
@@ -46,6 +51,9 @@ class UserRepositoryImpl extends UserRepository {
         .saveWallet(mnemonic)
         .then((_) => _updateAndStoreAccountData());
   }
+
+  @override
+  Stream<AccountData> observeAccount() => _accountController.stream;
 
   @override
   Future<AccountData> getAccount() async {

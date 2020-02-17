@@ -35,7 +35,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapLoadAccountEventToState() async* {
     // Load the data
-    _getAccountUseCase.get().then((account) {
+    _getAccountUseCase.single().then((account) {
       add(AddressLoaded(account));
     });
   }

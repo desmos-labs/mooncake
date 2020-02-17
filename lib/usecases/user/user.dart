@@ -1,3 +1,3 @@
-export 'repository_wallet.dart';
+export 'repository_user.dart';
 export 'usecase_get_account.dart';
 export 'usecase_get_address.dart';

@@ -13,7 +13,13 @@ class GetAccountUseCase {
 
   /// Returns the [AccountData] object containing the info of the
   /// current user account.
-  Future<AccountData> get() {
+  Future<AccountData> single() {
     return _userRepository.getAccount();
+  }
+
+  /// Returns a stream of [AccountData] that emits any new [AccountData]
+  /// instances that are stored.
+  Stream<AccountData> stream() {
+    return _userRepository.observeAccount();
   }
 }

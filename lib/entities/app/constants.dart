@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// Contains the application-wide constants.
 class Constants {
   /// Subspace that should be used to create and read posts
@@ -18,4 +20,24 @@ class Constants {
 
   // Post creation
   static const POST_PARAM_OWNER = "owner";
+
+  // Notifications
+  static const NOTIFICATION_CHANNEL_POSTS = const NotificationChannel(
+    id: "mooncake_posts",
+    title: "Posts interactions",
+    description: "Make sound and pop on a new post interaction",
+  );
+}
+
+/// Contains the data of a notification channel (required for Android 8.0+).
+class NotificationChannel {
+  final String id;
+  final String title;
+  final String description;
+
+  const NotificationChannel({
+    @required this.id,
+    @required this.title,
+    @required this.description,
+  });
 }

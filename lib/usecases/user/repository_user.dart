@@ -15,6 +15,9 @@ abstract class UserRepository {
   /// If no [Wallet] instance has been saved yet, returns null.
   Future<Wallet> getWallet();
 
+  /// Returns a stream that emits all the account changes.
+  Stream<AccountData> observeAccount();
+
   /// Returns the [AccountData] object containing the info of the current user.
   /// If no wallet has been saved using [saveWallet] and the account data
   /// cannot be retrieved, returns `null` instead.

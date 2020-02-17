@@ -1,3 +1,8 @@
+# Version 0.0.12
+## Changes
+- Added the support for push notifications
+- Added the support for media posts
+
 # Version 0.0.11
 ## Changes 
 - Added the pull-to-refresh inside the posts list
