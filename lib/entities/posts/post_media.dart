@@ -14,7 +14,7 @@ class PostMedia extends Equatable {
   @JsonKey(ignore: true)
   bool get isLocal => !url.startsWith("http");
 
-  @JsonKey(name: "mimetype")
+  @JsonKey(name: "mime_type")
   final String mimeType;
 
   PostMedia({@required this.url, @required this.mimeType})

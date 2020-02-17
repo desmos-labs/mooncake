@@ -41,6 +41,6 @@ Map<String, dynamic> _$MsgCreatePostToJson(MsgCreatePost instance) {
   writeNotNull('optional_data', instance.optionalData);
   val['creator'] = instance.creator;
   val['creation_date'] = instance.creationDate;
-  writeNotNull('medias', instance.medias);
+  writeNotNull('medias', instance.medias?.map((e) => e?.toJson())?.toList());
   return val;
 }

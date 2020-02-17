@@ -9,11 +9,11 @@ part of 'post_media.dart';
 PostMedia _$PostMediaFromJson(Map<String, dynamic> json) {
   return PostMedia(
     url: json['uri'] as String,
-    mimeType: json['mimetype'] as String,
+    mimeType: json['mime_type'] as String,
   );
 }
 
 Map<String, dynamic> _$PostMediaToJson(PostMedia instance) => <String, dynamic>{
       'uri': instance.url,
-      'mimetype': instance.mimeType,
+      'mime_type': instance.mimeType,
     };

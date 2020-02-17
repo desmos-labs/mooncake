@@ -8,7 +8,7 @@ part 'msg_create_post.g.dart';
 /// comment.
 @immutable
 @reflector
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class MsgCreatePost extends StdMsg {
   @JsonKey(name: "parent_id")
   final String parentId;
