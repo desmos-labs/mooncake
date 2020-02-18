@@ -121,6 +121,6 @@ class ChainHelper {
 
     final body = await response.stream.bytesToString();
     final uploadResponse = IpfsUploadResponse.fromJson(jsonDecode(body));
-    return "https://ipfs.io/ipfs/${uploadResponse.hash}";
+    return "$_ipfsEndpoint/ipfs/${uploadResponse.hash}";
   }
 }
