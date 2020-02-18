@@ -16,5 +16,6 @@ If you want to download Mooncake for your Android device, you need to perform th
 If you never installed an application from third parties, you may require to enable third party application support from your device. To do so, please search online how to do it (it varies from device to device).  
 :::
 
-## iOS 
-W.I.P
+## iOS
+
+You can join our [beta testing](https://testflight.apple.com/join/3Zh9mWFk) and download from TestFlight.
