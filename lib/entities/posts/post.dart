@@ -68,8 +68,18 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "optional_data", defaultValue: {})
   final Map<String, String> optionalData;
 
-  @JsonKey(name: "medias")
+  @JsonKey(name: "medias", fromJson: _postMediasFromJson)
   final List<PostMedia> medias;
+
+  /// Static method used to implement a custom deserialization of post medias.
+  static List<PostMedia> _postMediasFromJson(List<dynamic> json) {
+    return json
+        ?.map((e) => PostMedia.fromJson(e))
+        // We remove every media that is not an image
+        // TODO: Implement a way to also display non images
+        ?.where((media) => media.isImage)
+        ?.toList();
+  }
 
   @JsonKey(ignore: true)
   bool get containsLocalMedias => medias.any((media) => media.isLocal);
@@ -81,10 +91,7 @@ class Post extends Equatable implements Comparable<Post> {
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
-  @JsonKey(
-    name: "status",
-    fromJson: _postStatusFromJson,
-  )
+  @JsonKey(name: "status", fromJson: _postStatusFromJson)
   final PostStatus status;
 
   /// Static method used to implement a custom deserialization of posts.

@@ -1,14 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mooncake/entities/entities.dart';
 
 import 'image_preview_item.dart';
 
 /// Represents the list of images previews associated with a post.
 class PostImagesPreview extends StatelessWidget {
-  final List<File> images;
+  final bool allowsRemoval;
+  final List<PostMedia> images;
 
-  const PostImagesPreview({Key key, this.images}) : super(key: key);
+  final OnMediaTap onTap;
+
+  const PostImagesPreview({
+    Key key,
+    this.allowsRemoval = false,
+    this.images,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +28,12 @@ class PostImagesPreview extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: images.length,
         itemBuilder: (BuildContext context, int index) {
-          return ImagePreviewItem(size: size, image: images[index]);
+          return ImagePreviewItem(
+            onTap: onTap,
+            size: size,
+            media: images[index],
+            allowEdits: allowsRemoval,
+          );
         },
         separatorBuilder: (context, _) => SizedBox(width: 8),
       ),

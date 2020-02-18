@@ -20,10 +20,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
         ) ??
         {},
     owner: json['creator'] as String,
-    medias: (json['medias'] as List)
-        ?.map((e) =>
-            e == null ? null : PostMedia.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    medias: Post._postMediasFromJson(json['medias'] as List),
     reactions: (json['reactions'] as List)
         ?.map((e) =>
             e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))

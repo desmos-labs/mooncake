@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:mime_type/mime_type.dart';
+import 'package:mooncake/entities/entities.dart';
 
 import '../export.dart';
 
@@ -29,8 +31,9 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     } else if (event is AllowsCommentsChanged) {
       yield state.update(allowsComments: event.allowsComments);
     } else if (event is ImageAdded) {
-      final images = _removeFileIfPresent(state.medias, event.file);
-      yield state.update(medias: images + [event.file]);
+      final media = _convert(event.file);
+      final images = _removeFileIfPresent(state.medias, media);
+      yield state.update(medias: images + [media]);
     } else if (event is ImageRemoved) {
       final images = _removeFileIfPresent(state.medias, event.file);
       yield state.update(medias: images);
@@ -39,9 +42,29 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     }
   }
 
-  List<File> _removeFileIfPresent(List<File> files, File file) {
-    return files
-        .where((f) => !listEquals(f.readAsBytesSync(), file.readAsBytesSync()))
+  /// Tells whether the [first] and [second] files have the same content
+  /// in terms of bytes.
+  bool _contentsEquals(File first, File second) {
+    return listEquals(first.readAsBytesSync(), second.readAsBytesSync());
+  }
+
+  /// Converts the given [file] to a [PostMedia] instance.
+  PostMedia _convert(File file) {
+    return PostMedia(
+      url: file.absolute.path,
+      mimeType: mime(file.absolute.path),
+    );
+  }
+
+  /// Returns a new list of [PostMedia] containing the given [media].
+  List<PostMedia> _removeFileIfPresent(
+    List<PostMedia> medias,
+    PostMedia media,
+  ) {
+    return medias
+        .map((m) => File(media.url))
+        .where((f) => !_contentsEquals(f, File(media.url)))
+        .map((f) => _convert(f))
         .toList();
   }
 }

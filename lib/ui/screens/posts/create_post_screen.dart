@@ -57,7 +57,10 @@ class CreatePostScreen extends StatelessWidget {
     return Column(
       children: <Widget>[
         SizedBox(height: 16),
-        PostImagesPreview(images: state.medias),
+        PostImagesPreview(
+          images: state.medias,
+          allowsRemoval: true,
+        ),
       ],
     );
   }

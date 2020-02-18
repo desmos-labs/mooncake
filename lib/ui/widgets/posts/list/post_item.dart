@@ -6,6 +6,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/posts/list/post_reactions_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'post_item_header.dart';
 
@@ -74,11 +75,6 @@ class PostItem extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-//                      UserAvatar(
-//                        key: PostsKeys.postItemOwnerAvatar(postId),
-//                        user: post.owner,
-//                      ),
-//                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -104,6 +100,16 @@ class PostItem extends StatelessWidget {
                     key: PostsKeys.postActionsBar(post.id),
                     postId: postId,
                   ),
+                  const SizedBox(height: 16),
+                  if (post.medias?.isNotEmpty == true)
+                    PostImagesPreview(
+                      images: post.medias,
+                      onTap: (postMedia) async {
+                        if (await canLaunch(postMedia.url)) {
+                          await launch(postMedia.url);
+                        }
+                      },
+                    ),
                   const SizedBox(height: 16),
                   PostReactionsBar(
                     key: PostsKeys.postsReactionBar(post.id),

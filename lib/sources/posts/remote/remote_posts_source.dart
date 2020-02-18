@@ -138,7 +138,8 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   @override
   Future<List<Post>> getPostComments(String postId) async {
     final post = await getPostById(postId);
-    return Future.wait(post.commentsIds.map((comment) async {
+    Logger.log(Exception("Post with id $postId not found"));
+    return Future.wait((post?.commentsIds ?? []).map((comment) async {
       return await getPostById(comment);
     }).toList());
   }

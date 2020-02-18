@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic event that is emitted while the user is
 /// editing the comment to a post.
@@ -53,7 +54,7 @@ class ImageAdded extends PostInputEvent {
 
 /// Event that is emitted when the user wants to remove an image from a post.
 class ImageRemoved extends PostInputEvent {
-  final File file;
+  final PostMedia file;
 
   ImageRemoved(this.file);
 

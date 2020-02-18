@@ -8,6 +8,13 @@ part 'post_media.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PostMedia extends Equatable {
+  /// Contains all the mime types of medias supported
+  static const List<String> IMAGES_MIME_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/gif"
+  ] ;
+
   @JsonKey(name: "uri")
   final String url;
 
@@ -16,6 +23,8 @@ class PostMedia extends Equatable {
 
   @JsonKey(name: "mime_type")
   final String mimeType;
+
+  bool get isImage => IMAGES_MIME_TYPES.contains(mimeType);
 
   PostMedia({@required this.url, @required this.mimeType})
       : assert(url != null),

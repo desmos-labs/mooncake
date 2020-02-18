@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mooncake/entities/entities.dart';
 
 /// Represents the current state of a [CommentForm] while the user
 /// is creating a new comment for a post.
@@ -9,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 class PostInputState extends Equatable {
   final String message;
   final bool allowsComments;
-  final List<File> medias;
+  final List<PostMedia> medias;
   final bool saving;
 
   PostInputState({
@@ -34,7 +35,7 @@ class PostInputState extends Equatable {
   PostInputState update({
     String message,
     bool allowsComments,
-    List<File> medias,
+    List<PostMedia> medias,
     bool saving,
   }) {
     return PostInputState(
