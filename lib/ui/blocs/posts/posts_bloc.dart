@@ -14,9 +14,8 @@ import '../export.dart';
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final int _syncPeriod;
 
-  final GetAddressUseCase _getAddressUseCase;
-  final AddPostReactionUseCase _addReactionToPostUseCase;
-  final RemoveReactionFromPostUseCase _removeReactionFromPostUseCase;
+  final GetUserUseCase _getUserUseCase;
+  final ManagePostReactionsUseCase _managePostReactionsUseCase;
   final GetPostsUseCase _getPostsUseCase;
   final SyncPostsUseCase _syncPostsUseCase;
   final FirebaseAnalytics _analytics;
@@ -26,34 +25,30 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   PostsBloc({
     @required int syncPeriod,
-    @required AddPostReactionUseCase likePostUseCase,
-    @required RemoveReactionFromPostUseCase unlikePostUseCase,
+    @required ManagePostReactionsUseCase managePostReactionsUseCase,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
-    @required GetAddressUseCase getAddressUseCase,
+    @required GetUserUseCase getUserUseCase,
     @required FirebaseAnalytics analytics,
   })  : _syncPeriod = syncPeriod,
-        assert(likePostUseCase != null),
-        _addReactionToPostUseCase = likePostUseCase,
-        assert(unlikePostUseCase != null),
-        _removeReactionFromPostUseCase = unlikePostUseCase,
+        assert(managePostReactionsUseCase != null),
+        _managePostReactionsUseCase = managePostReactionsUseCase,
         assert(getPostsUseCase != null),
         _getPostsUseCase = getPostsUseCase,
         assert(syncPostsUseCase != null),
         _syncPostsUseCase = syncPostsUseCase,
-        assert(getAddressUseCase != null),
-        _getAddressUseCase = getAddressUseCase,
+        assert(getUserUseCase != null),
+        _getUserUseCase = getUserUseCase,
         assert(analytics != null),
         _analytics = analytics;
 
   factory PostsBloc.create({int syncPeriod = 30}) {
     return PostsBloc(
       syncPeriod: syncPeriod,
-      likePostUseCase: Injector.get(),
-      unlikePostUseCase: Injector.get(),
+      managePostReactionsUseCase: Injector.get(),
       getPostsUseCase: Injector.get(),
       syncPostsUseCase: Injector.get(),
-      getAddressUseCase: Injector.get(),
+      getUserUseCase: Injector.get(),
       analytics: Injector.get(),
     );
   }
@@ -72,12 +67,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         Constants.POST_PARAM_OWNER: event.post.owner,
       });
       yield* _mapAddPostEventToState(event);
-    } else if (event is AddPostReaction) {
-      _analytics.logEvent(name: Constants.EVENT_ADD_REACTION);
+    } else if (event is AddOrRemovePostReaction) {
+      _analytics.logEvent(name: Constants.EVENT_REACTION_CHANGED);
       yield* _mapAddPostReactionEventToState(event);
-    } else if (event is RemovePostReaction) {
-      _analytics.logEvent(name: Constants.EVENT_REMOVE_REACTION);
-      yield* _mapRemovePostReactionEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsEventToState();
     } else if (event is SyncPostsCompleted) {
@@ -112,17 +104,17 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     _initializeStreamListening();
     _initializeSyncTimer();
 
-    final address = await _getAddressUseCase.get();
+    final user = await _getUserUseCase.get();
 
     final currentState = state;
     if (currentState is PostsLoaded) {
       // We have already loaded some posts
       final newPosts = await _getPostsUseCase.get();
-      yield currentState.copyWith(posts: newPosts, address: address);
+      yield currentState.copyWith(posts: newPosts, user: user);
     } else {
       // We never loaded any post before
       final posts = await _getPostsUseCase.get(forceOnline: true);
-      yield PostsLoaded(address: address, posts: posts);
+      yield PostsLoaded(user: user, posts: posts);
     }
   }
 
@@ -152,36 +144,19 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   /// Handles the event emitted when the user likes a post
   Stream<PostsState> _mapAddPostReactionEventToState(
-    AddPostReaction event,
+    AddOrRemovePostReaction event,
   ) async* {
-    if (state is PostsLoaded) {
-      final updatedPost = await _addReactionToPostUseCase.react(
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      final updatedPost = await _managePostReactionsUseCase.addOrRemove(
         event.postId,
         event.reaction,
       );
-      final updatedPosts = (state as PostsLoaded)
+      final updatedPosts = currentState
           .posts
           .map((p) => p.id == updatedPost.id ? updatedPost : p)
           .toList();
-      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
-    }
-  }
-
-  /// Handles the event telling that the user has unliked a previously
-  /// liked post
-  Stream<PostsState> _mapRemovePostReactionEventToState(
-    RemovePostReaction event,
-  ) async* {
-    if (state is PostsLoaded) {
-      final updatedPost = await _removeReactionFromPostUseCase.remove(
-        event.postId,
-        event.reaction,
-      );
-      final updatedPosts = (state as PostsLoaded)
-          .posts
-          .map((p) => p.id == updatedPost.id ? updatedPost : p)
-          .toList();
-      yield (state as PostsLoaded).copyWith(posts: updatedPosts);
+      yield currentState.copyWith(posts: updatedPosts);
     }
   }
 

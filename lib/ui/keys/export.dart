@@ -16,9 +16,11 @@ class PostsKeys {
   static final postsLoading = const Key('__postsLoading__');
   static final postsEmptyContainer = const Key('__postsEmptyContainer__');
 
+  // --- Post item ---
   static Key postItem(String id) => Key('__postItem_$id\__');
+  static Key postItemHeader(String id) => Key('__postItemHeader_$id\__');
   static Key postItemMessage(String id) => Key('__postItemMessage_$id\__');
-  static Key postItemOwner(String id) => Key('__postItemOwner_$id\__');
+  static Key postItemImagePreviewer(String id) => Key('__postItemMImagePreviewer_$id\__');
   static Key postItemOwnerAvatar(String id) =>
       Key('__postItemOwnerAvatar_$id\__');
   static Key postActionsBar(String id) => Key('__postActionsBar$id\__');

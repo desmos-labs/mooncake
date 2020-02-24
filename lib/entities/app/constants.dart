@@ -15,8 +15,7 @@ class Constants {
   static const EVENT_LOGOUT = "logout";
   static const EVENT_NAVIGATE_TO_SCREEN = "navigate_to_screen";
   static const EVENT_SAVE_POST = "save_post";
-  static const EVENT_ADD_REACTION = "add_reaction";
-  static const EVENT_REMOVE_REACTION = "remove_reaction";
+  static const EVENT_REACTION_CHANGED = "reaction_changed";
 
   // Post creation
   static const POST_PARAM_OWNER = "owner";

@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/posts/list/post_reactions_bar.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:mooncake/ui/widgets/posts/list/post_images_previewer.dart';
+import 'package:mooncake/ui/widgets/posts/list/post_message.dart';
+import 'package:mooncake/ui/widgets/posts/action_bar/post_reactions_bar.dart';
 
 import 'post_item_header.dart';
 
@@ -41,28 +42,14 @@ class PostItem extends StatelessWidget {
         // Make sure we loaded the posts properly
         assert(state is PostsLoaded);
 
+        final user = (state as PostsLoaded).user;
         final post = (state as PostsLoaded).posts.firstBy(id: postId);
         if (post == null) {
           return Container();
         }
 
-        final theme = Theme.of(context);
-        double fontSize = theme.textTheme.bodyText2.fontSize;
-        if (this.messageFontSize > 0.0) {
-          fontSize = this.messageFontSize;
-        }
-
-        final messageTheme =
-            theme.textTheme.bodyText2.copyWith(fontSize: fontSize);
-        final mdStyle =
-            MarkdownStyleSheet.fromTheme(theme).copyWith(p: messageTheme);
-
-        return Card(
-          elevation: 4,
-          margin: this.margin,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+        return Container(
+          color: Colors.white,
           child: InkWell(
             onTap: onTap,
             onLongPress: post.status.value == PostStatusValue.ERRORED
@@ -73,48 +60,23 @@ class PostItem extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            MarkdownBody(
-                              data: post.message,
-                              key: PostsKeys.postItemMessage(post.id),
-                              styleSheet: mdStyle,
-                            ),
-                            const SizedBox(height: 4),
-                            PostItemHeader(
-                              key: PostsKeys.postItemOwner(post.id),
-                              post: post,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  PostItemHeader(
+                    key: PostsKeys.postItemHeader(post.id),
+                    post: post,
                   ),
-                  const SizedBox(height: 16),
+                  PostMessage(
+                    key: PostsKeys.postItemMessage(post.id),
+                    post: post,
+                  ),
+                  PostImagesPreviewer(
+                    key: PostsKeys.postItemImagePreviewer(post.id),
+                    post: post,
+                  ),
                   PostActionsBar(
                     key: PostsKeys.postActionsBar(post.id),
-                    postId: postId,
+                    post: post,
+                    user: user,
                   ),
-                  const SizedBox(height: 16),
-                  if (post.medias?.isNotEmpty == true)
-                    PostImagesPreview(
-                      images: post.medias,
-                      onTap: (postMedia) async {
-                        if (await canLaunch(postMedia.url)) {
-                          await launch(postMedia.url);
-                        }
-                      },
-                    ),
-                  const SizedBox(height: 16),
-                  PostReactionsBar(
-                    key: PostsKeys.postsReactionBar(post.id),
-                    postId: post.id,
-                  )
                 ],
               ),
             ),

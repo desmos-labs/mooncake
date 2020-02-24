@@ -34,6 +34,6 @@ extension IntExt on int {
   /// Converts this value into a [String] if it's greater than zero,
   /// otherwise returns null.
   String toStringOrEmpty() {
-    return this > 0 ? '$this' : null;
+    return this > 0 ? '$this' : "";
   }
 }

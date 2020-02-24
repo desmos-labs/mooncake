@@ -85,12 +85,97 @@ class PostsRepositoryImpl extends PostsRepository {
 
   @override
   Future<List<Post>> getPosts({bool forceOnline = false}) async {
-    if (forceOnline) {
-      final posts = await _remotePostsSource.getPosts();
-      await _localPostsSource.savePosts(posts, emit: false);
-    }
+    // TODO: Remove this
+    return [
+      Post(
+        parentId: "0",
+        id: "0",
+        created: "2020-24-02T08:40:00.000Z",
+        owner: User(
+          username: "Desmos",
+          address: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+          avatarUrl:
+              "https://pbs.twimg.com/profile_images/1206578012549980162/6L485PKE_400x400.jpg",
+        ),
+        subspace: Constants.SUBSPACE,
+        allowsComments: true,
+        optionalData: {},
+        status: PostStatus(value: PostStatusValue.SYNCED),
+        lastEdited: null,
+        message:
+            "Social networking is such a massive part of our lives. From today we are giving complete power to the users",
+        medias: [
+          PostMedia(
+            mimeType: "image/jpeg",
+            url:
+                "https://pbs.twimg.com/media/EMO5gOEWkAArAU1?format=jpg&name=4096x4096",
+          ),
+        ],
+        reactions: [
+          Reaction(
+            owner: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+            value: "👍",
+          ),
+          Reaction(
+            owner: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+            value: "😃",
+          ),
+          Reaction(
+            owner: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+            value: "😁",
+          )
+        ],
+        commentsIds: [],
+      ),
+      Post(
+        parentId: "0",
+        id: "1",
+        created: "2020-24-02T09:00:00.000Z",
+        owner: User(
+            username: "Alice Jackson",
+            address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+            avatarUrl:
+                "https://image.made-in-china.com/2f0j00AmtTrcdLyJoj/Wholesale-Plastic-Polarized-Custom-Women-Sunglasses.jpg"),
+        subspace: Constants.SUBSPACE,
+        allowsComments: true,
+        optionalData: {},
+        status: PostStatus(value: PostStatusValue.SYNCED),
+        lastEdited: null,
+        message: "Aliquam non sem nulla. In nulla mauris, imperdiet in ex in, egestas eleifend tellus. Curabitur facilisis mi nibh, sit amet luctus augue fermentum a.",
+        medias: [
+          PostMedia(
+            mimeType: "image/jpeg",
+            url: "https://www.plannthat.com/wp-content/uploads/2017/10/brahmino.png",
+          ),
+          PostMedia(
+            mimeType: "image/jpeg",
+            url: "https://cdn.hiconsumption.com/wp-content/uploads/2017/03/best-adventure-instagram-accounts-1087x725.jpg",
+          ),
+          PostMedia(
+            mimeType: "image/jpeg",
+            url: "https://kelseyinlondon.com/wp-content/uploads/2019/02/1-kelseyinlondon_kelsey_heinrichs_Paris-The-20-Best-Instagram-Photography-Locations.jpg",
+          ),
+          PostMedia(
+            mimeType: "image/jpeg",
+            url: "https://static2.businessinsider.com/image/546baf3069bedd6b6936ca04/the-best-instagram-accounts-to-follow.jpg",
+          ),
+        ],
+        reactions: [
+          Reaction(
+            owner: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+            value: ":+1:",
+          )
+        ],
+        commentsIds: [],
+      ),
+    ];
 
-    return _localPostsSource.getPosts();
+//    if (forceOnline) {
+//      final posts = await _remotePostsSource.getPosts();
+//      await _localPostsSource.savePosts(posts, emit: false);
+//    }
+//
+//    return _localPostsSource.getPosts();
   }
 
   @override

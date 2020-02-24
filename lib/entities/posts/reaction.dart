@@ -14,6 +14,8 @@ class Reaction extends Equatable {
   @JsonKey(name: "value")
   final String value;
 
+  bool get isLike => value == ":+1:" || value == ":thumbsup:";
+
   Reaction({@required this.owner, this.value})
       : assert(owner != null),
         assert(value != null);

@@ -63,23 +63,13 @@ class Post extends Equatable implements Comparable<Post> {
   final String subspace;
 
   @JsonKey(name: "creator")
-  final String owner;
+  final User owner;
 
   @JsonKey(name: "optional_data", defaultValue: {})
   final Map<String, String> optionalData;
 
-  @JsonKey(name: "medias", fromJson: _postMediasFromJson)
+  @JsonKey(name: "medias", nullable: true)
   final List<PostMedia> medias;
-
-  /// Static method used to implement a custom deserialization of post medias.
-  static List<PostMedia> _postMediasFromJson(List<dynamic> json) {
-    return json
-        ?.map((e) => PostMedia.fromJson(e))
-        // We remove every media that is not an image
-        // TODO: Implement a way to also display non images
-        ?.where((media) => media.isImage)
-        ?.toList();
-  }
 
   @JsonKey(ignore: true)
   bool get containsLocalMedias => medias.any((media) => media.isLocal);

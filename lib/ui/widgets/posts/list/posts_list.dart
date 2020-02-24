@@ -57,9 +57,14 @@ class _PostsListState extends State<PostsList> {
               return Column(
                 children: <Widget>[
                   Flexible(
-                    child: ListView.builder(
+                    child: ListView.separated(
                       key: PostsKeys.postsList,
                       itemCount: posts.length,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: PostsTheme.defaultPadding,
+                        );
+                      },
                       itemBuilder: (context, index) {
                         return _postWidget(context, posts[index]);
                       },

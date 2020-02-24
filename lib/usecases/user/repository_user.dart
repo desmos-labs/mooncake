@@ -7,6 +7,9 @@ abstract class UserRepository {
   /// allowing it to be retrieved later.
   Future<void> saveWallet(String mnemonic);
 
+  /// Returns the data about the user currently using the application.
+  Future<User> getUser();
+
   /// Returns the address associated to the user wallet.
   /// If no address has been set, returns `null` instead.
   Future<String> getAddress();

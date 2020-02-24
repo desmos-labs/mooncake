@@ -17,8 +17,8 @@ class PostsLoading extends PostsState {}
 /// Represents the state that must be used when a list of posts should be made
 /// visible to the user.
 class PostsLoaded extends PostsState {
-  /// Bech32 address of the user that is using the application.
-  final String address;
+  /// User that is using the application.
+  final User user;
 
   /// Lists of posts that should be shown to the user.
   final List<Post> posts;
@@ -30,7 +30,7 @@ class PostsLoaded extends PostsState {
   final bool syncingPosts;
 
   PostsLoaded({
-    @required this.address,
+    @required this.user,
     @required this.posts,
     this.refreshing = false,
     this.syncingPosts = false,
@@ -38,13 +38,13 @@ class PostsLoaded extends PostsState {
 
   PostsLoaded copyWith({
     int page,
-    String address,
+    User user,
     List<Post> posts,
     bool refreshing,
     bool syncingPosts,
   }) {
     return PostsLoaded(
-      address: address ?? this.address,
+      user: user ?? this.user,
       posts: posts ?? this.posts,
       refreshing: refreshing ?? this.refreshing,
       syncingPosts: syncingPosts ?? this.syncingPosts,

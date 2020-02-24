@@ -28,7 +28,7 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetPostsUseCase(
             postsRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => AddPostReactionUseCase(
+      ..bindFactory((injector, params) => ManagePostReactionsUseCase(
             postsRepository: injector.get(),
             walletRepository: injector.get(),
           ))
@@ -38,10 +38,6 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => SavePostUseCase(
             postsRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => RemoveReactionFromPostUseCase(
-            postsRepository: injector.get(),
-            walletRepository: injector.get(),
-          ))
       // User use cases
       ..bindFactory((injector, params) => LoginUseCase(
             userRepository: injector.get(),
@@ -50,6 +46,9 @@ class UseCaseModule implements Module {
             userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => GetAccountUseCase(
+            userRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => GetUserUseCase(
             userRepository: injector.get(),
           ));
   }

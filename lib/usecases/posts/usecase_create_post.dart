@@ -22,7 +22,7 @@ class CreatePostUseCase {
     @required bool allowsComments,
     List<PostMedia> medias,
   }) async {
-    final address = await _userRepository.getAddress();
+    final address = await _userRepository.getUser();
     final date = Post.getDateStringNow();
     return Post(
       id: date,

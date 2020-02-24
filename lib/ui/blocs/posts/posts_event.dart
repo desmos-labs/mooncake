@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic post-related event.
@@ -33,35 +34,19 @@ class AddPost extends PostsEvent {
   String toString() => 'AddPost { post: $post }';
 }
 
-/// Tells the Bloc that it needs to set a post as liked.
-class AddPostReaction extends PostsEvent {
+/// Tells the Bloc that it needs to either add (if not existing yet) or remove
+/// (if existing) a reaction from a user.
+class AddOrRemovePostReaction extends PostsEvent {
   final String postId;
   final String reaction;
 
-  AddPostReaction(this.postId, this.reaction);
+  AddOrRemovePostReaction({@required this.postId, @required this.reaction});
 
   @override
   List<Object> get props => [postId, reaction];
 
   @override
-  String toString() => 'AddPostReaction { '
-      'postId: $postId, '
-      'reaction: $reaction '
-      '}';
-}
-
-/// Tells the Bloc that it needs to set the given post as unliked
-class RemovePostReaction extends PostsEvent {
-  final String postId;
-  final String reaction;
-
-  RemovePostReaction(this.postId, this.reaction);
-
-  @override
-  List<Object> get props => [postId, reaction];
-
-  @override
-  String toString() => 'RemovePostReaction { '
+  String toString() => 'AddOrRemovePostReaction { '
       'postId: $postId, '
       'reaction: $reaction '
       '}';

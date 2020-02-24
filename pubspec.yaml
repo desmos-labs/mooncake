@@ -42,6 +42,7 @@ dependencies:
   sentry:
   shared_preferences:
   stream_transform:
+  timeago:
   url_launcher:
   web_socket_channel:
 

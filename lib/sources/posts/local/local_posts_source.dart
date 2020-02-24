@@ -33,7 +33,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
-  String _getPostKey(Post post) => post.created + post.owner;
+  String _getPostKey(Post post) => post.created + post.owner.address;
 
   @override
   Future<void> savePost(Post post, {bool emit = true}) async {

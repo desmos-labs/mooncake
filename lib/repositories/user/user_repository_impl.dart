@@ -21,6 +21,19 @@ class UserRepositoryImpl extends UserRepository {
         this._remoteUserSource = remoteUserSource;
 
   @override
+  Future<User> getUser() async {
+    return User(
+      address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+      username: "Desmos",
+      avatarUrl:
+          "https://pbs.twimg.com/profile_images/1206578012549980162/6L485PKE_400x400.jpg",
+    );
+
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
+
+  @override
   Future<String> getAddress() {
     return _localUserSource.getAddress();
   }
