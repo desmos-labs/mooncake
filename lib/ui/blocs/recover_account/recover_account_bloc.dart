@@ -15,25 +15,21 @@ import 'package:mooncake/utils/utils.dart';
 /// and emits the correct states.
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
-  final LoginUseCase _loginUseCase;
-  final FirebaseAnalytics _analytics;
+  final MnemonicInputBloc _mnemonicInputBloc;
+  final AccountBloc _accountBloc;
 
-  MnemonicInputBloc _mnemonicInputBloc;
-  LoginBloc _loginBloc;
+  final FirebaseAnalytics _analytics;
 
   StreamSubscription _mnemonicBlocSubscription;
 
   RecoverAccountBloc({
     @required MnemonicInputBloc mnemonicInputBloc,
-    @required LoginBloc loginBloc,
-    @required LoginUseCase loginUseCase,
+    @required AccountBloc accountBloc,
     @required FirebaseAnalytics analytics,
   })  : assert(mnemonicInputBloc != null),
         _mnemonicInputBloc = mnemonicInputBloc,
-        assert(loginBloc != null),
-        _loginBloc = loginBloc,
-        assert(loginUseCase != null),
-        this._loginUseCase = loginUseCase,
+        assert(accountBloc != null),
+        _accountBloc = accountBloc,
         assert(analytics != null),
         _analytics = analytics {
     // Observe the mnemonic changes to react tot them
@@ -45,8 +41,7 @@ class RecoverAccountBloc
   factory RecoverAccountBloc.create(BuildContext context) {
     return RecoverAccountBloc(
       mnemonicInputBloc: BlocProvider.of(context),
-      loginBloc: BlocProvider.of(context),
-      loginUseCase: Injector.get(),
+      accountBloc: BlocProvider.of(context),
       analytics: Injector.get(),
     );
   }
@@ -75,10 +70,9 @@ class RecoverAccountBloc
     if (state.isValid) {
       yield RecoveringAccount();
       try {
-        await _loginUseCase.login(state.mnemonic);
         _analytics.logEvent(name: Constants.EVENT_ACCOUNT_RECOVERED);
         yield RecoveredAccount(state.mnemonic);
-        _loginBloc.add(LogIn(state.mnemonic));
+        _accountBloc.add(LogIn(state.mnemonic));
       } catch (error) {
         Logger.log(error);
         yield RecoverError(error);

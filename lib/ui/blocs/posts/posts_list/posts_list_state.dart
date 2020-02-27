@@ -3,8 +3,8 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic posts list state.
-abstract class PostsState extends Equatable {
-  const PostsState();
+abstract class PostsListState extends Equatable {
+  const PostsListState();
 
   @override
   List<Object> get props => [];
@@ -12,11 +12,11 @@ abstract class PostsState extends Equatable {
 
 /// Represents the state that should be used when the posts are being loaded
 /// for the first time.
-class PostsLoading extends PostsState {}
+class PostsLoading extends PostsListState {}
 
 /// Represents the state that must be used when a list of posts should be made
 /// visible to the user.
-class PostsLoaded extends PostsState {
+class PostsLoaded extends PostsListState {
   /// User that is using the application.
   final User user;
 

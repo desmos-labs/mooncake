@@ -17,7 +17,10 @@ class ManagePostReactionsUseCase {
 
   /// Likes the post having the given [postId] and returns the
   /// updated [Post] object.
-  Future<Post> addOrRemove(String postId, String reaction) async {
+  Future<Post> addOrRemove({
+    @required String postId,
+    @required String reaction,
+  }) async {
     Post post = await _postsRepository.getPostById(postId);
     if (post == null) {
       return post;

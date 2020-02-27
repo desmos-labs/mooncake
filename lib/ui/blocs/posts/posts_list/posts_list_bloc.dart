@@ -11,11 +11,11 @@ import '../export.dart';
 
 /// Implementation of [Bloc] that allows to properly deal with
 /// events and states related to the list of posts.
-class PostsBloc extends Bloc<PostsEvent, PostsState> {
+class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final int _syncPeriod;
 
   final GetUserUseCase _getUserUseCase;
-  final ManagePostReactionsUseCase _managePostReactionsUseCase;
+
   final GetPostsUseCase _getPostsUseCase;
   final SyncPostsUseCase _syncPostsUseCase;
   final FirebaseAnalytics _analytics;
@@ -23,16 +23,13 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   Timer _syncTimer;
   StreamSubscription _postsSubscription;
 
-  PostsBloc({
+  PostsListBloc({
     @required int syncPeriod,
-    @required ManagePostReactionsUseCase managePostReactionsUseCase,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
     @required GetUserUseCase getUserUseCase,
     @required FirebaseAnalytics analytics,
   })  : _syncPeriod = syncPeriod,
-        assert(managePostReactionsUseCase != null),
-        _managePostReactionsUseCase = managePostReactionsUseCase,
         assert(getPostsUseCase != null),
         _getPostsUseCase = getPostsUseCase,
         assert(syncPostsUseCase != null),
@@ -42,10 +39,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         assert(analytics != null),
         _analytics = analytics;
 
-  factory PostsBloc.create({int syncPeriod = 30}) {
-    return PostsBloc(
+  factory PostsListBloc.create({int syncPeriod = 30}) {
+    return PostsListBloc(
       syncPeriod: syncPeriod,
-      managePostReactionsUseCase: Injector.get(),
       getPostsUseCase: Injector.get(),
       syncPostsUseCase: Injector.get(),
       getUserUseCase: Injector.get(),
@@ -54,24 +50,23 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   @override
-  PostsState get initialState => PostsLoading();
+  PostsListState get initialState => PostsLoading();
 
   @override
-  Stream<PostsState> mapEventToState(PostsEvent event) async* {
+  Stream<PostsListState> mapEventToState(PostsListEvent event) async* {
     if (event is LoadPosts) {
-      yield* _mapLoadPostsEventToState(event);
+      yield* _mapLoadPostsListEventToState(event);
     } else if (event is RefreshPosts) {
-      yield* _mapRefreshPostsEventToState(event);
+      yield* _mapRefreshPostsListEventToState(event);
     } else if (event is AddPost) {
       _analytics.logEvent(name: Constants.EVENT_SAVE_POST, parameters: {
         Constants.POST_PARAM_OWNER: event.post.owner,
       });
       yield* _mapAddPostEventToState(event);
     } else if (event is AddOrRemovePostReaction) {
-      _analytics.logEvent(name: Constants.EVENT_REACTION_CHANGED);
-      yield* _mapAddPostReactionEventToState(event);
+
     } else if (event is SyncPosts) {
-      yield* _mapSyncPostsEventToState();
+      yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
       yield* _mapSyncPostsCompletedEventToState(event);
     }
@@ -100,7 +95,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   /// Handles the event emitted when the posts list should be refreshed
-  Stream<PostsState> _mapLoadPostsEventToState(LoadPosts event) async* {
+  Stream<PostsListState> _mapLoadPostsListEventToState(LoadPosts event) async* {
     _initializeStreamListening();
     _initializeSyncTimer();
 
@@ -119,7 +114,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   /// Handles the posts refresh event.
-  Stream<PostsState> _mapRefreshPostsEventToState(RefreshPosts event) async* {
+  Stream<PostsListState> _mapRefreshPostsListEventToState(RefreshPosts event) async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(refreshing: true);
@@ -131,7 +126,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   /// Handles the event that is emitted when the user creates a new post
-  Stream<PostsState> _mapAddPostEventToState(AddPost event) async* {
+  Stream<PostsListState> _mapAddPostEventToState(AddPost event) async* {
     final cState = state;
     if (cState is PostsLoaded) {
       final post = event.post;
@@ -142,27 +137,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     }
   }
 
-  /// Handles the event emitted when the user likes a post
-  Stream<PostsState> _mapAddPostReactionEventToState(
-    AddOrRemovePostReaction event,
-  ) async* {
-    final currentState = state;
-    if (currentState is PostsLoaded) {
-      final updatedPost = await _managePostReactionsUseCase.addOrRemove(
-        event.postId,
-        event.reaction,
-      );
-      final updatedPosts = currentState
-          .posts
-          .map((p) => p.id == updatedPost.id ? updatedPost : p)
-          .toList();
-      yield currentState.copyWith(posts: updatedPosts);
-    }
-  }
-
   /// Handles the event emitted when the posts must be synced uploading
   /// all the changes stored locally to the chain
-  Stream<PostsState> _mapSyncPostsEventToState() async* {
+  Stream<PostsListState> _mapSyncPostsListEventToState() async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
       // Show the snackbar
@@ -179,7 +156,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   /// Handles the event that tells the bloc the synchronization has completed
-  Stream<PostsState> _mapSyncPostsCompletedEventToState(
+  Stream<PostsListState> _mapSyncPostsCompletedEventToState(
     SyncPostsCompleted event,
   ) async* {
     // Once the sync has been completed, hide the bar and load the new posts

@@ -26,6 +26,9 @@ class Constants {
     title: "Posts interactions",
     description: "Make sound and pop on a new post interaction",
   );
+
+  // Reactions
+  static const LIKE_REACTION = ":heart:";
 }
 
 /// Contains the data of a notification channel (required for Android 8.0+).

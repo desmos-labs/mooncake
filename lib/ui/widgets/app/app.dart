@@ -34,9 +34,9 @@ class _PostsAppState extends State<PostsApp> {
         BlocProvider<GenerateMnemonicBloc>(
           create: (context) => GenerateMnemonicBloc.create(context),
         ),
-        BlocProvider<PostsBloc>(
+        BlocProvider<PostsListBloc>(
           create: (context) =>
-              PostsBloc.create(syncPeriod: 30)..add(LoadPosts()),
+              PostsListBloc.create(syncPeriod: 30)..add(LoadPosts()),
         )
       ],
       child: MaterialApp(

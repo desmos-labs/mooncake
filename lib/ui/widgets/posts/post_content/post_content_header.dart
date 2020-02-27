@@ -4,7 +4,7 @@ import 'package:mooncake/ui/theme/theme.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-/// Contains the info that are shown on top of a [PostItem]. The following
+/// Contains the info that are shown on top of a [PostListItem]. The following
 /// data are :
 /// - the owner o the post
 /// - the block height at which the post has been created

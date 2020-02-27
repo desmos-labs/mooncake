@@ -3,26 +3,26 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic post-related event.
-abstract class PostsEvent extends Equatable {
-  const PostsEvent();
+abstract class PostsListEvent extends Equatable {
+  const PostsListEvent();
 
   @override
   List<Object> get props => [];
 }
 
 /// Tells the Bloc that it needs to load posts from the [PostsRepository].
-class LoadPosts extends PostsEvent {
+class LoadPosts extends PostsListEvent {
   @override
   String toString() => 'LoadPosts';
 }
 
-class RefreshPosts extends PostsEvent {
+class RefreshPosts extends PostsListEvent {
   @override
   String toString() => 'RefreshPosts';
 }
 
 /// Tells the Bloc that it needs to add a new post to the list of posts
-class AddPost extends PostsEvent {
+class AddPost extends PostsListEvent {
   final Post post;
 
   AddPost(this.post);
@@ -34,34 +34,18 @@ class AddPost extends PostsEvent {
   String toString() => 'AddPost { post: $post }';
 }
 
-/// Tells the Bloc that it needs to either add (if not existing yet) or remove
-/// (if existing) a reaction from a user.
-class AddOrRemovePostReaction extends PostsEvent {
-  final String postId;
-  final String reaction;
 
-  AddOrRemovePostReaction({@required this.postId, @required this.reaction});
-
-  @override
-  List<Object> get props => [postId, reaction];
-
-  @override
-  String toString() => 'AddOrRemovePostReaction { '
-      'postId: $postId, '
-      'reaction: $reaction '
-      '}';
-}
 
 /// Tells the bloc to start the synchronization of locally stored
 /// posts so that they can be uploaded to the chain.
-class SyncPosts extends PostsEvent {
+class SyncPosts extends PostsListEvent {
   @override
   String toString() => 'SyncPosts';
 }
 
 /// Tells the bloc that the synchronization of the locally stored posts
 /// have been completed.
-class SyncPostsCompleted extends PostsEvent {
+class SyncPostsCompleted extends PostsListEvent {
   @override
   String toString() => 'SyncPostsCompleted';
 }

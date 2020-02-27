@@ -12,11 +12,11 @@ import '../export.dart';
 
 /// Represents the BLoC associated with the home screen.
 class HomeBloc extends Bloc<HomeEvent, AppTab> {
-  final LoginBloc _loginBloc;
+  final AccountBloc _loginBloc;
   final LogoutUseCase _logoutUseCase;
 
   HomeBloc({
-    @required LoginBloc loginBloc,
+    @required AccountBloc loginBloc,
     @required LogoutUseCase logoutUseCase,
   })  : assert(loginBloc != null),
         _loginBloc = loginBloc,

@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/posts/list/post_images_previewer.dart';
-import 'package:mooncake/ui/widgets/posts/list/post_message.dart';
-import 'package:mooncake/ui/widgets/posts/action_bar/post_reactions_bar.dart';
 
-import 'post_item_header.dart';
+import 'action_bar/export.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
 /// It is made of the following components:
@@ -19,17 +15,15 @@ import 'post_item_header.dart';
 /// - a [Text] containing the actual post message
 /// - a [PostActionBar] containing all the actions that can be performed
 ///    for such post
-class PostItem extends StatelessWidget {
-  final GestureTapCallback onTap;
+class PostListItem extends StatelessWidget {
   final String postId;
 
   // Theming
   final double messageFontSize;
   final EdgeInsets margin;
 
-  PostItem({
+  PostListItem({
     Key key,
-    @required this.onTap,
     @required this.postId,
     this.messageFontSize = 0.0,
     this.margin = const EdgeInsets.all(16.0),
@@ -37,53 +31,39 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostsBloc, PostsState>(
+    return BlocBuilder<PostListItemBloc, PostListItemState>(
       builder: (context, state) {
-        // Make sure we loaded the posts properly
-        assert(state is PostsLoaded);
-
-        final user = (state as PostsLoaded).user;
-        final post = (state as PostsLoaded).posts.firstBy(id: postId);
-        if (post == null) {
+        if (state is PostListItemLoading) {
           return Container();
         }
 
+        final currentState = (state as PostListItemLoaded);
+        final post = currentState.post;
         return Container(
           color: Colors.white,
+          padding: PostsTheme.postItemPadding,
           child: InkWell(
-            onTap: onTap,
+            onTap: () => _openPostDetails(context),
             onLongPress: post.status.value == PostStatusValue.ERRORED
                 ? () => _showPostError(context, post)
                 : null,
-            child: Container(
-              padding: PostsTheme.postItemPadding,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  PostItemHeader(
-                    key: PostsKeys.postItemHeader(post.id),
-                    post: post,
-                  ),
-                  PostMessage(
-                    key: PostsKeys.postItemMessage(post.id),
-                    post: post,
-                  ),
-                  PostImagesPreviewer(
-                    key: PostsKeys.postItemImagePreviewer(post.id),
-                    post: post,
-                  ),
-                  PostActionsBar(
-                    key: PostsKeys.postActionsBar(post.id),
-                    post: post,
-                    user: user,
-                  ),
-                ],
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                PostContent(post: post),
+                PostActionsBar(),
+              ],
             ),
           ),
         );
       },
     );
+  }
+
+  void _openPostDetails(BuildContext context) {
+    // ignore: close_sinks
+    final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+    navigatorBloc.add(NavigateToPostDetails(context, postId));
   }
 
   void _showPostError(BuildContext context, Post post) {

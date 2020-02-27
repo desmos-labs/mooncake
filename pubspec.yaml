@@ -38,6 +38,7 @@ dependencies:
   meta:
   mime_type:
   path_provider:
+  rxdart:
   sembast:
   sentry:
   shared_preferences:

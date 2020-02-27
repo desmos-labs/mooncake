@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
-/// Represents a generic state for screen that shows the user
-/// the details about his account.
+/// Represents the login status of the user using the application.
 abstract class AccountState extends Equatable {
   const AccountState();
 
@@ -11,30 +9,28 @@ abstract class AccountState extends Equatable {
   List<Object> get props => [];
 }
 
-/// Represents the state where the user account has not yet been
-/// initialized and thus must be loaded.
-class UninitializedAccount extends AccountState {
+/// Tells the view to display a screen while the application is trying
+/// to figure out whether the user is logged in or not.
+class Loading extends AccountState {
   @override
-  String toString() => 'UninitializedAccountState';
+  String toString() => 'Loading';
 }
 
-/// Represents the state in which the user account data
-/// are being properly loaded.
-class LoadingAccount extends AccountState {
+/// Tells the view that the user is not logged in and thus the login
+/// screen should be shown to him.
+class LoggedOut extends AccountState {
   @override
-  String toString() => 'LoadingAccountState';
+  String toString() => 'LoggedOut';
 }
 
-/// Represents the state in which the user data has been
-/// properly loaded.
-class AccountLoaded extends AccountState {
+/// Tells the view that the user is logged in and thus he can properly
+/// access the main page of the application.
+class LoggedIn extends AccountState {
+  /// Represents the currently used account.
   final AccountData account;
 
-  AccountLoaded({@required this.account});
+  LoggedIn(this.account);
 
   @override
-  String toString() => 'AccountLoaded { account: $account }';
-
-  @override
-  List<Object> get props => [account];
+  String toString() => 'LoggedIn { account: $account }';
 }

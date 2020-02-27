@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:mooncake/entities/entities.dart';
 
-/// Represents a generic event that is emitted from the account data screen
+/// Represents a generic event that is emitted during the login procedure.
 abstract class AccountEvent extends Equatable {
   const AccountEvent();
 
@@ -9,22 +9,35 @@ abstract class AccountEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Represents the event that is emitted when the account data need to
-/// be loaded.
-class LoadAccount extends AccountEvent {
+/// Tells the block to check for the current user status to know if
+/// he is already logged in or not.
+class CheckStatus extends AccountEvent {
   @override
-  String toString() => 'LoadAccount';
+  String toString() => 'CheckStatus';
 }
 
-/// Event that is loaded once the address has been successfully computed.
-class AddressLoaded extends AccountEvent {
-  final AccountData account;
+/// Tells the bloc to log in the user showing him the home screen.
+class LogIn extends AccountEvent {
+  final String mnemonic;
 
-  AddressLoaded(this.account);
-
-  @override
-  String toString() => 'AddressLoaded { address: $account }';
+  LogIn(this.mnemonic);
 
   @override
-  List<Object> get props => [account];
+  List<Object> get props => [mnemonic];
+}
+
+/// Tells the BLoC to refresh the currently saved account replacing it
+/// with the new one.
+class Refresh extends AccountEvent {
+  final AccountData accountData;
+
+  Refresh(this.accountData);
+
+  @override
+  List<Object> get props => [accountData];
+}
+
+class LogOut extends AccountEvent {
+  @override
+  String toString() => 'LogOut';
 }

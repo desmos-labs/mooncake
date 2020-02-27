@@ -8,7 +8,7 @@ import 'package:mooncake/ui/ui.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
         if (state is LoggedOut) {
           return LoginScreen();

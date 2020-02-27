@@ -11,22 +11,8 @@ class Account extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
-      bloc: AccountBloc.create()..add(LoadAccount()),
       builder: (context, state) {
-        if (state is UninitializedAccount) {
-          return Container();
-        } else if (state is LoadingAccount) {
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              LoadingIndicator(),
-            ],
-          );
-        }
-
-        final currentState = state as AccountLoaded;
+        final account = (state as LoggedIn).account;
 
         return Container(
           padding: EdgeInsets.all(16),
@@ -53,7 +39,7 @@ class Account extends StatelessWidget {
                       PostsLocalizations.of(context).yourAddress,
                       style: Theme.of(context).textTheme.headline6,
                     ),
-                    Text(currentState.account.address),
+                    Text(account.address),
                     const SizedBox(height: 16),
                     Text(
                       PostsLocalizations.of(context).yourFunds,
@@ -62,9 +48,9 @@ class Account extends StatelessWidget {
                     Flexible(
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: currentState.account.coins.length,
+                        itemCount: account.coins.length,
                         itemBuilder: (context, index) {
-                          final coin = currentState.account.coins[index];
+                          final coin = account.coins[index];
                           return Text("${coin.amount} ${coin.denom}");
                         },
                       ),
@@ -74,7 +60,7 @@ class Account extends StatelessWidget {
               ),
               RaisedButton(
                 child: Text(PostsLocalizations.of(context).openInExplorer),
-                onPressed: () => _openInExplorer(currentState.account),
+                onPressed: () => _openInExplorer(account),
               )
             ],
           ),

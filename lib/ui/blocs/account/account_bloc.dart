@@ -1,48 +1,91 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-/// Represents the bloc associated to the screen displaying the user's
-/// account data.
+/// Handles the login events and emits the proper state instances.
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
+  final LoginUseCase _loginUseCase;
   final GetAccountUseCase _getAccountUseCase;
+  final FirebaseAnalytics _analytics;
 
-  AccountBloc({@required GetAccountUseCase getAccountUseCase})
-      : assert(getAccountUseCase != null),
-        _getAccountUseCase = getAccountUseCase;
+  final NavigatorBloc _navigatorBloc;
 
-  factory AccountBloc.create() {
+  StreamSubscription _accountSubscription;
+
+  AccountBloc({
+    @required LoginUseCase loginUseCase,
+    @required GetAccountUseCase getAccountUseCase,
+    @required NavigatorBloc navigatorBloc,
+    @required FirebaseAnalytics analytics,
+  })  : assert(loginUseCase != null),
+        _loginUseCase = loginUseCase,
+        assert(getAccountUseCase != null),
+        _getAccountUseCase = getAccountUseCase,
+        assert(navigatorBloc != null),
+        _navigatorBloc = navigatorBloc,
+        assert(analytics != null),
+        _analytics = analytics {
+    // Listen for account changes so that we know when to refresh
+    _accountSubscription = _getAccountUseCase.stream().listen((account) {
+      add(Refresh(account));
+    });
+  }
+
+  factory AccountBloc.create(BuildContext context) {
     return AccountBloc(
+      loginUseCase: Injector.get(),
       getAccountUseCase: Injector.get(),
+      navigatorBloc: BlocProvider.of(context),
+      analytics: Injector.get(),
     );
   }
 
   @override
-  AccountState get initialState => LoadingAccount();
+  AccountState get initialState => Loading();
 
   @override
   Stream<AccountState> mapEventToState(AccountEvent event) async* {
-    if (event is LoadAccount) {
-      yield* _mapLoadAccountEventToState();
-    } else if (event is AddressLoaded) {
-      yield* _mapAddressLoadedEventToState(event);
+    if (event is CheckStatus) {
+      yield* _mapCheckStatusEventToState();
+    } else if (event is LogIn) {
+      _analytics.logLogin();
+      yield* _mapLogInEventToState(event);
+    } else if (event is LogOut) {
+      _analytics.logEvent(name: Constants.EVENT_LOGOUT);
+      yield* _mapLogOutEventToState();
     }
   }
 
-  Stream<AccountState> _mapLoadAccountEventToState() async* {
-    // Load the data
-    _getAccountUseCase.single().then((account) {
-      add(AddressLoaded(account));
-    });
+  Stream<AccountState> _mapCheckStatusEventToState() async* {
+    final account = await _getAccountUseCase.single();
+    if (account != null) {
+      yield LoggedIn(account);
+    } else {
+      yield LoggedOut();
+    }
   }
 
-  Stream<AccountState> _mapAddressLoadedEventToState(
-    AddressLoaded event,
-  ) async* {
-    yield (AccountLoaded(account: event.account));
+  Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
+    await _loginUseCase.login(event.mnemonic);
+    final account = await _getAccountUseCase.single();
+    yield LoggedIn(account);
+    _navigatorBloc.add(NavigateToHome());
+  }
+
+  Stream<AccountState> _mapLogOutEventToState() async* {
+    yield LoggedOut();
+  }
+
+  @override
+  Future<Function> close() {
+    _accountSubscription.cancel();
   }
 }

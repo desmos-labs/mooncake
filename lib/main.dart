@@ -47,8 +47,8 @@ void _runApp() {
       BlocProvider<NavigatorBloc>(
         create: (_) => NavigatorBloc.create(),
       ),
-      BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc.create(context)..add(CheckStatus()),
+      BlocProvider<AccountBloc>(
+        create: (context) => AccountBloc.create(context)..add(CheckStatus()),
       ),
     ],
     child: PostsApp(),

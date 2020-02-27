@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/posts/list/sync_snackbar.dart';
 
 typedef Filter = bool Function(Post);
 
 /// Represents a list of [Post] objects.
 /// It simply builds a list using the [ListView.separated] builder
-/// and the [PostItem] class as the object representing each post.
+/// and the [PostListItem] class as the object representing each post.
 class PostsList extends StatefulWidget {
   final Filter _filter;
 
@@ -37,11 +36,11 @@ class _PostsListState extends State<PostsList> {
       decoration: PostsTheme.pattern,
       child: RefreshIndicator(
         onRefresh: () {
-          BlocProvider.of<PostsBloc>(context).add(RefreshPosts());
+          BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
           return _refreshCompleter.future;
         },
-        child: BlocBuilder<PostsBloc, PostsState>(
-          bloc: BlocProvider.of<PostsBloc>(context)..add(LoadPosts()),
+        child: BlocBuilder<PostsListBloc, PostsListState>(
+          bloc: BlocProvider.of<PostsListBloc>(context)..add(LoadPosts()),
           builder: (context, state) {
             if (state is PostsLoaded) {
               // Hide the refresh indicator
@@ -70,7 +69,7 @@ class _PostsListState extends State<PostsList> {
                       },
                     ),
                   ),
-                  if (state.syncingPosts) SyncSnackBar(),
+//                  if (state.syncingPosts) SyncSnackBar(),
                 ],
               );
             } else {
@@ -93,14 +92,10 @@ class _PostsListState extends State<PostsList> {
     );
   }
 
-  Widget _postWidget(BuildContext context, Post post) {
-    return PostItem(
-      postId: post.id,
-      onTap: () async => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => PostDetailsScreen(postId: post.id),
-        ),
-      ),
+  Widget _postWidget(BuildContext buildContext, Post post) {
+    return BlocProvider<PostListItemBloc>(
+      create: (context) => PostListItemBloc.create(context, post),
+      child: PostListItem(postId: post.id),
     );
   }
 }

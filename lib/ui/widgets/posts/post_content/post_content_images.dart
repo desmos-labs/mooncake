@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/theme/theme.dart';
 
-/// Allows to display the medias associated to a post (currently supports only
-/// the images).
+/// Allows to properly visualize the image(s) associated with a post.
+/// If only a single image is present, it will be shown full-width.
+/// Otherwise, if more than one image is present, it will be displayed
+/// as a grid of squared images.
 class PostImagesPreviewer extends StatelessWidget {
   final Post post;
 
-  const PostImagesPreviewer({Key key, @required this.post}) : super(key: key);
+  const PostImagesPreviewer({
+    Key key,
+    @required this.post,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

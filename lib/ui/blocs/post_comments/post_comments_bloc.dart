@@ -17,13 +17,13 @@ class PostCommentsBloc extends Bloc<PostCommentsEvent, PostCommentsState> {
 
   PostCommentsBloc({
     @required GetCommentsUseCase getCommentsUseCase,
-    @required PostsBloc postsBloc,
+    @required PostsListBloc PostsListBloc,
   })  : assert(getCommentsUseCase != null),
-        assert(postsBloc != null),
+        assert(PostsListBloc != null),
         _commentsUseCase = getCommentsUseCase {
     // Start listening for new posts so that we can update the
     // comments accordingly
-    _subscription = postsBloc.listen((state) {
+    _subscription = PostsListBloc.listen((state) {
       if (state is PostsLoaded) {
         add(RefreshComments());
       }
@@ -32,7 +32,7 @@ class PostCommentsBloc extends Bloc<PostCommentsEvent, PostCommentsState> {
 
   factory PostCommentsBloc.create(BuildContext context) {
     return PostCommentsBloc(
-      postsBloc: BlocProvider.of(context),
+      PostsListBloc: BlocProvider.of(context),
       getCommentsUseCase: Injector.get(),
     );
   }

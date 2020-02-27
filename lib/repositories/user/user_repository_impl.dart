@@ -4,13 +4,14 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/usecases/usecases.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// Implementation of [UserRepository].
 class UserRepositoryImpl extends UserRepository {
   final RemoteUserSource _remoteUserSource;
   final LocalUserSource _localUserSource;
 
-  final StreamController _accountController = StreamController<AccountData>();
+  final StreamController _accountController = BehaviorSubject<AccountData>();
 
   UserRepositoryImpl({
     @required LocalUserSource localUserSource,
