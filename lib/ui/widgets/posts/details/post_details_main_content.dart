@@ -12,26 +12,29 @@ class PostDetailsMainContent extends StatelessWidget {
         final currentState = state as PostDetailsLoaded;
         final post = currentState.post;
 
-        return Scaffold(
-          body: SafeArea(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, _) {
-                return [
-                  SliverAppBar(
-                    backgroundColor: Colors.white,
-                    expandedHeight: 310,
-                    pinned: true,
-                    primary: true,
-                    flexibleSpace: PostContent(post: post),
-                  )
-                ];
-              },
-              body: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Text(index.toString());
-                },
+        return DefaultTabController(
+          length: 2,
+          child: ListView(
+            children: <Widget>[
+              PostContent(post: post),
+              SizedBox(height: PostsTheme.defaultPadding),
+              TabBar(
+                unselectedLabelColor: Colors.grey[600],
+                labelColor: Colors.black,
+                tabs: [
+                  Tab(text: "First"),
+                  Tab(text: "Second"),
+                ],
               ),
-            ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    Text("Test 2"),
+                    Text("Test 2"),
+                  ],
+                ),
+              )
+            ],
           ),
         );
       },

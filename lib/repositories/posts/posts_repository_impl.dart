@@ -70,11 +70,58 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<Post> getPostById(String postId) =>
-      _localPostsSource.getPostById(postId);
+  Future<Post> getPostById(String postId) async {
+    return Post(
+      parentId: "0",
+      id: "0",
+      created: "2020-24-02T08:40:00.000Z",
+      owner: User(
+        username: "Desmos",
+        address: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+        avatarUrl:
+        "https://pbs.twimg.com/profile_images/1206578012549980162/6L485PKE_400x400.jpg",
+      ),
+      subspace: Constants.SUBSPACE,
+      allowsComments: true,
+      optionalData: {},
+      status: PostStatus(value: PostStatusValue.SYNCED),
+      lastEdited: null,
+      message:
+      "Social networking is such a massive part of our lives. From today we are giving complete power to the users",
+      medias: [
+        PostMedia(
+          mimeType: "image/jpeg",
+          url:
+          "https://pbs.twimg.com/media/EMO5gOEWkAArAU1?format=jpg&name=4096x4096",
+        ),
+      ],
+      reactions: [
+        Reaction(
+          owner: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+          value: "👍",
+        ),
+        Reaction(
+          owner: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+          value: "😃",
+        ),
+        Reaction(
+          owner: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+          value: "😁",
+        )
+      ],
+      commentsIds: [],
+    );
+
+    // TODO: Implement this again
+    return _localPostsSource.getPostById(postId);
+  }
 
   @override
   Future<List<Post>> getPostComments(String postId) async {
+    return [];
+
+
+    // TODO: Implement this again
     final comments = await _remotePostsSource.getPostComments(postId);
     comments.forEach((comment) async {
       await _localPostsSource.savePost(comment, emit: false);

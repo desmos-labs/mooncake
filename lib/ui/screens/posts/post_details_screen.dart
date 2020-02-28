@@ -15,25 +15,25 @@ class PostDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PostDetailsBloc>(
-      create: (context) => PostDetailsBloc.create(context, postId),
-      child: BlocBuilder<PostDetailsBloc, PostDetailsState>(
-        builder: (context, state) {
-          // The post details are still loading
-          if (state is LoadingPostDetails) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(PostsLocalizations.of(context).post),
-              ),
-              body: Container(
-                decoration: PostsTheme.pattern,
-                child: PostDetailsLoading(),
-              ),
-            );
-          }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(PostsLocalizations.of(context).postDetailsTitle),
+      ),
+      body: Container(
+        color: Colors.white,
+        padding: PostsTheme.postItemPadding,
+        child: BlocProvider<PostDetailsBloc>(
+          create: (context) => PostDetailsBloc.create(context, postId),
+          child: BlocBuilder<PostDetailsBloc, PostDetailsState>(
+            builder: (context, state) {
+              if (state is LoadingPostDetails) {
+                return PostDetailsLoading();
+              }
 
-          return PostDetailsMainContent();
-        },
+              return PostDetailsMainContent();
+            },
+          ),
+        ),
       ),
     );
   }
