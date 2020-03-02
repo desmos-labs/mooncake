@@ -1,10 +1,10 @@
 export 'account/export.dart';
 export 'app/export.dart';
+export 'bottom_navigation_bar/export.dart';
 export 'common/more_button.dart';
 export 'loading_indicator.dart';
 export 'login/export.dart';
 export 'mnemonic/mnemonic.dart';
 export 'posts/export.dart';
 export 'stats/export.dart';
-export 'tab_selector.dart';
 export 'user/export.dart';

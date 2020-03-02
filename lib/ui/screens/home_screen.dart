@@ -32,35 +32,14 @@ class HomeScreen extends StatelessWidget {
               )
             ],
           ),
-          body: activeTab == AppTab.posts
+          body: activeTab == AppTab.allPosts
               ? PostsList(filter: (p) => !p.hasParent)
               : Account(),
-          floatingActionButton: activeTab == AppTab.posts
-              ? FloatingActionButton(
-                  key: PostsKeys.addPost,
-                  onPressed: () => Navigator.of(context).push(_createRoute()),
-                  child: Icon(Icons.add),
-                  tooltip: PostsLocalizations.of(context).floatingButtonTip,
-                )
-              : null,
-          bottomNavigationBar: TabSelector(
-            activeTab: activeTab,
-            onTabSelected: (tab) {
-              BlocProvider.of<HomeBloc>(context).add(UpdateTab(tab));
-            },
-          ),
+          bottomNavigationBar: TabSelector(),
         );
       },
     );
   }
 
-  Route _createRoute() {
-    return MaterialPageRoute(builder: (BuildContext context) {
-      return CreatePostScreen(callback: (post) {
-        // ignore: close_sinks
-        final bloc = BlocProvider.of<PostsListBloc>(context);
-        bloc.add(AddPost(post));
-      });
-    });
-  }
+
 }
