@@ -10,6 +10,8 @@ class PostsKeys {
   static final addPost = const Key('__addPost__');
   static final tabs = const Key('__tabs__');
   static final allPostsTab = const Key('__allPostsTab__');
+  static final likedPostsTab = const Key('__likedPostsTab__');
+  static final notificationsTab = const Key('__notificationsTab__');
   static final yourPostsTab = const Key('__yourPostsTab__');
 
   static final postsList = const Key('__postsList__');

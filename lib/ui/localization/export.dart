@@ -41,6 +41,8 @@ class PostsLocalizations {
 
   // Main screen
   String get allPosts => "Posts";
+  String get likedPosts => "Liked posts";
+  String get notifications => "Notifications";
   String get yourAccount => "Your account";
   String get signOut => "Sign out";
   String get floatingButtonTip => "Create post";

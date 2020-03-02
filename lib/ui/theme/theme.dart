@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 class PostsTheme {
   static const double defaultPadding = 10.0;
 
-  static Color get primaryColor => Color(0xFF946FAE);
+  static Color get borderColor => Colors.grey[500];
+  static LinearGradient get gradient => LinearGradient(
+        colors: [Color(0xFF904FFF), Color(0xFF5277FF)],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      );
+
+  static Color get primaryColor => Colors.white;
   static Color get accentColor => Color(0xFFA94E89);
 
   static Color get textColor => Colors.grey[800];
@@ -29,7 +36,7 @@ class PostsTheme {
       primaryColor: primaryColor,
       accentColor: accentColor,
       primaryColorLight: Colors.white,
-      scaffoldBackgroundColor: Colors.grey[200],
+      scaffoldBackgroundColor: Colors.white,
 
       // Define the default font family.
       fontFamily: 'Roboto',

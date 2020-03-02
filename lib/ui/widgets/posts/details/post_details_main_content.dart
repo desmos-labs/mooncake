@@ -19,60 +19,69 @@ class PostDetailsMainContent extends StatelessWidget {
 
         return DefaultTabController(
           length: 2,
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  Container(padding: padding, child: PostContent(post: post)),
-                  SizedBox(height: PostsTheme.defaultPadding),
-                ]),
-              ),
-              SliverStickyHeader(
-                header: Container(
-                  color: Colors.white,
-                  child: TabBar(
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.grey[500],
-                    tabs: [
+          child: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Container(padding: padding, child: PostContent(post: post)),
+                    SizedBox(height: PostsTheme.defaultPadding),
+                  ]),
+                ),
+                SliverAppBar(
+                  primary: false,
+                  backgroundColor: Colors.white,
+                  leading: Container(),
+                  pinned: true,
+                  flexibleSpace: TabBar(
+                    tabs: <Widget>[
                       Tab(text: "Comments"),
                       Tab(text: "Reactions"),
                     ],
                   ),
-                ),
-                sliver: SliverFillRemaining(
-                  child: TabBarView(
-                    children: <Widget>[
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, i) => ListTile(
-                            leading: CircleAvatar(
-                              child: Text('0'),
-                            ),
-                            title: Text('Comment #$i'),
+                )
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                CustomScrollView(
+                  key: PageStorageKey<String>("comments"),
+                  slivers: <Widget>[
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, i) => ListTile(
+                          leading: CircleAvatar(
+                            child: Text('0'),
                           ),
-                          childCount: 20,
+                          title: Text('Comment #$i'),
                         ),
+                        childCount: 20,
                       ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, i) => ListTile(
-                            leading: CircleAvatar(
-                              child: Text('1'),
-                            ),
-                            title: Text('Reaction #$i'),
-                          ),
-                          childCount: 30,
-                        ),
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              ),
-            ],
+                CustomScrollView(
+                  key: PageStorageKey<String>("reactions"),
+                  slivers: <Widget>[
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, i) => ListTile(
+                          leading: CircleAvatar(
+                            child: Text('0'),
+                          ),
+                          title: Text('Reaction #$i'),
+                        ),
+                        childCount: 20,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         );
       },
     );
   }
 }
-

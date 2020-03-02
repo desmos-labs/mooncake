@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
       builder: (context, activeTab) {
         return Scaffold(
           appBar: AppBar(
+            elevation: 1,
             title: Text(PostsLocalizations.of(context).appTitle),
             actions: [
               IconButton(
