@@ -1,4 +1,4 @@
-# Verion 0.0.13
+# Version 0.0.13
 ## Bug fixes
  - Fixed wrong LCD and RPC endpoint
 
