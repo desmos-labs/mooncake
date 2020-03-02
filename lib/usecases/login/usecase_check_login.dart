@@ -12,6 +12,6 @@ class CheckLoginUseCase {
 
   /// Returns `true` iff the user has logged in, `false` otherwise.
   Future<bool> isLoggedIn() async {
-    return await _walletRepository.getAddress() != null;
+    return await _walletRepository.getUserData() != null;
   }
 }

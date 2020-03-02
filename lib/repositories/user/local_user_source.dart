@@ -7,20 +7,20 @@ abstract class LocalUserSource {
   /// allowing it to be retrieved later.
   Future<void> saveWallet(String mnemonic);
 
-  /// Returns the address associated with the current wallet.
-  /// Returns `null` if no wallet has been saved yet.
-  Future<String> getAddress();
-
   /// Returns the [Wallet] instance associated with the current
   /// application user.
   Future<Wallet> getWallet();
 
-  /// Saves the given [data] as the current local user data.
-  Future<void> saveAccountData(AccountData data);
+  /// Returns the [User] containing the data of the current app user.
+  /// If no [User] or [Wallet] have been saved yet, returns `null`.
+  Future<User> getUser();
 
-  /// Returns the currently stored [AccountData], or `null` if no data
-  /// are currently stored.
-  Future<AccountData> getAccountData();
+  /// Returns the [Stream] that emits all the new [User]
+  /// once they have been saved.
+  Stream<User> get userStream;
+
+  /// Saves the given [data] as the current local user data.
+  Future<void> saveUser(User data);
 
   /// Completely wipes the currently stored wallet for the user.
   Future<void> wipeData();

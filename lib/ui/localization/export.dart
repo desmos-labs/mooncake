@@ -69,6 +69,14 @@ class PostsLocalizations {
   String get cameraTip => "Take a picture using the camera";
   String get galleryTip => "Select an image from the gallery";
 
+  // Notifications screen
+  String get allNotificationsTabTitle => "All";
+  String get mentionsNotificationsTabTitle => "Mentions";
+  String get notificationHasCommentedText => "commented: ";
+  String get notificationAddedReaction => "added a reaction: ";
+  String get notificationLikedYourPost => "liked your post";
+  String get notificationTaggedYou => "tagged you in a post";
+
   // Account screen
   String get accountTitle => "Your account";
   String get yourAddress => "Your address:";

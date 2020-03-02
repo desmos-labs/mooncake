@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 
@@ -19,7 +20,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
         _faucetEndpoint = faucetEndpoint;
 
   @override
-  Future<AccountData> getAccountData(String address) async {
+  Future<User> getUser(String address) async {
     try {
       final endpoint = "/auth/accounts/$address";
       final response = await _chainHelper.queryChain(endpoint);
@@ -37,11 +38,11 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   }
 
   @override
-  Future<void> fundAccount(AccountData account) async {
+  Future<void> fundUser(User user) async {
     await http.Client().post(
       _faucetEndpoint,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"address": account.address}),
+      body: jsonEncode({"address": user.accountData.address}),
     );
   }
 }

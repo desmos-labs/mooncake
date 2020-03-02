@@ -6,6 +6,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
@@ -24,7 +25,7 @@ class _WalletInfo {
 class LocalUserSourceImpl extends LocalUserSource {
   static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
 
-  static const _ACCOUNT_DATA_KEY = "account_data";
+  static const _USER_DATA_KEY = "user_data";
   static const _MNEMONIC_KEY = "mnemonic";
 
   final String _dbName;
@@ -32,6 +33,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   final FlutterSecureStorage _storage;
 
   final _store = StoreRef.main();
+  final _userController = BehaviorSubject<User>();
 
   LocalUserSourceImpl({
     @required String dbName,
@@ -89,32 +91,39 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<String> getAddress() async {
-    final accountData = await getAccountData();
-    if (accountData != null) {
-      return accountData.address;
+  Future<User> getUser() async {
+    // Try getting the user from the database
+    final database = await this._database;
+    final record = await _store.findFirst(database);
+    if (record != null) {
+      return User.fromJson(record.value);
     }
 
+    // If the database does not have the user, build it from the address
     final wallet = await getWallet();
-    return wallet?.bech32Address;
-  }
+    final address = wallet.bech32Address;
 
-  @override
-  Future<void> saveAccountData(AccountData data) async {
-    final database = await this._database;
-    await _store.record(_ACCOUNT_DATA_KEY).put(database, data.toJson());
-  }
-
-  @override
-  Future<AccountData> getAccountData() async {
-    final database = await this._database;
-
-    final record = await _store.findFirst(database);
-    if (record == null) {
+    // If the address is null return null
+    if (address == null) {
       return null;
     }
 
-    return AccountData.fromJson(record.value);
+    // Build the user from the address and save it
+    final user = User.fromAddress(address);
+    await saveUser(user);
+
+    return user;
+  }
+
+  @override
+  Stream<User> get userStream => _userController.stream;
+
+
+  @override
+  Future<void> saveUser(User data) async {
+    final database = await this._database;
+    await _store.record(_USER_DATA_KEY).put(database, data.toJson());
+    _userController.add(data);
   }
 
   @override

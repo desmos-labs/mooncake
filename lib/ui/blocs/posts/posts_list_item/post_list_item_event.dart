@@ -13,16 +13,16 @@ abstract class PostListItemEvent extends Equatable {
 
 /// Tells the BLoC that the data has been loaded.
 class DataLoaded extends PostListItemEvent {
-  final AccountData account;
+  final User user;
   final Post post;
 
-  DataLoaded({@required this.account, @required this.post});
+  DataLoaded({@required this.user, @required this.post});
 
   @override
-  List<Object> get props => [account, post];
+  List<Object> get props => [user, post];
 
   @override
-  String toString() => 'DataLoaded { account: $account, post: $post }';
+  String toString() => 'DataLoaded { user: $user, post: $post }';
 }
 
 /// Tells the BLoC that it needs to either set as liked/unliked the given post.

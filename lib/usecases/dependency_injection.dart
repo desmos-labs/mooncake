@@ -42,14 +42,12 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => LoginUseCase(
             userRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => GetAddressUseCase(
-            userRepository: injector.get(),
-          ))
-      ..bindFactory((injector, params) => GetAccountUseCase(
-            userRepository: injector.get(),
-          ))
       ..bindFactory((injector, params) => GetUserUseCase(
             userRepository: injector.get(),
+          ))
+      // Notifications use cases
+      ..bindFactory((injector, params) => GetNotificationsUseCase(
+            repository: injector.get(),
           ));
   }
 }

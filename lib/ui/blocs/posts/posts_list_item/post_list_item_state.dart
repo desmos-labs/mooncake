@@ -18,7 +18,7 @@ class PostListItemLoading extends PostListItemState {
 /// present inside a posts list.
 class PostListItemLoaded extends PostListItemState {
   /// Account that is currently used from the user.
-  final AccountData account;
+  final User user;
 
   /// Post that is shown inside the item itself.
   final Post post;
@@ -39,12 +39,12 @@ class PostListItemLoaded extends PostListItemState {
 
   /// Tells whether the user has reacted with the given [reaction] or not.
   bool hasUserReactedWith(String reaction) => post.reactions.contains(Reaction(
-        owner: account.address,
+        owner: user.accountData.address,
         value: reaction,
       ));
 
   const PostListItemLoaded({
-    @required this.account,
+    @required this.user,
     @required this.post,
     @required this.actionBarExpanded,
   });
@@ -55,18 +55,18 @@ class PostListItemLoaded extends PostListItemState {
     bool actionBarExpanded,
   }) {
     return PostListItemLoaded(
-      account: account ?? this.account,
+      user: account ?? this.user,
       post: post ?? this.post,
       actionBarExpanded: actionBarExpanded ?? this.actionBarExpanded,
     );
   }
 
   @override
-  List<Object> get props => [account, post, actionBarExpanded];
+  List<Object> get props => [user, post, actionBarExpanded];
 
   @override
   String toString() => 'PostListItemState {'
-      'account: $account, '
+      'user: $user, '
       'post: $post, '
       'actionBarExpanded: $actionBarExpanded '
       '}';

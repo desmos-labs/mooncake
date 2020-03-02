@@ -16,9 +16,11 @@ class LoginUseCase {
     await _userRepository.saveWallet(mnemonic);
 
     // Get the account data
-    final account = await _userRepository.getAccount();
-    if (account == null || account.coins?.isEmpty != false) {
-      await _userRepository.fundAccount(account);
+    final user = await _userRepository.getUserData();
+
+    // If needed, send the funds to the user
+    if (user?.needsFunding == true) {
+      await _userRepository.fundUser(user);
     }
   }
 }

@@ -27,10 +27,10 @@ class LoggedOut extends AccountState {
 /// access the main page of the application.
 class LoggedIn extends AccountState {
   /// Represents the currently used account.
-  final AccountData account;
+  final User user;
 
-  LoggedIn(this.account);
+  LoggedIn(this.user);
 
   @override
-  String toString() => 'LoggedIn { account: $account }';
+  String toString() => 'LoggedIn { user: $user }';
 }

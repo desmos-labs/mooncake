@@ -4,14 +4,14 @@ import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to react a post having a specific id.
 class ManagePostReactionsUseCase {
-  final UserRepository _walletRepository;
+  final UserRepository _userRepository;
   final PostsRepository _postsRepository;
 
   ManagePostReactionsUseCase({
     @required UserRepository walletRepository,
     @required PostsRepository postsRepository,
   })  : assert(walletRepository != null),
-        _walletRepository = walletRepository,
+        _userRepository = walletRepository,
         assert(postsRepository != null),
         _postsRepository = postsRepository;
 
@@ -32,8 +32,11 @@ class ManagePostReactionsUseCase {
     }
 
     // Build the reaction object
-    final address = await _walletRepository.getAddress();
-    final reactionObj = Reaction(owner: address, value: reaction);
+    final user = await _userRepository.getUserData();
+    final reactionObj = Reaction(
+      owner: user.accountData.address,
+      value: reaction,
+    );
 
     // Add it to the list of reactions if not present and save the new post
     if (!post.reactions.contains(reactionObj)) {

@@ -12,7 +12,7 @@ class Account extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
-        final account = (state as LoggedIn).account;
+        final account = (state as LoggedIn).user;
 
         return Container(
           padding: EdgeInsets.all(16),

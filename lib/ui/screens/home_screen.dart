@@ -12,6 +12,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, activeTab) {
+
+        Widget body = Container();
+        if (activeTab == AppTab.allPosts) {
+          body = PostsList(filter: (p) => !p.hasParent);
+        } else if (activeTab == AppTab.notifications) {
+          body = NotificationsMainContent();
+        } else if (activeTab == AppTab.account) {
+          body = Account();
+        }
+
         return Scaffold(
           appBar: AppBar(
             elevation: 1,
@@ -32,9 +42,7 @@ class HomeScreen extends StatelessWidget {
               )
             ],
           ),
-          body: activeTab == AppTab.allPosts
-              ? PostsList(filter: (p) => !p.hasParent)
-              : Account(),
+          body: body,
           bottomNavigationBar: TabSelector(),
         );
       },

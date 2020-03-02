@@ -13,7 +13,7 @@ import 'package:mooncake/usecases/usecases.dart';
 /// Handles the login events and emits the proper state instances.
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final LoginUseCase _loginUseCase;
-  final GetAccountUseCase _getAccountUseCase;
+  final GetUserUseCase _getUserUseCase;
   final FirebaseAnalytics _analytics;
 
   final NavigatorBloc _navigatorBloc;
@@ -22,19 +22,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   AccountBloc({
     @required LoginUseCase loginUseCase,
-    @required GetAccountUseCase getAccountUseCase,
+    @required GetUserUseCase getUserUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
   })  : assert(loginUseCase != null),
         _loginUseCase = loginUseCase,
-        assert(getAccountUseCase != null),
-        _getAccountUseCase = getAccountUseCase,
+        assert(getUserUseCase != null),
+        _getUserUseCase = getUserUseCase,
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(analytics != null),
         _analytics = analytics {
     // Listen for account changes so that we know when to refresh
-    _accountSubscription = _getAccountUseCase.stream().listen((account) {
+    _accountSubscription = _getUserUseCase.stream().listen((account) {
       add(Refresh(account));
     });
   }
@@ -42,7 +42,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   factory AccountBloc.create(BuildContext context) {
     return AccountBloc(
       loginUseCase: Injector.get(),
-      getAccountUseCase: Injector.get(),
+      getUserUseCase: Injector.get(),
       navigatorBloc: BlocProvider.of(context),
       analytics: Injector.get(),
     );
@@ -65,7 +65,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   }
 
   Stream<AccountState> _mapCheckStatusEventToState() async* {
-    final account = await _getAccountUseCase.single();
+    final account = await _getUserUseCase.single();
     if (account != null) {
       yield LoggedIn(account);
     } else {
@@ -75,7 +75,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
     await _loginUseCase.login(event.mnemonic);
-    final account = await _getAccountUseCase.single();
+    final account = await _getUserUseCase.single();
     yield LoggedIn(account);
     _navigatorBloc.add(NavigateToHome());
   }

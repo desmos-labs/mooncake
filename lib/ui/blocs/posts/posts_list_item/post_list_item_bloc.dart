@@ -25,7 +25,7 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
     return PostListItemBloc(
       managePostReactionsUseCase: Injector.get(),
     )..add(DataLoaded(
-        account: (accountBloc.state as LoggedIn).account,
+        user: (accountBloc.state as LoggedIn).user,
         post: post,
       ));
   }
@@ -55,7 +55,7 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
     yield PostListItemLoaded(
       actionBarExpanded: false,
       post: event.post,
-      account: event.account,
+      user: event.user,
     );
   }
 

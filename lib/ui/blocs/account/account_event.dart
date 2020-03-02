@@ -29,12 +29,12 @@ class LogIn extends AccountEvent {
 /// Tells the BLoC to refresh the currently saved account replacing it
 /// with the new one.
 class Refresh extends AccountEvent {
-  final AccountData accountData;
+  final User user;
 
-  Refresh(this.accountData);
+  Refresh(this.user);
 
   @override
-  List<Object> get props => [accountData];
+  List<Object> get props => [user];
 }
 
 class LogOut extends AccountEvent {

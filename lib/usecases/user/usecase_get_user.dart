@@ -10,7 +10,13 @@ class GetUserUseCase {
       : this._userRepository = userRepository;
 
   /// Returns the current user of the application.
-  Future<User> get() {
-    return _userRepository.getUser();
+  Future<User> single() {
+    return _userRepository.getUserData();
+  }
+
+  /// Returns the [Stream] that emits all the [User] objects
+  /// as soon as they are stored.
+  Stream<User> stream() {
+    return _userRepository.userStream;
   }
 }

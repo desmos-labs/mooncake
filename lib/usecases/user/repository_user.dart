@@ -7,27 +7,20 @@ abstract class UserRepository {
   /// allowing it to be retrieved later.
   Future<void> saveWallet(String mnemonic);
 
-  /// Returns the data about the user currently using the application.
-  Future<User> getUser();
-
-  /// Returns the address associated to the user wallet.
-  /// If no address has been set, returns `null` instead.
-  Future<String> getAddress();
-
   /// Returns the [Wallet] instance of the current application user.
   /// If no [Wallet] instance has been saved yet, returns null.
   Future<Wallet> getWallet();
 
-  /// Returns a stream that emits all the account changes.
-  Stream<AccountData> observeAccount();
-
   /// Returns the [AccountData] object containing the info of the current user.
-  /// If no wallet has been saved using [saveWallet] and the account data
-  /// cannot be retrieved, returns `null` instead.
-  Future<AccountData> getAccount();
+  /// If no [User] or [Wallet] have been saved using [saveWallet] and the
+  /// account data cannot be retrieved, returns `null` instead.
+  Future<User> getUserData();
 
-  /// Allows to sends funds from the faucet to the specified [account].
-  Future<void> fundAccount(AccountData account);
+  /// Returns a stream that emits all the user changes.
+  Stream<User> get userStream;
+
+  /// Allows to sends funds from the faucet to the specified [user].
+  Future<void> fundUser(User user);
 
   /// Deletes entirely the currently stored account data.
   Future<void> deleteData();

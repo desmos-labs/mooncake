@@ -99,7 +99,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     _initializeStreamListening();
     _initializeSyncTimer();
 
-    final user = await _getUserUseCase.get();
+    final user = await _getUserUseCase.single();
 
     final currentState = state;
     if (currentState is PostsLoaded) {

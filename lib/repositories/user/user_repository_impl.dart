@@ -4,14 +4,11 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:rxdart/rxdart.dart';
 
 /// Implementation of [UserRepository].
 class UserRepositoryImpl extends UserRepository {
   final RemoteUserSource _remoteUserSource;
   final LocalUserSource _localUserSource;
-
-  final StreamController _accountController = BehaviorSubject<AccountData>();
 
   UserRepositoryImpl({
     @required LocalUserSource localUserSource,
@@ -22,44 +19,6 @@ class UserRepositoryImpl extends UserRepository {
         this._remoteUserSource = remoteUserSource;
 
   @override
-  Future<User> getUser() async {
-    return User(
-      address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
-      username: "Desmos",
-      avatarUrl:
-          "https://pbs.twimg.com/profile_images/1206578012549980162/6L485PKE_400x400.jpg",
-    );
-
-    // TODO: implement getUser
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String> getAddress() {
-    return _localUserSource.getAddress();
-  }
-
-  @override
-  Future<Wallet> getWallet() {
-    return _localUserSource.getWallet();
-  }
-
-  Future<void> _updateAndStoreAccountData() async {
-    final address = await _localUserSource.getAddress();
-    if (address != null) {
-      final data = (await _remoteUserSource.getAccountData(address)) ??
-          AccountData(
-            address: address,
-            accountNumber: 0,
-            sequence: 0,
-            coins: [],
-          );
-      await _localUserSource.saveAccountData(data);
-      _accountController.add(data);
-    }
-  }
-
-  @override
   Future<void> saveWallet(String mnemonic) async {
     return _localUserSource
         .saveWallet(mnemonic)
@@ -67,17 +26,33 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Stream<AccountData> observeAccount() => _accountController.stream;
-
-  @override
-  Future<AccountData> getAccount() async {
-    return _updateAndStoreAccountData()
-        .then((_) => _localUserSource.getAccountData());
+  Future<Wallet> getWallet() {
+    return _localUserSource.getWallet();
   }
 
   @override
-  Future<void> fundAccount(AccountData account) {
-    return _remoteUserSource.fundAccount(account);
+  Future<User> getUserData() async {
+    return _updateAndStoreAccountData().then((_) => _localUserSource.getUser());
+  }
+
+  @override
+  Stream<User> get userStream => _localUserSource.userStream;
+
+  Future<void> _updateAndStoreAccountData() async {
+    final user = await _localUserSource.getUser();
+    if (user == null) {
+      // No User stored locally, nothing to update
+      return;
+    }
+
+    // Update the data from the remote source and save it locally
+    final data = await _remoteUserSource.getUser(user.accountData.address);
+    await _localUserSource.saveUser(data);
+  }
+
+  @override
+  Future<void> fundUser(User user) {
+    return _remoteUserSource.fundUser(user);
   }
 
   @override
