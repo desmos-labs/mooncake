@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/entities/entities.dart';
 
@@ -37,7 +38,12 @@ class PostLikeAction extends StatelessWidget {
               onTapCancel: () {
                 bloc.add(PostLikeButtonSelectedStateChanged(false));
               },
-              child: icon,
+              child: SvgPicture.asset(
+                state.isLiked || state.isSelected
+                    ? "assets/icons/icon_like_pressed.png"
+                    : "assets/icons/icon_like_default.png",
+                color: iconColor,
+              ),
             ),
             const SizedBox(width: 5.0),
             Text(

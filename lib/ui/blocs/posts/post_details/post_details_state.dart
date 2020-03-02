@@ -17,16 +17,33 @@ class LoadingPostDetails extends PostDetailsState {
   String toString() => 'LoadingPostDetails';
 }
 
+enum PostDetailsTab { COMMENTS, REACTIONS }
+
 /// Represents the state that tells the post details have been loaded
 /// properly and are ready to be shown.
 class PostDetailsLoaded extends PostDetailsState {
   final Post post;
   final List<Post> comments;
+  final PostDetailsTab selectedTab;
 
-  PostDetailsLoaded({@required this.post, @required this.comments});
+  PostDetailsLoaded({
+    @required this.post,
+    @required this.comments,
+    @required this.selectedTab,
+  });
 
   @override
-  List<Object> get props => [post, comments];
+  List<Object> get props => [post, comments, selectedTab];
+
+  PostDetailsLoaded copyWith({
+    Post post,
+    List<Post> comments,
+    PostDetailsTab selectedTab,
+  }) {
+    return PostDetailsLoaded(
+      post: post ?? this.post,
+      comments: comments ?? this.comments,
+      selectedTab: selectedTab ?? this.selectedTab
+    );
+  }
 }
-
-

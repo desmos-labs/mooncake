@@ -21,7 +21,6 @@ class PostDetailsScreen extends StatelessWidget {
       ),
       body: Container(
         color: Colors.white,
-        padding: PostsTheme.postItemPadding,
         child: BlocProvider<PostDetailsBloc>(
           create: (context) => PostDetailsBloc.create(context, postId),
           child: BlocBuilder<PostDetailsBloc, PostDetailsState>(

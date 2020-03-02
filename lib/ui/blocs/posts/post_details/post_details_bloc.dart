@@ -41,6 +41,8 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
       yield* _mapLoadPostDetailsEventToState(event);
     } else if (event is ShowPostDetails) {
       yield* _mapShowPostDetailsEventToState(event);
+    } else if (event is ShowTab) {
+      yield* _mapShowTabEventToState(event);
     }
   }
 
@@ -61,7 +63,18 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   Stream<PostDetailsState> _mapShowPostDetailsEventToState(
     ShowPostDetails event,
   ) async* {
-    yield PostDetailsLoaded(post: event.post, comments: event.comments);
+    yield PostDetailsLoaded(
+      post: event.post,
+      comments: event.comments,
+      selectedTab: PostDetailsTab.COMMENTS,
+    );
+  }
+
+  Stream<PostDetailsState> _mapShowTabEventToState(ShowTab event) async* {
+    final currentState = state;
+    if (currentState is PostDetailsLoaded) {
+      yield currentState.copyWith(selectedTab: event.tab);
+    }
   }
 
   @override

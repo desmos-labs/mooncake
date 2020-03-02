@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic event related to the visualization of a post details.
 abstract class PostDetailsEvent extends Equatable {
@@ -36,4 +37,17 @@ class ShowPostDetails extends PostDetailsEvent {
 
   @override
   String toString() => 'ShowPostDetails { post: $post, comments: $comments }';
+}
+
+/// Tells the BLoC that it needs to visualize the selected tab.
+class ShowTab extends PostDetailsEvent {
+  final PostDetailsTab tab;
+
+  ShowTab(this.tab);
+
+  @override
+  List<Object> get props => [tab];
+
+  @override
+  String toString() => 'ShowTab { tab: $tab }';
 }

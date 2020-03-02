@@ -28,6 +28,7 @@ dependencies:
   flutter_markdown:
   flutter_screenutil:
   flutter_secure_storage:
+  flutter_sticky_header:
   flutter_svg:
   font_awesome_flutter:
   http:
@@ -59,6 +60,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/icons/
   fonts:
     - family: Dosis
       fonts:
