@@ -8,11 +8,10 @@ class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "https://ipfs.desmos.network";
 
-  // TODO: Change this
-//  static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
-//  static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";
-  static const _lcdUrl = "http://10.0.2.2:1317";
-  static const _rpcUrl = "http://10.0.2.2:26657";
+  static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
+  static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";
+//  static const _lcdUrl = "http://10.0.2.2:1317";
+//  static const _rpcUrl = "http://10.0.2.2:26657";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
