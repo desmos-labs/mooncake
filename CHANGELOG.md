@@ -1,3 +1,7 @@
+# Verion 0.0.13
+## Bug fixes
+ - Fixed wrong LCD and RPC endpoint
+
 # Version 0.0.12
 ## Changes
 - Added the support for push notifications
