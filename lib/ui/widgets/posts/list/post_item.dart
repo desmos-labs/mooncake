@@ -84,6 +84,7 @@ class PostItem extends StatelessWidget {
                               data: post.message,
                               key: PostsKeys.postItemMessage(post.id),
                               styleSheet: mdStyle,
+                              onTapLink: _openLink,
                             ),
                             const SizedBox(height: 4),
                             PostItemHeader(
@@ -171,5 +172,11 @@ class PostItem extends StatelessWidget {
       Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     });
+  }
+
+  void _openLink(String href) async {
+    if (await canLaunch(href)) {
+      await launch(href);
+    }
   }
 }

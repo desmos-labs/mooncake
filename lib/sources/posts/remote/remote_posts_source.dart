@@ -69,8 +69,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         .skip(queryList.length)
         .map((data) => TxEvent.fromJson(jsonDecode(data)))
         .map((txEvent) => txEvent.result.data.value.txResult.height)
-        .asyncMap((height) => parseBlock(height))
-        .where((list) => list.isNotEmpty)
+        // TODO: Re-implement this as it has been deleted to Cosmos v0.38.0 /txs?tx.height not working properly
+        .map((height) => [PostEvent(height: height, postId: "1")])
+//        .asyncMap((height) => parseBlock(height))
+//        .where((list) => list.isNotEmpty)
         .expand((list) => list)
         .handleError((e) => print('Remote posts channel exception: $e'));
   }

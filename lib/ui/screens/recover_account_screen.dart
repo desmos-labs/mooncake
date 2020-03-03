@@ -37,6 +37,10 @@ class RecoverAccountScreen extends StatelessWidget {
                     Text(
                       PostsLocalizations.of(context)
                           .mnemonicRecoverInstructions,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontSize: 16),
                     ),
                     const SizedBox(height: 16),
                     Expanded(

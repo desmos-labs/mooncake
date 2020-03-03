@@ -21,20 +21,23 @@ class PostsRepositoryImpl extends PostsRepository {
     // Initialize the events update
     _remotePostsSource
         .getEventsStream()
-        .asyncMap((event) {
-          if (event is PostCreatedEvent) {
-            return _mapPostCreatedEventToPosts(event);
-          } else if (event is PostEvent) {
-            return _mapPostEventToPosts(event);
-          } else {
-            return [];
-          }
-        })
-        .expand((posts) => posts as List<Post>)
+        .asyncMap((event) => _remotePostsSource.getPosts())
+        // TODO: Re-implement this as the getEventsStream() has been edited
+//        .asyncMap((event) {
+//          if (event is PostCreatedEvent) {
+//            return _mapPostCreatedEventToPosts(event);
+//          } else if (event is PostEvent) {
+//            return _mapPostEventToPosts(event);
+//          } else {
+//            return [];
+//          }
+//        })
+//        .expand((posts) => posts as List<Post>)
+        .expand((posts) => posts)
         .where((p) => p.subspace == Constants.SUBSPACE)
         .listen((post) async {
-          _localPostsSource.savePost(post, emit: true);
-        });
+      _localPostsSource.savePost(post, emit: true);
+    });
   }
 
   /// Transforms the given [event] to the list of posts to be updated.

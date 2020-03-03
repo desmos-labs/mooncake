@@ -6,7 +6,7 @@ import 'package:mooncake/sources/sources.dart';
 
 class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
-  static const _ipfsEndpoint = "https://ipfs.desmos.network";
+  static const _ipfsEndpoint = "ipfs.desmos.network";
 
   static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
   static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";

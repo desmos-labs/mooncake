@@ -29,7 +29,7 @@ class PostsTheme {
       scaffoldBackgroundColor: Colors.grey[200],
 
       // Define the default font family.
-      fontFamily: 'Dosis',
+      fontFamily: 'Roboto',
       textTheme: Typography.englishLike2018.copyWith(
         bodyText2: TextStyle(color: textColor, fontWeight: FontWeight.w500),
       ),

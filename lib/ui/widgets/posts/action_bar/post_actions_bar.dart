@@ -39,7 +39,7 @@ class PostActionsBar extends StatelessWidget {
           children: <Widget>[
             Icon(statusIcon, size: ICON_SIZE),
             const SizedBox(width: ICON_SPACING / 2),
-            Text(showFormatter.format(post.dateTime)),
+            Text(showFormatter.format(post.dateTime.toLocal())),
             const SizedBox(width: ICON_SPACING),
             PostAction(
               icon: post.allowsComments

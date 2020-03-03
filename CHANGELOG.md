@@ -1,3 +1,11 @@
+# Version 0.0.14
+## Bug fixes
+- Fixed non-clickable links inside posts
+- Fixed poor contrast inside the account recover page
+- Fixed the post time showing in UTC and not local time
+- Fixed the upload of images
+- Fixed the posts list not updating correctly
+
 # Version 0.0.13
 ## Bug fixes
  - Fixed wrong LCD and RPC endpoint

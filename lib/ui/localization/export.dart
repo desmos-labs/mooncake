@@ -30,7 +30,7 @@ class PostsLocalizations {
 
   // Mnemonic recover screen
   String get mnemonicRecoverInstructions =>
-      "Write here your mnemonic code, space separated";
+      "Write below your mnemonic code, space separated:";
   String get mnemonicHint => "Mnemonic";
   String get recoverAccount => "Recover account";
   String get invalidMnemonic => "Invalid mnemonic";
