@@ -15,11 +15,14 @@ class PostsLocalizations {
   String get splashLoadingData => "Loading data...";
 
   // Login
-  String get loginTitle => "Hello, dreamer!";
-  String get loginText =>
-      "Welcome to a new world of decentralized social networks";
-  String get recoverFromMnemonic => "Recover from mnemonic";
-  String get generateNewAccount => "Generate new account";
+  String get createAccountButtonText => "Create account";
+  String get alreadyHaveMnemonicButtonText => "I already have a mnemonic";
+
+  String get accountCreatedPopupTitleFirstRow => "The account";
+  String get accountCreatedPopupTitleSecondRow => "Has been created";
+  String get accountCreatedPopupText => "You can backup your phrase later";
+  String get accountCreatedPopupMainButtonText => "Go to Mooncake";
+  String get accountCreatedPopupBackupButtonText => "Backup mnemonic phrase";
 
   // Mnemonic generation screen
   String get createAccount => "Create account";

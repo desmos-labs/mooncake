@@ -39,7 +39,7 @@ class Account extends StatelessWidget {
                       PostsLocalizations.of(context).yourAddress,
                       style: Theme.of(context).textTheme.headline6,
                     ),
-                    Text(account.address),
+                    Text(account.accountData.address),
                     const SizedBox(height: 16),
                     Text(
                       PostsLocalizations.of(context).yourFunds,
@@ -48,9 +48,9 @@ class Account extends StatelessWidget {
                     Flexible(
                       child: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: account.coins.length,
+                        itemCount: account.accountData.coins.length,
                         itemBuilder: (context, index) {
-                          final coin = account.coins[index];
+                          final coin = account.accountData.coins[index];
                           return Text("${coin.amount} ${coin.denom}");
                         },
                       ),
@@ -60,7 +60,7 @@ class Account extends StatelessWidget {
               ),
               RaisedButton(
                 child: Text(PostsLocalizations.of(context).openInExplorer),
-                onPressed: () => _openInExplorer(account),
+                onPressed: () => _openInExplorer(account.accountData),
               )
             ],
           ),

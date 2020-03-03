@@ -12,7 +12,9 @@ import 'package:mooncake/usecases/usecases.dart';
 
 /// Handles the login events and emits the proper state instances.
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
+  final GenerateMnemonicUseCase _generateMnemonicUseCase;
   final LoginUseCase _loginUseCase;
+  final LogoutUseCase _logoutUseCase;
   final GetUserUseCase _getUserUseCase;
   final FirebaseAnalytics _analytics;
 
@@ -21,12 +23,18 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   StreamSubscription _accountSubscription;
 
   AccountBloc({
+    @required GenerateMnemonicUseCase generateMnemonicUseCase,
     @required LoginUseCase loginUseCase,
+    @required LogoutUseCase logoutUseCase,
     @required GetUserUseCase getUserUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
-  })  : assert(loginUseCase != null),
+  })  : assert(generateMnemonicUseCase != null),
+        _generateMnemonicUseCase = generateMnemonicUseCase,
+        assert(loginUseCase != null),
         _loginUseCase = loginUseCase,
+  assert(logoutUseCase != null),
+  _logoutUseCase = logoutUseCase,
         assert(getUserUseCase != null),
         _getUserUseCase = getUserUseCase,
         assert(navigatorBloc != null),
@@ -41,7 +49,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   factory AccountBloc.create(BuildContext context) {
     return AccountBloc(
+      generateMnemonicUseCase: Injector.get(),
       loginUseCase: Injector.get(),
+      logoutUseCase: Injector.get(),
       getUserUseCase: Injector.get(),
       navigatorBloc: BlocProvider.of(context),
       analytics: Injector.get(),
@@ -55,15 +65,17 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> mapEventToState(AccountEvent event) async* {
     if (event is CheckStatus) {
       yield* _mapCheckStatusEventToState();
+    } else if (event is GenerateAccount) {
+      yield* _mapGenerateAccountEventToState();
     } else if (event is LogIn) {
-      _analytics.logLogin();
       yield* _mapLogInEventToState(event);
     } else if (event is LogOut) {
-      _analytics.logEvent(name: Constants.EVENT_LOGOUT);
       yield* _mapLogOutEventToState();
     }
   }
 
+  /// Checks the current user state, determining if it is logged in or not.
+  /// After the check, either [LoggedIn] or [LoggedOut] are emitted.
   Stream<AccountState> _mapCheckStatusEventToState() async* {
     final account = await _getUserUseCase.single();
     if (account != null) {
@@ -73,14 +85,29 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     }
   }
 
+  /// Handle the [GenerateAccount] event, which is emitted when the user wants
+  /// to create a new account. It creates a new account, stores it locally
+  /// and later yield the [LoggedIn] state.
+  Stream<AccountState> _mapGenerateAccountEventToState() async* {
+    yield CreatingAccount();
+    final mnemonic = await _generateMnemonicUseCase.generate();
+    await _loginUseCase.login(mnemonic.join(" "));
+  }
+
+  /// Handle the [LogIn] event, emitting the [LoggedIn] state as well
+  /// as sending the user to the Home screen.
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
-    await _loginUseCase.login(event.mnemonic);
+    _analytics.logLogin();
     final account = await _getUserUseCase.single();
     yield LoggedIn(account);
     _navigatorBloc.add(NavigateToHome());
   }
 
+  /// Handles the [LogOut] event emitting the [LoggedOut] state after
+  /// effectively logging out the user.
   Stream<AccountState> _mapLogOutEventToState() async* {
+    _analytics.logEvent(name: Constants.EVENT_LOGOUT);
+    await _logoutUseCase.logout();
     yield LoggedOut();
   }
 

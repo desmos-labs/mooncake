@@ -16,14 +16,18 @@ class CheckStatus extends AccountEvent {
   String toString() => 'CheckStatus';
 }
 
+/// Tells the BLoC that a new account should be generated and properly stored
+/// inside the local device. Once the account has been generated, the
+/// [AccountGenerated] state should be emitted.
+class GenerateAccount extends AccountEvent {
+  @override
+  String toString() => 'GenerateAccount';
+}
+
 /// Tells the bloc to log in the user showing him the home screen.
 class LogIn extends AccountEvent {
-  final String mnemonic;
-
-  LogIn(this.mnemonic);
-
   @override
-  List<Object> get props => [mnemonic];
+  String toString() => 'LogIn';
 }
 
 /// Tells the BLoC to refresh the currently saved account replacing it
@@ -37,6 +41,7 @@ class Refresh extends AccountEvent {
   List<Object> get props => [user];
 }
 
+/// Tells the BLoC to log out the user from the application.
 class LogOut extends AccountEvent {
   @override
   String toString() => 'LogOut';

@@ -101,7 +101,7 @@ class LocalUserSourceImpl extends LocalUserSource {
 
     // If the database does not have the user, build it from the address
     final wallet = await getWallet();
-    final address = wallet.bech32Address;
+    final address = wallet?.bech32Address;
 
     // If the address is null return null
     if (address == null) {
@@ -121,6 +121,11 @@ class LocalUserSourceImpl extends LocalUserSource {
 
   @override
   Future<void> saveUser(User data) async {
+    // Null user, nothing to do
+    if (data == null) {
+      return;
+    }
+
     final database = await this._database;
     await _store.record(_USER_DATA_KEY).put(database, data.toJson());
     _userController.add(data);

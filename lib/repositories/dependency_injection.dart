@@ -20,8 +20,8 @@ class RepositoriesModule implements Module {
               ))
       ..bindLazySingleton<PostsRepository>(
           (injector, params) => PostsRepositoryImpl(
-                localSource: injector.get(name: "local"),
-                remoteSource: injector.get(name: "remote"),
+                localSource: injector.get(),
+                remoteSource: injector.get(),
               ))
       ..bindLazySingleton<NotificationsRepository>(
           (injector, params) => NotificationsRepositoryImpl(

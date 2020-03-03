@@ -3,9 +3,8 @@ import 'package:flutter/widgets.dart';
 class PostsKeys {
   static final navigatorKey = GlobalKey<NavigatorState>();
 
-  static final statsLoadingIndicator = const Key('__statsLoadingIndicator__');
-  static final emptyStatsContainer = const Key('__emptyStatsContainer__');
-  static final emptyDetailsContainer = const Key('__emptyDetailsContainer__');
+  // --- Login ---
+  static final loginScreenLogo = const Key('__loginScreenLogo__');
 
   static final addPost = const Key('__addPost__');
   static final tabs = const Key('__tabs__');

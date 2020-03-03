@@ -38,20 +38,25 @@ class SourcesModule implements Module {
               ))
       // Post sources
       ..bindLazySingleton<LocalPostsSource>(
-        (injector, params) => LocalPostsSourceImpl(
-          dbName: "posts.db",
-        ),
-        name: "local",
-      )
+          (injector, params) => LocalPostsSourceImpl(
+                dbName: "posts.db",
+              ))
       ..bindLazySingleton<RemotePostsSource>(
-        (injector, params) => RemotePostsSourceImpl(
-          rpcEndpoint: _rpcUrl,
-          chainHelper: injector.get(),
-          userSource: injector.get(),
-          eventsConverter: ChainEventsConverter(),
-          msgConverter: MsgConverter(),
-        ),
-        name: "remote",
-      );
+          (injector, params) => RemotePostsSourceImpl(
+                rpcEndpoint: _rpcUrl,
+                chainHelper: injector.get(),
+                userSource: injector.get(),
+                eventsConverter: ChainEventsConverter(),
+                msgConverter: MsgConverter(),
+              ))
+      // Notifications source
+      ..bindLazySingleton<RemoteNotificationsSource>(
+          (injector, params) => RemoteNotificationsSourceImpl(
+                localUserSource: injector.get(),
+              ))
+      ..bindLazySingleton<LocalNotificationsSource>(
+          (injector, params) => LocalNotificationsSourceImpl(
+                dbName: "user.db",
+              ));
   }
 }

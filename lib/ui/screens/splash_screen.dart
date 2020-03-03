@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the screen that is shown to the user during the application
@@ -10,37 +9,21 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
-        if (state is LoggedOut) {
+//        if (state is LoggedOut) {
           return LoginScreen();
-        } else if (state is LoggedIn) {
-          return _homeScreen();
-        }
+//        } else if (state is LoggedIn) {
+//          return _homeScreen();
+//        }
 
         return Container(
-          padding: EdgeInsets.all(16.0),
-          color: PostsTheme.primaryColor,
+          color: ThemeColors.splashScreenBackgroundColor,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SvgPicture.asset(
-                'assets/images/logo.svg',
-                width: 100,
-                color: Colors.white,
-              ),
-              Text(
-                PostsLocalizations.of(context).appTitle,
-                style: PostsTheme.theme.textTheme.bodyText2.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                PostsLocalizations.of(context).splashLoadingData,
-                style: PostsTheme.theme.textTheme.bodyText2.copyWith(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
+              SizedBox(height: 175),
+              Image(
+                image: AssetImage('assets/images/login_screen_logo.png'),
+                key: PostsKeys.loginScreenLogo,
+                width: 125,
               ),
             ],
           ),

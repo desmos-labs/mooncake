@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+export 'colors.dart';
+export 'text_themes.dart';
+
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
   static const double defaultPadding = 10.0;
@@ -39,9 +42,9 @@ class PostsTheme {
       scaffoldBackgroundColor: Colors.white,
 
       // Define the default font family.
-      fontFamily: 'Roboto',
+      fontFamily: 'Montserrat',
       textTheme: Typography.englishLike2018.copyWith(
-        bodyText2: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+        bodyText2: TextStyle(color: textColor, fontWeight: FontWeight.w400),
       ),
       buttonTheme: ButtonThemeData(
         buttonColor: accentColor,

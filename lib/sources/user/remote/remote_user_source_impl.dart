@@ -22,15 +22,17 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   @override
   Future<User> getUser(String address) async {
     try {
-      final endpoint = "/auth/accounts/$address";
-      final response = await _chainHelper.queryChain(endpoint);
-      final result = response.result;
-      if (result.isEmpty) {
-        throw Exception("Empty account result");
-      }
+      // TODO: Implement the user retrieval using GraphQL
+      final query = '''
+        query AverageTxPerBlock {
+          account(where: {address: {_eq: $address}}) {
+            num_txs
+            total_gas
+          }
+        }
+      ''';
 
-      final accountData = AccountDataResponse.fromJson(result).accountData;
-      return accountData.address?.isEmpty == true ? null : accountData;
+      return null;
     } catch (e) {
       print(e);
       return null;

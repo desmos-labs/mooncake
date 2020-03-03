@@ -23,6 +23,7 @@ class NotificationsManager {
   /// Initializes the manager subscribing to the proper streams as well
   /// as setting up necessary plugins.
   void init() {
+    // TODO: Inject this via constructor
     final notificationsSource = Injector.get<RemoteNotificationsSource>();
     _foregroundSub = notificationsSource.foregroundStream.listen((message) {
       _showLocalNotification(message);
