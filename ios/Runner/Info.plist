@@ -19,7 +19,23 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>No</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>No</string>
+    <key>NSContactsUsageDescription</key>
+    <string>No</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>No</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>No</string>
+    <key>NSMotionUsageDescription</key>
+    <string>No</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Upload your file</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>No</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -29,8 +45,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
