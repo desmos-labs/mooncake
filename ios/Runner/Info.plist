@@ -20,24 +20,26 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>No</string>
-    <key>NSCalendarsUsageDescription</key>
-    <string>No</string>
-    <key>NSContactsUsageDescription</key>
-    <string>No</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>No</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>No</string>
-    <key>NSMotionUsageDescription</key>
-    <string>No</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Upload your file</string>
-    <key>NSSpeechRecognitionUsageDescription</key>
-    <string>No</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.social-networking</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>No</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>No</string>
+	<key>NSContactsUsageDescription</key>
+	<string>No</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>No</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>No</string>
+	<key>NSMotionUsageDescription</key>
+	<string>No</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Upload your photo</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>No</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
