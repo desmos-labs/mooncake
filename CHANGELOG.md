@@ -1,3 +1,7 @@
+# Version 0.0.15
+## Bug fixes 
+- Fixed the camera not working on iOS due to missing permissions 
+
 # Version 0.0.14
 ## Bug fixes
 - Fixed non-clickable links inside posts
