@@ -36,8 +36,6 @@
 	<string>No</string>
 	<key>NSMotionUsageDescription</key>
 	<string>No</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Upload your photo</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>No</string>
 	<key>NSCameraUsageDescription</key>
