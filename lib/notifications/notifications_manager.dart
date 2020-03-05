@@ -13,22 +13,37 @@ import 'package:mooncake/ui/ui.dart';
 /// Utility class which contains all the logic to properly handle notifications.
 class NotificationsManager {
   final BuildContext _context;
+  final RemoteNotificationsSource _notificationsSource;
+
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   StreamSubscription _foregroundSub;
   StreamSubscription _backgroundSub;
 
-  NotificationsManager(this._context);
+  NotificationsManager({
+    @required BuildContext context,
+    @required RemoteNotificationsSource remoteNotificationsSource,
+  })  : assert(context != null),
+        _context = context,
+        assert(remoteNotificationsSource != null),
+        _notificationsSource = remoteNotificationsSource;
+
+  /// Allows to easily create a new [NotificationManager] from the
+  /// provided [context].
+  factory NotificationsManager.create(BuildContext context) {
+    return NotificationsManager(
+      context: context,
+      remoteNotificationsSource: Injector.get(),
+    );
+  }
 
   /// Initializes the manager subscribing to the proper streams as well
   /// as setting up necessary plugins.
   void init() {
-    // TODO: Inject this via constructor
-    final notificationsSource = Injector.get<RemoteNotificationsSource>();
-    _foregroundSub = notificationsSource.foregroundStream.listen((message) {
+    _foregroundSub = _notificationsSource.foregroundStream.listen((message) {
       _showLocalNotification(message);
     });
-    _backgroundSub = notificationsSource.backgroundStream.listen((message) {
+    _backgroundSub = _notificationsSource.backgroundStream.listen((message) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _handleMessage(_context, message);
       });
@@ -43,19 +58,25 @@ class NotificationsManager {
 
   /// Handles the given [message] accordingly, performing the needed
   /// operation(s) based on its type and data payload.
-  void _handleMessage(BuildContext context, FcmMessage fcmMessage) {
-    final data = FcmOpenPostData.fromJson(fcmMessage.data ?? {});
-    switch (data?.action) {
-      case FcmOpenPostData.ACTION_SHOW_POST:
-        BlocProvider.of<NavigatorBloc>(context)
-          ..add(NavigateToPostDetails(context, data.postId));
-        break;
+  void _handleMessage(BuildContext context, NotificationData notification) {
+    if (notification is BasePostInteractionNotification) {
+      switch (notification?.action) {
+        case NotificationActions.ACTION_SHOW_POST:
+          BlocProvider.of<NavigatorBloc>(context)
+            ..add(NavigateToPostDetails(context, notification.postId));
+          break;
+      }
     }
   }
 
   /// Allows to properly show a local notification containing
   /// the given [fcmMessage] as the payload.
-  void _showLocalNotification(FcmMessage fcmMessage) async {
+  void _showLocalNotification(NotificationData notification) async {
+    if (notification.title == null || notification.body == null) {
+      // Empty title or body, return
+      return;
+    }
+
     // Android 7.0+ and 8.0+ channel creation
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       Constants.NOTIFICATION_CHANNEL_POSTS.id,
@@ -73,10 +94,10 @@ class NotificationsManager {
 
     await flutterLocalNotificationsPlugin.show(
       Random.secure().nextInt(1024),
-      fcmMessage.notification.title,
-      fcmMessage.notification.body,
+      notification.title,
+      notification.body,
       platformChannelSpecifics,
-      payload: jsonEncode(fcmMessage.toJson()),
+      payload: jsonEncode(notification.asJson()),
     );
   }
 }

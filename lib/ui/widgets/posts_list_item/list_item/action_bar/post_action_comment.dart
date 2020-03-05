@@ -13,17 +13,15 @@ class PostCommentAction extends StatelessWidget {
         final currentState = (state as PostListItemLoaded);
         return Row(
           children: <Widget>[
-            Icon(
-              currentState.post.allowsComments
-                  ? FontAwesomeIcons.comment
-                  : FontAwesomeIcons.commentSlash,
-              color: PostsTheme.textColorVeryLight,
+            FaIcon(
+              MooncakeIcons.comment,
+              color: ThemeColors.textColorLight,
             ),
             SizedBox(width: 5.0),
             Text(
               currentState.post.commentsIds.length.toStringOrEmpty(),
               style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: PostsTheme.textColorVeryLight,
+                color: ThemeColors.textColorLight,
               ),
             )
           ],

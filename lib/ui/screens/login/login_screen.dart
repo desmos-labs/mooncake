@@ -9,7 +9,6 @@ import 'package:mooncake/ui/ui.dart';
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: Complete this
     return Scaffold(
       backgroundColor: ThemeColors.loginBackgroundColor,
       body: SafeArea(
@@ -22,16 +21,21 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Image(
-                        image:
-                            AssetImage('assets/images/login_screen_logo.png'),
-                        width: 75,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image(
+                            image: AssetImage('assets/images/login_logo.png'),
+                            width: 75,
+                          ),
+                        ],
                       ),
                       if (!(state is AccountCreated)) LoginMainContent(),
                     ],
                   ),
                 ),
-                if (state is AccountCreated) AccountCreatedPopup(),
+                if (state is AccountCreated)
+                  LoginPopup(content: AccountCreatedPopupContent()),
               ],
             );
           },

@@ -63,6 +63,10 @@ flutter:
     - assets/images/
     - assets/icons/
   fonts:
+    - family: Mooncake
+      fonts:
+        - asset: assets/fonts/mooncake-icons.ttf
+          weight: 400
     - family: Dosis
       fonts:
         - asset: assets/fonts/dosis/Dosis-ExtraLight.ttf

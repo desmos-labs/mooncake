@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mooncake/ui/theme/colors.dart';
 
 export 'colors.dart';
 export 'text_themes.dart';
+export 'spaces.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
@@ -13,13 +15,6 @@ class PostsTheme {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
       );
-
-  static Color get primaryColor => Colors.white;
-  static Color get accentColor => Color(0xFFA94E89);
-
-  static Color get textColor => Colors.grey[800];
-  static Color get textColorLight => Colors.grey[700];
-  static Color get textColorVeryLight => Colors.grey[500];
 
   static EdgeInsets get postItemPadding => EdgeInsets.all(16);
 
@@ -33,21 +28,24 @@ class PostsTheme {
   static ThemeData get theme {
     return ThemeData(
       iconTheme: IconThemeData(
-        color: accentColor,
+        color: ThemeColors.accentColor,
       ),
       brightness: Brightness.light,
-      primaryColor: primaryColor,
-      accentColor: accentColor,
+      primaryColor: ThemeColors.primaryColor,
+      accentColor: ThemeColors.accentColor,
       primaryColorLight: Colors.white,
       scaffoldBackgroundColor: Colors.white,
 
       // Define the default font family.
       fontFamily: 'Montserrat',
       textTheme: Typography.englishLike2018.copyWith(
-        bodyText2: TextStyle(color: textColor, fontWeight: FontWeight.w400),
+        bodyText2: TextStyle(color: ThemeColors.textColor),
+      ),
+      accentTextTheme: Typography.englishLike2018.copyWith(
+        bodyText2: TextStyle(color: ThemeColors.textColorAccent),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: accentColor,
+        buttonColor: ThemeColors.accentColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),

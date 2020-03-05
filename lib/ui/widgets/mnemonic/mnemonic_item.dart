@@ -16,7 +16,7 @@ class MnemonicItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      backgroundColor: PostsTheme.primaryColor,
+      backgroundColor: ThemeColors.primaryColor,
       label: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

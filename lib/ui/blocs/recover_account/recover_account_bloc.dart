@@ -72,7 +72,9 @@ class RecoverAccountBloc
       try {
         _analytics.logEvent(name: Constants.EVENT_ACCOUNT_RECOVERED);
         yield RecoveredAccount(state.mnemonic);
-        _accountBloc.add(LogIn(state.mnemonic));
+
+
+//        _accountBloc.add(LogIn(state.mnemonic));
       } catch (error) {
         Logger.log(error);
         yield RecoverError(error);

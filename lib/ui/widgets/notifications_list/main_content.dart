@@ -25,11 +25,9 @@ class NotificationsMainContent extends StatelessWidget {
               children: tabs.map((Tab tab) {
                 return NotificationsList(
                   key: PageStorageKey<String>(tab.text),
-                  filter: (notification) {
-                    // Second tab must show only mentions
-                    return tabs.indexOf(tab) != 0 &&
-                        notification.type == NotificationDataType.mention;
-                  },
+                  filter: tabs.indexOf(tab) == 0
+                      ? null
+                      : (n) => n.type == NotificationTypes.MENTION,
                 );
               }).toList(),
             ),

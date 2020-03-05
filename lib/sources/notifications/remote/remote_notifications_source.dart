@@ -9,11 +9,15 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'notifications_converter.dart';
+
 class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   final LocalUserSource _localUserSource;
 
-  final FirebaseMessaging _fcm = FirebaseMessaging();
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final _fcm = FirebaseMessaging();
+  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  final _converter = NotificationConverter();
 
   /// Represents the last FCM topic of an address to which we have subscribed.
   String _lastAddressSubscribedTopic;
@@ -49,7 +53,7 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
       initializationSettingsAndroid,
       initializationSettingsIOS,
     );
-    flutterLocalNotificationsPlugin.initialize(
+    _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onSelectNotification: (payload) async {
         final fcmMessage = FcmMessage.fromJson(jsonDecode(payload));
@@ -97,20 +101,15 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   }
 
   @override
-  Future<List<NotificationData>> getNotifications() {
-    // TODO: implement getNotifications
-    throw UnimplementedError();
+  Stream<NotificationData> get notificationsStream {
+    return MergeStream([backgroundStream, foregroundStream]);
   }
 
   @override
-  Stream<NotificationData> getNotificationsStream() {
-    // TODO: implement getNotificationsStream
-    throw UnimplementedError();
-  }
+  Stream<NotificationData> get foregroundStream =>
+      _foregroundNotificationStream.stream.map(_converter.convertFcmMessage);
 
   @override
-  Stream<FcmMessage> get foregroundStream => _foregroundNotificationStream;
-
-  @override
-  Stream<FcmMessage> get backgroundStream => _backgroundNotificationStream;
+  Stream<NotificationData> get backgroundStream =>
+      _backgroundNotificationStream.stream.map(_converter.convertFcmMessage);
 }

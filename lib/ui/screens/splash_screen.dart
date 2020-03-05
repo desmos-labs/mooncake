@@ -9,11 +9,11 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
-//        if (state is LoggedOut) {
+        if (state is LoggedOut) {
           return LoginScreen();
-//        } else if (state is LoggedIn) {
-//          return _homeScreen();
-//        }
+        } else if (state is LoggedIn) {
+          return _homeScreen();
+        }
 
         return Container(
           color: ThemeColors.splashScreenBackgroundColor,
@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
             children: <Widget>[
               SizedBox(height: 175),
               Image(
-                image: AssetImage('assets/images/login_screen_logo.png'),
+                image: AssetImage('assets/images/login_logo.png'),
                 key: PostsKeys.loginScreenLogo,
                 width: 125,
               ),

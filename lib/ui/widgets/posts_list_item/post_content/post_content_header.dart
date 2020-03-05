@@ -46,7 +46,7 @@ class PostItemHeader extends StatelessWidget {
               Text(
                 timeago.format(timeAgo),
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      color: PostsTheme.textColorLight,
+                      color: ThemeColors.textColorLight,
                     ),
               )
             ],
@@ -58,7 +58,7 @@ class PostItemHeader extends StatelessWidget {
 
         // More button
         IconButton(
-          icon: Icon(FontAwesomeIcons.ellipsisH),
+          icon: Icon(MooncakeIcons.more, size: 20),
           tooltip: PostsLocalizations.of(context).postActionsButtonCaption,
           onPressed: () {},
         )

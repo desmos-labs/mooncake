@@ -43,7 +43,7 @@ class TabSelector extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: PostsTheme.gradient,
               ),
-              child: Icon(FontAwesomeIcons.plus),
+              child: Icon(MooncakeIcons.wallet),
             ),
           ),
           BottomNavigationButton(

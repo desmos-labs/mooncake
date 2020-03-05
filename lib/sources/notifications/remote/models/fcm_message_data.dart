@@ -11,11 +11,22 @@ part 'fcm_message_data.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class FcmMessage extends Equatable {
-  @JsonKey(name: "notification", required: false)
+
+  /// Contains the data of the notification.
+  @JsonKey(name: "notification", nullable: true)
   final FcmNotification notification;
 
-  @JsonKey(name: "data", required: true)
+  /// Contains the data associated to the notification.
+  @JsonKey(name: "data", nullable: false)
   final Map<String, dynamic> data;
+
+  /// Returns the associated action.
+  /// If no action is associated, it returns `null` instead.
+  String get action => data["action"];
+
+  /// Returns the associated type.
+  /// If no type is associated, it returns `null` instead.
+  String get type => data["type"];
 
   FcmMessage({this.notification, this.data});
 
@@ -59,31 +70,4 @@ class FcmNotification extends Equatable {
       _$FcmNotificationFromJson(Map.from(json));
 
   Map<String, dynamic> toJson() => _$FcmNotificationToJson(this);
-}
-
-/// Represents the data object that can be sent along with
-/// any FCM notification.
-@immutable
-@JsonSerializable(explicitToJson: true)
-class FcmOpenPostData extends Equatable {
-  static const ACTION_SHOW_POST = "showPost";
-
-  @JsonKey(name: "action")
-  final String action;
-
-  @JsonKey(name: "post_id")
-  final String postId;
-
-  FcmOpenPostData({
-    this.action,
-    this.postId,
-  });
-
-  @override
-  List<Object> get props => [action, postId];
-
-  factory FcmOpenPostData.fromJson(Map<String, dynamic> json) =>
-      _$FcmOpenPostDataFromJson(Map.from(json));
-
-  Map<String, dynamic> toJson() => _$FcmOpenPostDataToJson(this);
 }

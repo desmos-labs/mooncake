@@ -12,12 +12,12 @@ abstract class NotificationsState extends Equatable {
 /// Represents the loading state of the notifications.
 class LoadingNotifications extends NotificationsState {
   @override
-  String toString() => 'LoadinNotifications';
+  String toString() => 'LoadingNotifications';
 }
 
 /// Represents the state of the screen once the notifications has been loaded.
 class NotificationsLoaded extends NotificationsState {
-  final List<NotificationData> notifications;
+  final List<BasePostInteractionNotification> notifications;
 
   NotificationsLoaded(this.notifications);
 

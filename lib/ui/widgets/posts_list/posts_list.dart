@@ -60,8 +60,9 @@ class _PostsListState extends State<PostsList> {
                       key: PostsKeys.postsList,
                       itemCount: posts.length,
                       separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          height: PostsTheme.defaultPadding,
+                        return Container(
+                          height: 0.5,
+                          color: ThemeColors.textColorLight,
                         );
                       },
                       itemBuilder: (context, index) {
@@ -69,7 +70,6 @@ class _PostsListState extends State<PostsList> {
                       },
                     ),
                   ),
-//                  if (state.syncingPosts) SyncSnackBar(),
                 ],
               );
             } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
@@ -22,8 +23,29 @@ class NotificationsList extends StatelessWidget {
 
         final currentState = state as NotificationsLoaded;
         final notifications = currentState.notifications
-            .where((n) => filter?.call(n) ?? true)
+            .where((n) => filter != null ? filter.call(n) : true)
             .toList();
+
+        if (notifications.isEmpty) {
+          // No notifications to show
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(height: 50),
+                Image(
+                  image: AssetImage("assets/icons/icon_no_notification.png"),
+                  width: MediaQuery.of(context).size.width * 0.33,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  PostsLocalizations.of(context).noNotifications,
+                  style: Theme.of(context).accentTextTheme.bodyText2,
+                )
+              ],
+            ),
+          );
+        }
 
         return ListView.builder(
           itemCount: notifications.length,

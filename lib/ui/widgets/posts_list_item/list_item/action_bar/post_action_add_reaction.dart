@@ -11,12 +11,13 @@ class AddReactionAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionChip(
+      backgroundColor: ThemeColors.emojiButtonBackgroundColor,
       shape: StadiumBorder(
         side: BorderSide(
-          color: Colors.grey[400],
+          color: ThemeColors.emojiButtonBackgroundColor,
         ),
       ),
-      label: Icon(FontAwesomeIcons.plus, size: 16),
+      label: Icon(MooncakeIcons.addEmoji, size: 16),
       onPressed: () {
         showDialog(
           context: context,

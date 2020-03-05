@@ -17,7 +17,7 @@ class _PostsAppState extends State<PostsApp> {
   @override
   void initState() {
     super.initState();
-    _notificationsManager = NotificationsManager(context);
+    _notificationsManager = NotificationsManager.create(context);
     _notificationsManager.init();
   }
 

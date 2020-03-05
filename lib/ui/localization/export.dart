@@ -79,6 +79,7 @@ class PostsLocalizations {
   String get notificationAddedReaction => "added a reaction: ";
   String get notificationLikedYourPost => "liked your post";
   String get notificationTaggedYou => "tagged you in a post";
+  String get noNotifications => "No notifications here, you're all done! 🎉";
 
   // Account screen
   String get accountTitle => "Your account";

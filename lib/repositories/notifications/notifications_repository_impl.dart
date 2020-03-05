@@ -16,7 +16,7 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
         _remoteSource = remoteNotificationsSource,
         _localSource = localNotificationsSource {
     // Listen for remote notifications and save them locally
-    _remoteSource.getNotificationsStream().listen((notification) async {
+    _remoteSource.notificationsStream.listen((notification) async {
       await _localSource.saveNotification(notification);
     });
   }

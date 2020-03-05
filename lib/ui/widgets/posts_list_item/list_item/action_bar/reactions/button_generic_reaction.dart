@@ -27,8 +27,9 @@ class PostReactionButton extends StatelessWidget {
             );
 
         return ActionChip(
-          backgroundColor:
-              userReacted ? PostsTheme.accentColor.withAlpha(50) : null,
+          backgroundColor: userReacted
+              ? ThemeColors.accentColor.withAlpha(50)
+              : ThemeColors.emojiButtonBackgroundColor,
           label: Row(
             children: <Widget>[
               Text(reaction),
@@ -45,7 +46,7 @@ class PostReactionButton extends StatelessWidget {
             side: BorderSide(
               color: userReacted
                   ? Theme.of(context).accentColor
-                  : Colors.grey[400],
+                  : ThemeColors.emojiButtonBackgroundColor,
             ),
           ),
         );

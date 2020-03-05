@@ -5,7 +5,7 @@ import 'package:mooncake/ui/localization/export.dart';
 
 /// Represents a single notification item inside the list of notifications.
 class NotificationItem extends StatelessWidget {
-  final NotificationData notification;
+  final BasePostInteractionNotification notification;
 
   const NotificationItem({
     Key key,
@@ -15,13 +15,13 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notificationsText = {
-      NotificationDataType.comment:
+      NotificationTypes.COMMENT:
           PostsLocalizations.of(context).notificationHasCommentedText,
-      NotificationDataType.like:
+      NotificationTypes.LIKE:
           PostsLocalizations.of(context).notificationLikedYourPost,
-      NotificationDataType.reaction:
+      NotificationTypes.REACTION:
           PostsLocalizations.of(context).notificationAddedReaction,
-      NotificationDataType.mention:
+      NotificationTypes.MENTION:
           PostsLocalizations.of(context).notificationTaggedYou,
     };
 
@@ -48,13 +48,20 @@ class NotificationItem extends StatelessWidget {
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(text: notificationText),
-                  if (notification.data != null)
-                    TextSpan(text: notification.data),
+                  if (notification is PostCommentNotification)
+                    TextSpan(
+                      text: (notification as PostCommentNotification).comment,
+                    ),
+                  if (notification is PostReactionNotification)
+                    TextSpan(
+                      text: (notificationText as PostReactionNotification)
+                          .reaction,
+                    ),
                 ],
               ),
             ),
             Text(
-              DateFormat("dd MMM YYYY").format(notification.dateTime),
+              DateFormat("dd MMM YYYY").format(notification.date),
               style: Theme.of(context).textTheme.caption,
             ),
           ],

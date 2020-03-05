@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/entities/entities.dart';
 
@@ -15,41 +14,26 @@ class PostLikeAction extends StatelessWidget {
     return BlocBuilder(
       bloc: bloc,
       builder: (BuildContext context, PostLikeButtonState state) {
-        final iconColor = Colors.red;
-        IconData iconData = FontAwesomeIcons.heart;
-        if (state.isLiked || state.isSelected) {
-          iconData = FontAwesomeIcons.solidHeart;
-        }
+        final defColor = ThemeColors.textColorLight;
+        final likeColor = ThemeColors.red;
 
-        final icon = Icon(iconData, color: iconColor);
+        final icon = state.isLiked ?
+            FaIcon(MooncakeIcons.heartFilled) :
+            FaIcon(MooncakeIcons.heart);
 
         return Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                bloc.add(PostLikeButtonClicked());
-              },
-              onTapDown: (_) {
-                bloc.add(PostLikeButtonSelectedStateChanged(true));
-              },
-              onTapUp: (_) {
-                bloc.add(PostLikeButtonSelectedStateChanged(false));
-              },
-              onTapCancel: () {
-                bloc.add(PostLikeButtonSelectedStateChanged(false));
-              },
-              child: SvgPicture.asset(
-                state.isLiked || state.isSelected
-                    ? "assets/icons/icon_like_pressed.png"
-                    : "assets/icons/icon_like_default.png",
-                color: iconColor,
-              ),
+            IconButton(
+              icon: icon,
+              color: state.isLiked ? likeColor : defColor,
+              highlightColor: state.isLiked ? defColor : likeColor,
+              onPressed: () => bloc.add(PostLikeButtonClicked()),
             ),
-            const SizedBox(width: 5.0),
             Text(
               state.likesCount.toStringOrEmpty(),
               style: Theme.of(context).textTheme.bodyText2.copyWith(
-                    color: PostsTheme.textColorVeryLight,
+                    color: ThemeColors.textColorLight,
                   ),
             ),
           ],

@@ -35,7 +35,9 @@ class PostReactionsList extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: itemCount,
-            separatorBuilder: (c, i) => SizedBox(width: 8),
+            separatorBuilder: (c, i) => SizedBox(
+              width: ThemeSpaces.actionBarSpacer,
+            ),
             shrinkWrap: compact,
             itemBuilder: (_, index) {
               final entry = reactMap.entries.toList()[index];

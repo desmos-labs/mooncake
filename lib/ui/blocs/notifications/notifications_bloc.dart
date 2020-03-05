@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/injector.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import './bloc.dart';
 
@@ -22,7 +23,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   }
 
   @override
-  NotificationsState get initialState => LoadingNotifications();
+  NotificationsState get initialState => NotificationsLoaded([]);
 
   @override
   Stream<NotificationsState> mapEventToState(NotificationsEvent event) async* {
@@ -39,6 +40,11 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
     // Load the notifications
     final notifications = await _getNotificationsUseCase.single();
-    yield NotificationsLoaded(notifications);
+    final notificationsToShow = notifications
+        .where((e) => e is BasePostInteractionNotification)
+        .map((e) => e as BasePostInteractionNotification)
+        .toList();
+
+    yield NotificationsLoaded(notificationsToShow);
   }
 }

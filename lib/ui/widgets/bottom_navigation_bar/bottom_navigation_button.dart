@@ -22,13 +22,18 @@ class BottomNavigationButton extends StatelessWidget {
     };
 
     final icons = {
-      AppTab.allPosts: FontAwesomeIcons.list,
-      AppTab.likedPosts: FontAwesomeIcons.heart,
-      AppTab.notifications: FontAwesomeIcons.bell,
-      AppTab.account: FontAwesomeIcons.user,
+      AppTab.allPosts: MooncakeIcons.mooncake,
+      AppTab.likedPosts: MooncakeIcons.heart,
+      AppTab.notifications: MooncakeIcons.bell,
+      AppTab.account: MooncakeIcons.user,
     };
 
-    final icon = Icon(icons[tab], key: key, color: Colors.grey[500]);
+    final selectedIcons = {
+      AppTab.allPosts: MooncakeIcons.mooncakeFilled,
+      AppTab.likedPosts: MooncakeIcons.heartFilled,
+      AppTab.notifications: MooncakeIcons.bellFilled,
+      AppTab.account: MooncakeIcons.userFilled,
+    };
 
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, currentTab) {
@@ -36,12 +41,12 @@ class BottomNavigationButton extends StatelessWidget {
           tooltip: titles[tab],
           onPressed: () => _showTab(context),
           icon: tab != currentTab
-              ? icon
+              ? Icon(icons[tab], key: key, color: Colors.grey[500])
               : ShaderMask(
                   shaderCallback: (Rect bounds) {
                     return PostsTheme.gradient.createShader(bounds);
                   },
-                  child: icon,
+                  child: Icon(selectedIcons[tab], key: key),
                 ),
         );
       },

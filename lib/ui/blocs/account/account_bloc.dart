@@ -92,6 +92,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     yield CreatingAccount();
     final mnemonic = await _generateMnemonicUseCase.generate();
     await _loginUseCase.login(mnemonic.join(" "));
+    yield AccountCreated();
   }
 
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well

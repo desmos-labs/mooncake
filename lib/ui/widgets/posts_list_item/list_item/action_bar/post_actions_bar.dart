@@ -25,33 +25,28 @@ class PostActionsBar extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        child: Row(
-                          children: <Widget>[
-                            /// Likes
-                            PostLikeAction(),
-                            const SizedBox(width: PostsTheme.defaultPadding),
-                            PostCommentAction(),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          if (!currentState.actionBarExpanded)
-                            PostReactionsList(compact: true),
-                          if (currentState.showMoreButton)
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: MoreButton(
-                                onTap: () => _onMoreTap(context),
-                              ),
-                            ),
-                          AddReactionAction(),
-                        ],
-                      )
+                      PostLikeAction(),
+                      const SizedBox(width: ThemeSpaces.actionBarSpacer),
+                      PostCommentAction(),
                     ],
                   ),
+                ),
+                Row(
+                  children: <Widget>[
+                    if (!currentState.actionBarExpanded)
+                      PostReactionsList(compact: true),
+                    if (currentState.showMoreButton)
+                      IconButton(
+                        iconSize: 14,
+                        onPressed: () => _onMoreTap(context),
+                        icon: Icon(MooncakeIcons.more),
+                      ),
+                    if (!currentState.showMoreButton)
+                      SizedBox(width: ThemeSpaces.actionBarSpacer),
+                    AddReactionAction(),
+                  ],
                 ),
               ],
             ),

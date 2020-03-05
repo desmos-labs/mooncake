@@ -9,7 +9,6 @@ import 'package:mooncake/main.reflectable.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/utils/utils.dart';
-import 'package:web_socket_channel/status.dart';
 
 import 'entities/entities.dart';
 
@@ -44,11 +43,18 @@ void main() {
     Logger.log(error, stackTrace: stackTrace);
   });
 
-  _initTestData();
+  if (Foundation.kDebugMode) {
+    _initTestData();
+  }
 }
 
 void _initTestData() async {
-  // Test posts
+  _initPosts();
+  _initUser();
+  _initNotifications();
+}
+
+void _initPosts() async {
   final posts = [
     Post(
       parentId: "0",
@@ -149,8 +155,9 @@ void _initTestData() async {
   ];
   final localPostsSource = Injector.get<LocalPostsSource>();
   await localPostsSource.savePosts(posts);
+}
 
-  // Test user
+void _initUser() async {
   final user = User(
     accountData: AccountData(
       address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
@@ -164,6 +171,31 @@ void _initTestData() async {
   );
   final localUserSource = Injector.get<LocalUserSource>();
   await localUserSource.saveUser(user);
+}
+
+void _initNotifications() async {
+  final localSource = Injector.get<LocalNotificationsSource>();
+  final notifications = [
+    PostCommentNotification(
+      postId: "0",
+      user: User(
+        username: "Nick Haynes",
+        avatarUrl: "https://writestylesonline.com/wp-content/uploads/2018/11/Three-Statistics-That-Will-Make-You-Rethink-Your-Professional-Profile-Picture.jpg",
+        accountData: AccountData(
+          sequence: 0,
+          coins: [],
+          accountNumber: 0,
+          address: "",
+        ),
+      ),
+      comment: "Curabitus nisl",
+      date: DateTime.now(),
+    )
+  ];
+
+  notifications.forEach((element) async {
+    await localSource.saveNotification(element);
+  });
 }
 
 void _runApp() {

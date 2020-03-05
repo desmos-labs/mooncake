@@ -57,6 +57,6 @@ class LoginMainContent extends StatelessWidget {
   }
 
   void _onCreateAccountClicked(BuildContext context) {
-    BlocProvider.of<NavigatorBloc>(context).add(NavigateToCreateAccount());
+    BlocProvider.of<AccountBloc>(context).add(GenerateAccount());
   }
 }

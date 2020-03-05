@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'popup_content.dart';
+import 'account_created_content.dart';
 
 /// Represents the popup that is shown to the user when the account has
 /// been generated and he can go to the first page of the application.
-class AccountCreatedPopup extends StatelessWidget {
+class LoginPopup extends StatelessWidget {
+  final Widget content;
+
+  const LoginPopup({
+    Key key,
+    @required this.content,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -15,7 +22,24 @@ class AccountCreatedPopup extends StatelessWidget {
             painter: _BackgroundPainter(color: Colors.white),
           ),
         ),
-        PopupContent(),
+        Container(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.5,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(color: Color(0xFF40318972), blurRadius: 15),
+                ],
+              ),
+              child: content,
+            ),
+          ),
+        ),
       ],
     );
   }

@@ -42,7 +42,7 @@ class LocalNotificationsSourceImpl extends LocalNotificationsSource {
     );
 
     final records = await store.find(database, finder: finder);
-    return records
+    return (records ?? [])
         .map((record) => NotificationData.fromJson(record.value))
         .toList();
   }
@@ -50,7 +50,7 @@ class LocalNotificationsSourceImpl extends LocalNotificationsSource {
   @override
   Future<void> saveNotification(NotificationData notification) async {
     final database = await this.database;
-    await store.record(notification.date).put(database, notification.toJson());
+    await store.record(notification.date).put(database, notification.asJson());
     _streamController.add(notification);
   }
 }
