@@ -1,4 +1,5 @@
 import 'package:dependencies/dependencies.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
@@ -8,11 +9,13 @@ class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "https://ipfs.desmos.network";
 
-  // TODO: Change this
-//  static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
-//  static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";
-  static const _lcdUrl = "http://10.0.2.2:1317";
-  static const _rpcUrl = "http://10.0.2.2:26657";
+  static const _lcdUrl = kDebugMode
+      ? "http://10.0.2.2:1317"
+      : "http://lcd.morpheus.desmos.network:1317";
+
+  static const _gqlEndpoint = kDebugMode
+      ? "10.0.2.2:8080/v1/graphql"
+      : "gql.desmos.network/v1/graphql";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
@@ -43,10 +46,9 @@ class SourcesModule implements Module {
               ))
       ..bindLazySingleton<RemotePostsSource>(
           (injector, params) => RemotePostsSourceImpl(
-                rpcEndpoint: _rpcUrl,
+                graphQlEndpoint: _gqlEndpoint,
                 chainHelper: injector.get(),
                 userSource: injector.get(),
-                eventsConverter: ChainEventsConverter(),
                 msgConverter: MsgConverter(),
               ))
       // Notifications source

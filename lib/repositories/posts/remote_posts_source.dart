@@ -4,21 +4,15 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/posts/export.dart';
 
 /// Represents the remote source that needs to be called when wanting to
-/// download data from the blockchain.
+/// download data from the server.
 abstract class RemotePostsSource {
-  /// Returns the stream emitting all the chain events.
-  Stream<ChainEvent> getEventsStream();
+  /// Represents the steam of posts that emits all the new posts as
+  /// well as the ones that need to be updated.
+  Stream<List<Post>> get postsStream;
 
-  /// Returns all the posts stored on the source.
-  Future<List<Post>> getPosts();
-
-  /// Returns the post having the given [id].
-  /// If no post with the given id was found, returns `null` instead.
-  Future<Post> getPostById(String postId);
-
-  /// Returns the list of all posts that represent comments to
-  /// the post having the given [postId].
-  Future<List<Post>> getPostComments(String postId);
+  /// Returns a [Stream] that subscribes to the post having the specified
+  /// [postId], emitting the new data each time the post is updated.
+  Stream<Post> getPostById(String postId);
 
   /// Saves the given list of [posts] into the source.
   Future<void> savePosts(List<Post> posts);

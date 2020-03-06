@@ -12,24 +12,31 @@ import './bloc.dart';
 /// Represents the BLoC that should be used inside the screen that allows
 /// to visualize the details of a single post.
 class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
-  final GetCommentsUseCase _getPostCommentsUseCase;
-  final PostsListBloc _postsListBloc;
-
-  StreamSubscription _postsSubscription;
+  StreamSubscription _postSubscription;
+  StreamSubscription _commentsSubscription;
 
   PostDetailsBloc({
+    @required String postId,
+    @required GetPostDetailsUseCase getPostDetailsUseCase,
     @required GetCommentsUseCase getCommentsUseCase,
-    @required PostsListBloc postsListBloc,
-  })  : assert(getCommentsUseCase != null),
-        this._getPostCommentsUseCase = getCommentsUseCase,
-        assert(postsListBloc != null),
-        this._postsListBloc = postsListBloc;
+  }) : assert(getCommentsUseCase != null) {
+    // Sub to the post details update
+    _postSubscription = getPostDetailsUseCase.get(postId).listen((post) {
+      add(ShowPostDetails(post: post));
+    });
+
+    // Sub to the comments update
+    _commentsSubscription = getCommentsUseCase.get(postId).listen((comments) {
+      add(ShowPostDetails(comments: comments));
+    });
+  }
 
   factory PostDetailsBloc.create(BuildContext context, String postId) {
     return PostDetailsBloc(
-        getCommentsUseCase: Injector.get(),
-        postsListBloc: BlocProvider.of(context))
-      ..add(LoadPostDetails(postId));
+      postId: postId,
+      getPostDetailsUseCase: Injector.get(),
+      getCommentsUseCase: Injector.get(),
+    );
   }
 
   @override
@@ -37,37 +44,22 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
 
   @override
   Stream<PostDetailsState> mapEventToState(PostDetailsEvent event) async* {
-    if (event is LoadPostDetails) {
-      yield* _mapLoadPostDetailsEventToState(event);
-    } else if (event is ShowPostDetails) {
+    if (event is ShowPostDetails) {
       yield* _mapShowPostDetailsEventToState(event);
     } else if (event is ShowTab) {
       yield* _mapShowTabEventToState(event);
     }
   }
 
-  Stream<PostDetailsState> _mapLoadPostDetailsEventToState(
-    LoadPostDetails event,
-  ) async* {
-    _postsSubscription = _postsListBloc.listen((state) async {
-      final postsState = state;
-      if (postsState is PostsLoaded) {
-        // TODO: Probably remove this with a remote call instead?
-        final post = postsState.posts.firstBy(id: event.postId);
-        final comments = await _getPostCommentsUseCase.get(event.postId);
-        add(ShowPostDetails(post: post, comments: comments));
-      }
-    });
-  }
-
   Stream<PostDetailsState> _mapShowPostDetailsEventToState(
     ShowPostDetails event,
   ) async* {
-    yield PostDetailsLoaded(
-      post: event.post,
-      comments: event.comments,
-      selectedTab: PostDetailsTab.COMMENTS,
-    );
+    final currentState = state;
+    if (currentState is LoadingPostDetails) {
+      yield PostDetailsLoaded.first(post: event.post, comments: event.comments);
+    } else if (currentState is PostDetailsLoaded) {
+      yield currentState.copyWith(post: event.post, comments: event.comments);
+    }
   }
 
   Stream<PostDetailsState> _mapShowTabEventToState(ShowTab event) async* {
@@ -79,6 +71,8 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
 
   @override
   Future<Function> close() {
-    _postsSubscription?.cancel();
+    _postSubscription?.cancel();
+    _commentsSubscription?.cancel();
+    return super.close();
   }
 }

@@ -25,6 +25,9 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetCommentsUseCase(
             postsRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => GetPostDetailsUseCase(
+            postsRepository: injector.get(),
+          ))
       ..bindFactory((injector, params) => GetPostsUseCase(
             postsRepository: injector.get(),
           ))

@@ -36,8 +36,16 @@ class PostsLoaded extends PostsListState {
     this.syncingPosts = false,
   });
 
+  factory PostsLoaded.first({User user, List<Post> posts}) {
+    return PostsLoaded(
+      user: user,
+      posts: posts ?? [],
+      refreshing: false,
+      syncingPosts: false,
+    );
+  }
+
   PostsLoaded copyWith({
-    int page,
     User user,
     List<Post> posts,
     bool refreshing,
@@ -60,6 +68,7 @@ class PostsLoaded extends PostsListState {
 
   @override
   String toString() => 'PostsLoaded { '
+      'user: $user, '
       'posts: ${posts.length}, '
       'refreshing: $refreshing, '
       'syncingPosts: $syncingPosts, '

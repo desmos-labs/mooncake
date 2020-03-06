@@ -3,29 +3,21 @@ import 'package:mooncake/entities/entities.dart';
 /// Represents the repository that can be used in order to read
 /// and write data related to posts, comments and likes.
 abstract class PostsRepository {
-  /// Returns the post having the given [postId], or `null` if no
-  /// such post could be found.
-  Future<Post> getPostById(String postId);
+  /// Represents the steam of posts that emits all the new posts as
+  /// well as the ones that need to be updated.
+  Stream<List<Post>> get postsStream;
 
-  /// Returns the list of all posts that represent comments to
-  /// the post having the given [postId].
-  Future<List<Post>> getPostComments(String postId);
+  /// Returns a [Stream] that subscribes to the post having the specified
+  /// [postId], emitting the new data each time the post is updated.
+  Stream<Post> getPostById(String postId);
 
-  /// Returns the full list of posts available.
-  Future<List<Post>> getPosts({bool forceOnline = false});
+  /// Returns a [Stream] that emits all the comments of the post
+  /// having the given [postId] as soon as they are created or updated.
+  Stream<List<Post>> getPostComments(String postId);
 
-  /// Returns the list of posts to sync.
-  Future<List<Post>> getPostsToSync();
-
-  /// Returns a [Stream] that emits new posts as they are created.
-  Stream<Post> get postsStream;
-
-  /// Saves the given [post].
+  /// Saves the given post inside the repository
   Future<void> savePost(Post post);
 
-  /// Syncs the given posts by sending them to the blockchain.
-  Future<void> syncPosts(List<Post> posts);
-
-  /// Deleted the post having the given [postId].
-  Future<void> deletePost(String postId);
+  /// Syncs all the posts that are currently awaiting to be synced.
+  Future<void> syncPosts();
 }

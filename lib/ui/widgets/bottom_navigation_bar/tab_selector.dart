@@ -64,7 +64,8 @@ class TabSelector extends StatelessWidget {
       return CreatePostScreen(callback: (post) {
         // ignore: close_sinks
         final bloc = BlocProvider.of<PostsListBloc>(context);
-        bloc.add(AddPost(post));
+        // TODO: Implement AddPost again
+//        bloc.add(AddPost(post));
       });
     });
   }

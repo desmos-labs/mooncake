@@ -2,7 +2,8 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-/// Allows to react a post having a specific id.
+/// Allows to manage (add/remove) a specific reaction for a post
+/// having a given post id.
 class ManagePostReactionsUseCase {
   final UserRepository _userRepository;
   final PostsRepository _postsRepository;
@@ -21,7 +22,7 @@ class ManagePostReactionsUseCase {
     @required String postId,
     @required String reaction,
   }) async {
-    Post post = await _postsRepository.getPostById(postId);
+    Post post = await _postsRepository.getPostById(postId).first;
     if (post == null) {
       return post;
     }

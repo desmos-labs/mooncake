@@ -6,15 +6,18 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
+  // Database
   final String _dbName;
-
   final store = StoreRef.main();
-  final StreamController<Post> _streamController = StreamController<Post>();
+
+  // Stream, controller
+  final _postsController = BehaviorSubject<List<Post>>();
 
   /// Public constructor
   LocalPostsSourceImpl({
@@ -22,59 +25,37 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   })  : assert(dbName != null && dbName.isNotEmpty),
         this._dbName = dbName;
 
+  /// Returns the database used to store the posts date.
   Future<Database> get database async {
     final path = await getApplicationDocumentsDirectory();
     await path.create(recursive: true);
     return databaseFactoryIo.openDatabase(join(path.path, this._dbName));
   }
 
-  @override
-  Stream<Post> get postsStream => _streamController.stream;
-
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
-  String _getPostKey(Post post) =>
-      post.created + post.owner.accountData.address;
+  String getPostKey(Post post) => post.created + post.owner.accountData.address;
 
   @override
-  Future<void> savePost(Post post, {bool emit = true}) async {
-    final database = await this.database;
-    await store.record(_getPostKey(post)).put(database, post.toJson());
-
-    if (emit) {
-      _streamController.add(post);
-    }
-  }
+  Stream<List<Post>> get postsStream => _postsController.stream;
 
   @override
-  Future<void> savePosts(List<Post> posts, {bool emit = true}) async {
-    final database = await this.database;
-    final keys = posts.map((p) => _getPostKey(p)).toList();
-    final values = posts.map((p) => p.toJson()).toList();
-    await store.records(keys).put(database, values);
-
-    if (emit) {
-      posts.forEach((p) => _streamController.add(p));
-    }
-  }
+  Stream<Post> getPostById(String postId) =>
+      postsStream.expand((list) => list).where((post) => post.id == postId);
 
   @override
-  Future<Post> getPostById(String postId) async {
-    final database = await this.database;
-    final finder = Finder(filter: Filter.equals("id", postId));
-
-    final record = await store.findFirst(database, finder: finder);
-    if (record == null) {
-      return null;
-    }
-
-    return Post.fromJson(record.value);
-  }
+  Stream<List<Post>> getPostComments(String postId) => postsStream
+      .map((list) => list.where((post) => post.parentId == postId).toList());
 
   @override
-  Future<List<Post>> getPostComments(String postId) async {
+  Future<List<Post>> getPosts() async {
     final database = await this.database;
-    final finder = Finder(filter: Filter.equals("parent_id", postId));
+    final finder = Finder(
+      sortOrders: [
+        SortOrder(Post.DATE_FIELD, false), // Descending date
+        SortOrder(Post.ID_FIELD, false), // Descending id if date is equal
+      ],
+    );
 
     final records = await store.find(database, finder: finder);
     return records.map((record) => Post.fromJson(record.value)).toList();
@@ -94,25 +75,30 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     return records.map((record) => Post.fromJson(record.value)).toList();
   }
 
-  @override
-  Future<List<Post>> getPosts() async {
+  /// Saves the given [post], updating its parent as well (if it has one).
+  /// If [emit] is true, after the update emits the new list of posts
+  /// using the [postsStream].
+  Future<void> _savePostAndParent(Post post, {bool emit = false}) async {
     final database = await this.database;
-    final finder = Finder(
-      sortOrders: [
-        SortOrder(Post.DATE_FIELD, false), // Descending date
-        SortOrder(Post.ID_FIELD, false), // Descending id if date is equal
-      ],
-    );
+    await store.record(getPostKey(post)).put(database, post.toJson());
 
-    final records = await store.find(database, finder: finder);
-    return records.map((record) => Post.fromJson(record.value)).toList();
+    // Update the parent
+    if (post.hasParent) {
+      final parent = await getPostById(post.parentId).first;
+      final comments = parent.commentsIds;
+      if (!comments.contains(post.id)) {
+        comments.add(post.id);
+      }
+      _savePostAndParent(parent.copyWith(commentsIds: comments), emit: false);
+    }
+
+    // If emit is true, emit the set of posts
+    if (emit) {
+      final records = await getPosts();
+      _postsController.add(records);
+    }
   }
 
   @override
-  Future<void> deletePost(String postId) async {
-    final database = await this.database;
-    final finder = Finder(filter: Filter.equals(Post.ID_FIELD, postId));
-
-    await store.delete(database, finder: finder);
-  }
+  Future<void> savePost(Post post) => _savePostAndParent(post, emit: true);
 }

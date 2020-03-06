@@ -30,6 +30,7 @@ class PostDetailsMainContent extends StatelessWidget {
                   ]),
                 ),
                 SliverAppBar(
+                  elevation: 0,
                   primary: false,
                   backgroundColor: Colors.white,
                   leading: Container(),

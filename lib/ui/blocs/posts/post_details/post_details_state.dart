@@ -22,8 +22,14 @@ enum PostDetailsTab { COMMENTS, REACTIONS }
 /// Represents the state that tells the post details have been loaded
 /// properly and are ready to be shown.
 class PostDetailsLoaded extends PostDetailsState {
+  /// Represents the details of the post currently loaded.
+  /// This can be `null` if the post has not been loaded yet.
   final Post post;
+
+  /// Represents the list of comments currently loaded.
   final List<Post> comments;
+
+  /// Represents the currently selected tab inside the view.
   final PostDetailsTab selectedTab;
 
   PostDetailsLoaded({
@@ -32,8 +38,16 @@ class PostDetailsLoaded extends PostDetailsState {
     @required this.selectedTab,
   });
 
-  @override
-  List<Object> get props => [post, comments, selectedTab];
+  factory PostDetailsLoaded.first({
+    @required Post post,
+    @required List<Post> comments,
+  }) {
+    return PostDetailsLoaded(
+      selectedTab: PostDetailsTab.COMMENTS,
+      post: post,
+      comments: comments ?? [],
+    );
+  }
 
   PostDetailsLoaded copyWith({
     Post post,
@@ -42,8 +56,18 @@ class PostDetailsLoaded extends PostDetailsState {
   }) {
     return PostDetailsLoaded(
       post: post ?? this.post,
-      comments: comments ?? this.comments,
-      selectedTab: selectedTab ?? this.selectedTab
+      comments: comments?.isNotEmpty == true ? comments : this.comments,
+      selectedTab: selectedTab ?? this.selectedTab,
     );
   }
+
+  @override
+  List<Object> get props => [post, comments, selectedTab];
+
+  @override
+  String toString() => 'PostDetailsLoaded { '
+      'post: $post, '
+      'comments: ${comments.length}, '
+      'selectedTab: $selectedTab'
+      '}';
 }

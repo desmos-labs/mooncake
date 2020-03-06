@@ -35,7 +35,7 @@ class _PostsAppState extends State<PostsApp> {
           create: (context) => GenerateMnemonicBloc.create(context),
         ),
         BlocProvider<PostsListBloc>(
-          create: (_) => PostsListBloc.create(syncPeriod: 30)..add(LoadPosts()),
+          create: (_) => PostsListBloc.create(syncPeriod: 30),
         ),
         BlocProvider<NotificationsBloc>(
           create: (_) => NotificationsBloc.create()..add(LoadNotifications()),

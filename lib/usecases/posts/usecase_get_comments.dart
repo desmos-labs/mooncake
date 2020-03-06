@@ -14,7 +14,6 @@ class GetCommentsUseCase {
   /// having the specified [postId].
   /// If no post with the given [postId] was found, an empty list is
   /// returned.
-  Future<List<Post>> get(String postId) async {
-    return _postsRepository.getPostComments(postId);
-  }
+  Stream<List<Post>> get(String postId) =>
+      _postsRepository.getPostComments(postId);
 }

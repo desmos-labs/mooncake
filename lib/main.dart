@@ -153,8 +153,11 @@ void _initPosts() async {
       commentsIds: [],
     ),
   ];
+
   final localPostsSource = Injector.get<LocalPostsSource>();
-  await localPostsSource.savePosts(posts);
+  posts.forEach((post) async {
+    await localPostsSource.savePost(post);
+  });
 }
 
 void _initUser() async {

@@ -36,11 +36,12 @@ class _PostsListState extends State<PostsList> {
       decoration: PostsTheme.pattern,
       child: RefreshIndicator(
         onRefresh: () {
-          BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
+          // TODO: Implement the refresh of posts
+//          BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
           return _refreshCompleter.future;
         },
         child: BlocBuilder<PostsListBloc, PostsListState>(
-          bloc: BlocProvider.of<PostsListBloc>(context)..add(LoadPosts()),
+          bloc: BlocProvider.of<PostsListBloc>(context),
           builder: (context, state) {
             if (state is PostsLoaded) {
               // Hide the refresh indicator

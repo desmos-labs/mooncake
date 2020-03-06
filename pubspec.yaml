@@ -32,6 +32,7 @@ dependencies:
   flutter_svg:
   font_awesome_flutter:
   gradient_widgets:
+  graphql:
   http:
   image_picker:
   intl:
