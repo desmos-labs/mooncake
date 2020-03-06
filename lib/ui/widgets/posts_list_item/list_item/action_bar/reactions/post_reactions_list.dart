@@ -24,8 +24,9 @@ class PostReactionsList extends StatelessWidget {
       builder: (context, state) {
         final currentState = (state as PostListItemLoaded);
 
-        final reactMap = groupBy<Reaction, String>(
-            currentState.post.reactions, (r) => r.value);
+        // Filter the likes as they are showed independently
+        final reactions = currentState.post.reactions.where((r) => !r.isLike);
+        final reactMap = groupBy<Reaction, String>(reactions, (r) => r.value);
 
         // Max 2 items if is compact and with a length more than 2
         final itemCount = reactMap.length > 2 && compact ? 2 : reactMap.length;

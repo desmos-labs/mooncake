@@ -75,10 +75,11 @@ class PostsLocalizations {
   // Notifications screen
   String get allNotificationsTabTitle => "All";
   String get mentionsNotificationsTabTitle => "Mentions";
-  String get notificationHasCommentedText => "commented: ";
-  String get notificationAddedReaction => "added a reaction: ";
+  String get notificationHasCommentedText => "commented:";
+  String get notificationAddedReaction => "added a reaction:";
   String get notificationLikedYourPost => "liked your post";
   String get notificationTaggedYou => "tagged you in a post";
+  String get notificationMentionedYou => "mentioned you in a post:";
   String get noNotifications => "No notifications here, you're all done! 🎉";
 
   // Account screen

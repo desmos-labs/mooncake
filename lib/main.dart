@@ -168,7 +168,7 @@ void _initUser() async {
       sequence: 0,
       coins: [],
     ),
-    username: "Desmos",
+    username: "mooncake",
     avatarUrl:
         "https://pbs.twimg.com/profile_images/1206578012549980162/6L485PKE_400x400.jpg",
   );
@@ -183,7 +183,8 @@ void _initNotifications() async {
       postId: "0",
       user: User(
         username: "Nick Haynes",
-        avatarUrl: "https://writestylesonline.com/wp-content/uploads/2018/11/Three-Statistics-That-Will-Make-You-Rethink-Your-Professional-Profile-Picture.jpg",
+        avatarUrl:
+            "https://specials-images.forbesimg.com/imageserve/5d70b0225b52ce0008826162/960x0.jpg?fit=scale",
         accountData: AccountData(
           sequence: 0,
           coins: [],
@@ -193,7 +194,88 @@ void _initNotifications() async {
       ),
       comment: "Curabitus nisl",
       date: DateTime.now(),
-    )
+    ),
+    PostCommentNotification(
+      postId: "1",
+      user: User(
+        username: "Keanu Stanley",
+        avatarUrl:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outdoors-man-portrait_%28cropped%29.jpg/1200px-Outdoors-man-portrait_%28cropped%29.jpg",
+        accountData: AccountData(
+          sequence: 0,
+          coins: [],
+          accountNumber: 0,
+          address: "",
+        ),
+      ),
+      comment: "Magna ne Mattis enim lorem",
+      date: DateTime.now(),
+    ),
+    PostCommentNotification(
+      postId: "1",
+      user: User(
+        username: "Matthew Alvarado",
+        avatarUrl:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outdoors-man-portrait_%28cropped%29.jpg/1200px-Outdoors-man-portrait_%28cropped%29.jpg",
+        accountData: AccountData(
+          sequence: 0,
+          coins: [],
+          accountNumber: 0,
+          address: "",
+        ),
+      ),
+      comment:
+          "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+      date: DateTime.now(),
+    ),
+    PostMentionNotification(
+      postId: "1",
+      user: User(
+        username: "Carolyn",
+        avatarUrl:
+            "https://www.amica.it/wp-content/uploads/2019/04/ana-de-armes4-635x635.jpg",
+        accountData: AccountData(
+          sequence: 0,
+          coins: [],
+          accountNumber: 0,
+          address: "",
+        ),
+      ),
+      text: "@mooncake great!!!",
+      date: DateTime.now(),
+    ),
+    PostMentionNotification(
+      postId: "1",
+      user: User(
+        username: "Carolyn",
+        avatarUrl:
+            "https://www.amica.it/wp-content/uploads/2019/04/ana-de-armes4-635x635.jpg",
+        accountData: AccountData(
+          sequence: 0,
+          coins: [],
+          accountNumber: 0,
+          address: "",
+        ),
+      ),
+      text: "I love @mooncake",
+      date: DateTime.now(),
+    ),
+    PostMentionNotification(
+      postId: "1",
+      user: User(
+        username: "Carolyn",
+        avatarUrl:
+            "https://www.amica.it/wp-content/uploads/2019/04/ana-de-armes4-635x635.jpg",
+        accountData: AccountData(
+          sequence: 0,
+          coins: [],
+          accountNumber: 0,
+          address: "",
+        ),
+      ),
+      text: "Go @mooncake, go!",
+      date: DateTime.now(),
+    ),
   ];
 
   notifications.forEach((element) async {

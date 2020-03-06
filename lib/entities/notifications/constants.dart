@@ -21,6 +21,7 @@ class NotificationTypes {
   static const LIKE = "like";
   static const REACTION = "reaction";
   static const MENTION = "mention";
+  static const TAG = "tag";
 }
 
 /// The [NotificationActions] contains the definition of all the possible

@@ -47,8 +47,11 @@ class NotificationsList extends StatelessWidget {
           );
         }
 
-        return ListView.builder(
+        return ListView.separated(
           itemCount: notifications.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return Container(height: 0.5, color: Colors.grey);
+          },
           itemBuilder: (BuildContext context, int index) {
             return NotificationItem(notification: notifications[index]);
           },

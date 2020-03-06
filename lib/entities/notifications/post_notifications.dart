@@ -107,6 +107,7 @@ class PostLikeNotification extends BasePostInteractionNotification {
 @JsonSerializable(explicitToJson: true)
 class PostReactionNotification extends BasePostInteractionNotification {
   /// Represents the value of the reaction that has been added to the post.
+  @JsonKey(name: "reaction")
   final String reaction;
 
   PostReactionNotification({
@@ -139,10 +140,15 @@ class PostReactionNotification extends BasePostInteractionNotification {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PostMentionNotification extends BasePostInteractionNotification {
+  /// Represents the text containing the mention.
+  @JsonKey(name: "text")
+  final String text;
+
   PostMentionNotification({
     @required String postId,
     @required User user,
     @required DateTime date,
+    @required this.text,
     String title,
     String body,
   }) : super(
@@ -160,4 +166,31 @@ class PostMentionNotification extends BasePostInteractionNotification {
 
   @override
   Map<String, dynamic> toJson() => _$PostMentionNotificationToJson(this);
+}
+
+/// Represents a notification telling the user he's been tagged inside a post.
+@immutable
+@JsonSerializable(explicitToJson: true)
+class PostTagNotification extends BasePostInteractionNotification {
+  PostTagNotification({
+    @required String postId,
+    @required User user,
+    @required DateTime date,
+    String title,
+    String body,
+  }) : super(
+          type: NotificationTypes.TAG,
+          action: NotificationActions.ACTION_SHOW_POST,
+          date: date,
+          postId: postId,
+          user: user,
+          title: title,
+          body: body,
+        );
+
+  factory PostTagNotification.fromJson(Map<String, dynamic> json) =>
+      _$PostTagNotificationFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PostTagNotificationToJson(this);
 }

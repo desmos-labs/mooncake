@@ -25,9 +25,12 @@ class NotificationsMainContent extends StatelessWidget {
               children: tabs.map((Tab tab) {
                 return NotificationsList(
                   key: PageStorageKey<String>(tab.text),
-                  filter: tabs.indexOf(tab) == 0
-                      ? null
-                      : (n) => n.type == NotificationTypes.MENTION,
+                  filter: (notification) {
+                    if (tabs.indexOf(tab) == 0) {
+                      return !_isNotificationMention(notification);
+                    }
+                    return _isNotificationMention(notification);
+                  },
                 );
               }).toList(),
             ),
@@ -35,5 +38,10 @@ class NotificationsMainContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _isNotificationMention(NotificationData notification) {
+    return notification.type == NotificationTypes.MENTION ||
+        notification.type == NotificationTypes.TAG;
   }
 }

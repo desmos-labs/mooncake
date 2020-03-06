@@ -78,6 +78,7 @@ PostMentionNotification _$PostMentionNotificationFromJson(
     postId: json['post_id'] as String,
     user: User.fromJson(json['user'] as Map<String, dynamic>),
     date: NotificationData.dateFromJson(json['date'] as String),
+    text: json['text'] as String,
     title: json['title'] as String,
     body: json['body'] as String,
   );
@@ -85,6 +86,27 @@ PostMentionNotification _$PostMentionNotificationFromJson(
 
 Map<String, dynamic> _$PostMentionNotificationToJson(
         PostMentionNotification instance) =>
+    <String, dynamic>{
+      'date': NotificationData.dateToJson(instance.date),
+      'title': instance.title,
+      'body': instance.body,
+      'post_id': instance.postId,
+      'user': instance.user.toJson(),
+      'text': instance.text,
+    };
+
+PostTagNotification _$PostTagNotificationFromJson(Map<String, dynamic> json) {
+  return PostTagNotification(
+    postId: json['post_id'] as String,
+    user: User.fromJson(json['user'] as Map<String, dynamic>),
+    date: NotificationData.dateFromJson(json['date'] as String),
+    title: json['title'] as String,
+    body: json['body'] as String,
+  );
+}
+
+Map<String, dynamic> _$PostTagNotificationToJson(
+        PostTagNotification instance) =>
     <String, dynamic>{
       'date': NotificationData.dateToJson(instance.date),
       'title': instance.title,
