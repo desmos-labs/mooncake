@@ -163,7 +163,7 @@ void _initPosts() async {
 void _initUser() async {
   final user = User(
     accountData: AccountData(
-      address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+      address: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
       accountNumber: 0,
       sequence: 0,
       coins: [],
