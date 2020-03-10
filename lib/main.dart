@@ -49,16 +49,16 @@ void main() {
 }
 
 void _initTestData() async {
-  _initPosts();
-  _initUser();
+  final user = await _initUser();
+  _initPosts(user);
   _initNotifications();
 }
 
-void _initPosts() async {
+void _initPosts(User user) async {
   final posts = [
     Post(
       parentId: "0",
-      id: "0",
+      id: "1",
       created: "2020-24-02T08:40:00.000Z",
       owner: User(
         username: "Desmos",
@@ -68,8 +68,7 @@ void _initPosts() async {
           coins: [],
           sequence: 0,
         ),
-        avatarUrl:
-            "https://pbs.twimg.com/profile_images/1206578012549980162/6L485PKE_400x400.jpg",
+        avatarUrl: "https://i.pravatar.cc/300?img=1",
       ),
       subspace: Constants.SUBSPACE,
       allowsComments: true,
@@ -87,34 +86,35 @@ void _initPosts() async {
       ],
       reactions: [
         Reaction(
-          owner: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+          user: user,
           value: "👍",
         ),
         Reaction(
-          owner: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+          user: User.fromAddress(
+            "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+          ),
           value: "😃",
         ),
         Reaction(
-          owner: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+          user: User.fromAddress(
+            "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
+          ),
           value: "😁",
         )
       ],
-      commentsIds: [],
+      commentsIds: ["3"],
     ),
     Post(
       parentId: "0",
-      id: "1",
+      id: "2",
       created: "2020-24-02T09:00:00.000Z",
       owner: User(
-          username: "Alice Jackson",
-          accountData: AccountData(
-            address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
-            accountNumber: 0,
-            coins: [],
-            sequence: 0,
-          ),
-          avatarUrl:
-              "https://image.made-in-china.com/2f0j00AmtTrcdLyJoj/Wholesale-Plastic-Polarized-Custom-Women-Sunglasses.jpg"),
+        username: "Alice Jackson",
+        accountData: AccountData.offline(
+          "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+        ),
+        avatarUrl: "https://i.pravatar.cc/300?img=2",
+      ),
       subspace: Constants.SUBSPACE,
       allowsComments: true,
       optionalData: {},
@@ -146,7 +146,59 @@ void _initPosts() async {
       ],
       reactions: [
         Reaction(
-          owner: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+          user: User.fromAddress(
+            "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+          ),
+          value: ":+1:",
+        )
+      ],
+      commentsIds: [],
+    ),
+    Post(
+      parentId: "1",
+      id: "3",
+      created: "2020-24-04T09:00:00.000Z",
+      owner: User(
+        username: "Alice Jackson",
+        accountData: AccountData.offline(
+          "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+        ),
+        avatarUrl: "https://i.pravatar.cc/300?img=3",
+      ),
+      subspace: Constants.SUBSPACE,
+      allowsComments: true,
+      optionalData: {},
+      status: PostStatus(value: PostStatusValue.SYNCED),
+      lastEdited: null,
+      message:
+          "Aliquam non sem nulla. In nulla mauris, imperdiet in ex in, egestas eleifend tellus. Curabitur facilisis mi nibh, sit amet luctus augue fermentum a.",
+      medias: [
+        PostMedia(
+          mimeType: "image/jpeg",
+          url:
+              "https://www.plannthat.com/wp-content/uploads/2017/10/brahmino.png",
+        ),
+        PostMedia(
+          mimeType: "image/jpeg",
+          url:
+              "https://cdn.hiconsumption.com/wp-content/uploads/2017/03/best-adventure-instagram-accounts-1087x725.jpg",
+        ),
+        PostMedia(
+          mimeType: "image/jpeg",
+          url:
+              "https://kelseyinlondon.com/wp-content/uploads/2019/02/1-kelseyinlondon_kelsey_heinrichs_Paris-The-20-Best-Instagram-Photography-Locations.jpg",
+        ),
+        PostMedia(
+          mimeType: "image/jpeg",
+          url:
+              "https://static2.businessinsider.com/image/546baf3069bedd6b6936ca04/the-best-instagram-accounts-to-follow.jpg",
+        ),
+      ],
+      reactions: [
+        Reaction(
+          user: User.fromAddress(
+            "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
+          ),
           value: ":+1:",
         )
       ],
@@ -160,7 +212,7 @@ void _initPosts() async {
   });
 }
 
-void _initUser() async {
+Future<User> _initUser() async {
   final user = User(
     accountData: AccountData(
       address: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
@@ -174,6 +226,8 @@ void _initUser() async {
   );
   final localUserSource = Injector.get<LocalUserSource>();
   await localUserSource.saveUser(user);
+
+  return user;
 }
 
 void _initNotifications() async {

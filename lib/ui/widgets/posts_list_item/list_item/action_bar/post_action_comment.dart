@@ -5,6 +5,9 @@ import 'package:mooncake/ui/ui.dart';
 
 /// Represents the icon that is use the tell how many comments a post has.
 class PostCommentAction extends StatelessWidget {
+  final double size;
+
+  const PostCommentAction({Key key, this.size = 24.0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +19,16 @@ class PostCommentAction extends StatelessWidget {
             FaIcon(
               MooncakeIcons.comment,
               color: ThemeColors.textColorLight,
+              size: size,
             ),
-            SizedBox(width: 5.0),
-            Text(
-              currentState.post.commentsIds.length.toStringOrEmpty(),
-              style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: ThemeColors.textColorLight,
-              ),
-            )
+            SizedBox(width: size / 4),
+            if (currentState.post.commentsIds.isNotEmpty)
+              Text(
+                currentState.post.commentsIds.length.toStringOrEmpty(),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      color: ThemeColors.textColorLight,
+                    ),
+              )
           ],
         );
       },

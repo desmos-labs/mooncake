@@ -9,8 +9,13 @@ part 'user.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class User extends Equatable {
+  /// Represents the username of the user.
+  /// Do not use this directly, use [screenName] instead.
   @JsonKey(name: "username", nullable: true)
   final String username;
+
+  /// Returns the name that should be used on the screen
+  String get screenName => username ?? accountData.address;
 
   @JsonKey(name: "avatar_url", nullable: true)
   final String avatarUrl;
@@ -19,9 +24,9 @@ class User extends Equatable {
   final AccountData accountData;
 
   User({
+    @required this.accountData,
     this.username,
     this.avatarUrl,
-    @required this.accountData,
   }) : assert(accountData != null);
 
   factory User.fromAddress(String address) {

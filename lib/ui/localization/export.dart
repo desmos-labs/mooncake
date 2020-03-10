@@ -95,6 +95,8 @@ class PostsLocalizations {
   String get commentHint => "Comment";
   String get newComment => "New comment";
   String get commentsDisabled => "Comments disabled by the post owner";
+  String commentsTabLabel(int comments) => "Comments $comments";
+  String reactionsTabLabel(int reactions) => "Reactions $reactions";
 }
 
 class FlutterBlocLocalizationsDelegate

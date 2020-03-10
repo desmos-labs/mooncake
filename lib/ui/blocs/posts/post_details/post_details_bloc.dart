@@ -4,9 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/ui/blocs/export.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:mooncake/entities/entities.dart';
 import './bloc.dart';
 
 /// Represents the BLoC that should be used inside the screen that allows
@@ -70,7 +69,7 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   }
 
   @override
-  Future<Function> close() {
+  Future<void> close() {
     _postSubscription?.cancel();
     _commentsSubscription?.cancel();
     return super.close();

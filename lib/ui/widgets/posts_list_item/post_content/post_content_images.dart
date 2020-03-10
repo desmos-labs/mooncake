@@ -53,11 +53,6 @@ class PostImagesPreviewer extends StatelessWidget {
       );
     }
 
-    return Column(
-      children: <Widget>[
-        const SizedBox(height: PostsTheme.defaultPadding),
-        child,
-      ],
-    );
+    return child;
   }
 }

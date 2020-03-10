@@ -17,6 +17,7 @@ class PostDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         title: Text(PostsLocalizations.of(context).postDetailsTitle),
       ),
       body: Container(

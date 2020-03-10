@@ -26,7 +26,7 @@ class PostItemHeader extends StatelessWidget {
     return Row(
       children: <Widget>[
         // User picture
-        CircleAvatar(backgroundImage: NetworkImage(post.owner.avatarUrl)),
+        UserAvatar(user: post.owner),
 
         // Spacer
         const SizedBox(width: PostsTheme.defaultPadding),
@@ -37,16 +37,16 @@ class PostItemHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                post.owner.username,
+                post.owner.screenName,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: FontWeight.bold,
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      fontWeight: FontWeight.w300,
                     ),
               ),
               Text(
                 timeago.format(timeAgo),
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      color: ThemeColors.textColorLight,
+                      fontWeight: FontWeight.w300,
                     ),
               )
             ],
@@ -57,11 +57,12 @@ class PostItemHeader extends StatelessWidget {
         const SizedBox(width: PostsTheme.defaultPadding),
 
         // More button
-        IconButton(
-          icon: Icon(MooncakeIcons.more, size: 20),
-          tooltip: PostsLocalizations.of(context).postActionsButtonCaption,
-          onPressed: () {},
-        )
+        // TODO: Implement this again
+//        IconButton(
+//          icon: Icon(MooncakeIcons.more, size: 20),
+//          tooltip: PostsLocalizations.of(context).postActionsButtonCaption,
+//          onPressed: () {},
+//        )
       ],
     );
   }

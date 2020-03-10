@@ -33,7 +33,7 @@ class ThemeColors {
   static const Color emojiButtonBackgroundColor = Color(0xFFF5F5F5);
 
   // --- Texts ---
-  static Color get textColor => Colors.grey[800];
+  static Color get textColor => Colors.grey[900];
   static Color get textColorAccent => accentColor;
   static Color get textColorLight => Colors.grey[700];
   static Color get textColorVeryLight => Colors.grey[500];

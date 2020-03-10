@@ -30,18 +30,23 @@ class PostListItemLoaded extends PostListItemState {
   bool get isLiked => hasUserReactedWith(Constants.LIKE_REACTION);
 
   /// Returns the number of likes that the post currently has.
-  int get likesCount => post.reactions
-      .where((reaction) => reaction.value == Constants.LIKE_REACTION)
-      .length;
+  int get likesCount =>
+      post.reactions.where((reaction) => reaction.isLike).length;
+
+  /// Returns the number of reactions (excluding the likes) that the
+  /// current post has.
+  int get reactionsCount =>
+      post.reactions.where((element) => !element.isLike).length;
 
   /// Tells whether the button to show more options should be shown or not.
   bool get showMoreButton => post.reactions.length > 2;
 
   /// Tells whether the user has reacted with the given [reaction] or not.
-  bool hasUserReactedWith(String reaction) => post.reactions.contains(Reaction(
-        owner: user.accountData.address,
-        value: reaction,
-      ));
+  bool hasUserReactedWith(String reaction) => post.reactions
+      .where((r) =>
+          r.value == reaction &&
+          r.user.accountData.address == user.accountData.address)
+      .isNotEmpty;
 
   const PostListItemLoaded({
     @required this.user,

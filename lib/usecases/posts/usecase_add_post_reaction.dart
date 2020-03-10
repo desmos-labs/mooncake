@@ -34,10 +34,7 @@ class ManagePostReactionsUseCase {
 
     // Build the reaction object
     final user = await _userRepository.getUserData();
-    final reactionObj = Reaction(
-      owner: user.accountData.address,
-      value: reaction,
-    );
+    final reactionObj = Reaction(user: user, value: reaction);
 
     // Add it to the list of reactions if not present and save the new post
     if (!post.reactions.contains(reactionObj)) {

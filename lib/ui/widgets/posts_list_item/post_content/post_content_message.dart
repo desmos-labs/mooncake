@@ -31,7 +31,6 @@ class PostMessage extends StatelessWidget {
 
     return Column(
       children: [
-        const SizedBox(height: PostsTheme.defaultPadding),
         Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[

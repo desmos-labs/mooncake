@@ -73,68 +73,6 @@ class PostCommentNotification extends BasePostInteractionNotification {
   Map<String, dynamic> toJson() => _$PostCommentNotificationToJson(this);
 }
 
-/// Represents a notification telling that a like has been added
-/// to a post previously created from the user.
-@immutable
-@JsonSerializable(explicitToJson: true)
-class PostLikeNotification extends BasePostInteractionNotification {
-  PostLikeNotification({
-    @required String postId,
-    @required User user,
-    @required DateTime date,
-    String title,
-    String body,
-  }) : super(
-          type: NotificationTypes.LIKE,
-          action: NotificationActions.ACTION_SHOW_POST,
-          date: date,
-          postId: postId,
-          user: user,
-          title: title,
-          body: body,
-        );
-
-  factory PostLikeNotification.fromJson(Map<String, dynamic> json) =>
-      _$PostLikeNotificationFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$PostLikeNotificationToJson(this);
-}
-
-/// Represents a notification telling that a reaction has been added
-/// to a post previously created from the user.
-@immutable
-@JsonSerializable(explicitToJson: true)
-class PostReactionNotification extends BasePostInteractionNotification {
-  /// Represents the value of the reaction that has been added to the post.
-  @JsonKey(name: "reaction")
-  final String reaction;
-
-  PostReactionNotification({
-    @required String postId,
-    @required User user,
-    @required DateTime date,
-    @required this.reaction,
-    String title,
-    String body,
-  })  : assert(reaction != null),
-        super(
-          type: NotificationTypes.REACTION,
-          action: NotificationActions.ACTION_SHOW_POST,
-          date: date,
-          postId: postId,
-          user: user,
-          title: title,
-          body: body,
-        );
-
-  factory PostReactionNotification.fromJson(Map<String, dynamic> json) =>
-      _$PostReactionNotificationFromJson(json);
-
-  @override
-  Map<String, dynamic> toJson() => _$PostReactionNotificationToJson(this);
-}
-
 /// Represents a notification telling that the user has been mentioned
 /// inside a post or comment.
 @immutable
@@ -193,4 +131,66 @@ class PostTagNotification extends BasePostInteractionNotification {
 
   @override
   Map<String, dynamic> toJson() => _$PostTagNotificationToJson(this);
+}
+
+/// Represents a notification telling that a reaction has been added
+/// to a post previously created from the user.
+@immutable
+@JsonSerializable(explicitToJson: true)
+class PostReactionNotification extends BasePostInteractionNotification {
+  /// Represents the value of the reaction that has been added to the post.
+  @JsonKey(name: "reaction")
+  final String reaction;
+
+  PostReactionNotification({
+    @required String postId,
+    @required User user,
+    @required DateTime date,
+    @required this.reaction,
+    String title,
+    String body,
+  })  : assert(reaction != null),
+        super(
+        type: NotificationTypes.REACTION,
+        action: NotificationActions.ACTION_SHOW_POST,
+        date: date,
+        postId: postId,
+        user: user,
+        title: title,
+        body: body,
+      );
+
+  factory PostReactionNotification.fromJson(Map<String, dynamic> json) =>
+      _$PostReactionNotificationFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PostReactionNotificationToJson(this);
+}
+
+/// Represents a notification telling that a like has been added
+/// to a post previously created from the user.
+@immutable
+@JsonSerializable(explicitToJson: true)
+class PostLikeNotification extends BasePostInteractionNotification {
+  PostLikeNotification({
+    @required String postId,
+    @required User user,
+    @required DateTime date,
+    String title,
+    String body,
+  }) : super(
+    type: NotificationTypes.LIKE,
+    action: NotificationActions.ACTION_SHOW_POST,
+    date: date,
+    postId: postId,
+    user: user,
+    title: title,
+    body: body,
+  );
+
+  factory PostLikeNotification.fromJson(Map<String, dynamic> json) =>
+      _$PostLikeNotificationFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$PostLikeNotificationToJson(this);
 }

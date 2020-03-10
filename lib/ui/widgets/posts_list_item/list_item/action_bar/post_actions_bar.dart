@@ -20,7 +20,6 @@ class PostActionsBar extends StatelessWidget {
         final currentState = (state as PostListItemLoaded);
         return Column(
           children: <Widget>[
-            const SizedBox(height: PostsTheme.defaultPadding),
             Row(
               children: <Widget>[
                 Expanded(

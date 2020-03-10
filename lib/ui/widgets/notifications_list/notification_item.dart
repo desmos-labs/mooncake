@@ -26,7 +26,7 @@ class NotificationItem extends StatelessWidget {
       NotificationTypes.REACTION:
           PostsLocalizations.of(context).notificationAddedReaction,
       NotificationTypes.MENTION:
-      PostsLocalizations.of(context).notificationMentionedYou,
+          PostsLocalizations.of(context).notificationMentionedYou,
       NotificationTypes.TAG:
           PostsLocalizations.of(context).notificationTaggedYou,
     };
@@ -49,10 +49,7 @@ class NotificationItem extends StatelessWidget {
           padding: EdgeInsets.all(10.0),
           child: Row(
             children: <Widget>[
-              CircleAvatar(
-                radius: 25,
-                backgroundImage: NetworkImage(notification.user.avatarUrl),
-              ),
+              UserAvatar(size: 25, user: notification.user),
               SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -66,7 +63,7 @@ class NotificationItem extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: notification.user.username,
+                            text: notification.user.screenName,
                             style: textStyle.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -77,7 +74,7 @@ class NotificationItem extends StatelessWidget {
                           ),
                           if (data != null)
                             _buildDataTextSpan(
-                              username: currentState.user.username,
+                              username: currentState.user.screenName,
                               data: data,
                               textStyle: textStyle,
                             ),

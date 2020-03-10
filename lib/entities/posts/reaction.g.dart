@@ -8,12 +8,14 @@ part of 'reaction.dart';
 
 Reaction _$ReactionFromJson(Map<String, dynamic> json) {
   return Reaction(
-    owner: json['owner'] as String,
+    user: json['user'] == null
+        ? null
+        : User.fromJson(json['user'] as Map<String, dynamic>),
     value: json['value'] as String,
   );
 }
 
 Map<String, dynamic> _$ReactionToJson(Reaction instance) => <String, dynamic>{
-      'owner': instance.owner,
+      'user': instance.user?.toJson(),
       'value': instance.value,
     };

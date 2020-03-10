@@ -51,6 +51,7 @@ class PostListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 PostContent(post: post),
+                const SizedBox(height: PostsTheme.defaultPadding),
                 PostActionsBar(),
               ],
             ),

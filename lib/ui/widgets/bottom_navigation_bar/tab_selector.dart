@@ -21,17 +21,20 @@ class TabSelector extends StatelessWidget {
           )),
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         key: PostsKeys.tabs,
         children: [
           BottomNavigationButton(
             key: PostsKeys.allPostsTab,
             tab: AppTab.allPosts,
           ),
-          BottomNavigationButton(
-            key: PostsKeys.likedPostsTab,
-            tab: AppTab.likedPosts,
-          ),
+
+          // TODO: Implement this again
+//          BottomNavigationButton(
+//            key: PostsKeys.likedPostsTab,
+//            tab: AppTab.likedPosts,
+//          ),
+
           MaterialButton(
             textColor: Colors.white,
             padding: EdgeInsets.all(0),
@@ -46,10 +49,13 @@ class TabSelector extends StatelessWidget {
               child: Icon(MooncakeIcons.wallet),
             ),
           ),
-          BottomNavigationButton(
-            key: PostsKeys.yourPostsTab,
-            tab: AppTab.notifications,
-          ),
+
+          // TODO: Implement this again
+//          BottomNavigationButton(
+//            key: PostsKeys.yourPostsTab,
+//            tab: AppTab.notifications,
+//          ),
+
           BottomNavigationButton(
             key: PostsKeys.notificationsTab,
             tab: AppTab.account,

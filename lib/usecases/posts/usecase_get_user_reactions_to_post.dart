@@ -18,7 +18,7 @@ class GetUserReactionsToPost {
   Future<List<Reaction>> verify(Post post) async {
     final user = await _walletRepository.getUserData();
     return post.reactions
-        .where((r) => r.owner == user.accountData.address)
+        .where((r) => r.user.accountData.address == user.accountData.address)
         .toList();
   }
 }

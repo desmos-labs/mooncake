@@ -1,83 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:mooncake/ui/ui.dart';
+
+import 'post_comments_list/export.dart';
+import 'post_reactions_list/export.dart';
 
 /// Represents the main content of the post details screen.
 class PostDetailsMainContent extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     final padding = PostsTheme.postItemPadding;
     return BlocBuilder<PostDetailsBloc, PostDetailsState>(
       builder: (BuildContext context, PostDetailsState state) {
-        // ignore: close_sinks
-        final bloc = BlocProvider.of<PostDetailsBloc>(context);
-
-        // The post details are loaded
         final currentState = state as PostDetailsLoaded;
         final post = currentState.post;
 
         return DefaultTabController(
           length: 2,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool _) {
               return [
+                // Post content
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Container(padding: padding, child: PostContent(post: post)),
                     SizedBox(height: PostsTheme.defaultPadding),
                   ]),
                 ),
-                SliverAppBar(
-                  elevation: 0,
-                  primary: false,
-                  backgroundColor: Colors.white,
-                  leading: Container(),
-                  pinned: true,
-                  flexibleSpace: TabBar(
-                    tabs: <Widget>[
-                      Tab(text: "Comments"),
-                      Tab(text: "Reactions"),
-                    ],
+                // Tab bar
+                SliverOverlapAbsorber(
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                    context,
                   ),
-                )
+                  sliver: SliverAppBar(
+                    elevation: 0,
+                    primary: false,
+                    stretch: true,
+                    floating: false,
+                    backgroundColor: Colors.white,
+                    leading: Container(),
+                    pinned: true,
+                    flexibleSpace: TabBar(
+                      labelColor: ThemeColors.accentColor,
+                      unselectedLabelColor: ThemeColors.textColorLight,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      tabs: <Widget>[
+                        Tab(
+                          text: PostsLocalizations.of(context)
+                              .commentsTabLabel(currentState.commentsCount),
+                        ),
+                        Tab(
+                          text: PostsLocalizations.of(context)
+                              .reactionsTabLabel(currentState.reactionsCount),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ];
             },
             body: TabBarView(
               children: <Widget>[
-                CustomScrollView(
-                  key: PageStorageKey<String>("comments"),
-                  slivers: <Widget>[
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, i) => ListTile(
-                          leading: CircleAvatar(
-                            child: Text('0'),
-                          ),
-                          title: Text('Comment #$i'),
-                        ),
-                        childCount: 20,
-                      ),
-                    )
-                  ],
-                ),
-                CustomScrollView(
-                  key: PageStorageKey<String>("reactions"),
-                  slivers: <Widget>[
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, i) => ListTile(
-                          leading: CircleAvatar(
-                            child: Text('0'),
-                          ),
-                          title: Text('Reaction #$i'),
-                        ),
-                        childCount: 20,
-                      ),
-                    )
-                  ],
-                )
+                PostCommentsList(),
+                PostReactionsList(),
               ],
             ),
           ),

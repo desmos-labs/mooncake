@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -24,8 +25,14 @@ class PostReactionsList extends StatelessWidget {
       builder: (context, state) {
         final currentState = (state as PostListItemLoaded);
 
+        // Emoji parser
+        final parser = EmojiParser();
+
         // Filter the likes as they are showed independently
-        final reactions = currentState.post.reactions.where((r) => !r.isLike);
+        final reactions = currentState.post.reactions
+            .where((r) => !r.isLike)
+            .map((r) => r.copyWith(value: parser.emojify(r.value)))
+            .where((element) => element.value.runes.length == 1);
         final reactMap = groupBy<Reaction, String>(reactions, (r) => r.value);
 
         // Max 2 items if is compact and with a length more than 2

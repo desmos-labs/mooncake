@@ -26,6 +26,14 @@ class PostDetailsLoaded extends PostDetailsState {
   /// This can be `null` if the post has not been loaded yet.
   final Post post;
 
+  /// Returns the number of comments associated to this post.
+  int get commentsCount => comments.length;
+
+  /// Returns the number of reactions (excluding the likes) that the
+  /// current post has.
+  int get reactionsCount =>
+      post.reactions.where((element) => !element.isLike).length;
+
   /// Represents the list of comments currently loaded.
   final List<Post> comments;
 
