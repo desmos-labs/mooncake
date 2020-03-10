@@ -1,7 +1,26 @@
+# Version 0.0.15
+## Bug fixes 
+- Fixed the camera not working on iOS due to missing permissions 
+
+# Version 0.0.14
+## Bug fixes
+- Fixed non-clickable links inside posts
+- Fixed poor contrast inside the account recover page
+- Fixed the post time showing in UTC and not local time
+- Fixed the upload of images
+- Fixed the posts list not updating correctly
+
+# Version 0.0.13
+## Bug fixes
+ - Fixed wrong LCD and RPC endpoint
+
 # Version 0.0.12
 ## Changes
 - Added the support for push notifications
 - Added the support for media posts
+
+## Bug fixes
+- Fixed a security bug while the app is in developer mode (thanks to Orthoepy)
 
 # Version 0.0.11
 ## Changes 

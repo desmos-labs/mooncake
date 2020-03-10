@@ -108,7 +108,7 @@ class ChainHelper {
   /// Uploads the given [media] to IPFS, returning the IPFS hash.
   /// Throws an exception is something goes wrong.
   Future<String> uploadMediaToIpfs(PostMedia media) async {
-    final url = "$_ipfsEndpoint/api/v0/add";
+    final url = "https://put.$_ipfsEndpoint/api/v0/add";
     final multiPartFile = await http.MultipartFile.fromPath('file', media.url);
     final request = new http.MultipartRequest("POST", Uri.parse(url));
     request.files.add(multiPartFile);
@@ -121,6 +121,6 @@ class ChainHelper {
 
     final body = await response.stream.bytesToString();
     final uploadResponse = IpfsUploadResponse.fromJson(jsonDecode(body));
-    return "$_ipfsEndpoint/ipfs/${uploadResponse.hash}";
+    return "https://$_ipfsEndpoint/ipfs/${uploadResponse.hash}";
   }
 }
