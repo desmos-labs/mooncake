@@ -16,7 +16,12 @@ class SplashScreen extends StatelessWidget {
         }
 
         return Container(
-          color: ThemeColors.splashScreenBackgroundColor,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/icons/background_login.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
             children: <Widget>[
               SizedBox(height: 175),

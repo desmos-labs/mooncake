@@ -49,12 +49,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         id
         allows_comments
         created
-        creator
         last_edited
         message
         optional_data
         parent_id
-        poll_id
         subspace
         poll {
           allows_multiple_answers
@@ -70,8 +68,10 @@ class RemotePostsSourceImpl implements RemotePostsSource {
           user_poll_answers {
             answers
             id
-            user_address
           }
+        }
+        user {
+          address
         }
       }
     }

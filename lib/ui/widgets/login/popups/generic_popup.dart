@@ -27,7 +27,6 @@ class LoginPopup extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.5,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -36,7 +35,11 @@ class LoginPopup extends StatelessWidget {
                   BoxShadow(color: Color(0xFF40318972), blurRadius: 15),
                 ],
               ),
-              child: content,
+              child: Wrap(
+                children: [
+                  content,
+                ],
+              ),
             ),
           ),
         ),

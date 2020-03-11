@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/theme/theme.dart';
+
+import 'post_content_image_item.dart';
 
 /// Allows to properly visualize the image(s) associated with a post.
 /// If only a single image is present, it will be shown full-width.
@@ -26,12 +27,7 @@ class PostImagesPreviewer extends StatelessWidget {
 
     Widget child;
     if (images.length == 1) {
-      child = Image(
-        width: double.infinity,
-        image: NetworkImage(
-          images[0].url,
-        ),
-      );
+      child = PostContentImage(url: images[0].url);
     }
 
     if (images.length > 1) {
@@ -42,13 +38,7 @@ class PostImagesPreviewer extends StatelessWidget {
         mainAxisSpacing: 5.0,
         crossAxisSpacing: 5.0,
         children: List.generate(images.length, (index) {
-          return Image(
-            width: double.infinity,
-            fit: BoxFit.cover,
-            image: NetworkImage(
-              images[index].url,
-            ),
-          );
+          return PostContentImage(url: images[index].url);
         }),
       );
     }

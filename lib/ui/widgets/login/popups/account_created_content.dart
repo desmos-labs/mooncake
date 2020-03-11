@@ -25,7 +25,7 @@ class AccountCreatedPopupContent extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Text(
-          "You can backup your phrase later",
+          PostsLocalizations.of(context).accountCreatedPopupText,
           style: TextThemes.loginPopupTextTheme(context),
         ),
         SizedBox(height: 50),

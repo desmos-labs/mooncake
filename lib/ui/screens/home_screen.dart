@@ -12,7 +12,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, activeTab) {
-
         Widget body = Container();
         if (activeTab == AppTab.allPosts) {
           body = PostsList(filter: (p) => !p.hasParent);
@@ -25,21 +24,25 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             elevation: 1,
+            centerTitle: true,
             title: Text(PostsLocalizations.of(context).appTitle),
             actions: [
               IconButton(
-                icon: SizedBox(
-                  height: 16,
-                  child: SvgPicture.asset(
-                    "assets/images/logout.svg",
-                    color: Colors.white,
-                  ),
-                ),
+                color: ThemeColors.accentColor,
+                icon: Icon(MooncakeIcons.wallet),
                 onPressed: () {
-                  BlocProvider.of<HomeBloc>(context).add(SignOut());
+                  BlocProvider.of<NavigatorBloc>(context)
+                      .add(NavigateToWallet());
                 },
-                tooltip: PostsLocalizations.of(context).signOut,
               )
+//              IconButton(
+//                color: ThemeColors.accentColor,
+//                icon: Icon(MooncakeIcons.logout),
+//                onPressed: () {
+//                  BlocProvider.of<HomeBloc>(context).add(SignOut());
+//                },
+//                tooltip: PostsLocalizations.of(context).signOut,
+//              )
             ],
           ),
           body: body,
@@ -48,6 +51,4 @@ class HomeScreen extends StatelessWidget {
       },
     );
   }
-
-
 }

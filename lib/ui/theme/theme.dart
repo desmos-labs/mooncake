@@ -27,7 +27,7 @@ class PostsTheme {
       primaryColor: ThemeColors.primaryColor,
       accentColor: ThemeColors.accentColor,
       primaryColorLight: Colors.white,
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.grey[200],
 
       // Define the default font family.
       fontFamily: 'Montserrat',

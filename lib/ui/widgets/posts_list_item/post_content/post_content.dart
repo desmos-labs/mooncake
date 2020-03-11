@@ -3,8 +3,8 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'post_content_header.dart';
-import 'post_content_message.dart';
 import 'post_content_images.dart';
+import 'post_content_message.dart';
 
 /// Contains the main content of a post. Such content is made of
 /// - The header of the post, indicating the creator and the data
@@ -20,6 +20,11 @@ class PostContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        PostItemHeader(
+          key: PostsKeys.postItemHeader(post.id),
+          post: post,
+        ),
+        const SizedBox(height: PostsTheme.defaultPadding),
         PostMessage(
           key: PostsKeys.postItemMessage(post.id),
           post: post,
@@ -27,11 +32,6 @@ class PostContent extends StatelessWidget {
         const SizedBox(height: PostsTheme.defaultPadding),
         PostImagesPreviewer(
           key: PostsKeys.postItemImagePreviewer(post.id),
-          post: post,
-        ),
-        const SizedBox(height: PostsTheme.defaultPadding),
-        PostItemHeader(
-          key: PostsKeys.postItemHeader(post.id),
           post: post,
         ),
       ],

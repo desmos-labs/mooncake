@@ -15,7 +15,7 @@ class TabSelector extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
+        color: Colors.white,
           border: Border(
             top: BorderSide(color: PostsTheme.borderColor, width: 0.5),
           )),

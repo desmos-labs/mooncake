@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Displays the message of a post properly.
 class PostMessage extends StatelessWidget {
@@ -39,6 +40,7 @@ class PostMessage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   MarkdownBody(
+                    onTapLink: _onTapLink,
                     data: post.message,
                     styleSheet: mdStyle,
                   ),
@@ -49,5 +51,11 @@ class PostMessage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _onTapLink(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
   }
 }

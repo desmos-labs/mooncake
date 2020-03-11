@@ -24,6 +24,9 @@ class PostsLocalizations {
   String get accountCreatedPopupMainButtonText => "Go to Mooncake";
   String get accountCreatedPopupBackupButtonText => "Backup mnemonic phrase";
 
+  String get creatingAccountPopupTitle => "Creating account";
+  String get creatingAccountText => "This might take a while...";
+
   // Mnemonic generation screen
   String get createAccount => "Create account";
   String get generatingMnemonic => "Generating mnemonic";
@@ -83,10 +86,8 @@ class PostsLocalizations {
   String get noNotifications => "No notifications here, you're all done! 🎉";
 
   // Account screen
-  String get accountTitle => "Your account";
-  String get yourAddress => "Your address:";
-  String get yourFunds => "Your funds:";
-  String get openInExplorer => "Open in explorer";
+  String get accountPageTitle => "Welcome to your future account page";
+  String get accountPageText => "We do not support accounts yet, but you can always click on the wallet option inside the app bar to visualize your wallet";
 
   // Post details
   String get postDetailsTitle => "Post details";

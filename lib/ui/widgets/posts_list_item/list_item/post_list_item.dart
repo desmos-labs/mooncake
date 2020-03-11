@@ -39,21 +39,27 @@ class PostListItem extends StatelessWidget {
 
         final currentState = (state as PostListItemLoaded);
         final post = currentState.post;
-        return Container(
-          color: Colors.white,
-          padding: PostsTheme.postItemPadding,
+        return Card(
+          margin: EdgeInsets.all(8),
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
           child: InkWell(
             onTap: () => _openPostDetails(context),
             onLongPress: post.status.value == PostStatusValue.ERRORED
                 ? () => _showPostError(context, post)
                 : null,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                PostContent(post: post),
-                const SizedBox(height: PostsTheme.defaultPadding),
-                PostActionsBar(),
-              ],
+            child: Container(
+              padding: PostsTheme.postItemPadding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  PostContent(post: post),
+                  const SizedBox(height: PostsTheme.defaultPadding),
+                  PostActionsBar(),
+                ],
+              ),
             ),
           ),
         );

@@ -11,13 +11,13 @@ abstract class NavigatorEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the bloc to navigate to the home screen.
+/// Tells the BLoC to navigate to the home screen.
 class NavigateToHome extends NavigatorEvent {
   @override
   String toString() => 'NavigateToHome';
 }
 
-/// Tells the bloc to navigate to the screen that allows to recover
+/// Tells the BLoC to navigate to the screen that allows to recover
 /// an existing account using a mnemonic phrase.
 class NavigateToRecoverAccount extends NavigatorEvent {
   final RecoverAccountArguments args;
@@ -28,14 +28,14 @@ class NavigateToRecoverAccount extends NavigatorEvent {
   String toString() => 'NavigateToRecoverAccount';
 }
 
-/// Tells the bloc to navigate to the screen that allows to create
+/// Tells the BLoC to navigate to the screen that allows to create
 /// a new random mnemonic phrase.
 class NavigateToCreateAccount extends NavigatorEvent {
   @override
   String toString() => 'NavigateToCreateAccount';
 }
 
-/// Tells the BloC to navigate to the screen that displays the post
+/// Tells the BLoC to navigate to the screen that displays the post
 /// having the specified id.
 class NavigateToPostDetails extends NavigatorEvent {
   final BuildContext context;
@@ -45,4 +45,10 @@ class NavigateToPostDetails extends NavigatorEvent {
 
   @override
   String toString() => 'NavigateToPostdetail { postId: $postId }';
+}
+
+/// Tells the BLoC to navigate to the wallet screen.
+class NavigateToWallet extends NavigatorEvent {
+  @override
+  String toString() => 'NavigateToWallet';
 }

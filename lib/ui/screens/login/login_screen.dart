@@ -11,34 +11,44 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeColors.loginBackgroundColor,
-      body: SafeArea(
-        child: BlocBuilder<AccountBloc, AccountState>(
-          builder: (BuildContext contest, AccountState state) {
-            return Stack(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image(
-                            image: AssetImage('assets/images/login_logo.png'),
-                            width: 75,
-                          ),
-                        ],
-                      ),
-                      if (!(state is AccountCreated)) LoginMainContent(),
-                    ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/icons/background_login.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: BlocBuilder<AccountBloc, AccountState>(
+            builder: (BuildContext contest, AccountState state) {
+              return Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Image(
+                              image: AssetImage('assets/images/login_logo.png'),
+                              width: 75,
+                            ),
+                          ],
+                        ),
+                        if (!(state is AccountCreated)) LoginMainContent(),
+                      ],
+                    ),
                   ),
-                ),
-                if (state is AccountCreated)
-                  LoginPopup(content: AccountCreatedPopupContent()),
-              ],
-            );
-          },
+                  if (state is CreatingAccount)
+                    LoginPopup(content: CreatingAccountPopupContent()),
+                  if (state is AccountCreated)
+                    LoginPopup(content: AccountCreatedPopupContent()),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

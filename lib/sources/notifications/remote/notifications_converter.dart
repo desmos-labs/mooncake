@@ -13,7 +13,7 @@ class NotificationConverter {
       case "comment":
         return PostCommentNotification(
           postId: message.data["post_id"],
-          user: message.data["post_creator"],
+          user: User.fromAddress(message.data["post_creator"]),
           comment: message.data["post_message"],
           date: DateTime.now(),
           title: message.notification?.title,
@@ -23,7 +23,7 @@ class NotificationConverter {
       case "mention":
         return PostMentionNotification(
           postId: message.data["post_id"],
-          user: message.data["post_creator"],
+          user: User.fromAddress(message.data["post_creator"]),
           date: DateTime.now(),
           text: message.data["post_message"],
           title: message.notification?.title,

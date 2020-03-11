@@ -76,7 +76,7 @@ void _initPosts(User user) async {
       status: PostStatus(value: PostStatusValue.SYNCED),
       lastEdited: null,
       message:
-          "Social networking is such a massive part of our lives. From today we are giving complete power to the users",
+          "Social networking is such a massive part of our lives. From today we are giving complete power to the users. Visit [desmos.network](https://desmos.network).",
       medias: [
         PostMedia(
           mimeType: "image/jpeg",
