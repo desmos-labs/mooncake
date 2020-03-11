@@ -15,7 +15,7 @@ class TabSelector extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Colors.white,
           border: Border(
             top: BorderSide(color: PostsTheme.borderColor, width: 0.5),
           )),
@@ -67,12 +67,15 @@ class TabSelector extends StatelessWidget {
 
   Route _createRoute() {
     return MaterialPageRoute(builder: (BuildContext context) {
-      return CreatePostScreen(callback: (post) {
-        // ignore: close_sinks
-        final bloc = BlocProvider.of<PostsListBloc>(context);
-        // TODO: Implement AddPost again
+      // TODO: Implement AddPost again
+      return CreatePostScreen(
+//          callback: (post) {
+//         ignore: close_sinks
+//        final bloc = BlocProvider.of<PostsListBloc>(context);
+//
 //        bloc.add(AddPost(post));
-      });
+//      }
+          );
     });
   }
 }

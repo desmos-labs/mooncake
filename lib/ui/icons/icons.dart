@@ -42,5 +42,5 @@ class MooncakeIcons {
   static const IconData faceId = const IconDataMooncake(0xe928);
   static const IconData addEmoji = const IconDataMooncake(0xe929);
   static const IconData comment = const IconDataMooncake(0xe931);
-
+  static const IconData trash = const IconDataMooncake(0xe92e);
 }
