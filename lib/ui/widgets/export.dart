@@ -11,4 +11,4 @@ export 'post_details/export.dart';
 export 'posts_list/export.dart';
 export 'posts_list_item/export.dart';
 export 'user/export.dart';
-
+export 'wallet/export.dart';

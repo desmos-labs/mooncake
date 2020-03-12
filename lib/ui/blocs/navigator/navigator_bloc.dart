@@ -37,6 +37,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToCreateAccountEventToState();
     } else if (event is NavigateToPostDetails) {
       _mapNavigateToPostDetailsEventToState(event);
+    } else if (event is NavigateToWallet) {
+      _mapNavigateToWalletEventToState();
     }
   }
 
@@ -69,5 +71,11 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
         builder: (context) => PostDetailsScreen(postId: event.postId),
       ));
     }
+  }
+
+  void _mapNavigateToWalletEventToState() {
+    _navigatorKey.currentState.push(MaterialPageRoute(
+      builder: (context) => WalletScreen(),
+    ));
   }
 }

@@ -218,7 +218,12 @@ Future<User> _initUser() async {
       address: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
       accountNumber: 0,
       sequence: 0,
-      coins: [],
+      coins: [
+        StdCoin(
+          denom: Constants.FEE_TOKEN,
+          amount: "21300",
+        ),
+      ],
     ),
     username: "mooncake",
     avatarUrl:

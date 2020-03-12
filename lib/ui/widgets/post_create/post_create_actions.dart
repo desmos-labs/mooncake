@@ -13,6 +13,7 @@ class PostCreateActions extends StatelessWidget {
         // ignore: close_sinks
         final bloc = BlocProvider.of<PostInputBloc>(context);
         return Container(
+          color: Colors.white,
           width: MediaQuery.of(context).size.width,
           child: Wrap(
             children: <Widget>[

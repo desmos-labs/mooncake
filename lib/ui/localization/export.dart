@@ -87,7 +87,18 @@ class PostsLocalizations {
 
   // Account screen
   String get accountPageTitle => "Welcome to your future account page";
-  String get accountPageText => "We do not support accounts yet, but you can always click on the wallet option inside the app bar to visualize your wallet";
+  String get accountPageText => "We do not support accounts yet, but you can "
+      "always click on the wallet option inside the app bar to visualize your "
+      "wallet";
+
+  // Wallet screen
+  String get walletTitle => "Welcome to your wallet";
+  String get walletBodyText => "We do not support transactions history yet, "
+      "but you can always see the current amount of tokens you own on the "
+      "top of the page";
+  String get emptyWalletTitle => "No tokens available";
+  String get emptyWalletBody => "You don't have any token yet. Ask someone "
+      "to send you some, or request them using our faucet to see them here.";
 
   // Post details
   String get postDetailsTitle => "Post details";
