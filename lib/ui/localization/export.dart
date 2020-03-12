@@ -27,22 +27,18 @@ class PostsLocalizations {
   String get creatingAccountPopupTitle => "Creating account";
   String get creatingAccountText => "This might take a while...";
 
-  // Mnemonic generation screen
-  String get createAccount => "Create account";
-  String get generatingMnemonic => "Generating mnemonic";
-  String get generatedMnemonicText =>
-      "Here is your mnemonic code. Please write it down on a piece of paper.";
-  String get mnemonicWritten => "I've written down the mnemonic phrase";
+  // Recover screen
+  String get recoverScreenTitle => "Recover mnemonic";
 
   // Mnemonic recover screen
-  String get mnemonicRecoverInstructions =>
-      "Write below your mnemonic code, space separated:";
+  String get mnemonicRecoverInstructions => "Please enter your mnemonic phrase"
+      " in order and make sure your mnemonic is written correctly";
   String get mnemonicHint => "Mnemonic";
   String get recoverAccount => "Recover account";
   String get invalidMnemonic => "Invalid mnemonic";
   String get recoveringPopupTitle => "Recovering account...";
-  String get recoveringPopupText =>
-      "Your account is being recovered. This operation might take a while, please wait.";
+  String get recoveringPopupText => "Your account is being recovered. "
+      "This operation might take a while, please wait.";
   String get recoverPopupErrorTitle => "Error while recovering the account";
 
   // Main screen

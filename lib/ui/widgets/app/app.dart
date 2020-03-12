@@ -25,9 +25,6 @@ class _PostsAppState extends State<PostsApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<MnemonicInputBloc>(
-          create: (_) => MnemonicInputBloc(),
-        ),
         BlocProvider<RecoverAccountBloc>(
           create: (context) => RecoverAccountBloc.create(context),
         ),
@@ -55,7 +52,6 @@ class _PostsAppState extends State<PostsApp> {
         routes: {
           PostsRoutes.home: (context) => SplashScreen(),
           PostsRoutes.recoverAccount: (context) => RecoverAccountScreen(),
-          PostsRoutes.createAccount: (context) => GenerateMnemonicScreen(),
         },
       ),
     );

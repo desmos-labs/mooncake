@@ -19,7 +19,6 @@ class WalletScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: ThemeColors.accentColor,
-            elevation: 0,
             iconTheme: Theme.of(context).accentIconTheme,
           ),
           body: coin == null

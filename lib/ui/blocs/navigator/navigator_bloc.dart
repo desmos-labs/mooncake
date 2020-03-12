@@ -33,8 +33,6 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToHomeEventToState();
     } else if (event is NavigateToRecoverAccount) {
       _mapNavigateToRecoverAccountEventToState(event);
-    } else if (event is NavigateToCreateAccount) {
-      _mapNavigateToCreateAccountEventToState();
     } else if (event is NavigateToPostDetails) {
       _mapNavigateToPostDetailsEventToState(event);
     } else if (event is NavigateToWallet) {
@@ -56,10 +54,6 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       PostsRoutes.recoverAccount,
       arguments: event.args,
     );
-  }
-
-  void _mapNavigateToCreateAccountEventToState() {
-    _navigatorKey.currentState.pushNamed(PostsRoutes.createAccount);
   }
 
   void _mapNavigateToPostDetailsEventToState(

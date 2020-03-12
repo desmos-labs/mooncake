@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:meta/meta.dart';
 
 /// Represents a generic state for the account recovery screen.
 abstract class RecoverAccountState extends Equatable {
@@ -9,20 +9,66 @@ abstract class RecoverAccountState extends Equatable {
   List<Object> get props => [];
 }
 
-/// Represents the state in which the user is typing his mnemonic into
-/// the proepr text field.
+/// Represents the state during which the user is still typing it's mnemonic.
 class TypingMnemonic extends RecoverAccountState {
-  final MnemonicInputState mnemonicInputState;
+  final int currentWordIndex;
 
-  TypingMnemonic(this.mnemonicInputState);
+  /// Represents the word that is being typed.
+  final String typedWord;
 
-  @override
-  List<Object> get props => [mnemonicInputState];
+  /// Represents the list of words that have been selected as composing the
+  /// mnemonic.
+  final List<String> wordsList;
 
-  @override
-  String toString() {
-    return 'TypingMnemonic { mnemonicInputState: $mnemonicInputState }';
+  /// Tells is the mnemonic inserted till now is valid or not.
+  final bool isMnemonicValid;
+
+  TypingMnemonic({
+    @required this.currentWordIndex,
+    @required this.typedWord,
+    @required this.wordsList,
+    @required this.isMnemonicValid,
+  })  : assert(typedWord != null),
+        assert(wordsList != null);
+
+  factory TypingMnemonic.initial() {
+    return TypingMnemonic(
+      currentWordIndex: 0,
+      typedWord: "",
+      wordsList: List(24),
+      isMnemonicValid: false,
+    );
   }
+
+  TypingMnemonic copyWith({
+    int currentWordIndex,
+    String typedWord,
+    List<String> wordsList,
+    bool isMnemonicValid,
+  }) {
+    return TypingMnemonic(
+      currentWordIndex: currentWordIndex ?? this.currentWordIndex,
+      typedWord: typedWord ?? this.typedWord,
+      wordsList: wordsList ?? this.wordsList,
+      isMnemonicValid: isMnemonicValid ?? this.isMnemonicValid,
+    );
+  }
+
+  @override
+  List<Object> get props => [
+        currentWordIndex,
+        typedWord,
+        wordsList,
+        isMnemonicValid,
+      ];
+
+  @override
+  String toString() => 'TypingMnemonic { '
+      'currentWordIndex: $currentWordIndex, '
+      'typedWord: $typedWord, '
+      'wordsList: $wordsList ,'
+      'isMnemonicValid: $isMnemonicValid '
+      '}';
 }
 
 /// Represents the state in which the mnemonic is being used to recover

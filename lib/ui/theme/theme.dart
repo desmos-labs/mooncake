@@ -20,6 +20,7 @@ class PostsTheme {
 
   static ThemeData get theme {
     return ThemeData(
+      appBarTheme: AppBarTheme(elevation: 0),
       iconTheme: IconThemeData(
         color: ThemeColors.accentColor,
       ),

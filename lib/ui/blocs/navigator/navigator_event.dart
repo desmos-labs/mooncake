@@ -28,13 +28,6 @@ class NavigateToRecoverAccount extends NavigatorEvent {
   String toString() => 'NavigateToRecoverAccount';
 }
 
-/// Tells the BLoC to navigate to the screen that allows to create
-/// a new random mnemonic phrase.
-class NavigateToCreateAccount extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToCreateAccount';
-}
-
 /// Tells the BLoC to navigate to the screen that displays the post
 /// having the specified id.
 class NavigateToPostDetails extends NavigatorEvent {

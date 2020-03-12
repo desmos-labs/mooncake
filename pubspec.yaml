@@ -29,6 +29,7 @@ dependencies:
   flutter_markdown:
   flutter_screenutil:
   flutter_secure_storage:
+  flutter_staggered_grid_view:
   flutter_sticky_header:
   flutter_svg:
   font_awesome_flutter:

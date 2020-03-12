@@ -18,53 +18,48 @@ class RecoverAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RecoverAccountArguments args = ModalRoute.of(context).settings.arguments;
-    final String mnemonic = args?.mnemonic;
+    // TODO: Implement this again
+    // RecoverAccountArguments args = ModalRoute.of(context).settings.arguments;
+    // final String mnemonic = args?.mnemonic;
 
     return BlocBuilder<RecoverAccountBloc, RecoverAccountState>(
       builder: (context, state) {
+        final bottomPadding = 50.0;
         return Stack(
           children: <Widget>[
             Scaffold(
               appBar: AppBar(
-                title: Text("Recover mnemonic"),
+                centerTitle: true,
+                title: Text(PostsLocalizations.of(context).recoverScreenTitle),
               ),
-              body: Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              body: BlocProvider(
+                create: (context) => RecoverAccountBloc.create(context),
+                child: Stack(
                   children: <Widget>[
-                    Text(
-                      PostsLocalizations.of(context)
-                          .mnemonicRecoverInstructions,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(fontSize: 16),
+                    RecoverAccountMainContent(bottomPadding: bottomPadding),
+                    Positioned(
+                      bottom: 0,
+                      child: RecoverAccountWordsList(height: bottomPadding),
                     ),
-                    const SizedBox(height: 16),
-                    Expanded(
-                      child: MnemonicInput(verificationMnemonic: mnemonic),
-                    ),
-                    const SizedBox(height: 16),
-                    if (state is TypingMnemonic) _recoverButton(context, state),
                   ],
                 ),
               ),
             ),
-            if (state is RecoveringAccount)
-              RecoverPopup(
-                title: PostsLocalizations.of(context).recoveringPopupTitle,
-                message: PostsLocalizations.of(context).recoveringPopupText,
-                loading: true,
-              ),
-            if (state is RecoverError)
-              RecoverPopup(
-                title: PostsLocalizations.of(context).recoverPopupErrorTitle,
-                message: state.error.toString(),
-                loading: false,
-                onTap: () => _dismissErrorPopup(context),
-              )
+
+// TODO: Implement this again
+//            if (state is RecoveringAccount)
+//              RecoverPopup(
+//                title: PostsLocalizations.of(context).recoveringPopupTitle,
+//                message: PostsLocalizations.of(context).recoveringPopupText,
+//                loading: true,
+//              ),
+//            if (state is RecoverError)
+//              RecoverPopup(
+//                title: PostsLocalizations.of(context).recoverPopupErrorTitle,
+//                message: state.error.toString(),
+//                loading: false,
+//                onTap: () => _dismissErrorPopup(context),
+//              )
           ],
         );
       },
