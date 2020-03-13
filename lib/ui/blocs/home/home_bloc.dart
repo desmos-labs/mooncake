@@ -10,7 +10,7 @@ import 'package:mooncake/usecases/usecases.dart';
 
 import '../export.dart';
 
-/// Represents the BLoC associated with the home screen.
+/// Represents the Bloc associated with the home screen.
 class HomeBloc extends Bloc<HomeEvent, AppTab> {
   final AccountBloc _loginBloc;
   final LogoutUseCase _logoutUseCase;

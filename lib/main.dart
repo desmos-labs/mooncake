@@ -18,7 +18,7 @@ void main() {
   // Setup the dependency injection
   Injector.init();
 
-  // Setup the BLoC delegate to observe transitions
+  // Setup the Bloc delegate to observe transitions
   BlocSupervisor.delegate = SimpleBlocDelegate();
 
   // This captures errors reported by the Flutter framework.

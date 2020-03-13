@@ -10,34 +10,34 @@ abstract class NavigatorEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the BLoC to navigate to the home screen.
+/// Tells the Bloc to navigate to the home screen.
 class NavigateToHome extends NavigatorEvent {
   @override
   String toString() => 'NavigateToHome';
 }
 
-/// Tells the BLoC to navigate to the screen that allows to recover
+/// Tells the Bloc to navigate to the screen that allows to recover
 /// an existing account using a mnemonic phrase.
 class NavigateToRecoverAccount extends NavigatorEvent {
   @override
   String toString() => 'NavigateToRecoverAccount';
 }
 
-/// Tells the BLoC to navigate to the screen that allows the user
+/// Tells the Bloc to navigate to the screen that allows the user
 /// to set a biometric authentication.
 class NavigateToEnableBiometrics extends NavigatorEvent {
   @override
   String toString() => 'NavigateToEnableBiometrics';
 }
 
-/// Tells the BLoC to navigate to the screen that allows the user
+/// Tells the Bloc to navigate to the screen that allows the user
 /// to set a password to protect the account.
 class NavigateToSetPassword extends NavigatorEvent {
   @override
   String toString() => 'NavigateToSetPassword';
 }
 
-/// Tells the BLoC to navigate to the screen that displays the post
+/// Tells the Bloc to navigate to the screen that displays the post
 /// having the specified id.
 class NavigateToPostDetails extends NavigatorEvent {
   final BuildContext context;
@@ -49,7 +49,7 @@ class NavigateToPostDetails extends NavigatorEvent {
   String toString() => 'NavigateToPostdetail { postId: $postId }';
 }
 
-/// Tells the BLoC to navigate to the wallet screen.
+/// Tells the Bloc to navigate to the wallet screen.
 class NavigateToWallet extends NavigatorEvent {
   @override
   String toString() => 'NavigateToWallet';

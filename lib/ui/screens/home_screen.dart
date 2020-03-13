@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
         } else if (activeTab == AppTab.notifications) {
           body = NotificationsMainContent();
         } else if (activeTab == AppTab.account) {
-          body = Account();
+          body = AccountScreenContent();
         }
 
         return Scaffold(

@@ -10,7 +10,7 @@ abstract class PostDetailsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the BLoC that the details of a post have been loaded and it
+/// Tells the Bloc that the details of a post have been loaded and it
 /// is ready to be shown to the user.
 class ShowPostDetails extends PostDetailsEvent {
   final Post post;
@@ -25,7 +25,7 @@ class ShowPostDetails extends PostDetailsEvent {
   String toString() => 'ShowPostDetails { post: $post, comments: $comments }';
 }
 
-/// Tells the BLoC that it needs to visualize the selected tab.
+/// Tells the Bloc that it needs to visualize the selected tab.
 class ShowTab extends PostDetailsEvent {
   final PostDetailsTab tab;
 

@@ -8,7 +8,7 @@ import 'package:mooncake/usecases/usecases.dart';
 
 import './bloc.dart';
 
-/// Represents the BLoC that is used to shows the list of notifications
+/// Represents the Bloc that is used to shows the list of notifications
 /// the user has received.
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   final GetNotificationsUseCase _getNotificationsUseCase;

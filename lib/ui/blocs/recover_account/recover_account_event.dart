@@ -31,7 +31,7 @@ class WordSelected extends RecoverAccountEvent {
   List<Object> get props => [word];
 }
 
-/// Tells the BLoC that the focus has changed to the word having the given
+/// Tells the Bloc that the focus has changed to the word having the given
 /// index.
 class ChangeFocus extends RecoverAccountEvent {
   final String currentText;
@@ -43,7 +43,7 @@ class ChangeFocus extends RecoverAccountEvent {
   List<Object> get props => [focusedField, currentText];
 }
 
-/// Tells the BLoC that the user has inserted the mnemonic and wants
+/// Tells the Bloc that the user has inserted the mnemonic and wants
 /// to continue to the next step.
 class ContinueRecovery extends RecoverAccountEvent {
   @override

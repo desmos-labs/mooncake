@@ -28,7 +28,7 @@ class AccountCreatedPopupContent extends StatelessWidget {
           PostsLocalizations.of(context).accountCreatedPopupText,
           style: TextThemes.loginPopupTextTheme(context),
         ),
-        SizedBox(height: 50),
+        SizedBox(height: 25),
         Row(
           children: <Widget>[
             Expanded(
@@ -40,17 +40,18 @@ class AccountCreatedPopupContent extends StatelessWidget {
             ),
           ],
         ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: SecondaryRoundedButton(
-                text: PostsLocalizations.of(context)
-                    .accountCreatedPopupBackupButtonText,
-                onPressed: () {},
-              ),
-            ),
-          ],
-        )
+// TODO: Bring this back
+//        Row(
+//          children: <Widget>[
+//            Expanded(
+//              child: SecondaryRoundedButton(
+//                text: PostsLocalizations.of(context)
+//                    .accountCreatedPopupBackupButtonText,
+//                onPressed: () {},
+//              ),
+//            ),
+//          ],
+//        )
       ],
     );
   }

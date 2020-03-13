@@ -21,7 +21,7 @@ class PrimaryRoundedButton extends StatelessWidget {
     return GradientButton(
       isEnabled: enabled,
       increaseWidthBy: double.infinity,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       callback: onPressed,
       gradient: ThemeColors.primaryButtonBackgroundGradient,
       shadowColor: Colors.transparent,

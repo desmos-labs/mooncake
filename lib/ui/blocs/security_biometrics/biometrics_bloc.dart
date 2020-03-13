@@ -10,7 +10,7 @@ import 'package:mooncake/usecases/usecases.dart';
 
 import './bloc.dart';
 
-/// Represents the BLoC that handles the changes in the biometrics setting
+/// Represents the Bloc that handles the changes in the biometrics setting
 /// of the user.
 class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
   final RecoverAccountBloc _recoverAccountBloc;

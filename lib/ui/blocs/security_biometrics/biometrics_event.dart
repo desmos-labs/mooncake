@@ -8,7 +8,7 @@ abstract class BiometricsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the BLoC that the user wants to be authenticated.
+/// Tells the Bloc that the user wants to be authenticated.
 class AuthenticateWithBiometrics extends BiometricsEvent {
   @override
   String toString() => 'Authenticate';

@@ -10,7 +10,7 @@ import 'package:mooncake/usecases/usecases.dart';
 
 import './bloc.dart';
 
-/// Represents the BLoC that should be used inside the screen that allows
+/// Represents the Bloc that should be used inside the screen that allows
 /// to visualize the details of a single post.
 class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   StreamSubscription _postSubscription;

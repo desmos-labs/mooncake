@@ -8,7 +8,7 @@ import 'package:mooncake/ui/ui.dart';
 
 import './bloc.dart';
 
-/// Represents the BLoC that handles the interaction with the button that
+/// Represents the Bloc that handles the interaction with the button that
 /// is used to like/unlike a post.
 class PostLikeButtonBloc
     extends Bloc<PostLikeButtonEvent, PostLikeButtonState> {

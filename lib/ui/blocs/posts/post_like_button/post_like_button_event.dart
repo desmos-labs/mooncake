@@ -6,7 +6,7 @@ abstract class PostLikeButtonEvent extends Equatable {
   const PostLikeButtonEvent();
 }
 
-/// Tells the BLoC that the initial data related to a single
+/// Tells the Bloc that the initial data related to a single
 /// like button has been loaded.
 class PostLikeDataLoaded extends PostLikeButtonEvent {
   final bool isLiked;
@@ -18,7 +18,7 @@ class PostLikeDataLoaded extends PostLikeButtonEvent {
   List<Object> get props => [isLiked, likesCount];
 }
 
-/// Tells the BLoC that the button state has changed to be (un)selected.
+/// Tells the Bloc that the button state has changed to be (un)selected.
 class PostLikeButtonSelectedStateChanged extends PostLikeButtonEvent {
   final bool selected;
 
@@ -28,7 +28,7 @@ class PostLikeButtonSelectedStateChanged extends PostLikeButtonEvent {
   List<Object> get props => [selected];
 }
 
-/// Tells the BLoC that the like button has been clicked.
+/// Tells the Bloc that the like button has been clicked.
 class PostLikeButtonClicked extends PostLikeButtonEvent {
   @override
   List<Object> get props => [];

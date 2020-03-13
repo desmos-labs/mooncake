@@ -68,6 +68,7 @@ class _MnemonicInputItemState extends State<MnemonicInputItem> {
                       onChanged: _emitText,
                       focusNode: _focusNode,
                       controller: _textEditingController,
+                      maxLines: 1,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(0.0),
                         isDense: true,

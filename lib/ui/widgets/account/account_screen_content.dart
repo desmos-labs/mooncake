@@ -3,7 +3,7 @@ import 'package:mooncake/ui/ui.dart';
 
 /// Represents the widget inside which all the users' account data
 /// are displayed.
-class Account extends StatelessWidget {
+class AccountScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

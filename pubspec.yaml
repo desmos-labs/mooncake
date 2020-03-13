@@ -44,6 +44,7 @@ dependencies:
   meta:
   mime_type:
   path_provider:
+  password_strength:
   rxdart:
   sembast:
   sentry:

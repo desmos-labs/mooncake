@@ -11,7 +11,7 @@ import 'package:mooncake/usecases/usecases.dart';
 
 import './bloc.dart';
 
-/// Represents the BLoC that handles the state of a single post item
+/// Represents the Bloc that handles the state of a single post item
 /// inside the posts list.
 class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
   final ManagePostReactionsUseCase _managePostReactionsUseCase;

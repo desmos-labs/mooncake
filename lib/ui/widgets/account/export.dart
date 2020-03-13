@@ -1,2 +1,1 @@
-export 'account_screen.dart';
-export 'recover_popup.dart';
+export 'account_screen_content.dart';

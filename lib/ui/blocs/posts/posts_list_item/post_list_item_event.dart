@@ -11,7 +11,7 @@ abstract class PostListItemEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the BLoC that the data has been loaded.
+/// Tells the Bloc that the data has been loaded.
 class DataLoaded extends PostListItemEvent {
   final User user;
   final Post post;
@@ -25,7 +25,7 @@ class DataLoaded extends PostListItemEvent {
   String toString() => 'DataLoaded { user: $user, post: $post }';
 }
 
-/// Tells the BLoC that it needs to either set as liked/unliked the given post.
+/// Tells the Bloc that it needs to either set as liked/unliked the given post.
 class AddOrRemoveLike extends PostListItemEvent {}
 
 /// Tells the Bloc that it needs to either add (if not existing yet) or remove
@@ -42,7 +42,7 @@ class AddOrRemovePostReaction extends PostListItemEvent {
   String toString() => 'AddOrRemovePostReaction { reaction: $reaction }';
 }
 
-/// Tells the BLoC to change the current state of the expanded reactions list.
+/// Tells the Bloc to change the current state of the expanded reactions list.
 class ChangeReactionBarExpandedState extends PostListItemEvent {
   ChangeReactionBarExpandedState();
 

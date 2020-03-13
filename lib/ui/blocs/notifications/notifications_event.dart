@@ -8,7 +8,7 @@ abstract class NotificationsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the BLoC that it needs to start loading the notifications.
+/// Tells the Bloc that it needs to start loading the notifications.
 class LoadNotifications extends NotificationsEvent {
   @override
   String toString() => 'LoadNotifications';

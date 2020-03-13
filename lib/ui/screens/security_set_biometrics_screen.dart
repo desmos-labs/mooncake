@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/ui/blocs/biometrics/biometrics_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the screen that is shown to the user when he wants
