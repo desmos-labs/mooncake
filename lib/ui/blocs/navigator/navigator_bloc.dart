@@ -32,7 +32,11 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     if (event is NavigateToHome) {
       _mapNavigateToHomeEventToState();
     } else if (event is NavigateToRecoverAccount) {
-      _mapNavigateToRecoverAccountEventToState(event);
+      _mapNavigateToRecoverAccountEventToState();
+    } else if (event is NavigateToEnableBiometrics) {
+      _mapNavigateToBiometricScreenEventToState();
+    } else if (event is NavigateToSetPassword) {
+      _mapNavigateToPasswordScreenEventToState();
     } else if (event is NavigateToPostDetails) {
       _mapNavigateToPostDetailsEventToState(event);
     } else if (event is NavigateToWallet) {
@@ -47,13 +51,20 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     );
   }
 
-  void _mapNavigateToRecoverAccountEventToState(
-    NavigateToRecoverAccount event,
-  ) {
-    _navigatorKey.currentState.pushNamed(
-      PostsRoutes.recoverAccount,
-      arguments: event.args,
-    );
+  void _mapNavigateToRecoverAccountEventToState() {
+    _navigatorKey.currentState.pushNamed(PostsRoutes.recoverAccount);
+  }
+
+  void _mapNavigateToBiometricScreenEventToState() {
+    _navigatorKey.currentState.push(MaterialPageRoute(
+      builder: (context) => SetBiometricScreen(),
+    ));
+  }
+
+  void _mapNavigateToPasswordScreenEventToState() {
+    _navigatorKey.currentState.push(MaterialPageRoute(
+      builder: (context) => SetPasswordScreen(),
+    ));
   }
 
   void _mapNavigateToPostDetailsEventToState(

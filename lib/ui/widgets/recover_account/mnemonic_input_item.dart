@@ -24,19 +24,17 @@ class _MnemonicInputItemState extends State<MnemonicInputItem> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RecoverAccountBloc, RecoverAccountState>(
-      builder: (BuildContext context, RecoverAccountState accountState) {
-        final state = accountState as TypingMnemonic;
-
-        if (state.currentWordIndex == widget.index) {
-          FocusScope.of(context).requestFocus(_focusNode);
+      builder: (BuildContext context, RecoverAccountState state) {
+        // Get the selected word, if existing
+        final word = state.wordsList[widget.index] ?? "";
+        if (word != _textEditingController.text) {
+          _textEditingController.text = word;
         }
 
-        // Get the selected word, if existing
-        final word = widget.index < state.wordsList.length
-            ? state.wordsList[widget.index]
-            : null;
-        if (word != null) {
-          _textEditingController.text = word;
+        if (!state.isMnemonicComplete &&
+            state.currentWordIndex == widget.index &&
+            !_focusNode.hasFocus) {
+          FocusScope.of(context).requestFocus(_focusNode);
         }
 
         // Find if the typed word is valid or not
@@ -53,8 +51,6 @@ class _MnemonicInputItemState extends State<MnemonicInputItem> {
           child: Wrap(
             children: <Widget>[
               Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // Word index
                   Text(
@@ -94,8 +90,10 @@ class _MnemonicInputItemState extends State<MnemonicInputItem> {
   }
 
   void _shiftFocus() {
-    BlocProvider.of<RecoverAccountBloc>(context)
-        .add(ChangeFocus(widget.index, _textEditingController.text));
+    if (!_focusNode.hasFocus) {
+      BlocProvider.of<RecoverAccountBloc>(context)
+          .add(ChangeFocus(widget.index, _textEditingController.text));
+    }
   }
 
   void _emitText(String text) {

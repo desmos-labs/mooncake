@@ -61,12 +61,14 @@ class RemotePostsSourceImpl implements RemotePostsSource {
           id
           open
           poll_answers {
-            answer
+            answer_id
             answer_text
           }
           user_poll_answers {
-            answers
-            id
+            user {
+              address
+            }
+            answer
           }
         }
         user {

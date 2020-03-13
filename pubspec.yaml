@@ -40,6 +40,7 @@ dependencies:
   intl:
   json_annotation:
   json_serializable:
+  local_auth:
   meta:
   mime_type:
   path_provider:

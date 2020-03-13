@@ -7,17 +7,15 @@ import 'package:bip39/src/wordlists/english.dart' as english;
 class RecoverAccountWordsList extends StatelessWidget {
   final double height;
 
-  const RecoverAccountWordsList({Key key, @required this.height}) : super(key: key);
+  const RecoverAccountWordsList({
+    Key key,
+    @required this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RecoverAccountBloc, RecoverAccountState>(
-      builder: (BuildContext context, RecoverAccountState accountState) {
-        if (!(accountState is TypingMnemonic)) {
-          return Container();
-        }
-
-        final state = accountState as TypingMnemonic;
+      builder: (BuildContext context, RecoverAccountState state) {
         final words = english.WORDLIST
             .where((word) => word.startsWith(state.typedWord))
             .toList();

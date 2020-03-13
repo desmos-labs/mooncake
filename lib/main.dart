@@ -351,6 +351,9 @@ void _runApp() {
       BlocProvider<AccountBloc>(
         create: (context) => AccountBloc.create(context)..add(CheckStatus()),
       ),
+      BlocProvider<RecoverAccountBloc>(
+        create: (context) => RecoverAccountBloc.create(context),
+      ),
     ],
     child: PostsApp(),
   ));

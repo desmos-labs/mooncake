@@ -23,6 +23,9 @@ abstract class NotificationData extends Equatable {
   @JsonKey(name: DATE_FIELD, toJson: dateToJson, fromJson: dateFromJson)
   final DateTime date;
 
+  /// Returns the [date] field as a string.
+  String get stringDate => DateFormat(_DATE_FORMAT).format(date);
+
   /// Represents the title of the notification that should be displayed
   /// inside the device.
   @JsonKey(name: "title", nullable: true)

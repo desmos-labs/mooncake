@@ -20,12 +20,22 @@ class NavigateToHome extends NavigatorEvent {
 /// Tells the BLoC to navigate to the screen that allows to recover
 /// an existing account using a mnemonic phrase.
 class NavigateToRecoverAccount extends NavigatorEvent {
-  final RecoverAccountArguments args;
-
-  NavigateToRecoverAccount({this.args});
-
   @override
   String toString() => 'NavigateToRecoverAccount';
+}
+
+/// Tells the BLoC to navigate to the screen that allows the user
+/// to set a biometric authentication.
+class NavigateToEnableBiometrics extends NavigatorEvent {
+  @override
+  String toString() => 'NavigateToEnableBiometrics';
+}
+
+/// Tells the BLoC to navigate to the screen that allows the user
+/// to set a password to protect the account.
+class NavigateToSetPassword extends NavigatorEvent {
+  @override
+  String toString() => 'NavigateToSetPassword';
 }
 
 /// Tells the BLoC to navigate to the screen that displays the post

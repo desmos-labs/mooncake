@@ -31,15 +31,24 @@ class PostsLocalizations {
   String get recoverScreenTitle => "Recover mnemonic";
 
   // Mnemonic recover screen
-  String get mnemonicRecoverInstructions => "Please enter your mnemonic phrase"
+  String get recoverAccountInstructions => "Please enter your mnemonic phrase"
       " in order and make sure your mnemonic is written correctly";
-  String get mnemonicHint => "Mnemonic";
   String get recoverAccount => "Recover account";
-  String get invalidMnemonic => "Invalid mnemonic";
-  String get recoveringPopupTitle => "Recovering account...";
-  String get recoveringPopupText => "Your account is being recovered. "
-      "This operation might take a while, please wait.";
-  String get recoverPopupErrorTitle => "Error while recovering the account";
+  String get recoverAccountContinueButton => "Continue";
+  String get recoverAccountInvalidMnemonic => "This mnemonic does not seem "
+      "valid. Please check it again.";
+
+  // Biometrics screen
+  String get biometricsTitle => "Biometric authentication";
+  String get biometricsBody => """
+Please note that the biometric authentication will be paired only to this 
+device and any fingerprint or face that has been set to unlock your device 
+can be used to access your account on this application
+  """;
+  String get biometricsEnableButton => "Enable";
+  String get biometricsUsePasswordButton => "Use text password instead";
+  String get biometricsReason => "Authenticate into Mooncake";
+
 
   // Main screen
   String get allPostsTabTitle => "Posts";

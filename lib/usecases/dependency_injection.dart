@@ -5,6 +5,8 @@ class UseCaseModule implements Module {
   @override
   void configure(Binder binder) {
     binder
+      // Biometrics use cases
+      ..bindFactory((injector, params) => CanUseBiometricsUseCase())
       // Login use cases
       ..bindFactory((injector, params) => CheckLoginUseCase(
             walletRepository: injector.get(),

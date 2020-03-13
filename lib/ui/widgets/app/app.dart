@@ -25,12 +25,6 @@ class _PostsAppState extends State<PostsApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<RecoverAccountBloc>(
-          create: (context) => RecoverAccountBloc.create(context),
-        ),
-        BlocProvider<GenerateMnemonicBloc>(
-          create: (context) => GenerateMnemonicBloc.create(context),
-        ),
         BlocProvider<PostsListBloc>(
           create: (_) => PostsListBloc.create(syncPeriod: 30),
         ),

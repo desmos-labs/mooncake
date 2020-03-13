@@ -44,6 +44,8 @@
     <string>Used to capture audio for posting videos</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Used to select images for posting gallery pictures</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Used to authenticate the user safely</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

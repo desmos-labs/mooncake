@@ -50,7 +50,9 @@ class LocalNotificationsSourceImpl extends LocalNotificationsSource {
   @override
   Future<void> saveNotification(NotificationData notification) async {
     final database = await this.database;
-    await store.record(notification.date).put(database, notification.asJson());
+    await store
+        .record(notification.stringDate)
+        .put(database, notification.asJson());
     _streamController.add(notification);
   }
 }

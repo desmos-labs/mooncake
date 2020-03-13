@@ -1,5 +1,5 @@
 export 'account/bloc.dart';
-export 'generate_mnemonic/bloc.dart';
+export 'biometrics/bloc.dart';
 export 'home/bloc.dart';
 export 'navigator/bloc.dart';
 export 'notifications/bloc.dart';
