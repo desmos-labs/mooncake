@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mooncake/ui/theme/colors.dart';
 
 export 'colors.dart';
-export 'text_themes.dart';
 export 'spaces.dart';
+export 'text_themes.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
   static const double defaultPadding = 10.0;
 
   static Color get borderColor => Colors.grey[500];
+
   static LinearGradient get gradient => LinearGradient(
         colors: [Color(0xFF904FFF), Color(0xFF5277FF)],
         begin: Alignment.topCenter,

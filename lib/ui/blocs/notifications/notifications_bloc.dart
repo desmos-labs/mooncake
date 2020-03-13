@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/injector.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
+
 import './bloc.dart';
 
 /// Represents the BLoC that is used to shows the list of notifications

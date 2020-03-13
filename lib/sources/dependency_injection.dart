@@ -13,9 +13,8 @@ class SourcesModule implements Module {
       ? "http://10.0.2.2:1317"
       : "http://lcd.morpheus.desmos.network:1317";
 
-  static const _gqlEndpoint = kDebugMode
-      ? "10.0.2.2:8080/v1/graphql"
-      : "gql.desmos.network/v1/graphql";
+  static const _gqlEndpoint =
+      kDebugMode ? "10.0.2.2:8080/v1/graphql" : "gql.desmos.network/v1/graphql";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 

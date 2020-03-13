@@ -13,7 +13,7 @@ class PostMedia extends Equatable {
     "image/jpeg",
     "image/png",
     "image/gif"
-  ] ;
+  ];
 
   @JsonKey(name: "uri")
   final String url;

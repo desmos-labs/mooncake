@@ -5,7 +5,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../export.dart';
 

@@ -1,8 +1,6 @@
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the item that the user should tap when wanting to add a

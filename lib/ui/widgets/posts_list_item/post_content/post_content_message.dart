@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Displays the message of a post properly.

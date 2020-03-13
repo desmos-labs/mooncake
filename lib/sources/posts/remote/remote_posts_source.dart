@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
@@ -7,9 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:mooncake/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:web_socket_channel/io.dart';
 
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.

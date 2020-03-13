@@ -13,10 +13,7 @@ class PostContentImage extends StatelessWidget {
     return InkWell(
       onTap: _openImage,
       child: Image(
-        width: double.infinity,
-        fit: BoxFit.cover,
-        image: NetworkImage(url)
-      ),
+          width: double.infinity, fit: BoxFit.cover, image: NetworkImage(url)),
     );
   }
 

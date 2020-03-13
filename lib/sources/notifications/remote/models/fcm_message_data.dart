@@ -11,7 +11,6 @@ part 'fcm_message_data.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class FcmMessage extends Equatable {
-
   /// Contains the data of the notification.
   @JsonKey(name: "notification", nullable: true)
   final FcmNotification notification;

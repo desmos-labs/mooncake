@@ -25,8 +25,7 @@ class SetBiometricBody extends StatelessWidget {
             Expanded(
               child: PrimaryLightRoundedButton(
                 child: Text(
-                  PostsLocalizations.of(context)
-                      .biometricsEnableButton,
+                  PostsLocalizations.of(context).biometricsEnableButton,
                 ),
                 onPressed: () => _enableButtonClicked(context),
               ),
@@ -38,8 +37,7 @@ class SetBiometricBody extends StatelessWidget {
             Expanded(
               child: SecondaryLightRoundedButton(
                 child: Text(
-                  PostsLocalizations.of(context)
-                      .biometricsUsePasswordButton,
+                  PostsLocalizations.of(context).biometricsUsePasswordButton,
                 ),
                 onPressed: () => _cancelButtonClicked(context),
               ),

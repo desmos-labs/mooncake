@@ -9,12 +9,12 @@ class PrimaryRoundedButton extends StatelessWidget {
   final String text;
   final bool enabled;
 
-  const PrimaryRoundedButton({
-    Key key,
-    @required this.onPressed,
-    @required this.text,
-    this.enabled = true
-  }) : super(key: key);
+  const PrimaryRoundedButton(
+      {Key key,
+      @required this.onPressed,
+      @required this.text,
+      this.enabled = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

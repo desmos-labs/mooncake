@@ -1,7 +1,7 @@
+import 'package:bip39/src/wordlists/english.dart' as english;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:bip39/src/wordlists/english.dart' as english;
 
 /// Represents the input inside which the user will write a word of his
 /// mnemonic code.

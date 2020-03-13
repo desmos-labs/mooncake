@@ -27,7 +27,6 @@ class PostCommentItem extends StatelessWidget {
               const SizedBox(height: PostsTheme.defaultPadding),
               Text(currentState.post.message),
               const SizedBox(height: PostsTheme.defaultPadding),
-
               PostCommentActions(),
             ],
           ),

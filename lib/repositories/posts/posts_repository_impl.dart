@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 /// Implementation of [PostsRepository] that listens for remote

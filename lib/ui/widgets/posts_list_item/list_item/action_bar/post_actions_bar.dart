@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'post_action_like.dart';
-import 'post_action_comment.dart';
 import 'post_action_add_reaction.dart';
+import 'post_action_comment.dart';
+import 'post_action_like.dart';
 import 'reactions/export.dart';
 
 /// Represents the action bar containing all the actions that can be performed

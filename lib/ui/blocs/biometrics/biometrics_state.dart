@@ -5,4 +5,3 @@ class BiometricsState extends Equatable {
   @override
   List<Object> get props => [];
 }
-

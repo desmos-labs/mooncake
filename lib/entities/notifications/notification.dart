@@ -43,6 +43,7 @@ abstract class NotificationData extends Equatable {
   final String action;
 
   static const _DATE_FORMAT = "yyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
   static String dateToJson(DateTime time) {
     return DateFormat(_DATE_FORMAT).format(time);
   }

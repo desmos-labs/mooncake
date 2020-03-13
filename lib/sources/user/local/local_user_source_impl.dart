@@ -118,7 +118,6 @@ class LocalUserSourceImpl extends LocalUserSource {
   @override
   Stream<User> get userStream => _userController.stream;
 
-
   @override
   Future<void> saveUser(User data) async {
     // Null user, nothing to do

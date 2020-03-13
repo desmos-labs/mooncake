@@ -19,12 +19,19 @@ class PostsKeys {
 
   // --- Post item ---
   static Key postItem(String id) => Key('__postItem_$id\__');
+
   static Key postItemHeader(String id) => Key('__postItemHeader_$id\__');
+
   static Key postItemMessage(String id) => Key('__postItemMessage_$id\__');
-  static Key postItemImagePreviewer(String id) => Key('__postItemMImagePreviewer_$id\__');
+
+  static Key postItemImagePreviewer(String id) =>
+      Key('__postItemMImagePreviewer_$id\__');
+
   static Key postItemOwnerAvatar(String id) =>
       Key('__postItemOwnerAvatar_$id\__');
+
   static Key postActionsBar(String id) => Key('__postActionsBar$id\__');
+
   static Key postsReactionBar(String id) => Key('__postReactionsBar$id\__');
 
   static Key postDetailsScreen(String id) => Key('__postDetailsScreen$id\__');

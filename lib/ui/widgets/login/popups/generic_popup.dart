@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'account_created_content.dart';
-
 /// Represents the popup that is shown to the user when the account has
 /// been generated and he can go to the first page of the application.
 class LoginPopup extends StatelessWidget {

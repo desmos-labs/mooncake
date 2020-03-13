@@ -151,14 +151,14 @@ class PostReactionNotification extends BasePostInteractionNotification {
     String body,
   })  : assert(reaction != null),
         super(
-        type: NotificationTypes.REACTION,
-        action: NotificationActions.ACTION_SHOW_POST,
-        date: date,
-        postId: postId,
-        user: user,
-        title: title,
-        body: body,
-      );
+          type: NotificationTypes.REACTION,
+          action: NotificationActions.ACTION_SHOW_POST,
+          date: date,
+          postId: postId,
+          user: user,
+          title: title,
+          body: body,
+        );
 
   factory PostReactionNotification.fromJson(Map<String, dynamic> json) =>
       _$PostReactionNotificationFromJson(json);
@@ -179,14 +179,14 @@ class PostLikeNotification extends BasePostInteractionNotification {
     String title,
     String body,
   }) : super(
-    type: NotificationTypes.LIKE,
-    action: NotificationActions.ACTION_SHOW_POST,
-    date: date,
-    postId: postId,
-    user: user,
-    title: title,
-    body: body,
-  );
+          type: NotificationTypes.LIKE,
+          action: NotificationActions.ACTION_SHOW_POST,
+          date: date,
+          postId: postId,
+          user: user,
+          title: title,
+          body: body,
+        );
 
   factory PostLikeNotification.fromJson(Map<String, dynamic> json) =>
       _$PostLikeNotificationFromJson(json);
