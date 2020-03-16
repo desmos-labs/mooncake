@@ -4,6 +4,7 @@ import 'package:mooncake/ui/theme/colors.dart';
 export 'colors.dart';
 export 'spaces.dart';
 export 'text_themes.dart';
+export 'decorations.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {

@@ -10,27 +10,24 @@ class RecoverAccountScreen extends StatelessWidget {
     return BlocBuilder<RecoverAccountBloc, RecoverAccountState>(
       builder: (BuildContext context, RecoverAccountState state) {
         final bottomPadding = 50.0;
-        return Stack(
-          children: <Widget>[
-            Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: Text(PostsLocalizations.of(context).recoverScreenTitle),
-              ),
-              body: Stack(
-                children: <Widget>[
-                  RecoverAccountMainContent(bottomPadding: bottomPadding),
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(PostsLocalizations.of(context).recoverScreenTitle),
+          ),
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: <Widget>[
+              RecoverAccountMainContent(bottomPadding: bottomPadding),
 
-                  // Words list
-                  if (!state.isMnemonicComplete)
-                    Positioned(
-                      bottom: 0,
-                      child: RecoverAccountWordsList(height: bottomPadding),
-                    ),
-                ],
-              ),
-            ),
-          ],
+              // Words list
+              if (!state.isMnemonicComplete)
+                Positioned(
+                  bottom: 0,
+                  child: RecoverAccountWordsList(height: bottomPadding),
+                ),
+            ],
+          ),
         );
       },
     );

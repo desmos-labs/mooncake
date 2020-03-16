@@ -38,7 +38,9 @@ class RecoverAccountBloc
   Stream<RecoverAccountState> mapEventToState(
     RecoverAccountEvent event,
   ) async* {
-    if (event is TypeWord) {
+    if (event is ResetRecoverAccountState) {
+      yield RecoverAccountState.initial();
+    } else if (event is TypeWord) {
       yield* _mapTypeWordEventToState(event);
     } else if (event is WordSelected) {
       yield* _mapWordSelectedEventToState(event);

@@ -39,8 +39,8 @@ class PostsLocalizations {
   // Biometrics screen
   String get biometricsTitle => "Biometric authentication";
   String get biometricsBody => """
-Please note that the biometric authentication will be paired only to this 
-device and any fingerprint or face that has been set to unlock your device 
+Please note that the biometric authentication will be paired only to this\
+device and any fingerprint or face that has been set to unlock your device\
 can be used to access your account on this application
   """;
 
@@ -56,6 +56,8 @@ phrase to access your account.
   String get passwordSecurityLow => "Low";
   String get passwordSecurityMedium => "Medium";
   String get passwordSecurityHigh => "High";
+  String get passwordShowPasswordButton => "Show password";
+  String get passwordHidePasswordButton => "Hide password";
 
   String get biometricsEnableButton => "Enable";
   String get biometricsUsePasswordButton => "Use text password instead";

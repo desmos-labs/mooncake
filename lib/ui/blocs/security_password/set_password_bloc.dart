@@ -19,6 +19,8 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
   Stream<SetPasswordState> mapEventToState(SetPasswordEvent event) async* {
     if (event is PasswordChanged) {
       yield* _mapPasswordChangedEventToState(event);
+    } else if (event is TriggerPasswordVisibility) {
+      yield* _mapTriggerPasswordVisibilityEventToState();
     }
   }
 
@@ -39,5 +41,9 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
       inputPassword: event.newPassword,
       passwordSecurity: security,
     );
+  }
+
+  Stream<SetPasswordState> _mapTriggerPasswordVisibilityEventToState() async* {
+    yield state.copyWith(showPassword: !state.showPassword);
   }
 }

@@ -20,3 +20,9 @@ class PasswordChanged extends SetPasswordEvent {
   @override
   String toString() => 'PasswordChanged { newPassword: $newPassword }';
 }
+
+/// Tells the Bloc to invert the current password visibility.
+class TriggerPasswordVisibility extends SetPasswordEvent {
+  @override
+  String toString() => 'TriggerPasswordVisibility';
+}

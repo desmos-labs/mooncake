@@ -14,12 +14,14 @@ class SetBiometricBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          PostsLocalizations.of(context).biometricsBody,
+          PostsLocalizations.of(context).biometricsBody.replaceAll("\n", ""),
           style: Theme.of(context)
               .textTheme
               .bodyText2
               .copyWith(color: Colors.white),
+          textAlign: TextAlign.center,
         ),
+        SizedBox(height: 25),
         Row(
           children: <Widget>[
             Expanded(

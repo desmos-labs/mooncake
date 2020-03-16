@@ -4,9 +4,7 @@ import 'package:flutter/painting.dart';
 class ThemeColors {
   // --- App ---
   static Color get primaryColor => Colors.white;
-
   static Color get accentColor => Color(0xFF6D4DDB);
-
   static Color get red => Color(0xFFE84444);
 
   // --- Splash screen ---

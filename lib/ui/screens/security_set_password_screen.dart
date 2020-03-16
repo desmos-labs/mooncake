@@ -12,6 +12,7 @@ class SetPasswordScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(PostsLocalizations.of(context).passwordTitle),
       ),
+      backgroundColor: Colors.white,
       body: BlocProvider<SetPasswordBloc>(
         create: (context) => SetPasswordBloc.create(),
         child: SetPasswordContent(),

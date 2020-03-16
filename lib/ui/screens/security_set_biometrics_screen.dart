@@ -13,7 +13,7 @@ class SetBiometricScreen extends StatelessWidget {
         builder: (context) => Scaffold(
           body: Container(
             padding: EdgeInsets.all(16),
-            color: ThemeColors.accentColor,
+            decoration: ThemeDecorations.pattern,
             constraints: BoxConstraints.expand(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,6 +23,12 @@ class SetBiometricScreen extends StatelessWidget {
                   title: Text("Access account"),
                   centerTitle: true,
                   backgroundColor: Colors.transparent,
+                  iconTheme: IconThemeData(color: Colors.white),
+                  textTheme: Theme.of(context).textTheme.copyWith(
+                    headline6: Theme.of(context).textTheme.headline6.copyWith(
+                      color: Colors.white,
+                    )
+                  ),
                 ),
                 Flexible(child: SetBiometricTitle()),
                 Flexible(child: SetBiometricBody())

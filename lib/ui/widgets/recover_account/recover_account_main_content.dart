@@ -56,7 +56,7 @@ class RecoverAccountMainContent extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .caption
-                    .copyWith(color: Colors.red),
+                    .copyWith(color: ThemeColors.red),
               ),
 
             // Debug mnemonic, TODO: Remove it

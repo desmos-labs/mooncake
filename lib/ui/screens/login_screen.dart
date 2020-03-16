@@ -4,20 +4,15 @@ import 'package:mooncake/ui/ui.dart';
 
 /// Screen that is shown to the user when he needs to log into the application.
 /// From this screen, he can perform two actions in order to log in:
-/// 1. Recover an existing account using a mnemonic phrase.
-/// 2. Crete a new random mnemonic.
+/// 1. Create a new account with a single click.
+/// 2. Recover an existing account using a mnemonic phrase.
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeColors.loginBackgroundColor,
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/icons/background_login.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
+        decoration: ThemeDecorations.pattern,
         child: SafeArea(
           child: BlocBuilder<AccountBloc, AccountState>(
             builder: (BuildContext contest, AccountState state) {

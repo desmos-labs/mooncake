@@ -9,6 +9,12 @@ abstract class RecoverAccountEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// Tells the Bloc to reset the current state.
+class ResetRecoverAccountState extends RecoverAccountEvent {
+  @override
+  String toString() => 'ResetRecoverAccountState';
+}
+
 /// Event that is emitted when a word is being emitted when a new word of
 /// the mnemonic if being typed from the user.
 class TypeWord extends RecoverAccountEvent {
