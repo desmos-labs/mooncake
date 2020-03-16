@@ -33,10 +33,10 @@ class _PostsListState extends State<PostsList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () {
-        // TODO: Implement the refresh of posts
-        // BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
-        return _refreshCompleter.future;
+      // TODO: Implement the refresh of posts
+      // BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
+      onRefresh: (){
+        return Future.value();
       },
       child: BlocBuilder<PostsListBloc, PostsListState>(
         bloc: BlocProvider.of<PostsListBloc>(context),

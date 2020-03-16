@@ -27,34 +27,20 @@ class TabSelector extends StatelessWidget {
             key: PostsKeys.allPostsTab,
             tab: AppTab.allPosts,
           ),
-
-          // TODO: Implement this again
-//          BottomNavigationButton(
-//            key: PostsKeys.likedPostsTab,
-//            tab: AppTab.likedPosts,
-//          ),
-
           MaterialButton(
             textColor: Colors.white,
             padding: EdgeInsets.all(0),
-            onPressed: () => Navigator.of(context).push(_createRoute()),
+            onPressed: () => _createRoute(context),
             shape: CircleBorder(),
             child: Container(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: PostsTheme.gradient,
               ),
-              child: Icon(MooncakeIcons.wallet),
+              child: Icon(MooncakeIcons.addPost, size: 48),
             ),
           ),
-
-          // TODO: Implement this again
-//          BottomNavigationButton(
-//            key: PostsKeys.yourPostsTab,
-//            tab: AppTab.notifications,
-//          ),
-
           BottomNavigationButton(
             key: PostsKeys.notificationsTab,
             tab: AppTab.account,
@@ -64,17 +50,9 @@ class TabSelector extends StatelessWidget {
     );
   }
 
-  Route _createRoute() {
-    return MaterialPageRoute(builder: (BuildContext context) {
-      // TODO: Implement AddPost again
-      return CreatePostScreen(
-//          callback: (post) {
-//         ignore: close_sinks
-//        final bloc = BlocProvider.of<PostsListBloc>(context);
-//
-//        bloc.add(AddPost(post));
-//      }
-          );
-    });
+  void _createRoute(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return CreatePostScreen();
+    }));
   }
 }

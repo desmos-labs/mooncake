@@ -4,22 +4,31 @@ import 'package:mooncake/entities/entities.dart';
 /// Allows to properly represent the avatar of a user given its data.
 class UserAvatar extends StatelessWidget {
   final double size;
+  final double border;
   final User user;
+  final Color borderColor;
 
   const UserAvatar({
     Key key,
-    this.size,
+    this.size = 48,
+    this.border = 0,
+    this.borderColor = Colors.white,
     @required this.user,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final radius = size / 2;
     return CircleAvatar(
-      radius: size,
-      backgroundImage: NetworkImage(
-        user.hasAvatar
-            ? user.avatarUrl
-            : "http://identicon-1132.appspot.com/${user.address}",
+      radius: border == 0 ? radius : radius + border,
+      backgroundColor: borderColor,
+      child: CircleAvatar(
+        radius: radius,
+        backgroundImage: NetworkImage(
+          user.hasAvatar
+              ? user.avatarUrl
+              : "http://identicon-1132.appspot.com/${user.address}",
+        ),
       ),
     );
   }

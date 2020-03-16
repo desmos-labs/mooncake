@@ -8,8 +8,6 @@ import 'package:timeago/timeago.dart' as timeago;
 /// data are :
 /// - the owner o the post
 /// - the block height at which the post has been created
-///
-/// TODO: Add the username (maybe using Starnames?)
 class PostItemHeader extends StatelessWidget {
   final Post post;
 
@@ -20,9 +18,6 @@ class PostItemHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final diff = DateTime.now().difference(post.dateTime);
-    final timeAgo = DateTime.now().subtract(diff);
-
     return Row(
       children: <Widget>[
         // User picture
@@ -39,12 +34,9 @@ class PostItemHeader extends StatelessWidget {
               Text(
                 post.owner.screenName,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      fontWeight: FontWeight.w300,
-                    ),
               ),
               Text(
-                timeago.format(timeAgo),
+                timeago.format(post.dateTime),
                 style: Theme.of(context).textTheme.caption.copyWith(
                       fontWeight: FontWeight.w300,
                     ),
@@ -52,17 +44,6 @@ class PostItemHeader extends StatelessWidget {
             ],
           ),
         ),
-
-        // Spacer
-        const SizedBox(width: PostsTheme.defaultPadding),
-
-        // More button
-        // TODO: Implement this again
-//        IconButton(
-//          icon: Icon(MooncakeIcons.more, size: 20),
-//          tooltip: PostsLocalizations.of(context).postActionsButtonCaption,
-//          onPressed: () {},
-//        )
       ],
     );
   }

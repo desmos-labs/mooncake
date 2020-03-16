@@ -49,7 +49,7 @@ class NotificationItem extends StatelessWidget {
           padding: EdgeInsets.all(10.0),
           child: Row(
             children: <Widget>[
-              UserAvatar(size: 25, user: notification.user),
+              UserAvatar(size: 50, user: notification.user),
               SizedBox(width: 10),
               Expanded(
                 child: Column(

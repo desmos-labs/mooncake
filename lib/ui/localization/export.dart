@@ -77,6 +77,9 @@ phrase to access your account.
   String get loadingPosts => "Loading posts";
   String get postActionsButtonCaption => "See post actions";
 
+  // Post item
+  String likesCount(int count) => "$count likes";
+
   // Syncing
   String get syncingActivities => "Syncing activities...";
   String get fetchingPosts => "Checking for new posts...";

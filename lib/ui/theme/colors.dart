@@ -6,6 +6,7 @@ class ThemeColors {
   static Color get primaryColor => Colors.white;
   static Color get accentColor => Color(0xFF6D4DDB);
   static Color get red => Color(0xFFE84444);
+  static Color get backgroundColor => Color(0xFFF4F4FC);
 
   // --- Splash screen ---
   static const Color splashScreenBackgroundColor = Color(0xFF8164E5);
@@ -35,10 +36,7 @@ class ThemeColors {
 
   // --- Texts ---
   static Color get textColor => Colors.grey[900];
-
   static Color get textColorAccent => accentColor;
-
   static Color get textColorLight => Colors.grey[700];
-
   static Color get textColorVeryLight => Colors.grey[500];
 }

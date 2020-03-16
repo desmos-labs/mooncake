@@ -22,9 +22,14 @@ class HomeScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            elevation: 1,
             centerTitle: true,
             title: Text(PostsLocalizations.of(context).appTitle),
+            backgroundColor: Colors.transparent,
+            textTheme: Theme.of(context).textTheme.copyWith(
+                  headline6: Theme.of(context).textTheme.headline6.copyWith(
+                        color: ThemeColors.accentColor,
+                      ),
+                ),
             actions: [
               IconButton(
                 color: ThemeColors.accentColor,
@@ -34,14 +39,6 @@ class HomeScreen extends StatelessWidget {
                       .add(NavigateToWallet());
                 },
               )
-//              IconButton(
-//                color: ThemeColors.accentColor,
-//                icon: Icon(MooncakeIcons.logout),
-//                onPressed: () {
-//                  BlocProvider.of<HomeBloc>(context).add(SignOut());
-//                },
-//                tooltip: PostsLocalizations.of(context).signOut,
-//              )
             ],
           ),
           body: body,

@@ -41,7 +41,7 @@ class PostListItem extends StatelessWidget {
         final post = currentState.post;
         return Card(
           margin: EdgeInsets.all(8),
-          elevation: 4,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4.0),
           ),

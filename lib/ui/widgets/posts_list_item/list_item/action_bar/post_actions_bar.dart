@@ -5,7 +5,7 @@ import 'package:mooncake/ui/ui.dart';
 import 'post_action_add_reaction.dart';
 import 'post_action_comment.dart';
 import 'post_action_like.dart';
-import 'reactions/export.dart';
+import 'post_likes_counter.dart';
 
 /// Represents the action bar containing all the actions that can be performed
 /// from a single post.
@@ -29,28 +29,14 @@ class PostActionsBar extends StatelessWidget {
                       PostLikeAction(),
                       const SizedBox(width: ThemeSpaces.actionBarSpacer),
                       PostCommentAction(),
+                      const SizedBox(width: ThemeSpaces.actionBarSpacer),
+                      AddReactionAction(),
                     ],
                   ),
                 ),
-                Row(
-                  children: <Widget>[
-                    if (!currentState.actionBarExpanded)
-                      PostReactionsList(compact: true),
-                    if (currentState.showMoreButton)
-                      IconButton(
-                        iconSize: 14,
-                        onPressed: () => _onMoreTap(context),
-                        icon: Icon(MooncakeIcons.more),
-                      ),
-                    if (!currentState.showMoreButton)
-                      SizedBox(width: ThemeSpaces.actionBarSpacer),
-                    AddReactionAction(),
-                  ],
-                ),
+                PostLikesCounter(),
               ],
             ),
-            if (currentState.actionBarExpanded)
-              PostReactionsList(compact: false),
           ],
         );
       },

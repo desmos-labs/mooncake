@@ -22,14 +22,14 @@ class BottomNavigationButton extends StatelessWidget {
     };
 
     final icons = {
-      AppTab.allPosts: MooncakeIcons.mooncake,
+      AppTab.allPosts: MooncakeIcons.home,
       AppTab.likedPosts: MooncakeIcons.heart,
       AppTab.notifications: MooncakeIcons.bell,
       AppTab.account: MooncakeIcons.user,
     };
 
     final selectedIcons = {
-      AppTab.allPosts: MooncakeIcons.mooncakeFilled,
+      AppTab.allPosts: MooncakeIcons.homeFilled,
       AppTab.likedPosts: MooncakeIcons.heartFilled,
       AppTab.notifications: MooncakeIcons.bellFilled,
       AppTab.account: MooncakeIcons.userFilled,

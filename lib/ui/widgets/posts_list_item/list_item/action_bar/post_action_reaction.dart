@@ -4,11 +4,11 @@ import 'package:mooncake/ui/ui.dart';
 
 /// Represents a single reaction button that allows the user to add a new
 /// reaction or remove an existing one.
-class PostReactionButton extends StatelessWidget {
+class PostReactionAction extends StatelessWidget {
   final String reaction;
   final int reactionCount;
 
-  const PostReactionButton({
+  const PostReactionAction({
     Key key,
     @required this.reaction,
     @required this.reactionCount,

@@ -18,9 +18,6 @@ class PostLikeAction extends StatelessWidget {
     return BlocBuilder(
       bloc: bloc,
       builder: (BuildContext context, PostLikeButtonState state) {
-        final defColor = ThemeColors.textColorLight;
-        final likeColor = ThemeColors.red;
-
         final icon = state.isLiked
             ? FaIcon(MooncakeIcons.heartFilled)
             : FaIcon(MooncakeIcons.heart);
@@ -35,8 +32,6 @@ class PostLikeAction extends StatelessWidget {
                 padding: EdgeInsets.all(0.0),
                 iconSize: size,
                 icon: icon,
-                color: state.isLiked ? likeColor : defColor,
-                highlightColor: state.isLiked ? defColor : likeColor,
                 onPressed: () => bloc.add(PostLikeButtonClicked()),
               ),
             ),

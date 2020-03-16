@@ -5,7 +5,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'button_generic_reaction.dart';
+import '../action_bar/post_action_reaction.dart';
 
 /// Represents the bar displaying the list of reactions that a post
 /// has associated to itself.
@@ -49,7 +49,7 @@ class PostReactionsList extends StatelessWidget {
             shrinkWrap: compact,
             itemBuilder: (_, index) {
               final entry = reactMap.entries.toList()[index];
-              return PostReactionButton(
+              return PostReactionAction(
                 reaction: entry.key,
                 reactionCount: entry.value.length,
               );

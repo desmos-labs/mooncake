@@ -6,36 +6,40 @@ import 'package:mooncake/ui/ui.dart';
 /// Represents the item that the user should tap when wanting to add a
 /// reaction to a post.
 class AddReactionAction extends StatelessWidget {
+  final double size;
+
+  const AddReactionAction({Key key, this.size = 24.0}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return ActionChip(
-      backgroundColor: ThemeColors.emojiButtonBackgroundColor,
-      shape: StadiumBorder(
-        side: BorderSide(
-          color: ThemeColors.emojiButtonBackgroundColor,
-        ),
+    return SizedBox(
+      height: size,
+      width: size,
+      child: IconButton(
+        padding: EdgeInsets.all(0.0),
+        iconSize: size,
+        icon: Icon(MooncakeIcons.reaction),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext buildContext) {
+              return Container(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    EmojiPicker(
+                      onEmojiSelected: (emoji, _) =>
+                          _onEmojiSelected(context, emoji),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
       ),
-      label: Icon(MooncakeIcons.addEmoji, size: 16),
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext buildContext) {
-            return Container(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  EmojiPicker(
-                    onEmojiSelected: (emoji, _) =>
-                        _onEmojiSelected(context, emoji),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
     );
   }
 

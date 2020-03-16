@@ -30,8 +30,11 @@ class PostListItemLoaded extends PostListItemState {
   bool get isLiked => hasUserReactedWith(Constants.LIKE_REACTION);
 
   /// Returns the number of likes that the post currently has.
-  int get likesCount =>
-      post.reactions.where((reaction) => reaction.isLike).length;
+  int get likesCount => likes.length;
+
+  /// Returns the list of all the likes that have been added.
+  List<Reaction> get likes =>
+      post.reactions.where((reaction) => reaction.isLike).toList();
 
   /// Returns the number of reactions (excluding the likes) that the
   /// current post has.
@@ -44,8 +47,7 @@ class PostListItemLoaded extends PostListItemState {
   /// Tells whether the user has reacted with the given [reaction] or not.
   bool hasUserReactedWith(String reaction) => post.reactions
       .where((r) =>
-          r.value == reaction &&
-          r.user.address == user.cosmosAccount.address)
+          r.value == reaction && r.user.address == user.cosmosAccount.address)
       .isNotEmpty;
 
   const PostListItemLoaded({

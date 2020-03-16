@@ -9,6 +9,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
+        // TODO: Handle the case where the user has logged out but he has biometrics or password
         if (state is LoggedOut) {
           return LoginScreen();
         } else if (state is LoggedIn) {
@@ -16,12 +17,7 @@ class SplashScreen extends StatelessWidget {
         }
 
         return Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/background_login.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
+          decoration: ThemeDecorations.pattern,
           child: Column(
             children: <Widget>[
               SizedBox(height: 175),

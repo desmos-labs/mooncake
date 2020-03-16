@@ -60,7 +60,7 @@ void _initPosts(MooncakeAccount user) async {
     Post(
       parentId: "0",
       id: "1",
-      created: "2020-24-02T08:40:00.000Z",
+      created: "2020-02-15T09:00:00.000Z",
       owner: User(
         username: "Desmos",
         address: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
@@ -103,7 +103,7 @@ void _initPosts(MooncakeAccount user) async {
     Post(
       parentId: "0",
       id: "2",
-      created: "2020-24-02T09:00:00.000Z",
+      created: "2020-03-15T09:00:00.000Z",
       owner: User(
         username: "Alice Jackson",
         address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
@@ -144,14 +144,32 @@ void _initPosts(MooncakeAccount user) async {
             "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
           ),
           value: ":+1:",
-        )
+        ),
+        Reaction(
+          user: User.fromAddress(
+            "desmos175u9d7kaqd737mqx9s34t7f3al5kvmjyuqep09",
+          ),
+          value: Constants.LIKE_REACTION,
+        ),
+        Reaction(
+          user: User.fromAddress(
+            "desmos1l5ftvt87xs98jttcv92sjzyuxc3rsukdf3t5t4",
+          ),
+          value: Constants.LIKE_REACTION,
+        ),
+        Reaction(
+          user: User.fromAddress(
+            "desmos16j35vxluyv8wue00xp3njvqzy0gqwsmj6z2jzv",
+          ),
+          value: Constants.LIKE_REACTION,
+        ),
       ],
       commentsIds: [],
     ),
     Post(
       parentId: "1",
       id: "3",
-      created: "2020-24-04T09:00:00.000Z",
+      created: "2020-03-16T09:00:00.000Z",
       owner: User(
         address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
         avatarUrl: "https://i.pravatar.cc/300?img=3",
