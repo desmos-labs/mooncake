@@ -14,6 +14,7 @@ dependencies:
   cloud_firestore:
   collection:
   cupertino_icons:
+  crypto:
   dependencies:
   emoji_picker:
   equatable:
@@ -66,7 +67,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/icons/
   fonts:
     - family: Mooncake
       fonts:

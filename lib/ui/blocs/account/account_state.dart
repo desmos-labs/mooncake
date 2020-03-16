@@ -33,7 +33,7 @@ class Loading extends AccountState {
 /// access the main page of the application.
 class LoggedIn extends AccountState {
   /// Represents the currently used account.
-  final User user;
+  final MooncakeAccount user;
 
   LoggedIn(this.user);
 

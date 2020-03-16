@@ -34,7 +34,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
-  String getPostKey(Post post) => post.created + post.owner.accountData.address;
+  String getPostKey(Post post) => post.created + post.owner.address;
 
   @override
   Stream<List<Post>> get postsStream => _postsController.stream;

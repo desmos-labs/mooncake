@@ -7,13 +7,15 @@ class SetBiometricTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Flexible(
           child: Image(
-            image: AssetImage("assets/icons/icon_ghost.png"),
+            height: MediaQuery.of(context).size.height * 0.3,
+            image: AssetImage("assets/images/fingerprint.png"),
           ),
         ),
+        SizedBox(height: 20),
         Text(
           PostsLocalizations.of(context).biometricsTitle,
           style: Theme.of(context)

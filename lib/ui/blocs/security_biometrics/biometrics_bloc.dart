@@ -17,42 +17,49 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
   final AccountBloc _accountBloc;
 
   final LoginUseCase _loginUseCase;
+  final SetAuthenticationMethodUseCase _setAuthenticationMethodUseCase;
 
   BiometricsBloc({
     @required AccountBloc accountBloc,
     @required RecoverAccountBloc recoverAccountBloc,
     @required LoginUseCase loginUseCase,
+    @required SetAuthenticationMethodUseCase setAuthenticationMethodUseCase,
   })  : assert(recoverAccountBloc != null),
         _recoverAccountBloc = recoverAccountBloc,
         assert(accountBloc != null),
         _accountBloc = accountBloc,
         assert(loginUseCase != null),
-        _loginUseCase = loginUseCase;
+        _loginUseCase = loginUseCase,
+        assert(setAuthenticationMethodUseCase != null),
+        _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase;
 
   factory BiometricsBloc.create(BuildContext context) {
     return BiometricsBloc(
       accountBloc: BlocProvider.of(context),
       recoverAccountBloc: BlocProvider.of(context),
       loginUseCase: Injector.get(),
+      setAuthenticationMethodUseCase: Injector.get(),
     );
   }
 
   @override
-  BiometricsState get initialState => BiometricsState();
+  BiometricsState get initialState => BiometricsState.initial();
 
   @override
   Stream<BiometricsState> mapEventToState(BiometricsEvent event) async* {
     if (event is AuthenticateWithBiometrics) {
-      _handleAuthenticateEvent();
+      yield* _mapAuthenticateEventToState();
     }
   }
 
-  void _handleAuthenticateEvent() async {
-    final state = _recoverAccountBloc.state;
-    print(state);
+  Stream<BiometricsState> _mapAuthenticateEventToState() async* {
+    // Set the authentication method
+    yield state.copyWith(saving: true);
+    await _setAuthenticationMethodUseCase.biometrics();
 
-    final mnemonic = state.wordsList.join(" ");
-    print(mnemonic);
+    // Log In
+    final recoverState = _recoverAccountBloc.state;
+    final mnemonic = recoverState.wordsList.join(" ");
     await _loginUseCase.login(mnemonic);
     _accountBloc.add(LogIn());
   }

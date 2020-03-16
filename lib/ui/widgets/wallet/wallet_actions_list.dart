@@ -18,7 +18,7 @@ class WalletActionsList extends StatelessWidget {
           SizedBox(height: 20),
           Image(
             height: 150,
-            image: AssetImage("assets/icons/icon_ghost.png"),
+            image: AssetImage("assets/images/ghost.png"),
           ),
           SizedBox(height: 20),
           Text(

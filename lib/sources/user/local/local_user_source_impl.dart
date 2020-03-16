@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -25,6 +27,7 @@ class _WalletInfo {
 class LocalUserSourceImpl extends LocalUserSource {
   static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
 
+  static const _AUTHENTICATION_KEY = "authentication";
   static const _USER_DATA_KEY = "user_data";
   static const _MNEMONIC_KEY = "mnemonic";
 
@@ -33,7 +36,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   final FlutterSecureStorage _storage;
 
   final _store = StoreRef.main();
-  final _userController = BehaviorSubject<User>();
+  final _userController = BehaviorSubject<MooncakeAccount>();
 
   LocalUserSourceImpl({
     @required String dbName,
@@ -91,12 +94,24 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<User> getUser() async {
+  Future<void> saveAccount(MooncakeAccount data) async {
+    // Null user, nothing to do
+    if (data == null) {
+      return;
+    }
+
+    final database = await this._database;
+    await _store.record(_USER_DATA_KEY).put(database, data.toJson());
+    _userController.add(data);
+  }
+
+  @override
+  Future<MooncakeAccount> getAccount() async {
     // Try getting the user from the database
     final database = await this._database;
     final record = await _store.findFirst(database);
     if (record != null) {
-      return User.fromJson(record.value);
+      return MooncakeAccount.fromJson(record.value);
     }
 
     // If the database does not have the user, build it from the address
@@ -109,25 +124,29 @@ class LocalUserSourceImpl extends LocalUserSource {
     }
 
     // Build the user from the address and save it
-    final user = User.fromAddress(address);
-    await saveUser(user);
+    final user = MooncakeAccount.local(address);
+    await saveAccount(user);
 
     return user;
   }
 
   @override
-  Stream<User> get userStream => _userController.stream;
+  Stream<MooncakeAccount> get accountStream => _userController.stream;
 
   @override
-  Future<void> saveUser(User data) async {
-    // Null user, nothing to do
-    if (data == null) {
-      return;
+  Future<void> saveAuthenticationMethod(AuthenticationMethod method) async {
+    final methodString = jsonEncode(method.toJson());
+    await _storage.write(key: _AUTHENTICATION_KEY, value: methodString);
+  }
+
+  @override
+  Future<AuthenticationMethod> getAuthenticationMethod() async {
+    final methodString = await _storage.read(key: _AUTHENTICATION_KEY);
+    if (methodString == null) {
+      return null;
     }
 
-    final database = await this._database;
-    await _store.record(_USER_DATA_KEY).put(database, data.toJson());
-    _userController.add(data);
+    return AuthenticationMethod.fromJson(jsonDecode(methodString));
   }
 
   @override

@@ -5,17 +5,30 @@ class UseCaseModule implements Module {
   @override
   void configure(Binder binder) {
     binder
-      // Biometrics use cases
-      ..bindFactory((injector, params) => CanUseBiometricsUseCase())
-      // Login use cases
+      // Account use cases
       ..bindFactory((injector, params) => CheckLoginUseCase(
             walletRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => GenerateMnemonicUseCase())
+      ..bindFactory((injector, params) => GetAccountUseCase(
+            userRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => GetAuthenticationMethod(
+            userRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => LoginUseCase(
+            userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => LogoutUseCase(
             walletRepository: injector.get(),
           ))
-      // Mnemonic use cases
-      ..bindFactory((injector, params) => GenerateMnemonicUseCase())
+      ..bindFactory((injector, params) => SetAuthenticationMethodUseCase(
+            userRepository: injector.get(),
+          ))
+
+      // Biometrics use cases
+      ..bindFactory((injector, params) => CanUseBiometricsUseCase())
+
       // Posts use cases
       ..bindFactory((injector, params) => GetUserReactionsToPost(
             walletRepository: injector.get(),
@@ -43,13 +56,7 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => SavePostUseCase(
             postsRepository: injector.get(),
           ))
-      // User use cases
-      ..bindFactory((injector, params) => LoginUseCase(
-            userRepository: injector.get(),
-          ))
-      ..bindFactory((injector, params) => GetUserUseCase(
-            userRepository: injector.get(),
-          ))
+
       // Notifications use cases
       ..bindFactory((injector, params) => GetNotificationsUseCase(
             repository: injector.get(),

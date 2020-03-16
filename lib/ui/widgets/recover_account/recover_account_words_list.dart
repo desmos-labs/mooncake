@@ -22,7 +22,7 @@ class RecoverAccountWordsList extends StatelessWidget {
 
         return Container(
           height: height,
-          color: Colors.grey,
+          color: Colors.grey[400],
           padding: EdgeInsets.all(5),
           width: MediaQuery.of(context).size.width,
           child: Row(

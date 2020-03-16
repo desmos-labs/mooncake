@@ -18,7 +18,7 @@ class PostsLoading extends PostsListState {}
 /// visible to the user.
 class PostsLoaded extends PostsListState {
   /// User that is using the application.
-  final User user;
+  final MooncakeAccount user;
 
   /// Lists of posts that should be shown to the user.
   final List<Post> posts;
@@ -36,7 +36,7 @@ class PostsLoaded extends PostsListState {
     this.syncingPosts = false,
   });
 
-  factory PostsLoaded.first({User user, List<Post> posts}) {
+  factory PostsLoaded.first({MooncakeAccount user, List<Post> posts}) {
     return PostsLoaded(
       user: user,
       posts: posts ?? [],
@@ -46,7 +46,7 @@ class PostsLoaded extends PostsListState {
   }
 
   PostsLoaded copyWith({
-    User user,
+    MooncakeAccount user,
     List<Post> posts,
     bool refreshing,
     bool syncingPosts,

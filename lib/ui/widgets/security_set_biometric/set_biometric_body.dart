@@ -10,43 +10,46 @@ class SetBiometricBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          PostsLocalizations.of(context).biometricsBody.replaceAll("\n", ""),
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              .copyWith(color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 25),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: PrimaryLightRoundedButton(
-                child: Text(
-                  PostsLocalizations.of(context).biometricsEnableButton,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            PostsLocalizations.of(context).biometricsBody.replaceAll("\n", ""),
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2
+                .copyWith(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 25),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: PrimaryLightRoundedButton(
+                  child: Text(
+                    PostsLocalizations.of(context).biometricsEnableButton,
+                  ),
+                  onPressed: () => _enableButtonClicked(context),
                 ),
-                onPressed: () => _enableButtonClicked(context),
               ),
-            ),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: SecondaryLightRoundedButton(
-                child: Text(
-                  PostsLocalizations.of(context).biometricsUsePasswordButton,
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: SecondaryLightRoundedButton(
+                  child: Text(
+                    PostsLocalizations.of(context).biometricsUsePasswordButton,
+                  ),
+                  onPressed: () => _cancelButtonClicked(context),
                 ),
-                onPressed: () => _cancelButtonClicked(context),
               ),
-            ),
-          ],
-        )
-      ],
+            ],
+          )
+        ],
+      ),
     );
   }
 

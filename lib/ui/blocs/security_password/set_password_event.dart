@@ -26,3 +26,9 @@ class TriggerPasswordVisibility extends SetPasswordEvent {
   @override
   String toString() => 'TriggerPasswordVisibility';
 }
+
+/// Tells the Bloc that the user wants to use the currently input password.
+class SavePassword extends SetPasswordEvent {
+  @override
+  String toString() => 'SavePassword';
+}

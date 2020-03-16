@@ -33,7 +33,8 @@ class ManagePostReactionsUseCase {
     }
 
     // Build the reaction object
-    final user = await _userRepository.getUserData();
+    final account = await _userRepository.getAccount();
+    final user = User.fromAddress(account.cosmosAccount.address);
     final reactionObj = Reaction(user: user, value: reaction);
 
     // Add it to the list of reactions if not present and save the new post

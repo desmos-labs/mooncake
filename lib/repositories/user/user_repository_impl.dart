@@ -30,29 +30,40 @@ class UserRepositoryImpl extends UserRepository {
     return _localUserSource.getWallet();
   }
 
-  @override
-  Future<User> getUserData() async {
-    return _updateAndStoreAccountData().then((_) => _localUserSource.getUser());
-  }
-
-  @override
-  Stream<User> get userStream => _localUserSource.userStream;
-
   Future<void> _updateAndStoreAccountData() async {
-    final user = await _localUserSource.getUser();
+    final user = await _localUserSource.getAccount();
     if (user == null) {
       // No User stored locally, nothing to update
       return;
     }
 
     // Update the data from the remote source and save it locally
-    final data = await _remoteUserSource.getUser(user.accountData.address);
-    await _localUserSource.saveUser(data);
+    final data = await _remoteUserSource.getAccount(user.cosmosAccount.address);
+    await _localUserSource.saveAccount(data);
   }
 
   @override
-  Future<void> fundUser(User user) {
-    return _remoteUserSource.fundUser(user);
+  Future<MooncakeAccount> getAccount() async {
+    return _updateAndStoreAccountData()
+        .then((_) => _localUserSource.getAccount());
+  }
+
+  @override
+  Stream<MooncakeAccount> get accountStream => _localUserSource.accountStream;
+
+  @override
+  Future<void> fundAccount(MooncakeAccount user) {
+    return _remoteUserSource.fundAccount(user);
+  }
+
+  @override
+  Future<void> saveAuthenticationMethod(AuthenticationMethod method) {
+    return _localUserSource.saveAuthenticationMethod(method);
+  }
+
+  @override
+  Future<AuthenticationMethod> getAuthenticationMethod() {
+    return _localUserSource.getAuthenticationMethod();
   }
 
   @override

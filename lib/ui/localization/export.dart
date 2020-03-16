@@ -43,6 +43,8 @@ Please note that the biometric authentication will be paired only to this\
 device and any fingerprint or face that has been set to unlock your device\
 can be used to access your account on this application
   """;
+  String get savingBiometricsTitle => "Saving biomentrics";
+  String get savingBiometricsBody => "This might take a while";
 
   // Password screen
   String get passwordTitle => "Set password";
@@ -58,6 +60,8 @@ phrase to access your account.
   String get passwordSecurityHigh => "High";
   String get passwordShowPasswordButton => "Show password";
   String get passwordHidePasswordButton => "Hide password";
+  String get savingPasswordTitle => "Saving password";
+  String get savingPasswordBody => "This might take a while";
 
   String get biometricsEnableButton => "Enable";
   String get biometricsUsePasswordButton => "Use text password instead";

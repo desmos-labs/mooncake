@@ -24,7 +24,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required int syncPeriod,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
-    @required GetUserUseCase getUserUseCase,
+    @required GetAccountUseCase getUserUseCase,
     @required FirebaseAnalytics analytics,
   })  : _syncPeriod = syncPeriod,
         assert(getPostsUseCase != null),

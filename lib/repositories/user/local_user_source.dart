@@ -11,16 +11,23 @@ abstract class LocalUserSource {
   /// application user.
   Future<Wallet> getWallet();
 
+  /// Saves the given [data] as the current local user data.
+  Future<void> saveAccount(MooncakeAccount data);
+
   /// Returns the [User] containing the data of the current app user.
   /// If no [User] or [Wallet] have been saved yet, returns `null`.
-  Future<User> getUser();
+  Future<MooncakeAccount> getAccount();
 
   /// Returns the [Stream] that emits all the new [User]
   /// once they have been saved.
-  Stream<User> get userStream;
+  Stream<MooncakeAccount> get accountStream;
 
-  /// Saves the given [data] as the current local user data.
-  Future<void> saveUser(User data);
+  /// Saves the given [method] as the local user authentication method.
+  Future<void> saveAuthenticationMethod(AuthenticationMethod method);
+
+  /// Returns the currently set authentication method.
+  /// If no method has been set yet, returns `null` instead.
+  Future<AuthenticationMethod> getAuthenticationMethod();
 
   /// Completely wipes the currently stored wallet for the user.
   Future<void> wipeData();

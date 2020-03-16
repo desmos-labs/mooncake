@@ -13,7 +13,7 @@ abstract class PostListItemEvent extends Equatable {
 
 /// Tells the Bloc that the data has been loaded.
 class DataLoaded extends PostListItemEvent {
-  final User user;
+  final MooncakeAccount user;
   final Post post;
 
   DataLoaded({@required this.user, @required this.post});

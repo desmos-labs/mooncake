@@ -15,7 +15,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
   final LoginUseCase _loginUseCase;
   final LogoutUseCase _logoutUseCase;
-  final GetUserUseCase _getUserUseCase;
+  final GetAccountUseCase _getUserUseCase;
   final FirebaseAnalytics _analytics;
 
   final NavigatorBloc _navigatorBloc;
@@ -26,7 +26,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required GenerateMnemonicUseCase generateMnemonicUseCase,
     @required LoginUseCase loginUseCase,
     @required LogoutUseCase logoutUseCase,
-    @required GetUserUseCase getUserUseCase,
+    @required GetAccountUseCase getUserUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
   })  : assert(generateMnemonicUseCase != null),

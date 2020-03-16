@@ -17,7 +17,7 @@ class AccountScreenContent extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           Image(
-            image: AssetImage("assets/icons/icon_ghost.png"),
+            image: AssetImage("assets/images/ghost.png"),
             width: 150,
           ),
           Text(

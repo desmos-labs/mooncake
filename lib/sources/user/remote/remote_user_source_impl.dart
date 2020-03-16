@@ -20,7 +20,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
         _faucetEndpoint = faucetEndpoint;
 
   @override
-  Future<User> getUser(String address) async {
+  Future<MooncakeAccount> getAccount(String address) async {
     try {
       // TODO: Implement the user retrieval using GraphQL
       final query = '''
@@ -40,11 +40,11 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   }
 
   @override
-  Future<void> fundUser(User user) async {
+  Future<void> fundAccount(MooncakeAccount user) async {
     await http.Client().post(
       _faucetEndpoint,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"address": user.accountData.address}),
+      body: jsonEncode({"address": user.cosmosAccount.address}),
     );
   }
 }

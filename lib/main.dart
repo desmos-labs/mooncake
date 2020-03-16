@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:alan/models/cosmos-sdk/query/account.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ void _initTestData() async {
   _initNotifications();
 }
 
-void _initPosts(User user) async {
+void _initPosts(MooncakeAccount user) async {
   final posts = [
     Post(
       parentId: "0",
@@ -62,12 +63,7 @@ void _initPosts(User user) async {
       created: "2020-24-02T08:40:00.000Z",
       owner: User(
         username: "Desmos",
-        accountData: AccountData(
-          address: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
-          accountNumber: 0,
-          coins: [],
-          sequence: 0,
-        ),
+        address: "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
         avatarUrl: "https://i.pravatar.cc/300?img=1",
       ),
       subspace: Constants.SUBSPACE,
@@ -86,7 +82,7 @@ void _initPosts(User user) async {
       ],
       reactions: [
         Reaction(
-          user: user,
+          user: User.fromAddress(user.cosmosAccount.address),
           value: "👍",
         ),
         Reaction(
@@ -110,9 +106,7 @@ void _initPosts(User user) async {
       created: "2020-24-02T09:00:00.000Z",
       owner: User(
         username: "Alice Jackson",
-        accountData: AccountData.offline(
-          "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
-        ),
+        address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
         avatarUrl: "https://i.pravatar.cc/300?img=2",
       ),
       subspace: Constants.SUBSPACE,
@@ -159,10 +153,7 @@ void _initPosts(User user) async {
       id: "3",
       created: "2020-24-04T09:00:00.000Z",
       owner: User(
-        username: "Alice Jackson",
-        accountData: AccountData.offline(
-          "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
-        ),
+        address: "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
         avatarUrl: "https://i.pravatar.cc/300?img=3",
       ),
       subspace: Constants.SUBSPACE,
@@ -212,9 +203,9 @@ void _initPosts(User user) async {
   });
 }
 
-Future<User> _initUser() async {
-  final user = User(
-    accountData: AccountData(
+Future<MooncakeAccount> _initUser() async {
+  final user = MooncakeAccount(
+    cosmosAccount: CosmosAccount(
       address: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
       accountNumber: 0,
       sequence: 0,
@@ -230,7 +221,7 @@ Future<User> _initUser() async {
         "https://pbs.twimg.com/profile_images/1206578012549980162/6L485PKE_400x400.jpg",
   );
   final localUserSource = Injector.get<LocalUserSource>();
-  await localUserSource.saveUser(user);
+  await localUserSource.saveAccount(user);
 
   return user;
 }
@@ -242,14 +233,9 @@ void _initNotifications() async {
       postId: "0",
       user: User(
         username: "Nick Haynes",
+        address: "",
         avatarUrl:
             "https://specials-images.forbesimg.com/imageserve/5d70b0225b52ce0008826162/960x0.jpg?fit=scale",
-        accountData: AccountData(
-          sequence: 0,
-          coins: [],
-          accountNumber: 0,
-          address: "",
-        ),
       ),
       comment: "Curabitus nisl",
       date: DateTime.now(),
@@ -258,14 +244,9 @@ void _initNotifications() async {
       postId: "1",
       user: User(
         username: "Keanu Stanley",
+        address: "",
         avatarUrl:
             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outdoors-man-portrait_%28cropped%29.jpg/1200px-Outdoors-man-portrait_%28cropped%29.jpg",
-        accountData: AccountData(
-          sequence: 0,
-          coins: [],
-          accountNumber: 0,
-          address: "",
-        ),
       ),
       comment: "Magna ne Mattis enim lorem",
       date: DateTime.now(),
@@ -274,14 +255,9 @@ void _initNotifications() async {
       postId: "1",
       user: User(
         username: "Matthew Alvarado",
+        address: "",
         avatarUrl:
             "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outdoors-man-portrait_%28cropped%29.jpg/1200px-Outdoors-man-portrait_%28cropped%29.jpg",
-        accountData: AccountData(
-          sequence: 0,
-          coins: [],
-          accountNumber: 0,
-          address: "",
-        ),
       ),
       comment:
           "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
@@ -291,14 +267,9 @@ void _initNotifications() async {
       postId: "1",
       user: User(
         username: "Carolyn",
+        address: "",
         avatarUrl:
             "https://www.amica.it/wp-content/uploads/2019/04/ana-de-armes4-635x635.jpg",
-        accountData: AccountData(
-          sequence: 0,
-          coins: [],
-          accountNumber: 0,
-          address: "",
-        ),
       ),
       text: "@mooncake great!!!",
       date: DateTime.now(),
@@ -307,14 +278,9 @@ void _initNotifications() async {
       postId: "1",
       user: User(
         username: "Carolyn",
+        address: "",
         avatarUrl:
             "https://www.amica.it/wp-content/uploads/2019/04/ana-de-armes4-635x635.jpg",
-        accountData: AccountData(
-          sequence: 0,
-          coins: [],
-          accountNumber: 0,
-          address: "",
-        ),
       ),
       text: "I love @mooncake",
       date: DateTime.now(),
@@ -323,14 +289,9 @@ void _initNotifications() async {
       postId: "1",
       user: User(
         username: "Carolyn",
+        address: "",
         avatarUrl:
             "https://www.amica.it/wp-content/uploads/2019/04/ana-de-armes4-635x635.jpg",
-        accountData: AccountData(
-          sequence: 0,
-          coins: [],
-          accountNumber: 0,
-          address: "",
-        ),
       ),
       text: "Go @mooncake, go!",
       date: DateTime.now(),

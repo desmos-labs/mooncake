@@ -1,57 +1,47 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-import 'package:mooncake/entities/entities.dart';
 
 part 'user.g.dart';
 
-/// Contains the data of a user.
+/// Contains the data of a generic user.
 @immutable
 @JsonSerializable(explicitToJson: true)
 class User extends Equatable {
+  /// Represents the Desmos address of the user
+  @JsonKey(name: "address", nullable: false)
+  final String address;
+
   /// Represents the username of the user.
   /// Do not use this directly, use [screenName] instead.
   @JsonKey(name: "username", nullable: true)
   final String username;
 
+  /// Returns `true` iff the username is not null and not empty.
+  bool get hasUsername => username != null && username.isNotEmpty;
+
   /// Returns the name that should be used on the screen
-  String get screenName => username ?? accountData.address;
+  String get screenName => username ?? address;
 
   @JsonKey(name: "avatar_url", nullable: true)
   final String avatarUrl;
 
-  @JsonKey(name: "account_data")
-  final AccountData accountData;
+  /// Returns `true` iff the user has an associated avatar.
+  bool get hasAvatar => avatarUrl != null && avatarUrl.isNotEmpty;
 
   User({
-    @required this.accountData,
+    @required this.address,
     this.username,
     this.avatarUrl,
-  }) : assert(accountData != null);
+  }) : assert(address != null);
 
   factory User.fromAddress(String address) {
-    return User(
-      accountData: AccountData(
-        address: address,
-        coins: [],
-        accountNumber: 0,
-        sequence: 0,
-      ),
-    );
+    return User(address: address);
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
     return _$UserFromJson(json);
   }
-
-  /// Returns `true` iff the user has an associated avatar.
-  bool get hasAvatar => avatarUrl != null && avatarUrl.isNotEmpty;
-
-  /// Returns `true` iff the username is not null and not empty.
-  bool get hasUsername => username != null && username.isNotEmpty;
-
-  /// Returns `true` iff the account needs to be funded.
-  bool get needsFunding => accountData.coins.isEmpty;
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
@@ -62,7 +52,6 @@ class User extends Equatable {
   @override
   String toString() => 'User { '
       'username: $username, '
-      'avatarUrl : $avatarUrl ,'
-      'accountData: $accountData '
+      'avatarUrl : $avatarUrl '
       '}';
 }

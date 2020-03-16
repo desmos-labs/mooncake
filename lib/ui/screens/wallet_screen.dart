@@ -11,7 +11,7 @@ class WalletScreen extends StatelessWidget {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (BuildContext context, AccountState accountState) {
         final state = accountState as LoggedIn;
-        final coin = state.user.accountData.coins.firstWhere(
+        final coin = state.user.cosmosAccount.coins.firstWhere(
           (c) => c.denom == Constants.FEE_TOKEN,
           orElse: () => null,
         );

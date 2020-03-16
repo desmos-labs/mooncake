@@ -34,7 +34,7 @@ class NotificationsList extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: 50),
                 Image(
-                  image: AssetImage("assets/icons/icon_no_notification.png"),
+                  image: AssetImage("assets/images/airplane.png"),
                   width: MediaQuery.of(context).size.width * 0.33,
                 ),
                 SizedBox(height: 10),

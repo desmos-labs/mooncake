@@ -9,31 +9,39 @@ class SetBiometricScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<BiometricsBloc>(
       create: (context) => BiometricsBloc.create(context),
-      child: Builder(
-        builder: (context) => Scaffold(
-          body: Container(
-            padding: EdgeInsets.all(16),
-            decoration: ThemeDecorations.pattern,
-            constraints: BoxConstraints.expand(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                AppBar(
-                  title: Text("Access account"),
-                  centerTitle: true,
-                  backgroundColor: Colors.transparent,
-                  iconTheme: IconThemeData(color: Colors.white),
-                  textTheme: Theme.of(context).textTheme.copyWith(
-                    headline6: Theme.of(context).textTheme.headline6.copyWith(
-                      color: Colors.white,
-                    )
-                  ),
+      child: BlocBuilder<BiometricsBloc, BiometricsState>(
+        builder: (context, state) => Scaffold(
+          body: Stack(
+            children: <Widget>[
+              Container(
+                decoration: ThemeDecorations.pattern,
+                constraints: BoxConstraints.expand(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    AppBar(
+                      title: Text("Access account"),
+                      centerTitle: true,
+                      backgroundColor: Colors.transparent,
+                      iconTheme: IconThemeData(color: Colors.white),
+                      textTheme: Theme.of(context).textTheme.copyWith(
+                          headline6:
+                              Theme.of(context).textTheme.headline6.copyWith(
+                                    color: Colors.white,
+                                  )),
+                    ),
+                    Flexible(child: SetBiometricTitle()),
+                    Flexible(child: SetBiometricBody())
+                  ],
                 ),
-                Flexible(child: SetBiometricTitle()),
-                Flexible(child: SetBiometricBody())
-              ],
-            ),
+              ),
+              if (state.saving)
+                GenericPopup(
+                  backgroundColor: Colors.white.withOpacity(0.5),
+                  content: SavingBiometricsPopupContent(),
+                )
+            ],
           ),
         ),
       ),

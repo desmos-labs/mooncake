@@ -19,7 +19,8 @@ class CreatePostUseCase {
     @required bool allowsComments,
     List<PostMedia> medias,
   }) async {
-    final address = await _userRepository.getUserData();
+    final account = await _userRepository.getAccount();
+    final user = User.fromAddress(account.cosmosAccount.address);
     final date = Post.getDateStringNow();
     return Post(
       id: date,
@@ -29,7 +30,7 @@ class CreatePostUseCase {
       allowsComments: allowsComments,
       medias: medias,
       subspace: Constants.SUBSPACE,
-      owner: address,
+      owner: user,
     );
   }
 }

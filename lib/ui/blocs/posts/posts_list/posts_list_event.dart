@@ -12,7 +12,7 @@ abstract class PostsListEvent extends Equatable {
 /// Event that is emitted when the user using the application
 /// has been updated for some reason.
 class UserUpdated extends PostsListEvent {
-  final User user;
+  final MooncakeAccount user;
 
   UserUpdated(this.user);
 

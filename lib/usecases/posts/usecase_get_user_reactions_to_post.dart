@@ -16,9 +16,9 @@ class GetUserReactionsToPost {
   /// Reads the Bech32 address of the current app user, and gets all the
   /// reactions from that address which are associated to the given [post].
   Future<List<Reaction>> verify(Post post) async {
-    final user = await _walletRepository.getUserData();
+    final account = await _walletRepository.getAccount();
     return post.reactions
-        .where((r) => r.user.accountData.address == user.accountData.address)
+        .where((r) => r.user.address == account.cosmosAccount.address)
         .toList();
   }
 }

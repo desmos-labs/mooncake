@@ -19,7 +19,7 @@ class UserAvatar extends StatelessWidget {
       backgroundImage: NetworkImage(
         user.hasAvatar
             ? user.avatarUrl
-            : "http://identicon-1132.appspot.com/${user.accountData.address}",
+            : "http://identicon-1132.appspot.com/${user.address}",
       ),
     );
   }

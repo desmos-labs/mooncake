@@ -5,8 +5,8 @@ import 'package:mooncake/entities/entities.dart';
 abstract class RemoteUserSource {
   /// Returns the object containing the data
   /// of the current application user.
-  Future<User> getUser(String address);
+  Future<MooncakeAccount> getAccount(String address);
 
   /// Allows to sends funds from the faucet to the specified [user].
-  Future<void> fundUser(User user);
+  Future<void> fundAccount(MooncakeAccount user);
 }

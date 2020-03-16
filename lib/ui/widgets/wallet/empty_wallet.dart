@@ -16,7 +16,7 @@ class EmptyWallet extends StatelessWidget {
           ),
           Image(
             height: 150,
-            image: AssetImage("assets/icons/icon_ghost.png"),
+            image: AssetImage("assets/images/ghost.png"),
           ),
           Text(
             PostsLocalizations.of(context).emptyWalletBody,

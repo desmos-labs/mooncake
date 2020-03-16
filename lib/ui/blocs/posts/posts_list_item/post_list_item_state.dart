@@ -18,7 +18,7 @@ class PostListItemLoading extends PostListItemState {
 /// present inside a posts list.
 class PostListItemLoaded extends PostListItemState {
   /// Account that is currently used from the user.
-  final User user;
+  final MooncakeAccount user;
 
   /// Post that is shown inside the item itself.
   final Post post;
@@ -45,7 +45,7 @@ class PostListItemLoaded extends PostListItemState {
   bool hasUserReactedWith(String reaction) => post.reactions
       .where((r) =>
           r.value == reaction &&
-          r.user.accountData.address == user.accountData.address)
+          r.user.address == user.cosmosAccount.address)
       .isNotEmpty;
 
   const PostListItemLoaded({
@@ -55,12 +55,12 @@ class PostListItemLoaded extends PostListItemState {
   });
 
   PostListItemLoaded copyWith({
-    AccountData account,
+    MooncakeAccount user,
     Post post,
     bool actionBarExpanded,
   }) {
     return PostListItemLoaded(
-      user: account ?? this.user,
+      user: user ?? this.user,
       post: post ?? this.post,
       actionBarExpanded: actionBarExpanded ?? this.actionBarExpanded,
     );

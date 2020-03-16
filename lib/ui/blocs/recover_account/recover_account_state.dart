@@ -54,7 +54,6 @@ class RecoverAccountState extends Equatable {
 
   @override
   String toString() => 'TypingMnemonic { '
-      'wordsList: $wordsList, '
       'currentWordIndex: $currentWordIndex, '
       'isMnemonicValid: $isMnemonicValid '
       '}';

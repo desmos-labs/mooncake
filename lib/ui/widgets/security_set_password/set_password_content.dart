@@ -48,6 +48,6 @@ class SetPasswordContent extends StatelessWidget {
   }
 
   void _onSavePassword(BuildContext context) {
-    // TODO: Do something
+    BlocProvider.of<SetPasswordBloc>(context).add(SavePassword());
   }
 }

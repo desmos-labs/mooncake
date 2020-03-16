@@ -33,7 +33,7 @@ class LogIn extends AccountEvent {
 /// Tells the Bloc to refresh the currently saved account replacing it
 /// with the new one.
 class Refresh extends AccountEvent {
-  final User user;
+  final MooncakeAccount user;
 
   Refresh(this.user);
 
