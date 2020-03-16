@@ -10,10 +10,16 @@ class PostContentImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _openImage,
-      child: Image(
-          width: double.infinity, fit: BoxFit.cover, image: NetworkImage(url)),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        onTap: _openImage,
+        child: Image(
+          width: double.infinity,
+          fit: BoxFit.cover,
+          image: NetworkImage(url),
+        ),
+      ),
     );
   }
 

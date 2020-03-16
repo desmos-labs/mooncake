@@ -1,5 +1,8 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 
 import 'post_content_image_item.dart';
 
@@ -8,6 +11,7 @@ import 'post_content_image_item.dart';
 /// Otherwise, if more than one image is present, it will be displayed
 /// as a grid of squared images.
 class PostImagesPreviewer extends StatelessWidget {
+  final double indicatorSize = 6;
   final Post post;
 
   const PostImagesPreviewer({
@@ -25,24 +29,52 @@ class PostImagesPreviewer extends StatelessWidget {
       return Container();
     }
 
-    Widget child;
-    if (images.length == 1) {
-      child = PostContentImage(url: images[0].url);
-    }
+    return BlocProvider<PostImagesCarouselBloc>(
+      create: (context) => PostImagesCarouselBloc.create(),
+      child: BlocBuilder<PostImagesCarouselBloc, PostImagesCarouselState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              CarouselSlider(
+                viewportFraction: 1.0,
+                enableInfiniteScroll: false,
+                onPageChanged: (index) => _onPageChanged(context, index),
+                items: List.generate(images.length, (index) {
+                  return PostContentImage(url: images[index].url);
+                }),
+              ),
+              if (images.length > 1)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(images.length, (index) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 2),
+                          height: indicatorSize,
+                          width: indicatorSize,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: state.currentIndex == index
+                                ? ThemeColors.accentColor
+                                : ThemeColors.accentColor.withOpacity(0.4),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
-    if (images.length > 1) {
-      child = GridView.count(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisCount: 2,
-        mainAxisSpacing: 5.0,
-        crossAxisSpacing: 5.0,
-        children: List.generate(images.length, (index) {
-          return PostContentImage(url: images[index].url);
-        }),
-      );
-    }
-
-    return child;
+  void _onPageChanged(BuildContext context, int index) {
+    BlocProvider.of<PostImagesCarouselBloc>(context).add(ImageChanged(index));
   }
 }

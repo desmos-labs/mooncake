@@ -11,6 +11,7 @@ dependencies:
       url: git://github.com/alan-sdk/alan.dart.git
       ref: cosmos-v0.38.0
   bip39:
+  carousel_slider:
   cloud_firestore:
   collection:
   cupertino_icons:
