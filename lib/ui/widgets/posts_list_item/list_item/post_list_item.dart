@@ -6,6 +6,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'action_bar/export.dart';
+import 'reactions/post_reactions_list.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
 /// It is made of the following components:
@@ -58,6 +59,8 @@ class PostListItem extends StatelessWidget {
                   PostContent(post: post),
                   const SizedBox(height: PostsTheme.defaultPadding),
                   PostActionsBar(),
+                  const SizedBox(height: PostsTheme.defaultPadding),
+                  PostReactionsList(),
                 ],
               ),
             ),

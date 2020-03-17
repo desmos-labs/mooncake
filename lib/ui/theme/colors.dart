@@ -39,4 +39,7 @@ class ThemeColors {
   static Color get textColorAccent => accentColor;
   static Color get textColorLight => Colors.grey[700];
   static Color get textColorVeryLight => Colors.grey[500];
+
+  // --- Loading bars ---
+  static Color get loadingBarBackgroundColor => Color(0xFFECECEC);
 }

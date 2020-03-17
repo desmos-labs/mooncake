@@ -81,7 +81,7 @@ phrase to access your account.
   String likesCount(int count) => "$count likes";
 
   // Syncing
-  String get syncingActivities => "Syncing activities...";
+  String get syncingActivities => "Syncing activities to the chain";
   String get fetchingPosts => "Checking for new posts...";
   String get syncErrorTitle => "Syncing error";
   String get syncErrorDesc =>
@@ -89,16 +89,14 @@ phrase to access your account.
   String get syncErrorCopied => "Sync error copied to clipboard";
 
   // Create post screen
-  String get createPost => "Create post";
   String get newPostHint => "What's going on?";
-  String get emptyPostError => "Empty message";
-  String get saveChanges => "Save changes";
-  String get savingPost => "Saving post";
-  String get commentsEnabledTip => "Comments will be enabled - Tap to disable";
-  String get commentsDisabledTip =>
-      "Comments will be disabled - Tap to enabled them";
+  String get createPostCancelButton => "Cancel";
+  String get createPostCreateButton => "Post";
   String get cameraTip => "Take a picture using the camera";
   String get galleryTip => "Select an image from the gallery";
+  String get savingPostPopupBody =>
+      "The post will now be synced to the chain. This might take a while";
+  String get savingPostPopupOkButton => "OK";
 
   // Notifications screen
   String get allNotificationsTabTitle => "All";

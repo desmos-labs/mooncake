@@ -29,24 +29,19 @@ class PostMessage extends StatelessWidget {
       p: messageTheme,
     );
 
-    return Column(
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  MarkdownBody(
-                    onTapLink: _onTapLink,
-                    data: post.message,
-                    styleSheet: mdStyle,
-                  ),
-                ],
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              MarkdownBody(
+                onTapLink: _onTapLink,
+                data: post.message,
+                styleSheet: mdStyle,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

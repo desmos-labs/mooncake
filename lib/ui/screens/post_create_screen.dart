@@ -8,6 +8,8 @@ import 'package:mooncake/ui/ui.dart';
 /// represents the method that must be called upon the click on the save button
 /// inside the editor itself.
 class CreatePostScreen extends StatelessWidget {
+  final bottomBarHeight = 50.0;
+
   const CreatePostScreen({Key key}) : super(key: key);
 
   @override
@@ -17,30 +19,24 @@ class CreatePostScreen extends StatelessWidget {
       child: BlocBuilder<PostInputBloc, PostInputState>(
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: Colors.white,
             body: Stack(
               children: <Widget>[
-                CreatePostContent(),
+                CreatePostContent(bottomPadding: bottomBarHeight),
                 Positioned(
                   bottom: 0,
-                  child: PostCreateActions(),
-                )
+                  child: PostCreateActions(height: bottomBarHeight),
+                ),
+                if (state.saving)
+                  GenericPopup(
+                    backgroundColor: Colors.black.withOpacity(0.6),
+                    content: PostSavingPopupContent(),
+                  )
               ],
             ),
           );
         },
       ),
-    );
-  }
-
-  _imagesPreview(PostInputState state) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 16),
-        PostImagesPreview(
-          images: state.medias,
-          allowsRemoval: true,
-        ),
-      ],
     );
   }
 }

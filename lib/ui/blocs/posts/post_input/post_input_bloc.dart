@@ -4,17 +4,31 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 import '../export.dart';
 
 /// Implementation of [Bloc] that allows to deal with [PostInputEvent]
 /// and [PostInputState] objects.
 class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
-  PostInputBloc();
+  final CreatePostUseCase _createPostUseCase;
+  final SavePostUseCase _savePostUseCase;
+
+  PostInputBloc({
+    @required SavePostUseCase savePostUseCase,
+    @required CreatePostUseCase createPostUseCase,
+  })  : assert(savePostUseCase != null),
+        _savePostUseCase = savePostUseCase,
+        assert(createPostUseCase != null),
+        _createPostUseCase = createPostUseCase;
 
   factory PostInputBloc.create() {
-    return PostInputBloc();
+    return PostInputBloc(
+      createPostUseCase: Injector.get(),
+      savePostUseCase: Injector.get(),
+    );
   }
 
   @override
@@ -38,7 +52,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       final images = _removeFileIfPresent(state.medias, event.file);
       yield state.update(medias: images);
     } else if (event is SavePost) {
-      yield state.update(saving: true);
+      yield* _mapSavePostEventToState();
     }
   }
 
@@ -62,9 +76,24 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     PostMedia media,
   ) {
     return medias
-        .map((m) => File(media.url))
+        .map((m) => File(m.url))
         .where((f) => !_contentsEquals(f, File(media.url)))
         .map((f) => _convert(f))
         .toList();
+  }
+
+  Stream<PostInputState> _mapSavePostEventToState() async* {
+    yield state.update(saving: true);
+
+    final useCase = Injector.get<CreatePostUseCase>();
+    final post = await useCase.create(
+      message: state.message,
+      parentId: null,
+      allowsComments: state.allowsComments,
+      medias: state.medias,
+    );
+
+    final saveUseCase = Injector.get<SavePostUseCase>();
+    await saveUseCase.save(post);
   }
 }

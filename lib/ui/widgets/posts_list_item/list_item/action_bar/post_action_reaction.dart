@@ -31,6 +31,7 @@ class PostReactionAction extends StatelessWidget {
               ? ThemeColors.accentColor.withAlpha(50)
               : ThemeColors.emojiButtonBackgroundColor,
           label: Row(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(reaction),
               SizedBox(width: 8),

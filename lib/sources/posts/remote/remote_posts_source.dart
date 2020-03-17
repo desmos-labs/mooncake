@@ -41,32 +41,24 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     final gqlWsLink = WebSocketLink(url: "ws://$graphQlEndpoint");
     final client = GraphQLClient(link: gqlWsLink, cache: InMemoryCache());
     final postsSub = """
-    subscription posts {
-      post(order_by: {created: desc}, where: {subspace: {_eq: "${Constants.SUBSPACE}"}}) {
+    subscription Posts {
+      post {
         id
-        allows_comments
+        subspace
         created
         last_edited
+        media {
+          uri
+          mime_type
+        }
         message
         optional_data
         parent_id
-        subspace
-        poll {
-          allows_multiple_answers
-          allows_answer_edits
-          end_date
-          id
-          open
-          poll_answers {
-            answer_id
-            answer_text
+        reactions {
+          user {
+            address
           }
-          user_poll_answers {
-            user {
-              address
-            }
-            answer
-          }
+          value
         }
         user {
           address
@@ -75,7 +67,15 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     }
     """;
     client.subscribe(Operation(documentNode: gql(postsSub))).listen((event) {
-      // TODO: Convert the posts
+      final data = event.data as Map<String, dynamic>;
+      if (data.containsKey("post")) {
+        final posts = (data["post"] as List<dynamic>)
+            .map((e) => Post.fromJson(e))
+            .toList();
+        _postsController.add(posts);
+      }
+
+      print(event.data);
     });
   }
 

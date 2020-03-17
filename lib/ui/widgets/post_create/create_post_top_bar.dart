@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the top bar that is displayed to the user inside the
@@ -7,31 +8,34 @@ import 'package:mooncake/ui/ui.dart';
 class CreatePostTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                FlatButton(
-                  child: Text("Cancel"),
+    return BlocBuilder<PostInputBloc, PostInputState>(
+      builder: (context, state) {
+        return Container(
+          padding: EdgeInsets.all(8),
+          child: AppBar(
+            leading: FlatButton(
+              padding: EdgeInsets.zero,
+              child: Text(
+                PostsLocalizations.of(context).createPostCancelButton,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            actions: <Widget>[
+              SizedBox(
+                width: 65,
+                child: PrimaryRoundedButton(
+                  enabled: state.isValid,
+                  text: PostsLocalizations.of(context).createPostCreateButton,
+                  borderRadius: 25,
                   onPressed: () {
-                    // TODO: Implement this
+                    BlocProvider.of<PostInputBloc>(context).add(SavePost());
                   },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          PrimaryRoundedButton(
-            text: "Post",
-            onPressed: () {
-              // TODO: Implement this
-            },
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -8,7 +8,7 @@ part 'post.g.dart';
 
 /// Represents a generic post
 @immutable
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, ignoreUnannotated: true)
 class Post extends Equatable implements Comparable<Post> {
   /// Represents the date format that should be used to format and parse
   /// post-related date values.
@@ -33,11 +33,10 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: ID_FIELD)
   final String id;
 
-  @JsonKey(name: "parent_id")
+  @JsonKey(name: "parent_id", nullable: true)
   final String parentId;
 
   /// Tells if this post has a valid parent post or not.
-  @JsonKey(ignore: true)
   bool get hasParent =>
       parentId != null && parentId.trim().isNotEmpty && parentId != "0";
 
@@ -62,7 +61,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "subspace")
   final String subspace;
 
-  @JsonKey(name: "creator")
+  @JsonKey(name: "user")
   final User owner;
 
   @JsonKey(name: "optional_data", defaultValue: {})

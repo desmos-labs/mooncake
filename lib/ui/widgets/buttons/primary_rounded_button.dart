@@ -8,11 +8,13 @@ class PrimaryRoundedButton extends StatelessWidget {
   final void Function() onPressed;
   final String text;
   final bool enabled;
+  final double borderRadius;
 
   const PrimaryRoundedButton(
       {Key key,
       @required this.onPressed,
       @required this.text,
+      this.borderRadius = 4.0,
       this.enabled = true})
       : super(key: key);
 
@@ -21,7 +23,9 @@ class PrimaryRoundedButton extends StatelessWidget {
     return GradientButton(
       isEnabled: enabled,
       increaseWidthBy: double.infinity,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
       callback: onPressed,
       gradient: ThemeColors.primaryButtonBackgroundGradient,
       shadowColor: Colors.transparent,
