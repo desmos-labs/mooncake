@@ -19,7 +19,7 @@ class CreatePostScreen extends StatelessWidget {
       child: BlocBuilder<PostInputBloc, PostInputState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).cardColor,
             body: Stack(
               children: <Widget>[
                 CreatePostContent(bottomPadding: bottomBarHeight),

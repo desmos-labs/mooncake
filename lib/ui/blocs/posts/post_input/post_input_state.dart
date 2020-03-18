@@ -45,15 +45,10 @@ class PostInputState extends Equatable {
   }
 
   @override
-  List<Object> get props => [message, allowsComments, medias, saving];
-
-  @override
-  String toString() {
-    return 'CommentInputState {'
-        'message: $message ,'
-        'allowsComments: $allowsComments, '
-        'medias: $medias, '
-        'saving: $saving'
-        '}';
-  }
+  List<Object> get props => [
+        message,
+        allowsComments,
+        medias,
+        saving,
+      ];
 }

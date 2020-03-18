@@ -22,9 +22,9 @@ class GenericPopup extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             boxShadow: [
-              BoxShadow(color: Color(0xFF40318972), blurRadius: 15),
+              BoxShadow(color: Colors.black.withOpacity(0.50), blurRadius: 10),
             ],
           ),
           child: Wrap(

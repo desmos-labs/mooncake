@@ -16,15 +16,12 @@ class PostsListContent extends StatelessWidget {
       key: PostsKeys.postsList,
       itemCount: posts.length,
       itemBuilder: (context, index) {
-        return _postWidget(context, posts[index]);
+        final post = posts[index];
+        return BlocProvider<PostListItemBloc>(
+          create: (context) => PostListItemBloc.create(context, post),
+          child: PostListItem(postId: post.id),
+        );
       },
-    );
-  }
-
-  Widget _postWidget(BuildContext buildContext, Post post) {
-    return BlocProvider<PostListItemBloc>(
-      create: (context) => PostListItemBloc.create(context, post),
-      child: PostListItem(postId: post.id),
     );
   }
 }

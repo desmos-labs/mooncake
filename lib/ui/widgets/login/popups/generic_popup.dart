@@ -18,7 +18,7 @@ class LoginPopup extends StatelessWidget {
         Container(
           constraints: BoxConstraints.expand(),
           child: CustomPaint(
-            painter: _BackgroundPainter(color: Colors.white),
+            painter: _BackgroundPainter(color: Theme.of(context).cardColor),
           ),
         ),
         GenericPopup(content: content),

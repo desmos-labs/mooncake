@@ -1,6 +1,6 @@
 name: mooncake
 description: A decentralized Twitter based on Desmos
-version: 0.0.14+14
+version: 0.1.0+0100
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons:
   crypto:
   dependencies:
+  dynamic_theme:
   emoji_picker:
   equatable:
   firebase_core:

@@ -17,6 +17,9 @@ class UserUpdated extends PostsListEvent {
   UserUpdated(this.user);
 
   @override
+  List<Object> get props => [user];
+
+  @override
   String toString() => 'UserUpdated { user: $user }';
 }
 
@@ -25,6 +28,9 @@ class PostsUpdated extends PostsListEvent {
   final List<Post> posts;
 
   const PostsUpdated(this.posts);
+
+  @override
+  List<Object> get props => [posts];
 
   @override
   String toString() => 'ShowPosts { posts: ${posts.length} }';

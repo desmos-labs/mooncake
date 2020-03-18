@@ -16,18 +16,28 @@ class WalletScreen extends StatelessWidget {
           orElse: () => null,
         );
 
+        final headerTextColor = Theme.of(context).brightness == Brightness.light
+            ? Theme.of(context).primaryColorLight
+            : Theme.of(context).accentColor;
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: ThemeColors.accentColor,
-            iconTheme: Theme.of(context).accentIconTheme,
+            iconTheme: Theme.of(context).appBarTheme.iconTheme.copyWith(
+                  color: headerTextColor,
+                ),
           ),
+          backgroundColor: Theme.of(context).brightness == Brightness.light
+              ? Theme.of(context).accentColor
+              : Theme.of(context).cardColor,
           body: coin == null
               ? EmptyWallet()
               : Column(
                   children: <Widget>[
-                    Expanded(
+                    Flexible(
                       flex: 1,
-                      child: WalletHeader(coin: coin),
+                      child: WalletHeader(
+                        coin: coin,
+                        textColor: headerTextColor,
+                      ),
                     ),
                     Expanded(
                       flex: 4,

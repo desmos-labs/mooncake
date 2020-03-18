@@ -43,6 +43,9 @@ class CreatePostContent extends StatelessWidget {
                         border: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent),
                         ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)
+                        )
                       ),
                     ),
                     if (state.medias.isNotEmpty)

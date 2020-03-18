@@ -25,10 +25,8 @@ class PostContent extends StatelessWidget {
           post: post,
         ),
         const SizedBox(height: PostsTheme.defaultPadding),
-        PostMessage(
-          key: PostsKeys.postItemMessage(post.id),
-          post: post,
-        ),
+        if (post.message != null && post.message.isNotEmpty)
+          PostMessage(key: PostsKeys.postItemMessage(post.id), post: post),
         const SizedBox(height: PostsTheme.defaultPadding),
         PostImagesPreviewer(
           key: PostsKeys.postItemImagePreviewer(post.id),

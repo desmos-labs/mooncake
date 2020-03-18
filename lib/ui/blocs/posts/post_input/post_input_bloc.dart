@@ -85,15 +85,12 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   Stream<PostInputState> _mapSavePostEventToState() async* {
     yield state.update(saving: true);
 
-    final useCase = Injector.get<CreatePostUseCase>();
-    final post = await useCase.create(
+    final post = await _createPostUseCase.create(
       message: state.message,
       parentId: null,
       allowsComments: state.allowsComments,
       medias: state.medias,
     );
-
-    final saveUseCase = Injector.get<SavePostUseCase>();
-    await saveUseCase.save(post);
+    await _savePostUseCase.save(post);
   }
 }

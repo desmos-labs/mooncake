@@ -19,9 +19,8 @@ class PostCommentsList extends StatelessWidget {
           return Container();
         }
 
-        final childCount = currentState.comments.length +
-            (currentState.comments.length / 2).ceil() -
-            1;
+        final childCount = (currentState.comments.length * 2) - 1;
+        print(childCount);
 
         return Container(
           padding: EdgeInsets.only(
@@ -39,7 +38,7 @@ class PostCommentsList extends StatelessWidget {
                       return BlocProvider<PostListItemBloc>(
                         create: (context) => PostListItemBloc.create(
                           context,
-                          currentState.comments[index],
+                          currentState.comments[index ~/ 2],
                         ),
                         child: PostCommentItem(),
                       );

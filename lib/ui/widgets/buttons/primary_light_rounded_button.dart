@@ -20,8 +20,8 @@ class PrimaryLightRoundedButton extends StatelessWidget {
       onPressed: onPressed,
       child: child,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      color: ThemeColors.primaryLightButtonBackgroundColor,
-      textColor: ThemeColors.primaryLightButtonTextColor,
+      color: Theme.of(context).primaryColorLight,
+      textColor: Theme.of(context).accentColor,
     );
   }
 }

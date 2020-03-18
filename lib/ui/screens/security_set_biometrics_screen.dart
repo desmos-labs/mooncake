@@ -14,7 +14,7 @@ class SetBiometricScreen extends StatelessWidget {
           body: Stack(
             children: <Widget>[
               Container(
-                decoration: ThemeDecorations.pattern,
+                decoration: ThemeDecorations.pattern(context),
                 constraints: BoxConstraints.expand(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

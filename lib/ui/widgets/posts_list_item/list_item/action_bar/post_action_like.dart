@@ -12,12 +12,13 @@ class PostLikeAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: close_sinks
-    final bloc = PostLikeButtonBloc.create(context);
+    return BlocBuilder<PostListItemBloc, PostListItemState>(
+      builder: (BuildContext context, PostListItemState itemState) {
+        if (itemState is PostListItemLoading) {
+          return Container();
+        }
 
-    return BlocBuilder(
-      bloc: bloc,
-      builder: (BuildContext context, PostLikeButtonState state) {
+        final state = itemState as PostListItemLoaded;
         final icon = state.isLiked
             ? FaIcon(MooncakeIcons.heartFilled)
             : FaIcon(MooncakeIcons.heart);
@@ -32,7 +33,10 @@ class PostLikeAction extends StatelessWidget {
                 padding: EdgeInsets.all(0.0),
                 iconSize: size,
                 icon: icon,
-                onPressed: () => bloc.add(PostLikeButtonClicked()),
+                onPressed: () {
+                  BlocProvider.of<PostListItemBloc>(context)
+                      .add(AddOrRemoveLike());
+                },
               ),
             ),
             SizedBox(width: size / 4),
@@ -40,7 +44,7 @@ class PostLikeAction extends StatelessWidget {
               Text(
                 state.likesCount.toStringOrEmpty(),
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      color: ThemeColors.textColorLight,
+                      color: Theme.of(context).primaryColorLight,
                     ),
               ),
           ],

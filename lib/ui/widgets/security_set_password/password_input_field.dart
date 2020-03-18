@@ -18,7 +18,7 @@ class PasswordInputField extends StatelessWidget {
                 onChanged: (pass) => _onPasswordChanged(context, pass),
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       fontSize: 18,
-                      color: ThemeColors.accentColor,
+                      color: Theme.of(context).accentColor,
                     ),
                 decoration: InputDecoration(
                   hintText: PostsLocalizations.of(context).passwordHint,

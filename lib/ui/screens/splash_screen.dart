@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
         }
 
         return Container(
-          decoration: ThemeDecorations.pattern,
+          decoration: ThemeDecorations.pattern(context),
           child: Column(
             children: <Widget>[
               SizedBox(height: 175),

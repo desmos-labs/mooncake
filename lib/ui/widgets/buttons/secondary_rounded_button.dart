@@ -16,16 +16,13 @@ class SecondaryRoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: onPressed,
-      color: ThemeColors.secondaryButtonBackgroundColor,
-      textColor: ThemeColors.secondaryButtonTextColor,
+      color: Colors.transparent,
+      textColor: Theme.of(context).accentColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
-        side: BorderSide(color: ThemeColors.secondaryButtonTextColor, width: 1),
+        side: BorderSide(color: Theme.of(context).accentColor, width: 1),
       ),
-      child: Text(
-        text,
-        style: TextThemes.secondaryButtonTextStyle(context),
-      ),
+      child: Text(text),
     );
   }
 }

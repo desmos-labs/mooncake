@@ -41,7 +41,7 @@ class PostImagesPreviewer extends StatelessWidget {
                 enableInfiniteScroll: false,
                 onPageChanged: (index) => _onPageChanged(context, index),
                 items: List.generate(images.length, (index) {
-                  return PostContentImage(url: images[index].url);
+                  return PostContentImage(media: images[index]);
                 }),
               ),
               if (images.length > 1)
@@ -59,8 +59,8 @@ class PostImagesPreviewer extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: state.currentIndex == index
-                                ? ThemeColors.accentColor
-                                : ThemeColors.accentColor.withOpacity(0.4),
+                                ? Theme.of(context).accentColor
+                                : Theme.of(context).accentColor.withOpacity(0.4),
                           ),
                         );
                       }),

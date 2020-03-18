@@ -16,6 +16,9 @@ abstract class UserRepository {
   /// and the account data cannot be retrieved, returns `null` instead.
   Future<MooncakeAccount> getAccount();
 
+  /// Refreshes the user account downloading the data from the remote source.
+  Future<void> refreshAccount();
+
   /// Returns a stream that emits all the user changes.
   Stream<MooncakeAccount> get accountStream;
 

@@ -11,20 +11,6 @@ abstract class PostListItemEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the Bloc that the data has been loaded.
-class DataLoaded extends PostListItemEvent {
-  final MooncakeAccount user;
-  final Post post;
-
-  DataLoaded({@required this.user, @required this.post});
-
-  @override
-  List<Object> get props => [user, post];
-
-  @override
-  String toString() => 'DataLoaded { user: $user, post: $post }';
-}
-
 /// Tells the Bloc that it needs to either set as liked/unliked the given post.
 class AddOrRemoveLike extends PostListItemEvent {}
 
@@ -39,7 +25,7 @@ class AddOrRemovePostReaction extends PostListItemEvent {
   List<Object> get props => [reaction];
 
   @override
-  String toString() => 'AddOrRemovePostReaction { reaction: $reaction }';
+  String toString() => 'AddOrRemovePostReaction';
 }
 
 /// Tells the Bloc to change the current state of the expanded reactions list.

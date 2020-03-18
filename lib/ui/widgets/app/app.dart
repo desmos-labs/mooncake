@@ -1,3 +1,4 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,21 +33,25 @@ class _PostsAppState extends State<PostsApp> {
           create: (_) => NotificationsBloc.create()..add(LoadNotifications()),
         )
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: PostsKeys.navigatorKey,
-        title: PostsLocalizations().appTitle,
-        theme: PostsTheme.theme,
-        localizationsDelegates: [
-          FlutterBlocLocalizationsDelegate(),
-        ],
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: Injector.get()),
-        ],
-        routes: {
-          PostsRoutes.home: (context) => SplashScreen(),
-          PostsRoutes.recoverAccount: (context) => RecoverAccountScreen(),
-        },
+      child: DynamicTheme(
+        defaultBrightness: Brightness.light,
+        data: PostsTheme.themeBuilder,
+        themedWidgetBuilder: (context, theme) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          navigatorKey: PostsKeys.navigatorKey,
+          title: PostsLocalizations().appTitle,
+          theme: theme,
+          localizationsDelegates: [
+            FlutterBlocLocalizationsDelegate(),
+          ],
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: Injector.get()),
+          ],
+          routes: {
+            PostsRoutes.home: (context) => SplashScreen(),
+            PostsRoutes.recoverAccount: (context) => RecoverAccountScreen(),
+          },
+        ),
       ),
     );
   }

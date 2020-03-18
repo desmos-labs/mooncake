@@ -15,18 +15,18 @@ class AccountCreatedPopupContent extends StatelessWidget {
           PostsLocalizations.of(context)
               .accountCreatedPopupTitleFirstRow
               .toUpperCase(),
-          style: TextThemes.loginPopupTitleTheme(context),
+          style: Theme.of(context).accentTextTheme.headline6,
         ),
         Text(
           PostsLocalizations.of(context)
               .accountCreatedPopupTitleSecondRow
               .toUpperCase(),
-          style: TextThemes.loginPopupTitleTheme(context),
+          style: Theme.of(context).accentTextTheme.headline6,
         ),
         SizedBox(height: 10),
         Text(
           PostsLocalizations.of(context).accountCreatedPopupText,
-          style: TextThemes.loginPopupTextTheme(context),
+          style: Theme.of(context).accentTextTheme.bodyText2,
         ),
         SizedBox(height: 25),
         Row(
@@ -40,18 +40,6 @@ class AccountCreatedPopupContent extends StatelessWidget {
             ),
           ],
         ),
-// TODO: Bring this back
-//        Row(
-//          children: <Widget>[
-//            Expanded(
-//              child: SecondaryRoundedButton(
-//                text: PostsLocalizations.of(context)
-//                    .accountCreatedPopupBackupButtonText,
-//                onPressed: () {},
-//              ),
-//            ),
-//          ],
-//        )
       ],
     );
   }

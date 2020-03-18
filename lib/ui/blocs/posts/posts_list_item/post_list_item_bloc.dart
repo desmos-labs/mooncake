@@ -14,9 +14,13 @@ import './bloc.dart';
 /// Represents the Bloc that handles the state of a single post item
 /// inside the posts list.
 class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
+  final MooncakeAccount user;
+  final Post post;
   final ManagePostReactionsUseCase _managePostReactionsUseCase;
 
   PostListItemBloc({
+    @required this.user,
+    @required this.post,
     @required ManagePostReactionsUseCase managePostReactionsUseCase,
   })  : assert(managePostReactionsUseCase != null),
         this._managePostReactionsUseCase = managePostReactionsUseCase;
@@ -25,40 +29,30 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
     // ignore: close_sinks
     final accountBloc = BlocProvider.of<AccountBloc>(context);
     return PostListItemBloc(
+      user: (accountBloc.state as LoggedIn).user,
+      post: post,
       managePostReactionsUseCase: Injector.get(),
-    )..add(DataLoaded(
-        user: (accountBloc.state as LoggedIn).user,
-        post: post,
-      ));
+    );
   }
 
   @override
-  PostListItemState get initialState => PostListItemLoading();
+  PostListItemState get initialState => PostListItemLoaded(
+        user: user,
+        post: post,
+        actionBarExpanded: false,
+      );
 
   @override
   Stream<PostListItemLoaded> mapEventToState(
     PostListItemEvent event,
   ) async* {
-    if (event is DataLoaded) {
-      yield* _mapDataLoadedEventToState(event);
-    } else if (event is AddOrRemoveLike) {
+    if (event is AddOrRemoveLike) {
       _convertAddOrRemoveLikeEvent();
     } else if (event is AddOrRemovePostReaction) {
       yield* _mapAddPostReactionEventToState(event);
     } else if (event is ChangeReactionBarExpandedState) {
       yield* _mapChangeReactionBarExpandedStateToState(event);
     }
-  }
-
-  /// Handles the event telling that the data has been loaded.
-  Stream<PostListItemLoaded> _mapDataLoadedEventToState(
-    DataLoaded event,
-  ) async* {
-    yield PostListItemLoaded(
-      actionBarExpanded: false,
-      post: event.post,
-      user: event.user,
-    );
   }
 
   /// Converts an [AddOrRemoveLikeEvent] into an

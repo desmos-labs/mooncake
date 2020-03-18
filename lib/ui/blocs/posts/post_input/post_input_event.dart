@@ -20,9 +20,6 @@ class MessageChanged extends PostInputEvent {
 
   @override
   List<Object> get props => [message];
-
-  @override
-  String toString() => 'MessageChanged { message: $message }';
 }
 
 /// Event that is emitted when the user changes whether or not the post
@@ -34,9 +31,6 @@ class AllowsCommentsChanged extends PostInputEvent {
 
   @override
   List<Object> get props => [allowsComments];
-
-  @override
-  String toString() => 'AllowsCommentsChanged { newValue: $allowsComments }';
 }
 
 /// Event that is emitted upon the user adds an image to the post.

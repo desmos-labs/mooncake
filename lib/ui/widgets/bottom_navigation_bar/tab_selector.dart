@@ -14,9 +14,9 @@ class TabSelector extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           border: Border(
-            top: BorderSide(color: PostsTheme.borderColor, width: 0.5),
+            top: BorderSide(color: Colors.grey[500], width: 0.5),
           )),
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -36,7 +36,7 @@ class TabSelector extends StatelessWidget {
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: PostsTheme.gradient,
+                gradient: ThemeColors.gradient,
               ),
               child: Icon(MooncakeIcons.addPost, size: 48),
             ),

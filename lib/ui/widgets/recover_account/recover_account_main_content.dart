@@ -56,23 +56,22 @@ class RecoverAccountMainContent extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .caption
-                    .copyWith(color: ThemeColors.red),
+                    .copyWith(color: Theme.of(context).errorColor),
               ),
 
-            // Debug mnemonic, TODO: Remove it
-            if (kDebugMode)
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                    child: SecondaryRoundedButton(
-                      text: PostsLocalizations.of(context)
-                          .recoverAccountContinueButton,
-                      onPressed: () => _debugMnemonic(context),
-                    ),
+            // TODO: Remove this
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  child: SecondaryRoundedButton(
+                    text: PostsLocalizations.of(context)
+                        .recoverAccountContinueButton,
+                    onPressed: () => _debugMnemonic(context),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
             // Continue button
             Row(

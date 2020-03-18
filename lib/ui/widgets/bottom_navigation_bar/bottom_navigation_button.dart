@@ -41,13 +41,8 @@ class BottomNavigationButton extends StatelessWidget {
           tooltip: titles[tab],
           onPressed: () => _showTab(context),
           icon: tab != currentTab
-              ? Icon(icons[tab], key: key, color: Colors.grey[500])
-              : ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return PostsTheme.gradient.createShader(bounds);
-                  },
-                  child: Icon(selectedIcons[tab], key: key),
-                ),
+              ? Icon(icons[tab], key: key)
+              : Icon(selectedIcons[tab], key: key)
         );
       },
     );

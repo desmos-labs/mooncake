@@ -43,13 +43,18 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<MooncakeAccount> getAccount() async {
+  Future<MooncakeAccount> getAccount() {
     return _updateAndStoreAccountData()
         .then((_) => _localUserSource.getAccount());
   }
 
   @override
-  Stream<MooncakeAccount> get accountStream => _localUserSource.accountStream;
+  Future<void> refreshAccount() => _updateAndStoreAccountData();
+
+  @override
+  Stream<MooncakeAccount> get accountStream {
+    return _localUserSource.accountStream;
+  }
 
   @override
   Future<void> fundAccount(MooncakeAccount user) {

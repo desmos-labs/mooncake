@@ -18,7 +18,7 @@ class AddReactionAction extends StatelessWidget {
       child: IconButton(
         padding: EdgeInsets.all(0.0),
         iconSize: size,
-        icon: Icon(MooncakeIcons.reaction),
+        icon: Icon(MooncakeIcons.addReaction),
         onPressed: () {
           showDialog(
             context: context,

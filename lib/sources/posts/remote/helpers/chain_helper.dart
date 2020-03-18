@@ -59,6 +59,9 @@ class ChainHelper {
     return TxHelper.sendTx(txData.messages, txData.wallet);
   }
 
+  /// Returns the LCD endpoint to call.
+  String get lcdEndpoint => _lcdEndpoint;
+
   /// Queries the chain status using the given endpoint and returns
   /// the raw body response.
   /// If an exception is thrown, returns `null`.

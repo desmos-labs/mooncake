@@ -70,11 +70,4 @@ class PostListItemLoaded extends PostListItemState {
 
   @override
   List<Object> get props => [user, post, actionBarExpanded];
-
-  @override
-  String toString() => 'PostListItemState {'
-      'user: $user, '
-      'post: $post, '
-      'actionBarExpanded: $actionBarExpanded '
-      '}';
 }

@@ -36,40 +36,32 @@ class _PostsListState extends State<PostsList> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      // TODO: Implement the refresh of posts
-      // BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
-      onRefresh: () {
-        return Future.value();
+    return BlocBuilder<PostsListBloc, PostsListState>(
+      builder: (context, postsState) {
+        // Posts are not loaded, return the empty container
+        if (!(postsState is PostsLoaded)) {
+          return PostsListEmptyContainer();
+        }
+
+        // Hide the refresh indicator
+        final state = postsState as PostsLoaded;
+        if (!state.refreshing) {
+          _refreshCompleter?.complete();
+          _refreshCompleter = Completer();
+        }
+
+        // Filter the posts based on the filter set
+        final posts = state.posts
+            .where((p) => widget._filter?.call(p) ?? true)
+            .toList();
+
+        return Column(
+          children: <Widget>[
+            PostsListSyncingIndicator(visible: state.syncingPosts),
+            Expanded(child: PostsListContent(posts: posts)),
+          ],
+        );
       },
-      child: BlocBuilder<PostsListBloc, PostsListState>(
-        bloc: BlocProvider.of<PostsListBloc>(context),
-        builder: (context, postsState) {
-          // Posts are not loaded, return the empty container
-          if (!(postsState is PostsLoaded)) {
-            return PostsListEmptyContainer();
-          }
-
-          // Hide the refresh indicator
-          final state = postsState as PostsLoaded;
-          if (!state.refreshing) {
-            _refreshCompleter?.complete();
-            _refreshCompleter = Completer();
-          }
-
-          // Filter the posts based on the filter set
-          final posts = state.posts
-              .where((p) => widget._filter?.call(p) ?? true)
-              .toList();
-
-          return Column(
-            children: <Widget>[
-              if (state.syncingPosts) PostsListSyncingIndicator(),
-              Expanded(child: PostsListContent(posts: posts)),
-            ],
-          );
-        },
-      ),
     );
   }
 }

@@ -11,12 +11,12 @@ class CreatingAccountPopupContent extends StatelessWidget {
           PostsLocalizations.of(context)
               .creatingAccountPopupTitle
               .toUpperCase(),
-          style: TextThemes.loginPopupTitleTheme(context),
+          style: Theme.of(context).accentTextTheme.headline6,
         ),
         SizedBox(height: 10),
         Text(
           PostsLocalizations.of(context).creatingAccountText,
-          style: TextThemes.loginPopupTextTheme(context),
+          style: Theme.of(context).accentTextTheme.headline6,
         ),
         SizedBox(height: 30),
         LoadingIndicator(),

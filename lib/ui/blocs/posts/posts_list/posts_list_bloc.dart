@@ -63,8 +63,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield* _mapUserUpdatedEventToState(event);
     } else if (event is PostsUpdated) {
       yield* _mapPostsUpdatedEventToState(event);
-    } else if (event is AddOrRemovePostReaction) {
-      // TODO: Handle AddOrRemovePostReaction event
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {

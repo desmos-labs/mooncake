@@ -17,6 +17,9 @@ class CreatePostTopBar extends StatelessWidget {
               padding: EdgeInsets.zero,
               child: Text(
                 PostsLocalizations.of(context).createPostCancelButton,
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  color: Theme.of(context).appBarTheme.iconTheme.color,
+                ),
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),

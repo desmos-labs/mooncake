@@ -1,3 +1,4 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -7,6 +8,9 @@ import 'package:mooncake/ui/ui.dart';
 /// the user can access the posts timeline as well as other screens by
 /// using the navigation bar
 class HomeScreen extends StatelessWidget {
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, AppTab>(
@@ -21,18 +25,33 @@ class HomeScreen extends StatelessWidget {
         }
 
         return Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: true,
-            title: Text(PostsLocalizations.of(context).appTitle),
+            title: Text(
+              activeTab == AppTab.allPosts
+                  ? PostsLocalizations.of(context).appTitle
+                  : PostsLocalizations.of(context).accountScreenTitle,
+            ),
             backgroundColor: Colors.transparent,
             textTheme: Theme.of(context).textTheme.copyWith(
                   headline6: Theme.of(context).textTheme.headline6.copyWith(
-                        color: ThemeColors.accentColor,
+                        color: Theme.of(context).accentColor,
                       ),
                 ),
+            leading: IconButton(
+              icon: Icon(MooncakeIcons.settings),
+              color: Theme.of(context).accentColor,
+              onPressed: () {
+                DynamicTheme.of(context).setBrightness(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Brightness.light
+                        : Brightness.dark);
+              },
+            ),
             actions: [
               IconButton(
-                color: ThemeColors.accentColor,
+                color: Theme.of(context).accentColor,
                 icon: Icon(MooncakeIcons.wallet),
                 onPressed: () {
                   BlocProvider.of<NavigatorBloc>(context)

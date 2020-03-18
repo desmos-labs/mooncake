@@ -61,6 +61,7 @@ class PostsLoaded extends PostsListState {
 
   @override
   List<Object> get props => [
+        user,
         posts,
         refreshing,
         syncingPosts,

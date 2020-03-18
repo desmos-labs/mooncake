@@ -20,6 +20,9 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   // Stream controllers
   final _postsController = BehaviorSubject<List<Post>>();
 
+  // GraphQL
+  GraphQLClient _gqlClient;
+
   /// Public constructor
   RemotePostsSourceImpl({
     @required String graphQlEndpoint,
@@ -36,59 +39,105 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     _initGql(graphQlEndpoint);
   }
 
+  /// Returns a GraphQL [String] that allows to query for all the mooncake
+  /// posts that have the given id.
+  /// If no id is specified, all the posts will be considered instead.
+  String _postGql({String id}) {
+    String idQuery = "";
+    if (id != null) {
+      idQuery = 'id: {_eq: "$id"},';
+    }
+    return """
+    post(where: {$idQuery subspace: {_eq: "${Constants.SUBSPACE}"}}, order_by: {created: desc}) {
+      id
+      subspace
+      created
+      last_edited
+      media {
+        uri
+        mime_type
+      }
+      message
+      optional_data
+      parent_id
+      reactions {
+        user {
+          address
+        }
+        value
+      }
+      user {
+        address
+      }
+    }
+    """;
+  }
+
+  /// Converts the given [gqlData] retrieved from the remote GraphQL
+  /// server into a list of posts.
+  /// If no data is present, returns an empty list instead.
+  List<Post> _convertGqlResponse(dynamic gqlData) {
+    final data = gqlData as Map<String, dynamic>;
+    if (data.containsKey("post")) {
+      return (data["post"] as List<dynamic>)
+          .map((e) => Post.fromJson(e))
+          .toList();
+    }
+    return [];
+  }
+
+  /// Initializes the GraphQL clients properly so that they can be
+  /// queried using [_gqlClient] and new posts will be retrieved using
+  /// the [postsStream].
   void _initGql(String graphQlEndpoint) {
     // Init the GraphQL
+    _gqlClient = GraphQLClient(
+      link: HttpLink(uri: "http://$graphQlEndpoint"),
+      cache: InMemoryCache(),
+    );
+
     final gqlWsLink = WebSocketLink(url: "ws://$graphQlEndpoint");
     final client = GraphQLClient(link: gqlWsLink, cache: InMemoryCache());
     final postsSub = """
     subscription Posts {
-      post {
-        id
-        subspace
-        created
-        last_edited
-        media {
-          uri
-          mime_type
-        }
-        message
-        optional_data
-        parent_id
-        reactions {
-          user {
-            address
-          }
-          value
-        }
-        user {
-          address
-        }
-      }
+      ${_postGql()}
     }
     """;
     client.subscribe(Operation(documentNode: gql(postsSub))).listen((event) {
+      print("New event: $event");
       final data = event.data as Map<String, dynamic>;
-      if (data.containsKey("post")) {
-        final posts = (data["post"] as List<dynamic>)
-            .map((e) => Post.fromJson(e))
-            .toList();
-        _postsController.add(posts);
-      }
-
-      print(event.data);
+      _postsController.add(_convertGqlResponse(data));
     });
   }
 
   @override
   Stream<List<Post>> get postsStream => _postsController.stream;
 
+  /// Returns the [Post] object having the given [postId]
+  /// retrieved from the remote source. If no post with such id could
+  /// be found, `null` is returned instead.
+  Future<Post> _getPostById(String postId) async {
+    final query = """
+    query PostById {
+      ${_postGql(id: postId)}
+    }
+    """;
+    final data = await _gqlClient.query(QueryOptions(documentNode: gql(query)));
+    final posts = _convertGqlResponse(data.data);
+    if (posts.isEmpty) {
+      return null;
+    }
+    return posts[0];
+  }
+
   @override
   Future<void> savePosts(List<Post> posts) async {
     final wallet = await _userSource.getWallet();
 
     // Get the existing posts list
-    final List<Post> existingPosts =
-        await Future.wait(posts.map((p) => getPostById(p.id).first).toList());
+    final List<Post> existingPosts = await Future.wait(posts.map((post) {
+      return _getPostById(post.id);
+    }).toList());
 
     // Upload the medias
     final postsWithIpfsMedias = await _uploadMediasIfNecessary(posts);
@@ -102,13 +151,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
     // Get the result of the transactions
     await _chainHelper.sendTx(messages, wallet);
-  }
-
-  @override
-  Stream<Post> getPostById(String postId) {
-    return postsStream
-        .expand((list) => list)
-        .where((post) => post.id == postId);
   }
 
   /// Allows to upload the media of each [posts] item if necessary.

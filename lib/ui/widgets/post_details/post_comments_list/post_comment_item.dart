@@ -18,6 +18,7 @@ class PostCommentItem extends StatelessWidget {
         return Container(
           padding: PostsTheme.postItemPadding,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               PostItemHeader(

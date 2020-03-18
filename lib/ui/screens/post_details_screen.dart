@@ -17,11 +17,12 @@ class PostDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 1,
         title: Text(PostsLocalizations.of(context).postDetailsTitle),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).cardColor,
       ),
       body: Container(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         child: BlocProvider<PostDetailsBloc>(
           create: (context) => PostDetailsBloc.create(context, postId),
           child: BlocBuilder<PostDetailsBloc, PostDetailsState>(

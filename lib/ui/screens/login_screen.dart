@@ -10,9 +10,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeColors.loginBackgroundColor,
       body: Container(
-        decoration: ThemeDecorations.pattern,
+        decoration: ThemeDecorations.pattern(context),
         child: SafeArea(
           child: BlocBuilder<AccountBloc, AccountState>(
             builder: (BuildContext contest, AccountState state) {

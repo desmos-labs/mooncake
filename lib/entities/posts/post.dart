@@ -70,7 +70,6 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "medias", nullable: true)
   final List<PostMedia> medias;
 
-  @JsonKey(ignore: true)
   bool get containsLocalMedias => medias.any((media) => media.isLocal);
 
   @JsonKey(name: "reactions")
@@ -105,7 +104,7 @@ class Post extends Equatable implements Comparable<Post> {
     List<String> commentsIds = const [],
     this.status = const PostStatus(value: PostStatusValue.TO_BE_SYNCED),
   })  : assert(id != null),
-        assert(message != null),
+        assert(message != null || medias?.isNotEmpty == true),
         assert(created != null),
         assert(subspace != null),
         assert(owner != null),
@@ -158,8 +157,8 @@ class Post extends Equatable implements Comparable<Post> {
         this.lastEdited,
         this.allowsComments,
         this.subspace,
-        this.optionalData,
         this.owner,
+        this.optionalData,
         this.medias,
         this.reactions,
         this.commentsIds,
@@ -169,17 +168,6 @@ class Post extends Equatable implements Comparable<Post> {
   @override
   String toString() => 'Post { '
       'id: $id, '
-      'parentId: $parentId, '
-      'message: $message, '
-      'created: $created, '
-      'lastEdited: $lastEdited, '
-      'allowsComments: $allowsComments, '
-      'subspace: $subspace, '
-      'optionalData: $optionalData, '
-      'owner: $owner, '
-      'medias: $medias, '
-      'reactions: $reactions, '
-      'commentsIds: $commentsIds, '
       'status: $status '
       '}';
 

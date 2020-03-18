@@ -15,37 +15,26 @@ class PostActionsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostListItemBloc, PostListItemState>(
-      builder: (BuildContext context, PostListItemState state) {
-        final currentState = (state as PostListItemLoaded);
-        return Column(
+    return Column(
+      children: <Widget>[
+        Row(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      PostLikeAction(),
-                      const SizedBox(width: ThemeSpaces.actionBarSpacer),
-                      PostCommentAction(),
-                      const SizedBox(width: ThemeSpaces.actionBarSpacer),
-                      AddReactionAction(),
-                    ],
-                  ),
-                ),
-                PostLikesCounter(),
-              ],
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  PostLikeAction(),
+                  const SizedBox(width: ThemeSpaces.actionBarSpacer),
+                  PostCommentAction(),
+                  const SizedBox(width: ThemeSpaces.actionBarSpacer),
+                  AddReactionAction(),
+                ],
+              ),
             ),
+            PostLikesCounter(),
           ],
-        );
-      },
+        ),
+      ],
     );
-  }
-
-  void _onMoreTap(BuildContext context) {
-    // ignore: close_sinks
-    final bloc = BlocProvider.of<PostListItemBloc>(context);
-    bloc.add(ChangeReactionBarExpandedState());
   }
 }

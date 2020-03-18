@@ -109,6 +109,7 @@ phrase to access your account.
   String get noNotifications => "No notifications here, you're all done! 🎉";
 
   // Account screen
+  String get accountScreenTitle => "Account";
   String get accountPageTitle => "Welcome to your future account page";
   String get accountPageText => """
 We do not support accounts yet, but you can always click on the wallet option
@@ -116,6 +117,7 @@ inside the app bar to visualize your wallet
 """;
 
   // Wallet screen
+  String get walletScreenName => "Wallet";
   String get walletTitle => "Welcome to your wallet";
   String get walletBodyText => """
 We do not support transactions history yet, but you can always see the current 

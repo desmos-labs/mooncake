@@ -7,6 +7,10 @@ import 'package:mooncake/ui/ui.dart';
 class LoginMainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final titleTextTheme = Theme.of(context).textTheme.bodyText2.copyWith(
+          fontSize: 32,
+          color: Colors.white,
+        );
     return Expanded(
       child: Column(
         children: <Widget>[
@@ -14,14 +18,8 @@ class LoginMainContent extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 const SizedBox(height: 32),
-                Text(
-                  "Decentralized",
-                  style: TextThemes.loginTitleTheme(context),
-                ),
-                Text(
-                  "Social Network",
-                  style: TextThemes.loginTitleTheme(context),
-                ),
+                Text("Decentralized", style: titleTextTheme),
+                Text("Social Network", style: titleTextTheme),
               ],
             ),
           ),
@@ -30,7 +28,8 @@ class LoginMainContent extends StatelessWidget {
               Expanded(
                 child: PrimaryLightRoundedButton(
                   child: Text(
-                      PostsLocalizations.of(context).createAccountButtonText),
+                    PostsLocalizations.of(context).createAccountButtonText,
+                  ),
                   onPressed: () => _onCreateAccountClicked(context),
                 ),
               ),
@@ -40,8 +39,10 @@ class LoginMainContent extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: SecondaryLightRoundedButton(
-                  child: Text(PostsLocalizations.of(context)
-                      .alreadyHaveMnemonicButtonText),
+                  child: Text(
+                    PostsLocalizations.of(context)
+                        .alreadyHaveMnemonicButtonText,
+                  ),
                   onPressed: () => _onRecoverAccount(context),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:alan/alan.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -22,17 +23,24 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   @override
   Future<MooncakeAccount> getAccount(String address) async {
     try {
-      // TODO: Implement the user retrieval using GraphQL
-      final query = '''
-        query AverageTxPerBlock {
-          account(where: {address: {_eq: $address}}) {
-            num_txs
-            total_gas
+      // TODO: Get the avatar and username from the GraphQL endpoint when supported
+      final query = """
+        query UserByAddress {
+          user(where: {address: {_eq: "$address"}}) {
+            address
           }
         }
-      ''';
+      """;
 
-      return null;
+      final cosmosAccount = await QueryHelper.getAccountData(
+        _chainHelper.lcdEndpoint,
+        address,
+      );
+      return MooncakeAccount(
+        cosmosAccount: cosmosAccount,
+        username: null,
+        avatarUrl: null,
+      );
     } catch (e) {
       print(e);
       return null;

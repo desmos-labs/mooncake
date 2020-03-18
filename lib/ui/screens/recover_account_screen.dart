@@ -15,7 +15,6 @@ class RecoverAccountScreen extends StatelessWidget {
             centerTitle: true,
             title: Text(PostsLocalizations.of(context).recoverScreenTitle),
           ),
-          backgroundColor: Colors.white,
           body: Stack(
             children: <Widget>[
               RecoverAccountMainContent(bottomPadding: bottomPadding),
