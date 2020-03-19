@@ -20,23 +20,9 @@ class AddReactionAction extends StatelessWidget {
         iconSize: size,
         icon: Icon(MooncakeIcons.addReaction),
         onPressed: () {
-          showDialog(
+          showEmojiPicker(
             context: context,
-            builder: (BuildContext buildContext) {
-              return Container(
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    EmojiPicker(
-                      onEmojiSelected: (emoji, _) =>
-                          _onEmojiSelected(context, emoji),
-                    ),
-                  ],
-                ),
-              );
-            },
+            onEmojiSelected: (emoji, _) => _onEmojiSelected(context, emoji),
           );
         },
       ),

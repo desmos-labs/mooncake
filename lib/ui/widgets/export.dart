@@ -5,6 +5,7 @@ export 'buttons/export.dart';
 export 'loading_indicator.dart';
 export 'login/export.dart';
 export 'notifications_list/export.dart';
+export 'pickers/export.dart';
 export 'popup/export.dart';
 export 'post_create/export.dart';
 export 'post_details/export.dart';

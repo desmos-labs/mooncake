@@ -22,9 +22,18 @@ enum PostDetailsTab { COMMENTS, REACTIONS }
 /// Represents the state that tells the post details have been loaded
 /// properly and are ready to be shown.
 class PostDetailsLoaded extends PostDetailsState {
+  /// Represents the user that is using the application
+  final MooncakeAccount user;
+
   /// Represents the details of the post currently loaded.
   /// This can be `null` if the post has not been loaded yet.
   final Post post;
+
+  /// Represents the list of comments currently loaded.
+  final List<Post> comments;
+
+  /// Represents the currently selected tab inside the view.
+  final PostDetailsTab selectedTab;
 
   /// Returns the number of comments associated to this post.
   int get commentsCount => comments.length;
@@ -34,23 +43,27 @@ class PostDetailsLoaded extends PostDetailsState {
   int get reactionsCount =>
       post.reactions.where((element) => !element.isLike).length;
 
-  /// Represents the list of comments currently loaded.
-  final List<Post> comments;
-
-  /// Represents the currently selected tab inside the view.
-  final PostDetailsTab selectedTab;
+  /// Tells whether or not the post has been liked from the user.
+  bool get isLiked => post.reactions
+      .where((element) =>
+          element.user.address == user.cosmosAccount.address &&
+          element.value == Constants.LIKE_REACTION)
+      .isNotEmpty;
 
   PostDetailsLoaded({
+    @required this.user,
     @required this.post,
     @required this.comments,
     @required this.selectedTab,
   });
 
   factory PostDetailsLoaded.first({
+    @required MooncakeAccount user,
     @required Post post,
     @required List<Post> comments,
   }) {
     return PostDetailsLoaded(
+      user: user,
       selectedTab: PostDetailsTab.COMMENTS,
       post: post,
       comments: comments ?? [],
@@ -58,11 +71,13 @@ class PostDetailsLoaded extends PostDetailsState {
   }
 
   PostDetailsLoaded copyWith({
+    MooncakeAccount user,
     Post post,
     List<Post> comments,
     PostDetailsTab selectedTab,
   }) {
     return PostDetailsLoaded(
+      user: user,
       post: post ?? this.post,
       comments: comments?.isNotEmpty == true ? comments : this.comments,
       selectedTab: selectedTab ?? this.selectedTab,
@@ -70,7 +85,7 @@ class PostDetailsLoaded extends PostDetailsState {
   }
 
   @override
-  List<Object> get props => [post, comments, selectedTab];
+  List<Object> get props => [user, post, comments, selectedTab];
 
   @override
   String toString() => 'PostDetailsLoaded { '

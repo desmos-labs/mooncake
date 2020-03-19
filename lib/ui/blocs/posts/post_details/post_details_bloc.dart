@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
@@ -13,14 +14,19 @@ import './bloc.dart';
 /// Represents the Bloc that should be used inside the screen that allows
 /// to visualize the details of a single post.
 class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
+  final MooncakeAccount _user;
+
   StreamSubscription _postSubscription;
   StreamSubscription _commentsSubscription;
 
   PostDetailsBloc({
+    @required MooncakeAccount user,
     @required String postId,
     @required GetPostDetailsUseCase getPostDetailsUseCase,
     @required GetCommentsUseCase getCommentsUseCase,
-  }) : assert(getCommentsUseCase != null) {
+  })  : assert(user != null),
+        _user = user,
+        assert(getCommentsUseCase != null) {
     // Sub to the post details update
     _postSubscription = getPostDetailsUseCase.get(postId).listen((post) {
       add(ShowPostDetails(post: post));
@@ -34,6 +40,7 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
 
   factory PostDetailsBloc.create(BuildContext context, String postId) {
     return PostDetailsBloc(
+      user: (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user,
       postId: postId,
       getPostDetailsUseCase: Injector.get(),
       getCommentsUseCase: Injector.get(),
@@ -57,9 +64,16 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   ) async* {
     final currentState = state;
     if (currentState is LoadingPostDetails) {
-      yield PostDetailsLoaded.first(post: event.post, comments: event.comments);
+      yield PostDetailsLoaded.first(
+        user: _user,
+        post: event.post,
+        comments: event.comments,
+      );
     } else if (currentState is PostDetailsLoaded) {
-      yield currentState.copyWith(post: event.post, comments: event.comments);
+      yield currentState.copyWith(
+        post: event.post,
+        comments: event.comments,
+      );
     }
   }
 
