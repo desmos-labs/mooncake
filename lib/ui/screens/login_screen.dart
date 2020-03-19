@@ -26,10 +26,17 @@ class LoginScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Image(
-                              image: AssetImage('assets/images/login_logo.png'),
+                              image: AssetImage('assets/images/logo.png'),
                               width: 75,
                             ),
                           ],
+                        ),
+                        Text(
+                          PostsLocalizations.of(context).appName,
+                          style: Theme.of(context).textTheme.headline6.copyWith(
+                                color: Colors.white,
+                                fontFamily: 'Montserrat',
+                              ),
                         ),
                         if (!(state is AccountCreated)) LoginMainContent(),
                       ],

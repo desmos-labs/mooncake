@@ -9,13 +9,18 @@ class PostInputState extends Equatable {
   final String message;
   final bool allowsComments;
   final List<PostMedia> medias;
+
+  final bool showPopup;
   final bool saving;
+  final willShowPopupAgain;
 
   PostInputState({
     @required this.message,
     @required this.allowsComments,
     @required this.medias,
     @required this.saving,
+    @required this.showPopup,
+    @required this.willShowPopupAgain,
   });
 
   bool get isValid =>
@@ -27,6 +32,8 @@ class PostInputState extends Equatable {
         allowsComments: true,
         medias: [],
         saving: false,
+        showPopup: false,
+        willShowPopupAgain: true,
       );
 
   /// Updates this state setting the specified values properly.
@@ -34,13 +41,17 @@ class PostInputState extends Equatable {
     String message,
     bool allowsComments,
     List<PostMedia> medias,
+    bool showPopup,
     bool saving,
+    bool willShowPopupAgain,
   }) {
     return PostInputState(
       message: message ?? this.message,
       allowsComments: allowsComments ?? this.allowsComments,
       saving: saving ?? this.saving,
       medias: medias ?? this.medias,
+      showPopup: showPopup ?? this.showPopup,
+      willShowPopupAgain: willShowPopupAgain ?? this.willShowPopupAgain,
     );
   }
 
@@ -50,5 +61,7 @@ class PostInputState extends Equatable {
         allowsComments,
         medias,
         saving,
+        showPopup,
+        willShowPopupAgain,
       ];
 }

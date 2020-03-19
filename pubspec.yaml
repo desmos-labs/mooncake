@@ -74,22 +74,6 @@ flutter:
       fonts:
         - asset: assets/fonts/mooncake-icons.ttf
           weight: 400
-    - family: Dosis
-      fonts:
-        - asset: assets/fonts/dosis/Dosis-ExtraLight.ttf
-          weight: 100
-        - asset: assets/fonts/dosis/Dosis-Light.ttf
-          weight: 200
-        - asset: assets/fonts/dosis/Dosis-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/dosis/Dosis-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/dosis/Dosis-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/dosis/Dosis-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/dosis/Dosis-ExtraBold.ttf
-          weight: 800
     - family: Montserrat
       fonts:
         - asset: assets/fonts/montserrat/Montserrat-Thin.ttf

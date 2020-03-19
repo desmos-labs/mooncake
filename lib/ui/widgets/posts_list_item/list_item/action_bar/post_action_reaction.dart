@@ -17,10 +17,8 @@ class PostReactionAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostListItemBloc, PostListItemState>(
-      builder: (context, state) {
-        final currentState = (state as PostListItemLoaded);
-
-        final userReacted = currentState.hasUserReactedWith(reaction);
+      builder: (BuildContext context, PostListItemState state) {
+        final userReacted = state.hasUserReactedWith(reaction);
         final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
               color: userReacted ? Theme.of(context).accentColor : null,
               fontWeight: userReacted ? FontWeight.bold : null,

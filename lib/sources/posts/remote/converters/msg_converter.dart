@@ -17,7 +17,7 @@ class MsgConverter {
   MsgCreatePost toMsgCreatePost(Post post, String creator) {
     return MsgCreatePost(
       parentId: post.parentId ?? "0",
-      message: post.message,
+      message: post.message ?? "",
       allowsComments: post.allowsComments,
       optionalData:
           post.optionalData?.isNotEmpty == true ? post.optionalData : null,

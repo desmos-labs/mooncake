@@ -8,9 +8,10 @@ part of 'mooncake_account.dart';
 
 MooncakeAccount _$MooncakeAccountFromJson(Map<String, dynamic> json) {
   return MooncakeAccount(
-    cosmosAccount: json['cosmosAccount'] == null
+    cosmosAccount: json['cosmos_account'] == null
         ? null
-        : CosmosAccount.fromJson(json['cosmosAccount'] as Map<String, dynamic>),
+        : CosmosAccount.fromJson(
+            json['cosmos_account'] as Map<String, dynamic>),
     username: json['username'] as String,
     avatarUrl: json['avatar_url'] as String,
   );
@@ -18,7 +19,7 @@ MooncakeAccount _$MooncakeAccountFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$MooncakeAccountToJson(MooncakeAccount instance) =>
     <String, dynamic>{
-      'cosmosAccount': instance.cosmosAccount?.toJson(),
+      'cosmos_account': instance.cosmosAccount?.toJson(),
       'avatar_url': instance.avatarUrl,
       'username': instance.username,
     };

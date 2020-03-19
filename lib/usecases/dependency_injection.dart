@@ -29,6 +29,11 @@ class UseCaseModule implements Module {
       // Biometrics use cases
       ..bindFactory((injector, params) => CanUseBiometricsUseCase())
 
+      // Notifications use cases
+      ..bindFactory((injector, params) => GetNotificationsUseCase(
+            repository: injector.get(),
+          ))
+
       // Posts use cases
       ..bindFactory((injector, params) => GetUserReactionsToPost(
             walletRepository: injector.get(),
@@ -52,15 +57,17 @@ class UseCaseModule implements Module {
           ))
       ..bindFactory((injector, params) => SyncPostsUseCase(
             postsRepository: injector.get(),
-            userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => SavePostUseCase(
             postsRepository: injector.get(),
           ))
 
-      // Notifications use cases
-      ..bindFactory((injector, params) => GetNotificationsUseCase(
-            repository: injector.get(),
+      // Settings use cases
+      ..bindFactory((injector, params) => SaveSettingUseCase(
+            settingsRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => GetSettingUseCase(
+            settingsRepository: injector.get(),
           ));
   }
 }

@@ -13,18 +13,20 @@ class PostCommentAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostListItemBloc, PostListItemState>(
       builder: (BuildContext context, PostListItemState state) {
-        final currentState = (state as PostListItemLoaded);
         return Row(
           children: <Widget>[
             FaIcon(MooncakeIcons.comment, size: size),
-            SizedBox(width: size / 4),
-            if (currentState.post.commentsIds.isNotEmpty)
-              Text(
-                currentState.post.commentsIds.length.toStringOrEmpty(),
-                style: Theme.of(context).textTheme.bodyText2.copyWith(
-                      color: Theme.of(context).primaryColorLight,
-                    ),
-              )
+            if (state.post.commentsIds.isNotEmpty)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(width: size / 4),
+                  Text(
+                    state.post.commentsIds.length.toStringOrEmpty(),
+                    style: Theme.of(context).accentTextTheme.bodyText2,
+                  )
+                ],
+              ),
           ],
         );
       },

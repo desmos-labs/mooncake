@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
@@ -34,31 +35,39 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
-  String getPostKey(Post post) => post.created + post.owner.address;
+  String getPostKey(Post post) {
+    return DateFormat(Post.DATE_FORMAT).format(post.dateTime) +
+        post.owner.address;
+  }
 
   @override
-  Stream<List<Post>> get postsStream => _postsController.stream;
+  Stream<List<Post>> get postsStream {
+    return _postsController.stream;
+  }
 
   @override
-  Stream<Post> getPostById(String postId) =>
-      postsStream.expand((list) => list).where((post) => post.id == postId);
+  Stream<Post> getPostById(String postId) {
+    return postsStream
+        .expand((list) => list)
+        .where((post) => post.id == postId);
+  }
 
   @override
-  Stream<List<Post>> getPostComments(String postId) => postsStream
-      .map((list) => list.where((post) => post.parentId == postId).toList());
+  Stream<List<Post>> getPostComments(String postId) {
+    return postsStream
+        .map((list) => list.where((post) => post.parentId == postId).toList());
+  }
 
   @override
   Future<List<Post>> getPosts() async {
     final database = await this.database;
     final finder = Finder(
-      sortOrders: [
-        SortOrder(Post.DATE_FIELD, false), // Descending date
-        SortOrder(Post.ID_FIELD, false), // Descending id if date is equal
-      ],
+      sortOrders: [SortOrder(Post.DATE_FIELD, false)],
     );
 
     final records = await store.find(database, finder: finder);
-    return records.map((record) => Post.fromJson(record.value)).toList();
+    final posts = records.map((record) => Post.fromJson(record.value)).toList();
+    return posts;
   }
 
   @override

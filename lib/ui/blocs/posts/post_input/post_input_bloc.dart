@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 import '../export.dart';
@@ -13,21 +16,39 @@ import '../export.dart';
 /// Implementation of [Bloc] that allows to deal with [PostInputEvent]
 /// and [PostInputState] objects.
 class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
+  static const _SHOW_POPUP_KEY = "show_saving_popup";
+
+  final NavigatorBloc _navigatorBloc;
+
   final CreatePostUseCase _createPostUseCase;
   final SavePostUseCase _savePostUseCase;
+  final GetSettingUseCase _getSettingUseCase;
+  final SaveSettingUseCase _saveSettingUseCase;
 
   PostInputBloc({
+    @required NavigatorBloc navigatorBloc,
     @required SavePostUseCase savePostUseCase,
     @required CreatePostUseCase createPostUseCase,
-  })  : assert(savePostUseCase != null),
+    @required GetSettingUseCase getSettingUseCase,
+    @required SaveSettingUseCase saveSettingUseCase,
+  })  : assert(navigatorBloc != null),
+        _navigatorBloc = navigatorBloc,
+        assert(savePostUseCase != null),
         _savePostUseCase = savePostUseCase,
         assert(createPostUseCase != null),
-        _createPostUseCase = createPostUseCase;
+        _createPostUseCase = createPostUseCase,
+        assert(getSettingUseCase != null),
+        _getSettingUseCase = getSettingUseCase,
+        assert(saveSettingUseCase != null),
+        _saveSettingUseCase = saveSettingUseCase;
 
-  factory PostInputBloc.create() {
+  factory PostInputBloc.create(BuildContext context) {
     return PostInputBloc(
+      navigatorBloc: BlocProvider.of(context),
       createPostUseCase: Injector.get(),
       savePostUseCase: Injector.get(),
+      getSettingUseCase: Injector.get(),
+      saveSettingUseCase: Injector.get(),
     );
   }
 
@@ -51,6 +72,8 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     } else if (event is ImageRemoved) {
       final images = _removeFileIfPresent(state.medias, event.file);
       yield state.update(medias: images);
+    } else if (event is ChangeWillShowPopup) {
+      yield* _mapChangeWillShowPopupEventToState();
     } else if (event is SavePost) {
       yield* _mapSavePostEventToState();
     }
@@ -83,7 +106,8 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   }
 
   Stream<PostInputState> _mapSavePostEventToState() async* {
-    yield state.update(saving: true);
+    final showPopup = await _getSettingUseCase.get(key: _SHOW_POPUP_KEY);
+    yield state.update(saving: true, showPopup: showPopup ?? true);
 
     final post = await _createPostUseCase.create(
       message: state.message,
@@ -92,5 +116,15 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       medias: state.medias,
     );
     await _savePostUseCase.save(post);
+
+    if (!state.showPopup) {
+      _navigatorBloc.add(GoBack());
+    }
+  }
+
+  Stream<PostInputState> _mapChangeWillShowPopupEventToState() async* {
+    final showAgain = !state.willShowPopupAgain;
+    await _saveSettingUseCase.save(key: _SHOW_POPUP_KEY, value: showAgain);
+    yield state.update(willShowPopupAgain: showAgain);
   }
 }

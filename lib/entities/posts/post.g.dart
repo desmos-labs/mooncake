@@ -22,7 +22,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
     owner: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
-    medias: (json['medias'] as List)
+    medias: (json['media'] as List)
         ?.map((e) =>
             e == null ? null : PostMedia.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -45,7 +45,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'subspace': instance.subspace,
       'user': instance.owner?.toJson(),
       'optional_data': instance.optionalData,
-      'medias': instance.medias?.map((e) => e?.toJson())?.toList(),
+      'media': instance.medias?.map((e) => e?.toJson())?.toList(),
       'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
       'children': instance.commentsIds,
       'status': instance.status?.toJson(),

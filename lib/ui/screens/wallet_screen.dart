@@ -29,7 +29,7 @@ class WalletScreen extends StatelessWidget {
               ? Theme.of(context).accentColor
               : Theme.of(context).cardColor,
           body: coin == null
-              ? EmptyWallet()
+              ? EmptyWallet(textColor: headerTextColor)
               : Column(
                   children: <Widget>[
                     Flexible(

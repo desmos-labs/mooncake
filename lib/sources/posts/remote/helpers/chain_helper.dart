@@ -56,7 +56,11 @@ class ChainHelper {
     // We cannot rely on the initialization done inside the constructor as
     // this Codec instance will not be the same as that one.
     initCodec();
-    return TxHelper.sendTx(txData.messages, txData.wallet);
+    return TxHelper.sendTx(
+      txData.messages,
+      txData.wallet,
+      fee: StdFee(amount: [], gas: "500000"),
+    );
   }
 
   /// Returns the LCD endpoint to call.

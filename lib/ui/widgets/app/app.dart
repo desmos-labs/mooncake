@@ -39,7 +39,7 @@ class _PostsAppState extends State<PostsApp> {
         themedWidgetBuilder: (context, theme) => MaterialApp(
           debugShowCheckedModeBanner: false,
           navigatorKey: PostsKeys.navigatorKey,
-          title: PostsLocalizations().appTitle,
+          title: PostsLocalizations().appName,
           theme: theme,
           localizationsDelegates: [
             FlutterBlocLocalizationsDelegate(),

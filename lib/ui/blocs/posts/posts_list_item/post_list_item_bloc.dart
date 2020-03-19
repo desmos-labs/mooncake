@@ -36,14 +36,14 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
   }
 
   @override
-  PostListItemState get initialState => PostListItemLoaded(
+  PostListItemState get initialState => PostListItemState(
         user: user,
         post: post,
         actionBarExpanded: false,
       );
 
   @override
-  Stream<PostListItemLoaded> mapEventToState(
+  Stream<PostListItemState> mapEventToState(
     PostListItemEvent event,
   ) async* {
     if (event is AddOrRemoveLike) {
@@ -62,29 +62,23 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
   }
 
   /// Handles the event emitted when the user likes a post
-  Stream<PostListItemLoaded> _mapAddPostReactionEventToState(
+  Stream<PostListItemState> _mapAddPostReactionEventToState(
     AddOrRemovePostReaction event,
   ) async* {
-    final currentState = state;
-    if (currentState is PostListItemLoaded) {
-      final updatedPost = await _managePostReactionsUseCase.addOrRemove(
-        postId: currentState.post.id,
-        reaction: event.reaction,
-      );
-      yield currentState.copyWith(post: updatedPost);
-    }
+    final updatedPost = await _managePostReactionsUseCase.addOrRemove(
+      postId: state.post.id,
+      reaction: event.reaction,
+    );
+    yield state.copyWith(post: updatedPost);
   }
 
   /// Handles the event emitted when the reaction bar should be expanded
   /// or collapsed.
-  Stream<PostListItemLoaded> _mapChangeReactionBarExpandedStateToState(
+  Stream<PostListItemState> _mapChangeReactionBarExpandedStateToState(
     ChangeReactionBarExpandedState event,
   ) async* {
-    final currentState = state;
-    if (currentState is PostListItemLoaded) {
-      yield currentState.copyWith(
-        actionBarExpanded: !currentState.actionBarExpanded,
-      );
-    }
+    yield state.copyWith(
+      actionBarExpanded: !state.actionBarExpanded,
+    );
   }
 }

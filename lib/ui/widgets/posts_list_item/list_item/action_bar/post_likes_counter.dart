@@ -11,9 +11,7 @@ class PostLikesCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostListItemBloc, PostListItemState>(
-      builder: (context, itemState) {
-        final state = (itemState as PostListItemLoaded);
-
+      builder: (BuildContext context, PostListItemState state) {
         final double afterIconSize = iconSize * 0.75;
         double iconsWidth = 0.0;
         if (state.likesCount > 0) {

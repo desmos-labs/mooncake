@@ -19,14 +19,12 @@ class PostReactionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostListItemBloc, PostListItemState>(
-      builder: (context, state) {
-        final currentState = (state as PostListItemLoaded);
-
+      builder: (BuildContext context, PostListItemState state) {
         // Emoji parser
         final parser = EmojiParser();
 
         // Filter the likes as they are showed independently
-        final reactions = currentState.post.reactions
+        final reactions = state.post.reactions
             .where((r) => !r.isLike)
             .map((r) => r.copyWith(value: parser.emojify(r.value)))
             .where((element) => element.value.runes.length == 1);
@@ -40,13 +38,13 @@ class PostReactionsList extends StatelessWidget {
         final showMore = reactMap.length > singleRowItems;
 
         int itemCount = reactMap.length;
-        if (showMore && !currentState.actionBarExpanded) {
+        if (showMore && !state.actionBarExpanded) {
           // There should be the max number of items per row, as the last one
           // will be the "More" button
           itemCount = singleRowItems;
         }
 
-        if (showMore && currentState.actionBarExpanded) {
+        if (showMore && state.actionBarExpanded) {
           // There should be all the items visible, plus the "More" button
           itemCount = reactMap.length + 1;
         }

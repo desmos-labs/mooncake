@@ -17,7 +17,7 @@ import 'reactions/post_reactions_list.dart';
 /// - a [PostActionBar] containing all the actions that can be performed
 ///    for such post
 class PostListItem extends StatelessWidget {
-  final String postId;
+  final Post post;
 
   // Theming
   final double messageFontSize;
@@ -25,55 +25,66 @@ class PostListItem extends StatelessWidget {
 
   PostListItem({
     Key key,
-    @required this.postId,
+    @required this.post,
     this.messageFontSize = 0.0,
     this.margin = const EdgeInsets.all(16.0),
   }) : super(key: key);
 
+  Color darken(Color color, [double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(color);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostListItemBloc, PostListItemState>(
-      builder: (context, state) {
-        if (state is PostListItemLoading) {
-          return Container();
-        }
+    Color color = Theme.of(context).cardColor;
+    if (post.status.value != PostStatusValue.SYNCED) {
+      color = color.withOpacity(0.5);
+    }
 
-        final currentState = (state as PostListItemLoaded);
-        final post = currentState.post;
-        return Card(
-          margin: EdgeInsets.all(8),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
+    if (post.status.value == PostStatusValue.ERRORED) {
+      color = Theme.of(context).errorColor.withOpacity(0.75);
+    }
+
+
+
+    return Card(
+      color: color,
+      margin: EdgeInsets.all(8),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: InkWell(
+        onTap: () => _openPostDetails(context),
+        onLongPress: post.status.value == PostStatusValue.ERRORED
+            ? () => _showPostError(context, post)
+            : null,
+        child: Container(
+          padding: PostsTheme.postItemPadding,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              PostContent(post: post),
+              const SizedBox(height: PostsTheme.defaultPadding),
+              PostActionsBar(),
+              const SizedBox(height: PostsTheme.defaultPadding),
+              PostReactionsList(),
+            ],
           ),
-          child: InkWell(
-            onTap: () => _openPostDetails(context),
-            onLongPress: post.status.value == PostStatusValue.ERRORED
-                ? () => _showPostError(context, post)
-                : null,
-            child: Container(
-              padding: PostsTheme.postItemPadding,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  PostContent(post: post),
-                  const SizedBox(height: PostsTheme.defaultPadding),
-                  PostActionsBar(),
-                  const SizedBox(height: PostsTheme.defaultPadding),
-                  PostReactionsList(),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+        ),
+      ),
     );
   }
 
   void _openPostDetails(BuildContext context) {
     // ignore: close_sinks
     final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-    navigatorBloc.add(NavigateToPostDetails(context, postId));
+    navigatorBloc.add(NavigateToPostDetails(context, post.id));
   }
 
   void _showPostError(BuildContext context, Post post) {
@@ -104,7 +115,7 @@ class PostListItem extends StatelessWidget {
                     children: <Widget>[
                       FlatButton(
                         child: Text("Copy error"),
-                        onPressed: () => _copyError(context, post),
+                        onPressed: () => _copyError(context),
                       )
                     ],
                   )
@@ -115,7 +126,7 @@ class PostListItem extends StatelessWidget {
         });
   }
 
-  void _copyError(BuildContext context, Post post) {
+  void _copyError(BuildContext context) {
     Clipboard.setData(ClipboardData(text: post.status.error)).then((_) {
       final snackBar = SnackBar(
         content: Text(PostsLocalizations.of(context).syncErrorCopied),

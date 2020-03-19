@@ -51,6 +51,7 @@ class User extends Equatable {
   // DONT COVER
   @override
   String toString() => 'User { '
+      'address: $address, '
       'username: $username, '
       'avatarUrl : $avatarUrl '
       '}';

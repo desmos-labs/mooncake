@@ -41,6 +41,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToPostDetailsEventToState(event);
     } else if (event is NavigateToWallet) {
       _mapNavigateToWalletEventToState();
+    } else if (event is GoBack) {
+      _handleGoBack(event);
     }
   }
 
@@ -82,5 +84,9 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     _navigatorKey.currentState.push(MaterialPageRoute(
       builder: (context) => WalletScreen(),
     ));
+  }
+
+  void _handleGoBack(GoBack event) {
+    _navigatorKey.currentState.pop(event.result);
   }
 }

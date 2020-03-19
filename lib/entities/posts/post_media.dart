@@ -6,7 +6,7 @@ part 'post_media.g.dart';
 
 /// Represents a single media inside the list of post medias.
 @immutable
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, ignoreUnannotated: true)
 class PostMedia extends Equatable {
   /// Contains all the mime types of medias supported
   static const List<String> IMAGES_MIME_TYPES = [
@@ -18,12 +18,13 @@ class PostMedia extends Equatable {
   @JsonKey(name: "uri")
   final String url;
 
-  @JsonKey(ignore: true)
-  bool get isLocal => !url.startsWith("http");
-
   @JsonKey(name: "mime_type")
   final String mimeType;
 
+  /// Tells whether the image is stored only locally or not.
+  bool get isLocal => !url.startsWith("http");
+
+  /// Tells whether this media represents an image or not.
   bool get isImage => IMAGES_MIME_TYPES.contains(mimeType);
 
   PostMedia({@required this.url, @required this.mimeType})

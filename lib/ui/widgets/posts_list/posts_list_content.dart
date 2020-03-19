@@ -19,7 +19,7 @@ class PostsListContent extends StatelessWidget {
         final post = posts[index];
         return BlocProvider<PostListItemBloc>(
           create: (context) => PostListItemBloc.create(context, post),
-          child: PostListItem(postId: post.id),
+          child: PostListItem(post: post),
         );
       },
     );

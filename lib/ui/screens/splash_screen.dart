@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
       builder: (context, state) {
         // TODO: Handle the case where the user has logged out but he has biometrics or password
         if (state is LoggedOut) {
-          return LoginScreen();
+        return LoginScreen();
         } else if (state is LoggedIn) {
           return _homeScreen();
         }
@@ -19,12 +19,19 @@ class SplashScreen extends StatelessWidget {
         return Container(
           decoration: ThemeDecorations.pattern(context),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 175),
               Image(
-                image: AssetImage('assets/images/login_logo.png'),
+                image: AssetImage('assets/images/logo.png'),
                 key: PostsKeys.loginScreenLogo,
                 width: 125,
+              ),
+              Text(
+                PostsLocalizations.of(context).appName,
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                      color: Colors.white,
+                      fontFamily: 'Montserrat',
+                    ),
               ),
             ],
           ),

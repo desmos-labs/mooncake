@@ -10,9 +10,9 @@ class SetBiometricTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Flexible(
-          child: Image(
-            height: MediaQuery.of(context).size.height * 0.3,
-            image: AssetImage("assets/images/fingerprint.png"),
+          child: Icon(
+            MooncakeIcons.fingerprint,
+            size: MediaQuery.of(context).size.height * 0.3,
           ),
         ),
         SizedBox(height: 20),

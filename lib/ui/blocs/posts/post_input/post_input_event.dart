@@ -62,5 +62,9 @@ class ImageRemoved extends PostInputEvent {
 /// Tells the input that the post is being saved
 class SavePost extends PostInputEvent {}
 
+/// Tells that the user wants to show (or not) the alert popup again in the
+/// future.
+class ChangeWillShowPopup extends PostInputEvent {}
+
 /// Tells the input that it needs to be reset
 class ResetForm extends PostInputEvent {}

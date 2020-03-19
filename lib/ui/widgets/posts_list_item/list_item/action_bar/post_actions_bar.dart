@@ -15,26 +15,29 @@ class PostActionsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  PostLikeAction(),
-                  const SizedBox(width: ThemeSpaces.actionBarSpacer),
-                  PostCommentAction(),
-                  const SizedBox(width: ThemeSpaces.actionBarSpacer),
-                  AddReactionAction(),
-                ],
+    return BlocBuilder<PostListItemBloc, PostListItemState>(
+        builder: (BuildContext context, PostListItemState state) {
+      return Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    PostLikeAction(),
+                    const SizedBox(width: ThemeSpaces.actionBarSpacer),
+                    PostCommentAction(),
+                    const SizedBox(width: ThemeSpaces.actionBarSpacer),
+                    AddReactionAction(),
+                  ],
+                ),
               ),
-            ),
-            PostLikesCounter(),
-          ],
-        ),
-      ],
-    );
+              if (state.likesCount > 0) PostLikesCounter(),
+            ],
+          ),
+        ],
+      );
+    });
   }
 }

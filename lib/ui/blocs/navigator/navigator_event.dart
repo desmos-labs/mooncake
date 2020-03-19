@@ -10,6 +10,16 @@ abstract class NavigatorEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// Tells the Bloc to go back one page
+class GoBack extends NavigatorEvent {
+  final dynamic result;
+
+  GoBack([this.result]);
+
+  @override
+  String toString() => 'GoBack';
+}
+
 /// Tells the Bloc to navigate to the home screen.
 class NavigateToHome extends NavigatorEvent {
   @override

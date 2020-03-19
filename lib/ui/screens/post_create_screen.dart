@@ -15,7 +15,7 @@ class CreatePostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PostInputBloc.create(),
+      create: (context) => PostInputBloc.create(context),
       child: BlocBuilder<PostInputBloc, PostInputState>(
         builder: (context, state) {
           return Scaffold(
@@ -27,7 +27,7 @@ class CreatePostScreen extends StatelessWidget {
                   bottom: 0,
                   child: PostCreateActions(height: bottomBarHeight),
                 ),
-                if (state.saving)
+                if (state.showPopup)
                   GenericPopup(
                     backgroundColor: Colors.black.withOpacity(0.6),
                     content: PostSavingPopupContent(),

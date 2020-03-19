@@ -70,12 +70,24 @@ class MsgCreatePost extends StdMsg {
 
   @override
   Exception validate() {
-    if (parentId.isEmpty ||
-        message.isEmpty ||
-        subspace.isEmpty ||
-        creator.isEmpty ||
-        creationDate.isEmpty) {
-      return Exception("Malformed MsgCreatePost");
+    if (parentId.isEmpty) {
+      return Exception("Parent ID cannot be empty");
+    }
+
+    if (message.isEmpty && (medias == null || medias.isEmpty)) {
+      return Exception("Message and medias cannot be both empty");
+    }
+
+    if (subspace.isEmpty) {
+      return Exception("Subspace cannot be empty");
+    }
+
+    if (creator.isEmpty) {
+      return Exception("Creator cannot be empty");
+    }
+
+    if (creationDate.isEmpty) {
+      return Exception("Creation date cannot be empty");
     }
 
     return null;

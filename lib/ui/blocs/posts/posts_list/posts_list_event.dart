@@ -20,7 +20,7 @@ class UserUpdated extends PostsListEvent {
   List<Object> get props => [user];
 
   @override
-  String toString() => 'UserUpdated { user: $user }';
+  String toString() => 'UserUpdated';
 }
 
 /// Event that is emitted when the posts list has been updated.

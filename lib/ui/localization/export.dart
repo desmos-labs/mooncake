@@ -11,7 +11,7 @@ class PostsLocalizations {
     );
   }
 
-  String get appTitle => "Mooncake";
+  String get appName => "Mooncake";
   String get splashLoadingData => "Loading data...";
 
   // Login
@@ -96,6 +96,7 @@ phrase to access your account.
   String get galleryTip => "Select an image from the gallery";
   String get savingPostPopupBody =>
       "The post will now be synced to the chain. This might take a while";
+  String get savingPostPopupDontShow => "Don't show again";
   String get savingPostPopupOkButton => "OK";
 
   // Notifications screen

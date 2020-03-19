@@ -10,7 +10,6 @@ import 'package:mooncake/ui/ui.dart';
 class HomeScreen extends StatelessWidget {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, AppTab>(
@@ -30,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             centerTitle: true,
             title: Text(
               activeTab == AppTab.allPosts
-                  ? PostsLocalizations.of(context).appTitle
+                  ? PostsLocalizations.of(context).appName
                   : PostsLocalizations.of(context).accountScreenTitle,
             ),
             backgroundColor: Colors.transparent,
@@ -40,7 +39,9 @@ class HomeScreen extends StatelessWidget {
                       ),
                 ),
             leading: IconButton(
-              icon: Icon(MooncakeIcons.settings),
+              icon: Icon(Theme.of(context).brightness == Brightness.light
+                  ? MooncakeIcons.lightBulb
+                  : MooncakeIcons.lightBulbFilled),
               color: Theme.of(context).accentColor,
               onPressed: () {
                 DynamicTheme.of(context).setBrightness(

@@ -104,7 +104,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     }
     """;
     client.subscribe(Operation(documentNode: gql(postsSub))).listen((event) {
-      print("New event: $event");
       final data = event.data as Map<String, dynamic>;
       _postsController.add(_convertGqlResponse(data));
     });

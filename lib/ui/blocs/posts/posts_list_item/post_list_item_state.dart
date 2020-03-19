@@ -2,21 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
-abstract class PostListItemState extends Equatable {
-  const PostListItemState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class PostListItemLoading extends PostListItemState {
-  @override
-  String toString() => 'PostListItemLoading';
-}
-
 /// Represents the state of a single post item that is
 /// present inside a posts list.
-class PostListItemLoaded extends PostListItemState {
+class PostListItemState extends Equatable {
   /// Account that is currently used from the user.
   final MooncakeAccount user;
 
@@ -50,18 +38,18 @@ class PostListItemLoaded extends PostListItemState {
           r.value == reaction && r.user.address == user.cosmosAccount.address)
       .isNotEmpty;
 
-  const PostListItemLoaded({
+  const PostListItemState({
     @required this.user,
     @required this.post,
     @required this.actionBarExpanded,
   });
 
-  PostListItemLoaded copyWith({
+  PostListItemState copyWith({
     MooncakeAccount user,
     Post post,
     bool actionBarExpanded,
   }) {
-    return PostListItemLoaded(
+    return PostListItemState(
       user: user ?? this.user,
       post: post ?? this.post,
       actionBarExpanded: actionBarExpanded ?? this.actionBarExpanded,

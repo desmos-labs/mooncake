@@ -37,8 +37,9 @@ class Post extends Equatable implements Comparable<Post> {
   final String parentId;
 
   /// Tells if this post has a valid parent post or not.
-  bool get hasParent =>
-      parentId != null && parentId.trim().isNotEmpty && parentId != "0";
+  bool get hasParent {
+    return parentId != null && parentId.trim().isNotEmpty && parentId != "0";
+  }
 
   @JsonKey(name: "message")
   final String message;
@@ -67,7 +68,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "optional_data", defaultValue: {})
   final Map<String, String> optionalData;
 
-  @JsonKey(name: "medias", nullable: true)
+  @JsonKey(name: "media", nullable: true)
   final List<PostMedia> medias;
 
   bool get containsLocalMedias => medias.any((media) => media.isLocal);
