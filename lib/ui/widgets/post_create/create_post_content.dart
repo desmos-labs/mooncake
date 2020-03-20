@@ -4,7 +4,6 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'create_post_top_bar.dart';
-
 import 'images/create_post_images_list.dart';
 
 /// Contains the main content of the post creation screen.
@@ -37,36 +36,9 @@ class CreatePostContent extends StatelessWidget {
                     bottom: padding + bottomPadding,
                   ),
                   children: <Widget>[
-                    if (parentPost != null)
-                      Card(
-                        elevation: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(16),
-                          child: PostContent(post: parentPost),
-                        ),
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                      ),
-                    TextFormField(
-                      key: PostsKeys.postMessageField,
-                      autofocus: true,
-                      onChanged: (value) => _messageChanged(context, value),
-                      decoration: InputDecoration(
-                          hintText: "What's on your mind?",
-                          border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.transparent))),
-                    ),
-                    if (state.medias.isNotEmpty)
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const SizedBox(height: 10),
-                          CreatePostImagesList(),
-                        ],
-                      ),
+                    if (parentPost != null) _parentPostPreview(context),
+                    _postTextInput(context),
+                    if (state.medias.isNotEmpty) _imagesPreview(),
                   ],
                 ),
               )
@@ -74,6 +46,44 @@ class CreatePostContent extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _parentPostPreview(BuildContext context) {
+    return Card(
+      elevation: 0,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        child: PostContent(post: parentPost),
+      ),
+      color: Theme.of(context).scaffoldBackgroundColor,
+    );
+  }
+
+  Widget _postTextInput(BuildContext context) {
+    return TextFormField(
+      key: PostsKeys.postMessageField,
+      autofocus: true,
+      onChanged: (value) => _messageChanged(context, value),
+      decoration: InputDecoration(
+        hintText: PostsLocalizations.of(context).createPostHint,
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+      ),
+    );
+  }
+
+  Widget _imagesPreview() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        const SizedBox(height: 10),
+        CreatePostImagesList(),
+      ],
     );
   }
 

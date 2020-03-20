@@ -96,6 +96,7 @@ phrase to access your account.
   String get newPostHint => "What's going on?";
   String get createPostCancelButton => "Cancel";
   String get createPostCreateButton => "Post";
+  String get createPostHint => "What's on your mind?";
   String get cameraTip => "Take a picture using the camera";
   String get galleryTip => "Select an image from the gallery";
   String get savingPostPopupBody =>
