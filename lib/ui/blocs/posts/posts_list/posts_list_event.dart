@@ -37,6 +37,31 @@ class PostsUpdated extends PostsListEvent {
   String toString() => 'ShowPosts { posts: ${posts.length} }';
 }
 
+/// Tells the Bloc that it needs to either set as liked/unliked the given post.
+class AddOrRemoveLike extends PostsListEvent {
+  final Post post;
+
+  AddOrRemoveLike(this.post);
+
+  @override
+  List<Object> get props => [post];
+}
+
+/// Tells the Bloc that it needs to either add (if not existing yet) or remove
+/// (if existing) a reaction from the current user to the post.
+class AddOrRemovePostReaction extends PostsListEvent {
+  final Post post;
+  final String reaction;
+
+  AddOrRemovePostReaction(this.post, this.reaction);
+
+  @override
+  List<Object> get props => [post, reaction];
+
+  @override
+  String toString() => 'AddOrRemovePostReaction';
+}
+
 /// Tells the bloc to start the synchronization of locally stored
 /// posts so that they can be uploaded to the chain.
 class SyncPosts extends PostsListEvent {

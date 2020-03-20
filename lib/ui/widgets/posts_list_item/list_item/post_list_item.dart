@@ -67,9 +67,9 @@ class PostListItem extends StatelessWidget {
             children: <Widget>[
               PostContent(post: post),
               const SizedBox(height: PostsTheme.defaultPadding),
-              PostActionsBar(),
+              PostActionsBar(post: post),
               const SizedBox(height: PostsTheme.defaultPadding),
-              PostReactionsList(),
+              PostReactionsList(post: post),
             ],
           ),
         ),

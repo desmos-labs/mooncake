@@ -69,8 +69,9 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Stream<List<Post>> getPostComments(String postId) {
-    return postsStream
-        .map((list) => list.where((post) => post.parentId == postId).toList());
+    return postsStream.map((list) {
+      return list.where((post) => post.parentId == postId).toList();
+    });
   }
 
   @override
@@ -105,20 +106,6 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     return records.map((record) => Post.fromJson(record.value)).toList();
   }
 
-  /// Returns the post having the given creation data and creator, or
-  /// `null` if such post could not be found.
-  Future<Post> _getSimilarPost(Post post) async {
-    final key = getPostKey(post);
-    final database = await this.database;
-    final record = store.record(key);
-    if (!await record.exists(database)) {
-      return null;
-    }
-
-    final value = await record.get(database);
-    return Post.fromJson(value);
-  }
-
   /// Saves the given [post], updating its parent as well (if it has one).
   /// If [emit] is true, after the update emits the new list of posts
   /// using the [postsStream].
@@ -144,5 +131,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<void> savePost(Post post) => _savePostAndParent(post, emit: true);
+  Future<void> savePost(Post post) {
+    return _savePostAndParent(post, emit: true);
+  }
 }

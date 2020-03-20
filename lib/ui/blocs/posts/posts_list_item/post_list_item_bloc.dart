@@ -16,14 +16,12 @@ import './bloc.dart';
 class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
   final MooncakeAccount user;
   final Post post;
-  final ManagePostReactionsUseCase _managePostReactionsUseCase;
 
   PostListItemBloc({
     @required this.user,
     @required this.post,
     @required ManagePostReactionsUseCase managePostReactionsUseCase,
-  })  : assert(managePostReactionsUseCase != null),
-        this._managePostReactionsUseCase = managePostReactionsUseCase;
+  })  : assert(managePostReactionsUseCase != null);
 
   factory PostListItemBloc.create(BuildContext context, Post post) {
     // ignore: close_sinks
@@ -38,7 +36,6 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
   @override
   PostListItemState get initialState => PostListItemState(
         user: user,
-        post: post,
         actionBarExpanded: false,
       );
 
@@ -46,30 +43,9 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
   Stream<PostListItemState> mapEventToState(
     PostListItemEvent event,
   ) async* {
-    if (event is AddOrRemoveLike) {
-      _convertAddOrRemoveLikeEvent();
-    } else if (event is AddOrRemovePostReaction) {
-      yield* _mapAddPostReactionEventToState(event);
-    } else if (event is ChangeReactionBarExpandedState) {
+    if (event is ChangeReactionBarExpandedState) {
       yield* _mapChangeReactionBarExpandedStateToState(event);
     }
-  }
-
-  /// Converts an [AddOrRemoveLikeEvent] into an
-  /// [AddOrRemovePostReaction] event so that it can be handled properly.
-  void _convertAddOrRemoveLikeEvent() {
-    add(AddOrRemovePostReaction(Constants.LIKE_REACTION));
-  }
-
-  /// Handles the event emitted when the user likes a post
-  Stream<PostListItemState> _mapAddPostReactionEventToState(
-    AddOrRemovePostReaction event,
-  ) async* {
-    final updatedPost = await _managePostReactionsUseCase.addOrRemove(
-      postId: state.post.id,
-      reaction: event.reaction,
-    );
-    yield state.copyWith(post: updatedPost);
   }
 
   /// Handles the event emitted when the reaction bar should be expanded

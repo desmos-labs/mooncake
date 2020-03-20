@@ -18,7 +18,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Timer _syncTimer;
 
   // Use cases
-  UpdatePostsStatusUseCase _updatePostsStatusUseCase;
+  final UpdatePostsStatusUseCase _updatePostsStatusUseCase;
+  final ManagePostReactionsUseCase _managePostReactionsUseCase;
 
   // Subscriptions
   StreamSubscription _userSubscription;
@@ -33,13 +34,16 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required GetAccountUseCase getUserUseCase,
     @required GetNotificationsUseCase getNotificationsUseCase,
     @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
+    @required ManagePostReactionsUseCase managePostReactionsUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getPostsUseCase != null),
         assert(syncPostsUseCase != null),
         _syncPostsUseCase = syncPostsUseCase,
         assert(getUserUseCase != null),
         assert(updatePostsStatusUseCase != null),
-        _updatePostsStatusUseCase = updatePostsStatusUseCase {
+        _updatePostsStatusUseCase = updatePostsStatusUseCase,
+        assert(managePostReactionsUseCase != null),
+        _managePostReactionsUseCase = managePostReactionsUseCase {
     _initializeSyncTimer();
 
     // Subscribe to the user changes
@@ -71,6 +75,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       analytics: Injector.get(),
       getNotificationsUseCase: Injector.get(),
       updatePostsStatusUseCase: Injector.get(),
+      managePostReactionsUseCase: Injector.get(),
     );
   }
 
@@ -83,6 +88,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield* _mapUserUpdatedEventToState(event);
     } else if (event is PostsUpdated) {
       yield* _mapPostsUpdatedEventToState(event);
+    } else if (event is AddOrRemoveLike) {
+      _convertAddOrRemoveLikeEvent(event);
+    } else if (event is AddOrRemovePostReaction) {
+      yield* _mapAddPostReactionEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
@@ -125,6 +134,23 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     } else if (currentState is PostsLoaded) {
       yield currentState.copyWith(posts: event.posts);
     }
+  }
+
+  /// Converts an [AddOrRemoveLikeEvent] into an
+  /// [AddOrRemovePostReaction] event so that it can be handled properly.
+  void _convertAddOrRemoveLikeEvent(AddOrRemoveLike event) {
+    add(AddOrRemovePostReaction(event.post, Constants.LIKE_REACTION));
+  }
+
+  /// Handles the event emitted when the user likes a post
+  Stream<PostsListState> _mapAddPostReactionEventToState(
+    AddOrRemovePostReaction event,
+  ) async* {
+    print("Add or remove: ${event.reaction}");
+    await _managePostReactionsUseCase.addOrRemove(
+      postId: event.post.id,
+      reaction: event.reaction,
+    );
   }
 
   /// Handles the event emitted when the posts must be synced uploading

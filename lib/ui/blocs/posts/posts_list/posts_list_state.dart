@@ -69,7 +69,6 @@ class PostsLoaded extends PostsListState {
 
   @override
   String toString() => 'PostsLoaded { '
-      'user: $user, '
       'posts: ${posts.length}, '
       'refreshing: $refreshing, '
       'syncingPosts: $syncingPosts, '

@@ -66,7 +66,7 @@ class PostDetailsMainContent extends StatelessWidget {
                 },
                 body: TabBarView(
                   children: <Widget>[
-                    PostCommentsList(),
+                    PostCommentsList(comments: currentState.comments),
                     PostReactionsList(),
                   ],
                 ),

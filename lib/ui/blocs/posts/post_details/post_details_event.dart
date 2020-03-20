@@ -22,7 +22,10 @@ class ShowPostDetails extends PostDetailsEvent {
   List<Object> get props => [post, comments];
 
   @override
-  String toString() => 'ShowPostDetails { post: $post, comments: $comments }';
+  String toString() => 'ShowPostDetails { '
+      'post: $post, '
+      'comments: ${comments?.length ?? 0} '
+      '}';
 }
 
 /// Tells the Bloc that it needs to visualize the selected tab.
@@ -36,23 +39,4 @@ class ShowTab extends PostDetailsEvent {
 
   @override
   String toString() => 'ShowTab { tab: $tab }';
-}
-
-/// Toggles the like to the post, either adding or removing it.
-class ToggleLike extends PostDetailsEvent {
-  @override
-  String toString() => 'ToggleLike';
-}
-
-/// Toggle the emoji to the post, either adding or removing it.
-class ToggleReaction extends PostDetailsEvent {
-  final String reaction;
-
-  ToggleReaction(this.reaction);
-
-  @override
-  List<Object> get props => [reaction];
-
-  @override
-  String toString() => 'ToggleEmoji { reaction: $reaction }';
 }

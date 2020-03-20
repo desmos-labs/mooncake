@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents a single reaction button that allows the user to add a new
 /// reaction or remove an existing one.
 class PostReactionAction extends StatelessWidget {
+  final Post post;
   final String reaction;
   final int reactionCount;
 
   const PostReactionAction({
     Key key,
+    @required this.post,
     @required this.reaction,
     @required this.reactionCount,
   }) : super(key: key);
@@ -18,7 +21,7 @@ class PostReactionAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostListItemBloc, PostListItemState>(
       builder: (BuildContext context, PostListItemState state) {
-        final userReacted = state.hasUserReactedWith(reaction);
+        final userReacted = state.user.hasReactedWith(post, reaction);
         final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
               color: userReacted ? Theme.of(context).accentColor : null,
               fontWeight: userReacted ? FontWeight.bold : null,
@@ -35,8 +38,8 @@ class PostReactionAction extends StatelessWidget {
             ],
           ),
           onPressed: () {
-            BlocProvider.of<PostListItemBloc>(context)
-                .add(AddOrRemovePostReaction(reaction));
+            BlocProvider.of<PostsListBloc>(context)
+                .add(AddOrRemovePostReaction(post, reaction));
           },
           shape: StadiumBorder(
             side: BorderSide(

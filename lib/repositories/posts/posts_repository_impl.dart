@@ -28,22 +28,29 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Stream<List<Post>> get postsStream => _localPostsSource.postsStream;
+  Stream<List<Post>> get postsStream {
+    return _localPostsSource.postsStream;
+  }
 
   @override
-  Stream<Post> getPostById(String postId) =>
-      _localPostsSource.getPostById(postId);
+  Stream<Post> getPostById(String postId) {
+    return _localPostsSource.getPostById(postId);
+  }
 
   @override
-  Future<List<Post>> getPostsByTxHash(String txHash) =>
-      _localPostsSource.getPostsByTxHash(txHash);
+  Future<List<Post>> getPostsByTxHash(String txHash) {
+    return _localPostsSource.getPostsByTxHash(txHash);
+  }
 
   @override
-  Stream<List<Post>> getPostComments(String postId) =>
-      _localPostsSource.getPostComments(postId);
+  Stream<List<Post>> getPostComments(String postId) {
+    return _localPostsSource.getPostComments(postId);
+  }
 
   @override
-  Future<void> savePost(Post post) => _localPostsSource.savePost(post);
+  Future<void> savePost(Post post) {
+    return _localPostsSource.savePost(post);
+  }
 
   @override
   Future<void> syncPosts() async {

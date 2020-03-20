@@ -5,7 +5,7 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import '../action_bar/post_action_reaction.dart';
+import '../../../post_actions/post_action_reaction.dart';
 
 /// Represents the bar displaying the list of reactions that a post
 /// has associated to itself.
@@ -14,7 +14,11 @@ import '../action_bar/post_action_reaction.dart';
 class PostReactionsList extends StatelessWidget {
   final double itemHeight = 40;
 
-  const PostReactionsList({Key key}) : super(key: key);
+  final Post post;
+  const PostReactionsList({
+    Key key,
+    @required this.post,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class PostReactionsList extends StatelessWidget {
         final parser = EmojiParser();
 
         // Filter the likes as they are showed independently
-        final reactions = state.post.reactions
+        final reactions = post.reactions
             .where((r) => !r.isLike)
             .map((r) => r.copyWith(value: parser.emojify(r.value)))
             .where((element) => element.value.runes.length == 1);
@@ -32,7 +36,6 @@ class PostReactionsList extends StatelessWidget {
 
         // Compute the number of items per row
         final singleRowItems = MediaQuery.of(context).size.width ~/ 70;
-
 
         // Tells then the "More" button should be visible
         final showMore = reactMap.length > singleRowItems;
@@ -66,6 +69,7 @@ class PostReactionsList extends StatelessWidget {
 
                   final entry = reactMap.entries.toList()[index];
                   return PostReactionAction(
+                    post: post,
                     reaction: entry.key,
                     reactionCount: entry.value.length,
                   );

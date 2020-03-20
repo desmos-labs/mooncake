@@ -7,6 +7,7 @@ export 'login/export.dart';
 export 'notifications_list/export.dart';
 export 'pickers/export.dart';
 export 'popup/export.dart';
+export 'post_actions/export.dart';
 export 'post_create/export.dart';
 export 'post_details/export.dart';
 export 'posts_list/export.dart';
