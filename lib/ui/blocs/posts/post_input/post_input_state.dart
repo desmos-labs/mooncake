@@ -6,6 +6,8 @@ import 'package:mooncake/entities/entities.dart';
 /// is creating a new comment for a post.
 @immutable
 class PostInputState extends Equatable {
+  final Post parentPost;
+
   final String message;
   final bool allowsComments;
   final List<PostMedia> medias;
@@ -15,6 +17,7 @@ class PostInputState extends Equatable {
   final willShowPopupAgain;
 
   PostInputState({
+    @required this.parentPost,
     @required this.message,
     @required this.allowsComments,
     @required this.medias,
@@ -27,14 +30,17 @@ class PostInputState extends Equatable {
       (message != null && message.isNotEmpty) || medias.isNotEmpty;
 
   /// Builds an empty state.
-  factory PostInputState.empty() => PostInputState(
-        message: null,
-        allowsComments: true,
-        medias: [],
-        saving: false,
-        showPopup: false,
-        willShowPopupAgain: true,
-      );
+  factory PostInputState.empty(Post parentPost) {
+    return PostInputState(
+      parentPost: parentPost,
+      message: null,
+      allowsComments: true,
+      medias: [],
+      saving: false,
+      showPopup: false,
+      willShowPopupAgain: true,
+    );
+  }
 
   /// Updates this state setting the specified values properly.
   PostInputState update({
@@ -46,6 +52,7 @@ class PostInputState extends Equatable {
     bool willShowPopupAgain,
   }) {
     return PostInputState(
+      parentPost: parentPost,
       message: message ?? this.message,
       allowsComments: allowsComments ?? this.allowsComments,
       saving: saving ?? this.saving,
@@ -57,6 +64,7 @@ class PostInputState extends Equatable {
 
   @override
   List<Object> get props => [
+        parentPost,
         message,
         allowsComments,
         medias,

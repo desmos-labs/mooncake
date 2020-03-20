@@ -19,7 +19,7 @@ class AddOrRemoveLike extends PostListItemEvent {}
 class AddOrRemovePostReaction extends PostListItemEvent {
   final String reaction;
 
-  AddOrRemovePostReaction({@required this.reaction});
+  AddOrRemovePostReaction(this.reaction);
 
   @override
   List<Object> get props => [reaction];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/app/app_tab.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -51,8 +52,6 @@ class TabSelector extends StatelessWidget {
   }
 
   void _createRoute(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return CreatePostScreen();
-    }));
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToCreatePost());
   }
 }

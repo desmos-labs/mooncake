@@ -71,7 +71,10 @@ class PostDetailsMainContent extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(bottom: 0, child: PostDetailsBottomBar()),
+              Positioned(
+                bottom: 0,
+                child: PostDetailsBottomBar(height: bottomBarHeight),
+              ),
             ],
           ),
         );

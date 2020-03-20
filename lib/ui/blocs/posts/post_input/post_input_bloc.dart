@@ -18,6 +18,8 @@ import '../export.dart';
 class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   static const _SHOW_POPUP_KEY = "show_saving_popup";
 
+  final Post _parentPost;
+
   final NavigatorBloc _navigatorBloc;
 
   final CreatePostUseCase _createPostUseCase;
@@ -26,12 +28,14 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   final SaveSettingUseCase _saveSettingUseCase;
 
   PostInputBloc({
+    @required Post parentPost,
     @required NavigatorBloc navigatorBloc,
     @required SavePostUseCase savePostUseCase,
     @required CreatePostUseCase createPostUseCase,
     @required GetSettingUseCase getSettingUseCase,
     @required SaveSettingUseCase saveSettingUseCase,
-  })  : assert(navigatorBloc != null),
+  })  : _parentPost = parentPost,
+        assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(savePostUseCase != null),
         _savePostUseCase = savePostUseCase,
@@ -42,8 +46,9 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
         assert(saveSettingUseCase != null),
         _saveSettingUseCase = saveSettingUseCase;
 
-  factory PostInputBloc.create(BuildContext context) {
+  factory PostInputBloc.create(BuildContext context, Post parentPost) {
     return PostInputBloc(
+      parentPost: parentPost,
       navigatorBloc: BlocProvider.of(context),
       createPostUseCase: Injector.get(),
       savePostUseCase: Injector.get(),
@@ -53,14 +58,14 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   }
 
   @override
-  PostInputState get initialState => PostInputState.empty();
+  PostInputState get initialState => PostInputState.empty(_parentPost);
 
   @override
   Stream<PostInputState> mapEventToState(
     PostInputEvent event,
   ) async* {
     if (event is ResetForm) {
-      yield PostInputState.empty();
+      yield PostInputState.empty(_parentPost);
     } else if (event is MessageChanged) {
       yield state.update(message: event.message);
     } else if (event is AllowsCommentsChanged) {
@@ -111,7 +116,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
 
     final post = await _createPostUseCase.create(
       message: state.message,
-      parentId: null,
+      parentId: state.parentPost?.id,
       allowsComments: state.allowsComments,
       medias: state.medias,
     );

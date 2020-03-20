@@ -39,6 +39,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToPasswordScreenEventToState();
     } else if (event is NavigateToPostDetails) {
       _mapNavigateToPostDetailsEventToState(event);
+    } else if (event is NavigateToCreatePost) {
+      _mapNavigateToCreatePostEventToState(event);
     } else if (event is NavigateToWallet) {
       _mapNavigateToWalletEventToState();
     } else if (event is GoBack) {
@@ -58,15 +60,15 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   }
 
   void _mapNavigateToBiometricScreenEventToState() {
-    _navigatorKey.currentState.push(MaterialPageRoute(
-      builder: (context) => SetBiometricScreen(),
-    ));
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return SetBiometricScreen();
+    }));
   }
 
   void _mapNavigateToPasswordScreenEventToState() {
-    _navigatorKey.currentState.push(MaterialPageRoute(
-      builder: (context) => SetPasswordScreen(),
-    ));
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return SetPasswordScreen();
+    }));
   }
 
   void _mapNavigateToPostDetailsEventToState(
@@ -74,16 +76,22 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   ) async {
     final isLoggedIn = await _checkLoginUseCase.isLoggedIn();
     if (isLoggedIn) {
-      _navigatorKey.currentState.push(MaterialPageRoute(
-        builder: (context) => PostDetailsScreen(postId: event.postId),
-      ));
+      _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+        return PostDetailsScreen(postId: event.postId);
+      }));
     }
   }
 
+  void _mapNavigateToCreatePostEventToState(NavigateToCreatePost event) {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return CreatePostScreen(parentPost: event.parentPost);
+    }));
+  }
+
   void _mapNavigateToWalletEventToState() {
-    _navigatorKey.currentState.push(MaterialPageRoute(
-      builder: (context) => WalletScreen(),
-    ));
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return WalletScreen();
+    }));
   }
 
   void _handleGoBack(GoBack event) {

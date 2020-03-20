@@ -1,6 +1,7 @@
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/entities/emojis/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the item that the user should tap when wanting to add a
@@ -30,9 +31,9 @@ class AddReactionAction extends StatelessWidget {
   }
 
   void _onEmojiSelected(BuildContext context, Emoji emoji) {
-    // ignore: close_sinks
-    final bloc = BlocProvider.of<PostListItemBloc>(context);
-    bloc.add(AddOrRemovePostReaction(reaction: emoji.emoji));
-    Navigator.pop(context);
+    final code = getEmojiCode(emoji.emoji);
+    BlocProvider.of<PostListItemBloc>(context)
+        .add(AddOrRemovePostReaction(code));
+    BlocProvider.of<NavigatorBloc>(context).add(GoBack());
   }
 }

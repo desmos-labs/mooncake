@@ -22,7 +22,7 @@ class PostCommentAction extends StatelessWidget {
                 children: <Widget>[
                   SizedBox(width: size / 4),
                   Text(
-                    state.post.commentsIds.length.toStringOrEmpty(),
+                    state.post.commentsIds.length.toString(),
                     style: Theme.of(context).accentTextTheme.bodyText2,
                   )
                 ],

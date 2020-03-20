@@ -58,7 +58,7 @@ class PostListItemBloc extends Bloc<PostListItemEvent, PostListItemState> {
   /// Converts an [AddOrRemoveLikeEvent] into an
   /// [AddOrRemovePostReaction] event so that it can be handled properly.
   void _convertAddOrRemoveLikeEvent() {
-    add(AddOrRemovePostReaction(reaction: Constants.LIKE_REACTION));
+    add(AddOrRemovePostReaction(Constants.LIKE_REACTION));
   }
 
   /// Handles the event emitted when the user likes a post

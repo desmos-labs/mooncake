@@ -77,7 +77,7 @@ class PostDetailsLoaded extends PostDetailsState {
     PostDetailsTab selectedTab,
   }) {
     return PostDetailsLoaded(
-      user: user,
+      user: user ?? this.user,
       post: post ?? this.post,
       comments: comments?.isNotEmpty == true ? comments : this.comments,
       selectedTab: selectedTab ?? this.selectedTab,

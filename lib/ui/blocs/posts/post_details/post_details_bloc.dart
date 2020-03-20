@@ -19,14 +19,19 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   StreamSubscription _postSubscription;
   StreamSubscription _commentsSubscription;
 
+  ManagePostReactionsUseCase _managePostReactionsUseCase;
+
   PostDetailsBloc({
     @required MooncakeAccount user,
     @required String postId,
     @required GetPostDetailsUseCase getPostDetailsUseCase,
     @required GetCommentsUseCase getCommentsUseCase,
+    @required ManagePostReactionsUseCase managePostReactionsUseCase,
   })  : assert(user != null),
         _user = user,
-        assert(getCommentsUseCase != null) {
+        assert(getCommentsUseCase != null),
+        assert(managePostReactionsUseCase != null),
+        _managePostReactionsUseCase = managePostReactionsUseCase {
     // Sub to the post details update
     _postSubscription = getPostDetailsUseCase.get(postId).listen((post) {
       add(ShowPostDetails(post: post));
@@ -44,6 +49,7 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
       postId: postId,
       getPostDetailsUseCase: Injector.get(),
       getCommentsUseCase: Injector.get(),
+      managePostReactionsUseCase: Injector.get(),
     );
   }
 
@@ -56,6 +62,10 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
       yield* _mapShowPostDetailsEventToState(event);
     } else if (event is ShowTab) {
       yield* _mapShowTabEventToState(event);
+    } else if (event is ToggleLike) {
+      add(ToggleReaction(Constants.LIKE_REACTION));
+    } else if (event is ToggleReaction) {
+      _handleToggleReactionEvent(event);
     }
   }
 
@@ -81,6 +91,16 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
     final currentState = state;
     if (currentState is PostDetailsLoaded) {
       yield currentState.copyWith(selectedTab: event.tab);
+    }
+  }
+
+  void _handleToggleReactionEvent(ToggleReaction event) async {
+    final currentState = state;
+    if (currentState is PostDetailsLoaded) {
+      await _managePostReactionsUseCase.addOrRemove(
+        postId: currentState.post.id,
+        reaction: event.reaction,
+      );
     }
   }
 

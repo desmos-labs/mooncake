@@ -35,9 +35,8 @@ class PostReactionAction extends StatelessWidget {
             ],
           ),
           onPressed: () {
-            // ignore: close_sinks
-            final bloc = BlocProvider.of<PostListItemBloc>(context);
-            bloc.add(AddOrRemovePostReaction(reaction: reaction));
+            BlocProvider.of<PostListItemBloc>(context)
+                .add(AddOrRemovePostReaction(reaction));
           },
           shape: StadiumBorder(
             side: BorderSide(
