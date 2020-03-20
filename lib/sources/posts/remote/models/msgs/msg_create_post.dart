@@ -74,8 +74,8 @@ class MsgCreatePost extends StdMsg {
       return Exception("Parent ID cannot be empty");
     }
 
-    if (message.isEmpty && (medias == null || medias.isEmpty)) {
-      return Exception("Message and medias cannot be both empty");
+    if (message.isEmpty) {
+      return Exception("Message cannot be both empty");
     }
 
     if (subspace.isEmpty) {

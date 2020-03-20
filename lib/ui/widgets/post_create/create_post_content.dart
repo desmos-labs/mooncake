@@ -10,9 +10,10 @@ import 'images/create_post_images_list.dart';
 /// Such content includes a top bar and the [TextFormField] inside which
 /// the post message is inserted.
 class CreatePostContent extends StatelessWidget {
+  final maxTextLength = 500;
+
   final Post parentPost;
   final double bottomPadding;
-
   const CreatePostContent({
     Key key,
     this.parentPost,
@@ -37,7 +38,7 @@ class CreatePostContent extends StatelessWidget {
                   ),
                   children: <Widget>[
                     if (parentPost != null) _parentPostPreview(context),
-                    _postTextInput(context),
+                    _postTextInput(context, state),
                     if (state.medias.isNotEmpty) _imagesPreview(),
                   ],
                 ),
@@ -60,19 +61,27 @@ class CreatePostContent extends StatelessWidget {
     );
   }
 
-  Widget _postTextInput(BuildContext context) {
+  Widget _postTextInput(BuildContext context, PostInputState state) {
+    final border = UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.transparent),
+    );
+    final isValid = state.isValid;
+
     return TextFormField(
+      maxLength: maxTextLength,
+      textInputAction: isValid ? TextInputAction.send : TextInputAction.done,
+      onFieldSubmitted: isValid ? (_) => _onSubmitted(context) : null,
       key: PostsKeys.postMessageField,
       autofocus: true,
       onChanged: (value) => _messageChanged(context, value),
       decoration: InputDecoration(
         hintText: PostsLocalizations.of(context).createPostHint,
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.transparent),
-        ),
+        border: border,
+        focusedBorder: border,
+        enabledBorder: border,
+        disabledBorder: border,
+        errorBorder: border,
+        focusedErrorBorder: border,
       ),
     );
   }
@@ -89,5 +98,9 @@ class CreatePostContent extends StatelessWidget {
 
   void _messageChanged(BuildContext context, String value) {
     BlocProvider.of<PostInputBloc>(context).add(MessageChanged(value));
+  }
+
+  void _onSubmitted(BuildContext context) {
+    BlocProvider.of<PostInputBloc>(context).add(SavePost());
   }
 }

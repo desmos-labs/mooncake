@@ -113,7 +113,7 @@ class Post extends Equatable implements Comparable<Post> {
     List<String> commentsIds = const [],
     this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
   })  : assert(id != null),
-        assert(message != null || medias?.isNotEmpty == true),
+        assert(message != null && message.isNotEmpty),
         assert(created != null),
         assert(subspace != null),
         assert(owner != null),
