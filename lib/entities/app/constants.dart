@@ -2,6 +2,9 @@ import 'package:meta/meta.dart';
 
 /// Contains the application-wide constants.
 class Constants {
+  /// Explorer
+  static const EXPLORER = "https://morpheus.desmos.network";
+
   /// Subspace that should be used to create and read posts
   static const SUBSPACE =
       "2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88";

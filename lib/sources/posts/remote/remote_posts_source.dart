@@ -130,7 +130,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   }
 
   @override
-  Future<void> savePosts(List<Post> posts) async {
+  Future<TransactionResult> savePosts(List<Post> posts) async {
     final wallet = await _userSource.getWallet();
 
     // Get the existing posts list
@@ -149,7 +149,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     );
 
     // Get the result of the transactions
-    await _chainHelper.sendTx(messages, wallet);
+    return _chainHelper.sendTx(messages, wallet);
   }
 
   /// Allows to upload the media of each [posts] item if necessary.

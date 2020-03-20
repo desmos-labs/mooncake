@@ -41,7 +41,7 @@ class ManagePostReactionsUseCase {
     if (!post.reactions.contains(reactionObj)) {
       post = post.copyWith(reactions: post.reactions + [reactionObj]);
       await _postsRepository.savePost(post.copyWith(
-        status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+        status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
       ));
     }
 
@@ -51,7 +51,7 @@ class ManagePostReactionsUseCase {
         reactions: post.reactions.where((r) => r != reactionObj).toList(),
       );
       await _postsRepository.savePost(post.copyWith(
-        status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+        status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
       ));
     }
 

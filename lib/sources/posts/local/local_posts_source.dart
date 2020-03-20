@@ -53,6 +53,21 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
+  Future<List<Post>> getPostsByTxHash(String txHash) async {
+    final database = await this.database;
+    final finder = Finder(
+      filter: Filter.and([
+        Filter.equals(Post.STATUS_VALUE_FIELD, PostStatusValue.TX_SENT.value),
+        Filter.equals(Post.STATUS_DATA_FIELD, txHash),
+      ]),
+    );
+
+    final records = await store.find(database, finder: finder);
+    final posts = records.map((record) => Post.fromJson(record.value)).toList();
+    return posts;
+  }
+
+  @override
   Stream<List<Post>> getPostComments(String postId) {
     return postsStream
         .map((list) => list.where((post) => post.parentId == postId).toList());
@@ -75,13 +90,33 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     final database = await this.database;
     final finder = Finder(
       filter: Filter.or([
-        Filter.equals(Post.STATUS_FIELD, PostStatusValue.TO_BE_SYNCED.value),
-        Filter.equals(Post.STATUS_FIELD, PostStatusValue.ERRORED.value),
+        Filter.equals(
+          Post.STATUS_VALUE_FIELD,
+          PostStatusValue.STORED_LOCALLY.value,
+        ),
+        Filter.equals(
+          Post.STATUS_VALUE_FIELD,
+          PostStatusValue.ERRORED.value,
+        ),
       ]),
     );
 
     final records = await store.find(database, finder: finder);
     return records.map((record) => Post.fromJson(record.value)).toList();
+  }
+
+  /// Returns the post having the given creation data and creator, or
+  /// `null` if such post could not be found.
+  Future<Post> _getSimilarPost(Post post) async {
+    final key = getPostKey(post);
+    final database = await this.database;
+    final record = store.record(key);
+    if (!await record.exists(database)) {
+      return null;
+    }
+
+    final value = await record.get(database);
+    return Post.fromJson(value);
   }
 
   /// Saves the given [post], updating its parent as well (if it has one).

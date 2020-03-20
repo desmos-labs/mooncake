@@ -48,5 +48,5 @@ class PostsKeys {
 
   static Key mnemonicField = const Key('__mnemonciField__');
 
-  static Key syncErrorDialog = const Key('__syncingErrorDialog__');
+  static Key postItemPopup = const Key('__postItemPopup__');
 }

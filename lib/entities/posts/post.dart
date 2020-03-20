@@ -15,7 +15,10 @@ class Post extends Equatable implements Comparable<Post> {
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
   /// Identifier used to reference posts status value.
-  static const STATUS_FIELD = "status.value";
+  static const STATUS_VALUE_FIELD = "status.value";
+
+  /// Identifier used to reference the data associated to the post status.
+  static const STATUS_DATA_FIELD = "status.data";
 
   /// Identifier used to reference post creation date.
   static const DATE_FIELD = "created";
@@ -86,7 +89,7 @@ class Post extends Equatable implements Comparable<Post> {
   /// Static method used to implement a custom deserialization of posts.
   static PostStatus _postStatusFromJson(Map<String, dynamic> json) {
     return json == null
-        ? PostStatus(value: PostStatusValue.SYNCED)
+        ? PostStatus(value: PostStatusValue.TX_SUCCESSFULL)
         : PostStatus.fromJson(json);
   }
 
@@ -103,7 +106,7 @@ class Post extends Equatable implements Comparable<Post> {
     List<PostMedia> medias = const [],
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
-    this.status = const PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+    this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
   })  : assert(id != null),
         assert(message != null || medias?.isNotEmpty == true),
         assert(created != null),
@@ -114,6 +117,7 @@ class Post extends Equatable implements Comparable<Post> {
         this.commentsIds = commentsIds ?? [];
 
   Post copyWith({
+    PostStatus status,
     String parentId,
     String message,
     String created,
@@ -125,9 +129,9 @@ class Post extends Equatable implements Comparable<Post> {
     List<PostMedia> medias,
     List<Reaction> reactions,
     List<String> commentsIds,
-    PostStatus status,
   }) {
     return Post(
+      status: status ?? this.status,
       id: this.id,
       parentId: parentId ?? this.parentId,
       message: message ?? this.message,
@@ -140,7 +144,6 @@ class Post extends Equatable implements Comparable<Post> {
       medias: medias ?? this.medias,
       reactions: reactions ?? this.reactions,
       commentsIds: commentsIds ?? this.commentsIds,
-      status: status ?? this.status,
     );
   }
 

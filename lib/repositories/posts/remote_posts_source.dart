@@ -10,5 +10,5 @@ abstract class RemotePostsSource {
   Stream<List<Post>> get postsStream;
 
   /// Saves the given list of [posts] into the source.
-  Future<void> savePosts(List<Post> posts);
+  Future<TransactionResult> savePosts(List<Post> posts);
 }

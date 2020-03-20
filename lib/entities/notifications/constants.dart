@@ -22,6 +22,9 @@ class NotificationTypes {
   static const REACTION = "reaction";
   static const MENTION = "mention";
   static const TAG = "tag";
+
+  static const TRANSACTION_SUCCESS = "transaction_success";
+  static const TRANSACTION_FAIL = "transaction_fail";
 }
 
 /// The [NotificationActions] contains the definition of all the possible

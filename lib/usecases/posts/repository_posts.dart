@@ -11,6 +11,10 @@ abstract class PostsRepository {
   /// [postId], emitting the new data each time the post is updated.
   Stream<Post> getPostById(String postId);
 
+  /// Returns a list of all the posts that have been included inside
+  /// the transaction having the given [txHash].
+  Future<List<Post>> getPostsByTxHash(String txHash);
+
   /// Returns a [Stream] that emits all the comments of the post
   /// having the given [postId] as soon as they are created or updated.
   Stream<List<Post>> getPostComments(String postId);

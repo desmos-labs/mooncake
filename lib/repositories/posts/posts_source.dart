@@ -10,6 +10,10 @@ abstract class LocalPostsSource {
   /// If no post with the given id was found, returns `null` instead.
   Stream<Post> getPostById(String postId);
 
+  /// Returns the list of posts that have been included inside the
+  /// transaction having the given [txHash].
+  Future<List<Post>> getPostsByTxHash(String txHash);
+
   /// Returns the list of all posts that represent comments to
   /// the post having the given [postId].
   Stream<List<Post>> getPostComments(String postId);

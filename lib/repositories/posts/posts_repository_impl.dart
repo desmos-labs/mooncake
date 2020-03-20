@@ -35,6 +35,10 @@ class PostsRepositoryImpl extends PostsRepository {
       _localPostsSource.getPostById(postId);
 
   @override
+  Future<List<Post>> getPostsByTxHash(String txHash) =>
+      _localPostsSource.getPostsByTxHash(txHash);
+
+  @override
   Stream<List<Post>> getPostComments(String postId) =>
       _localPostsSource.getPostComments(postId);
 
@@ -45,7 +49,7 @@ class PostsRepositoryImpl extends PostsRepository {
   Future<void> syncPosts() async {
     // Get the posts
     final posts = await _localPostsSource.getPostsToSync();
-    final syncingStatus = PostStatus(value: PostStatusValue.SYNCING);
+    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
     final syncingPosts =
         posts.map((post) => post.copyWith(status: syncingStatus)).toList();
 
@@ -59,14 +63,34 @@ class PostsRepositoryImpl extends PostsRepository {
       await _localPostsSource.savePost(post);
     });
 
-    // Send the post transactions
     try {
-      await _remotePostsSource.savePosts(syncingPosts);
+      // Send the post transactions
+      final result = await _remotePostsSource.savePosts(syncingPosts);
+
+      // Update the posts based on the sync result
+      PostStatus postStatus;
+      switch (result.success) {
+        case true:
+          postStatus = PostStatus(
+            value: PostStatusValue.TX_SENT,
+            data: result.hash,
+          );
+          break;
+        case false:
+          postStatus = PostStatus(
+            value: PostStatusValue.ERRORED,
+            data: result.error.errorMessage,
+          );
+          break;
+      }
+      syncingPosts.forEach((post) async {
+        await _localPostsSource.savePost(post.copyWith(status: postStatus));
+      });
     } catch (error) {
       print("Sync error: $error");
       final status = PostStatus(
         value: PostStatusValue.ERRORED,
-        error: error.toString(),
+        data: error.toString(),
       );
 
       // Set the posts state to failed

@@ -69,7 +69,7 @@ void _initPosts(MooncakeAccount user) async {
       subspace: Constants.SUBSPACE,
       allowsComments: true,
       optionalData: {},
-      status: PostStatus(value: PostStatusValue.SYNCED),
+      status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
       lastEdited: null,
       message:
           "Social networking is such a massive part of our lives. From today we are giving complete power to the users. Visit [desmos.network](https://desmos.network).",
@@ -112,7 +112,7 @@ void _initPosts(MooncakeAccount user) async {
       subspace: Constants.SUBSPACE,
       allowsComments: true,
       optionalData: {},
-      status: PostStatus(value: PostStatusValue.SYNCED),
+      status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
       lastEdited: null,
       message:
           "Aliquam non sem nulla. In nulla mauris, imperdiet in ex in, egestas eleifend tellus. Curabitur facilisis mi nibh, sit amet luctus augue fermentum a.",
@@ -177,7 +177,7 @@ void _initPosts(MooncakeAccount user) async {
       subspace: Constants.SUBSPACE,
       allowsComments: true,
       optionalData: {},
-      status: PostStatus(value: PostStatusValue.SYNCED),
+      status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
       lastEdited: null,
       message:
           "Aliquam non sem nulla. In nulla mauris, imperdiet in ex in, egestas eleifend tellus. Curabitur facilisis mi nibh, sit amet luctus augue fermentum a.",

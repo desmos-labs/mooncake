@@ -5,6 +5,7 @@ import 'package:mooncake/entities/entities.dart';
 part 'post_notifications.g.dart';
 
 /// Represents a basic notification that represents an interaction with a post.
+@immutable
 abstract class BasePostInteractionNotification extends NotificationData {
   /// Represents the ID of post towards which this notification is directed.
   @JsonKey(name: "post_id", nullable: false)

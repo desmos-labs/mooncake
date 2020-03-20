@@ -7,3 +7,4 @@ export 'usecase_get_posts.dart';
 export 'usecase_get_user_reactions_to_post.dart';
 export 'usecase_save_post.dart';
 export 'usecase_sync.dart';
+export 'usecase_update_posts_status.dart';

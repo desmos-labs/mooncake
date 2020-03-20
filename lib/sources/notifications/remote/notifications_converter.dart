@@ -10,7 +10,7 @@ class NotificationConverter {
   /// Converts the given [message] to the proper [NotificationData] instance.
   NotificationData convertFcmMessage(FcmMessage message) {
     switch (message.type) {
-      case "comment":
+      case NotificationTypes.COMMENT:
         return PostCommentNotification(
           postId: message.data["post_id"],
           user: User.fromAddress(message.data["post_creator"]),
@@ -20,7 +20,7 @@ class NotificationConverter {
           body: message.notification?.body,
         );
 
-      case "mention":
+      case NotificationTypes.COMMENT:
         return PostMentionNotification(
           postId: message.data["post_id"],
           user: User.fromAddress(message.data["post_creator"]),
@@ -28,6 +28,19 @@ class NotificationConverter {
           text: message.data["post_message"],
           title: message.notification?.title,
           body: message.notification?.body,
+        );
+
+      case NotificationTypes.TRANSACTION_SUCCESS:
+        return TxSuccessfulNotification(
+          date: DateTime.now(),
+          txHash: message.data["tx_hash"],
+        );
+
+      case NotificationTypes.TRANSACTION_FAIL:
+        return TxFailedNotification(
+          date: DateTime.now(),
+          txHash: message.data["tx_hash"],
+          error: message.data["tx_error"],
         );
 
       // TODO: Add other types

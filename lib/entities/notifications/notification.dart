@@ -89,6 +89,10 @@ abstract class NotificationData extends Equatable {
       return PostLikeNotification.fromJson(json);
     } else if (type == NotificationTypes.MENTION) {
       return PostMentionNotification.fromJson(json);
+    } else if (type == NotificationTypes.TRANSACTION_SUCCESS) {
+      return TxSuccessfulNotification.fromJson(json);
+    } else if (type == NotificationTypes.TRANSACTION_FAIL) {
+      return TxFailedNotification.fromJson(json);
     }
     return null;
   }

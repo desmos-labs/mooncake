@@ -13,6 +13,7 @@ class SetBiometricTitle extends StatelessWidget {
           child: Icon(
             MooncakeIcons.fingerprint,
             size: MediaQuery.of(context).size.height * 0.3,
+            color: Colors.white,
           ),
         ),
         SizedBox(height: 20),

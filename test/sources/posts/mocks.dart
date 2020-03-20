@@ -12,7 +12,7 @@ final Post testPost = Post(
   owner: "desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h",
   reactions: [],
   commentsIds: [],
-  status: PostStatus(value: PostStatusValue.SYNCED),
+  status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
 );
 
 final List<Post> testPosts = [
@@ -28,7 +28,7 @@ final List<Post> testPosts = [
     owner: "desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h",
     reactions: [],
     commentsIds: [],
-    status: PostStatus(value: PostStatusValue.SYNCED),
+    status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
   ),
   Post(
     id: "2",
@@ -51,7 +51,7 @@ final List<Post> testPosts = [
       )
     ],
     commentsIds: ["10"],
-    status: PostStatus(value: PostStatusValue.SYNCED),
+    status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
   ),
   Post(
     id: "3",
@@ -65,7 +65,7 @@ final List<Post> testPosts = [
     owner: "desmos15x3e6md5gdcsszc2nx88trnn85nn0qzgjwl9pj",
     reactions: [],
     commentsIds: [],
-    status: PostStatus(value: PostStatusValue.SYNCING),
+    status: PostStatus(value: PostStatusValue.SENDING_TX),
   ),
   Post(
     id: "4",
@@ -82,7 +82,7 @@ final List<Post> testPosts = [
           value: "💢", owner: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl")
     ],
     commentsIds: [],
-    status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+    status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
   ),
   Post(
     id: "5",
@@ -96,7 +96,7 @@ final List<Post> testPosts = [
     owner: "desmos15x3e6md5gdcsszc2nx88trnn85nn0qzgjwl9pj",
     reactions: [],
     commentsIds: [],
-    status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+    status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
   ),
 ];
 
@@ -113,7 +113,7 @@ final List<Post> testComments = [
     owner: "desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h",
     reactions: [],
     commentsIds: [],
-    status: PostStatus(value: PostStatusValue.SYNCED),
+    status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
   ),
   Post(
     id: "11",
@@ -127,6 +127,6 @@ final List<Post> testComments = [
     owner: "desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h",
     reactions: [],
     commentsIds: [],
-    status: PostStatus(value: PostStatusValue.SYNCED),
+    status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
   ),
 ];

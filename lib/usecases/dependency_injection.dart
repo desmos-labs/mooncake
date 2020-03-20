@@ -61,6 +61,9 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => SavePostUseCase(
             postsRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => UpdatePostsStatusUseCase(
+            postsRepository: injector.get(),
+          ))
 
       // Settings use cases
       ..bindFactory((injector, params) => SaveSettingUseCase(

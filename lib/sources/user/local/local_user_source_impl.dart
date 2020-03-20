@@ -109,9 +109,9 @@ class LocalUserSourceImpl extends LocalUserSource {
   Future<MooncakeAccount> getAccount() async {
     // Try getting the user from the database
     final database = await this._database;
-    final record = await _store.findFirst(database);
+    final record = await _store.record(_USER_DATA_KEY).get(database);
     if (record != null) {
-      return MooncakeAccount.fromJson(record.value);
+      return MooncakeAccount.fromJson(record);
     }
 
     // If the database does not have the user, build it from the address

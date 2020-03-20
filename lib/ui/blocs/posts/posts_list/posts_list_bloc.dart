@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 import '../export.dart';
@@ -16,21 +17,29 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final SyncPostsUseCase _syncPostsUseCase;
   Timer _syncTimer;
 
+  // Use cases
+  UpdatePostsStatusUseCase _updatePostsStatusUseCase;
+
   // Subscriptions
   StreamSubscription _userSubscription;
   StreamSubscription _postsSubscription;
+  StreamSubscription _txSubscription;
 
   PostsListBloc({
     @required int syncPeriod,
+    @required FirebaseAnalytics analytics,
     @required GetPostsUseCase getPostsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
     @required GetAccountUseCase getUserUseCase,
-    @required FirebaseAnalytics analytics,
+    @required GetNotificationsUseCase getNotificationsUseCase,
+    @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getPostsUseCase != null),
         assert(syncPostsUseCase != null),
         _syncPostsUseCase = syncPostsUseCase,
-        assert(getUserUseCase != null) {
+        assert(getUserUseCase != null),
+        assert(updatePostsStatusUseCase != null),
+        _updatePostsStatusUseCase = updatePostsStatusUseCase {
     _initializeSyncTimer();
 
     // Subscribe to the user changes
@@ -42,6 +51,15 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     _postsSubscription = getPostsUseCase.stream().listen((posts) {
       add(PostsUpdated(posts));
     });
+
+    // Subscribe to the transactions notifications
+    _txSubscription = getNotificationsUseCase.stream().listen((notification) {
+      if (notification is TxSuccessfulNotification) {
+        add(TxSuccessful(txHash: notification.txHash));
+      } else if (notification is TxFailedNotification) {
+        add(TxFailed(txHash: notification.txHash, error: notification.error));
+      }
+    });
   }
 
   factory PostsListBloc.create({int syncPeriod = 30}) {
@@ -51,6 +69,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       syncPostsUseCase: Injector.get(),
       getUserUseCase: Injector.get(),
       analytics: Injector.get(),
+      getNotificationsUseCase: Injector.get(),
+      updatePostsStatusUseCase: Injector.get(),
     );
   }
 
@@ -67,6 +87,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
       yield* _mapSyncPostsCompletedEventToState();
+    } else if (event is TxSuccessful) {
+      _handleTxSuccessfulEvent(event);
+    } else if (event is TxFailed) {
+      _handleTxFailedEvent(event);
     }
   }
 
@@ -130,10 +154,31 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
+  /// Handles the event that tells the Bloc that a transaction has
+  /// been successful.
+  void _handleTxSuccessfulEvent(TxSuccessful event) async {
+    final status = PostStatus(
+      value: PostStatusValue.TX_SUCCESSFULL,
+      data: event.txHash,
+    );
+    await _updatePostsStatusUseCase.update(event.txHash, status);
+  }
+
+  /// Handles the event that tells the Bloc that a transaction has not
+  /// been successful.
+  void _handleTxFailedEvent(TxFailed event) async {
+    final status = PostStatus(
+      value: PostStatusValue.ERRORED,
+      data: event.error,
+    );
+    await _updatePostsStatusUseCase.update(event.txHash, status);
+  }
+
   @override
   Future<void> close() {
     _userSubscription?.cancel();
     _postsSubscription?.cancel();
+    _txSubscription?.cancel();
     _syncTimer?.cancel();
     return super.close();
   }

@@ -242,7 +242,7 @@ void main() {
 
     void checkPostsStatus(List<Post> posts) {
       posts.forEach((p) {
-        if (p.status.value != PostStatusValue.SYNCED) {
+        if (p.status.value != PostStatusValue.TX_SUCCESSFULL) {
           throw Exception("Post with id ${p.id} has not a synced status");
         }
       });
@@ -318,7 +318,7 @@ void main() {
           )
         ],
         commentsIds: ["57"],
-        status: PostStatus(value: PostStatusValue.SYNCED),
+        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
       );
       expect(post, expected);
     });

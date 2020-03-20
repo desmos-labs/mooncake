@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic post-related event.
@@ -48,4 +49,29 @@ class SyncPosts extends PostsListEvent {
 class SyncPostsCompleted extends PostsListEvent {
   @override
   String toString() => 'SyncPostsCompleted';
+}
+
+/// Tells the Bloc that a transaction has been successful.
+class TxSuccessful extends PostsListEvent {
+  final String txHash;
+
+  TxSuccessful({@required this.txHash}) : assert(txHash != null);
+
+  @override
+  List<Object> get props => [txHash];
+}
+
+/// Tells the Bloc that a transaction has failed with a given errror.
+class TxFailed extends PostsListEvent {
+  final String txHash;
+  final String error;
+
+  TxFailed({
+    @required this.txHash,
+    @required this.error,
+  })  : assert(txHash != null),
+        assert(error != null);
+
+  @override
+  List<Object> get props => [txHash, error];
 }

@@ -82,11 +82,15 @@ phrase to access your account.
 
   // Syncing
   String get syncingActivities => "Syncing activities to the chain";
-  String get fetchingPosts => "Checking for new posts...";
   String get syncErrorTitle => "Syncing error";
   String get syncErrorDesc =>
       "An error has verified when syncing the posts to the chain:";
+  String get syncErrorCopyButton => "Copy error";
   String get syncErrorCopied => "Sync error copied to clipboard";
+  String get syncSuccessTitle => "Transaction sent";
+  String syncSuccessBody(String txHash) =>
+      "A transaction with hash %s has been sent to the chain";
+  String get syncSuccessBrowseButton => "Browse transaction";
 
   // Create post screen
   String get newPostHint => "What's going on?";

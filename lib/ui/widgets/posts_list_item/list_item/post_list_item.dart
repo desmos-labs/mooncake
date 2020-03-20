@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -7,6 +6,7 @@ import 'package:mooncake/ui/ui.dart';
 
 import 'action_bar/export.dart';
 import 'reactions/post_reactions_list.dart';
+import 'popups/export.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
 /// It is made of the following components:
@@ -42,15 +42,13 @@ class PostListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).cardColor;
-    if (post.status.value != PostStatusValue.SYNCED) {
+    if (post.status.value != PostStatusValue.TX_SUCCESSFULL) {
       color = color.withOpacity(0.5);
     }
 
     if (post.status.value == PostStatusValue.ERRORED) {
       color = Theme.of(context).errorColor.withOpacity(0.75);
     }
-
-
 
     return Card(
       color: color,
@@ -61,9 +59,7 @@ class PostListItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () => _openPostDetails(context),
-        onLongPress: post.status.value == PostStatusValue.ERRORED
-            ? () => _showPostError(context, post)
-            : null,
+        onLongPress: _handleLongClick(context),
         child: Container(
           padding: PostsTheme.postItemPadding,
           child: Column(
@@ -87,52 +83,18 @@ class PostListItem extends StatelessWidget {
     navigatorBloc.add(NavigateToPostDetails(context, post.id));
   }
 
-  void _showPostError(BuildContext context, Post post) {
-    showDialog(
+  Function _handleLongClick(BuildContext context) {
+    if (post.status.hasError) {
+      return () => showPostItemPopup(
         context: context,
-        builder: (buildContext) {
-          return Dialog(
-            key: PostsKeys.syncErrorDialog,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Container(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    PostsLocalizations.of(buildContext).syncErrorTitle,
-                    style: Theme.of(buildContext).textTheme.headline6,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(PostsLocalizations.of(buildContext).syncErrorDesc),
-                  const SizedBox(height: 16),
-                  Text(post.status.error),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      FlatButton(
-                        child: Text("Copy error"),
-                        onPressed: () => _copyError(context),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  void _copyError(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: post.status.error)).then((_) {
-      final snackBar = SnackBar(
-        content: Text(PostsLocalizations.of(context).syncErrorCopied),
+        content: PostErrorPopupContent(error: post.status.data),
       );
-      Navigator.pop(context);
-      Scaffold.of(context).showSnackBar(snackBar);
-    });
+    } else if (post.status.hasTxHash) {
+      return () => showPostItemPopup(
+        context: context,
+        content: PostSuccessPopupContent(txHash: post.status.data),
+      );
+    }
+    return null;
   }
 }
