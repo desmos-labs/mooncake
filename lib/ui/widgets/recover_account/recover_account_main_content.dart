@@ -60,18 +60,19 @@ class RecoverAccountMainContent extends StatelessWidget {
               ),
 
             // TODO: Remove this
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                  child: SecondaryRoundedButton(
-                    text: PostsLocalizations.of(context)
-                        .recoverAccountContinueButton,
-                    onPressed: () => _debugMnemonic(context),
+            if (kDebugMode)
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: SecondaryRoundedButton(
+                      text: PostsLocalizations.of(context)
+                          .recoverAccountContinueButton,
+                      onPressed: () => _debugMnemonic(context),
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
 
             // Continue button
             Row(
@@ -94,31 +95,7 @@ class RecoverAccountMainContent extends StatelessWidget {
   }
 
   void _debugMnemonic(BuildContext context) {
-    final bloc = BlocProvider.of<RecoverAccountBloc>(context);
-    bloc.add(WordSelected("frown"));
-    bloc.add(WordSelected("spike"));
-    bloc.add(WordSelected("buyer"));
-    bloc.add(WordSelected("diagram"));
-    bloc.add(WordSelected("between"));
-    bloc.add(WordSelected("output"));
-    bloc.add(WordSelected("keep"));
-    bloc.add(WordSelected("ask"));
-    bloc.add(WordSelected("column"));
-    bloc.add(WordSelected("wage"));
-    bloc.add(WordSelected("kid"));
-    bloc.add(WordSelected("layer"));
-    bloc.add(WordSelected("nasty"));
-    bloc.add(WordSelected("grab"));
-    bloc.add(WordSelected("learn"));
-    bloc.add(WordSelected("same"));
-    bloc.add(WordSelected("morning"));
-    bloc.add(WordSelected("fog"));
-    bloc.add(WordSelected("mandate"));
-    bloc.add(WordSelected("sphere"));
-    bloc.add(WordSelected("cream"));
-    bloc.add(WordSelected("focus"));
-    bloc.add(WordSelected("sister"));
-    bloc.add(WordSelected("lava"));
+//    final bloc = BlocProvider.of<RecoverAccountBloc>(context);
   }
 
   /// Handle the click on the continue button
