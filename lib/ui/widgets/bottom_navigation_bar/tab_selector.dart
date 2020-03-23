@@ -39,7 +39,7 @@ class TabSelector extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: ThemeColors.gradient,
               ),
-              child: Icon(MooncakeIcons.addPost, size: 48),
+              child: Icon(MooncakeIcons.plus, size: 48),
             ),
           ),
           BottomNavigationButton(

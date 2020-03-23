@@ -40,8 +40,8 @@ class HomeScreen extends StatelessWidget {
                 ),
             leading: IconButton(
               icon: Icon(Theme.of(context).brightness == Brightness.light
-                  ? MooncakeIcons.lightBulb
-                  : MooncakeIcons.lightBulbFilled),
+                  ? MooncakeIcons.lightbulb
+                  : MooncakeIcons.lightbulbF),
               color: Theme.of(context).accentColor,
               onPressed: () {
                 DynamicTheme.of(context).setBrightness(
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
             actions: [
               IconButton(
                 color: Theme.of(context).accentColor,
-                icon: Icon(MooncakeIcons.wallet),
+                icon: Icon(MooncakeIcons.coin),
                 onPressed: () {
                   BlocProvider.of<NavigatorBloc>(context)
                       .add(NavigateToWallet());

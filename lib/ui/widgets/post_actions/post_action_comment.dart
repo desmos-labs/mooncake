@@ -21,7 +21,7 @@ class PostCommentAction extends StatelessWidget {
       onTap: () => _onTap(context),
       child: Row(
         children: <Widget>[
-          FaIcon(MooncakeIcons.comment, size: size),
+          FaIcon(MooncakeIcons.messageAlt, size: size),
           if (comments.isNotEmpty)
             Row(
               mainAxisSize: MainAxisSize.min,

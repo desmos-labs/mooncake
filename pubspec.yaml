@@ -48,6 +48,7 @@ dependencies:
   mime_type:
   path_provider:
   password_strength:
+  recase:
   rxdart:
   sembast:
   sentry:
@@ -72,7 +73,7 @@ flutter:
   fonts:
     - family: Mooncake
       fonts:
-        - asset: assets/fonts/mooncake-icons.ttf
+        - asset: assets/fonts/icomoon.ttf
           weight: 400
     - family: Montserrat
       fonts:

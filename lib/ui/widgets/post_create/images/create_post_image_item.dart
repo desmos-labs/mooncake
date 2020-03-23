@@ -52,7 +52,7 @@ class CreatePostImageItem extends StatelessWidget {
               ),
               padding: EdgeInsets.all(1),
               child: FaIcon(
-                MooncakeIcons.cross,
+                MooncakeIcons.close,
                 size: size / 6,
                 color: Colors.white,
               ),

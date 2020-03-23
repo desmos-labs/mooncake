@@ -62,7 +62,7 @@ class PostReactionsList extends StatelessWidget {
                 children: List.generate(itemCount, (index) {
                   if (showMore && index == itemCount - 1) {
                     return IconButton(
-                      icon: Icon(MooncakeIcons.more, size: 16),
+                      icon: Icon(MooncakeIcons.moreHorizontal, size: 16),
                       onPressed: () => _triggerExpansion(context),
                     );
                   }

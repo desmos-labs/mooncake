@@ -30,7 +30,7 @@ class PasswordInputField extends StatelessWidget {
                             .passwordShowPasswordButton,
                     icon: Icon(
                       state.showPassword
-                          ? MooncakeIcons.eyeSlash
+                          ? MooncakeIcons.eyeClose
                           : MooncakeIcons.eye,
                       color: Color(0xFF999999),
                     ),

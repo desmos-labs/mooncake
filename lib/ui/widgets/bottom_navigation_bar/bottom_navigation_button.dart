@@ -29,10 +29,10 @@ class BottomNavigationButton extends StatelessWidget {
     };
 
     final selectedIcons = {
-      AppTab.allPosts: MooncakeIcons.homeFilled,
-      AppTab.likedPosts: MooncakeIcons.heartFilled,
-      AppTab.notifications: MooncakeIcons.bellFilled,
-      AppTab.account: MooncakeIcons.userFilled,
+      AppTab.allPosts: MooncakeIcons.home,
+      AppTab.likedPosts: MooncakeIcons.heartF,
+      AppTab.notifications: MooncakeIcons.bellF,
+      AppTab.account: MooncakeIcons.userF,
     };
 
     return BlocBuilder<HomeBloc, AppTab>(

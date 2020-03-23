@@ -21,7 +21,7 @@ class PostLikeAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final icon = isLiked
-        ? FaIcon(MooncakeIcons.heartFilled)
+        ? FaIcon(MooncakeIcons.heartF)
         : FaIcon(MooncakeIcons.heart);
 
     return Row(
