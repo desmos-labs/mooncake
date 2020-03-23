@@ -23,19 +23,16 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   @override
   Future<MooncakeAccount> getAccount(String address) async {
     try {
-      // TODO: Get the avatar and username from the GraphQL endpoint when supported
-      final query = """
-        query UserByAddress {
-          user(where: {address: {_eq: "$address"}}) {
-            address
-          }
-        }
-      """;
-
       final cosmosAccount = await QueryHelper.getAccountData(
         _chainHelper.lcdEndpoint,
         address,
       );
+
+      // If no account is found, return null
+      if (cosmosAccount == null) {
+        return null;
+      }
+
       return MooncakeAccount(
         cosmosAccount: cosmosAccount,
         username: null,

@@ -3,9 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import '../../../post_actions/post_action_add_reaction.dart';
-import '../../../post_actions/post_action_comment.dart';
-import '../../../post_actions/post_action_like.dart';
 import 'post_likes_counter.dart';
 
 /// Represents the action bar containing all the actions that can be performed

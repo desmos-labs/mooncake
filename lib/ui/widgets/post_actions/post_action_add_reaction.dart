@@ -26,7 +26,7 @@ class PostAddReactionAction extends StatelessWidget {
       child: IconButton(
         padding: EdgeInsets.all(0.0),
         iconSize: size,
-        icon: Icon(MooncakeIcons.addReaction),
+        icon: Icon(MooncakeIcons.smiley),
         onPressed: () {
           showEmojiPicker(
             context: context,

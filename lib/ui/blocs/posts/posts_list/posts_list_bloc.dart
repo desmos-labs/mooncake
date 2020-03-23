@@ -146,10 +146,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Stream<PostsListState> _mapAddPostReactionEventToState(
     AddOrRemovePostReaction event,
   ) async* {
-    print("Add or remove: ${event.reaction}");
+    print("Add or remove: ${event.reactionCode}");
     await _managePostReactionsUseCase.addOrRemove(
       postId: event.post.id,
-      reaction: event.reaction,
+      reaction: event.reactionCode,
     );
   }
 

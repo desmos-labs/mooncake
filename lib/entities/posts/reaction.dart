@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -7,38 +8,49 @@ part 'reaction.g.dart';
 
 /// Represents a reaction for a post that has been inserted by a specific user.
 @immutable
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, ignoreUnannotated: true)
 class Reaction extends Equatable {
   @JsonKey(name: "user")
   final User user;
 
+  /// Represents the
   @JsonKey(name: "value")
-  final String value;
+  final String code;
+
+  String get rune => EmojiParser().emojify(code);
 
   /// Tells whether or not this reaction represents a like.
-  bool get isLike => value == Constants.LIKE_REACTION;
+  bool get isLike => code == Constants.LIKE_REACTION;
 
   Reaction({
     @required this.user,
-    this.value,
+    @required String code,
   })  : assert(user != null),
-        assert(value != null);
+        assert(code != null),
+        this.code = getEmojiCode(code);
 
-  @override
-  List<Object> get props => [this.user, this.value];
+  factory Reaction.withRune(User user, String rune) {
+    return Reaction(
+      user: user,
+      code: EmojiParser().unemojify(rune),
+    );
+  }
 
   factory Reaction.fromJson(Map<String, dynamic> json) =>
       _$ReactionFromJson(json);
 
+  @override
+  List<Object> get props => [this.user, this.code];
+
   /// Allows to create a copy of this [Reaction] having either [user] or
-  /// [value] changed.
+  /// [code] changed.
   Reaction copyWith({
     User user,
-    String value,
+    String code,
   }) {
     return Reaction(
       user: user ?? this.user,
-      value: value ?? this.value,
+      code: code ?? this.code,
     );
   }
 

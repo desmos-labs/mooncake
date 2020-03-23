@@ -51,12 +51,12 @@ class AddOrRemoveLike extends PostsListEvent {
 /// (if existing) a reaction from the current user to the post.
 class AddOrRemovePostReaction extends PostsListEvent {
   final Post post;
-  final String reaction;
+  final String reactionCode;
 
-  AddOrRemovePostReaction(this.post, this.reaction);
+  AddOrRemovePostReaction(this.post, this.reactionCode);
 
   @override
-  List<Object> get props => [post, reaction];
+  List<Object> get props => [post, reactionCode];
 
   @override
   String toString() => 'AddOrRemovePostReaction';

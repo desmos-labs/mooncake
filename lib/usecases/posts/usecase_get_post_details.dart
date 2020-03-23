@@ -14,5 +14,5 @@ class GetPostDetailsUseCase {
 
   /// Returns the [Stream] emitting the details of the [Post] having the
   /// specified [postId] each time it is updated.
-  Stream<Post> get(String postId) => _postsRepository.getPostById(postId);
+  Stream<Post> get(String postId) => _postsRepository.getPostByIdStream(postId);
 }

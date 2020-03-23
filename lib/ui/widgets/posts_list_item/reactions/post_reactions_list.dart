@@ -5,8 +5,6 @@ import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import '../../../post_actions/post_action_reaction.dart';
-
 /// Represents the bar displaying the list of reactions that a post
 /// has associated to itself.
 /// If [compact] is set to `true`, the list will be chopped to
@@ -24,15 +22,11 @@ class PostReactionsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostListItemBloc, PostListItemState>(
       builder: (BuildContext context, PostListItemState state) {
-        // Emoji parser
-        final parser = EmojiParser();
-
         // Filter the likes as they are showed independently
         final reactions = post.reactions
             .where((r) => !r.isLike)
-            .map((r) => r.copyWith(value: parser.emojify(r.value)))
-            .where((element) => element.value.runes.length == 1);
-        final reactMap = groupBy<Reaction, String>(reactions, (r) => r.value);
+            .where((element) => element.rune.runes.length == 1);
+        final reactMap = groupBy<Reaction, String>(reactions, (r) => r.rune);
 
         // Compute the number of items per row
         final singleRowItems = MediaQuery.of(context).size.width ~/ 70;
@@ -70,7 +64,8 @@ class PostReactionsList extends StatelessWidget {
                   final entry = reactMap.entries.toList()[index];
                   return PostReactionAction(
                     post: post,
-                    reaction: entry.key,
+                    reactionCode: entry.value[0].code,
+                    reactionRune: entry.value[0].rune,
                     reactionCount: entry.value.length,
                   );
                 }).toList(),

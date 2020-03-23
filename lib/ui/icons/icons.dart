@@ -177,7 +177,8 @@ class MooncakeIcons {
   static const IconData chevronCircleDownLeft = const IconDataMooncake(0xebd5);
   static const IconData chevronCircleDownLeftF = const IconDataMooncake(0xebd6);
   static const IconData chevronCircleDownRight = const IconDataMooncake(0xebd3);
-  static const IconData chevronCircleDownRightF = const IconDataMooncake(0xebd4);
+  static const IconData chevronCircleDownRightF =
+      const IconDataMooncake(0xebd4);
   static const IconData chevronCircleLeft = const IconDataMooncake(0xebd0);
   static const IconData chevronCircleLeftF = const IconDataMooncake(0xebd1);
   static const IconData chevronCircleRight = const IconDataMooncake(0xebce);
@@ -198,7 +199,8 @@ class MooncakeIcons {
   static const IconData chevronSquareDownLeft = const IconDataMooncake(0xebc0);
   static const IconData chevronSquareDownLeftF = const IconDataMooncake(0xebc1);
   static const IconData chevronSquareDownRight = const IconDataMooncake(0xebbe);
-  static const IconData chevronSquareDownRightF = const IconDataMooncake(0xebbf);
+  static const IconData chevronSquareDownRightF =
+      const IconDataMooncake(0xebbf);
   static const IconData chevronSquareLeft = const IconDataMooncake(0xebbb);
   static const IconData chevronSquareLeftF = const IconDataMooncake(0xebbc);
   static const IconData chevronSquareRight = const IconDataMooncake(0xebb9);
@@ -215,9 +217,12 @@ class MooncakeIcons {
   static const IconData chevronsCircleDown = const IconDataMooncake(0xebaa);
   static const IconData chevronsCircleDownF = const IconDataMooncake(0xebaf);
   static const IconData chevronsCircleDownLeft = const IconDataMooncake(0xebad);
-  static const IconData chevronsCircleDownLeftF = const IconDataMooncake(0xebae);
-  static const IconData chevronsCircleDownRight = const IconDataMooncake(0xebab);
-  static const IconData chevronsCircleDownRightF = const IconDataMooncake(0xebac);
+  static const IconData chevronsCircleDownLeftF =
+      const IconDataMooncake(0xebae);
+  static const IconData chevronsCircleDownRight =
+      const IconDataMooncake(0xebab);
+  static const IconData chevronsCircleDownRightF =
+      const IconDataMooncake(0xebac);
   static const IconData chevronsCircleLeft = const IconDataMooncake(0xeba8);
   static const IconData chevronsCircleLeftF = const IconDataMooncake(0xeba9);
   static const IconData chevronsCircleRight = const IconDataMooncake(0xeba6);
@@ -236,9 +241,12 @@ class MooncakeIcons {
   static const IconData chevronsSquareDown = const IconDataMooncake(0xeb95);
   static const IconData chevronsSquareDownF = const IconDataMooncake(0xeb9a);
   static const IconData chevronsSquareDownLeft = const IconDataMooncake(0xeb98);
-  static const IconData chevronsSquareDownLeftF = const IconDataMooncake(0xeb99);
-  static const IconData chevronsSquareDownRight = const IconDataMooncake(0xeb96);
-  static const IconData chevronsSquareDownRightF = const IconDataMooncake(0xeb97);
+  static const IconData chevronsSquareDownLeftF =
+      const IconDataMooncake(0xeb99);
+  static const IconData chevronsSquareDownRight =
+      const IconDataMooncake(0xeb96);
+  static const IconData chevronsSquareDownRightF =
+      const IconDataMooncake(0xeb97);
   static const IconData chevronsSquareLeft = const IconDataMooncake(0xeb93);
   static const IconData chevronsSquareLeftF = const IconDataMooncake(0xeb94);
   static const IconData chevronsSquareRight = const IconDataMooncake(0xeb91);

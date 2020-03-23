@@ -61,7 +61,7 @@ class MsgConverter {
         if (!post.reactions.contains(exReaction)) {
           reactionsToRemove.add(ReactionData(
             postId: post.id,
-            value: exReaction.value,
+            value: exReaction.code,
           ));
         }
       }
@@ -71,7 +71,7 @@ class MsgConverter {
       for (final localReaction in post.reactions) {
         if (!existingPost.reactions.contains(localReaction)) {
           reactionsToAdd.add(
-            ReactionData(postId: post.id, value: localReaction.value),
+            ReactionData(postId: post.id, value: localReaction.code),
           );
         }
       }

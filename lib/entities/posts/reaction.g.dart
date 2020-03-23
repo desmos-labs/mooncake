@@ -11,11 +11,11 @@ Reaction _$ReactionFromJson(Map<String, dynamic> json) {
     user: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
-    value: json['value'] as String,
+    code: json['value'] as String,
   );
 }
 
 Map<String, dynamic> _$ReactionToJson(Reaction instance) => <String, dynamic>{
       'user': instance.user?.toJson(),
-      'value': instance.value,
+      'value': instance.code,
     };

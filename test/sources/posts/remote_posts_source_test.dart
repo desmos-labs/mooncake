@@ -285,7 +285,7 @@ void main() {
 
   group('getPostById', () {
     test('reading returns null when post does not exist', () async {
-      final post = await source.getPostById("999");
+      final post = await source.getPostByIdStream("999");
       expect(post, isNull);
     });
 
@@ -296,7 +296,7 @@ void main() {
       when(chainHelper.queryChain("/posts/$postId")).thenAnswer(
           (_) => Future.value(LcdResponse.fromJson(jsonDecode(contents))));
 
-      final post = await source.getPostById(postId);
+      final post = await source.getPostByIdStream(postId);
       final expected = Post(
         id: "56",
         parentId: "0",

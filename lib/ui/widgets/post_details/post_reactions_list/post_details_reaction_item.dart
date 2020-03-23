@@ -11,8 +11,6 @@ class PostReactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parser = EmojiParser();
-    final reactionValue = parser.emojify(reaction.value);
     return Container(
       padding: PostsTheme.postItemPadding,
       child: Row(
@@ -28,7 +26,7 @@ class PostReactionItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: PostsTheme.defaultPadding),
-          Text(reactionValue),
+          Text(reaction.code),
         ],
       ),
     );

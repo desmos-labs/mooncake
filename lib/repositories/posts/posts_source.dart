@@ -8,7 +8,10 @@ abstract class LocalPostsSource {
 
   /// Returns the post having the given [id].
   /// If no post with the given id was found, returns `null` instead.
-  Stream<Post> getPostById(String postId);
+  Stream<Post> getPostStream(String postId);
+
+  /// Returns the details of the post currently stored inside the device.
+  Future<Post> getPostById(String postId);
 
   /// Returns the list of posts that have been included inside the
   /// transaction having the given [txHash].

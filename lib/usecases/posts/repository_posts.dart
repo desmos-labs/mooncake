@@ -9,7 +9,10 @@ abstract class PostsRepository {
 
   /// Returns a [Stream] that subscribes to the post having the specified
   /// [postId], emitting the new data each time the post is updated.
-  Stream<Post> getPostById(String postId);
+  Stream<Post> getPostByIdStream(String postId);
+
+  /// Returns the post having the given [postId] currently stored.
+  Future<Post> getPostById(String postId);
 
   /// Returns a list of all the posts that have been included inside
   /// the transaction having the given [txHash].

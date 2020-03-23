@@ -22,7 +22,7 @@ class ManagePostReactionsUseCase {
     @required String postId,
     @required String reaction,
   }) async {
-    Post post = await _postsRepository.getPostById(postId).first;
+    Post post = await _postsRepository.getPostById(postId);
     if (post == null) {
       return post;
     }
@@ -32,30 +32,14 @@ class ManagePostReactionsUseCase {
       return post;
     }
 
-    // Build the reaction object
     final account = await _userRepository.getAccount();
-    final user = User.fromAddress(account.cosmosAccount.address);
-    final reactionObj = Reaction(user: user, value: reaction);
+    final newReactions = post.reactions.removeOrAdd(account, reaction);
+    post = post.copyWith(
+      reactions: newReactions,
+      status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+    );
+    await _postsRepository.savePost(post);
 
-    // Add it to the list of reactions if not present and save the new post
-    if (!post.reactions.contains(reactionObj)) {
-      post = post.copyWith(reactions: post.reactions + [reactionObj]);
-      await _postsRepository.savePost(post.copyWith(
-        status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
-      ));
-    }
-
-    // Remove it from the list of reactions if already present
-    else {
-      post = post.copyWith(
-        reactions: post.reactions.where((r) => r != reactionObj).toList(),
-      );
-      await _postsRepository.savePost(post.copyWith(
-        status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
-      ));
-    }
-
-    // Return the (updated) post
     return post;
   }
 }

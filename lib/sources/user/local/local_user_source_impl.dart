@@ -95,13 +95,8 @@ class LocalUserSourceImpl extends LocalUserSource {
 
   @override
   Future<void> saveAccount(MooncakeAccount data) async {
-    // Null user, nothing to do
-    if (data == null) {
-      return;
-    }
-
     final database = await this._database;
-    await _store.record(_USER_DATA_KEY).put(database, data.toJson());
+    await _store.record(_USER_DATA_KEY).put(database, data?.toJson());
     _userController.add(data);
   }
 

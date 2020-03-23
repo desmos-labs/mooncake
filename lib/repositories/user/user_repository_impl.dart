@@ -39,7 +39,9 @@ class UserRepositoryImpl extends UserRepository {
 
     // Update the data from the remote source and save it locally
     final data = await _remoteUserSource.getAccount(user.cosmosAccount.address);
-    await _localUserSource.saveAccount(data);
+    if (data != null) {
+      await _localUserSource.saveAccount(data);
+    }
   }
 
   @override

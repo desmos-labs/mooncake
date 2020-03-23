@@ -33,7 +33,12 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Stream<Post> getPostById(String postId) {
+  Stream<Post> getPostByIdStream(String postId) {
+    return _localPostsSource.getPostStream(postId);
+  }
+
+  @override
+  Future<Post> getPostById(String postId) {
     return _localPostsSource.getPostById(postId);
   }
 

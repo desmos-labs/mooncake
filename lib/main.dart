@@ -83,19 +83,19 @@ void _initPosts(MooncakeAccount user) async {
       reactions: [
         Reaction(
           user: User.fromAddress(user.cosmosAccount.address),
-          value: "👍",
+          code: "👍",
         ),
         Reaction(
           user: User.fromAddress(
             "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
           ),
-          value: "😃",
+          code: "😃",
         ),
         Reaction(
           user: User.fromAddress(
             "desmos1hm422rugs829rmvrge35dea05sce86z2qf0mrc",
           ),
-          value: "😁",
+          code: "😁",
         )
       ],
       commentsIds: ["3"],
@@ -143,25 +143,25 @@ void _initPosts(MooncakeAccount user) async {
           user: User.fromAddress(
             "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
           ),
-          value: ":+1:",
+          code: ":+1:",
         ),
         Reaction(
           user: User.fromAddress(
             "desmos175u9d7kaqd737mqx9s34t7f3al5kvmjyuqep09",
           ),
-          value: Constants.LIKE_REACTION,
+          code: Constants.LIKE_REACTION,
         ),
         Reaction(
           user: User.fromAddress(
             "desmos1l5ftvt87xs98jttcv92sjzyuxc3rsukdf3t5t4",
           ),
-          value: Constants.LIKE_REACTION,
+          code: Constants.LIKE_REACTION,
         ),
         Reaction(
           user: User.fromAddress(
             "desmos16j35vxluyv8wue00xp3njvqzy0gqwsmj6z2jzv",
           ),
-          value: Constants.LIKE_REACTION,
+          code: Constants.LIKE_REACTION,
         ),
       ],
       commentsIds: [],
@@ -208,7 +208,7 @@ void _initPosts(MooncakeAccount user) async {
           user: User.fromAddress(
             "desmos12v62d963xs2sqfugdtrg4a8myekvj3sf473cfv",
           ),
-          value: ":+1:",
+          code: ":+1:",
         )
       ],
       commentsIds: [],

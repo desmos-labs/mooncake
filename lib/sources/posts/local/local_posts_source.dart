@@ -46,10 +46,22 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Stream<Post> getPostById(String postId) {
+  Stream<Post> getPostStream(String postId) {
     return postsStream
         .expand((list) => list)
         .where((post) => post.id == postId);
+  }
+
+  @override
+  Future<Post> getPostById(String postId) async {
+    final database = await this.database;
+    final finder = Finder(filter: Filter.equals(Post.ID_FIELD, postId));
+    final record = await store.findFirst(database, finder: finder);
+    if (record == null) {
+      return null;
+    }
+
+    return Post.fromJson(record.value);
   }
 
   @override
@@ -115,7 +127,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
     // Update the parent
     if (post.hasParent) {
-      final parent = await getPostById(post.parentId).first;
+      final parent = await getPostStream(post.parentId).first;
       final comments = parent.commentsIds;
       if (!comments.contains(post.id)) {
         comments.add(post.id);
