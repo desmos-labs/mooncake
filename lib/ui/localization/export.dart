@@ -49,8 +49,10 @@ can be used to access your account on this application
   // Password screen
   String get passwordTitle => "Set password";
   String get passwordBody => """
-If you change device of forgout your password, you will need the mnemonic 
-phrase to access your account.
+Due to security reasons, we require you to input a password if you will ever
+want to recover your mnemonic phrase from within the appliation later on. 
+Please note that if you loose this password you will be required to enter 
+your mnemonic from scratch in the case of a future recovery.
 """;
   String get passwordHint => "Password";
   String get passwordCaption => "* at least 6 characters in length";

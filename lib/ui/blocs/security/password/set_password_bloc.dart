@@ -6,7 +6,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:password_strength/password_strength.dart';
 import 'package:mooncake/ui/ui.dart';
-import './bloc.dart';
+import 'bloc.dart';
 
 /// Represents the Bloc that is used inside the screen allowing the user
 /// to set a custom password to protect his account.
@@ -83,8 +83,7 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
     yield state.copyWith(savingPassword: true);
 
     // Log In
-    final recoverState = _recoverAccountBloc.state;
-    final mnemonic = recoverState.wordsList.join(" ");
+    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
     await _loginUseCase.login(mnemonic);
     _accountBloc.add(LogIn());
   }

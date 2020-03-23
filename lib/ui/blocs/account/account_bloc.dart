@@ -13,7 +13,6 @@ import 'package:mooncake/usecases/usecases.dart';
 /// Handles the login events and emits the proper state instances.
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
-  final LoginUseCase _loginUseCase;
   final LogoutUseCase _logoutUseCase;
   final GetAccountUseCase _getUserUseCase;
   final FirebaseAnalytics _analytics;
@@ -24,15 +23,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   AccountBloc({
     @required GenerateMnemonicUseCase generateMnemonicUseCase,
-    @required LoginUseCase loginUseCase,
     @required LogoutUseCase logoutUseCase,
     @required GetAccountUseCase getUserUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
   })  : assert(generateMnemonicUseCase != null),
         _generateMnemonicUseCase = generateMnemonicUseCase,
-        assert(loginUseCase != null),
-        _loginUseCase = loginUseCase,
         assert(logoutUseCase != null),
         _logoutUseCase = logoutUseCase,
         assert(getUserUseCase != null),
@@ -50,7 +46,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   factory AccountBloc.create(BuildContext context) {
     return AccountBloc(
       generateMnemonicUseCase: Injector.get(),
-      loginUseCase: Injector.get(),
       logoutUseCase: Injector.get(),
       getUserUseCase: Injector.get(),
       navigatorBloc: BlocProvider.of(context),
@@ -71,6 +66,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _mapLogInEventToState(event);
     } else if (event is LogOut) {
       yield* _mapLogOutEventToState();
+    } else if (event is Refresh) {
+      yield* _mapRefreshEventToState(event);
     }
   }
 
@@ -91,8 +88,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapGenerateAccountEventToState() async* {
     yield CreatingAccount();
     final mnemonic = await _generateMnemonicUseCase.generate();
-    await _loginUseCase.login(mnemonic.join(" "));
-    yield AccountCreated();
+    yield AccountCreated(mnemonic);
   }
 
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well
@@ -112,8 +108,16 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     yield LoggedOut();
   }
 
+  Stream<AccountState> _mapRefreshEventToState(Refresh event) async* {
+    final currentState = state;
+    if (currentState is LoggedIn) {
+      yield LoggedIn(event.user);
+    }
+  }
+
   @override
   Future<Function> close() {
-    _accountSubscription.cancel();
+    _accountSubscription?.cancel();
+    return super.close();
   }
 }

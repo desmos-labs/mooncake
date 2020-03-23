@@ -8,7 +8,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import './bloc.dart';
+import 'bloc.dart';
 
 /// Represents the Bloc that handles the changes in the biometrics setting
 /// of the user.
@@ -58,8 +58,7 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
     await _setAuthenticationMethodUseCase.biometrics();
 
     // Log In
-    final recoverState = _recoverAccountBloc.state;
-    final mnemonic = recoverState.wordsList.join(" ");
+    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
     await _loginUseCase.login(mnemonic);
     _accountBloc.add(LogIn());
   }

@@ -71,10 +71,11 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
         _fcm.unsubscribeFromTopic(_lastAddressSubscribedTopic);
       }
 
-      if (account != null) {
-        print("Susbcribing to FCM topic: ${account.cosmosAccount.address}");
-        _fcm.subscribeToTopic(account.cosmosAccount.address);
-        _lastAddressSubscribedTopic = account.cosmosAccount.address;
+      final address = account?.cosmosAccount?.address ?? "";
+      if (address.isNotEmpty) {
+        print("Susbcribing to FCM topic: $address");
+        _fcm.subscribeToTopic(address);
+        _lastAddressSubscribedTopic = address;
       }
     });
   }

@@ -20,11 +20,10 @@ class RecoverAccountScreen extends StatelessWidget {
               RecoverAccountMainContent(bottomPadding: bottomPadding),
 
               // Words list
-              if (!state.isMnemonicComplete)
-                Positioned(
-                  bottom: 0,
-                  child: RecoverAccountWordsList(height: bottomPadding),
-                ),
+              Positioned(
+                bottom: 0,
+                child: RecoverAccountWordsList(height: bottomPadding),
+              ),
             ],
           ),
         );
