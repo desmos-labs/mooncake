@@ -50,7 +50,7 @@ can be used to access your account on this application
   String get passwordTitle => "Set password";
   String get passwordBody => """
 Due to security reasons, we require you to input a password if you will ever
-want to recover your mnemonic phrase from within the appliation later on. 
+want to recover your mnemonic phrase from within the application later on.
 Please note that if you loose this password you will be required to enter 
 your mnemonic from scratch in the case of a future recovery.
 """;

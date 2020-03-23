@@ -25,7 +25,9 @@ class EmptyWallet extends StatelessWidget {
             image: AssetImage("assets/images/ghost.png"),
           ),
           Text(
-            PostsLocalizations.of(context).emptyWalletBody.replaceAll("\n", ""),
+            PostsLocalizations.of(context)
+                .emptyWalletBody
+                .replaceAll("\n", " "),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   color: textColor,

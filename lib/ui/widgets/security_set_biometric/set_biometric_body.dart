@@ -16,7 +16,7 @@ class SetBiometricBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            PostsLocalizations.of(context).biometricsBody.replaceAll("\n", ""),
+            PostsLocalizations.of(context).biometricsBody.replaceAll("\n", " "),
             style: Theme.of(context)
                 .textTheme
                 .bodyText2

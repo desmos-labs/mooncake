@@ -21,7 +21,9 @@ class AccountScreenContent extends StatelessWidget {
             width: 150,
           ),
           Text(
-            PostsLocalizations.of(context).accountPageText.replaceAll("\n", ""),
+            PostsLocalizations.of(context)
+                .accountPageText
+                .replaceAll("\n", " "),
             textAlign: TextAlign.center,
           ),
         ],

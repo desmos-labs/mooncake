@@ -30,7 +30,7 @@ class WalletActionsList extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Text(
-            PostsLocalizations.of(context).walletBodyText.replaceAll("\n", ""),
+            PostsLocalizations.of(context).walletBodyText.replaceAll("\n", " "),
             textAlign: TextAlign.center,
           )
         ],

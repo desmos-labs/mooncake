@@ -16,7 +16,7 @@ class SetPasswordContent extends StatelessWidget {
           padding: EdgeInsets.all(16),
           children: <Widget>[
             Text(
-              PostsLocalizations.of(context).passwordBody.replaceAll("\n", ""),
+              PostsLocalizations.of(context).passwordBody.replaceAll("\n", " "),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 50),
