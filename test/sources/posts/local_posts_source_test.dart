@@ -67,13 +67,13 @@ void main() {
     });
 
     test('reading returns null when no post is found', () async {
-      final post = await source.getPostStream("inexsitinst post id");
+      final post = await source.singlePostStream("inexsitinst post id");
       expect(post, isNull);
     });
 
     test('reading returns the valid post when it exists', () async {
       await source.savePost(testPost);
-      final stored = await source.getPostStream(testPost.id);
+      final stored = await source.singlePostStream(testPost.id);
       expect(stored, testPost);
     });
 
@@ -81,16 +81,16 @@ void main() {
       final postId = "post-id";
       await source.deletePost(postId);
 
-      final stored = await source.getPostStream(postId);
+      final stored = await source.singlePostStream(postId);
       expect(stored, isNull);
     });
 
     test('deleting works properly with existing post', () async {
       await source.savePost(testPost);
-      expect(await source.getPostStream(testPost.id), testPost);
+      expect(await source.singlePostStream(testPost.id), testPost);
 
       await source.deletePost(testPost.id);
-      expect(await source.getPostStream(testPost.id), isNull);
+      expect(await source.singlePostStream(testPost.id), isNull);
     });
   });
 

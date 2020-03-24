@@ -20,14 +20,17 @@ class PostDetailsBottomBar extends StatelessWidget {
           height: height,
           width: MediaQuery.of(context).size.width,
           color: Theme.of(context).primaryColorDark,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              PostCommentAction(post: state.post),
-              PostLikeAction(post: state.post, isLiked: state.isLiked),
-              PostAddReactionAction(post: state.post),
-            ],
+          child: Material(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                PostCommentAction(post: state.post),
+                PostLikeAction(post: state.post, isLiked: state.isLiked),
+                PostAddReactionAction(post: state.post),
+              ],
+            ),
           ),
         );
       },

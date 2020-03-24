@@ -11,7 +11,7 @@ class PostSavingPopupContent extends StatelessWidget {
       return Column(
         children: <Widget>[
           Icon(
-            MooncakeIcons.save,
+            MooncakeIcons.syncing,
             color: Theme.of(context).accentColor,
             size: 80,
           ),

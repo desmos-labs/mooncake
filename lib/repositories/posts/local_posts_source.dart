@@ -6,12 +6,15 @@ abstract class LocalPostsSource {
   /// are stored into the source.
   Stream<List<Post>> get postsStream;
 
+  /// Returns the posts that should be seen inside the home page.
+  Stream<List<Post>> homePostsStream(int limit);
+
   /// Returns the post having the given [id].
   /// If no post with the given id was found, returns `null` instead.
-  Stream<Post> getPostStream(String postId);
+  Stream<Post> singlePostStream(String postId);
 
   /// Returns the details of the post currently stored inside the device.
-  Future<Post> getPostById(String postId);
+  Future<Post> getSinglePost(String postId);
 
   /// Returns the list of posts that have been included inside the
   /// transaction having the given [txHash].
@@ -21,14 +24,15 @@ abstract class LocalPostsSource {
   /// the post having the given [postId].
   Stream<List<Post>> getPostComments(String postId);
 
-  /// Returns the list of all the currently stored posts.
-  Future<List<Post>> getPosts();
-
   /// Returns the list of all the posts to be synced.
   Future<List<Post>> getPostsToSync();
 
   /// Saves the given [post] inside the source.
-  /// Upon having stored it properly, it emits the new set of posts
+  /// If [emits] is `true`, emits the new set of posts using the [postsStream].
+  Future<void> savePost(Post post, {bool emit = true});
+
+  /// Saves the given [posts] inside the source.
+  /// Upon having stored them properly, it emits the new set of posts
   /// to the [postsStream].
-  Future<void> savePost(Post post);
+  Future<void> savePosts(List<Post> posts, {bool merge = false});
 }

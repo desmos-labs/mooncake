@@ -27,7 +27,8 @@ class _PostsAppState extends State<PostsApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PostsListBloc>(
-          create: (_) => PostsListBloc.create(syncPeriod: 30),
+          create: (_) =>
+              PostsListBloc.create(syncPeriod: 30)..add(RefreshPosts()),
         ),
         BlocProvider<NotificationsBloc>(
           create: (_) => NotificationsBloc.create()..add(LoadNotifications()),

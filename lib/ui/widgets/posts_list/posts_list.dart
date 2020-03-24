@@ -15,12 +15,6 @@ typedef Filter = bool Function(Post);
 /// It simply builds a list using the [ListView.separated] builder
 /// and the [PostListItem] class as the object representing each post.
 class PostsList extends StatefulWidget {
-  final Filter _filter;
-
-  PostsList({Key key, Filter filter})
-      : _filter = filter,
-        super(key: key);
-
   @override
   _PostsListState createState() => _PostsListState();
 }
@@ -36,32 +30,33 @@ class _PostsListState extends State<PostsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostsListBloc, PostsListState>(
-      builder: (context, postsState) {
-        // Posts are not loaded, return the empty container
-        if (!(postsState is PostsLoaded)) {
-          return PostsListEmptyContainer();
-        }
-
-        // Hide the refresh indicator
-        final state = postsState as PostsLoaded;
-        if (!state.refreshing) {
-          _refreshCompleter?.complete();
-          _refreshCompleter = Completer();
-        }
-
-        // Filter the posts based on the filter set
-        final posts = state.posts
-            .where((p) => widget._filter?.call(p) ?? true)
-            .toList();
-
-        return Column(
-          children: <Widget>[
-            PostsListSyncingIndicator(visible: state.syncingPosts),
-            Expanded(child: PostsListContent(posts: posts)),
-          ],
-        );
+    return RefreshIndicator(
+      onRefresh: () {
+        BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
+        return _refreshCompleter.future;
       },
+      child: BlocBuilder<PostsListBloc, PostsListState>(
+        builder: (context, postsState) {
+          // Posts are not loaded, return the empty container
+          if (!(postsState is PostsLoaded)) {
+            return PostsListEmptyContainer();
+          }
+
+          // Hide the refresh indicator
+          final state = postsState as PostsLoaded;
+          if (!state.refreshing) {
+            _refreshCompleter?.complete();
+            _refreshCompleter = Completer();
+          }
+
+          return Column(
+            children: <Widget>[
+              PostsListSyncingIndicator(visible: state.syncingPosts),
+              Expanded(child: PostsListContent(posts: state.posts)),
+            ],
+          );
+        },
+      ),
     );
   }
 }

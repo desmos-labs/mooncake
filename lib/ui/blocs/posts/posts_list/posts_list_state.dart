@@ -23,6 +23,9 @@ class PostsLoaded extends PostsListState {
   /// Lists of posts that should be shown to the user.
   final List<Post> posts;
 
+  /// Tells if a refresh should be done or not.
+  final bool shouldRefresh;
+
   /// Tells whether the list is being refreshed.
   final bool refreshing;
 
@@ -32,14 +35,16 @@ class PostsLoaded extends PostsListState {
   PostsLoaded({
     @required this.user,
     @required this.posts,
-    this.refreshing = false,
-    this.syncingPosts = false,
+    @required this.shouldRefresh,
+    @required this.refreshing,
+    @required this.syncingPosts,
   });
 
   factory PostsLoaded.first({MooncakeAccount user, List<Post> posts}) {
     return PostsLoaded(
       user: user,
       posts: posts ?? [],
+      shouldRefresh: false,
       refreshing: false,
       syncingPosts: false,
     );
@@ -48,12 +53,14 @@ class PostsLoaded extends PostsListState {
   PostsLoaded copyWith({
     MooncakeAccount user,
     List<Post> posts,
+    bool shouldRefresh,
     bool refreshing,
     bool syncingPosts,
   }) {
     return PostsLoaded(
       user: user ?? this.user,
       posts: posts ?? this.posts,
+      shouldRefresh: shouldRefresh ?? this.shouldRefresh,
       refreshing: refreshing ?? this.refreshing,
       syncingPosts: syncingPosts ?? this.syncingPosts,
     );
@@ -63,6 +70,7 @@ class PostsLoaded extends PostsListState {
   List<Object> get props => [
         user,
         posts,
+        shouldRefresh,
         refreshing,
         syncingPosts,
       ];
@@ -70,6 +78,7 @@ class PostsLoaded extends PostsListState {
   @override
   String toString() => 'PostsLoaded { '
       'posts: ${posts.length}, '
+      'shouldRefresh: $shouldRefresh, '
       'refreshing: $refreshing, '
       'syncingPosts: $syncingPosts, '
       '}';

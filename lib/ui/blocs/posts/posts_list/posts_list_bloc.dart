@@ -12,31 +12,39 @@ import '../export.dart';
 /// Implementation of [Bloc] that allows to properly deal with
 /// events and states related to the list of posts.
 class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
+  static const _HOME_LIMIT = 50;
+
   // Synchronization
   final int _syncPeriod;
   final SyncPostsUseCase _syncPostsUseCase;
   Timer _syncTimer;
 
   // Use cases
+  final GetHomePostsUseCase _getHomePostsUseCase;
+  final GetHomeEventsUseCase _getHomeEventsUseCase;
   final UpdatePostsStatusUseCase _updatePostsStatusUseCase;
   final ManagePostReactionsUseCase _managePostReactionsUseCase;
 
   // Subscriptions
-  StreamSubscription _userSubscription;
+  StreamSubscription _eventsSubscription;
   StreamSubscription _postsSubscription;
   StreamSubscription _txSubscription;
 
   PostsListBloc({
     @required int syncPeriod,
     @required FirebaseAnalytics analytics,
-    @required GetPostsUseCase getPostsUseCase,
+    @required GetHomePostsUseCase getHomePostsUseCase,
+    @required GetHomeEventsUseCase getHomeEventsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
     @required GetAccountUseCase getUserUseCase,
     @required GetNotificationsUseCase getNotificationsUseCase,
     @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
     @required ManagePostReactionsUseCase managePostReactionsUseCase,
   })  : _syncPeriod = syncPeriod,
-        assert(getPostsUseCase != null),
+        assert(getHomePostsUseCase != null),
+        _getHomePostsUseCase = getHomePostsUseCase,
+        assert(getHomeEventsUseCase != null),
+        _getHomeEventsUseCase = getHomeEventsUseCase,
         assert(syncPostsUseCase != null),
         _syncPostsUseCase = syncPostsUseCase,
         assert(getUserUseCase != null),
@@ -47,13 +55,16 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     _initializeSyncTimer();
 
     // Subscribe to the user changes
-    _userSubscription = getUserUseCase.stream().listen((user) {
+    getUserUseCase.single().then((user) {
       add(UserUpdated(user));
     });
 
     // Subscribe to the posts changes
-    _postsSubscription = getPostsUseCase.stream().listen((posts) {
-      add(PostsUpdated(posts));
+    _postsSubscription = _initPostsSubscription();
+
+    // Subscribe to tell the user he should refresh
+    _eventsSubscription = _getHomeEventsUseCase.stream.listen((event) {
+      add(ShouldRefreshPosts());
     });
 
     // Subscribe to the transactions notifications
@@ -69,7 +80,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   factory PostsListBloc.create({int syncPeriod = 30}) {
     return PostsListBloc(
       syncPeriod: syncPeriod,
-      getPostsUseCase: Injector.get(),
+      getHomePostsUseCase: Injector.get(),
+      getHomeEventsUseCase: Injector.get(),
       syncPostsUseCase: Injector.get(),
       getUserUseCase: Injector.get(),
       analytics: Injector.get(),
@@ -89,18 +101,28 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     } else if (event is PostsUpdated) {
       yield* _mapPostsUpdatedEventToState(event);
     } else if (event is AddOrRemoveLike) {
-      _convertAddOrRemoveLikeEvent(event);
+      yield* _convertAddOrRemoveLikeEvent(event);
     } else if (event is AddOrRemovePostReaction) {
       yield* _mapAddPostReactionEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
       yield* _mapSyncPostsCompletedEventToState();
+    } else if (event is ShouldRefreshPosts) {
+      yield* _mapShouldRefreshPostsEventToState();
+    } else if (event is RefreshPosts) {
+      yield* _refreshPostsEventToState();
     } else if (event is TxSuccessful) {
       _handleTxSuccessfulEvent(event);
     } else if (event is TxFailed) {
       _handleTxFailedEvent(event);
     }
+  }
+
+  StreamSubscription _initPostsSubscription() {
+    return _getHomePostsUseCase.stream(_HOME_LIMIT).listen((posts) {
+      add(PostsUpdated(posts));
+    });
   }
 
   /// Initializes the timer allowing us to sync the user activity once every
@@ -132,25 +154,56 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     if (currentState is PostsLoading) {
       yield PostsLoaded.first(posts: event.posts);
     } else if (currentState is PostsLoaded) {
-      yield currentState.copyWith(posts: event.posts);
+      yield currentState.copyWith(
+        posts: event.posts,
+        refreshing: false,
+        shouldRefresh: false,
+      );
     }
   }
 
   /// Converts an [AddOrRemoveLikeEvent] into an
   /// [AddOrRemovePostReaction] event so that it can be handled properly.
-  void _convertAddOrRemoveLikeEvent(AddOrRemoveLike event) {
-    add(AddOrRemovePostReaction(event.post, Constants.LIKE_REACTION));
+  Stream<PostsListState> _convertAddOrRemoveLikeEvent(AddOrRemoveLike event) {
+    final reactEvent = AddOrRemovePostReaction(
+      event.post,
+      Constants.LIKE_REACTION,
+    );
+    return _mapAddPostReactionEventToState(reactEvent);
   }
 
   /// Handles the event emitted when the user likes a post
   Stream<PostsListState> _mapAddPostReactionEventToState(
     AddOrRemovePostReaction event,
   ) async* {
-    print("Add or remove: ${event.reactionCode}");
-    await _managePostReactionsUseCase.addOrRemove(
-      postId: event.post.id,
-      reaction: event.reactionCode,
-    );
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      final newPost = await _managePostReactionsUseCase.addOrRemove(
+        post: event.post,
+        reaction: event.reactionCode,
+      );
+      final posts = currentState.posts
+          .map((post) => post.id == newPost.id ? newPost : post)
+          .toList();
+      yield currentState.copyWith(posts: posts);
+    }
+  }
+
+  Stream<PostsListState> _mapShouldRefreshPostsEventToState() async* {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      yield currentState.copyWith(shouldRefresh: true);
+    }
+  }
+
+  /// Handles the event emitted when the list of the home posts
+  /// should be updated.
+  Stream<PostsListState> _refreshPostsEventToState() async* {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      yield currentState.copyWith(refreshing: true);
+      await _getHomePostsUseCase.refresh(_HOME_LIMIT);
+    }
   }
 
   /// Handles the event emitted when the posts must be synced uploading
@@ -202,7 +255,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
   @override
   Future<void> close() {
-    _userSubscription?.cancel();
+    _eventsSubscription?.cancel();
     _postsSubscription?.cancel();
     _txSubscription?.cancel();
     _syncTimer?.cancel();

@@ -27,6 +27,9 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   })  : assert(user != null),
         _user = user,
         assert(getCommentsUseCase != null) {
+    // TODO: Add the details event subscription to notify if new data
+    // are created and prompt the user to refresh
+
     // Sub to the post details update
     _postSubscription = getPostDetailsUseCase.get(postId).listen((post) {
       add(ShowPostDetails(post: post));

@@ -16,8 +16,6 @@ class UpdatePostsStatusUseCase {
   /// having the given [txHash] by setting the specified [status].
   Future<void> update(String txHash, PostStatus status,) async {
     final posts = await _postsRepository.getPostsByTxHash(txHash);
-    posts.forEach((post) async {
-      await _postsRepository.savePost(post.copyWith(status: status));
-    });
+    await _postsRepository.savePosts(posts.map((e) => e.copyWith(status: status)));
   }
 }

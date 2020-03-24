@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
 
@@ -22,12 +23,13 @@ class UserAvatar extends StatelessWidget {
     return CircleAvatar(
       radius: border == 0 ? radius : radius + border,
       backgroundColor: borderColor,
-      child: CircleAvatar(
-        radius: radius,
-        backgroundImage: NetworkImage(
-          user.hasAvatar
-              ? user.avatarUrl
-              : "http://identicon-1132.appspot.com/${user.address}",
+      child: CachedNetworkImage(
+        imageUrl: user.hasAvatar
+            ? user.avatarUrl
+            : "http://identicon-1132.appspot.com/${user.address}",
+        imageBuilder: (context, image) => CircleAvatar(
+          radius: radius,
+          backgroundImage: image,
         ),
       ),
     );

@@ -33,7 +33,7 @@ class PostCreateActions extends StatelessWidget {
                   children: <Widget>[
                     IconButton(
                       tooltip: PostsLocalizations.of(context).galleryTip,
-                      icon: Icon(MooncakeIcons.pictures),
+                      icon: Icon(MooncakeIcons.picture),
                       onPressed: () => _pickImage(bloc, ImageSource.gallery),
                     ),
                     IconButton(

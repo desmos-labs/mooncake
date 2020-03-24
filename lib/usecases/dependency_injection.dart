@@ -48,7 +48,10 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetPostDetailsUseCase(
             postsRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => GetPostsUseCase(
+      ..bindFactory((injector, params) => GetHomePostsUseCase(
+            postsRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => GetHomeEventsUseCase(
             postsRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => ManagePostReactionsUseCase(

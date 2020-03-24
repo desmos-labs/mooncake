@@ -34,7 +34,7 @@ class PostsUpdated extends PostsListEvent {
   List<Object> get props => [posts];
 
   @override
-  String toString() => 'ShowPosts { posts: ${posts.length} }';
+  String toString() => 'PostsUpdated { posts: ${posts.length} }';
 }
 
 /// Tells the Bloc that it needs to either set as liked/unliked the given post.
@@ -60,6 +60,19 @@ class AddOrRemovePostReaction extends PostsListEvent {
 
   @override
   String toString() => 'AddOrRemovePostReaction';
+}
+
+/// Tells the Bloc to inform the user that he should refresh the
+/// home list of the posts.
+class ShouldRefreshPosts extends PostsListEvent {
+  @override
+  String toString() => 'ShouldRefreshPosts';
+}
+
+/// Tells the Bloc that the currently shown list of posts should be refreshed.
+class RefreshPosts extends PostsListEvent {
+  @override
+  String toString() => 'RefreshPosts';
 }
 
 /// Tells the bloc to start the synchronization of locally stored

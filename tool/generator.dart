@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:build/build.dart';
 import 'package:path/path.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:recase/recase.dart';
@@ -57,10 +56,6 @@ void main() async {
 
   output.writeAsStringSync(
     "/// This class has been auto generated. Do not edit or change manually.\n",
-    mode: FileMode.append,
-  );
-  output.writeAsStringSync(
-    "/// All the icons can be found at https://jam-icons.com/.\n",
     mode: FileMode.append,
   );
   output.writeAsStringSync("class MooncakeIcons { \n", mode: FileMode.append);

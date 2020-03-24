@@ -4,20 +4,25 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:sembast/sembast.dart';
 
 class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "ipfs.desmos.network";
 
-  static const _lcdUrl = false
+  static const _lcdUrl = kDebugMode
       ? "http://10.0.2.2:1317"
       : "http://lcd.morpheus.desmos.network:1317";
 
-  static const _gqlEndpoint = false
-      ? "10.0.2.2:8080/v1/graphql"
-      : "35.234.80.165:8080/v1/graphql";
+  static const _gqlEndpoint =
+      kDebugMode ? "10.0.2.2:8080/v1/graphql" : "35.234.80.165:8080/v1/graphql";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
+
+  final Database postsDatabase;
+  SourcesModule({
+    @required this.postsDatabase,
+  }) : assert(postsDatabase != null);
 
   @override
   void configure(Binder binder) {
@@ -42,7 +47,7 @@ class SourcesModule implements Module {
       // Post sources
       ..bindLazySingleton<LocalPostsSource>(
           (injector, params) => LocalPostsSourceImpl(
-                dbName: "posts.db",
+                database: postsDatabase,
               ))
       ..bindLazySingleton<RemotePostsSource>(
           (injector, params) => RemotePostsSourceImpl(
@@ -50,6 +55,7 @@ class SourcesModule implements Module {
                 chainHelper: injector.get(),
                 userSource: injector.get(),
                 msgConverter: MsgConverter(),
+                gqlHelper: GqlHelper(),
               ))
       // Notifications source
       ..bindLazySingleton<RemoteNotificationsSource>(

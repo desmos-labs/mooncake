@@ -28,7 +28,9 @@ class PostDetailsMainContent extends StatelessWidget {
                     SliverList(
                       delegate: SliverChildListDelegate([
                         Container(
-                            padding: padding, child: PostContent(post: post)),
+                          padding: padding,
+                          child: PostContent(post: post),
+                        ),
                         SizedBox(height: PostsTheme.defaultPadding),
                       ]),
                     ),

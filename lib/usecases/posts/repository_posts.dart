@@ -3,9 +3,16 @@ import 'package:mooncake/entities/entities.dart';
 /// Represents the repository that can be used in order to read
 /// and write data related to posts, comments and likes.
 abstract class PostsRepository {
-  /// Represents the steam of posts that emits all the new posts as
-  /// well as the ones that need to be updated.
-  Stream<List<Post>> get postsStream;
+  /// Returns the posts that should be seen inside the home page.
+  Stream<List<Post>> getHomePostsStream(int limit);
+
+  /// [Stream] that emits an item each time that the home posts
+  /// list should be updated.
+  Stream<dynamic> homeEventsStream;
+
+  /// Refreshes the home posts downloading the ones present remotely and
+  /// saving them locally.
+  Future<void> refreshHomePosts(int limit);
 
   /// Returns a [Stream] that subscribes to the post having the specified
   /// [postId], emitting the new data each time the post is updated.
@@ -22,8 +29,12 @@ abstract class PostsRepository {
   /// having the given [postId] as soon as they are created or updated.
   Stream<List<Post>> getPostComments(String postId);
 
-  /// Saves the given post inside the repository
-  Future<void> savePost(Post post);
+  /// Saves the given post inside the repository.
+  /// If emit is true, emits the new list of posts using the stream.
+  Future<void> savePost(Post post, {bool emit = true});
+
+  /// Saves the given post inside the repository.
+  Future<void> savePosts(List<Post> posts);
 
   /// Syncs all the posts that are currently awaiting to be synced.
   Future<void> syncPosts();

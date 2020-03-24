@@ -13,64 +13,32 @@ import 'package:rxdart/rxdart.dart';
 class RemotePostsSourceImpl implements RemotePostsSource {
   final ChainHelper _chainHelper;
   final LocalUserSource _userSource;
+  final GqlHelper _gqlHelper;
 
   // Converters
   final MsgConverter _msgConverter;
 
-  // Stream controllers
-  final _postsController = BehaviorSubject<List<Post>>();
-
   // GraphQL
   GraphQLClient _gqlClient;
+  GraphQLClient _wsClient;
 
   /// Public constructor
   RemotePostsSourceImpl({
     @required String graphQlEndpoint,
     @required ChainHelper chainHelper,
+    @required GqlHelper gqlHelper,
     @required LocalUserSource userSource,
     @required MsgConverter msgConverter,
   })  : assert(userSource != null),
         _userSource = userSource,
         assert(chainHelper != null),
         _chainHelper = chainHelper,
+        assert(gqlHelper != null),
+        _gqlHelper = gqlHelper,
         assert(msgConverter != null),
         _msgConverter = msgConverter {
     // Init GraphQL
     _initGql(graphQlEndpoint);
-  }
-
-  /// Returns a GraphQL [String] that allows to query for all the mooncake
-  /// posts that have the given id.
-  /// If no id is specified, all the posts will be considered instead.
-  String _postGql({String id}) {
-    String idQuery = "";
-    if (id != null) {
-      idQuery = 'id: {_eq: "$id"},';
-    }
-    return """
-    post(where: {$idQuery subspace: {_eq: "${Constants.SUBSPACE}"}}, order_by: {created: desc}) {
-      id
-      subspace
-      created
-      last_edited
-      media {
-        uri
-        mime_type
-      }
-      message
-      optional_data
-      parent_id
-      reactions {
-        user {
-          address
-        }
-        value
-      }
-      user {
-        address
-      }
-    }
-    """;
   }
 
   /// Converts the given [gqlData] retrieved from the remote GraphQL
@@ -90,43 +58,49 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   /// queried using [_gqlClient] and new posts will be retrieved using
   /// the [postsStream].
   void _initGql(String graphQlEndpoint) {
-    // Init the GraphQL
+    // Init the query client
     _gqlClient = GraphQLClient(
       link: HttpLink(uri: "http://$graphQlEndpoint"),
       cache: InMemoryCache(),
     );
-
-    final gqlWsLink = WebSocketLink(url: "ws://$graphQlEndpoint");
-    final client = GraphQLClient(link: gqlWsLink, cache: InMemoryCache());
-    final postsSub = """
-    subscription Posts {
-      ${_postGql()}
-    }
-    """;
-    client.subscribe(Operation(documentNode: gql(postsSub))).listen((event) {
-      final data = event.data as Map<String, dynamic>;
-      _postsController.add(_convertGqlResponse(data));
-    });
+    _wsClient = GraphQLClient(
+      link: WebSocketLink(url: "ws://$graphQlEndpoint"),
+      cache: InMemoryCache(),
+    );
   }
 
   @override
-  Stream<List<Post>> get postsStream => _postsController.stream;
+  Future<List<Post>> getHomePosts(int limit) async {
+    final homePosts = """query HomePosts { 
+    ${_gqlHelper.homePosts(limit)} 
+    }""";
+    final data = await _gqlClient.query(QueryOptions(
+        documentNode: gql(homePosts), fetchPolicy: FetchPolicy.networkOnly));
+    return _convertGqlResponse(data.data);
+  }
+
+  @override
+  Stream<dynamic> get homeEventsStream {
+    final query = """subscription HomeEvents {
+    ${_gqlHelper.homeEvents}
+    }""";
+    return _wsClient.subscribe(Operation(documentNode: gql(query)));
+  }
 
   /// Returns the [Post] object having the given [postId]
   /// retrieved from the remote source. If no post with such id could
   /// be found, `null` is returned instead.
-  Future<Post> _getPostById(String postId) async {
-    final query = """
-    query PostById {
-      ${_postGql(id: postId)}
-    }
-    """;
-    final data = await _gqlClient.query(QueryOptions(documentNode: gql(query)));
+  @override
+  Future<Post> getPostById(String postId) async {
+    final query = """query PostById {
+    ${_gqlHelper.postDetailsQuery(postId)}
+    }""";
+    final data = await _gqlClient.query(QueryOptions(
+      documentNode: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
     final posts = _convertGqlResponse(data.data);
-    if (posts.isEmpty) {
-      return null;
-    }
-    return posts[0];
+    return posts.isEmpty ? null : posts[0];
   }
 
   @override
@@ -135,7 +109,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
     // Get the existing posts list
     final List<Post> existingPosts = await Future.wait(posts.map((post) {
-      return _getPostById(post.id);
+      return getPostById(post.id);
     }).toList());
 
     // Upload the medias

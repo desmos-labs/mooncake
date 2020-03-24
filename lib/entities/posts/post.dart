@@ -20,6 +20,8 @@ class Post extends Equatable implements Comparable<Post> {
   /// Identifier used to reference the data associated to the post status.
   static const STATUS_DATA_FIELD = "status.data";
 
+  static const PARENT_ID_FIELD = "parent_id";
+
   /// Identifier used to reference post creation date.
   static const DATE_FIELD = "created";
 
@@ -36,7 +38,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: ID_FIELD)
   final String id;
 
-  @JsonKey(name: "parent_id", nullable: true)
+  @JsonKey(name: PARENT_ID_FIELD, nullable: true)
   final String parentId;
 
   /// Tells if this post has a valid parent post or not.

@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Represents a single image items that should be displayed as part
@@ -17,14 +19,25 @@ class PostContentImage extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
         onTap: _openImage,
-        child: Image(
-          width: double.infinity,
-          fit: BoxFit.cover,
-          image: media.isLocal
-              ? FileImage(File(media.url))
-              : NetworkImage(media.url),
-        ),
+        child: media.isLocal ? _localImage(media.url) : _remoteImage(media.url),
       ),
+    );
+  }
+
+  Widget _localImage(String url) {
+    return Image(
+      width: double.infinity,
+      fit: BoxFit.cover,
+      image: FileImage(File(url)),
+    );
+  }
+
+  Widget _remoteImage(String url) {
+    return CachedNetworkImage(
+      width: double.infinity,
+      fit: BoxFit.cover,
+      imageUrl: media.url,
+      placeholder: (context, _) => LoadingIndicator(),
     );
   }
 

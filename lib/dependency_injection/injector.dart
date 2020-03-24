@@ -1,15 +1,17 @@
 import 'package:dependencies/dependencies.dart' as di;
+import 'package:meta/meta.dart';
 import 'package:mooncake/repositories/dependency_injection.dart';
 import 'package:mooncake/sources/dependency_injection.dart';
 import 'package:mooncake/usecases/dependency_injection.dart';
 import 'package:mooncake/utils/dependency_injector.dart';
+import 'package:sembast/sembast.dart';
 
 /// Utility class used to provide instances of different objects.
 class Injector {
   /// Initializes the injector. Should be called inside the main method.
-  static init() {
+  static init({@required Database postsDatabase}) {
     final builder = di.Injector.builder()
-      ..install(SourcesModule())
+      ..install(SourcesModule(postsDatabase: postsDatabase))
       ..install(RepositoriesModule())
       ..install(UseCaseModule())
       ..install(UtilsModule());

@@ -1,6 +1,6 @@
 name: mooncake
 description: A decentralized Twitter based on Desmos
-version: 0.1.0+0100
+version: 0.1.0+0102
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -12,6 +12,7 @@ dependencies:
       ref: cosmos-v0.38.0
   bip39:
   carousel_slider:
+  cached_network_image:
   cloud_firestore:
   collection:
   cupertino_icons:
@@ -73,7 +74,7 @@ flutter:
   fonts:
     - family: Mooncake
       fonts:
-        - asset: assets/fonts/icomoon.ttf
+        - asset: assets/fonts/mooncake-icons.ttf
           weight: 400
     - family: Montserrat
       fonts:

@@ -19,14 +19,9 @@ class ManagePostReactionsUseCase {
   /// Likes the post having the given [postId] and returns the
   /// updated [Post] object.
   Future<Post> addOrRemove({
-    @required String postId,
+    @required Post post,
     @required String reaction,
   }) async {
-    Post post = await _postsRepository.getPostById(postId);
-    if (post == null) {
-      return post;
-    }
-
     if (reaction == null || reaction.trim().isEmpty) {
       // Reaction is invalid, do nothing
       return post;
@@ -38,8 +33,7 @@ class ManagePostReactionsUseCase {
       reactions: newReactions,
       status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
     );
-    await _postsRepository.savePost(post);
-
+    await _postsRepository.savePost(post, emit: true);
     return post;
   }
 }

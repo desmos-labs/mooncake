@@ -17,24 +17,24 @@ class PostCommentAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final comments = post.commentsIds ?? [];
-    return InkWell(
-      onTap: () => _onTap(context),
-      child: Row(
-        children: <Widget>[
-          FaIcon(MooncakeIcons.messageAlt, size: size),
-          if (comments.isNotEmpty)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SizedBox(width: size / 4),
-                Text(
-                  comments.length.toString(),
-                  style: Theme.of(context).accentTextTheme.bodyText2,
-                )
-              ],
-            ),
-        ],
-      ),
+    return Row(
+      children: <Widget>[
+        IconButton(
+          icon: Icon(MooncakeIcons.comment, size: size),
+          onPressed: () => _onTap(context),
+        ),
+        if (comments.isNotEmpty)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(width: size / 4),
+              Text(
+                comments.length.toString(),
+                style: Theme.of(context).accentTextTheme.bodyText2,
+              )
+            ],
+          ),
+      ],
     );
   }
 

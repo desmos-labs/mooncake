@@ -22,7 +22,7 @@ class WalletHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Icon(MooncakeIcons.taskList, size: 40, color: textColor),
+          Icon(MooncakeIcons.transactions, size: 40, color: textColor),
           Flexible(child: Container()),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -8,15 +8,13 @@ import 'package:mooncake/ui/ui.dart';
 /// the user can access the posts timeline as well as other screens by
 /// using the navigation bar
 class HomeScreen extends StatelessWidget {
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, activeTab) {
         Widget body = Container();
         if (activeTab == AppTab.allPosts) {
-          body = PostsList(filter: (p) => !p.hasParent);
+          body = PostsList();
         } else if (activeTab == AppTab.notifications) {
           body = NotificationsMainContent();
         } else if (activeTab == AppTab.account) {
@@ -24,7 +22,6 @@ class HomeScreen extends StatelessWidget {
         }
 
         return Scaffold(
-          key: _scaffoldKey,
           appBar: AppBar(
             centerTitle: true,
             title: Text(
@@ -53,7 +50,7 @@ class HomeScreen extends StatelessWidget {
             actions: [
               IconButton(
                 color: Theme.of(context).accentColor,
-                icon: Icon(MooncakeIcons.coin),
+                icon: Icon(MooncakeIcons.wallet),
                 onPressed: () {
                   BlocProvider.of<NavigatorBloc>(context)
                       .add(NavigateToWallet());

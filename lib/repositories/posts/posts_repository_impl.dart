@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/usecases/usecases.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// Implementation of [PostsRepository] that listens for remote
 /// changes, persists them locally and then emits the locally-stored
@@ -20,26 +21,32 @@ class PostsRepositoryImpl extends PostsRepository {
   })  : assert(localSource != null),
         _localPostsSource = localSource,
         assert(remoteSource != null),
-        _remotePostsSource = remoteSource {
-    // Start listening for remote changes and store them locally
-    _remotePostsSource.postsStream.expand((list) => list).listen((post) async {
-      _localPostsSource.savePost(post);
-    });
+        _remotePostsSource = remoteSource;
+
+  @override
+  Stream<List<Post>> getHomePostsStream(int limit) {
+    return _localPostsSource.homePostsStream(limit);
   }
 
   @override
-  Stream<List<Post>> get postsStream {
-    return _localPostsSource.postsStream;
+  Stream<dynamic> get homeEventsStream {
+    return _remotePostsSource.homeEventsStream;
+  }
+
+  @override
+  Future<void> refreshHomePosts(int limit) async {
+    final remotes = await _remotePostsSource.getHomePosts(limit);
+    await _localPostsSource.savePosts(remotes, merge: true);
   }
 
   @override
   Stream<Post> getPostByIdStream(String postId) {
-    return _localPostsSource.getPostStream(postId);
+    return _localPostsSource.singlePostStream(postId);
   }
 
   @override
   Future<Post> getPostById(String postId) {
-    return _localPostsSource.getPostById(postId);
+    return _localPostsSource.getSinglePost(postId);
   }
 
   @override
@@ -53,8 +60,13 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<void> savePost(Post post) {
-    return _localPostsSource.savePost(post);
+  Future<void> savePost(Post post, {bool emit = true}) {
+    return _localPostsSource.savePost(post, emit: emit);
+  }
+
+  @override
+  Future<void> savePosts(List<Post> posts) {
+    return _localPostsSource.savePosts(posts);
   }
 
   @override
