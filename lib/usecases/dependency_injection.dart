@@ -35,10 +35,6 @@ class UseCaseModule implements Module {
           ))
 
       // Posts use cases
-      ..bindFactory((injector, params) => GetUserReactionsToPost(
-            walletRepository: injector.get(),
-            postsRepository: injector.get(),
-          ))
       ..bindFactory((injector, params) => CreatePostUseCase(
             walletRepository: injector.get(),
           ))

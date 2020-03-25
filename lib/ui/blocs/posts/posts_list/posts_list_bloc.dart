@@ -54,7 +54,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     _initializeSyncTimer();
 
     // Subscribe to the posts changes
-    _postsSubscription = _initPostsSubscription();
+    _postsSubscription =
+        _getHomePostsUseCase.stream(_HOME_LIMIT).listen((posts) {
+      add(PostsUpdated(posts));
+    });
 
     // Subscribe to tell the user he should refresh
     _eventsSubscription = _getHomeEventsUseCase.stream.listen((event) {
@@ -89,7 +92,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
   @override
   Stream<PostsListState> mapEventToState(PostsListEvent event) async* {
-   if (event is PostsUpdated) {
+    if (event is PostsUpdated) {
       yield* _mapPostsUpdatedEventToState(event);
     } else if (event is AddOrRemoveLike) {
       yield* _convertAddOrRemoveLikeEvent(event);
@@ -108,12 +111,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     } else if (event is TxFailed) {
       _handleTxFailedEvent(event);
     }
-  }
-
-  StreamSubscription _initPostsSubscription() {
-    return _getHomePostsUseCase.stream(_HOME_LIMIT).listen((posts) {
-      add(PostsUpdated(posts));
-    });
   }
 
   /// Initializes the timer allowing us to sync the user activity once every
@@ -183,8 +180,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     final currentState = state;
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(refreshing: true);
-      await _getHomePostsUseCase.refresh(_HOME_LIMIT);
     }
+    await _getHomePostsUseCase.refresh(_HOME_LIMIT);
   }
 
   /// Handles the event emitted when the posts must be synced uploading
