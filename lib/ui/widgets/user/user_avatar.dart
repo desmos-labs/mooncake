@@ -26,7 +26,7 @@ class UserAvatar extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: user.hasAvatar
             ? user.avatarUrl
-            : "http://identicon-1132.appspot.com/${user.address}",
+            : "http://identicon-1132.appspot.com/${user.address}?s=10&p=8",
         imageBuilder: (context, image) => CircleAvatar(
           radius: radius,
           backgroundImage: image,
