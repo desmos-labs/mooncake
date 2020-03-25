@@ -17,7 +17,8 @@ class Reaction extends Equatable {
   @JsonKey(name: "value")
   final String code;
 
-  String get rune => EmojiParser().emojify(code);
+  /// Represents the Unicode character that identifies the emoji.
+  final String rune;
 
   /// Tells whether or not this reaction represents a like.
   bool get isLike => code == Constants.LIKE_REACTION;
@@ -27,14 +28,8 @@ class Reaction extends Equatable {
     @required String code,
   })  : assert(user != null),
         assert(code != null),
-        this.code = getEmojiCode(code);
-
-  factory Reaction.withRune(User user, String rune) {
-    return Reaction(
-      user: user,
-      code: EmojiParser().unemojify(rune),
-    );
-  }
+        this.code = getEmojiCode(code),
+        this.rune = getEmojiRune(code);
 
   factory Reaction.fromJson(Map<String, dynamic> json) =>
       _$ReactionFromJson(json);

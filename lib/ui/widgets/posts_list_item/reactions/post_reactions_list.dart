@@ -9,77 +9,70 @@ import 'package:mooncake/ui/ui.dart';
 /// has associated to itself.
 /// If [compact] is set to `true`, the list will be chopped to
 /// at most two items.
-class PostReactionsList extends StatelessWidget {
-  final double itemHeight = 40;
-
+class PostReactionsList extends StatefulWidget {
   final Post post;
+
   const PostReactionsList({
     Key key,
     @required this.post,
   }) : super(key: key);
 
   @override
+  _PostReactionsListState createState() => _PostReactionsListState();
+}
+
+class _PostReactionsListState extends State<PostReactionsList> {
+  bool actionBarExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostListItemBloc, PostListItemState>(
-      bloc: PostListItemBloc.create(),
-      builder: (BuildContext context, PostListItemState state) {
-        // Filter the likes as they are showed independently
-        final reactions = post.reactions
-            .where((r) => !r.isLike)
-            .where((element) => element.rune.runes.length == 1);
-        final reactMap = groupBy<Reaction, String>(reactions, (r) => r.rune);
+    final reactsCount = widget.post.reactionsCount.length;
 
-        // Compute the number of items per row
-        final singleRowItems = MediaQuery.of(context).size.width ~/ 70;
+    // Tells then the "More" button should be visible
+    final showMore = reactsCount > 4;
 
-        // Tells then the "More" button should be visible
-        final showMore = reactMap.length > singleRowItems;
+    int itemCount = reactsCount;
+    if (showMore && !actionBarExpanded) {
+      // There should be the max number of items per row, as the last one
+      // will be the "More" button
+      itemCount = 4;
+    } else if (showMore && actionBarExpanded) {
+      // There should be all the items visible, plus the "More" button
+      itemCount = reactsCount + 1;
+    }
 
-        int itemCount = reactMap.length;
-        if (showMore && !state.actionBarExpanded) {
-          // There should be the max number of items per row, as the last one
-          // will be the "More" button
-          itemCount = singleRowItems;
-        }
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+          child: Wrap(
+            spacing: ThemeSpaces.actionBarSpacer,
+            alignment: WrapAlignment.start,
+            children: List.generate(itemCount, (index) {
+              if (showMore && index == itemCount - 1) {
+                return IconButton(
+                  icon: Icon(MooncakeIcons.more, size: 16),
+                  onPressed: () => _triggerExpansion(context),
+                );
+              }
 
-        if (showMore && state.actionBarExpanded) {
-          // There should be all the items visible, plus the "More" button
-          itemCount = reactMap.length + 1;
-        }
-
-        return Row(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-              child: Wrap(
-                spacing: ThemeSpaces.actionBarSpacer,
-                alignment: WrapAlignment.start,
-                children: List.generate(itemCount, (index) {
-                  if (showMore && index == itemCount - 1) {
-                    return IconButton(
-                      icon: Icon(MooncakeIcons.more, size: 16),
-                      onPressed: () => _triggerExpansion(context),
-                    );
-                  }
-
-                  final entry = reactMap.entries.toList()[index];
-                  return PostReactionAction(
-                    post: post,
-                    reactionCode: entry.value[0].code,
-                    reactionRune: entry.value[0].rune,
-                    reactionCount: entry.value.length,
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-        );
-      },
+              final entry = widget.post.reactionsCount.entries.toList()[index];
+              return PostReactionAction(
+                post: widget.post,
+                reactionCode: entry.key.code,
+                reactionRune: entry.key.rune,
+                reactionCount: entry.value,
+              );
+            }).toList(),
+          ),
+        ),
+      ],
     );
   }
 
   void _triggerExpansion(BuildContext context) {
-    BlocProvider.of<PostListItemBloc>(context)
-        .add(ChangeReactionBarExpandedState());
+    setState(() {
+      actionBarExpanded = !actionBarExpanded;
+    });
   }
 }

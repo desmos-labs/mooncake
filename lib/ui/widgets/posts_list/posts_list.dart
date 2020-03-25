@@ -7,7 +7,6 @@ import 'package:mooncake/ui/ui.dart';
 
 import 'posts_list_syncing_indicator.dart';
 import 'posts_list_empty_container.dart';
-import 'posts_list_content.dart';
 
 typedef Filter = bool Function(Post);
 
@@ -32,7 +31,7 @@ class _PostsListState extends State<PostsList> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-        BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
+        _refreshPosts(context);
         return _refreshCompleter.future;
       },
       child: BlocBuilder<PostsListBloc, PostsListState>(
@@ -49,14 +48,43 @@ class _PostsListState extends State<PostsList> {
             _refreshCompleter = Completer();
           }
 
-          return Column(
+          return Stack(
             children: <Widget>[
-              PostsListSyncingIndicator(visible: state.syncingPosts),
-              Expanded(child: PostsListContent(posts: state.posts)),
+              Column(
+                children: <Widget>[
+                  PostsListSyncingIndicator(visible: state.syncingPosts),
+                  Expanded(
+                    child: ListView.builder(
+                      key: PostsKeys.postsList,
+                      itemCount: state.posts.length,
+                      itemBuilder: (context, index) {
+                        final post = state.posts[index];
+                        return PostListItem(post: post);
+                      },
+                    )
+                  ),
+                ],
+              ),
+              if (state.shouldRefresh)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: FlatButton(
+                    textColor: Colors.white,
+                    color: Theme.of(context).iconTheme.color,
+                    onPressed: () => _refreshPosts(context),
+                    child: Text(
+                      PostsLocalizations.of(context).refreshButtonText,
+                    ),
+                  ),
+                ),
             ],
           );
         },
       ),
     );
+  }
+
+  void _refreshPosts(BuildContext context) {
+    BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
   }
 }

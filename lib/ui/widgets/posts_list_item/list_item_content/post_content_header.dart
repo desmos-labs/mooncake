@@ -11,7 +11,7 @@ import 'package:timeago/timeago.dart' as timeago;
 class PostItemHeader extends StatelessWidget {
   final Post post;
 
-  PostItemHeader({
+  const PostItemHeader({
     @required this.post,
     Key key,
   }) : super(key: key);

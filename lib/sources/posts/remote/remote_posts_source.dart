@@ -65,7 +65,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   @override
   Future<List<Post>> getHomePosts(int limit) async {
     final data = HomePostsData(graphQlEndpoint, Constants.SUBSPACE, limit);
-    return await compute(GqlHelper.getHomePosts, data);
+    return compute(GqlHelper.getHomePosts, data);
   }
 
   @override
@@ -86,7 +86,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       subspace: Constants.SUBSPACE,
       id: postId,
     );
-    return await compute(GqlHelper.getPostDetails, data);
+    return compute(GqlHelper.getPostDetails, data);
   }
 
   @override

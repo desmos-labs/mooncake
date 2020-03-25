@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -87,6 +88,9 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "reactions")
   final List<Reaction> reactions;
 
+  /// Contains a list of all the reactions and the respective count.
+  final Map<Reaction, int> reactionsCount;
+
   /// Returns the list of all the likes that have been added.
   List<Reaction> get likes {
     return reactions?.where((reaction) => reaction.isLike)?.toList() ?? [];
@@ -127,6 +131,10 @@ class Post extends Equatable implements Comparable<Post> {
         assert(owner != null),
         this.medias = medias ?? [],
         this.reactions = reactions ?? [],
+        this.reactionsCount = groupBy<Reaction, String>(
+          (reactions ?? []).where((r) => !r.isLike).toList(),
+          (r) => r.rune,
+        ).map((rune, reactions) => MapEntry(reactions[0], reactions.length)),
         this.commentsIds = commentsIds ?? [];
 
   Post copyWith({

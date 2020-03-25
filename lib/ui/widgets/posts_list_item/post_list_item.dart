@@ -18,26 +18,7 @@ import 'popups/export.dart';
 ///    for such post
 class PostListItem extends StatelessWidget {
   final Post post;
-
-  // Theming
-  final double messageFontSize;
-  final EdgeInsets margin;
-
-  PostListItem({
-    Key key,
-    @required this.post,
-    this.messageFontSize = 0.0,
-    this.margin = const EdgeInsets.all(16.0),
-  }) : super(key: key);
-
-  Color darken(Color color, [double amount = .1]) {
-    assert(amount >= 0 && amount <= 1);
-
-    final hsl = HSLColor.fromColor(color);
-    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-
-    return hslDark.toColor();
-  }
+  PostListItem({Key key, @required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,24 +33,25 @@ class PostListItem extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.all(8),
-      decoration: BoxDecoration(
+      child: Material(
         color: color,
         borderRadius: BorderRadius.circular(4.0),
-      ),
-      child: InkWell(
-        onTap: () => _openPostDetails(context),
-        onLongPress: _handleLongClick(context),
-        child: Container(
-          padding: PostsTheme.postItemPadding,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              PostContent(post: post),
-              const SizedBox(height: PostsTheme.defaultPadding),
-              PostActionsBar(post: post),
-              const SizedBox(height: PostsTheme.defaultPadding),
-              if (post.reactions.isNotEmpty) PostReactionsList(post: post),
-            ],
+        child: InkWell(
+          onTap: () => _openPostDetails(context),
+          onLongPress: _handleLongClick(context),
+          child: Container(
+            padding: PostsTheme.postItemPadding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                PostContent(post: post),
+                const SizedBox(height: PostsTheme.defaultPadding),
+                PostActionsBar(post: post),
+                if (post.reactions.isNotEmpty)
+                  const SizedBox(height: PostsTheme.defaultPadding),
+                if (post.reactions.isNotEmpty) PostReactionsList(post: post),
+              ],
+            ),
           ),
         ),
       ),

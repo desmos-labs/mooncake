@@ -30,19 +30,28 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         post.owner.address;
   }
 
-  final List<Post> Function(
-    List<RecordSnapshot<dynamic, dynamic>>,
-  ) postsMapper = (snapshots) {
+  static Future<List<Post>> _convertPosts(
+      List<RecordSnapshot<dynamic, dynamic>> records,
+      ) async {
     return List<Post>.generate(
-      snapshots.length ?? 0,
-      (index) => Post.fromJson(snapshots[index].value),
+      records.length ?? 0,
+          (index) => Post.fromJson(records[index].value),
     );
+  }
+
+  final Future<List<Post>> Function(
+      List<RecordSnapshot<dynamic, dynamic>>,
+  ) postsMapper = (snapshots) async {
+    return  compute(_convertPosts, snapshots);
   };
 
   @override
   Stream<List<Post>> get postsStream {
     final finder = Finder(sortOrders: [SortOrder(Post.DATE_FIELD, false)]);
-    return store.query(finder: finder).onSnapshots(database).map(postsMapper);
+    return store
+        .query(finder: finder)
+        .onSnapshots(database)
+        .asyncMap(postsMapper);
   }
 
   @override
@@ -55,7 +64,10 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       sortOrders: [SortOrder(Post.DATE_FIELD, false)],
       limit: limit,
     );
-    return store.query(finder: finder).onSnapshots(database).map(postsMapper);
+    return store
+        .query(finder: finder)
+        .onSnapshots(database)
+        .asyncMap(postsMapper);
   }
 
   @override
@@ -64,7 +76,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     return store
         .query(finder: finder)
         .onSnapshots(database)
-        .map(postsMapper)
+        .asyncMap(postsMapper)
         .map((event) => event?.isNotEmpty == true ? event[0] : null);
   }
 

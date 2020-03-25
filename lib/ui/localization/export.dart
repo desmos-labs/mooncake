@@ -70,6 +70,7 @@ your mnemonic from scratch in the case of a future recovery.
   String get biometricsReason => "Authenticate into Mooncake";
 
   // Main screen
+  String get refreshButtonText => "New posts available. Tap to refresh";
   String get allPostsTabTitle => "Posts";
   String get likedPostsTabTitle => "Liked posts";
   String get notificationsTabTitle => "Notifications";
