@@ -16,7 +16,6 @@ class CreatePostUseCase {
   Future<Post> create({
     @required String message,
     @required String parentId,
-    @required bool allowsComments,
     List<PostMedia> medias,
   }) async {
     final account = await _userRepository.getAccount();
@@ -27,7 +26,7 @@ class CreatePostUseCase {
       created: date,
       parentId: parentId,
       message: message,
-      allowsComments: allowsComments,
+      allowsComments: true,
       medias: medias,
       subspace: Constants.SUBSPACE,
       owner: user,

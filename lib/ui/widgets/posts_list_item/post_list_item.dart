@@ -50,11 +50,10 @@ class PostListItem extends StatelessWidget {
       color = Theme.of(context).errorColor.withOpacity(0.75);
     }
 
-    return Card(
-      color: color,
+    return Container(
       margin: EdgeInsets.all(8),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
+      decoration: BoxDecoration(
+        color: color,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: InkWell(
@@ -69,7 +68,7 @@ class PostListItem extends StatelessWidget {
               const SizedBox(height: PostsTheme.defaultPadding),
               PostActionsBar(post: post),
               const SizedBox(height: PostsTheme.defaultPadding),
-              PostReactionsList(post: post),
+              if (post.reactions.isNotEmpty) PostReactionsList(post: post),
             ],
           ),
         ),
@@ -86,14 +85,14 @@ class PostListItem extends StatelessWidget {
   Function _handleLongClick(BuildContext context) {
     if (post.status.hasError) {
       return () => showPostItemPopup(
-        context: context,
-        content: PostErrorPopupContent(error: post.status.data),
-      );
+            context: context,
+            content: PostErrorPopupContent(error: post.status.data),
+          );
     } else if (post.status.hasTxHash) {
       return () => showPostItemPopup(
-        context: context,
-        content: PostSuccessPopupContent(txHash: post.status.data),
-      );
+            context: context,
+            content: PostSuccessPopupContent(txHash: post.status.data),
+          );
     }
     return null;
   }

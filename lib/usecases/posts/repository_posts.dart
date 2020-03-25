@@ -31,7 +31,7 @@ abstract class PostsRepository {
 
   /// Saves the given post inside the repository.
   /// If emit is true, emits the new list of posts using the stream.
-  Future<void> savePost(Post post, {bool emit = true});
+  Future<void> savePost(Post post);
 
   /// Saves the given post inside the repository.
   Future<void> savePosts(List<Post> posts);

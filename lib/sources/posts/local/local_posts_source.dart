@@ -119,12 +119,13 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<void> savePost(Post post, {bool emit = true}) async {
-    return store.record(getPostKey(post)).put(database, post.toJson());
+  Future<void> savePost(Post post) async {
+    await database.transaction((txn) async {
+      await store.record(getPostKey(post)).put(txn, post.toJson());
+    });
   }
 
   List<Post> _mergePosts(List<Post> existingPosts, List<Post> newPosts) {
-    final List<Post> list = List<Post>(newPosts.length);
     for (int index = 0; index < newPosts.length; index++) {
       final existing = existingPosts[index];
       final updated = newPosts[index];
@@ -149,7 +150,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         commentIds.addAll(existing.commentsIds);
       }
 
-      list[index] = updated.copyWith(
+      newPosts[index] = updated.copyWith(
         status: existing?.status,
         optionalData: optionalData,
         medias: medias.toList(),
@@ -157,21 +158,22 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         commentsIds: commentIds.toList(),
       );
     }
-    return list;
   }
 
   @override
   Future<void> savePosts(List<Post> posts, {bool merge = false}) async {
-    final keys = posts.map((e) => getPostKey(e)).toList();
-
-    if (merge) {
-      List<Post> existingValues = (await store.records(keys).get(database))
-          .map((e) => e == null ? null : Post.fromJson(e))
-          .toList();
-      posts = _mergePosts(existingValues, posts);
-    }
-
     final values = posts.map((e) => e.toJson()).toList();
-    return store.records(keys).put(database, values);
+    await database.transaction((txn) async {
+      final keys = posts.map((e) => getPostKey(e)).toList();
+
+      if (merge) {
+        final existingValues = (await store.records(keys).get(txn))
+            .map((e) => e == null ? null : Post.fromJson(e))
+            .toList();
+        _mergePosts(existingValues, posts);
+      }
+
+      await store.records(keys).put(txn, values);
+    });
   }
 }

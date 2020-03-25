@@ -33,7 +33,7 @@ class ManagePostReactionsUseCase {
       reactions: newReactions,
       status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
     );
-    await _postsRepository.savePost(post, emit: true);
+    await _postsRepository.savePost(post);
     return post;
   }
 }

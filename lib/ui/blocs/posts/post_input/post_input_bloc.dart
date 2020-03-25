@@ -68,8 +68,6 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       yield PostInputState.empty(_parentPost);
     } else if (event is MessageChanged) {
       yield state.update(message: event.message);
-    } else if (event is AllowsCommentsChanged) {
-      yield state.update(allowsComments: event.allowsComments);
     } else if (event is ImageAdded) {
       final media = _convert(event.file);
       final images = _removeFileIfPresent(state.medias, media);
@@ -117,7 +115,6 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     final post = await _createPostUseCase.create(
       message: state.message,
       parentId: state.parentPost?.id,
-      allowsComments: state.allowsComments,
       medias: state.medias,
     );
     await _savePostUseCase.save(post);

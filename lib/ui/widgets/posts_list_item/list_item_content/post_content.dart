@@ -13,7 +13,10 @@ import 'post_content_message.dart';
 class PostContent extends StatelessWidget {
   final Post post;
 
-  const PostContent({Key key, this.post}) : super(key: key);
+  const PostContent({
+    Key key,
+    @required this.post,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +29,16 @@ class PostContent extends StatelessWidget {
         ),
         const SizedBox(height: PostsTheme.defaultPadding),
         if (post.message != null && post.message.isNotEmpty)
-          PostMessage(key: PostsKeys.postItemMessage(post.id), post: post),
+          PostMessage(
+            key: PostsKeys.postItemMessage(post.id),
+            post: post,
+          ),
         const SizedBox(height: PostsTheme.defaultPadding),
-        PostImagesPreviewer(
-          key: PostsKeys.postItemImagePreviewer(post.id),
-          post: post,
-        ),
+        if (post.images.isNotEmpty)
+          PostImagesPreviewer(
+            key: PostsKeys.postItemImagePreviewer(post.id),
+            post: post,
+          ),
       ],
     );
   }

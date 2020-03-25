@@ -31,29 +31,22 @@ class LocalUserSourceImpl extends LocalUserSource {
   static const _USER_DATA_KEY = "user_data";
   static const _MNEMONIC_KEY = "mnemonic";
 
-  final String _dbName;
+  final Database database;
   final NetworkInfo _networkInfo;
   final FlutterSecureStorage _storage;
 
-  final _store = StoreRef.main();
-  final _userController = BehaviorSubject<MooncakeAccount>();
+  final store = StoreRef.main();
 
   LocalUserSourceImpl({
-    @required String dbName,
+    @required Database database,
     @required NetworkInfo networkInfo,
     @required FlutterSecureStorage secureStorage,
-  })  : assert(dbName != null && dbName.isNotEmpty),
-        this._dbName = dbName,
+  })  : assert(database != null),
+        database = database,
         assert(networkInfo != null),
         this._networkInfo = networkInfo,
         assert(secureStorage != null),
         this._storage = secureStorage;
-
-  Future<Database> get _database async {
-    final path = await getApplicationDocumentsDirectory();
-    await path.create(recursive: true);
-    return databaseFactoryIo.openDatabase(join(path.path, this._dbName));
-  }
 
   /// Allows to derive a [Wallet] instance from the given [_WalletInfo] object.
   /// This method is static so that it can be called using the [compute] method
@@ -95,16 +88,15 @@ class LocalUserSourceImpl extends LocalUserSource {
 
   @override
   Future<void> saveAccount(MooncakeAccount data) async {
-    final database = await this._database;
-    await _store.record(_USER_DATA_KEY).put(database, data?.toJson());
-    _userController.add(data);
+    await database.transaction((txn) async {
+      await store.record(_USER_DATA_KEY).put(txn, data?.toJson());
+    });
   }
 
   @override
   Future<MooncakeAccount> getAccount() async {
     // Try getting the user from the database
-    final database = await this._database;
-    final record = await _store.record(_USER_DATA_KEY).get(database);
+    final record = await store.record(_USER_DATA_KEY).get(database);
     if (record != null) {
       return MooncakeAccount.fromJson(record);
     }
@@ -126,7 +118,11 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Stream<MooncakeAccount> get accountStream => _userController.stream;
+  Stream<MooncakeAccount> get accountStream {
+    return store
+        .stream(database, filter: Filter.byKey(_USER_DATA_KEY))
+        .map((event) => MooncakeAccount.fromJson(event.value));
+  }
 
   @override
   Future<void> saveAuthenticationMethod(AuthenticationMethod method) async {
@@ -147,6 +143,6 @@ class LocalUserSourceImpl extends LocalUserSource {
   @override
   Future<void> wipeData() async {
     await _storage.delete(key: _MNEMONIC_KEY);
-    await _store.delete(await _database);
+    await store.delete(database);
   }
 }

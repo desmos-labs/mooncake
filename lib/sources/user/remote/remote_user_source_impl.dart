@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:alan/alan.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';

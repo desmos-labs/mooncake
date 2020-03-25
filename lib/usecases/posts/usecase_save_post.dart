@@ -11,25 +11,18 @@ class SavePostUseCase {
         this._postsRepository = postsRepository;
 
   /// Saves the given [post] inside the repository.
-  Future<void> save(Post post) {
-    return _savePostAndParent(post, emit: true);
-  }
+  Future<void> save(Post post) async {
+    // Save the post
+    await _postsRepository.savePost(post);
 
-  /// Saves the given [post], updating its parent as well (if it has one).
-  /// If [emit] is true, after the update emits the new list of posts
-  /// using the proper streams.
-  Future<void> _savePostAndParent(Post post, {bool emit = false}) async {
     // Update the parent
     if (post.hasParent) {
       final parent = await _postsRepository.getPostById(post.parentId);
       final comments = parent.commentsIds;
       if (!comments.contains(post.id)) {
         comments.add(post.id);
+        await _postsRepository.savePost(parent);
       }
-      await _savePostAndParent(post, emit: false);
     }
-
-    // Save the post
-    await _postsRepository.savePost(post, emit: emit);
   }
 }

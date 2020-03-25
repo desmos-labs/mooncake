@@ -12,37 +12,28 @@ class PostActionsBar extends StatelessWidget {
   static const ICON_SPACING = 16.0;
 
   final Post post;
-  const PostActionsBar({
-    Key key,
-    @required this.post,
-  }) : super(key: key);
+  const PostActionsBar({Key key, @required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostListItemBloc, PostListItemState>(
-      builder: (BuildContext context, PostListItemState state) {
-        return Column(
+    return BlocBuilder<AccountBloc, AccountState>(
+      builder: (BuildContext context, AccountState state) {
+        return Row(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      PostLikeAction(
-                        post: post,
-                        isLiked: state.user.hasLiked(post),
-                      ),
-                      const SizedBox(width: ThemeSpaces.actionBarSpacer),
-                      PostCommentAction(post: post),
-                      const SizedBox(width: ThemeSpaces.actionBarSpacer),
-                      PostAddReactionAction(post: post),
-                    ],
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  PostLikeAction(
+                    post: post,
+                    isLiked: (state as LoggedIn).user.hasLiked(post),
                   ),
-                ),
-                if (post.likes.length > 0) PostLikesCounter(post: post),
-              ],
+                  PostCommentAction(post: post),
+                  PostAddReactionAction(post: post),
+                ],
+              ),
             ),
+            if (post.likes.length > 0) PostLikesCounter(post: post),
           ],
         );
       },

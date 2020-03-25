@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -36,7 +37,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required GetHomePostsUseCase getHomePostsUseCase,
     @required GetHomeEventsUseCase getHomeEventsUseCase,
     @required SyncPostsUseCase syncPostsUseCase,
-    @required GetAccountUseCase getUserUseCase,
     @required GetNotificationsUseCase getNotificationsUseCase,
     @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
     @required ManagePostReactionsUseCase managePostReactionsUseCase,
@@ -47,17 +47,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         _getHomeEventsUseCase = getHomeEventsUseCase,
         assert(syncPostsUseCase != null),
         _syncPostsUseCase = syncPostsUseCase,
-        assert(getUserUseCase != null),
         assert(updatePostsStatusUseCase != null),
         _updatePostsStatusUseCase = updatePostsStatusUseCase,
         assert(managePostReactionsUseCase != null),
         _managePostReactionsUseCase = managePostReactionsUseCase {
     _initializeSyncTimer();
-
-    // Subscribe to the user changes
-    getUserUseCase.single().then((user) {
-      add(UserUpdated(user));
-    });
 
     // Subscribe to the posts changes
     _postsSubscription = _initPostsSubscription();
@@ -83,7 +77,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       getHomePostsUseCase: Injector.get(),
       getHomeEventsUseCase: Injector.get(),
       syncPostsUseCase: Injector.get(),
-      getUserUseCase: Injector.get(),
       analytics: Injector.get(),
       getNotificationsUseCase: Injector.get(),
       updatePostsStatusUseCase: Injector.get(),
@@ -96,9 +89,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
   @override
   Stream<PostsListState> mapEventToState(PostsListEvent event) async* {
-    if (event is UserUpdated) {
-      yield* _mapUserUpdatedEventToState(event);
-    } else if (event is PostsUpdated) {
+   if (event is PostsUpdated) {
       yield* _mapPostsUpdatedEventToState(event);
     } else if (event is AddOrRemoveLike) {
       yield* _convertAddOrRemoveLikeEvent(event);
@@ -133,16 +124,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       _syncTimer = Timer.periodic(Duration(seconds: _syncPeriod), (t) {
         add(SyncPosts());
       });
-    }
-  }
-
-  /// Handles the event emitted when the user has been updated.
-  Stream<PostsListState> _mapUserUpdatedEventToState(UserUpdated event) async* {
-    final currentState = state;
-    if (currentState is PostsLoading) {
-      yield PostsLoaded.first(user: event.user);
-    } else if (currentState is PostsLoaded) {
-      yield currentState.copyWith(user: event.user);
     }
   }
 

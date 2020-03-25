@@ -8,7 +8,10 @@ import 'package:mooncake/ui/ui.dart';
 class PostsListContent extends StatelessWidget {
   final List<Post> posts;
 
-  const PostsListContent({Key key, this.posts}) : super(key: key);
+  const PostsListContent({
+    Key key,
+    @required this.posts,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +20,7 @@ class PostsListContent extends StatelessWidget {
       itemCount: posts.length,
       itemBuilder: (context, index) {
         final post = posts[index];
-        return BlocProvider<PostListItemBloc>(
-          create: (context) => PostListItemBloc.create(context, post),
-          child: PostListItem(post: post),
-        );
+        return PostListItem(post: post);
       },
     );
   }

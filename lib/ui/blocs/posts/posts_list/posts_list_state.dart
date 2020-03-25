@@ -17,9 +17,6 @@ class PostsLoading extends PostsListState {}
 /// Represents the state that must be used when a list of posts should be made
 /// visible to the user.
 class PostsLoaded extends PostsListState {
-  /// User that is using the application.
-  final MooncakeAccount user;
-
   /// Lists of posts that should be shown to the user.
   final List<Post> posts;
 
@@ -33,16 +30,14 @@ class PostsLoaded extends PostsListState {
   final bool syncingPosts;
 
   PostsLoaded({
-    @required this.user,
     @required this.posts,
     @required this.shouldRefresh,
     @required this.refreshing,
     @required this.syncingPosts,
   });
 
-  factory PostsLoaded.first({MooncakeAccount user, List<Post> posts}) {
+  factory PostsLoaded.first({List<Post> posts}) {
     return PostsLoaded(
-      user: user,
       posts: posts ?? [],
       shouldRefresh: false,
       refreshing: false,
@@ -58,7 +53,6 @@ class PostsLoaded extends PostsListState {
     bool syncingPosts,
   }) {
     return PostsLoaded(
-      user: user ?? this.user,
       posts: posts ?? this.posts,
       shouldRefresh: shouldRefresh ?? this.shouldRefresh,
       refreshing: refreshing ?? this.refreshing,
@@ -68,7 +62,6 @@ class PostsLoaded extends PostsListState {
 
   @override
   List<Object> get props => [
-        user,
         posts,
         shouldRefresh,
         refreshing,

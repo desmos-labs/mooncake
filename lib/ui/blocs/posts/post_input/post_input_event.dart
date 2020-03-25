@@ -22,17 +22,6 @@ class MessageChanged extends PostInputEvent {
   List<Object> get props => [message];
 }
 
-/// Event that is emitted when the user changes whether or not the post
-/// should allow comments.
-class AllowsCommentsChanged extends PostInputEvent {
-  final bool allowsComments;
-
-  AllowsCommentsChanged(this.allowsComments);
-
-  @override
-  List<Object> get props => [allowsComments];
-}
-
 /// Event that is emitted upon the user adds an image to the post.
 class ImageAdded extends PostInputEvent {
   final File file;

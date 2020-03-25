@@ -9,9 +9,15 @@ import 'package:sembast/sembast.dart';
 /// Utility class used to provide instances of different objects.
 class Injector {
   /// Initializes the injector. Should be called inside the main method.
-  static init({@required Database postsDatabase}) {
+  static init({
+    @required Database accountDatabase,
+    @required Database postsDatabase,
+  }) {
     final builder = di.Injector.builder()
-      ..install(SourcesModule(postsDatabase: postsDatabase))
+      ..install(SourcesModule(
+        accountDatabase: accountDatabase,
+        postsDatabase: postsDatabase,
+      ))
       ..install(RepositoriesModule())
       ..install(UseCaseModule())
       ..install(UtilsModule());

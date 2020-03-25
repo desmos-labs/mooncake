@@ -9,17 +9,24 @@ import 'package:mooncake/main.reflectable.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/utils/utils.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
 
+  // Setup the logging
+  if (Foundation.kReleaseMode) {
+    Foundation.debugPrint = (String message, {int wrapWidth}) {};
+  }
+
   // Setup the dependency injection
+  final path = await getApplicationDocumentsDirectory();
+  await path.create(recursive: true);
+  final factory = createDatabaseFactoryIo(rootPath: path.path);
   Injector.init(
-    postsDatabase: await _getPostsDatabase(),
+    accountDatabase: await factory.openDatabase("account.db"),
+    postsDatabase: await factory.openDatabase("posts.db"),
   );
 
   // Setup the Bloc delegate to observe transitions
@@ -46,13 +53,6 @@ void main() async {
     // Dart errors to the dev console or Sentry depending on the environment.
     Logger.log(error, stackTrace: stackTrace);
   });
-}
-
-Future<Database> _getPostsDatabase() async {
-  final path = await getApplicationDocumentsDirectory();
-  await path.create(recursive: true);
-  final dbPath = join(path.path, "posts.db");
-  return databaseFactoryIo.openDatabase(dbPath);
 }
 
 void _runApp() {

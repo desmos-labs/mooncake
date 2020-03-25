@@ -21,10 +21,10 @@ class PostReactionAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostListItemBloc, PostListItemState>(
-      builder: (BuildContext context, PostListItemState state) {
+    return BlocBuilder<AccountBloc, AccountState>(
+      builder: (BuildContext context, AccountState state) {
         final userReacted = post.reactions.containsFrom(
-          state.user,
+          (state as LoggedIn).user,
           reactionCode,
         );
         final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(

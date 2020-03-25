@@ -9,7 +9,6 @@ class PostInputState extends Equatable {
   final Post parentPost;
 
   final String message;
-  final bool allowsComments;
   final List<PostMedia> medias;
 
   final bool showPopup;
@@ -19,7 +18,6 @@ class PostInputState extends Equatable {
   PostInputState({
     @required this.parentPost,
     @required this.message,
-    @required this.allowsComments,
     @required this.medias,
     @required this.saving,
     @required this.showPopup,
@@ -33,7 +31,6 @@ class PostInputState extends Equatable {
     return PostInputState(
       parentPost: parentPost,
       message: null,
-      allowsComments: true,
       medias: [],
       saving: false,
       showPopup: false,
@@ -53,7 +50,6 @@ class PostInputState extends Equatable {
     return PostInputState(
       parentPost: parentPost,
       message: message ?? this.message,
-      allowsComments: allowsComments ?? this.allowsComments,
       saving: saving ?? this.saving,
       medias: medias ?? this.medias,
       showPopup: showPopup ?? this.showPopup,
@@ -65,7 +61,6 @@ class PostInputState extends Equatable {
   List<Object> get props => [
         parentPost,
         message,
-        allowsComments,
         medias,
         saving,
         showPopup,

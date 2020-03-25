@@ -24,23 +24,18 @@ class PostLikeAction extends StatelessWidget {
         ? Icon(MooncakeIcons.heartF)
         : Icon(MooncakeIcons.heart);
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        SizedBox(
-          height: size,
-          width: size,
-          child: IconButton(
-            padding: EdgeInsets.all(0.0),
-            iconSize: size,
-            icon: icon,
-            onPressed: () {
-              BlocProvider.of<PostsListBloc>(context)
-                  .add(AddOrRemoveLike(post));
-            },
-          ),
-        ),
-      ],
+    return SizedBox(
+      height: size,
+      width: size,
+      child: IconButton(
+        padding: EdgeInsets.all(0.0),
+        iconSize: size,
+        icon: icon,
+        onPressed: () {
+          BlocProvider.of<PostsListBloc>(context)
+              .add(AddOrRemoveLike(post));
+        },
+      ),
     );
   }
 }

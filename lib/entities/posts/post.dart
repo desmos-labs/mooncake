@@ -76,6 +76,11 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "media", nullable: true)
   final List<PostMedia> medias;
 
+  /// Returns only the list of images.
+  List<PostMedia> get images {
+    return medias?.where((element) => element.isImage)?.toList() ?? [];
+  }
+
   /// Tells whether or not it contains local medias.
   bool get containsLocalMedias => medias.any((media) => media.isLocal);
 
@@ -83,8 +88,9 @@ class Post extends Equatable implements Comparable<Post> {
   final List<Reaction> reactions;
 
   /// Returns the list of all the likes that have been added.
-  List<Reaction> get likes =>
-      reactions?.where((reaction) => reaction.isLike)?.toList() ?? [];
+  List<Reaction> get likes {
+    return reactions?.where((reaction) => reaction.isLike)?.toList() ?? [];
+  }
 
   @JsonKey(name: "children")
   final List<String> commentsIds;

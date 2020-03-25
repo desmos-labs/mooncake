@@ -21,56 +21,55 @@ class PostImagesPreviewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filter all the non-images medias
-    final images = post.medias?.where((element) => element.isImage)?.toList();
-
-    // No images to display
-    if (images == null || images.isEmpty) {
-      return Container();
-    }
-
     return BlocProvider<PostImagesCarouselBloc>(
-      create: (context) => PostImagesCarouselBloc.create(),
+      create: (_) => PostImagesCarouselBloc.create(),
       child: BlocBuilder<PostImagesCarouselBloc, PostImagesCarouselState>(
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              CarouselSlider(
-                viewportFraction: 1.0,
-                enableInfiniteScroll: false,
-                onPageChanged: (index) => _onPageChanged(context, index),
-                items: List.generate(images.length, (index) {
-                  return PostContentImage(media: images[index]);
-                }),
-              ),
-              if (images.length > 1)
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(images.length, (index) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 2),
-                          height: indicatorSize,
-                          width: indicatorSize,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: state.currentIndex == index
-                                ? Theme.of(context).accentColor
-                                : Theme.of(context).accentColor.withOpacity(0.4),
-                          ),
-                        );
-                      }),
-                    ),
-                  ],
-                ),
+              _imagesCarousel(context),
+              if (post.images.length > 1) _imagesIndicator(state, context),
             ],
           );
         },
       ),
+    );
+  }
+
+  CarouselSlider _imagesCarousel(BuildContext context) {
+    return CarouselSlider(
+      viewportFraction: 1.0,
+      enableInfiniteScroll: false,
+      onPageChanged: (index) => _onPageChanged(context, index),
+      items: List.generate(post.images.length, (index) {
+        return PostContentImage(media: post.images[index]);
+      }),
+    );
+  }
+
+  Column _imagesIndicator(PostImagesCarouselState state, BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        const SizedBox(height: 8),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(post.images.length, (index) {
+            return Container(
+              margin: EdgeInsets.symmetric(horizontal: 2),
+              height: indicatorSize,
+              width: indicatorSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: state.currentIndex == index
+                    ? Theme.of(context).accentColor
+                    : Theme.of(context).accentColor.withOpacity(0.4),
+              ),
+            );
+          }),
+        ),
+      ],
     );
   }
 

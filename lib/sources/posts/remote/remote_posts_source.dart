@@ -11,6 +11,8 @@ import 'package:rxdart/rxdart.dart';
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
 class RemotePostsSourceImpl implements RemotePostsSource {
+  final String graphQlEndpoint;
+
   final ChainHelper _chainHelper;
   final LocalUserSource _userSource;
   final GqlHelper _gqlHelper;
@@ -29,7 +31,9 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     @required GqlHelper gqlHelper,
     @required LocalUserSource userSource,
     @required MsgConverter msgConverter,
-  })  : assert(userSource != null),
+  })  : assert(graphQlEndpoint != null),
+        graphQlEndpoint = graphQlEndpoint,
+        assert(userSource != null),
         _userSource = userSource,
         assert(chainHelper != null),
         _chainHelper = chainHelper,
@@ -41,18 +45,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     _initGql(graphQlEndpoint);
   }
 
-  /// Converts the given [gqlData] retrieved from the remote GraphQL
-  /// server into a list of posts.
-  /// If no data is present, returns an empty list instead.
-  List<Post> _convertGqlResponse(dynamic gqlData) {
-    final data = gqlData as Map<String, dynamic>;
-    if (data.containsKey("post")) {
-      return (data["post"] as List<dynamic>)
-          .map((e) => Post.fromJson(e))
-          .toList();
-    }
-    return [];
-  }
+
 
   /// Initializes the GraphQL clients properly so that they can be
   /// queried using [_gqlClient] and new posts will be retrieved using
@@ -71,18 +64,14 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   @override
   Future<List<Post>> getHomePosts(int limit) async {
-    final homePosts = """query HomePosts { 
-    ${_gqlHelper.homePosts(limit)} 
-    }""";
-    final data = await _gqlClient.query(QueryOptions(
-        documentNode: gql(homePosts), fetchPolicy: FetchPolicy.networkOnly));
-    return _convertGqlResponse(data.data);
+    final data = HomePostsData(graphQlEndpoint, Constants.SUBSPACE, limit);
+    return await compute(GqlHelper.getHomePosts, data);
   }
 
   @override
   Stream<dynamic> get homeEventsStream {
     final query = """subscription HomeEvents {
-    ${_gqlHelper.homeEvents}
+    ${GqlHelper.homeEvents}
     }""";
     return _wsClient.subscribe(Operation(documentNode: gql(query)));
   }
@@ -92,15 +81,12 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   /// be found, `null` is returned instead.
   @override
   Future<Post> getPostById(String postId) async {
-    final query = """query PostById {
-    ${_gqlHelper.postDetailsQuery(postId)}
-    }""";
-    final data = await _gqlClient.query(QueryOptions(
-      documentNode: gql(query),
-      fetchPolicy: FetchPolicy.networkOnly,
-    ));
-    final posts = _convertGqlResponse(data.data);
-    return posts.isEmpty ? null : posts[0];
+    final data = PostDetailsData(
+      endpoint: graphQlEndpoint,
+      subspace: Constants.SUBSPACE,
+      id: postId,
+    );
+    return await compute(GqlHelper.getPostDetails, data);
   }
 
   @override

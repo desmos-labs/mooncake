@@ -10,20 +10,6 @@ abstract class PostsListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Event that is emitted when the user using the application
-/// has been updated for some reason.
-class UserUpdated extends PostsListEvent {
-  final MooncakeAccount user;
-
-  UserUpdated(this.user);
-
-  @override
-  List<Object> get props => [user];
-
-  @override
-  String toString() => 'UserUpdated';
-}
-
 /// Event that is emitted when the posts list has been updated.
 class PostsUpdated extends PostsListEvent {
   final List<Post> posts;

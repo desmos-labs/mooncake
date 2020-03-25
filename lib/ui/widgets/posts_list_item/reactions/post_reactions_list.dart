@@ -21,6 +21,7 @@ class PostReactionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostListItemBloc, PostListItemState>(
+      bloc: PostListItemBloc.create(),
       builder: (BuildContext context, PostListItemState state) {
         // Filter the likes as they are showed independently
         final reactions = post.reactions

@@ -17,15 +17,10 @@ class PostMessage extends StatelessWidget {
     return Row(
       children: <Widget>[
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              MarkdownBody(
-                onTapLink: _onTapLink,
-                data: post.message,
-                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
-              ),
-            ],
+          child: MarkdownBody(
+            onTapLink: _onTapLink,
+            data: post.message,
+            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
           ),
         ),
       ],

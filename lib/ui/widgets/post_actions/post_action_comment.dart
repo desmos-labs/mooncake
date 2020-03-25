@@ -23,16 +23,11 @@ class PostCommentAction extends StatelessWidget {
           icon: Icon(MooncakeIcons.comment, size: size),
           onPressed: () => _onTap(context),
         ),
+        if (comments.isNotEmpty) SizedBox(width: size / 4),
         if (comments.isNotEmpty)
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(width: size / 4),
-              Text(
-                comments.length.toString(),
-                style: Theme.of(context).accentTextTheme.bodyText2,
-              )
-            ],
+          Text(
+            comments.length.toString(),
+            style: Theme.of(context).accentTextTheme.bodyText2,
           ),
       ],
     );

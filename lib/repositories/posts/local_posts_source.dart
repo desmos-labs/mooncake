@@ -28,8 +28,7 @@ abstract class LocalPostsSource {
   Future<List<Post>> getPostsToSync();
 
   /// Saves the given [post] inside the source.
-  /// If [emits] is `true`, emits the new set of posts using the [postsStream].
-  Future<void> savePost(Post post, {bool emit = true});
+  Future<void> savePost(Post post);
 
   /// Saves the given [posts] inside the source.
   /// Upon having stored them properly, it emits the new set of posts

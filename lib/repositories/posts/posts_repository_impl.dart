@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
@@ -60,8 +61,8 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<void> savePost(Post post, {bool emit = true}) {
-    return _localPostsSource.savePost(post, emit: emit);
+  Future<void> savePost(Post post) {
+    return _localPostsSource.savePost(post);
   }
 
   @override

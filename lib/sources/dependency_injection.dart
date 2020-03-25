@@ -10,18 +10,20 @@ class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "ipfs.desmos.network";
 
-  static const _lcdUrl = kDebugMode
+  static const _lcdUrl = false
       ? "http://10.0.2.2:1317"
       : "http://lcd.morpheus.desmos.network:1317";
 
   static const _gqlEndpoint =
-      kDebugMode ? "10.0.2.2:8080/v1/graphql" : "35.234.80.165:8080/v1/graphql";
+      false ? "10.0.2.2:8080/v1/graphql" : "35.234.80.165:8080/v1/graphql";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
+  final Database accountDatabase;
   final Database postsDatabase;
   SourcesModule({
     @required this.postsDatabase,
+    @required this.accountDatabase,
   }) : assert(postsDatabase != null);
 
   @override
@@ -36,7 +38,7 @@ class SourcesModule implements Module {
       ..bindLazySingleton<LocalUserSource>(
           (injector, params) => LocalUserSourceImpl(
                 networkInfo: _networkInfo,
-                dbName: "account.db",
+                database: accountDatabase,
                 secureStorage: FlutterSecureStorage(),
               ))
       ..bindLazySingleton<RemoteUserSource>(

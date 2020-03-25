@@ -26,13 +26,12 @@ class _PostsAppState extends State<PostsApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PostsListBloc>(
-          create: (_) =>
-              PostsListBloc.create(syncPeriod: 30)..add(RefreshPosts()),
-        ),
-        BlocProvider<NotificationsBloc>(
-          create: (_) => NotificationsBloc.create()..add(LoadNotifications()),
-        )
+        BlocProvider<PostsListBloc>(create: (_) {
+          return PostsListBloc.create(syncPeriod: 30)..add(RefreshPosts());
+        }),
+        BlocProvider<NotificationsBloc>(create: (_) {
+          return NotificationsBloc.create()..add(LoadNotifications());
+        }),
       ],
       child: DynamicTheme(
         defaultBrightness: Brightness.light,
