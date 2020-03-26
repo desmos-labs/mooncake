@@ -179,7 +179,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Stream<PostsListState> _refreshPostsEventToState() async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
-      yield currentState.copyWith(refreshing: true);
+      yield currentState.copyWith(refreshing: true, shouldRefresh: false);
     }
     await _getHomePostsUseCase.refresh(_HOME_LIMIT);
   }

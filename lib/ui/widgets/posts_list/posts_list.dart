@@ -19,6 +19,7 @@ class PostsList extends StatefulWidget {
 }
 
 class _PostsListState extends State<PostsList> {
+  final indicator = new GlobalKey<RefreshIndicatorState>();
   Completer<void> _refreshCompleter;
 
   @override
@@ -30,6 +31,7 @@ class _PostsListState extends State<PostsList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
+      key: indicator,
       onRefresh: () {
         _refreshPosts(context);
         return _refreshCompleter.future;
@@ -71,7 +73,9 @@ class _PostsListState extends State<PostsList> {
                   child: FlatButton(
                     textColor: Colors.white,
                     color: Theme.of(context).iconTheme.color,
-                    onPressed: () => _refreshPosts(context),
+                    onPressed: () {
+                      indicator.currentState.show();
+                    },
                     child: Text(
                       PostsLocalizations.of(context).refreshButtonText,
                     ),

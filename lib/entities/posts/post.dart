@@ -196,7 +196,9 @@ class Post extends Equatable implements Comparable<Post> {
       'status: $status '
       '}';
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  static Post fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+
+  static Map<String, dynamic> asJson(Post post) => post.toJson();
 
   Map<String, dynamic> toJson() => _$PostToJson(this);
 }

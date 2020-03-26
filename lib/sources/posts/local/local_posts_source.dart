@@ -5,11 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
+
+import 'converter.dart';
 
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
@@ -18,9 +16,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   final Database database;
 
   /// Public constructor
-  LocalPostsSourceImpl({
-    this.database,
-  }) : assert(database != null);
+  LocalPostsSourceImpl({this.database}) : assert(database != null);
 
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
@@ -30,28 +26,13 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         post.owner.address;
   }
 
-  static Future<List<Post>> _convertPosts(
-      List<RecordSnapshot<dynamic, dynamic>> records,
-      ) async {
-    return List<Post>.generate(
-      records.length ?? 0,
-          (index) => Post.fromJson(records[index].value),
-    );
-  }
-
-  final Future<List<Post>> Function(
-      List<RecordSnapshot<dynamic, dynamic>>,
-  ) postsMapper = (snapshots) async {
-    return  compute(_convertPosts, snapshots);
-  };
-
   @override
   Stream<List<Post>> get postsStream {
     final finder = Finder(sortOrders: [SortOrder(Post.DATE_FIELD, false)]);
     return store
         .query(finder: finder)
         .onSnapshots(database)
-        .asyncMap(postsMapper);
+        .asyncMap(PostsConverter.deserializePosts);
   }
 
   @override
@@ -67,7 +48,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     return store
         .query(finder: finder)
         .onSnapshots(database)
-        .asyncMap(postsMapper);
+        .asyncMap(PostsConverter.deserializePosts);
   }
 
   @override
@@ -76,7 +57,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     return store
         .query(finder: finder)
         .onSnapshots(database)
-        .asyncMap(postsMapper)
+        .asyncMap(PostsConverter.deserializePosts)
         .map((event) => event?.isNotEmpty == true ? event[0] : null);
   }
 
@@ -88,7 +69,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       return null;
     }
 
-    return Post.fromJson(record.value);
+    return PostsConverter.deserializePost(record);
   }
 
   @override
@@ -101,7 +82,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     );
 
     final records = await store.find(database, finder: finder);
-    return records.map((record) => Post.fromJson(record.value)).toList();
+    return PostsConverter.deserializePosts(records);
   }
 
   @override
@@ -127,17 +108,18 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     );
 
     final records = await store.find(database, finder: finder);
-    return records.map((record) => Post.fromJson(record.value)).toList();
+    return PostsConverter.deserializePosts(records);
   }
 
   @override
   Future<void> savePost(Post post) async {
+    final value = await PostsConverter.serializePost(post);
     await database.transaction((txn) async {
-      await store.record(getPostKey(post)).put(txn, post.toJson());
+      await store.record(getPostKey(post)).put(txn, value);
     });
   }
 
-  List<Post> _mergePosts(List<Post> existingPosts, List<Post> newPosts) {
+  void _mergePosts(List<Post> existingPosts, List<Post> newPosts) {
     for (int index = 0; index < newPosts.length; index++) {
       final existing = existingPosts[index];
       final updated = newPosts[index];
@@ -174,17 +156,17 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Future<void> savePosts(List<Post> posts, {bool merge = false}) async {
-    final values = posts.map((e) => e.toJson()).toList();
-    await database.transaction((txn) async {
-      final keys = posts.map((e) => getPostKey(e)).toList();
+    final keys = posts.map((e) => getPostKey(e)).toList();
 
+    await database.transaction((txn) async {
       if (merge) {
-        final existingValues = (await store.records(keys).get(txn))
-            .map((e) => e == null ? null : Post.fromJson(e))
-            .toList();
+        final existingValues = await PostsConverter.deserializePosts(
+          await store.records(keys).get(txn),
+        );
         _mergePosts(existingValues, posts);
       }
 
+      final values = await PostsConverter.serializePosts(posts);
       await store.records(keys).put(txn, values);
     });
   }
