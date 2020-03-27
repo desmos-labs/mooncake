@@ -12,13 +12,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast_io.dart';
 
 void main() async {
+  // Init widget bindings
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Init reflectable
   initializeReflectable();
 
-  // Setup the logging
-  if (Foundation.kReleaseMode) {
-    Foundation.debugPrint = (String message, {int wrapWidth}) {};
-  }
+  // Init the logger
+  await Logger.init();
 
   // Setup the dependency injection
   final path = await getApplicationDocumentsDirectory();
@@ -30,7 +31,9 @@ void main() async {
   );
 
   // Setup the Bloc delegate to observe transitions
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  if (Foundation.kDebugMode) {
+    BlocSupervisor.delegate = SimpleBlocDelegate();
+  }
 
   // This captures errors reported by the Flutter framework.
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -46,9 +49,9 @@ void main() async {
 
   // Run the app
   // ignore: missing_return
-  runZoned<Future<void>>(() {
+  runZonedGuarded(() {
     _runApp();
-  }, onError: (error, stackTrace) {
+  }, (error, stackTrace) {
     // Whenever an error occurs, call the `_reportError` function. This sends
     // Dart errors to the dev console or Sentry depending on the environment.
     Logger.log(error, stackTrace: stackTrace);

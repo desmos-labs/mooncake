@@ -49,9 +49,6 @@ class LocalNotificationsSourceImpl extends LocalNotificationsSource {
 
   @override
   Future<void> saveNotification(NotificationData notification) async {
-
-
-
     final database = await this.database;
     await store
         .record(notification.stringDate)

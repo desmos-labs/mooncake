@@ -85,17 +85,14 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   void _configureFcm() {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("Notification onMessage: $message");
         final fcmMessage = FcmMessage.fromJson(message);
         _foregroundNotificationStream.add(fcmMessage);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("Notification onLaunch: $message");
         final fcmMessage = FcmMessage.fromJson(message);
         _backgroundNotificationStream.add(fcmMessage);
       },
       onResume: (Map<String, dynamic> message) async {
-        print("Notification onResume: $message");
         final fcmMessage = FcmMessage.fromJson(message);
         _backgroundNotificationStream.add(fcmMessage);
       },
@@ -109,9 +106,13 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
 
   @override
   Stream<NotificationData> get foregroundStream =>
-      _foregroundNotificationStream.stream.map(_converter.convertFcmMessage);
+      _foregroundNotificationStream.stream
+          .map(_converter.convertFcmMessage)
+          .where((event) => event != null);
 
   @override
   Stream<NotificationData> get backgroundStream =>
-      _backgroundNotificationStream.stream.map(_converter.convertFcmMessage);
+      _backgroundNotificationStream.stream
+          .map(_converter.convertFcmMessage)
+          .where((element) => element != null);
 }
