@@ -15,6 +15,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
   final LogoutUseCase _logoutUseCase;
   final GetAccountUseCase _getUserUseCase;
+  final RefreshAccountUseCase _refreshAccountUseCase;
   final FirebaseAnalytics _analytics;
 
   final NavigatorBloc _navigatorBloc;
@@ -25,6 +26,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required GenerateMnemonicUseCase generateMnemonicUseCase,
     @required LogoutUseCase logoutUseCase,
     @required GetAccountUseCase getUserUseCase,
+    @required RefreshAccountUseCase refreshAccountUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
   })  : assert(generateMnemonicUseCase != null),
@@ -33,13 +35,15 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         _logoutUseCase = logoutUseCase,
         assert(getUserUseCase != null),
         _getUserUseCase = getUserUseCase,
+        assert(refreshAccountUseCase != null),
+        _refreshAccountUseCase = refreshAccountUseCase,
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(analytics != null),
         _analytics = analytics {
     // Listen for account changes so that we know when to refresh
     _accountSubscription = _getUserUseCase.stream().listen((account) {
-      add(Refresh(account));
+      add(UserRefreshed(account));
     });
   }
 
@@ -48,6 +52,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       generateMnemonicUseCase: Injector.get(),
       logoutUseCase: Injector.get(),
       getUserUseCase: Injector.get(),
+      refreshAccountUseCase: Injector.get(),
       navigatorBloc: BlocProvider.of(context),
       analytics: Injector.get(),
     );
@@ -66,8 +71,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _mapLogInEventToState(event);
     } else if (event is LogOut) {
       yield* _mapLogOutEventToState();
-    } else if (event is Refresh) {
+    } else if (event is UserRefreshed) {
       yield* _mapRefreshEventToState(event);
+    } else if (event is RefreshAccount) {
+      yield* _mapRefreshAccountEventToState();
     }
   }
 
@@ -76,7 +83,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapCheckStatusEventToState() async* {
     final account = await _getUserUseCase.single();
     if (account != null) {
-      yield LoggedIn(account);
+      yield LoggedIn.initial(account);
     } else {
       yield LoggedOut();
     }
@@ -96,7 +103,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
     _analytics.logLogin();
     final account = await _getUserUseCase.single();
-    yield LoggedIn(account);
+    yield LoggedIn.initial(account);
     _navigatorBloc.add(NavigateToHome());
   }
 
@@ -108,10 +115,23 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     yield LoggedOut();
   }
 
-  Stream<AccountState> _mapRefreshEventToState(Refresh event) async* {
+  /// Handles the event emitted when the user has triggered a manual refresh
+  /// of the account details.
+  Stream<AccountState> _mapRefreshAccountEventToState() async* {
     final currentState = state;
     if (currentState is LoggedIn) {
-      yield LoggedIn(event.user);
+      yield currentState.copyWith(refreshing: true);
+      await _refreshAccountUseCase.refresh();
+      yield currentState.copyWith(refreshing: false);
+    }
+  }
+
+  /// Handles the event that is emitted when the user details have been
+  /// changed and they should be refreshed.
+  Stream<AccountState> _mapRefreshEventToState(UserRefreshed event) async* {
+    final currentState = state;
+    if (currentState is LoggedIn) {
+      yield currentState.copyWith(user: event.user, refreshing: false);
     }
   }
 

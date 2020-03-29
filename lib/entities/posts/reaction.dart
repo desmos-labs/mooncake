@@ -28,8 +28,8 @@ class Reaction extends Equatable {
     @required String code,
   })  : assert(user != null),
         assert(code != null),
-        this.code = getEmojiCode(code),
-        this.rune = getEmojiRune(code);
+        this.code = EmojiUtils.getEmojiCode(code),
+        this.rune = EmojiUtils.getEmojiRune(code);
 
   factory Reaction.fromJson(Map<String, dynamic> json) =>
       _$ReactionFromJson(json);

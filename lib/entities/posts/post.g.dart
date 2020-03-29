@@ -23,14 +23,18 @@ Post _$PostFromJson(Map<String, dynamic> json) {
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
     medias: (json['media'] as List)
-        ?.map((e) =>
-            e == null ? null : PostMedia.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) => e == null
+                ? null
+                : PostMedia.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
     reactions: (json['reactions'] as List)
-        ?.map((e) =>
-            e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    commentsIds: (json['children'] as List)?.map((e) => e as String)?.toList(),
+            ?.map((e) =>
+                e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
+    commentsIds:
+        (json['children'] as List)?.map((e) => e as String)?.toList() ?? [],
     status: Post._postStatusFromJson(json['status'] as Map<String, dynamic>),
   );
 }

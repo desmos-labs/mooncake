@@ -21,23 +21,15 @@ class PostMedia extends Equatable {
   @JsonKey(name: "mime_type")
   final String mimeType;
 
+  PostMedia({@required this.url, @required this.mimeType})
+      : assert(url != null),
+        assert(mimeType != null);
+
   /// Tells whether the image is stored only locally or not.
   bool get isLocal => !url.startsWith("http");
 
   /// Tells whether this media represents an image or not.
   bool get isImage => IMAGES_MIME_TYPES.contains(mimeType);
-
-  PostMedia({@required this.url, @required this.mimeType})
-      : assert(url != null),
-        assert(mimeType != null);
-
-  @override
-  List<Object> get props => [url, mimeType];
-
-  factory PostMedia.fromJson(Map<String, dynamic> json) =>
-      _$PostMediaFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PostMediaToJson(this);
 
   /// Allows to create a new [PostMedia] instance with the data contained
   /// inside the invoking object replaced with the ones specified as
@@ -50,5 +42,18 @@ class PostMedia extends Equatable {
       url: url ?? this.url,
       mimeType: mimeType ?? this.mimeType,
     );
+  }
+
+  @override
+  List<Object> get props {
+    return [url, mimeType];
+  }
+
+  factory PostMedia.fromJson(Map<String, dynamic> json) {
+    return _$PostMediaFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$PostMediaToJson(this);
   }
 }

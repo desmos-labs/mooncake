@@ -8,6 +8,8 @@ part of 'notification.dart';
 
 Map<String, dynamic> _$NotificationDataToJson(NotificationData instance) =>
     <String, dynamic>{
+      'stringify': instance.stringify,
+      'hashCode': instance.hashCode,
       'type': instance.type,
       'date': NotificationData.dateToJson(instance.date),
       'title': instance.title,

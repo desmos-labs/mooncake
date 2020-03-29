@@ -38,7 +38,7 @@ class PostAddReactionAction extends StatelessWidget {
   }
 
   void _onEmojiSelected(BuildContext context, Emoji emoji) {
-    final code = getEmojiCode(emoji.emoji);
+    final code = EmojiUtils.getEmojiCode(emoji.emoji);
     BlocProvider.of<PostsListBloc>(context)
         .add(AddOrRemovePostReaction(post, code));
     BlocProvider.of<NavigatorBloc>(context).add(GoBack());

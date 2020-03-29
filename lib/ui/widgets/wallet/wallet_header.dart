@@ -15,35 +15,32 @@ class WalletHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(bottom: kTextTabBarHeight),
-      color: Colors.transparent,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Icon(MooncakeIcons.transactions, size: 40, color: textColor),
-          Flexible(child: Container()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                coin.amount,
-                style: Theme.of(context).textTheme.headline5.copyWith(
-                      color: textColor,
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Icon(MooncakeIcons.transactions, size: 40, color: textColor),
+        SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              coin.amount,
+              style: Theme.of(context).textTheme.headline5.copyWith(
+                color: textColor,
               ),
-              SizedBox(width: 5),
-              Text(
-                coin.denom,
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: textColor,
-                    ),
-              )
-            ],
-          )
-        ],
-      ),
+            ),
+            SizedBox(width: 5),
+            Text(
+              coin.denom,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                color: textColor,
+              ),
+            )
+          ],
+        ),
+        Flexible(child: Container()),
+      ],
     );
   }
 }

@@ -22,6 +22,9 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => LogoutUseCase(
             walletRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => RefreshAccountUseCase(
+            userRepository: injector.get(),
+          ))
       ..bindFactory((injector, params) => SetAuthenticationMethodUseCase(
             userRepository: injector.get(),
           ))

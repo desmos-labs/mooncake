@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents the login status of the user using the application.
@@ -49,10 +50,31 @@ class LoggedIn extends AccountState {
   /// Represents the currently used account.
   final MooncakeAccount user;
 
-  LoggedIn(this.user);
+  /// Indicates whether the account is being refreshed or not.
+  final bool refreshing;
+
+  LoggedIn({@required this.user, @required this.refreshing});
+
+  factory LoggedIn.initial(MooncakeAccount user) {
+    return LoggedIn(
+      user: user,
+      refreshing: false,
+    );
+  }
+
+  LoggedIn copyWith({
+    MooncakeAccount user,
+    bool refreshing,
+  }) {
+    return LoggedIn(
+      user: user ?? this.user,
+      refreshing: refreshing ?? this.refreshing,
+    );
+  }
+
+  @override
+  List<Object> get props => [user, refreshing];
 
   @override
   String toString() => 'LoggedIn { user: $user }';
 }
-
-

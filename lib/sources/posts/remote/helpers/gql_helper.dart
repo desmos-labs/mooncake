@@ -60,11 +60,10 @@ class GqlHelper {
     return [];
   }
 
-  static Future<List<Post>> getHomePosts(HomePostsData queryData) async {
-    final client = GraphQLClient(
-      link: HttpLink(uri: "http://${queryData.endpoint}"),
-      cache: InMemoryCache(),
-    );
+  static Future<List<Post>> getHomePosts(
+    GraphQLClient client,
+    HomePostsData queryData,
+  ) async {
     final query = """
     query HomePosts {
       post(
@@ -79,23 +78,24 @@ class GqlHelper {
       }
     }
     """;
-    final data = await client.query(QueryOptions(
+    final data = await client.query(
+      QueryOptions(
         documentNode: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
     );
     return convertGqlResponse(data.data);
   }
 
-  static Future<Post> getPostDetails(PostDetailsData queryData) async {
-    final client = GraphQLClient(
-      link: HttpLink(uri: "http://${queryData.endpoint}"),
-      cache: InMemoryCache(),
-    );
+  static Future<Post> getPostDetails(
+    GraphQLClient client,
+    PostDetailsData queryData,
+  ) async {
     final query = """
     query PostById {
       post(
         where: { 
-          id: {_eq: "$queryData.id"}, 
+          id: {_eq: "${queryData.id}"}, 
           subspace: {_eq: "${queryData.subspace}"}
         }, 
       ) {
@@ -103,9 +103,11 @@ class GqlHelper {
       }
     }
     """;
-    final data = await client.query(QueryOptions(
+    final data = await client.query(
+      QueryOptions(
         documentNode: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ),
     );
     final posts = convertGqlResponse(data.data);
     return posts.isEmpty ? null : posts[0];

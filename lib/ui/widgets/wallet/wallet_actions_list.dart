@@ -14,7 +14,6 @@ class WalletActionsList extends StatelessWidget {
         ),
         color: Theme.of(context).scaffoldBackgroundColor,
       ),
-      padding: EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -23,12 +22,10 @@ class WalletActionsList extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6,
           ),
-          SizedBox(height: 20),
           Image(
             height: 150,
             image: AssetImage("assets/images/ghost.png"),
           ),
-          SizedBox(height: 20),
           Text(
             PostsLocalizations.of(context).walletBodyText.replaceAll("\n", " "),
             textAlign: TextAlign.center,

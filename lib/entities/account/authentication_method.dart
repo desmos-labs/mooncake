@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
@@ -6,7 +7,7 @@ part 'authentication_method.g.dart';
 /// Represents a user authentication method.
 @immutable
 @JsonSerializable(explicitToJson: true, createFactory: false)
-abstract class AuthenticationMethod {
+abstract class AuthenticationMethod extends Equatable {
   static const String KEY_TYPE = "type";
 
   /// Identifies the type of authentication.
@@ -39,6 +40,9 @@ abstract class AuthenticationMethod {
 
   /// Converts this object to a JSON object.
   Map<String, dynamic> asJson();
+
+  @override
+  List<Object> get props => [type];
 }
 
 /// Represents the authentication method that relies on the current
@@ -49,6 +53,9 @@ class BiometricAuthentication extends AuthenticationMethod {
 
   factory BiometricAuthentication.fromJson(Map<String, dynamic> json) =>
       _$BiometricAuthenticationFromJson(json);
+
+  @override
+  List<Object> get props => super.props + [];
 
   @override
   Map<String, dynamic> asJson() => _$BiometricAuthenticationToJson(this);
@@ -71,4 +78,7 @@ class PasswordAuthentication extends AuthenticationMethod {
 
   @override
   Map<String, dynamic> asJson() => _$PasswordAuthenticationToJson(this);
+
+  @override
+  List<Object> get props => super.props + [hashedPassword];
 }

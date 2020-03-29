@@ -30,12 +30,18 @@ class LogIn extends AccountEvent {
   String toString() => 'LogIn';
 }
 
+/// Tells the Bloc that the user has forced a refresh of the account
+class RefreshAccount extends AccountEvent {
+  @override
+  String toString() => 'RefreshAccount';
+}
+
 /// Tells the Bloc to refresh the currently saved account replacing it
 /// with the new one.
-class Refresh extends AccountEvent {
+class UserRefreshed extends AccountEvent {
   final MooncakeAccount user;
 
-  Refresh(this.user);
+  UserRefreshed(this.user);
 
   @override
   List<Object> get props => [user];

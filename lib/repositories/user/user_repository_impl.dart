@@ -51,7 +51,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> refreshAccount() => _updateAndStoreAccountData();
+  Future<void> refreshAccount() {
+    return _updateAndStoreAccountData();
+  }
 
   @override
   Stream<MooncakeAccount> get accountStream {

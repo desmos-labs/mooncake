@@ -45,8 +45,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     _initGql(graphQlEndpoint);
   }
 
-
-
   /// Initializes the GraphQL clients properly so that they can be
   /// queried using [_gqlClient] and new posts will be retrieved using
   /// the [postsStream].
@@ -65,7 +63,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   @override
   Future<List<Post>> getHomePosts(int limit) async {
     final data = HomePostsData(graphQlEndpoint, Constants.SUBSPACE, limit);
-    return compute(GqlHelper.getHomePosts, data);
+    return GqlHelper.getHomePosts(_gqlClient, data);
   }
 
   @override
@@ -86,7 +84,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       subspace: Constants.SUBSPACE,
       id: postId,
     );
-    return compute(GqlHelper.getPostDetails, data);
+    return GqlHelper.getPostDetails(_gqlClient, data);
   }
 
   @override

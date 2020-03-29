@@ -167,6 +167,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
+  /// Handles the event that is emitted when the list of posts should be
+  /// refreshed.
   Stream<PostsListState> _mapShouldRefreshPostsEventToState() async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
