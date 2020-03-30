@@ -8,6 +8,13 @@ abstract class BiometricsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// Tells the Bloc to check what type of biometric authentication the
+/// device supports.
+class CheckAuthenticationType extends BiometricsEvent {
+  @override
+  String toString() => 'CheckBiometricAuthenticationType';
+}
+
 /// Tells the Bloc that the user wants to be authenticated.
 class AuthenticateWithBiometrics extends BiometricsEvent {
   @override

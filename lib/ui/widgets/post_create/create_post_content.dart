@@ -69,7 +69,9 @@ class CreatePostContent extends StatelessWidget {
 
     return TextFormField(
       maxLength: maxTextLength,
-      textInputAction: isValid ? TextInputAction.send : TextInputAction.done,
+      textInputAction: TextInputAction.newline,
+      minLines: null,
+      maxLines: null,
       onFieldSubmitted: isValid ? (_) => _onSubmitted(context) : null,
       key: PostsKeys.postMessageField,
       autofocus: true,

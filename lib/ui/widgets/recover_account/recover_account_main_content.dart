@@ -66,8 +66,8 @@ class RecoverAccountMainContent extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: SecondaryRoundedButton(
-                      text: PostsLocalizations.of(context)
-                          .recoverAccountContinueButton,
+                      child: Text(PostsLocalizations.of(context)
+                          .recoverAccountContinueButton),
                       onPressed: () => _debugMnemonic(context),
                     ),
                   ),

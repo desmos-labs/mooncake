@@ -8,7 +8,9 @@ class SetBiometricScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<BiometricsBloc>(
-      create: (context) => BiometricsBloc.create(context),
+      create: (context) {
+        return BiometricsBloc.create(context)..add(CheckAuthenticationType());
+      },
       child: BlocBuilder<BiometricsBloc, BiometricsState>(
         builder: (context, state) => Scaffold(
           body: Stack(

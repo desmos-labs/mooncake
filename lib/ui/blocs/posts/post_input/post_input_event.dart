@@ -22,6 +22,12 @@ class MessageChanged extends PostInputEvent {
   List<Object> get props => [message];
 }
 
+/// Event that tells that the user has toggled the allowing of comments.
+class ToggleAllowsComments extends PostInputEvent {
+  @override
+  String toString() => 'ToggleAllowsComments';
+}
+
 /// Event that is emitted upon the user adds an image to the post.
 class ImageAdded extends PostInputEvent {
   final File file;
@@ -54,6 +60,13 @@ class SavePost extends PostInputEvent {}
 /// Tells that the user wants to show (or not) the alert popup again in the
 /// future.
 class ChangeWillShowPopup extends PostInputEvent {}
+
+/// Tells the Bloc that the popup has been hidden from the user.
+class HidePopup extends PostInputEvent {}
+
+/// Tells the Bloc that the user has accepted everything and wants to crete
+/// the post.
+class CreatePost extends PostInputEvent {}
 
 /// Tells the input that it needs to be reset
 class ResetForm extends PostInputEvent {}

@@ -31,6 +31,7 @@ class UseCaseModule implements Module {
 
       // Biometrics use cases
       ..bindFactory((injector, params) => CanUseBiometricsUseCase())
+      ..bindFactory((injector, params) => GetAvailableBiometricsUseCase())
 
       // Notifications use cases
       ..bindFactory((injector, params) => GetNotificationsUseCase(

@@ -15,6 +15,7 @@ class CreatePostUseCase {
   /// Returns the newly created object.
   Future<Post> create({
     @required String message,
+    @required bool allowsComments,
     @required String parentId,
     List<PostMedia> medias,
   }) async {
@@ -26,7 +27,7 @@ class CreatePostUseCase {
       created: date,
       parentId: parentId,
       message: message,
-      allowsComments: true,
+      allowsComments: allowsComments,
       medias: medias,
       subspace: Constants.SUBSPACE,
       owner: user,

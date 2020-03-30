@@ -32,10 +32,18 @@ class CreatePostScreen extends StatelessWidget {
                   bottom: 0,
                   child: PostCreateActions(height: bottomBarHeight),
                 ),
+                Positioned(
+                  bottom: bottomBarHeight,
+                  right: 4,
+                  child: CreatePostCommentAction(),
+                ),
                 if (state.showPopup)
                   GenericPopup(
                     backgroundColor: Colors.black.withOpacity(0.6),
                     content: PostSavingPopupContent(),
+                    onTap: () {
+                      BlocProvider.of<PostInputBloc>(context).add(HidePopup());
+                    },
                   )
               ],
             ),

@@ -38,7 +38,7 @@ class PostSavingPopupContent extends StatelessWidget {
               Expanded(
                 child: PrimaryRoundedButton(
                   onPressed: () {
-                    BlocProvider.of<NavigatorBloc>(context).add(GoBack());
+                    BlocProvider.of<PostInputBloc>(context).add(CreatePost());
                   },
                   text: PostsLocalizations.of(context).savingPostPopupOkButton,
                 ),

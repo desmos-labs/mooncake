@@ -97,6 +97,12 @@ your mnemonic from scratch in the case of a future recovery.
 
   // Create post screen
   String get newPostHint => "What's going on?";
+  String get createPostEnableCommentsButton => "Enable comments";
+  String get createPostEnableCommentsButtonHint =>
+      "Comments to this post will be disabled. Tap to enable them";
+  String get createPostDisableCommentsButton => "Disable comments";
+  String get createPostDisableCommentsButtonHint =>
+      "Comments to this post will be enabled. Tap to disable them";
   String get createPostCancelButton => "Cancel";
   String get createPostCreateButton => "Post";
   String get createPostHint => "What's on your mind?";

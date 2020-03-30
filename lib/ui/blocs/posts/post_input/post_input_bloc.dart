@@ -67,7 +67,9 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     if (event is ResetForm) {
       yield PostInputState.empty(_parentPost);
     } else if (event is MessageChanged) {
-      yield state.update(message: event.message);
+      yield state.update(message: event.message.trim());
+    } else if (event is ToggleAllowsComments) {
+      yield state.update(allowsComments: !state.allowsComments);
     } else if (event is ImageAdded) {
       final media = _convert(event.file);
       final images = _removeFileIfPresent(state.medias, media);
@@ -79,6 +81,10 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       yield* _mapChangeWillShowPopupEventToState();
     } else if (event is SavePost) {
       yield* _mapSavePostEventToState();
+    } else if (event is HidePopup) {
+      yield state.update(showPopup: false);
+    } else if (event is CreatePost) {
+      yield* _mapCreatePostEventToState();
     }
   }
 
@@ -112,16 +118,22 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     final showPopup = await _getSettingUseCase.get(key: _SHOW_POPUP_KEY);
     yield state.update(saving: true, showPopup: showPopup ?? true);
 
+    if (!(showPopup ?? true)) {
+      add(CreatePost());
+    }
+  }
+
+  Stream<PostInputState> _mapCreatePostEventToState() async* {
+    yield state.update(saving: true, showPopup: false);
+
     final post = await _createPostUseCase.create(
       message: state.message,
+      allowsComments: state.allowsComments,
       parentId: state.parentPost?.id,
       medias: state.medias,
     );
     await _savePostUseCase.save(post);
-
-    if (!state.showPopup) {
-      _navigatorBloc.add(GoBack());
-    }
+    _navigatorBloc.add(GoBack());
   }
 
   Stream<PostInputState> _mapChangeWillShowPopupEventToState() async* {

@@ -4,25 +4,30 @@ import 'package:mooncake/ui/ui.dart';
 
 class SecondaryRoundedButton extends StatelessWidget {
   final Function onPressed;
-  final String text;
+  final Widget child;
+  final BorderRadius borderRadius;
+  final Color color;
 
   const SecondaryRoundedButton({
     Key key,
     @required this.onPressed,
-    @required this.text,
+    @required this.child,
+    this.borderRadius,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Color color = this.color ?? Theme.of(context).accentColor;
     return FlatButton(
       onPressed: onPressed,
       color: Colors.transparent,
-      textColor: Theme.of(context).accentColor,
+      textColor: color,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
-        side: BorderSide(color: Theme.of(context).accentColor, width: 1),
+        borderRadius: this.borderRadius ?? BorderRadius.circular(4),
+        side: BorderSide(color: color, width: 1),
       ),
-      child: Text(text),
+      child: child,
     );
   }
 }
