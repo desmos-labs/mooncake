@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
@@ -50,7 +51,7 @@ class GqlHelper {
   /// Converts the given [gqlData] retrieved from the remote GraphQL
   /// server into a list of posts.
   /// If no data is present, returns an empty list instead.
-  static List<Post> convertGqlResponse(dynamic gqlData) {
+  static List<Post> _convertGqlResponse(dynamic gqlData) {
     final data = gqlData as Map<String, dynamic>;
     if (data.containsKey("post")) {
       return (data["post"] as List<dynamic>)
@@ -84,7 +85,7 @@ class GqlHelper {
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
-    return convertGqlResponse(data.data);
+    return compute(_convertGqlResponse, data.data);
   }
 
   static Future<Post> getPostDetails(
@@ -109,7 +110,7 @@ class GqlHelper {
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
-    final posts = convertGqlResponse(data.data);
+    final posts = await compute(_convertGqlResponse, data.data);
     return posts.isEmpty ? null : posts[0];
   }
 

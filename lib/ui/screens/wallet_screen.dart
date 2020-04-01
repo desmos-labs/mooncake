@@ -54,10 +54,10 @@ class _WalletScreenState extends State<WalletScreen> {
               BlocProvider.of<AccountBloc>(context).add(RefreshAccount());
               return _refreshCompleter.future;
             },
-            child: SingleChildScrollView(
-              child: coin == null
-                  ? EmptyWallet(textColor: headerTextColor)
-                  : Container(
+            child: coin == null
+                ? EmptyWallet(textColor: headerTextColor)
+                : SingleChildScrollView(
+                    child: Container(
                       height: MediaQuery.of(context).size.height,
                       child: Column(
                         children: <Widget>[
@@ -74,7 +74,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         ],
                       ),
                     ),
-            ),
+                  ),
           ),
         );
       },

@@ -1,6 +1,6 @@
 name: mooncake
 description: A decentralized Twitter based on Desmos
-version: 0.1.0+0109
+version: 0.1.0+0110
 
 environment:
   sdk: ">=2.6.0 <3.0.0"

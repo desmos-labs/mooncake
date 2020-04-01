@@ -7,6 +7,7 @@ class WalletActionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
@@ -22,10 +23,7 @@ class WalletActionsList extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6,
           ),
-          Image(
-            height: 150,
-            image: AssetImage("assets/images/ghost.png"),
-          ),
+          Image.asset("assets/images/tongue.png", width: 150),
           Text(
             PostsLocalizations.of(context).walletBodyText.replaceAll("\n", " "),
             textAlign: TextAlign.center,

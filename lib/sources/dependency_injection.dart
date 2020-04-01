@@ -57,7 +57,6 @@ class SourcesModule implements Module {
                 chainHelper: injector.get(),
                 userSource: injector.get(),
                 msgConverter: MsgConverter(),
-                gqlHelper: GqlHelper(),
               ))
       // Notifications source
       ..bindLazySingleton<RemoteNotificationsSource>(

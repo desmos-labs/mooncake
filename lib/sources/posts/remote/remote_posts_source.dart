@@ -15,7 +15,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   final ChainHelper _chainHelper;
   final LocalUserSource _userSource;
-  final GqlHelper _gqlHelper;
 
   // Converters
   final MsgConverter _msgConverter;
@@ -28,7 +27,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   RemotePostsSourceImpl({
     @required String graphQlEndpoint,
     @required ChainHelper chainHelper,
-    @required GqlHelper gqlHelper,
     @required LocalUserSource userSource,
     @required MsgConverter msgConverter,
   })  : assert(graphQlEndpoint != null),
@@ -37,8 +35,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
         _userSource = userSource,
         assert(chainHelper != null),
         _chainHelper = chainHelper,
-        assert(gqlHelper != null),
-        _gqlHelper = gqlHelper,
         assert(msgConverter != null),
         _msgConverter = msgConverter {
     // Init GraphQL

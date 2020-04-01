@@ -1,1 +1,1 @@
-export 'post_comments.dart';
+export 'post_comments_list.dart';

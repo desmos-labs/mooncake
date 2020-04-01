@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'post_details_reaction_item.dart';
@@ -15,6 +16,25 @@ class PostReactionsList extends StatelessWidget {
         }
 
         final currentState = state as PostDetailsLoaded;
+        if (currentState.reactionsCount == 0) {
+          return Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Image.asset(
+                  "assets/images/smile.png",
+                  width: 150,
+                ),
+                Text(
+                  PostsLocalizations.of(context).noReactionsYet,
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
+          );
+        }
+
         return Container(
           padding: EdgeInsets.only(
             top: NestedScrollView.sliverOverlapAbsorberHandleFor(context)

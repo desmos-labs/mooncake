@@ -128,6 +128,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Stream<PostsListState> _mapPostsUpdatedEventToState(
     PostsUpdated event,
   ) async* {
+    if (event.posts == null) {
+      return;
+    }
+
     final currentState = state;
     if (currentState is PostsLoading) {
       yield PostsLoaded.first(posts: event.posts);

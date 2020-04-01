@@ -7,13 +7,17 @@ class PostsListEmptyContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: PostsKeys.postsEmptyContainer,
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          LoadingIndicator(),
-          SizedBox(height: 16),
-          Text(PostsLocalizations.of(context).loadingPosts)
+          Image.asset("assets/images/sad.png", width: 150),
+          Text(
+            PostsLocalizations.of(context).noPostsYet,
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );

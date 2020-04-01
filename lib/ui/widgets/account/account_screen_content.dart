@@ -16,10 +16,7 @@ class AccountScreenContent extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
             textAlign: TextAlign.center,
           ),
-          Image(
-            image: AssetImage("assets/images/ghost.png"),
-            width: 150,
-          ),
+          Image.asset("assets/images/wink.png", width: 150),
           Text(
             PostsLocalizations.of(context)
                 .accountPageText

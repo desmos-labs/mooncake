@@ -14,7 +14,7 @@ class SetBiometricTitle extends StatelessWidget {
         if (state.availableBiometric == BiometricType.face) {
           icon = defaultTargetPlatform == TargetPlatform.iOS
               ? MooncakeIcons.faceId
-              : MooncakeIcons.faceId;
+              : MooncakeIcons.faceIdAndroid;
         }
 
         return Column(

@@ -7,6 +7,7 @@ import 'package:mooncake/ui/ui.dart';
 
 import 'posts_list_syncing_indicator.dart';
 import 'posts_list_empty_container.dart';
+import 'posts_list_loading_container.dart';
 
 typedef Filter = bool Function(Post);
 
@@ -40,7 +41,7 @@ class _PostsListState extends State<PostsList> {
         builder: (context, postsState) {
           // Posts are not loaded, return the empty container
           if (!(postsState is PostsLoaded)) {
-            return PostsListEmptyContainer();
+            return PostsLoadingEmptyContainer();
           }
 
           // Hide the refresh indicator
@@ -48,6 +49,10 @@ class _PostsListState extends State<PostsList> {
           if (!state.refreshing) {
             _refreshCompleter?.complete();
             _refreshCompleter = Completer();
+          }
+
+          if (state.posts.isEmpty) {
+            return PostsListEmptyContainer();
           }
 
           return Stack(

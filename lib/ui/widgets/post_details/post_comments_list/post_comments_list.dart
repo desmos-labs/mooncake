@@ -14,7 +14,22 @@ class PostCommentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (comments.isEmpty) {
-      return Container();
+      return Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Image.asset(
+              "assets/images/smile.png",
+              width: 150,
+            ),
+            Text(
+              PostsLocalizations.of(context).noCommentsYet,
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      );
     }
 
     final childCount = (comments.length * 2) - 1;

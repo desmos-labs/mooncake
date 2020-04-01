@@ -11,8 +11,9 @@ class EmptyWallet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
+      height: MediaQuery.of(context).size.height,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Text(
             PostsLocalizations.of(context).emptyWalletTitle,
@@ -20,10 +21,7 @@ class EmptyWallet extends StatelessWidget {
                   color: textColor,
                 ),
           ),
-          Image(
-            height: 150,
-            image: AssetImage("assets/images/ghost.png"),
-          ),
+          Image.asset("assets/images/frowned.png", height: 150),
           Text(
             PostsLocalizations.of(context)
                 .emptyWalletBody

@@ -78,6 +78,10 @@ your mnemonic from scratch in the case of a future recovery.
   String get signOut => "Sign out";
   String get floatingButtonTip => "Create post";
   String get loadingPosts => "Loading posts";
+  String get noPostsYet => """
+Looks a little empty here.
+What about adding some content?
+""";
   String get postActionsButtonCaption => "See post actions";
 
   // Post item
@@ -151,7 +155,15 @@ using our faucet to see them here.
   String get commentHint => "Comment";
   String get newComment => "New comment";
   String get commentsDisabled => "Comments disabled by the post owner";
+  String get noCommentsYet => """
+Currently there are no comments to this post yet.
+Be the first to add one!
+""";
   String commentsTabLabel(int comments) => "Comments $comments";
+  String get noReactionsYet => """
+Currently there are no reactions to this post yet.
+Be the first to add one!
+""";
   String reactionsTabLabel(int reactions) => "Reactions $reactions";
 }
 
