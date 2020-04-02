@@ -28,6 +28,7 @@ void main() async {
   Injector.init(
     accountDatabase: await factory.openDatabase("account.db"),
     postsDatabase: await factory.openDatabase("posts.db"),
+    notificationDatabase: await factory.openDatabase("user.db"),
   );
 
   // Setup the Bloc delegate to observe transitions

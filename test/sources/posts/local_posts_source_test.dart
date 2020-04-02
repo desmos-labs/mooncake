@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 
-import 'mocks.dart';
+import '../../mocks/posts.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

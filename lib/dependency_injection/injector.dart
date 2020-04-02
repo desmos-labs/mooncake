@@ -12,11 +12,13 @@ class Injector {
   static init({
     @required Database accountDatabase,
     @required Database postsDatabase,
+    @required Database notificationDatabase,
   }) {
     final builder = di.Injector.builder()
       ..install(SourcesModule(
         accountDatabase: accountDatabase,
         postsDatabase: postsDatabase,
+        notificationsDatabase: notificationDatabase,
       ))
       ..install(RepositoriesModule())
       ..install(UseCaseModule())

@@ -44,6 +44,11 @@ class TxSuccessfulNotification extends TxNotification {
 
   @override
   Map<String, dynamic> toJson() => _$TxSuccessfulNotificationToJson(this);
+
+  @override
+  String toString() {
+    return 'TxSuccessfulNotification { date: $date, txHash: $txHash }';
+  }
 }
 
 /// Represents the notification that is sent to the user when

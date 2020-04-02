@@ -1,15 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Implementation of [SettingsRepository]
 class SettingsRepositoryImpl extends SettingsRepository {
-  /// Returns the [SharedPreferences] instance used to save the user
-  /// settings.
-  Future<SharedPreferences> get _sharedPrefs {
-    return SharedPreferences.getInstance();
-  }
+  final Future<SharedPreferences> _sharedPrefs;
+
+  SettingsRepositoryImpl({
+    @required Future<SharedPreferences> sharedPreferences,
+  })  : assert(sharedPreferences != null),
+        _sharedPrefs = sharedPreferences;
 
   @override
   Future<void> save(String key, value) async {

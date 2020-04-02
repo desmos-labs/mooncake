@@ -11,7 +11,7 @@ import 'package:web_socket_channel/io.dart';
 
 import 'common.dart';
 import 'remote_posts_source_test.reflectable.dart';
-import 'mocks.dart';
+import '../../mocks/posts.dart';
 
 class MockChainHelper extends Mock implements ChainHelper {}
 

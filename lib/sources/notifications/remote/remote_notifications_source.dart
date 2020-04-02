@@ -105,14 +105,16 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   }
 
   @override
-  Stream<NotificationData> get foregroundStream =>
-      _foregroundNotificationStream.stream
-          .map(_converter.convertFcmMessage)
-          .where((event) => event != null);
+  Stream<NotificationData> get foregroundStream {
+    return _foregroundNotificationStream.stream
+        .map(_converter.convertFcmMessage)
+        .where((event) => event != null);
+  }
 
   @override
-  Stream<NotificationData> get backgroundStream =>
-      _backgroundNotificationStream.stream
-          .map(_converter.convertFcmMessage)
-          .where((element) => element != null);
+  Stream<NotificationData> get backgroundStream {
+    return _backgroundNotificationStream.stream
+        .map(_converter.convertFcmMessage)
+        .where((element) => element != null);
+  }
 }

@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:rxdart/rxdart.dart';
 
 /// Implementation of [PostsRepository] that listens for remote
 /// changes, persists them locally and then emits the locally-stored
@@ -74,20 +73,28 @@ class PostsRepositoryImpl extends PostsRepository {
   Future<void> syncPosts() async {
     // Get the posts
     final posts = await _localPostsSource.getPostsToSync();
-    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
-    final syncingPosts =
-        posts.map((post) => post.copyWith(status: syncingStatus)).toList();
-
-    if (syncingPosts.isEmpty) {
+    if (posts.isEmpty) {
       // We do not have any post to be synced, so return.
       return;
     }
 
     // Set the posts as syncing
-    syncingPosts.forEach((post) async {
-      await _localPostsSource.savePost(post);
-    });
+    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
+    final syncingPosts = posts.map((post) {
+      return post.copyWith(status: syncingStatus);
+    }).toList();
+    await _localPostsSource.savePosts(syncingPosts);
 
+    // Sync the posts and update the status based on the result
+    final status = await savePostsAndGetStatus(syncingPosts);
+    final updatedPosts = syncingPosts.map((post) {
+      return post.copyWith(status: status);
+    }).toList();
+    await _localPostsSource.savePosts(updatedPosts);
+  }
+
+  @visibleForTesting
+  Future<PostStatus> savePostsAndGetStatus(List<Post> syncingPosts) async {
     try {
       // Send the post transactions
       final result = await _remotePostsSource.savePosts(syncingPosts);
@@ -108,20 +115,13 @@ class PostsRepositoryImpl extends PostsRepository {
           );
           break;
       }
-      syncingPosts.forEach((post) async {
-        await _localPostsSource.savePost(post.copyWith(status: postStatus));
-      });
+
+      return postStatus;
     } catch (error) {
-      print("Sync error: $error");
-      final status = PostStatus(
+      return PostStatus(
         value: PostStatusValue.ERRORED,
         data: error.toString(),
       );
-
-      // Set the posts state to failed
-      syncingPosts.forEach((post) async {
-        await _localPostsSource.savePost(post.copyWith(status: status));
-      });
     }
   }
 }
