@@ -9,10 +9,7 @@ part of 'authentication_method.dart';
 Map<String, dynamic> _$AuthenticationMethodToJson(
         AuthenticationMethod instance) =>
     <String, dynamic>{
-      'stringify': instance.stringify,
-      'hashCode': instance.hashCode,
       'type': instance.type,
-      'props': instance.props,
     };
 
 BiometricAuthentication _$BiometricAuthenticationFromJson(

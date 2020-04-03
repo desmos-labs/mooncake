@@ -8,9 +8,14 @@ extension ReactionsExt on List<Reaction> {
   /// Returns `true` if this list of reactions already contains one having
   /// the specified [reactionCode] from the specified [account].
   bool containsFrom(MooncakeAccount account, String reactionCode) {
+    return containsFromAddress(account.cosmosAccount.address, reactionCode);
+  }
+
+  /// Returns `true` if this list of reactions already contains one having
+  /// the specified [reactionCode] from the specified [address].
+  bool containsFromAddress(String address, String reactionCode) {
     return this.where((element) {
-      return element.user.address == account.cosmosAccount.address &&
-          element.code == reactionCode;
+      return element.user.address == address && element.code == reactionCode;
     }).isNotEmpty;
   }
 

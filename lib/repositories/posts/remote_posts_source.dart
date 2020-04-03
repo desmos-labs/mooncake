@@ -17,5 +17,6 @@ abstract class RemotePostsSource {
   Future<Post> getPostById(String postId);
 
   /// Saves the given list of [posts] into the source.
+  /// It returns the [TransactionResult] of the operation.
   Future<TransactionResult> savePosts(List<Post> posts);
 }

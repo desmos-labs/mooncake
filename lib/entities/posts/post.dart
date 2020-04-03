@@ -9,7 +9,7 @@ part 'post.g.dart';
 
 /// Represents a generic post
 @immutable
-@JsonSerializable(explicitToJson: true, ignoreUnannotated: true)
+@JsonSerializable(explicitToJson: true)
 class Post extends Equatable implements Comparable<Post> {
   /// Represents the date format that should be used to format and parse
   /// post-related date values.

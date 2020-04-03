@@ -1,6 +1,6 @@
 name: mooncake
 description: A decentralized Twitter based on Desmos
-version: 0.1.0+0110
+version: 0.1.0+0111
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -13,17 +13,13 @@ dependencies:
   bip39:
   carousel_slider:
   cached_network_image:
-  cloud_firestore:
   collection:
-  cupertino_icons:
   crypto:
   dependencies:
   dynamic_theme:
   emoji_picker:
   equatable:
-  firebase_core:
   firebase_analytics:
-  firebase_auth:
   firebase_messaging:
   flutter:
     sdk: flutter
@@ -31,11 +27,8 @@ dependencies:
   flutter_emoji:
   flutter_local_notifications:
   flutter_markdown:
-  flutter_screenutil:
   flutter_secure_storage:
   flutter_staggered_grid_view:
-  flutter_sticky_header:
-  flutter_svg:
   font_awesome_flutter:
   gradient_widgets:
   graphql:
@@ -43,7 +36,6 @@ dependencies:
   image_picker:
   intl:
   json_annotation:
-  json_serializable:
   local_auth:
   meta:
   mime_type:
@@ -55,16 +47,15 @@ dependencies:
   sembast:
   sentry:
   shared_preferences:
-  stream_transform:
   timeago:
   url_launcher:
-  web_socket_channel:
 
 dev_dependencies:
-  build_runner:
   bloc_test:
+  build_runner:
   flutter_test:
     sdk: flutter
+  json_serializable:
   mockito:
   mock_web_server:
 
@@ -79,45 +70,7 @@ flutter:
           weight: 400
     - family: Montserrat
       fonts:
-        - asset: assets/fonts/montserrat/Montserrat-Thin.ttf
-          weight: 100
-        - asset: assets/fonts/montserrat/Montserrat-ThinItalic.ttf
-          weight: 100
-          style: italic
-        - asset: assets/fonts/montserrat/Montserrat-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/montserrat/Montserrat-ExtraLightItalic.ttf
-          weight: 200
-          style: italic
-        - asset: assets/fonts/montserrat/Montserrat-Light.ttf
-          weight: 300
-        - asset: assets/fonts/montserrat/Montserrat-LightItalic.ttf
-          weight: 300
-          style: italic
         - asset: assets/fonts/montserrat/Montserrat-Regular.ttf
           weight: 400
         - asset: assets/fonts/montserrat/Montserrat-Medium.ttf
           weight: 500
-        - asset: assets/fonts/montserrat/Montserrat-MediumItalic.ttf
-          weight: 500
-          style: italic
-        - asset: assets/fonts/montserrat/Montserrat-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/montserrat/Montserrat-SemiBoldItalic.ttf
-          weight: 600
-          style: italic
-        - asset: assets/fonts/montserrat/Montserrat-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/montserrat/Montserrat-BoldItalic.ttf
-          weight: 700
-          style: italic
-        - asset: assets/fonts/montserrat/Montserrat-ExtraBold.ttf
-          weight: 800
-        - asset: assets/fonts/montserrat/Montserrat-ExtraBoldItalic.ttf
-          weight: 800
-          style: italic
-        - asset: assets/fonts/montserrat/Montserrat-Black.ttf
-          weight: 900
-        - asset: assets/fonts/montserrat/Montserrat-BlackItalic.ttf
-          weight: 900
-          style: italic

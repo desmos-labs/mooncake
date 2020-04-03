@@ -9,7 +9,7 @@ part 'notification.g.dart';
 
 /// Represents a generic notification and the contained data.
 @immutable
-@JsonSerializable(createFactory: false, ignoreUnannotated: true)
+@JsonSerializable(createFactory: false)
 abstract class NotificationData extends Equatable {
   static const DATE_TYPE = "type";
   static const DATE_FIELD = "date";

@@ -44,11 +44,7 @@ class PostErrorPopupContent extends StatelessWidget {
 
   void _copyError(BuildContext context) {
     Clipboard.setData(ClipboardData(text: error)).then((_) {
-      final snackBar = SnackBar(
-        content: Text(PostsLocalizations.of(context).syncErrorCopied),
-      );
       BlocProvider.of<NavigatorBloc>(context).add(GoBack());
-      Scaffold.of(context).showSnackBar(snackBar);
     });
   }
 }

@@ -7,7 +7,7 @@ part 'mooncake_account.g.dart';
 
 /// Contains the data of the current application account
 @immutable
-@JsonSerializable(explicitToJson: true, ignoreUnannotated: true)
+@JsonSerializable(explicitToJson: true)
 class MooncakeAccount extends Equatable {
   /// Contains the current data of the Desmos account.
   @JsonKey(name: "cosmos_account")

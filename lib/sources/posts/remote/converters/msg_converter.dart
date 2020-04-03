@@ -55,7 +55,10 @@ class MsgConverter {
       // Iterate over the existing reactions to find the ones that have been
       // deleted
       for (final exReaction in existingPost.reactions) {
-        if (!post.reactions.contains(exReaction)) {
+        if (!post.reactions.containsFromAddress(
+          exReaction.user.address,
+          exReaction.code,
+        )) {
           reactionsToRemove.add(ReactionData(
             postId: post.id,
             value: exReaction.code,
@@ -66,7 +69,10 @@ class MsgConverter {
       // Iterate over the local reactions to find the ones that have been
       // added new
       for (final localReaction in post.reactions) {
-        if (!existingPost.reactions.contains(localReaction)) {
+        if (!existingPost.reactions.containsFromAddress(
+          localReaction.user.address,
+          localReaction.code,
+        )) {
           reactionsToAdd.add(
             ReactionData(postId: post.id, value: localReaction.code),
           );

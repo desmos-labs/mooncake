@@ -6,7 +6,7 @@ part 'post_media.g.dart';
 
 /// Represents a single media inside the list of post medias.
 @immutable
-@JsonSerializable(explicitToJson: true, ignoreUnannotated: true)
+@JsonSerializable(explicitToJson: true)
 class PostMedia extends Equatable {
   /// Contains all the mime types of medias supported
   static const List<String> IMAGES_MIME_TYPES = [
