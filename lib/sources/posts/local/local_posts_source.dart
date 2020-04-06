@@ -124,16 +124,6 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       final existing = existingPosts[index];
       final updated = newPosts[index];
 
-      Map<String, String> optionalData = updated.optionalData;
-      if (existing?.optionalData != null) {
-        optionalData.addAll(existing.optionalData);
-      }
-
-      Set<PostMedia> medias = updated.medias.toSet();
-      if (existing?.medias != null) {
-        medias.addAll(existing.medias);
-      }
-
       Set<Reaction> reactions = updated.reactions.toSet();
       if (existing?.reactions != null) {
         reactions.addAll(existing.reactions);
@@ -146,8 +136,6 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
       newPosts[index] = updated.copyWith(
         status: existing?.status,
-        optionalData: optionalData,
-        medias: medias.toList(),
         reactions: reactions.toList(),
         commentsIds: commentIds.toList(),
       );
