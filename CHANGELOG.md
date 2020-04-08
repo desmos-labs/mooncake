@@ -15,5 +15,8 @@ Inside the post details screen you will now be able to visualize the list of rea
 ### Improved wallet experience 
 We've improved how you interact with your wallet, by making it more accessible and easier to comprehend.
 
+### Many more 
+Many other changes have been made. Download the app now and check them out! 
+
 # Previous versions
 Changelogs from `0.0.1` to `0.0.14` has been moved to the [PRE-RELEASES file](./PRE-RELEASES.md) 
