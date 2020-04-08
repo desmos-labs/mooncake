@@ -1,12 +1,16 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-/// Implementation of [PostsRepository].
+/// Implementation of [PostsRepository] that listens for remote
+/// changes, persists them locally and then emits the locally-stored
+/// data once they have been saved properly.
+/// This is to have a single source of through (the local data) instead
+/// of multiple once.
 class PostsRepositoryImpl extends PostsRepository {
   final LocalPostsSource _localPostsSource;
   final RemotePostsSource _remotePostsSource;
@@ -17,110 +21,107 @@ class PostsRepositoryImpl extends PostsRepository {
   })  : assert(localSource != null),
         _localPostsSource = localSource,
         assert(remoteSource != null),
-        _remotePostsSource = remoteSource {
-    // Initialize the events update
-    _remotePostsSource
-        .getEventsStream()
-        .asyncMap((event) => _remotePostsSource.getPosts())
-        // TODO: Re-implement this as the getEventsStream() has been edited
-//        .asyncMap((event) {
-//          if (event is PostCreatedEvent) {
-//            return _mapPostCreatedEventToPosts(event);
-//          } else if (event is PostEvent) {
-//            return _mapPostEventToPosts(event);
-//          } else {
-//            return [];
-//          }
-//        })
-//        .expand((posts) => posts as List<Post>)
-        .expand((posts) => posts)
-        .where((p) => p.subspace == Constants.SUBSPACE)
-        .listen((post) async {
-      _localPostsSource.savePost(post, emit: true);
-    });
-  }
+        _remotePostsSource = remoteSource;
 
-  /// Transforms the given [event] to the list of posts to be updated.
-  Future<List<Post>> _mapPostCreatedEventToPosts(PostCreatedEvent event) async {
-    final posts = List<Post>();
-    final post = await _remotePostsSource.getPostById(event.postId);
-
-    if (post != null) {
-      posts.add(post);
-    }
-
-    // Emit the updated parent
-    if (post?.hasParent == true) {
-      final parent = await _remotePostsSource.getPostById(post.parentId);
-      if (parent != null) {
-        posts.add(parent);
-      }
-    }
-
-    return posts;
-  }
-
-  /// Maps the given [event] to the list of posts that should be updated.
-  Future<List<Post>> _mapPostEventToPosts(PostEvent event) async {
-    final posts = List<Post>();
-
-    final post = await _remotePostsSource.getPostById(event.postId);
-    if (post != null) {
-      posts.add(post);
-    }
-
-    return posts;
+  @override
+  Stream<List<Post>> getHomePostsStream(int limit) {
+    return _localPostsSource.homePostsStream(limit);
   }
 
   @override
-  Future<Post> getPostById(String postId) =>
-      _localPostsSource.getPostById(postId);
+  Stream<dynamic> get homeEventsStream {
+    return _remotePostsSource.homeEventsStream;
+  }
 
   @override
-  Future<List<Post>> getPostComments(String postId) async {
-    final comments = await _remotePostsSource.getPostComments(postId);
-    comments.forEach((comment) async {
-      await _localPostsSource.savePost(comment, emit: false);
-    });
+  Future<void> refreshHomePosts(int limit) async {
+    final remotes = await _remotePostsSource.getHomePosts(limit);
+    await _localPostsSource.savePosts(remotes, merge: true);
+  }
 
+  @override
+  Stream<Post> getPostByIdStream(String postId) {
+    return _localPostsSource.singlePostStream(postId);
+  }
+
+  @override
+  Future<Post> getPostById(String postId) {
+    return _localPostsSource.getSinglePost(postId);
+  }
+
+  @override
+  Future<List<Post>> getPostsByTxHash(String txHash) {
+    return _localPostsSource.getPostsByTxHash(txHash);
+  }
+
+  @override
+  Stream<List<Post>> getPostComments(String postId) {
     return _localPostsSource.getPostComments(postId);
   }
 
   @override
-  Future<List<Post>> getPosts({bool forceOnline = false}) async {
-    if (forceOnline) {
-      final posts = await _remotePostsSource.getPosts();
-      await _localPostsSource.savePosts(posts, emit: false);
-    }
-
-    return _localPostsSource.getPosts();
+  Future<void> savePost(Post post) {
+    return _localPostsSource.savePost(post);
   }
 
   @override
-  Future<List<Post>> getPostsToSync() => _localPostsSource.getPostsToSync();
-
-  @override
-  Stream<Post> get postsStream => _localPostsSource.postsStream;
-
-  @override
-  Future<void> savePost(Post post) async {
-    // Save the post
-    await _localPostsSource.savePost(post);
-
-    // Update the parent comments if the parent exists and does not contain
-    // the post id as a comment yet
-    Post parent = await _localPostsSource.getPostById(post.parentId);
-    if (parent != null && !parent.commentsIds.contains(post.id)) {
-      parent = parent.copyWith(commentsIds: [post.id] + parent.commentsIds);
-      await _localPostsSource.savePost(parent);
-    }
+  Future<void> savePosts(List<Post> posts) {
+    return _localPostsSource.savePosts(posts);
   }
 
   @override
-  Future<void> syncPosts(List<Post> posts) =>
-      _remotePostsSource.savePosts(posts);
+  Future<void> syncPosts() async {
+    // Get the posts
+    final posts = await _localPostsSource.getPostsToSync();
+    if (posts.isEmpty) {
+      // We do not have any post to be synced, so return.
+      return;
+    }
 
-  @override
-  Future<void> deletePost(String postId) =>
-      _localPostsSource.deletePost(postId);
+    // Set the posts as syncing
+    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
+    final syncingPosts = posts.map((post) {
+      return post.copyWith(status: syncingStatus);
+    }).toList();
+    await _localPostsSource.savePosts(syncingPosts);
+
+    // Sync the posts and update the status based on the result
+    final status = await savePostsAndGetStatus(syncingPosts);
+    final updatedPosts = syncingPosts.map((post) {
+      return post.copyWith(status: status);
+    }).toList();
+    await _localPostsSource.savePosts(updatedPosts);
+  }
+
+  @visibleForTesting
+  Future<PostStatus> savePostsAndGetStatus(List<Post> syncingPosts) async {
+    try {
+      // Send the post transactions
+      final result = await _remotePostsSource.savePosts(syncingPosts);
+
+      // Update the posts based on the sync result
+      PostStatus postStatus;
+      switch (result.success) {
+        case true:
+          postStatus = PostStatus(
+            value: PostStatusValue.TX_SENT,
+            data: result.hash,
+          );
+          break;
+        case false:
+          postStatus = PostStatus(
+            value: PostStatusValue.ERRORED,
+            data: result.error.errorMessage,
+          );
+          break;
+      }
+
+      return postStatus;
+    } catch (error) {
+      return PostStatus(
+        value: PostStatusValue.ERRORED,
+        data: error.toString(),
+      );
+    }
+  }
 }

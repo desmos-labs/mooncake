@@ -11,7 +11,18 @@ class SavePostUseCase {
         this._postsRepository = postsRepository;
 
   /// Saves the given [post] inside the repository.
-  Future<void> save(Post post) {
-    return _postsRepository.savePost(post);
+  Future<void> save(Post post) async {
+    // Save the post
+    await _postsRepository.savePost(post);
+
+    // Update the parent
+    if (post.hasParent) {
+      final parent = await _postsRepository.getPostById(post.parentId);
+      final comments = parent.commentsIds;
+      if (!comments.contains(post.id)) {
+        comments.add(post.id);
+        await _postsRepository.savePost(parent);
+      }
+    }
   }
 }

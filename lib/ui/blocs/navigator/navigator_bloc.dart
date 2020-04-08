@@ -32,11 +32,19 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     if (event is NavigateToHome) {
       _mapNavigateToHomeEventToState();
     } else if (event is NavigateToRecoverAccount) {
-      _mapNavigateToRecoverAccountEventToState(event);
-    } else if (event is NavigateToCreateAccount) {
-      _mapNavigateToCreateAccountEventToState();
+      _mapNavigateToRecoverAccountEventToState();
+    } else if (event is NavigateToEnableBiometrics) {
+      _mapNavigateToBiometricScreenEventToState();
+    } else if (event is NavigateToSetPassword) {
+      _mapNavigateToPasswordScreenEventToState();
     } else if (event is NavigateToPostDetails) {
       _mapNavigateToPostDetailsEventToState(event);
+    } else if (event is NavigateToCreatePost) {
+      _mapNavigateToCreatePostEventToState(event);
+    } else if (event is NavigateToWallet) {
+      _mapNavigateToWalletEventToState();
+    } else if (event is GoBack) {
+      _handleGoBack(event);
     }
   }
 
@@ -47,17 +55,20 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     );
   }
 
-  void _mapNavigateToRecoverAccountEventToState(
-    NavigateToRecoverAccount event,
-  ) {
-    _navigatorKey.currentState.pushNamed(
-      PostsRoutes.recoverAccount,
-      arguments: event.args,
-    );
+  void _mapNavigateToRecoverAccountEventToState() {
+    _navigatorKey.currentState.pushNamed(PostsRoutes.recoverAccount);
   }
 
-  void _mapNavigateToCreateAccountEventToState() {
-    _navigatorKey.currentState.pushNamed(PostsRoutes.createAccount);
+  void _mapNavigateToBiometricScreenEventToState() {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return SetBiometricScreen();
+    }));
+  }
+
+  void _mapNavigateToPasswordScreenEventToState() {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return SetPasswordScreen();
+    }));
   }
 
   void _mapNavigateToPostDetailsEventToState(
@@ -65,10 +76,25 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   ) async {
     final isLoggedIn = await _checkLoginUseCase.isLoggedIn();
     if (isLoggedIn) {
-      print("Navingating to details");
-      _navigatorKey.currentState.push(MaterialPageRoute(
-        builder: (context) => PostDetailsScreen(postId: event.postId),
-      ));
+      _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+        return PostDetailsScreen(postId: event.postId);
+      }));
     }
+  }
+
+  void _mapNavigateToCreatePostEventToState(NavigateToCreatePost event) {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return CreatePostScreen(parentPost: event.parentPost);
+    }));
+  }
+
+  void _mapNavigateToWalletEventToState() {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return WalletScreen();
+    }));
+  }
+
+  void _handleGoBack(GoBack event) {
+    _navigatorKey.currentState.pop(event.result);
   }
 }

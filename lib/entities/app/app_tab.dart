@@ -1,2 +1,2 @@
 /// Represents all the possible app navigation tabs
-enum AppTab { posts, stats }
+enum AppTab { allPosts, likedPosts, notifications, account }

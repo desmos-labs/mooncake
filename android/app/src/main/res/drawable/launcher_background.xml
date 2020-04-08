@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Modify this file to customize your launch splash screen -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#946FAE" />
-        </shape>
-    </item>
-<!--    <item android:drawable="@drawable/ic_launcher_foreground" />-->
-</layer-list>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:aapt="http://schemas.android.com/aapt"
+        android:width="96dp"
+        android:height="96dp"
+        android:viewportHeight="100"
+        android:viewportWidth="100">
+
+    <path android:pathData="M1,1 H99 V99 H1Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startColor="#5755ED"
+                    android:endColor="#6A43EE"
+                    android:endX="50"
+                    android:endY="99"
+                    android:startX="50"
+                    android:startY="1"
+                    android:type="linear" />
+        </aapt:attr>
+    </path>
+</vector>

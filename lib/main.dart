@@ -8,15 +8,33 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/main.reflectable.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/utils/utils.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sembast/sembast_io.dart';
 
-void main() {
+void main() async {
+  // Init widget bindings
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Init reflectable
   initializeReflectable();
 
-  // Setup the dependency injection
-  Injector.init();
+  // Init the logger
+  await Logger.init();
 
-  // Setup the BLoC delegate to observe transitions
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  // Setup the dependency injection
+  final path = await getApplicationDocumentsDirectory();
+  await path.create(recursive: true);
+  final factory = createDatabaseFactoryIo(rootPath: path.path);
+  Injector.init(
+    accountDatabase: await factory.openDatabase("account.db"),
+    postsDatabase: await factory.openDatabase("posts.db"),
+    notificationDatabase: await factory.openDatabase("user.db"),
+  );
+
+  // Setup the Bloc delegate to observe transitions
+  if (Foundation.kDebugMode) {
+    BlocSupervisor.delegate = SimpleBlocDelegate();
+  }
 
   // This captures errors reported by the Flutter framework.
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -32,9 +50,9 @@ void main() {
 
   // Run the app
   // ignore: missing_return
-  runZoned<Future<void>>(() {
+  runZonedGuarded(() {
     _runApp();
-  }, onError: (error, stackTrace) {
+  }, (error, stackTrace) {
     // Whenever an error occurs, call the `_reportError` function. This sends
     // Dart errors to the dev console or Sentry depending on the environment.
     Logger.log(error, stackTrace: stackTrace);
@@ -47,8 +65,11 @@ void _runApp() {
       BlocProvider<NavigatorBloc>(
         create: (_) => NavigatorBloc.create(),
       ),
-      BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc.create(context)..add(CheckStatus()),
+      BlocProvider<AccountBloc>(
+        create: (context) => AccountBloc.create(context)..add(CheckStatus()),
+      ),
+      BlocProvider<RecoverAccountBloc>(
+        create: (context) => RecoverAccountBloc.create(context),
       ),
     ],
     child: PostsApp(),

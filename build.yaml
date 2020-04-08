@@ -9,3 +9,6 @@ targets:
           - test/sources/posts/remote_posts_source_test.dart
         options:
           formatted: true
+      json_serializable:
+        options:
+          ignore_unannotated: true

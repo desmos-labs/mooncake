@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic event that is emitted when recovering an existing
 /// account using a mnemonic phrase.
@@ -10,31 +9,49 @@ abstract class RecoverAccountEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Event that tells the bloc that the user has changed the input mnemonic
-/// which should be verified.
-class MnemonicInputChanged extends RecoverAccountEvent {
-  final MnemonicInputState mnemonicInputState;
-
-  MnemonicInputChanged(this.mnemonicInputState);
-
+/// Tells the Bloc to reset the current state.
+class ResetRecoverAccountState extends RecoverAccountEvent {
   @override
-  List<Object> get props => [mnemonicInputState];
-
-  @override
-  String toString() {
-    return 'MnemonicInputChanged';
-  }
+  String toString() => 'ResetRecoverAccountState';
 }
 
-/// Event that tells the bloc that the user has clicked the button to recover
-/// the account using the mnemonic phrase inserted.
-class RecoverAccount extends RecoverAccountEvent {
+/// Event that is emitted when a word is being emitted when a new word of
+/// the mnemonic if being typed from the user.
+class TypeWord extends RecoverAccountEvent {
+  final String word;
+
+  TypeWord(this.word) : assert(word != null);
+
   @override
-  String toString() => 'RecoverAccount';
+  List<Object> get props => [word];
 }
 
-/// Event that is emitted when the user wants to close the error popup.
-class CloseErrorPopup extends RecoverAccountEvent {
+/// Event that is emitted when a word is selected from the user as the next
+/// word that compose its mnemonic code.
+class WordSelected extends RecoverAccountEvent {
+  final String word;
+
+  WordSelected(this.word) : assert(word != null);
+
   @override
-  String toString() => 'CloseErrorPopup';
+  List<Object> get props => [word];
+}
+
+/// Tells the Bloc that the focus has changed to the word having the given
+/// index.
+class ChangeFocus extends RecoverAccountEvent {
+  final String currentText;
+  final int focusedField;
+
+  ChangeFocus(this.focusedField, this.currentText);
+
+  @override
+  List<Object> get props => [focusedField, currentText];
+}
+
+/// Tells the Bloc that the user has inserted the mnemonic and wants
+/// to continue to the next step.
+class ContinueRecovery extends RecoverAccountEvent {
+  @override
+  String toString() => 'ContinueRecovery';
 }

@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:meta/meta.dart';
-import 'package:mime_type/mime_type.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
@@ -18,11 +15,12 @@ class CreatePostUseCase {
   /// Returns the newly created object.
   Future<Post> create({
     @required String message,
-    @required String parentId,
     @required bool allowsComments,
+    @required String parentId,
     List<PostMedia> medias,
   }) async {
-    final address = await _userRepository.getAddress();
+    final account = await _userRepository.getAccount();
+    final user = User.fromAddress(account.cosmosAccount.address);
     final date = Post.getDateStringNow();
     return Post(
       id: date,
@@ -32,7 +30,7 @@ class CreatePostUseCase {
       allowsComments: allowsComments,
       medias: medias,
       subspace: Constants.SUBSPACE,
-      owner: address,
+      owner: user,
     );
   }
 }

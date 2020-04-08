@@ -1,151 +1,113 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:mooncake/utils/utils.dart';
-import 'package:web_socket_channel/io.dart';
 
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
 class RemotePostsSourceImpl implements RemotePostsSource {
-  final String _rpcEndpoint;
+  final String graphQlEndpoint;
+
   final ChainHelper _chainHelper;
   final LocalUserSource _userSource;
 
   // Converters
-  final ChainEventsConverter _eventsConverter;
   final MsgConverter _msgConverter;
+
+  // GraphQL
+  GraphQLClient _gqlClient;
+  GraphQLClient _wsClient;
 
   /// Public constructor
   RemotePostsSourceImpl({
-    @required String rpcEndpoint,
+    @required String graphQlEndpoint,
     @required ChainHelper chainHelper,
     @required LocalUserSource userSource,
-    @required ChainEventsConverter eventsConverter,
     @required MsgConverter msgConverter,
-  })  : assert(rpcEndpoint != null),
-        _rpcEndpoint = rpcEndpoint,
+  })  : assert(graphQlEndpoint != null),
+        graphQlEndpoint = graphQlEndpoint,
         assert(userSource != null),
         _userSource = userSource,
         assert(chainHelper != null),
         _chainHelper = chainHelper,
-        assert(eventsConverter != null),
-        _eventsConverter = eventsConverter,
         assert(msgConverter != null),
-        _msgConverter = msgConverter;
-
-  @override
-  Stream<ChainEvent> getEventsStream() {
-    print("Initializing remote source posts stream");
-
-    // Setup the channel
-    final rpcUrl = _rpcEndpoint.replaceAll(RegExp('http(s)?:\/\/'), "");
-    final channel = IOWebSocketChannel.connect('ws://$rpcUrl/websocket');
-
-    // Get the given query list or use the default set
-    final queryList = [
-      "tm.event='Tx'",
-    ];
-
-    // Send a subscription message for each query
-    queryList.forEach((query) {
-      channel.sink.add(jsonEncode({
-        "jsonrpc": "2.0",
-        "method": "subscribe",
-        "id": "0",
-        "params": {
-          "query": query,
-        }
-      }));
-    });
-
-    // Observe each new message and handle it properly
-    return channel.stream
-        // We need to skip the initial messages answering OK for the queries
-        .skip(queryList.length)
-        .map((data) => TxEvent.fromJson(jsonDecode(data)))
-        .map((txEvent) => txEvent.result.data.value.txResult.height)
-        // TODO: Re-implement this as it has been deleted to Cosmos v0.38.0 /txs?tx.height not working properly
-        .map((height) => [PostEvent(height: height, postId: "1")])
-//        .asyncMap((height) => parseBlock(height))
-//        .where((list) => list.isNotEmpty)
-        .expand((list) => list)
-        .handleError((e) => print('Remote posts channel exception: $e'));
+        _msgConverter = msgConverter {
+    // Init GraphQL
+    _initGql(graphQlEndpoint);
   }
 
-  /// Parses the block at the given [height, handling all the contained
-  /// events.
-  @visibleForTesting
-  Future<List<ChainEvent>> parseBlock(String height) async {
-    try {
-      final transactions = await _chainHelper.getTxsByHeight(height);
-      if (transactions.isEmpty) {
-        // No txs, nothing to do
-        return [];
-      }
-
-      return transactions
-          .expand((tx) => _eventsConverter.convert(height, tx.logs))
-          .toList();
-    } catch (error) {
-      Logger.log(error);
-      return [];
-    }
-  }
-
-  /// This method allows for background response conversion.
-  @visibleForTesting
-  static PostsResponse convertResponse(Map<String, dynamic> json) {
-    return PostsResponse.fromJson(json);
+  /// Initializes the GraphQL clients properly so that they can be
+  /// queried using [_gqlClient] and new posts will be retrieved using
+  /// the [postsStream].
+  void _initGql(String graphQlEndpoint) {
+    // Init the query client
+    _gqlClient = GraphQLClient(
+      link: HttpLink(uri: "http://$graphQlEndpoint"),
+      cache: InMemoryCache(),
+    );
+    _wsClient = GraphQLClient(
+      link: WebSocketLink(url: "ws://$graphQlEndpoint"),
+      cache: InMemoryCache(),
+    );
   }
 
   @override
-  Future<List<Post>> getPosts() async {
-    try {
-      final posts = List<Post>();
-      int page = 1;
-      bool fetchNext = true;
-
-      while (fetchNext) {
-        final endpoint =
-            "/posts?subspace=${Constants.SUBSPACE}&limit=100&page=${page++}";
-        final response = await _chainHelper.queryChainRaw(endpoint);
-        final postsResponse = await compute(convertResponse, response);
-        posts.addAll(postsResponse.posts);
-        fetchNext = postsResponse.posts.isNotEmpty;
-      }
-
-      return posts;
-    } catch (error) {
-      Logger.log(error);
-      return [];
-    }
+  Future<List<Post>> getHomePosts(int limit) async {
+    final data = HomePostsData(graphQlEndpoint, Constants.SUBSPACE, limit);
+    return GqlHelper.getHomePosts(_gqlClient, data);
   }
 
+  @override
+  Stream<dynamic> get homeEventsStream {
+    final query = """subscription HomeEvents {
+    ${GqlHelper.homeEvents}
+    }""";
+    return _wsClient.subscribe(Operation(documentNode: gql(query)));
+  }
+
+  /// Returns the [Post] object having the given [postId]
+  /// retrieved from the remote source. If no post with such id could
+  /// be found, `null` is returned instead.
   @override
   Future<Post> getPostById(String postId) async {
-    try {
-      final data = await _chainHelper.queryChain("/posts/$postId");
-      return data?.result == null ? null : Post.fromJson(data.result);
-    } catch (e) {
-      print(e);
-      return null;
-    }
+    final data = PostDetailsData(
+      endpoint: graphQlEndpoint,
+      subspace: Constants.SUBSPACE,
+      id: postId,
+    );
+    return GqlHelper.getPostDetails(_gqlClient, data);
   }
 
   @override
-  Future<List<Post>> getPostComments(String postId) async {
-    final post = await getPostById(postId);
-    Logger.log(Exception("Post with id $postId not found"));
-    return Future.wait((post?.commentsIds ?? []).map((comment) async {
-      return await getPostById(comment);
+  Future<TransactionResult> savePosts(List<Post> posts) async {
+    final wallet = await _userSource.getWallet();
+
+    // Get the existing posts list
+    final List<Post> existingPosts = await Future.wait(posts.map((post) {
+      return getPostById(post.id);
     }).toList());
+
+    // Upload the medias
+    final postsWithIpfsMedias = await _uploadMediasIfNecessary(posts);
+
+    // Convert the posts into messages
+    final messages = _msgConverter.convertPostsToMsg(
+      posts: postsWithIpfsMedias,
+      existingPosts: existingPosts,
+      wallet: wallet,
+    );
+
+    // Get the result of the transactions
+    return _chainHelper.sendTx(messages, wallet);
   }
 
+  /// Allows to upload the media of each [posts] item if necessary.
+  /// Returns a list of [Post] that have each one a reference to a
+  /// remote media.
   Future<List<Post>> _uploadMediasIfNecessary(List<Post> posts) async {
     final newPosts = List<Post>(posts.length);
     for (int index = 0; index < posts.length; index++) {
@@ -172,27 +134,5 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     }
 
     return newPosts;
-  }
-
-  @override
-  Future<void> savePosts(List<Post> posts) async {
-    final wallet = await _userSource.getWallet();
-
-    // Get the existing posts list
-    final List<Post> existingPosts =
-        await Future.wait(posts.map((p) => getPostById(p.id)).toList());
-
-    // Upload the medias
-    final postsWithIpfsMedias = await _uploadMediasIfNecessary(posts);
-
-    // Convert the posts into messages
-    final messages = _msgConverter.convertPostsToMsg(
-      posts: postsWithIpfsMedias,
-      existingPosts: existingPosts,
-      wallet: wallet,
-    );
-
-    // Get the result of the transactions
-    await _chainHelper.sendTx(messages, wallet);
   }
 }

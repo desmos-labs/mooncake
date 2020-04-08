@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -15,9 +16,15 @@ class Post extends Equatable implements Comparable<Post> {
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
   /// Identifier used to reference posts status value.
-  static const STATUS_FIELD = "status.value";
+  static const STATUS_VALUE_FIELD = "status.value";
 
-  /// Identifier used to reference post creation date.
+  /// Identifier used to reference the data associated to the post status.
+  static const STATUS_DATA_FIELD = "status.data";
+
+  /// Identifier used to reference the posts' parent id.
+  static const PARENT_ID_FIELD = "parent_id";
+
+  /// Identifier used to reference the post creation date.
   static const DATE_FIELD = "created";
 
   /// Identifier used to reference post ids.
@@ -33,13 +40,8 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: ID_FIELD)
   final String id;
 
-  @JsonKey(name: "parent_id")
+  @JsonKey(name: PARENT_ID_FIELD, nullable: true)
   final String parentId;
-
-  /// Tells if this post has a valid parent post or not.
-  @JsonKey(ignore: true)
-  bool get hasParent =>
-      parentId != null && parentId.trim().isNotEmpty && parentId != "0";
 
   @JsonKey(name: "message")
   final String message;
@@ -47,11 +49,6 @@ class Post extends Equatable implements Comparable<Post> {
   /// RFC3339-formatted creation date
   @JsonKey(name: DATE_FIELD)
   final String created;
-
-  @JsonKey(ignore: true)
-  DateTime get dateTime {
-    return DateTime.parse(created);
-  }
 
   @JsonKey(name: "last_edited")
   final String lastEdited;
@@ -62,32 +59,19 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "subspace")
   final String subspace;
 
-  @JsonKey(name: "creator")
-  final String owner;
+  @JsonKey(name: "user")
+  final User owner;
 
   @JsonKey(name: "optional_data", defaultValue: {})
   final Map<String, String> optionalData;
 
-  @JsonKey(name: "medias", fromJson: _postMediasFromJson)
+  @JsonKey(name: "media", defaultValue: [])
   final List<PostMedia> medias;
 
-  /// Static method used to implement a custom deserialization of post medias.
-  static List<PostMedia> _postMediasFromJson(List<dynamic> json) {
-    return json
-        ?.map((e) => PostMedia.fromJson(e))
-        // We remove every media that is not an image
-        // TODO: Implement a way to also display non images
-        ?.where((media) => media.isImage)
-        ?.toList();
-  }
-
-  @JsonKey(ignore: true)
-  bool get containsLocalMedias => medias.any((media) => media.isLocal);
-
-  @JsonKey(name: "reactions")
+  @JsonKey(name: "reactions", defaultValue: [])
   final List<Reaction> reactions;
 
-  @JsonKey(name: "children")
+  @JsonKey(name: "children", defaultValue: [])
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
@@ -97,7 +81,7 @@ class Post extends Equatable implements Comparable<Post> {
   /// Static method used to implement a custom deserialization of posts.
   static PostStatus _postStatusFromJson(Map<String, dynamic> json) {
     return json == null
-        ? PostStatus(value: PostStatusValue.SYNCED)
+        ? PostStatus(value: PostStatusValue.TX_SUCCESSFULL)
         : PostStatus.fromJson(json);
   }
 
@@ -114,17 +98,52 @@ class Post extends Equatable implements Comparable<Post> {
     List<PostMedia> medias = const [],
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
-    this.status = const PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+    this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
   })  : assert(id != null),
-        assert(message != null),
+        assert(message != null && message.isNotEmpty),
         assert(created != null),
         assert(subspace != null),
         assert(owner != null),
         this.medias = medias ?? [],
         this.reactions = reactions ?? [],
+        this.reactionsCount = groupBy<Reaction, String>(
+          (reactions ?? []).where((r) => !r.isLike).toList(),
+          (r) => r.rune,
+        ).map((rune, reactions) => MapEntry(reactions[0], reactions.length)),
         this.commentsIds = commentsIds ?? [];
 
+  /// Returns the posts' data as a [DateTime] object.
+  DateTime get dateTime {
+    return DateTime.parse(created);
+  }
+
+  /// Tells if this post has a valid parent post or not.
+  bool get hasParent {
+    return parentId != null && parentId.trim().isNotEmpty && parentId != "0";
+  }
+
+  /// Returns only the list of images.
+  List<PostMedia> get images {
+    return medias?.where((element) => element.isImage)?.toList() ?? [];
+  }
+
+  /// Tells whether or not it contains local medias.
+  bool get containsLocalMedias {
+    return medias.any((media) => media.isLocal);
+  }
+
+  /// Contains a list of all the reactions and the respective count.
+  final Map<Reaction, int> reactionsCount;
+
+  /// Returns the list of all the likes that have been added.
+  List<Reaction> get likes {
+    return reactions?.where((reaction) => reaction.isLike)?.toList() ?? [];
+  }
+
+  /// Returns a new [Post] having the same data as `this` one, but
+  /// with the specified data replaced.
   Post copyWith({
+    PostStatus status,
     String parentId,
     String message,
     String created,
@@ -136,9 +155,9 @@ class Post extends Equatable implements Comparable<Post> {
     List<PostMedia> medias,
     List<Reaction> reactions,
     List<String> commentsIds,
-    PostStatus status,
   }) {
     return Post(
+      status: status ?? this.status,
       id: this.id,
       parentId: parentId ?? this.parentId,
       message: message ?? this.message,
@@ -151,7 +170,6 @@ class Post extends Equatable implements Comparable<Post> {
       medias: medias ?? this.medias,
       reactions: reactions ?? this.reactions,
       commentsIds: commentsIds ?? this.commentsIds,
-      status: status ?? this.status,
     );
   }
 
@@ -161,40 +179,38 @@ class Post extends Equatable implements Comparable<Post> {
   }
 
   @override
-  List<Object> get props => [
-        this.id,
-        this.parentId,
-        this.message,
-        this.created,
-        this.lastEdited,
-        this.allowsComments,
-        this.subspace,
-        this.optionalData,
-        this.owner,
-        this.medias,
-        this.reactions,
-        this.commentsIds,
-        this.status,
-      ];
+  List<Object> get props {
+    return [
+      this.id,
+      this.parentId,
+      this.message,
+      this.created,
+      this.lastEdited,
+      this.allowsComments,
+      this.subspace,
+      this.owner,
+      this.optionalData,
+      this.medias,
+      this.reactions,
+      this.commentsIds,
+      this.status,
+    ];
+  }
 
   @override
-  String toString() => 'Post { '
-      'id: $id, '
-      'parentId: $parentId, '
-      'message: $message, '
-      'created: $created, '
-      'lastEdited: $lastEdited, '
-      'allowsComments: $allowsComments, '
-      'subspace: $subspace, '
-      'optionalData: $optionalData, '
-      'owner: $owner, '
-      'medias: $medias, '
-      'reactions: $reactions, '
-      'commentsIds: $commentsIds, '
-      'status: $status '
-      '}';
+  String toString() {
+    return 'Post { id: $id, status: $status }';
+  }
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  static Post fromJson(Map<String, dynamic> json) {
+    return _$PostFromJson(json);
+  }
 
-  Map<String, dynamic> toJson() => _$PostToJson(this);
+  static Map<String, dynamic> asJson(Post post) {
+    return post.toJson();
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$PostToJson(this);
+  }
 }

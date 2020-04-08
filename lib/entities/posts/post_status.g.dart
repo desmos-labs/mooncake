@@ -9,14 +9,14 @@ part of 'post_status.dart';
 PostStatus _$PostStatusFromJson(Map<String, dynamic> json) {
   return PostStatus(
     value: _$enumDecodeNullable(_$PostStatusValueEnumMap, json['value']),
-    error: json['error'] as String,
+    data: json['data'] as String,
   );
 }
 
 Map<String, dynamic> _$PostStatusToJson(PostStatus instance) =>
     <String, dynamic>{
       'value': _$PostStatusValueEnumMap[instance.value],
-      'error': instance.error,
+      'data': instance.data,
     };
 
 T _$enumDecode<T>(
@@ -52,8 +52,9 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$PostStatusValueEnumMap = {
-  PostStatusValue.TO_BE_SYNCED: 'to_be_synced',
-  PostStatusValue.SYNCING: 'syncing',
-  PostStatusValue.SYNCED: 'synced',
+  PostStatusValue.STORED_LOCALLY: 'stored_locally',
+  PostStatusValue.SENDING_TX: 'sending_tx',
+  PostStatusValue.TX_SENT: 'tx_sent',
+  PostStatusValue.TX_SUCCESSFULL: 'tx_successfull',
   PostStatusValue.ERRORED: 'errored',
 };

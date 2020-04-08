@@ -10,8 +10,6 @@ class UserRepositoryImpl extends UserRepository {
   final RemoteUserSource _remoteUserSource;
   final LocalUserSource _localUserSource;
 
-  final StreamController _accountController = StreamController<AccountData>();
-
   UserRepositoryImpl({
     @required LocalUserSource localUserSource,
     @required RemoteUserSource remoteUserSource,
@@ -21,8 +19,10 @@ class UserRepositoryImpl extends UserRepository {
         this._remoteUserSource = remoteUserSource;
 
   @override
-  Future<String> getAddress() {
-    return _localUserSource.getAddress();
+  Future<void> saveWallet(String mnemonic) async {
+    return _localUserSource
+        .saveWallet(mnemonic)
+        .then((_) => _updateAndStoreAccountData());
   }
 
   @override
@@ -31,39 +31,48 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   Future<void> _updateAndStoreAccountData() async {
-    final address = await _localUserSource.getAddress();
-    if (address != null) {
-      final data = (await _remoteUserSource.getAccountData(address)) ??
-          AccountData(
-            address: address,
-            accountNumber: 0,
-            sequence: 0,
-            coins: [],
-          );
-      await _localUserSource.saveAccountData(data);
-      _accountController.add(data);
+    final user = await _localUserSource.getAccount();
+    if (user == null) {
+      // No User stored locally, nothing to update
+      return;
+    }
+
+    // Update the data from the remote source and save it locally
+    final data = await _remoteUserSource.getAccount(user.cosmosAccount.address);
+    if (data != null) {
+      await _localUserSource.saveAccount(data);
     }
   }
 
   @override
-  Future<void> saveWallet(String mnemonic) async {
-    return _localUserSource
-        .saveWallet(mnemonic)
-        .then((_) => _updateAndStoreAccountData());
-  }
-
-  @override
-  Stream<AccountData> observeAccount() => _accountController.stream;
-
-  @override
-  Future<AccountData> getAccount() async {
+  Future<MooncakeAccount> getAccount() {
     return _updateAndStoreAccountData()
-        .then((_) => _localUserSource.getAccountData());
+        .then((_) => _localUserSource.getAccount());
   }
 
   @override
-  Future<void> fundAccount(AccountData account) {
-    return _remoteUserSource.fundAccount(account);
+  Future<void> refreshAccount() {
+    return _updateAndStoreAccountData();
+  }
+
+  @override
+  Stream<MooncakeAccount> get accountStream {
+    return _localUserSource.accountStream;
+  }
+
+  @override
+  Future<void> fundAccount(MooncakeAccount user) {
+    return _remoteUserSource.fundAccount(user);
+  }
+
+  @override
+  Future<void> saveAuthenticationMethod(AuthenticationMethod method) {
+    return _localUserSource.saveAuthenticationMethod(method);
+  }
+
+  @override
+  Future<AuthenticationMethod> getAuthenticationMethod() {
+    return _localUserSource.getAuthenticationMethod();
   }
 
   @override

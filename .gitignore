@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+selection.json
 
 # Vuepress
 **/.vuepress/dist/

@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
-/// Represents a generic state for screen that shows the user
-/// the details about his account.
+/// Represents the login status of the user using the application.
 abstract class AccountState extends Equatable {
   const AccountState();
 
@@ -11,30 +10,71 @@ abstract class AccountState extends Equatable {
   List<Object> get props => [];
 }
 
-/// Represents the state where the user account has not yet been
-/// initialized and thus must be loaded.
-class UninitializedAccount extends AccountState {
+/// Tells the view to display a screen while the application is trying
+/// to figure out whether the user is logged in or not.
+class Loading extends AccountState {
   @override
-  String toString() => 'UninitializedAccountState';
+  String toString() => 'Loading';
 }
 
-/// Represents the state in which the user account data
-/// are being properly loaded.
-class LoadingAccount extends AccountState {
+/// Tells the view that the user is not logged in and thus the login
+/// screen should be shown to him.
+class LoggedOut extends AccountState {
   @override
-  String toString() => 'LoadingAccountState';
+  String toString() => 'LoggedOut';
 }
 
-/// Represents the state in which the user data has been
-/// properly loaded.
-class AccountLoaded extends AccountState {
-  final AccountData account;
+/// Represents the state during which the account is being generated.
+class CreatingAccount extends LoggedOut {
+  @override
+  String toString() => 'CreatingAccount';
+}
 
-  AccountLoaded({@required this.account});
+/// Tells the view that the account has been generated properly and
+/// the user can log into the application.
+class AccountCreated extends LoggedOut {
+  final List<String> mnemonic;
+
+  AccountCreated(this.mnemonic);
 
   @override
-  String toString() => 'AccountLoaded { account: $account }';
+  List<Object> get props => [mnemonic];
 
   @override
-  List<Object> get props => [account];
+  String toString() => 'AccountCreated';
+}
+
+/// Tells the view that the user is logged in and thus he can properly
+/// access the main page of the application.
+class LoggedIn extends AccountState {
+  /// Represents the currently used account.
+  final MooncakeAccount user;
+
+  /// Indicates whether the account is being refreshed or not.
+  final bool refreshing;
+
+  LoggedIn({@required this.user, @required this.refreshing});
+
+  factory LoggedIn.initial(MooncakeAccount user) {
+    return LoggedIn(
+      user: user,
+      refreshing: false,
+    );
+  }
+
+  LoggedIn copyWith({
+    MooncakeAccount user,
+    bool refreshing,
+  }) {
+    return LoggedIn(
+      user: user ?? this.user,
+      refreshing: refreshing ?? this.refreshing,
+    );
+  }
+
+  @override
+  List<Object> get props => [user, refreshing];
+
+  @override
+  String toString() => 'LoggedIn { user: $user }';
 }

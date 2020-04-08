@@ -1,6 +1,6 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -12,54 +12,56 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, activeTab) {
+        Widget body = Container();
+        if (activeTab == AppTab.allPosts) {
+          body = PostsList();
+        } else if (activeTab == AppTab.notifications) {
+          body = NotificationsMainContent();
+        } else if (activeTab == AppTab.account) {
+          body = AccountScreenContent();
+        }
+
         return Scaffold(
           appBar: AppBar(
-            title: Text(PostsLocalizations.of(context).appTitle),
+            centerTitle: true,
+            title: Text(
+              activeTab == AppTab.allPosts
+                  ? PostsLocalizations.of(context).appName
+                  : PostsLocalizations.of(context).accountScreenTitle,
+            ),
+            backgroundColor: Colors.transparent,
+            textTheme: Theme.of(context).textTheme.copyWith(
+                  headline6: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Theme.of(context).accentColor,
+                      ),
+                ),
+            leading: IconButton(
+              icon: Icon(Theme.of(context).brightness == Brightness.light
+                  ? MooncakeIcons.lightbulb
+                  : MooncakeIcons.lightbulbF),
+              color: Theme.of(context).accentColor,
+              onPressed: () {
+                DynamicTheme.of(context).setBrightness(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Brightness.light
+                        : Brightness.dark);
+              },
+            ),
             actions: [
               IconButton(
-                icon: SizedBox(
-                  height: 16,
-                  child: SvgPicture.asset(
-                    "assets/images/logout.svg",
-                    color: Colors.white,
-                  ),
-                ),
+                color: Theme.of(context).accentColor,
+                icon: Icon(MooncakeIcons.wallet),
                 onPressed: () {
-                  BlocProvider.of<HomeBloc>(context).add(SignOut());
+                  BlocProvider.of<NavigatorBloc>(context)
+                      .add(NavigateToWallet());
                 },
-                tooltip: PostsLocalizations.of(context).signOut,
               )
             ],
           ),
-          body: activeTab == AppTab.posts
-              ? PostsList(filter: (p) => !p.hasParent)
-              : Account(),
-          floatingActionButton: activeTab == AppTab.posts
-              ? FloatingActionButton(
-                  key: PostsKeys.addPost,
-                  onPressed: () => Navigator.of(context).push(_createRoute()),
-                  child: Icon(Icons.add),
-                  tooltip: PostsLocalizations.of(context).floatingButtonTip,
-                )
-              : null,
-          bottomNavigationBar: TabSelector(
-            activeTab: activeTab,
-            onTabSelected: (tab) {
-              BlocProvider.of<HomeBloc>(context).add(UpdateTab(tab));
-            },
-          ),
+          body: body,
+          bottomNavigationBar: TabSelector(),
         );
       },
     );
-  }
-
-  Route _createRoute() {
-    return MaterialPageRoute(builder: (BuildContext context) {
-      return CreatePostScreen(callback: (post) {
-        // ignore: close_sinks
-        final bloc = BlocProvider.of<PostsBloc>(context);
-        bloc.add(AddPost(post));
-      });
-    });
   }
 }

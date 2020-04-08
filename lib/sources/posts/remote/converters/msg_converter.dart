@@ -17,7 +17,7 @@ class MsgConverter {
   MsgCreatePost toMsgCreatePost(Post post, String creator) {
     return MsgCreatePost(
       parentId: post.parentId ?? "0",
-      message: post.message,
+      message: post.message ?? "",
       allowsComments: post.allowsComments,
       optionalData:
           post.optionalData?.isNotEmpty == true ? post.optionalData : null,
@@ -48,10 +48,6 @@ class MsgConverter {
 
       // The post needs to be created
       if (existingPost == null) {
-        // TODO: Upload the medias to IPFS before adding the post
-        // Media posts should be uploaded to IPFS, and then the URIs should be
-        // changed to the one that IPFS returns using
-        // Infura (https://ipfs.infura.io/ipfs/) or other similar services.
         postsToCreate.add(posts[index]);
         continue;
       }
@@ -59,10 +55,13 @@ class MsgConverter {
       // Iterate over the existing reactions to find the ones that have been
       // deleted
       for (final exReaction in existingPost.reactions) {
-        if (!post.reactions.contains(exReaction)) {
+        if (!post.reactions.containsFromAddress(
+          exReaction.user.address,
+          exReaction.code,
+        )) {
           reactionsToRemove.add(ReactionData(
             postId: post.id,
-            value: exReaction.value,
+            value: exReaction.code,
           ));
         }
       }
@@ -70,9 +69,12 @@ class MsgConverter {
       // Iterate over the local reactions to find the ones that have been
       // added new
       for (final localReaction in post.reactions) {
-        if (!existingPost.reactions.contains(localReaction)) {
+        if (!existingPost.reactions.containsFromAddress(
+          localReaction.user.address,
+          localReaction.code,
+        )) {
           reactionsToAdd.add(
-            ReactionData(postId: post.id, value: localReaction.value),
+            ReactionData(postId: post.id, value: localReaction.code),
           );
         }
       }

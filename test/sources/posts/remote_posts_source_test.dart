@@ -11,7 +11,7 @@ import 'package:web_socket_channel/io.dart';
 
 import 'common.dart';
 import 'remote_posts_source_test.reflectable.dart';
-import 'mocks.dart';
+import '../../mocks/posts.dart';
 
 class MockChainHelper extends Mock implements ChainHelper {}
 
@@ -242,7 +242,7 @@ void main() {
 
     void checkPostsStatus(List<Post> posts) {
       posts.forEach((p) {
-        if (p.status.value != PostStatusValue.SYNCED) {
+        if (p.status.value != PostStatusValue.TX_SUCCESSFULL) {
           throw Exception("Post with id ${p.id} has not a synced status");
         }
       });
@@ -285,7 +285,7 @@ void main() {
 
   group('getPostById', () {
     test('reading returns null when post does not exist', () async {
-      final post = await source.getPostById("999");
+      final post = await source.getPostByIdStream("999");
       expect(post, isNull);
     });
 
@@ -296,7 +296,7 @@ void main() {
       when(chainHelper.queryChain("/posts/$postId")).thenAnswer(
           (_) => Future.value(LcdResponse.fromJson(jsonDecode(contents))));
 
-      final post = await source.getPostById(postId);
+      final post = await source.getPostByIdStream(postId);
       final expected = Post(
         id: "56",
         parentId: "0",
@@ -318,7 +318,7 @@ void main() {
           )
         ],
         commentsIds: ["57"],
-        status: PostStatus(value: PostStatusValue.SYNCED),
+        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
       );
       expect(post, expected);
     });

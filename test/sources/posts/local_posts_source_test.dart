@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 
-import 'mocks.dart';
+import '../../mocks/posts.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -67,13 +67,13 @@ void main() {
     });
 
     test('reading returns null when no post is found', () async {
-      final post = await source.getPostById("inexsitinst post id");
+      final post = await source.singlePostStream("inexsitinst post id");
       expect(post, isNull);
     });
 
     test('reading returns the valid post when it exists', () async {
       await source.savePost(testPost);
-      final stored = await source.getPostById(testPost.id);
+      final stored = await source.singlePostStream(testPost.id);
       expect(stored, testPost);
     });
 
@@ -81,16 +81,16 @@ void main() {
       final postId = "post-id";
       await source.deletePost(postId);
 
-      final stored = await source.getPostById(postId);
+      final stored = await source.singlePostStream(postId);
       expect(stored, isNull);
     });
 
     test('deleting works properly with existing post', () async {
       await source.savePost(testPost);
-      expect(await source.getPostById(testPost.id), testPost);
+      expect(await source.singlePostStream(testPost.id), testPost);
 
       await source.deletePost(testPost.id);
-      expect(await source.getPostById(testPost.id), isNull);
+      expect(await source.singlePostStream(testPost.id), isNull);
     });
   });
 
@@ -160,7 +160,7 @@ void main() {
             )
           ],
           commentsIds: ["10"],
-          status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+          status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
         ),
         Post(
           id: "3",
@@ -174,7 +174,7 @@ void main() {
           owner: "desmos15x3e6md5gdcsszc2nx88trnn85nn0qzgjwl9pj",
           reactions: [],
           commentsIds: [],
-          status: PostStatus(value: PostStatusValue.SYNCING),
+          status: PostStatus(value: PostStatusValue.SENDING_TX),
         ),
         Post(
           id: "4",
@@ -188,7 +188,7 @@ void main() {
           owner: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
           reactions: [],
           commentsIds: [],
-          status: PostStatus(value: PostStatusValue.SYNCED),
+          status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
         ),
       ];
       await source.savePosts(posts, emit: false);
@@ -222,7 +222,7 @@ void main() {
           owner: "desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h",
           reactions: [],
           commentsIds: [],
-          status: PostStatus(value: PostStatusValue.SYNCED),
+          status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
         ),
         Post(
           id: "2",
@@ -245,7 +245,7 @@ void main() {
             )
           ],
           commentsIds: ["10"],
-          status: PostStatus(value: PostStatusValue.SYNCED),
+          status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
         ),
         Post(
           id: "3",
@@ -259,7 +259,7 @@ void main() {
           owner: "desmos15x3e6md5gdcsszc2nx88trnn85nn0qzgjwl9pj",
           reactions: [],
           commentsIds: [],
-          status: PostStatus(value: PostStatusValue.SYNCING),
+          status: PostStatus(value: PostStatusValue.SENDING_TX),
         ),
       ];
       await source.savePosts(comments, emit: false);
@@ -314,7 +314,7 @@ void main() {
             )
           ],
           commentsIds: ["10"],
-          status: PostStatus(value: PostStatusValue.TO_BE_SYNCED),
+          status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
         ),
         Post(
           id: "3",
@@ -328,7 +328,7 @@ void main() {
           owner: "desmos15x3e6md5gdcsszc2nx88trnn85nn0qzgjwl9pj",
           reactions: [],
           commentsIds: [],
-          status: PostStatus(value: PostStatusValue.SYNCING),
+          status: PostStatus(value: PostStatusValue.SENDING_TX),
         ),
         Post(
           id: "4",
@@ -342,7 +342,7 @@ void main() {
           owner: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl",
           reactions: [],
           commentsIds: [],
-          status: PostStatus(value: PostStatusValue.SYNCED),
+          status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
         ),
       ];
       await source.savePosts(posts, emit: false);

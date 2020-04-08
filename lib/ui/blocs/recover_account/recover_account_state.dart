@@ -1,61 +1,60 @@
 import 'package:equatable/equatable.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:meta/meta.dart';
 
-/// Represents a generic state for the account recovery screen.
-abstract class RecoverAccountState extends Equatable {
-  const RecoverAccountState();
+/// Represents the state during which the user is still typing it's mnemonic.
+class RecoverAccountState extends Equatable {
+  /// Represents the currently focused word.
+  final int currentWordIndex;
 
-  @override
-  List<Object> get props => [];
-}
+  /// Represents the word that is being typed.
+  String get typedWord => wordsList[currentWordIndex] ?? "";
 
-/// Represents the state in which the user is typing his mnemonic into
-/// the proepr text field.
-class TypingMnemonic extends RecoverAccountState {
-  final MnemonicInputState mnemonicInputState;
+  /// Represents the list of words that have been selected as composing the
+  /// mnemonic.
+  final List<String> wordsList;
 
-  TypingMnemonic(this.mnemonicInputState);
+  /// Tells whether the mnemonic is all complete or not.
+  bool get isMnemonicComplete => wordsList.where((e) => e == null).isEmpty;
 
-  @override
-  List<Object> get props => [mnemonicInputState];
+  /// Tells is the mnemonic inserted till now is valid or not.
+  final bool isMnemonicValid;
 
-  @override
-  String toString() {
-    return 'TypingMnemonic { mnemonicInputState: $mnemonicInputState }';
+  RecoverAccountState({
+    @required this.currentWordIndex,
+    @required this.wordsList,
+    @required this.isMnemonicValid,
+  }) : assert(wordsList != null);
+
+  factory RecoverAccountState.initial() {
+    return RecoverAccountState(
+      currentWordIndex: 0,
+      wordsList: List(24),
+      isMnemonicValid: false,
+    );
   }
-}
 
-/// Represents the state in which the mnemonic is being used to recover
-/// the account associated with it.
-class RecoveringAccount extends RecoverAccountState {
-  @override
-  String toString() => "RecoveringAccount";
-}
-
-/// Represents the state in which the application goes if the account has been
-/// recovered successfully.
-class RecoveredAccount extends RecoverAccountState {
-  final String mnemonic;
-
-  RecoveredAccount(this.mnemonic);
+  RecoverAccountState copyWith({
+    int currentWordIndex,
+    List<String> wordsList,
+    bool isMnemonicValid,
+  }) {
+    return RecoverAccountState(
+      currentWordIndex: currentWordIndex ?? this.currentWordIndex,
+      wordsList: wordsList ?? this.wordsList,
+      isMnemonicValid: isMnemonicValid ?? this.isMnemonicValid,
+    );
+  }
 
   @override
-  List<Object> get props => [mnemonic];
+  List<Object> get props => [
+        currentWordIndex,
+        wordsList,
+        isMnemonicValid,
+      ];
 
   @override
-  String toString() => "RecoveredAccount";
-}
-
-/// Represents the state in which the account has not been recovered due to an
-/// error.
-class RecoverError extends RecoverAccountState {
-  final dynamic error;
-
-  RecoverError(this.error);
-
-  @override
-  List<Object> get props => [error];
-
-  @override
-  String toString() => "RecoverError { error: $error }";
+  String toString() => 'TypingMnemonic { '
+      'currentWordIndex: $currentWordIndex, '
+      'isMnemonicValid: $isMnemonicValid '
+      '}';
 }

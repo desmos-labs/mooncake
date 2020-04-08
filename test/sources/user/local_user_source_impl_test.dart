@@ -171,7 +171,7 @@ void main() {
         sequence: 1,
         coins: [],
       );
-      await source.saveAccountData(accountData);
+      await source.saveAccount(accountData);
       expect(await source.getAccountData(), accountData);
 
       expect(await source.getAddress(), accountData.address);
@@ -191,7 +191,7 @@ void main() {
         coins: [],
       );
 
-      await source.saveAccountData(accountData);
+      await source.saveAccount(accountData);
 
       expect(await source.getAccountData(), accountData);
     });
@@ -205,7 +205,7 @@ void main() {
         sequence: 1,
         coins: [],
       );
-      await source.saveAccountData(accountData);
+      await source.saveAccount(accountData);
       expect(await source.getAccountData(), isNotNull);
 
       await source.wipeData();

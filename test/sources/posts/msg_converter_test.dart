@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/posts/export.dart';
 
-import 'mocks.dart';
+import '../../mocks/posts.dart';
 
 class MockWallet extends Mock implements Wallet {
   @override

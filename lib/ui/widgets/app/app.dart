@@ -1,3 +1,4 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,7 @@ class _PostsAppState extends State<PostsApp> {
   @override
   void initState() {
     super.initState();
-    _notificationsManager = NotificationsManager(context);
+    _notificationsManager = NotificationsManager.create(context);
     _notificationsManager.init();
   }
 
@@ -25,36 +26,32 @@ class _PostsAppState extends State<PostsApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<MnemonicInputBloc>(
-          create: (_) => MnemonicInputBloc(),
-        ),
-        BlocProvider<RecoverAccountBloc>(
-          create: (context) => RecoverAccountBloc.create(context),
-        ),
-        BlocProvider<GenerateMnemonicBloc>(
-          create: (context) => GenerateMnemonicBloc.create(context),
-        ),
-        BlocProvider<PostsBloc>(
-          create: (context) =>
-              PostsBloc.create(syncPeriod: 30)..add(LoadPosts()),
-        )
+        BlocProvider<PostsListBloc>(create: (_) {
+          return PostsListBloc.create(syncPeriod: 30)..add(RefreshPosts());
+        }),
+        BlocProvider<NotificationsBloc>(create: (_) {
+          return NotificationsBloc.create()..add(LoadNotifications());
+        }),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: PostsKeys.navigatorKey,
-        title: PostsLocalizations().appTitle,
-        theme: PostsTheme.theme,
-        localizationsDelegates: [
-          FlutterBlocLocalizationsDelegate(),
-        ],
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: Injector.get()),
-        ],
-        routes: {
-          PostsRoutes.home: (context) => SplashScreen(),
-          PostsRoutes.recoverAccount: (context) => RecoverAccountScreen(),
-          PostsRoutes.createAccount: (context) => GenerateMnemonicScreen(),
-        },
+      child: DynamicTheme(
+        defaultBrightness: Brightness.light,
+        data: PostsTheme.themeBuilder,
+        themedWidgetBuilder: (context, theme) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          navigatorKey: PostsKeys.navigatorKey,
+          title: PostsLocalizations().appName,
+          theme: theme,
+          localizationsDelegates: [
+            FlutterBlocLocalizationsDelegate(),
+          ],
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: Injector.get()),
+          ],
+          routes: {
+            PostsRoutes.home: (context) => SplashScreen(),
+            PostsRoutes.recoverAccount: (context) => RecoverAccountScreen(),
+          },
+        ),
       ),
     );
   }

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:alan/alan.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 
@@ -19,17 +22,23 @@ class RemoteUserSourceImpl implements RemoteUserSource {
         _faucetEndpoint = faucetEndpoint;
 
   @override
-  Future<AccountData> getAccountData(String address) async {
+  Future<MooncakeAccount> getAccount(String address) async {
     try {
-      final endpoint = "/auth/accounts/$address";
-      final response = await _chainHelper.queryChain(endpoint);
-      final result = response.result;
-      if (result.isEmpty) {
-        throw Exception("Empty account result");
+      final cosmosAccount = await QueryHelper.getAccountData(
+        _chainHelper.lcdEndpoint,
+        address,
+      );
+
+      // If no account is found, return null
+      if (cosmosAccount == null) {
+        return null;
       }
 
-      final accountData = AccountDataResponse.fromJson(result).accountData;
-      return accountData.address?.isEmpty == true ? null : accountData;
+      return MooncakeAccount(
+        cosmosAccount: cosmosAccount,
+        username: null,
+        avatarUrl: null,
+      );
     } catch (e) {
       print(e);
       return null;
@@ -37,11 +46,11 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   }
 
   @override
-  Future<void> fundAccount(AccountData account) async {
+  Future<void> fundAccount(MooncakeAccount user) async {
     await http.Client().post(
       _faucetEndpoint,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"address": account.address}),
+      body: jsonEncode({"address": user.cosmosAccount.address}),
     );
   }
 }

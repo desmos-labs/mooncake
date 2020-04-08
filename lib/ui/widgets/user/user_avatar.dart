@@ -1,32 +1,36 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mooncake/entities/entities.dart';
 
-/// Represents an image (given its [url]) as a circular image.
+/// Allows to properly represent the avatar of a user given its data.
 class UserAvatar extends StatelessWidget {
-  /// Bech32 address of the user
-  final String user;
+  final double size;
+  final double border;
+  final User user;
+  final Color borderColor;
 
-  /// Size of the icon
-  double iconSize;
-
-  UserAvatar({
-    @required this.user,
-    this.iconSize = 0,
+  const UserAvatar({
     Key key,
+    this.size = 48,
+    this.border = 0,
+    this.borderColor = Colors.white,
+    @required this.user,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    if (iconSize == 0) {
-      iconSize = mediaQuery.size.width / 16;
-    }
-
-    return Container(
-      width: iconSize * 2,
-      height: iconSize * 2,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(iconSize),
+    final radius = size / 2;
+    return CircleAvatar(
+      radius: border == 0 ? radius : radius + border,
+      backgroundColor: borderColor,
+      child: CachedNetworkImage(
+        imageUrl: user.hasAvatar
+            ? user.avatarUrl
+            : "http://identicon-1132.appspot.com/${user.address}?s=10&p=8",
+        imageBuilder: (context, image) => CircleAvatar(
+          radius: radius,
+          backgroundImage: image,
+        ),
       ),
     );
   }

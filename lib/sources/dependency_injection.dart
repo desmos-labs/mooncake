@@ -1,19 +1,30 @@
 import 'package:dependencies/dependencies.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:sembast/sembast.dart';
 
 class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "ipfs.desmos.network";
 
   static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
-  static const _rpcUrl = "http://rpc.morpheus.desmos.network:26657";
-//  static const _lcdUrl = "http://10.0.2.2:1317";
-//  static const _rpcUrl = "http://10.0.2.2:26657";
+  static const _gqlEndpoint = "35.234.80.165:8080/v1/graphql";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
+
+  final Database accountDatabase;
+  final Database postsDatabase;
+  final Database notificationsDatabase;
+  SourcesModule({
+    @required this.postsDatabase,
+    @required this.accountDatabase,
+    @required this.notificationsDatabase,
+  })  : assert(postsDatabase != null),
+        assert(accountDatabase != null),
+        assert(notificationsDatabase != null);
 
   @override
   void configure(Binder binder) {
@@ -27,7 +38,7 @@ class SourcesModule implements Module {
       ..bindLazySingleton<LocalUserSource>(
           (injector, params) => LocalUserSourceImpl(
                 networkInfo: _networkInfo,
-                dbName: "account.db",
+                database: accountDatabase,
                 secureStorage: FlutterSecureStorage(),
               ))
       ..bindLazySingleton<RemoteUserSource>(
@@ -37,20 +48,24 @@ class SourcesModule implements Module {
               ))
       // Post sources
       ..bindLazySingleton<LocalPostsSource>(
-        (injector, params) => LocalPostsSourceImpl(
-          dbName: "posts.db",
-        ),
-        name: "local",
-      )
+          (injector, params) => LocalPostsSourceImpl(
+                database: postsDatabase,
+              ))
       ..bindLazySingleton<RemotePostsSource>(
-        (injector, params) => RemotePostsSourceImpl(
-          rpcEndpoint: _rpcUrl,
-          chainHelper: injector.get(),
-          userSource: injector.get(),
-          eventsConverter: ChainEventsConverter(),
-          msgConverter: MsgConverter(),
-        ),
-        name: "remote",
-      );
+          (injector, params) => RemotePostsSourceImpl(
+                graphQlEndpoint: _gqlEndpoint,
+                chainHelper: injector.get(),
+                userSource: injector.get(),
+                msgConverter: MsgConverter(),
+              ))
+      // Notifications source
+      ..bindLazySingleton<RemoteNotificationsSource>(
+          (injector, params) => RemoteNotificationsSourceImpl(
+                localUserSource: injector.get(),
+              ))
+      ..bindLazySingleton<LocalNotificationsSource>(
+          (injector, params) => LocalNotificationsSourceImpl(
+                database: accountDatabase,
+              ));
   }
 }

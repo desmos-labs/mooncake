@@ -2,6 +2,9 @@ import 'package:meta/meta.dart';
 
 /// Contains the application-wide constants.
 class Constants {
+  /// Explorer
+  static const EXPLORER = "https://morpheus.desmos.network";
+
   /// Subspace that should be used to create and read posts
   static const SUBSPACE =
       "2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88";
@@ -15,8 +18,7 @@ class Constants {
   static const EVENT_LOGOUT = "logout";
   static const EVENT_NAVIGATE_TO_SCREEN = "navigate_to_screen";
   static const EVENT_SAVE_POST = "save_post";
-  static const EVENT_ADD_REACTION = "add_reaction";
-  static const EVENT_REMOVE_REACTION = "remove_reaction";
+  static const EVENT_REACTION_CHANGED = "reaction_changed";
 
   // Post creation
   static const POST_PARAM_OWNER = "owner";
@@ -27,6 +29,9 @@ class Constants {
     title: "Posts interactions",
     description: "Make sound and pop on a new post interaction",
   );
+
+  // Reactions
+  static const LIKE_REACTION = ":heart:";
 }
 
 /// Contains the data of a notification channel (required for Android 8.0+).

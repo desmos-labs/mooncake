@@ -1,13 +1,12 @@
+import 'dart:convert';
+
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
 
 /// Contains the information that needs to be given to derive a [Wallet].
 class _WalletInfo {
@@ -24,31 +23,26 @@ class _WalletInfo {
 class LocalUserSourceImpl extends LocalUserSource {
   static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
 
-  static const _ACCOUNT_DATA_KEY = "account_data";
+  static const _AUTHENTICATION_KEY = "authentication";
+  static const _USER_DATA_KEY = "user_data";
   static const _MNEMONIC_KEY = "mnemonic";
 
-  final String _dbName;
+  final Database database;
   final NetworkInfo _networkInfo;
   final FlutterSecureStorage _storage;
 
-  final _store = StoreRef.main();
+  final store = StoreRef.main();
 
   LocalUserSourceImpl({
-    @required String dbName,
+    @required Database database,
     @required NetworkInfo networkInfo,
     @required FlutterSecureStorage secureStorage,
-  })  : assert(dbName != null && dbName.isNotEmpty),
-        this._dbName = dbName,
+  })  : assert(database != null),
+        database = database,
         assert(networkInfo != null),
         this._networkInfo = networkInfo,
         assert(secureStorage != null),
         this._storage = secureStorage;
-
-  Future<Database> get _database async {
-    final path = await getApplicationDocumentsDirectory();
-    await path.create(recursive: true);
-    return databaseFactoryIo.openDatabase(join(path.path, this._dbName));
-  }
 
   /// Allows to derive a [Wallet] instance from the given [_WalletInfo] object.
   /// This method is static so that it can be called using the [compute] method
@@ -89,37 +83,62 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<String> getAddress() async {
-    final accountData = await getAccountData();
-    if (accountData != null) {
-      return accountData.address;
+  Future<void> saveAccount(MooncakeAccount data) async {
+    await database.transaction((txn) async {
+      await store.record(_USER_DATA_KEY).put(txn, data?.toJson());
+    });
+  }
+
+  @override
+  Future<MooncakeAccount> getAccount() async {
+    // Try getting the user from the database
+    final record = await store.record(_USER_DATA_KEY).get(database);
+    if (record != null) {
+      return MooncakeAccount.fromJson(record);
     }
 
+    // If the database does not have the user, build it from the address
     final wallet = await getWallet();
-    return wallet?.bech32Address;
-  }
+    final address = wallet?.bech32Address;
 
-  @override
-  Future<void> saveAccountData(AccountData data) async {
-    final database = await this._database;
-    await _store.record(_ACCOUNT_DATA_KEY).put(database, data.toJson());
-  }
-
-  @override
-  Future<AccountData> getAccountData() async {
-    final database = await this._database;
-
-    final record = await _store.findFirst(database);
-    if (record == null) {
+    // If the address is null return null
+    if (address == null) {
       return null;
     }
 
-    return AccountData.fromJson(record.value);
+    // Build the user from the address and save it
+    final user = MooncakeAccount.local(address);
+    await saveAccount(user);
+
+    return user;
+  }
+
+  @override
+  Stream<MooncakeAccount> get accountStream {
+    return store
+        .stream(database, filter: Filter.byKey(_USER_DATA_KEY))
+        .map((event) => MooncakeAccount.fromJson(event.value));
+  }
+
+  @override
+  Future<void> saveAuthenticationMethod(AuthenticationMethod method) async {
+    final methodString = jsonEncode(method.toJson());
+    await _storage.write(key: _AUTHENTICATION_KEY, value: methodString);
+  }
+
+  @override
+  Future<AuthenticationMethod> getAuthenticationMethod() async {
+    final methodString = await _storage.read(key: _AUTHENTICATION_KEY);
+    if (methodString == null) {
+      return null;
+    }
+
+    return AuthenticationMethod.fromJson(jsonDecode(methodString));
   }
 
   @override
   Future<void> wipeData() async {
     await _storage.delete(key: _MNEMONIC_KEY);
-    await _store.delete(await _database);
+    await store.delete(database);
   }
 }

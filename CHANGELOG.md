@@ -1,3 +1,7 @@
+# Version 0.1.0
+## Changes
+- Completely new UX and UI 🎉
+
 # Version 0.0.15
 ## Bug fixes 
 - Fixed the camera not working on iOS due to missing permissions 

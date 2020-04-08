@@ -1,117 +1,161 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
+
+import 'converter.dart';
 
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
-  final String _dbName;
-
+  // Database
   final store = StoreRef.main();
-  final StreamController<Post> _streamController = StreamController<Post>();
+  final Database database;
 
   /// Public constructor
-  LocalPostsSourceImpl({
-    @required String dbName,
-  })  : assert(dbName != null && dbName.isNotEmpty),
-        this._dbName = dbName;
-
-  Future<Database> get database async {
-    final path = await getApplicationDocumentsDirectory();
-    await path.create(recursive: true);
-    return databaseFactoryIo.openDatabase(join(path.path, this._dbName));
-  }
-
-  @override
-  Stream<Post> get postsStream => _streamController.stream;
+  LocalPostsSourceImpl({this.database}) : assert(database != null);
 
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
-  String _getPostKey(Post post) => post.created + post.owner;
-
-  @override
-  Future<void> savePost(Post post, {bool emit = true}) async {
-    final database = await this.database;
-    await store.record(_getPostKey(post)).put(database, post.toJson());
-
-    if (emit) {
-      _streamController.add(post);
-    }
+  @visibleForTesting
+  String getPostKey(Post post) {
+    return DateFormat(Post.DATE_FORMAT).format(post.dateTime) +
+        post.owner.address;
   }
 
   @override
-  Future<void> savePosts(List<Post> posts, {bool emit = true}) async {
-    final database = await this.database;
-    final keys = posts.map((p) => _getPostKey(p)).toList();
-    final values = posts.map((p) => p.toJson()).toList();
-    await store.records(keys).put(database, values);
-
-    if (emit) {
-      posts.forEach((p) => _streamController.add(p));
-    }
+  Stream<List<Post>> get postsStream {
+    final finder = Finder(sortOrders: [SortOrder(Post.DATE_FIELD, false)]);
+    return store
+        .query(finder: finder)
+        .onSnapshots(database)
+        .asyncMap(PostsConverter.deserializePosts);
   }
 
   @override
-  Future<Post> getPostById(String postId) async {
-    final database = await this.database;
-    final finder = Finder(filter: Filter.equals("id", postId));
+  Stream<List<Post>> homePostsStream(int limit) {
+    final finder = Finder(
+      filter: Filter.or([
+        Filter.equals(Post.PARENT_ID_FIELD, null),
+        Filter.equals(Post.PARENT_ID_FIELD, "0"),
+      ]),
+      sortOrders: [SortOrder(Post.DATE_FIELD, false)],
+      limit: limit,
+    );
+    return store
+        .query(finder: finder)
+        .onSnapshots(database)
+        .asyncMap(PostsConverter.deserializePosts);
+  }
 
+  @override
+  Stream<Post> singlePostStream(String postId) {
+    final finder = Finder(filter: Filter.equals(Post.ID_FIELD, postId));
+    return store
+        .query(finder: finder)
+        .onSnapshots(database)
+        .asyncMap(PostsConverter.deserializePosts)
+        .map((event) => event?.isNotEmpty == true ? event[0] : null);
+  }
+
+  @override
+  Future<Post> getSinglePost(String postId) async {
+    final finder = Finder(filter: Filter.equals(Post.ID_FIELD, postId));
     final record = await store.findFirst(database, finder: finder);
     if (record == null) {
       return null;
     }
 
-    return Post.fromJson(record.value);
+    return PostsConverter.deserializePost(record);
   }
 
   @override
-  Future<List<Post>> getPostComments(String postId) async {
-    final database = await this.database;
-    final finder = Finder(filter: Filter.equals("parent_id", postId));
-
-    final records = await store.find(database, finder: finder);
-    return records.map((record) => Post.fromJson(record.value)).toList();
-  }
-
-  @override
-  Future<List<Post>> getPostsToSync() async {
-    final database = await this.database;
+  Future<List<Post>> getPostsByTxHash(String txHash) async {
     final finder = Finder(
-      filter: Filter.or([
-        Filter.equals(Post.STATUS_FIELD, PostStatusValue.TO_BE_SYNCED.value),
-        Filter.equals(Post.STATUS_FIELD, PostStatusValue.ERRORED.value),
+      filter: Filter.and([
+        Filter.equals(Post.STATUS_VALUE_FIELD, PostStatusValue.TX_SENT.value),
+        Filter.equals(Post.STATUS_DATA_FIELD, txHash),
       ]),
     );
 
     final records = await store.find(database, finder: finder);
-    return records.map((record) => Post.fromJson(record.value)).toList();
+    return PostsConverter.deserializePosts(records);
   }
 
   @override
-  Future<List<Post>> getPosts() async {
-    final database = await this.database;
+  Stream<List<Post>> getPostComments(String postId) {
+    return postsStream.map((list) {
+      return list.where((post) => post.parentId == postId).toList();
+    });
+  }
+
+  @override
+  Future<List<Post>> getPostsToSync() async {
     final finder = Finder(
-      sortOrders: [
-        SortOrder(Post.DATE_FIELD, false), // Descending date
-        SortOrder(Post.ID_FIELD, false), // Descending id if date is equal
-      ],
+      filter: Filter.or([
+        Filter.equals(
+          Post.STATUS_VALUE_FIELD,
+          PostStatusValue.STORED_LOCALLY.value,
+        ),
+        Filter.equals(
+          Post.STATUS_VALUE_FIELD,
+          PostStatusValue.ERRORED.value,
+        ),
+      ]),
     );
 
     final records = await store.find(database, finder: finder);
-    return records.map((record) => Post.fromJson(record.value)).toList();
+    return PostsConverter.deserializePosts(records);
   }
 
   @override
-  Future<void> deletePost(String postId) async {
-    final database = await this.database;
-    final finder = Finder(filter: Filter.equals(Post.ID_FIELD, postId));
+  Future<void> savePost(Post post) async {
+    final value = await PostsConverter.serializePost(post);
+    await database.transaction((txn) async {
+      await store.record(getPostKey(post)).put(txn, value);
+    });
+  }
 
-    await store.delete(database, finder: finder);
+  void _mergePosts(List<Post> existingPosts, List<Post> newPosts) {
+    for (int index = 0; index < newPosts.length; index++) {
+      final existing = existingPosts[index];
+      final updated = newPosts[index];
+
+      Set<Reaction> reactions = updated.reactions.toSet();
+      if (existing?.reactions != null) {
+        reactions.addAll(existing.reactions);
+      }
+
+      Set<String> commentIds = updated.commentsIds.toSet();
+      if (existing?.commentsIds != null) {
+        commentIds.addAll(existing.commentsIds);
+      }
+
+      newPosts[index] = updated.copyWith(
+        status: existing?.status,
+        reactions: reactions.toList(),
+        commentsIds: commentIds.toList(),
+      );
+    }
+  }
+
+  @override
+  Future<void> savePosts(List<Post> posts, {bool merge = false}) async {
+    final keys = posts.map((e) => getPostKey(e)).toList();
+
+    await database.transaction((txn) async {
+      if (merge) {
+        final existingValues = await PostsConverter.deserializePosts(
+          await store.records(keys).get(txn),
+        );
+        _mergePosts(existingValues, posts);
+      }
+
+      final values = await PostsConverter.serializePosts(posts);
+      await store.records(keys).put(txn, values);
+    });
   }
 }
