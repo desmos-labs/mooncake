@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -15,36 +16,26 @@ import './bloc.dart';
 /// to visualize the details of a single post.
 class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   final MooncakeAccount _user;
+  final GetPostDetailsUseCase _getPostDetailsUseCase;
+  final GetCommentsUseCase _getCommentsUseCase;
 
   StreamSubscription _postSubscription;
   StreamSubscription _commentsSubscription;
 
   PostDetailsBloc({
     @required MooncakeAccount user,
-    @required String postId,
     @required GetPostDetailsUseCase getPostDetailsUseCase,
     @required GetCommentsUseCase getCommentsUseCase,
   })  : assert(user != null),
         _user = user,
-        assert(getCommentsUseCase != null) {
-    // TODO: Add the details event subscription to notify if new data
-    // are created and prompt the user to refresh
+        assert(getPostDetailsUseCase != null),
+        _getPostDetailsUseCase = getPostDetailsUseCase,
+        assert(getCommentsUseCase != null),
+        _getCommentsUseCase = getCommentsUseCase;
 
-    // Sub to the post details update
-    _postSubscription = getPostDetailsUseCase.get(postId).listen((post) {
-      add(ShowPostDetails(post: post));
-    });
-
-    // Sub to the comments update
-    _commentsSubscription = getCommentsUseCase.get(postId).listen((comments) {
-      add(ShowPostDetails(comments: comments));
-    });
-  }
-
-  factory PostDetailsBloc.create(BuildContext context, String postId) {
+  factory PostDetailsBloc.create(BuildContext context) {
     return PostDetailsBloc(
       user: (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user,
-      postId: postId,
       getPostDetailsUseCase: Injector.get(),
       getCommentsUseCase: Injector.get(),
     );
@@ -55,27 +46,35 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
 
   @override
   Stream<PostDetailsState> mapEventToState(PostDetailsEvent event) async* {
-    if (event is ShowPostDetails) {
-      yield* _mapShowPostDetailsEventToState(event);
+    if (event is LoadPostDetails) {
+      yield* _mapLoadPostEventToState(event);
+    } else if (event is RefreshPostDetails) {
+      yield* _mapRefreshEventToState();
     } else if (event is ShowTab) {
       yield* _mapShowTabEventToState(event);
     }
   }
 
-  Stream<PostDetailsState> _mapShowPostDetailsEventToState(
-    ShowPostDetails event,
+  Stream<PostDetailsState> _mapLoadPostEventToState(
+    LoadPostDetails event,
   ) async* {
+    // TODO: Subscribe to the post events to notify about updates telling the user to refresh
+    final post = await _getPostDetailsUseCase.fromRemote(event.postId);
+    final comments = await _getCommentsUseCase.fromRemote(event.postId);
+    yield PostDetailsLoaded.first(user: _user, post: post, comments: comments);
+  }
+
+  Stream<PostDetailsState> _mapRefreshEventToState() async* {
     final currentState = state;
-    if (currentState is LoadingPostDetails) {
-      yield PostDetailsLoaded.first(
-        user: _user,
-        post: event.post,
-        comments: event.comments,
-      );
-    } else if (currentState is PostDetailsLoaded) {
+    if (currentState is PostDetailsLoaded) {
+      yield currentState.copyWith(refreshing: true);
+      final postId = currentState.post.id;
+      final post = await _getPostDetailsUseCase.fromRemote(postId);
+      final comments = await _getCommentsUseCase.fromRemote(postId);
       yield currentState.copyWith(
-        post: event.post,
-        comments: event.comments,
+        post: post,
+        comments: comments,
+        refreshing: false,
       );
     }
   }

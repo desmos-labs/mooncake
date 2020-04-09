@@ -19,11 +19,11 @@ class PostReactionsList extends StatelessWidget {
           return Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
                   "assets/images/smile.png",
-                  width: 150,
+                  width: 100,
                 ),
                 Text(
                   PostsLocalizations.of(context).noReactionsYet,

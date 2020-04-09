@@ -45,7 +45,12 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<Post> getPostById(String postId) {
+  Future<Post> getPostById(String postId, {bool refresh = false}) async {
+    if (refresh) {
+      final updated = await _remotePostsSource.getPostById(postId);
+      await _localPostsSource.savePost(updated);
+    }
+
     return _localPostsSource.getSinglePost(postId);
   }
 
@@ -55,7 +60,20 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Stream<List<Post>> getPostComments(String postId) {
+  Stream<List<Post>> getPostCommentsStream(String postId) {
+    return _localPostsSource.getPostCommentsStream(postId);
+  }
+
+  @override
+  Future<List<Post>> getPostComments(
+    String postId, {
+    bool refresh = false,
+  }) async {
+    if (refresh) {
+      final updated = await _remotePostsSource.getPostComments(postId);
+      await _localPostsSource.savePosts(updated);
+    }
+
     return _localPostsSource.getPostComments(postId);
   }
 

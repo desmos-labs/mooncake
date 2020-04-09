@@ -22,7 +22,11 @@ abstract class LocalPostsSource {
 
   /// Returns the list of all posts that represent comments to
   /// the post having the given [postId].
-  Stream<List<Post>> getPostComments(String postId);
+  Stream<List<Post>> getPostCommentsStream(String postId);
+
+  /// Returns the list of the comments to the post having
+  /// the specified [postId].
+  Future<List<Post>> getPostComments(String postId);
 
   /// Returns the list of all the posts to be synced.
   Future<List<Post>> getPostsToSync();

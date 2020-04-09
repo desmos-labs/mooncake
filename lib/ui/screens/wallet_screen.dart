@@ -49,32 +49,34 @@ class _WalletScreenState extends State<WalletScreen> {
           backgroundColor: Theme.of(context).brightness == Brightness.light
               ? Theme.of(context).accentColor
               : Theme.of(context).cardColor,
-          body: RefreshIndicator(
-            onRefresh: () {
-              BlocProvider.of<AccountBloc>(context).add(RefreshAccount());
-              return _refreshCompleter.future;
-            },
-            child: coin == null
-                ? EmptyWallet(textColor: headerTextColor)
-                : SingleChildScrollView(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: Column(
-                        children: <Widget>[
-                          Flexible(
-                            child: WalletHeader(
-                              coin: coin,
-                              textColor: headerTextColor,
+          body: SafeArea(
+            child: RefreshIndicator(
+              onRefresh: () {
+                BlocProvider.of<AccountBloc>(context).add(RefreshAccount());
+                return _refreshCompleter.future;
+              },
+              child: coin == null
+                  ? EmptyWallet(textColor: headerTextColor)
+                  : SingleChildScrollView(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: Column(
+                          children: <Widget>[
+                            Flexible(
+                              child: WalletHeader(
+                                coin: coin,
+                                textColor: headerTextColor,
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: WalletActionsList(),
-                          ),
-                        ],
+                            Expanded(
+                              flex: 4,
+                              child: WalletActionsList(),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+            ),
           ),
         );
       },

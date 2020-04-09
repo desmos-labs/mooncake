@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -10,22 +11,24 @@ abstract class PostDetailsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-/// Tells the Bloc that the details of a post have been loaded and it
-/// is ready to be shown to the user.
-class ShowPostDetails extends PostDetailsEvent {
-  final Post post;
-  final List<Post> comments;
+/// Tells the Bloc to load the details of the post having the given id.
+class LoadPostDetails extends PostDetailsEvent {
+  final String postId;
 
-  ShowPostDetails({this.post, this.comments});
+  LoadPostDetails(this.postId);
 
   @override
-  List<Object> get props => [post, comments];
+  List<Object> get props => [postId];
 
   @override
-  String toString() => 'ShowPostDetails { '
-      'post: $post, '
-      'comments: ${comments?.length ?? 0} '
-      '}';
+  String toString() => 'LoadPost { postId: $postId }';
+}
+
+/// Tells the Bloc that the user has requested the post details to be
+/// refreshed.
+class RefreshPostDetails extends PostDetailsEvent {
+  @override
+  String toString() => 'RefreshPostDetails';
 }
 
 /// Tells the Bloc that it needs to visualize the selected tab.

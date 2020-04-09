@@ -15,16 +15,18 @@ class RecoverAccountScreen extends StatelessWidget {
             centerTitle: true,
             title: Text(PostsLocalizations.of(context).recoverScreenTitle),
           ),
-          body: Stack(
-            children: <Widget>[
-              RecoverAccountMainContent(bottomPadding: bottomPadding),
+          body: SafeArea(
+            child: Stack(
+              children: <Widget>[
+                RecoverAccountMainContent(bottomPadding: bottomPadding),
 
-              // Words list
-              Positioned(
-                bottom: 0,
-                child: RecoverAccountWordsList(height: bottomPadding),
-              ),
-            ],
+                // Words list
+                Positioned(
+                  bottom: 0,
+                  child: RecoverAccountWordsList(height: bottomPadding),
+                ),
+              ],
+            ),
           ),
         );
       },

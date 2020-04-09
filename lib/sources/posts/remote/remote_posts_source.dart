@@ -83,6 +83,16 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   }
 
   @override
+  Future<List<Post>> getPostComments(String postId) async {
+    final data = PostDetailsData(
+      endpoint: graphQlEndpoint,
+      subspace: Constants.SUBSPACE,
+      id: postId,
+    );
+    return GqlHelper.getPostComments(_gqlClient, data);
+  }
+
+  @override
   Future<TransactionResult> savePosts(List<Post> posts) async {
     final wallet = await _userSource.getWallet();
 

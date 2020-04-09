@@ -16,6 +16,10 @@ abstract class RemotePostsSource {
   /// If no post with the given id was found, returns `null` instead.
   Future<Post> getPostById(String postId);
 
+  /// Returns the list of the comments to the post
+  /// having the specified [postId].
+  Future<List<Post>> getPostComments(String postId);
+
   /// Saves the given list of [posts] into the source.
   /// It returns the [TransactionResult] of the operation.
   Future<TransactionResult> savePosts(List<Post> posts);

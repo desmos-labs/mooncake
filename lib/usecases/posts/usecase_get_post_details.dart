@@ -14,5 +14,13 @@ class GetPostDetailsUseCase {
 
   /// Returns the [Stream] emitting the details of the [Post] having the
   /// specified [postId] each time it is updated.
-  Stream<Post> get(String postId) => _postsRepository.getPostByIdStream(postId);
+  Stream<Post> stream(String postId) {
+    return _postsRepository.getPostByIdStream(postId);
+  }
+
+  /// Returns a [Future] that emits the updated post retrieved from the remote
+  /// server and stored locally.
+  Future<Post> fromRemote(String postId) {
+    return _postsRepository.getPostById(postId, refresh: true);
+  }
 }

@@ -19,7 +19,9 @@ abstract class PostsRepository {
   Stream<Post> getPostByIdStream(String postId);
 
   /// Returns the post having the given [postId] currently stored.
-  Future<Post> getPostById(String postId);
+  /// If [refresh] is `true`, first downloads the updated data from the
+  /// remote server.
+  Future<Post> getPostById(String postId, {bool refresh = false});
 
   /// Returns a list of all the posts that have been included inside
   /// the transaction having the given [txHash].
@@ -27,7 +29,12 @@ abstract class PostsRepository {
 
   /// Returns a [Stream] that emits all the comments of the post
   /// having the given [postId] as soon as they are created or updated.
-  Stream<List<Post>> getPostComments(String postId);
+  Stream<List<Post>> getPostCommentsStream(String postId);
+
+  /// Returns a [Future] that emits all the comments of the post
+  /// having the given [postId] stored locally. If [refresh] is true,
+  /// the comments are firstly downloaded from the remote source.
+  Future<List<Post>> getPostComments(String postId, {bool refresh = false});
 
   /// Saves the given post inside the repository.
   /// If emit is true, emits the new list of posts using the stream.

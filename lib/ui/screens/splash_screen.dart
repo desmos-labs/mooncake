@@ -16,24 +16,26 @@ class SplashScreen extends StatelessWidget {
           return _homeScreen();
         }
 
-        return Container(
-          decoration: ThemeDecorations.pattern(context),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(
-                image: AssetImage('assets/images/logo.png'),
-                key: PostsKeys.loginScreenLogo,
-                width: 125,
-              ),
-              Text(
-                PostsLocalizations.of(context).appName,
-                style: Theme.of(context).textTheme.headline6.copyWith(
-                      color: Colors.white,
-                      fontFamily: 'Montserrat',
-                    ),
-              ),
-            ],
+        return SafeArea(
+          child: Container(
+            decoration: ThemeDecorations.pattern(context),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                  image: AssetImage('assets/images/logo.png'),
+                  key: PostsKeys.loginScreenLogo,
+                  width: 125,
+                ),
+                Text(
+                  PostsLocalizations.of(context).appName,
+                  style: Theme.of(context).textTheme.headline6.copyWith(
+                        color: Colors.white,
+                        fontFamily: 'Montserrat',
+                      ),
+                ),
+              ],
+            ),
           ),
         );
       },

@@ -86,10 +86,21 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Stream<List<Post>> getPostComments(String postId) {
+  Stream<List<Post>> getPostCommentsStream(String postId) {
     return postsStream.map((list) {
       return list.where((post) => post.parentId == postId).toList();
     });
+  }
+
+  @override
+  Future<List<Post>> getPostComments(String postId) async {
+    final finder = Finder(
+      filter: Filter.equals(Post.PARENT_ID_FIELD, postId),
+      sortOrders: [SortOrder(Post.DATE_FIELD, false)],
+    );
+
+    final records = await store.find(database, finder: finder);
+    return PostsConverter.deserializePosts(records);
   }
 
   @override

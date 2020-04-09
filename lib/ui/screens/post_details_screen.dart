@@ -5,14 +5,6 @@ import 'package:mooncake/ui/ui.dart';
 /// Represents the screen that is shown to the user when he wants
 /// to visualize the details of a specific [postId].
 class PostDetailsScreen extends StatelessWidget {
-  final String postId;
-
-  PostDetailsScreen({
-    Key key,
-    @required this.postId,
-  })  : assert(postId != null),
-        super(key: key ?? PostsKeys.postDetailsScreen(postId));
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,17 +15,14 @@ class PostDetailsScreen extends StatelessWidget {
       ),
       body: Container(
         color: Theme.of(context).cardColor,
-        child: BlocProvider<PostDetailsBloc>(
-          create: (context) => PostDetailsBloc.create(context, postId),
-          child: BlocBuilder<PostDetailsBloc, PostDetailsState>(
-            builder: (context, state) {
-              if (state is LoadingPostDetails) {
-                return PostDetailsLoading();
-              }
+        child: BlocBuilder<PostDetailsBloc, PostDetailsState>(
+          builder: (context, state) {
+            if (state is LoadingPostDetails) {
+              return PostDetailsLoading();
+            }
 
-              return PostDetailsMainContent();
-            },
-          ),
+            return PostDetailsMainContent();
+          },
         ),
       ),
     );

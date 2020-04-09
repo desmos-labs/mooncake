@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
               )
             ],
           ),
-          body: body,
+          body: SafeArea(child: body),
           bottomNavigationBar: TabSelector(),
         );
       },

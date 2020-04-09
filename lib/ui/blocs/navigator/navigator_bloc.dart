@@ -77,7 +77,10 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     final isLoggedIn = await _checkLoginUseCase.isLoggedIn();
     if (isLoggedIn) {
       _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
-        return PostDetailsScreen(postId: event.postId);
+        return BlocProvider<PostDetailsBloc>(
+          create: (context) => PostDetailsBloc.create(context)..add(LoadPostDetails(event.postId)),
+          child: PostDetailsScreen(),
+        );
       }));
     }
   }

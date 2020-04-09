@@ -14,6 +14,12 @@ class GetCommentsUseCase {
   /// having the specified [postId].
   /// If no post with the given [postId] was found, an empty list is
   /// returned.
-  Stream<List<Post>> get(String postId) =>
-      _postsRepository.getPostComments(postId);
+  Stream<List<Post>> stream(String postId) {
+    return _postsRepository.getPostCommentsStream(postId);
+  }
+
+  /// Returns the list of comments to the post having the given [postId].
+  Future<List<Post>> fromRemote(String postId) {
+    return _postsRepository.getPostComments(postId, refresh: true);
+  }
 }

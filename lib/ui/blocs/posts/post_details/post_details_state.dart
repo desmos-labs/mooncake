@@ -22,6 +22,9 @@ enum PostDetailsTab { COMMENTS, REACTIONS }
 /// Represents the state that tells the post details have been loaded
 /// properly and are ready to be shown.
 class PostDetailsLoaded extends PostDetailsState {
+  /// Tells if the details of the post are being refreshed or not.
+  final bool refreshing;
+
   /// Represents the user that is using the application
   final MooncakeAccount user;
 
@@ -51,6 +54,7 @@ class PostDetailsLoaded extends PostDetailsState {
       .isNotEmpty;
 
   PostDetailsLoaded({
+    @required this.refreshing,
     @required this.user,
     @required this.post,
     @required this.comments,
@@ -67,6 +71,7 @@ class PostDetailsLoaded extends PostDetailsState {
       selectedTab: PostDetailsTab.COMMENTS,
       post: post,
       comments: comments ?? [],
+      refreshing: false,
     );
   }
 
@@ -75,22 +80,25 @@ class PostDetailsLoaded extends PostDetailsState {
     Post post,
     List<Post> comments,
     PostDetailsTab selectedTab,
+    bool refreshing,
   }) {
     return PostDetailsLoaded(
       user: user ?? this.user,
       post: post ?? this.post,
       comments: comments?.isNotEmpty == true ? comments : this.comments,
       selectedTab: selectedTab ?? this.selectedTab,
+      refreshing: refreshing ?? this.refreshing,
     );
   }
 
   @override
-  List<Object> get props => [user, post, comments, selectedTab];
+  List<Object> get props => [user, post, comments, selectedTab, refreshing];
 
   @override
   String toString() => 'PostDetailsLoaded { '
       'post: $post, '
       'comments: ${comments.length}, '
-      'selectedTab: $selectedTab'
+      'selectedTab: $selectedTab, '
+      'refreshing: $refreshing '
       '}';
 }
