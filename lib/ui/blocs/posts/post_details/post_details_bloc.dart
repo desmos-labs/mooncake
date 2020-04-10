@@ -19,9 +19,6 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   final GetPostDetailsUseCase _getPostDetailsUseCase;
   final GetCommentsUseCase _getCommentsUseCase;
 
-  StreamSubscription _postSubscription;
-  StreamSubscription _commentsSubscription;
-
   PostDetailsBloc({
     @required MooncakeAccount user,
     @required GetPostDetailsUseCase getPostDetailsUseCase,
@@ -58,7 +55,6 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   Stream<PostDetailsState> _mapLoadPostEventToState(
     LoadPostDetails event,
   ) async* {
-    // TODO: Subscribe to the post events to notify about updates telling the user to refresh
     final post = await _getPostDetailsUseCase.fromRemote(event.postId);
     final comments = await _getCommentsUseCase.fromRemote(event.postId);
     yield PostDetailsLoaded.first(user: _user, post: post, comments: comments);
@@ -84,12 +80,5 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
     if (currentState is PostDetailsLoaded) {
       yield currentState.copyWith(selectedTab: event.tab);
     }
-  }
-
-  @override
-  Future<void> close() {
-    _postSubscription?.cancel();
-    _commentsSubscription?.cancel();
-    return super.close();
   }
 }

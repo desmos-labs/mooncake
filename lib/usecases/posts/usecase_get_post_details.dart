@@ -18,6 +18,12 @@ class GetPostDetailsUseCase {
     return _postsRepository.getPostByIdStream(postId);
   }
 
+  /// Returns a [Future] that emits the currently locally stored post that
+  /// has the given [postId].
+  Future<Post> local(String postId) {
+    return _postsRepository.getPostById(postId);
+  }
+
   /// Returns a [Future] that emits the updated post retrieved from the remote
   /// server and stored locally.
   Future<Post> fromRemote(String postId) {

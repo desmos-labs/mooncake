@@ -12,7 +12,7 @@ abstract class PostsRepository {
 
   /// Refreshes the home posts downloading the ones present remotely and
   /// saving them locally.
-  Future<void> refreshHomePosts(int limit);
+  Future<List<Post>> refreshHomePosts(int limit);
 
   /// Returns a [Stream] that subscribes to the post having the specified
   /// [postId], emitting the new data each time the post is updated.

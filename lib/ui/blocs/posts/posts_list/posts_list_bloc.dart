@@ -128,7 +128,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Stream<PostsListState> _mapPostsUpdatedEventToState(
     PostsUpdated event,
   ) async* {
-    if (event.posts == null) {
+    if (event.posts?.isNotEmpty == false) {
       return;
     }
 
@@ -187,7 +187,13 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(refreshing: true, shouldRefresh: false);
     }
-    await _getHomePostsUseCase.refresh(_HOME_LIMIT);
+
+    final posts = await _getHomePostsUseCase.refresh(_HOME_LIMIT);
+    if (currentState is PostsLoaded) {
+      yield currentState.copyWith(refreshing: false, posts: posts);
+    } else if (currentState is PostsLoading) {
+      yield PostsLoaded.first(posts: posts);
+    }
   }
 
   /// Handles the event emitted when the posts must be synced uploading

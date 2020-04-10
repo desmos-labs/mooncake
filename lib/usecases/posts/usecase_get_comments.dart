@@ -18,6 +18,12 @@ class GetCommentsUseCase {
     return _postsRepository.getPostCommentsStream(postId);
   }
 
+  /// Returns a [Future] that emits the list of comments made to the
+  /// post having the specified [postId].
+  Future<List<Post>> local(String postId) {
+    return _postsRepository.getPostComments(postId);
+  }
+
   /// Returns the list of comments to the post having the given [postId].
   Future<List<Post>> fromRemote(String postId) {
     return _postsRepository.getPostComments(postId, refresh: true);
