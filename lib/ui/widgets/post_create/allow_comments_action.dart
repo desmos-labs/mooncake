@@ -6,7 +6,7 @@ import 'package:mooncake/ui/ui.dart';
 
 /// Represents the action that can be used to toggle between the possibility
 /// of allowing comments to the post that is being created.
-class CreatePostCommentAction extends StatelessWidget {
+class AllowCommentAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostInputBloc, PostInputState>(

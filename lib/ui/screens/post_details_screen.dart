@@ -15,16 +15,18 @@ class PostDetailsScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Theme.of(context).cardColor,
       ),
-      body: Container(
-        color: Theme.of(context).cardColor,
-        child: BlocBuilder<PostDetailsBloc, PostDetailsState>(
-          builder: (context, state) {
-            if (state is LoadingPostDetails) {
-              return PostDetailsLoading();
-            }
+      body: SafeArea(
+        child: Container(
+          color: Theme.of(context).cardColor,
+          child: BlocBuilder<PostDetailsBloc, PostDetailsState>(
+            builder: (context, state) {
+              if (state is LoadingPostDetails) {
+                return PostDetailsLoading();
+              }
 
-            return PostDetailsMainContent();
-          },
+              return PostDetailsMainContent();
+            },
+          ),
         ),
       ),
     );

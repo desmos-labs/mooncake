@@ -53,7 +53,7 @@ class CreatePostContent extends StatelessWidget {
   Widget _parentPostPreview(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(4.0),
       ),
       padding: EdgeInsets.all(16),
