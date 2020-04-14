@@ -12,8 +12,8 @@ Everyone reads everything, but none knows who is who.
 If so, create your account by generating a mnemonic (or importing an existing one), ask some tokens using our [faucet](https://faucet.desmos.network/) and start posting! 📜
 
 ## Useful links
-- [Download guide for Android](download-android.md)
-- [Download guide for iOS](download-ios.md)
+- [Download guide for Android](download.md#android)
+- [Download guide for iOS](download.md#ios)
 - [Developers guide](development.md)
 
 ## Caveats
