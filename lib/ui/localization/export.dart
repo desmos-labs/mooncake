@@ -87,6 +87,21 @@ What about adding some content?
   // Post item
   String likesCount(int count) => "$count likes";
 
+  // Post actions popup
+  String get postActionsPopupTitle => "Post actions";
+  String get postActionReport => "Report";
+
+  // Report popup
+  String get reportPopupTitle => "What's wrong with this post?";
+  String get reportPopupSpam => "It's spam";
+  String get reportPopupSexuallyInappropriate => "It's sexually inappropriate";
+  String get reportPopupScamMisleading => "It's scam or misleading";
+  String get reportPopupViolentProhibited =>
+      "It's violent or prohibited content";
+  String get reportPopupOther => "Other";
+  String get reportPopupEditBotHint => "Write something (optional)";
+  String get reportPopupSubmit => "Submit";
+
   // Syncing
   String get syncingActivities => "Syncing activities to the chain";
   String get syncErrorTitle => "Syncing error";

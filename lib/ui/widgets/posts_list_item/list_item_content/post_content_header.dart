@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/theme/theme.dart';
 import 'package:mooncake/ui/ui.dart';
@@ -18,33 +19,60 @@ class PostItemHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        // User picture
-        UserAvatar(size: 36, user: post.owner),
+    return BlocBuilder<AccountBloc, AccountState>(
+      builder: (context, state) {
+        final account = (state as LoggedIn).user;
+        return Row(
+          children: <Widget>[
+            // User picture
+            UserAvatar(size: 36, user: post.owner),
 
-        // Spacer
-        const SizedBox(width: PostsTheme.defaultPadding),
+            // Spacer
+            const SizedBox(width: PostsTheme.defaultPadding),
 
-        // Username and time ago
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                post.owner.screenName,
-                overflow: TextOverflow.ellipsis,
+            // Username and time ago
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    post.owner.screenName,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    timeago.format(post.dateTime),
+                    style: Theme.of(context).textTheme.caption.copyWith(
+                          fontWeight: FontWeight.w300,
+                        ),
+                  )
+                ],
               ),
-              Text(
-                timeago.format(post.dateTime),
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      fontWeight: FontWeight.w300,
-                    ),
+            ),
+
+            if (post.owner.address != account.cosmosAccount.address)
+              SizedBox(
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(MooncakeIcons.more, size: 16),
+                  onPressed: () => _showPostOptions(context),
+                ),
               )
-            ],
-          ),
-        ),
-      ],
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPostOptions(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return GenericPopup(
+          onTap: () => Navigator.pop(context),
+          padding: EdgeInsets.all(4),
+          content: PostOptionsPopup(post: post),
+        );
+      }
     );
   }
 }

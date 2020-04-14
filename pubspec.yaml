@@ -1,6 +1,6 @@
 name: mooncake
 description: A decentralized Twitter based on Desmos
-version: 0.1.0+0114
+version: 0.1.1-01+01101
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc:
+  flutter_email_sender:
   flutter_emoji:
   flutter_local_notifications:
   flutter_markdown:
