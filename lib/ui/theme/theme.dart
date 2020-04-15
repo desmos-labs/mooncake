@@ -25,6 +25,9 @@ class PostsTheme {
         iconTheme: IconThemeData(
           color: Color(0xFF8164E5),
         ),
+        actionsIconTheme: IconThemeData(
+          color: Color(0xFF8164E5),
+        )
       ),
       iconTheme: IconThemeData(
         color: Color(0xFF6D4DDB),

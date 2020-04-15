@@ -17,67 +17,65 @@ class ReportPostPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = ReportPopupBloc.create(post);
-    return BlocProvider<ReportPopupBloc>(
-      create: (_) => bloc,
-      child: SafeArea(
-        child: Material(
-          color: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Flexible(
-                child: Container(
-                  padding: MediaQuery.of(context).viewInsets,
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(16),
-                      topRight: const Radius.circular(16),
-                    ),
-                  ),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 24),
-                        child: Text(
-                          PostsLocalizations.of(context).reportPopupTitle,
-                          style: Theme.of(context).textTheme.headline6,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      _separator(),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: ReportType.values.length,
-                        separatorBuilder: (_, index) => _separator(),
-                        itemBuilder: (_, index) {
-                          return PopupReportOption(index: index);
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          children: [
-                            PopupReportTextInput(),
-                            const SizedBox(height: 16),
-                            PrimaryRoundedButton(
-                              onPressed: () => bloc.add(SubmitReport()),
-                              text: PostsLocalizations.of(context)
-                                  .reportPopupSubmit,
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    ],
+    return SafeArea(
+      child: Material(
+        color: Colors.transparent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Flexible(
+              child: Container(
+                padding: MediaQuery.of(context).viewInsets,
+                decoration: new BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(16),
+                    topRight: const Radius.circular(16),
                   ),
                 ),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: Text(
+                        PostsLocalizations.of(context).reportPopupTitle,
+                        style: Theme.of(context).textTheme.headline6,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    _separator(),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: ReportType.values.length,
+                      separatorBuilder: (_, index) => _separator(),
+                      itemBuilder: (_, index) {
+                        return PopupReportOption(index: index);
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          PopupReportTextInput(),
+                          const SizedBox(height: 16),
+                          PrimaryRoundedButton(
+                            onPressed: () =>
+                                BlocProvider.of<ReportPopupBloc>(context)
+                                    .add(SubmitReport()),
+                            text: PostsLocalizations.of(context)
+                                .reportPopupSubmit,
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

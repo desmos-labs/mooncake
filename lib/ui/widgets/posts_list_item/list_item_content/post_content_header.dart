@@ -40,7 +40,7 @@ class PostItemHeader extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    timeago.format(post.dateTime),
+                    timeago.format(post.dateTime.toLocal()),
                     style: Theme.of(context).textTheme.caption.copyWith(
                           fontWeight: FontWeight.w300,
                         ),

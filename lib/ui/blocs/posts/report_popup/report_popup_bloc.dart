@@ -6,6 +6,14 @@ import 'package:mooncake/entities/entities.dart';
 import './bloc.dart';
 
 class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
+  static const REASONS = {
+    ReportType.Spam: "it's spam",
+    ReportType.SexuallyInappropriate: "it's sexually inappropriate",
+    ReportType.ScamOrMisleading: "it's scam or misleading",
+    ReportType.ViolentOrProhibited: "it's violent or misleading",
+    ReportType.Other: "other"
+  };
+
   final Post _post;
 
   ReportPopupBloc({@required Post post})
@@ -26,7 +34,7 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
     } else if (event is ChangeOtherText) {
       yield* _mapChangeOtherTextToState(event);
     } else if (event is SubmitReport) {
-      _handleSubmitReport();
+      await _handleSubmitReport();
     }
   }
 
@@ -44,25 +52,18 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
     yield state.copyWith(otherText: event.text);
   }
 
-  void _handleSubmitReport() async {
-    final reasons = {
-      ReportType.Spam: "it's spam",
-      ReportType.SexuallyInappropriate: "it's sexually inappropriate",
-      ReportType.ScamOrMisleading: "it's scam or misleading",
-      ReportType.ViolentOrProhibited: "it's violent or misleading",
-      ReportType.Other: "other"
-    };
-
-    final selectedReasons = Map.fromEntries(state.selectedValues.entries);
-    selectedReasons.removeWhere((key, value) => !value);
-    final reasonsString =
-        selectedReasons.entries.map((entry) => reasons[entry.key]).join(", ");
+  Future<void> _handleSubmitReport() async {
+    final currentState = state;
+    final reasonsString = currentState.selectedValues.entries
+        .map((entry) => entry.value ? REASONS[entry.key] : null)
+        .where((value) => value != null)
+        .join(", ");
 
     final emailText = """
-    Please review the following post. 
-    Post id: ${_post.id}
-    Reason: $reasonsString
-    Additional notes: ${state.otherText} 
+Please review the following post.
+Post id: ${_post.id}
+Reason(s): $reasonsString
+Additional notes: ${currentState.otherText}
     """;
 
     final email = Email(

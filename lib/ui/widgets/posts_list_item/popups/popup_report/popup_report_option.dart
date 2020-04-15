@@ -29,20 +29,28 @@ class PopupReportOption extends StatelessWidget {
 
     return BlocBuilder<ReportPopupBloc, ReportPopupState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Row(
-            children: [
-              Checkbox(
-                value: state.selectedValues[type],
-                onChanged: (_) => BlocProvider.of<ReportPopupBloc>(context)
-                    .add(ToggleSelection(type)),
+        return Material(
+          child: InkWell(
+            onTap: () => _triggerEvent(context, type),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: state.selectedValues[type],
+                    onChanged: (_) => _triggerEvent(context, type),
+                  ),
+                  Text(text),
+                ],
               ),
-              Text(text),
-            ],
+            ),
           ),
         );
       },
     );
+  }
+
+  void _triggerEvent(BuildContext context, ReportType type) {
+    BlocProvider.of<ReportPopupBloc>(context).add(ToggleSelection(type));
   }
 }

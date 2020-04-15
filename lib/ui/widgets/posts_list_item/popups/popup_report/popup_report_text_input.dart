@@ -9,7 +9,7 @@ class PopupReportTextInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ReportPopupBloc, ReportPopupState>(
       builder: (context, state) {
-        return TextField(
+        return TextFormField(
           autofocus: false,
           onChanged: (value) => BlocProvider.of<ReportPopupBloc>(context)
               .add(ChangeOtherText(value)),

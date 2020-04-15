@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -57,7 +58,10 @@ class PostOptionsPopup extends StatelessWidget {
     Navigator.pop(context);
     showDialog(
       context: context,
-      child: ReportPostPopup(post: post),
+      child: BlocProvider<ReportPopupBloc>(
+        create: (_) => ReportPopupBloc.create(post),
+        child: ReportPostPopup(post: post),
+      ),
     );
   }
 }
