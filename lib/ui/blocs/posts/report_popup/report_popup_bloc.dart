@@ -69,7 +69,7 @@ Additional notes: ${currentState.otherText}
     final email = Email(
       body: emailText,
       subject: 'Post report',
-      recipients: ['development@forbole.com'],
+      recipients: ['report@forbole.com'],
     );
 
     await FlutterEmailSender.send(email);
