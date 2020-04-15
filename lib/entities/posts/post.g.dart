@@ -36,6 +36,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
     commentsIds:
         (json['children'] as List)?.map((e) => e as String)?.toList() ?? [],
     status: Post._postStatusFromJson(json['status'] as Map<String, dynamic>),
+    hidden: json['hidden'] as bool ?? false,
   );
 }
 
@@ -53,4 +54,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
       'children': instance.commentsIds,
       'status': instance.status?.toJson(),
+      'hidden': instance.hidden,
     };

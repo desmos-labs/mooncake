@@ -30,6 +30,9 @@ class Post extends Equatable implements Comparable<Post> {
   /// Identifier used to reference post ids.
   static const ID_FIELD = "id";
 
+  /// Identifier used to reference the hidden field or not.
+  static const HIDDEN_FIELD = "hidden";
+
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
   static String getDateStringNow() {
@@ -85,6 +88,10 @@ class Post extends Equatable implements Comparable<Post> {
         : PostStatus.fromJson(json);
   }
 
+  /// Tells whether or not the post has been hidden from the user.
+  @JsonKey(name: HIDDEN_FIELD, defaultValue: false)
+  final bool hidden;
+
   Post({
     @required this.id,
     this.parentId = "0",
@@ -99,6 +106,7 @@ class Post extends Equatable implements Comparable<Post> {
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
     this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
+    this.hidden = false,
   })  : assert(id != null),
         assert(message != null && message.isNotEmpty),
         assert(created != null),
@@ -155,6 +163,7 @@ class Post extends Equatable implements Comparable<Post> {
     List<PostMedia> medias,
     List<Reaction> reactions,
     List<String> commentsIds,
+    bool hidden,
   }) {
     return Post(
       status: status ?? this.status,
@@ -170,6 +179,7 @@ class Post extends Equatable implements Comparable<Post> {
       medias: medias ?? this.medias,
       reactions: reactions ?? this.reactions,
       commentsIds: commentsIds ?? this.commentsIds,
+      hidden: hidden ?? this.hidden,
     );
   }
 
@@ -194,6 +204,7 @@ class Post extends Equatable implements Comparable<Post> {
       this.reactions,
       this.commentsIds,
       this.status,
+      this.hidden,
     ];
   }
 

@@ -18,6 +18,7 @@ class PostOptionsPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
+        width: 150,
         padding: EdgeInsets.all(8),
         child: Column(
           children: [
@@ -26,29 +27,44 @@ class PostOptionsPopup extends StatelessWidget {
               style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 8),
-            Material(
-              child: InkWell(
-                onTap: () => _onReportClicked(context),
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        MooncakeIcons.report,
-                        color: Theme.of(context).textTheme.bodyText2.color,
-                      ),
-                      const SizedBox(width: 16),
-                      Text(
-                        PostsLocalizations.of(context).postActionReport,
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            _buildItem(
+              context: context,
+              icon: MooncakeIcons.report,
+              text: PostsLocalizations.of(context).postActionReport,
+              action: () => _onReportClicked(context),
+            ),
+            _buildItem(
+              context: context,
+              icon: MooncakeIcons.eyeClose,
+              text: PostsLocalizations.of(context).postActionHide,
+              action: () => _onHideClicked(context),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildItem({
+    BuildContext context,
+    IconData icon,
+    String text,
+    Function action,
+  }) {
+    return Material(
+      child: InkWell(
+        onTap: action,
+        child: Container(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Icon(icon, color: Theme.of(context).textTheme.bodyText2.color),
+              const SizedBox(width: 16),
+              Text(text, style: Theme.of(context).textTheme.bodyText2),
+            ],
+          ),
         ),
       ),
     );
@@ -63,5 +79,10 @@ class PostOptionsPopup extends StatelessWidget {
         child: ReportPostPopup(post: post),
       ),
     );
+  }
+
+  void _onHideClicked(BuildContext context) {
+    Navigator.pop(context);
+    BlocProvider.of<PostsListBloc>(context).add(HidePost(post));
   }
 }

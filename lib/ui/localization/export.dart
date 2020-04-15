@@ -90,6 +90,7 @@ What about adding some content?
   // Post actions popup
   String get postActionsPopupTitle => "Post actions";
   String get postActionReport => "Report";
+  String get postActionHide => "Hide post";
 
   // Report popup
   String get reportPopupTitle => "What's wrong with this post?";

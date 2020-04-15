@@ -48,6 +48,19 @@ class AddOrRemovePostReaction extends PostsListEvent {
   String toString() => 'AddOrRemovePostReaction';
 }
 
+/// Tells the Bloc that the specified post should be hidden from the user view.
+class HidePost extends PostsListEvent {
+  final Post post;
+
+  HidePost(this.post);
+
+  @override
+  List<Object> get props => [post];
+
+  @override
+  String toString() => 'HidePost { post: $post }';
+}
+
 /// Tells the Bloc to inform the user that he should refresh the
 /// home list of the posts.
 class ShouldRefreshPosts extends PostsListEvent {

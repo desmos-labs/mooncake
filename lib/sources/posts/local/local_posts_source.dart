@@ -28,25 +28,35 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Stream<List<Post>> get postsStream {
-    final finder = Finder(sortOrders: [SortOrder(Post.DATE_FIELD, false)]);
+    final finder = Finder(
+      filter: Filter.equals(Post.HIDDEN_FIELD, false),
+      sortOrders: [SortOrder(Post.DATE_FIELD, false)],
+    );
+
     return store
         .query(finder: finder)
         .onSnapshots(database)
         .asyncMap(PostsConverter.deserializePosts);
   }
 
-  @override
-  Stream<List<Post>> homePostsStream(int limit) {
-    final finder = Finder(
-      filter: Filter.or([
-        Filter.equals(Post.PARENT_ID_FIELD, null),
-        Filter.equals(Post.PARENT_ID_FIELD, "0"),
+  Finder _homeFinder(int limit) {
+    return Finder(
+      filter: Filter.and([
+        Filter.or([
+          Filter.equals(Post.PARENT_ID_FIELD, null),
+          Filter.equals(Post.PARENT_ID_FIELD, "0"),
+        ]),
+        Filter.equals(Post.HIDDEN_FIELD, false),
       ]),
       sortOrders: [SortOrder(Post.DATE_FIELD, false)],
       limit: limit,
     );
+  }
+
+  @override
+  Stream<List<Post>> homePostsStream(int limit) {
     return store
-        .query(finder: finder)
+        .query(finder: _homeFinder(limit))
         .onSnapshots(database)
         .asyncMap(PostsConverter.deserializePosts);
   }
@@ -85,21 +95,27 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     return PostsConverter.deserializePosts(records);
   }
 
+  Finder _commentsFinder(String postId) {
+    return Finder(
+      filter: Filter.and([
+        Filter.equals(Post.HIDDEN_FIELD, false),
+        Filter.equals(Post.PARENT_ID_FIELD, postId),
+      ]),
+      sortOrders: [SortOrder(Post.DATE_FIELD, false)],
+    );
+  }
+
   @override
   Stream<List<Post>> getPostCommentsStream(String postId) {
-    return postsStream.map((list) {
-      return list.where((post) => post.parentId == postId).toList();
-    });
+    return store
+        .query(finder: _commentsFinder(postId))
+        .onSnapshots(database)
+        .asyncMap(PostsConverter.deserializePosts);
   }
 
   @override
   Future<List<Post>> getPostComments(String postId) async {
-    final finder = Finder(
-      filter: Filter.equals(Post.PARENT_ID_FIELD, postId),
-      sortOrders: [SortOrder(Post.DATE_FIELD, false)],
-    );
-
-    final records = await store.find(database, finder: finder);
+    final records = await store.find(database, finder: _commentsFinder(postId));
     return PostsConverter.deserializePosts(records);
   }
 

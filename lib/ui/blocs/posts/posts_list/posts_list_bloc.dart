@@ -25,6 +25,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final GetHomeEventsUseCase _getHomeEventsUseCase;
   final UpdatePostsStatusUseCase _updatePostsStatusUseCase;
   final ManagePostReactionsUseCase _managePostReactionsUseCase;
+  final HidePostUseCase _hidePostUseCase;
 
   // Subscriptions
   StreamSubscription _eventsSubscription;
@@ -40,6 +41,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required GetNotificationsUseCase getNotificationsUseCase,
     @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
     @required ManagePostReactionsUseCase managePostReactionsUseCase,
+    @required HidePostUseCase hidePostUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getHomePostsUseCase != null),
         _getHomePostsUseCase = getHomePostsUseCase,
@@ -50,7 +52,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(updatePostsStatusUseCase != null),
         _updatePostsStatusUseCase = updatePostsStatusUseCase,
         assert(managePostReactionsUseCase != null),
-        _managePostReactionsUseCase = managePostReactionsUseCase {
+        _managePostReactionsUseCase = managePostReactionsUseCase,
+        assert(hidePostUseCase != null),
+        _hidePostUseCase = hidePostUseCase {
     _initializeSyncTimer();
 
     // Subscribe to the posts changes
@@ -84,6 +88,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       getNotificationsUseCase: Injector.get(),
       updatePostsStatusUseCase: Injector.get(),
       managePostReactionsUseCase: Injector.get(),
+      hidePostUseCase: Injector.get(),
     );
   }
 
@@ -98,6 +103,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield* _convertAddOrRemoveLikeEvent(event);
     } else if (event is AddOrRemovePostReaction) {
       yield* _mapAddPostReactionEventToState(event);
+    } else if (event is HidePost) {
+      yield* _mapHidePostEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
@@ -168,6 +175,18 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
       yield currentState.copyWith(posts: posts);
+    }
+  }
+
+  /// Handles the event emitted when a post should be hidden from the user view.
+  Stream<PostsListState> _mapHidePostEventToState(HidePost event) async* {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      final newPost = await _hidePostUseCase.hide(event.post);
+      final newPosts = currentState.posts
+          .map((post) => post.id == newPost.id ? newPost : post)
+          .toList();
+      yield currentState.copyWith(posts: newPosts);
     }
   }
 
