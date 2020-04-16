@@ -48,6 +48,7 @@ module.exports = {
         lastUpdated: true,
         logo: "/assets/logo.png",
         nav: [
+            {text: "Leaderbord", link: "http://leaderboard.mooncake.space", target: "_blank"},
             {text: "Desmos", link: "https://desmos.network", target: "_blank"},
         ],
         sidebarDepth: 2,
