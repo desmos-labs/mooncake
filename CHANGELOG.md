@@ -1,5 +1,14 @@
+# Version 0.1.1 (Unreleased)
+## Changes
+- Added the possibility of reporting a post
+- Added the possibility of hiding a post
+
+## Bug fixes
+- Fixed a bug that didn't allow to like or add a reaction to a post from within its detail screen
+- Fixed the splashscreen colors
+
 # Version 0.1.0
-Version `0.1.0` brings a brand new UX and UI for a simplified usage of the application. Here is a sneak peek at what has changed with this version.  
+Version `0.1.0` brings a brand new UX and UI for a simplified usage of the application. Here is a sneak peek at what has changed with this version. 
 
 ### Once-click access
 If you do not own a mnemonic phrase yet, you are not required to generate one to access the app the first time anymore. Instead, you can simply click the "Login" button and start using Mooncake right away.
