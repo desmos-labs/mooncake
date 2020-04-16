@@ -14,22 +14,7 @@ class PostCommentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (comments.isEmpty) {
-      return Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              "assets/images/smile.png",
-              width: 100,
-            ),
-            Text(
-              PostsLocalizations.of(context).noCommentsYet,
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
-      );
+      return _emptyCommentsContainer(context);
     }
 
     final childCount = (comments.length * 2) - 1;
@@ -57,6 +42,25 @@ class PostCommentsList extends StatelessWidget {
               },
               childCount: childCount,
             ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _emptyCommentsContainer(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset(
+            "assets/images/smile.png",
+            width: 100,
+          ),
+          Text(
+            PostsLocalizations.of(context).noCommentsYet,
+            textAlign: TextAlign.center,
           )
         ],
       ),

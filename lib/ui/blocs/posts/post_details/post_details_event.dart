@@ -24,11 +24,25 @@ class LoadPostDetails extends PostDetailsEvent {
   String toString() => 'LoadPost { postId: $postId }';
 }
 
-/// Tells the Bloc that the user has requested the post details to be
-/// refreshed.
-class RefreshPostDetails extends PostDetailsEvent {
+/// Tells the Bloc that the post details have been updated and should be shown
+/// again inside the view.
+class PostDetailsUpdated extends PostDetailsEvent {
+  final Post post;
+
+  PostDetailsUpdated(this.post);
+
   @override
-  String toString() => 'RefreshPostDetails';
+  List<Object> get props => [post];
+}
+
+/// Tells the Bloc that the post comments should be updated.
+class PostCommentsUpdated extends PostDetailsEvent {
+  final List<Post> comments;
+
+  PostCommentsUpdated(this.comments);
+
+  @override
+  List<Object> get props => [comments];
 }
 
 /// Tells the Bloc that it needs to visualize the selected tab.

@@ -12,49 +12,45 @@ class PostsTheme {
   static EdgeInsets get postItemPadding => EdgeInsets.all(16);
 
   static ThemeData get _lightTheme {
+    final brightness = Brightness.light;
+    final accentColor = ThemeColors.accentColor(brightness);
+    final iconTheme = IconThemeData(color: accentColor);
     return ThemeData(
-      brightness: Brightness.light,
+      brightness: brightness,
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.transparent,
         textTheme: TextTheme(
           headline6: Typography.englishLike2018.headline6.copyWith(
-            color: Color(0xFF8164E5),
+            color: accentColor,
           ),
         ),
-        iconTheme: IconThemeData(
-          color: Color(0xFF8164E5),
-        ),
-        actionsIconTheme: IconThemeData(
-          color: Color(0xFF8164E5),
-        )
+        iconTheme: iconTheme,
+        actionsIconTheme: iconTheme,
       ),
-      iconTheme: IconThemeData(
-        color: Color(0xFF6D4DDB),
-      ),
+      iconTheme: iconTheme,
       primaryColor: Colors.white,
       primaryColorLight: Colors.white,
       primaryColorDark: Color(0xFFF4F4FC),
-      accentColor: Color(0xFF8164E5),
+      accentColor: accentColor,
       errorColor: Color(0xFFE84444),
       scaffoldBackgroundColor: Color(0xFFF4F4FC),
       cardColor: Colors.white,
       accentTextTheme: Typography.englishLike2018.copyWith(
-        headline5: Typography.englishLike2018.headline5.copyWith(
-          color: Color(0xFF6D4DDB),
-        ),
+        headline5:
+            Typography.englishLike2018.headline5.copyWith(color: accentColor),
         headline6: Typography.englishLike2018.headline6.copyWith(
-          color: Color(0xFF6D4DDB),
+          color: accentColor,
         ),
         bodyText2: Typography.englishLike2018.bodyText2.copyWith(
-          color: Color(0xFF6D4DDB),
+          color: accentColor,
         ),
         caption: Typography.englishLike2018.caption.copyWith(
-          color: Color(0xFF6D4DDB),
+          color: accentColor,
         ),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Color(0xFF6D4DDB),
+        buttonColor: accentColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
@@ -63,21 +59,28 @@ class PostsTheme {
   }
 
   static ThemeData get _darkTheme {
+    final brightness = Brightness.light;
+    final accentColor = ThemeColors.accentColor(brightness);
+    final iconTheme = IconThemeData(color: accentColor);
+
     return ThemeData(
       brightness: Brightness.dark,
       appBarTheme: AppBarTheme(
-          elevation: 0,
-          color: Colors.transparent,
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          )),
-      iconTheme: IconThemeData(
-        color: Color(0xFFA990FF),
+        elevation: 0,
+        color: Colors.transparent,
+        textTheme: TextTheme(
+          headline6: Typography.englishLike2018.headline6.copyWith(
+            color: accentColor,
+          ),
+        ),
+        iconTheme: iconTheme,
+        actionsIconTheme: iconTheme,
       ),
-      primaryColor: Color(0xFF1F1C45),
+      iconTheme: iconTheme,
+      primaryColor: Color(0xFF423F64),
       primaryColorLight: Color(0xFFB7A2FF),
-      primaryColorDark: Color(0xFF423F64),
-      accentColor: Colors.white,
+      primaryColorDark: Color(0xFF1F1C45),
+      accentColor: accentColor,
       errorColor: Color(0xFFE84444),
       scaffoldBackgroundColor: Color(0xFF1F1C45),
       cardColor: Color(0xFF2C2A50),

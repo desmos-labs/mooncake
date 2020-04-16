@@ -19,19 +19,35 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   final GetPostDetailsUseCase _getPostDetailsUseCase;
   final GetCommentsUseCase _getCommentsUseCase;
 
+  StreamSubscription _postSubscription;
+  StreamSubscription _commentsSubscription;
+
   PostDetailsBloc({
     @required MooncakeAccount user,
+    @required String postId,
     @required GetPostDetailsUseCase getPostDetailsUseCase,
     @required GetCommentsUseCase getCommentsUseCase,
-  })  : assert(user != null),
+  })  : assert(postId != null),
+        assert(user != null),
         _user = user,
         assert(getPostDetailsUseCase != null),
         _getPostDetailsUseCase = getPostDetailsUseCase,
         assert(getCommentsUseCase != null),
-        _getCommentsUseCase = getCommentsUseCase;
+        _getCommentsUseCase = getCommentsUseCase {
+    add(LoadPostDetails(postId));
 
-  factory PostDetailsBloc.create(BuildContext context) {
+    _postSubscription = getPostDetailsUseCase.stream(postId).listen((post) {
+      add(PostDetailsUpdated(post));
+    });
+
+    _commentsSubscription = getCommentsUseCase.stream(postId).listen((posts) {
+      add(PostCommentsUpdated(posts));
+    });
+  }
+
+  factory PostDetailsBloc.create(BuildContext context, String postId) {
     return PostDetailsBloc(
+      postId: postId,
       user: (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user,
       getPostDetailsUseCase: Injector.get(),
       getCommentsUseCase: Injector.get(),
@@ -43,12 +59,21 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
 
   @override
   Stream<PostDetailsState> mapEventToState(PostDetailsEvent event) async* {
-    if (event is LoadPostDetails) {
-      yield* _mapLoadPostEventToState(event);
-    } else if (event is RefreshPostDetails) {
-      yield* _mapRefreshEventToState();
-    } else if (event is ShowTab) {
+    if (event is ShowTab) {
       yield* _mapShowTabEventToState(event);
+    } else if (event is LoadPostDetails) {
+      yield* _mapLoadPostEventToState(event);
+    } else if (event is PostDetailsUpdated) {
+      yield* _mapPostDetailsUpdatedToState(event);
+    } else if (event is PostCommentsUpdated) {
+      yield* _mapPostCommentsUpdateToState(event);
+    }
+  }
+
+  Stream<PostDetailsState> _mapShowTabEventToState(ShowTab event) async* {
+    final currentState = state;
+    if (currentState is PostDetailsLoaded) {
+      yield currentState.copyWith(selectedTab: event.tab);
     }
   }
 
@@ -60,25 +85,28 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
     yield PostDetailsLoaded.first(user: _user, post: post, comments: comments);
   }
 
-  Stream<PostDetailsState> _mapRefreshEventToState() async* {
+  Stream<PostDetailsState> _mapPostDetailsUpdatedToState(
+    PostDetailsUpdated event,
+  ) async* {
     final currentState = state;
     if (currentState is PostDetailsLoaded) {
-      yield currentState.copyWith(refreshing: true);
-      final postId = currentState.post.id;
-      final post = await _getPostDetailsUseCase.fromRemote(postId);
-      final comments = await _getCommentsUseCase.fromRemote(postId);
-      yield currentState.copyWith(
-        post: post,
-        comments: comments,
-        refreshing: false,
-      );
+      yield currentState.copyWith(post: event.post, refreshing: false);
     }
   }
 
-  Stream<PostDetailsState> _mapShowTabEventToState(ShowTab event) async* {
+  Stream<PostDetailsState> _mapPostCommentsUpdateToState(
+    PostCommentsUpdated event,
+  ) async* {
     final currentState = state;
     if (currentState is PostDetailsLoaded) {
-      yield currentState.copyWith(selectedTab: event.tab);
+      yield currentState.copyWith(comments: event.comments);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _postSubscription?.cancel();
+    _commentsSubscription?.cancel();
+    return super.close();
   }
 }

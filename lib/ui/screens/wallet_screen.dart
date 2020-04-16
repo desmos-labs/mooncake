@@ -31,24 +31,13 @@ class _WalletScreenState extends State<WalletScreen> {
           orElse: () => null,
         );
 
-        final headerTextColor = Theme.of(context).brightness == Brightness.light
-            ? Theme.of(context).primaryColorLight
-            : Theme.of(context).accentColor;
-
         if (!state.refreshing) {
           _refreshCompleter?.complete();
           _refreshCompleter = Completer();
         }
 
         return Scaffold(
-          appBar: AppBar(
-            iconTheme: Theme.of(context).appBarTheme.iconTheme.copyWith(
-                  color: headerTextColor,
-                ),
-          ),
-          backgroundColor: Theme.of(context).brightness == Brightness.light
-              ? Theme.of(context).accentColor
-              : Theme.of(context).cardColor,
+          appBar: AppBar(),
           body: SafeArea(
             child: RefreshIndicator(
               onRefresh: () {
@@ -56,17 +45,14 @@ class _WalletScreenState extends State<WalletScreen> {
                 return _refreshCompleter.future;
               },
               child: coin == null
-                  ? EmptyWallet(textColor: headerTextColor)
+                  ? EmptyWallet()
                   : SingleChildScrollView(
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         child: Column(
                           children: <Widget>[
                             Flexible(
-                              child: WalletHeader(
-                                coin: coin,
-                                textColor: headerTextColor,
-                              ),
+                              child: WalletHeader(coin: coin),
                             ),
                             Expanded(
                               flex: 4,

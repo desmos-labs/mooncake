@@ -19,7 +19,7 @@ class PostDetailsBottomBar extends StatelessWidget {
         return Container(
           height: height,
           width: MediaQuery.of(context).size.width,
-          color: Theme.of(context).primaryColorDark,
+          color: Theme.of(context).scaffoldBackgroundColor,
           child: Material(
             color: Colors.transparent,
             child: Row(

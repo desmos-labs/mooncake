@@ -78,7 +78,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     if (isLoggedIn) {
       _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
         return BlocProvider<PostDetailsBloc>(
-          create: (context) => PostDetailsBloc.create(context)..add(LoadPostDetails(event.postId)),
+          create: (context) => PostDetailsBloc.create(context, event.postId),
           child: PostDetailsScreen(),
         );
       }));

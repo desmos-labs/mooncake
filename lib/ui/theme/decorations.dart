@@ -6,8 +6,8 @@ class ThemeDecorations {
   static List<Color> _patternColors(BuildContext context) {
     switch (Theme.of(context).brightness) {
       case Brightness.light:
-        return [Color(0xFF6C52C3), Color(0xFF904FFF)];
-      case Brightness.dark:
+        return [Color(0xFF5b53ed), Color(0xFF6747ee)];
+      default:
         return [Color(0xFF1B1659), Color(0xFF11101D)];
     }
   }
@@ -22,7 +22,7 @@ class ThemeDecorations {
       image: DecorationImage(
         colorFilter: ColorFilter.mode(
           Colors.white.withOpacity(
-                Theme.of(context).brightness == Brightness.light ? 0.25 : 0.10,
+                Theme.of(context).brightness == Brightness.light ? 0.75 : 0.15,
               ),
           BlendMode.dstIn,
         ),
