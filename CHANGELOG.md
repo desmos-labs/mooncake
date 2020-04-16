@@ -5,7 +5,7 @@
 
 ## Bug fixes
 - Fixed a bug that didn't allow to like or add a reaction to a post from within its detail screen
-- Fixed the splashscreen colors
+- Fixed the splash screen colors
 
 # Version 0.1.0
 Version `0.1.0` brings a brand new UX and UI for a simplified usage of the application. Here is a sneak peek at what has changed with this version. 
