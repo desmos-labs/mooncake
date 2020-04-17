@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents the repository that can be used in order to read
@@ -12,7 +13,10 @@ abstract class PostsRepository {
 
   /// Refreshes the home posts downloading the ones present remotely and
   /// saving them locally.
-  Future<List<Post>> refreshHomePosts(int limit);
+  Future<List<Post>> refreshHomePosts({
+    @required int start,
+    @required int limit,
+  });
 
   /// Returns a [Stream] that subscribes to the post having the specified
   /// [postId], emitting the new data each time the post is updated.

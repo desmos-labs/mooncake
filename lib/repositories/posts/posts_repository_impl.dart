@@ -34,8 +34,14 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<List<Post>> refreshHomePosts(int limit) async {
-    final remotes = await _remotePostsSource.getHomePosts(limit);
+  Future<List<Post>> refreshHomePosts({
+    @required int start,
+    @required int limit,
+  }) async {
+    final remotes = await _remotePostsSource.getHomePosts(
+      start: start,
+      limit: limit,
+    );
     await _localPostsSource.savePosts(remotes, merge: true);
     return remotes;
   }

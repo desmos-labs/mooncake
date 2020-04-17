@@ -56,8 +56,16 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   }
 
   @override
-  Future<List<Post>> getHomePosts(int limit) async {
-    final data = HomePostsData(graphQlEndpoint, Constants.SUBSPACE, limit);
+  Future<List<Post>> getHomePosts({
+    @required int start,
+    @required int limit,
+  }) async {
+    final data = HomePostsData(
+      endpoint: graphQlEndpoint,
+      subspace: Constants.SUBSPACE,
+      start: start,
+      limit: limit,
+    );
     return GqlHelper.getHomePosts(_gqlClient, data);
   }
 

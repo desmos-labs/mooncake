@@ -8,8 +8,7 @@ import 'package:mooncake/ui/ui.dart';
 import 'posts_list_syncing_indicator.dart';
 import 'posts_list_empty_container.dart';
 import 'posts_list_loading_container.dart';
-
-typedef Filter = bool Function(Post);
+import 'posts_bottom_loader.dart';
 
 /// Represents a list of [Post] objects.
 /// It simply builds a list using the [ListView.separated] builder
@@ -20,19 +19,26 @@ class PostsList extends StatefulWidget {
 }
 
 class _PostsListState extends State<PostsList> {
-  final indicator = new GlobalKey<RefreshIndicatorState>();
+  final _indicator = new GlobalKey<RefreshIndicatorState>();
   Completer<void> _refreshCompleter;
+
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  PostsListBloc _postsListBloc;
 
   @override
   void initState() {
     super.initState();
     _refreshCompleter = Completer<void>();
+
+    _scrollController.addListener(_onScroll);
+    _postsListBloc = BlocProvider.of<PostsListBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      key: indicator,
+      key: _indicator,
       onRefresh: () {
         _refreshPosts(context);
         return _refreshCompleter.future;
@@ -63,12 +69,16 @@ class _PostsListState extends State<PostsList> {
                   Expanded(
                     child: ListView.builder(
                       key: PostsKeys.postsList,
-                      itemCount: state.posts.length,
+                      itemCount: state.hasReachedMax
+                          ? state.posts.length
+                          : state.posts.length + 1,
                       itemBuilder: (context, index) {
-                        final post = state.posts[index];
-                        return PostListItem(post: post);
+                        return index >= state.posts.length
+                            ? BottomLoader()
+                            : PostListItem(post: state.posts[index]);
                       },
-                    )
+                      controller: _scrollController,
+                    ),
                   ),
                 ],
               ),
@@ -79,7 +89,7 @@ class _PostsListState extends State<PostsList> {
                     textColor: Colors.white,
                     color: Theme.of(context).iconTheme.color,
                     onPressed: () {
-                      indicator.currentState.show();
+                      _indicator.currentState.show();
                     },
                     child: Text(
                       PostsLocalizations.of(context).refreshButtonText,
@@ -93,7 +103,21 @@ class _PostsListState extends State<PostsList> {
     );
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _refreshPosts(BuildContext context) {
     BlocProvider.of<PostsListBloc>(context).add(RefreshPosts());
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      _postsListBloc.add(FetchPosts());
+    }
   }
 }

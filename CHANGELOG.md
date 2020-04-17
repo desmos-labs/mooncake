@@ -2,6 +2,7 @@
 ## Changes
 - Added the possibility of reporting a post
 - Added the possibility of hiding a post
+- Added the possibility of scrolling past the latest 50 posts to load more
 
 ## Bug fixes
 - Fixed a bug that didn't allow to like or add a reaction to a post from within its detail screen

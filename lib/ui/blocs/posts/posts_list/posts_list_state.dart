@@ -29,11 +29,15 @@ class PostsLoaded extends PostsListState {
   /// Tells if the app is syncing the user activities to the chain.
   final bool syncingPosts;
 
+  /// Tells if the whole list of posts has been loaded or not.
+  final bool hasReachedMax;
+
   PostsLoaded({
     @required this.posts,
     @required this.shouldRefresh,
     @required this.refreshing,
     @required this.syncingPosts,
+    @required this.hasReachedMax,
   });
 
   factory PostsLoaded.first({List<Post> posts}) {
@@ -42,6 +46,7 @@ class PostsLoaded extends PostsListState {
       shouldRefresh: false,
       refreshing: false,
       syncingPosts: false,
+      hasReachedMax: false,
     );
   }
 
@@ -51,12 +56,14 @@ class PostsLoaded extends PostsListState {
     bool shouldRefresh,
     bool refreshing,
     bool syncingPosts,
+    bool hasReachedMax,
   }) {
     return PostsLoaded(
       posts: posts ?? this.posts,
       shouldRefresh: shouldRefresh ?? this.shouldRefresh,
       refreshing: refreshing ?? this.refreshing,
       syncingPosts: syncingPosts ?? this.syncingPosts,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }
 
@@ -66,6 +73,7 @@ class PostsLoaded extends PostsListState {
         shouldRefresh,
         refreshing,
         syncingPosts,
+        hasReachedMax,
       ];
 
   @override
@@ -74,5 +82,6 @@ class PostsLoaded extends PostsListState {
       'shouldRefresh: $shouldRefresh, '
       'refreshing: $refreshing, '
       'syncingPosts: $syncingPosts, '
+      'hasReachedMax: $hasReachedMax, '
       '}';
 }

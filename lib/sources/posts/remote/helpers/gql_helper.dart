@@ -6,9 +6,16 @@ import 'package:mooncake/entities/entities.dart';
 class HomePostsData {
   final String endpoint;
   final String subspace;
+
+  final int start;
   final int limit;
 
-  HomePostsData(this.endpoint, this.subspace, this.limit);
+  HomePostsData({
+    @required this.endpoint,
+    @required this.subspace,
+    @required this.start,
+    @required this.limit,
+  });
 }
 
 class PostDetailsData {
@@ -95,7 +102,8 @@ class GqlHelper {
           subspace: {_eq: "${queryData.subspace}"} 
         }
         order_by: { created: desc },
-        limit: ${queryData.limit},
+        offset: ${queryData.start},
+        limit: ${queryData.start + queryData.limit},
       ) { 
         $_postContents
       }

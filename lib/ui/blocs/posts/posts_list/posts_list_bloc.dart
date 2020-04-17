@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -58,10 +59,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     _initializeSyncTimer();
 
     // Subscribe to the posts changes
-    _postsSubscription =
-        _getHomePostsUseCase.stream(_HOME_LIMIT).listen((posts) {
-      add(PostsUpdated(posts));
-    });
+    _listToHomePosts(_HOME_LIMIT);
 
     // Subscribe to tell the user he should refresh
     _eventsSubscription = _getHomeEventsUseCase.stream.listen((event) {
@@ -96,7 +94,19 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   PostsListState get initialState => PostsLoading();
 
   @override
+  Stream<PostsListState> transformEvents(
+    Stream<PostsListEvent> events,
+    Function next,
+  ) {
+    return super.transformEvents(
+      events.debounceTime(Duration(milliseconds: 500)).distinct(),
+      next,
+    );
+  }
+
+  @override
   Stream<PostsListState> mapEventToState(PostsListEvent event) async* {
+    final currentState = state;
     if (event is PostsUpdated) {
       yield* _mapPostsUpdatedEventToState(event);
     } else if (event is AddOrRemoveLike) {
@@ -113,11 +123,25 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield* _mapShouldRefreshPostsEventToState();
     } else if (event is RefreshPosts) {
       yield* _refreshPostsEventToState();
+    } else if (event is FetchPosts && !_hasReachedMax(currentState)) {
+      yield* _mapFetchEventToState();
     } else if (event is TxSuccessful) {
       _handleTxSuccessfulEvent(event);
     } else if (event is TxFailed) {
       _handleTxFailedEvent(event);
     }
+  }
+
+  void _listToHomePosts(int limit) {
+    _postsSubscription?.cancel();
+    _postsSubscription = _getHomePostsUseCase.stream(limit).listen((posts) {
+      if (posts.isEmpty) return;
+      add(PostsUpdated(posts));
+    });
+  }
+
+  bool _hasReachedMax(PostsListState state) {
+    return state is PostsLoaded && state.hasReachedMax;
   }
 
   /// Initializes the timer allowing us to sync the user activity once every
@@ -131,20 +155,30 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
+  /// Merges the [current] posts list with the [newList].
+  /// INVARIANT: `current.length > newList.length`
+  List<Post> _mergePosts(List<Post> current, List<Post> newList) {
+    return current.map((post) {
+      final newPost = newList.firstWhere(
+        (p) => p.id == post.id,
+        orElse: () => null,
+      );
+      return newPost != null ? newPost : post;
+    });
+  }
+
   /// Handles the event emitted when a new list of posts has been emitted.
   Stream<PostsListState> _mapPostsUpdatedEventToState(
     PostsUpdated event,
   ) async* {
-    if (event.posts?.isNotEmpty == false) {
-      return;
-    }
-
     final currentState = state;
     if (currentState is PostsLoading) {
       yield PostsLoaded.first(posts: event.posts);
     } else if (currentState is PostsLoaded) {
       yield currentState.copyWith(
-        posts: event.posts,
+        posts: event.posts.length < currentState.posts.length
+            ? _mergePosts(currentState.posts, event.posts)
+            : event.posts,
         refreshing: false,
         shouldRefresh: false,
       );
@@ -153,7 +187,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
   /// Converts an [AddOrRemoveLikeEvent] into an
   /// [AddOrRemovePostReaction] event so that it can be handled properly.
-  Stream<PostsListState> _convertAddOrRemoveLikeEvent(AddOrRemoveLike event) {
+  Stream<PostsListState> _convertAddOrRemoveLikeEvent(
+    AddOrRemoveLike event,
+  ) {
     final reactEvent = AddOrRemovePostReaction(
       event.post,
       Constants.LIKE_REACTION,
@@ -179,7 +215,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   }
 
   /// Handles the event emitted when a post should be hidden from the user view.
-  Stream<PostsListState> _mapHidePostEventToState(HidePost event) async* {
+  Stream<PostsListState> _mapHidePostEventToState(
+    HidePost event,
+  ) async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
       final newPost = await _hidePostUseCase.hide(event.post);
@@ -187,6 +225,33 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
       yield currentState.copyWith(posts: newPosts);
+    }
+  }
+
+  Stream<PostsListState> _mapFetchEventToState() async* {
+    final currentState = state;
+    if (currentState is PostsLoading) {
+      final posts = await _getHomePostsUseCase.refresh(
+        start: 0,
+        limit: _HOME_LIMIT,
+      );
+      yield PostsLoaded.first(posts: posts);
+    } else if (currentState is PostsLoaded) {
+      final posts = await _getHomePostsUseCase.refresh(
+        start: currentState.posts.length,
+        limit: _HOME_LIMIT,
+      );
+      yield posts.isEmpty
+          ? currentState.copyWith(hasReachedMax: true)
+          : currentState.copyWith(
+              posts: currentState.posts + posts,
+              hasReachedMax: false,
+            );
+
+      // Listen to new changes on all the posts
+      if (posts.isNotEmpty) {
+        _listToHomePosts(currentState.posts.length + posts.length);
+      }
     }
   }
 
@@ -203,11 +268,13 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   /// should be updated.
   Stream<PostsListState> _refreshPostsEventToState() async* {
     final currentState = state;
+    int limit = _HOME_LIMIT;
     if (currentState is PostsLoaded) {
+      limit = currentState.posts.length;
       yield currentState.copyWith(refreshing: true, shouldRefresh: false);
     }
 
-    final posts = await _getHomePostsUseCase.refresh(_HOME_LIMIT);
+    final posts = await _getHomePostsUseCase.refresh(start: 0, limit: limit);
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(refreshing: false, posts: posts);
     } else if (currentState is PostsLoading) {

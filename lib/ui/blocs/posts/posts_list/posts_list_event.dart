@@ -74,6 +74,12 @@ class RefreshPosts extends PostsListEvent {
   String toString() => 'RefreshPosts';
 }
 
+/// Tells the Bloc that more posts should be fetched and shown to the user.
+class FetchPosts extends PostsListEvent {
+  @override
+  String toString() => 'FetchPosts';
+}
+
 /// Tells the bloc to start the synchronization of locally stored
 /// posts so that they can be uploaded to the chain.
 class SyncPosts extends PostsListEvent {

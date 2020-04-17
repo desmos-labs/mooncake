@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents the remote source that needs to be called when wanting to
 /// download data from the server.
 abstract class RemotePostsSource {
   /// Returns the posts that should be seen inside the home page.
-  Future<List<Post>> getHomePosts(int limit);
+  Future<List<Post>> getHomePosts({@required int start, @required int limit});
 
   /// [Stream] that emits an item each time that the home posts
   /// list should be updated.
