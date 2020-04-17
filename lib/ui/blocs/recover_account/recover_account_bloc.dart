@@ -53,9 +53,10 @@ class RecoverAccountBloc
 
   Stream<RecoverAccountState> _mapTypeWordEventToState(TypeWord event) async* {
     final wordsList = List<String>()..addAll(state.wordsList);
-    wordsList[state.currentWordIndex] = event.word;
+    wordsList[event.index] = event.word;
     yield state.copyWith(
       wordsList: wordsList,
+      currentWordIndex: event.index,
       isMnemonicValid: bip39.validateMnemonic(wordsList.join(" ")),
     );
   }

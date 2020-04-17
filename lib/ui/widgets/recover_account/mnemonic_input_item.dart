@@ -98,6 +98,7 @@ class _MnemonicInputItemState extends State<MnemonicInputItem> {
   }
 
   void _emitText(String text) {
-    BlocProvider.of<RecoverAccountBloc>(context).add(TypeWord(text));
+    BlocProvider.of<RecoverAccountBloc>(context)
+        .add(TypeWord(widget.index, text));
   }
 }

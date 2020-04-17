@@ -18,12 +18,15 @@ class ResetRecoverAccountState extends RecoverAccountEvent {
 /// Event that is emitted when a word is being emitted when a new word of
 /// the mnemonic if being typed from the user.
 class TypeWord extends RecoverAccountEvent {
+  final int index;
   final String word;
 
-  TypeWord(this.word) : assert(word != null);
+  TypeWord(this.index, this.word)
+      : assert(index != null),
+        assert(word != null);
 
   @override
-  List<Object> get props => [word];
+  List<Object> get props => [index, word];
 }
 
 /// Event that is emitted when a word is selected from the user as the next
