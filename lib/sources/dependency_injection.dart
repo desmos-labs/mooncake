@@ -11,7 +11,7 @@ class SourcesModule implements Module {
   static const _ipfsEndpoint = "ipfs.desmos.network";
 
   static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
-  static const _gqlEndpoint = "35.234.80.165:8080/v1/graphql";
+  static const _gqlEndpoint = "gql.morpheus.desmos.network/v1/graphql";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 

@@ -10,8 +10,6 @@ import 'package:mooncake/sources/sources.dart';
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
 class RemotePostsSourceImpl implements RemotePostsSource {
-  final String graphQlEndpoint;
-
   final ChainHelper _chainHelper;
   final LocalUserSource _userSource;
 
@@ -29,7 +27,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     @required LocalUserSource userSource,
     @required MsgConverter msgConverter,
   })  : assert(graphQlEndpoint != null),
-        graphQlEndpoint = graphQlEndpoint,
         assert(userSource != null),
         _userSource = userSource,
         assert(chainHelper != null),
@@ -46,11 +43,11 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   void _initGql(String graphQlEndpoint) {
     // Init the query client
     _gqlClient = GraphQLClient(
-      link: HttpLink(uri: "http://$graphQlEndpoint"),
+      link: HttpLink(uri: "https://$graphQlEndpoint"),
       cache: InMemoryCache(),
     );
     _wsClient = GraphQLClient(
-      link: WebSocketLink(url: "ws://$graphQlEndpoint"),
+      link: WebSocketLink(url: "wss://$graphQlEndpoint"),
       cache: InMemoryCache(),
     );
   }
@@ -61,7 +58,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     @required int limit,
   }) async {
     final data = HomePostsData(
-      endpoint: graphQlEndpoint,
       subspace: Constants.SUBSPACE,
       start: start,
       limit: limit,
@@ -83,7 +79,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   @override
   Future<Post> getPostById(String postId) async {
     final data = PostDetailsData(
-      endpoint: graphQlEndpoint,
       subspace: Constants.SUBSPACE,
       id: postId,
     );
@@ -93,7 +88,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   @override
   Future<List<Post>> getPostComments(String postId) async {
     final data = PostDetailsData(
-      endpoint: graphQlEndpoint,
       subspace: Constants.SUBSPACE,
       id: postId,
     );

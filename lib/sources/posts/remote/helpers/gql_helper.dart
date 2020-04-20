@@ -4,14 +4,12 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 class HomePostsData {
-  final String endpoint;
   final String subspace;
 
   final int start;
   final int limit;
 
   HomePostsData({
-    @required this.endpoint,
     @required this.subspace,
     @required this.start,
     @required this.limit,
@@ -19,12 +17,10 @@ class HomePostsData {
 }
 
 class PostDetailsData {
-  final String endpoint;
   final String subspace;
   final String id;
 
   PostDetailsData({
-    @required this.endpoint,
     @required this.subspace,
     @required this.id,
   });
