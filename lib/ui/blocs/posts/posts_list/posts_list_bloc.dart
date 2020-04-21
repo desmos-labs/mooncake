@@ -98,10 +98,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     Stream<PostsListEvent> events,
     Function next,
   ) {
-    return super.transformEvents(
-      events.debounceTime(Duration(milliseconds: 500)).distinct(),
-      next,
-    );
+    return super.transformEvents(events.distinct(), next);
   }
 
   @override
