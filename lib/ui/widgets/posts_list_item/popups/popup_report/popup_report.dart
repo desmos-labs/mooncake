@@ -7,12 +7,14 @@ import 'package:mooncake/ui/ui.dart';
 import 'popup_report_option.dart';
 import 'popup_report_text_input.dart';
 
+/// Represents the popup that is shown to the user when he wants to
+/// report a single post.
 class ReportPostPopup extends StatelessWidget {
   final Post post;
 
   const ReportPostPopup({
     Key key,
-    @required this.post,
+    @required this.post
   }) : super(key: key);
 
   @override
@@ -61,9 +63,7 @@ class ReportPostPopup extends StatelessWidget {
                           PopupReportTextInput(),
                           const SizedBox(height: 16),
                           PrimaryRoundedButton(
-                            onPressed: () =>
-                                BlocProvider.of<ReportPopupBloc>(context)
-                                    .add(SubmitReport()),
+                            onPressed: () => _sendReport(context),
                             text: PostsLocalizations.of(context)
                                 .reportPopupSubmit,
                           ),
@@ -83,5 +83,10 @@ class ReportPostPopup extends StatelessWidget {
 
   Widget _separator() {
     return Container(width: double.infinity, height: 0.5, color: Colors.grey);
+  }
+
+  void _sendReport(BuildContext context) {
+    BlocProvider.of<ReportPopupBloc>(context).add(SubmitReport());
+    BlocProvider.of<NavigatorBloc>(context).add(GoBack());
   }
 }

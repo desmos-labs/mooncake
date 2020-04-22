@@ -59,12 +59,12 @@ class PostsTheme {
   }
 
   static ThemeData get _darkTheme {
-    final brightness = Brightness.light;
+    final brightness = Brightness.dark;
     final accentColor = ThemeColors.accentColor(brightness);
     final iconTheme = IconThemeData(color: accentColor);
 
     return ThemeData(
-      brightness: Brightness.dark,
+      brightness: brightness,
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.transparent,
@@ -78,7 +78,7 @@ class PostsTheme {
       ),
       iconTheme: iconTheme,
       primaryColor: Color(0xFF423F64),
-      primaryColorLight: Color(0xFFB7A2FF),
+      primaryColorLight: Color(0xFF8d8ba2),
       primaryColorDark: Color(0xFF1F1C45),
       accentColor: accentColor,
       errorColor: Color(0xFFE84444),

@@ -5,7 +5,7 @@ class ThemeColors {
   static Color accentColor(Brightness brightness) {
     switch (brightness) {
       case Brightness.dark:
-        return Color(0xFFc2b1ff);
+        return Color(0xFFe6dfff);
       default:
         return Color(0xFF8164E5);
     }

@@ -12,12 +12,17 @@ import 'package:mooncake/usecases/usecases.dart';
 
 /// Handles the login events and emits the proper state instances.
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
+  static const SETTING_FIRST_START = "first_start";
+
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
   final LogoutUseCase _logoutUseCase;
   final GetAccountUseCase _getUserUseCase;
   final RefreshAccountUseCase _refreshAccountUseCase;
-  final FirebaseAnalytics _analytics;
 
+  final GetSettingUseCase _getSettingUseCase;
+  final SaveSettingUseCase _saveSettingUseCase;
+
+  final FirebaseAnalytics _analytics;
   final NavigatorBloc _navigatorBloc;
 
   StreamSubscription _accountSubscription;
@@ -27,6 +32,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required LogoutUseCase logoutUseCase,
     @required GetAccountUseCase getUserUseCase,
     @required RefreshAccountUseCase refreshAccountUseCase,
+    @required GetSettingUseCase getSettingUseCase,
+    @required SaveSettingUseCase saveSettingUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
   })  : assert(generateMnemonicUseCase != null),
@@ -37,6 +44,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         _getUserUseCase = getUserUseCase,
         assert(refreshAccountUseCase != null),
         _refreshAccountUseCase = refreshAccountUseCase,
+        assert(getSettingUseCase != null),
+        _getSettingUseCase = getSettingUseCase,
+        assert(saveSettingUseCase != null),
+        _saveSettingUseCase = saveSettingUseCase,
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(analytics != null),
@@ -53,6 +64,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       logoutUseCase: Injector.get(),
       getUserUseCase: Injector.get(),
       refreshAccountUseCase: Injector.get(),
+      getSettingUseCase: Injector.get(),
+      saveSettingUseCase: Injector.get(),
       navigatorBloc: BlocProvider.of(context),
       analytics: Injector.get(),
     );
@@ -81,6 +94,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// Checks the current user state, determining if it is logged in or not.
   /// After the check, either [LoggedIn] or [LoggedOut] are emitted.
   Stream<AccountState> _mapCheckStatusEventToState() async* {
+    // Remove any info if it's the first start
+    final firstStart = await _getSettingUseCase.get(key: SETTING_FIRST_START);
+    if (firstStart ?? true) {
+      await _logoutUseCase.logout();
+      await _saveSettingUseCase.save(key: SETTING_FIRST_START, value: false);
+    }
+
     final account = await _getUserUseCase.single();
     if (account != null) {
       yield LoggedIn.initial(account);

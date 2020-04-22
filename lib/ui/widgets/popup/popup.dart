@@ -24,16 +24,20 @@ class GenericPopup extends StatelessWidget {
         alignment: Alignment.center,
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Container(
-            padding: padding,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Theme.of(context).cardColor,
-            ),
-            child: Wrap(
-              children: [
-                content,
-              ],
+          child: Material(
+            elevation: 6,
+            color: Colors.transparent,
+            child: Container(
+              padding: padding,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Theme.of(context).cardColor,
+              ),
+              child: Wrap(
+                children: [
+                  content,
+                ],
+              ),
             ),
           ),
         ),

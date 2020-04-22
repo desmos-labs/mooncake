@@ -18,7 +18,7 @@ class PasswordChanged extends SetPasswordEvent {
   List<Object> get props => [newPassword];
 
   @override
-  String toString() => 'PasswordChanged { newPassword: $newPassword }';
+  String toString() => 'PasswordChanged';
 }
 
 /// Tells the Bloc to invert the current password visibility.

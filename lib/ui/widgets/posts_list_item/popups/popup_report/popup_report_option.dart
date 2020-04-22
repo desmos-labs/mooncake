@@ -30,6 +30,7 @@ class PopupReportOption extends StatelessWidget {
     return BlocBuilder<ReportPopupBloc, ReportPopupState>(
       builder: (context, state) {
         return Material(
+          color: Colors.transparent,
           child: InkWell(
             onTap: () => _triggerEvent(context, type),
             child: Padding(

@@ -20,7 +20,7 @@ class SecondaryLightRoundedButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         side: BorderSide(
           color: Theme.of(context).primaryColorLight,
-          width: 0.5,
+          width: 0.5
         ),
       ),
       color: Colors.transparent,

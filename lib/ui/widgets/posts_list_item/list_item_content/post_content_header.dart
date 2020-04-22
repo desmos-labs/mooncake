@@ -50,29 +50,41 @@ class PostItemHeader extends StatelessWidget {
             ),
 
             if (post.owner.address != account.cosmosAccount.address)
-              SizedBox(
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon: Icon(MooncakeIcons.more, size: 16),
-                  onPressed: () => _showPostOptions(context),
-                ),
-              )
+              _moreActionButton(context)
           ],
         );
       },
     );
   }
 
+  Widget _moreActionButton(BuildContext context) {
+    final size = 16.0;
+    return Row(
+      children: <Widget>[
+        SizedBox(width: 16),
+        SizedBox(
+          width: size,
+          height: size,
+          child: IconButton(
+            alignment: Alignment.center,
+            padding: EdgeInsets.zero,
+            icon: Icon(MooncakeIcons.more, size: size),
+            onPressed: () => _showPostOptions(context),
+          ),
+        ),
+      ],
+    );
+  }
+
   void _showPostOptions(BuildContext context) async {
     await showDialog(
-      context: context,
-      builder: (context) {
-        return GenericPopup(
-          onTap: () => Navigator.pop(context),
-          padding: EdgeInsets.all(4),
-          content: PostOptionsPopup(post: post),
-        );
-      }
-    );
+        context: context,
+        builder: (context) {
+          return GenericPopup(
+            onTap: () => Navigator.pop(context),
+            padding: EdgeInsets.all(4),
+            content: PostOptionsPopup(post: post),
+          );
+        });
   }
 }

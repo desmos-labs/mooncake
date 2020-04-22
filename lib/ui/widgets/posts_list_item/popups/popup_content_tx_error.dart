@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the content of the popup that is shown to the user when he

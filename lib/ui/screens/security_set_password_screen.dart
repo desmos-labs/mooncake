@@ -12,7 +12,6 @@ class SetPasswordScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(PostsLocalizations.of(context).passwordTitle),
       ),
-      backgroundColor: Colors.white,
       body: BlocProvider<SetPasswordBloc>(
         create: (context) => SetPasswordBloc.create(context),
         child: BlocBuilder<SetPasswordBloc, SetPasswordState>(
@@ -23,7 +22,8 @@ class SetPasswordScreen extends StatelessWidget {
                   SetPasswordContent(),
                   if (state.savingPassword)
                     GenericPopup(
-                      backgroundColor: Colors.white.withOpacity(0.5),
+                      backgroundColor:
+                          Theme.of(context).cardColor.withOpacity(0.5),
                       content: SavingPasswordPopupContent(),
                     )
                 ],

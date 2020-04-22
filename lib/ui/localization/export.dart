@@ -84,6 +84,11 @@ What about adding some content?
 """;
   String get postActionsButtonCaption => "See post actions";
 
+  // Action bar
+  String get brightnessButtonTooltip => "Brightness";
+  String get walletButtonTooltip => "Wallet";
+  String get logoutButtonTooltip => "Logout";
+
   // Post item
   String likesCount(int count) => "$count likes";
 

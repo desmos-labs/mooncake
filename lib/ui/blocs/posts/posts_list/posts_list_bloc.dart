@@ -172,6 +172,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     if (currentState is PostsLoading) {
       yield PostsLoaded.first(posts: event.posts);
     } else if (currentState is PostsLoaded) {
+      // Avoid overloading operations
+      if (currentState.posts == event.posts) {
+        return;
+      }
+
       yield currentState.copyWith(
         posts: event.posts.length < currentState.posts.length
             ? _mergePosts(currentState.posts, event.posts)

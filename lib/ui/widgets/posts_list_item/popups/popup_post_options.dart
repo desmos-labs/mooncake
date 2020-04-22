@@ -17,6 +17,7 @@ class PostOptionsPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Container(
         width: 150,
         padding: EdgeInsets.all(8),
@@ -52,6 +53,7 @@ class PostOptionsPopup extends StatelessWidget {
     Function action,
   }) {
     return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: action,
         child: Container(

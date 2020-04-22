@@ -1,12 +1,15 @@
-# Version 0.1.1 (Unreleased)
+# Version 0.2.0 (Unreleased)
 ## Changes
 - Added the possibility of reporting a post
 - Added the possibility of hiding a post
 - Added the possibility of scrolling past the latest 50 posts to load more
+- Added the possibility of logging out
+- Improved the colors of the dark mode
 
 ## Bug fixes
 - Fixed a bug that didn't allow to like or add a reaction to a post from within its detail screen
 - Fixed the splash screen colors
+- Fixed a bug that automatically made you log in after you uninstalled and re-installed the app
 
 # Version 0.1.0
 Version `0.1.0` brings a brand new UX and UI for a simplified usage of the application. Here is a sneak peek at what has changed with this version. 

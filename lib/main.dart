@@ -22,14 +22,7 @@ void main() async {
   await Logger.init();
 
   // Setup the dependency injection
-  final path = await getApplicationDocumentsDirectory();
-  await path.create(recursive: true);
-  final factory = createDatabaseFactoryIo(rootPath: path.path);
-  Injector.init(
-    accountDatabase: await factory.openDatabase("account.db"),
-    postsDatabase: await factory.openDatabase("posts.db"),
-    notificationDatabase: await factory.openDatabase("user.db"),
-  );
+  await _setupDependencyInjection();
 
   // Setup the Bloc delegate to observe transitions
   if (Foundation.kDebugMode) {
@@ -57,6 +50,18 @@ void main() async {
     // Dart errors to the dev console or Sentry depending on the environment.
     Logger.log(error, stackTrace: stackTrace);
   });
+}
+
+/// Setup the dependency injection.
+Future _setupDependencyInjection() async {
+  final path = await getApplicationDocumentsDirectory();
+  await path.create(recursive: true);
+  final factory = createDatabaseFactoryIo(rootPath: path.path);
+  Injector.init(
+    accountDatabase: await factory.openDatabase("account.db"),
+    postsDatabase: await factory.openDatabase("posts.db"),
+    notificationDatabase: await factory.openDatabase("user.db"),
+  );
 }
 
 void _runApp() {

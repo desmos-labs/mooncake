@@ -23,16 +23,10 @@ class PostContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        PostItemHeader(
-          key: PostsKeys.postItemHeader(post.id),
-          post: post,
-        ),
+        PostItemHeader(key: PostsKeys.postItemHeader(post.id), post: post),
         const SizedBox(height: PostsTheme.defaultPadding),
         if (post.message != null && post.message.isNotEmpty)
-          PostMessage(
-            key: PostsKeys.postItemMessage(post.id),
-            post: post,
-          ),
+          PostMessage(key: PostsKeys.postItemMessage(post.id), post: post),
         if (post.message != null && post.message.isNotEmpty)
           const SizedBox(height: PostsTheme.defaultPadding),
         if (post.images.isNotEmpty)

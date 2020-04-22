@@ -30,16 +30,11 @@ class HomeScreen extends StatelessWidget {
                   : PostsLocalizations.of(context).accountScreenTitle,
             ),
             backgroundColor: Colors.transparent,
-            textTheme: Theme.of(context).textTheme.copyWith(
-                  headline6: Theme.of(context).textTheme.headline6.copyWith(
-                        color: Theme.of(context).accentColor,
-                      ),
-                ),
             leading: IconButton(
               icon: Icon(Theme.of(context).brightness == Brightness.light
                   ? MooncakeIcons.lightbulb
                   : MooncakeIcons.lightbulbF),
-              color: Theme.of(context).accentColor,
+              tooltip: PostsLocalizations.of(context).brightnessButtonTooltip,
               onPressed: () {
                 DynamicTheme.of(context).setBrightness(
                     Theme.of(context).brightness == Brightness.dark
@@ -49,13 +44,21 @@ class HomeScreen extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                color: Theme.of(context).accentColor,
                 icon: Icon(MooncakeIcons.wallet),
+                tooltip: PostsLocalizations.of(context).walletButtonTooltip,
                 onPressed: () {
                   BlocProvider.of<NavigatorBloc>(context)
                       .add(NavigateToWallet());
                 },
-              )
+              ),
+              IconButton(
+                icon: Icon(MooncakeIcons.logout),
+                tooltip: PostsLocalizations.of(context).logoutButtonTooltip,
+                onPressed: () {
+                  BlocProvider.of<AccountBloc>(context).add(LogOut());
+                  BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
+                },
+              ),
             ],
           ),
           body: body,
