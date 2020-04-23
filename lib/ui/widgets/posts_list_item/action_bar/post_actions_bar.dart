@@ -11,6 +11,7 @@ class PostActionsBar extends StatelessWidget {
   static const ICON_SPACING = 12.0;
 
   final Post post;
+
   const PostActionsBar({Key key, @required this.post}) : super(key: key);
 
   @override
@@ -28,7 +29,10 @@ class PostActionsBar extends StatelessWidget {
                     isLiked: (state as LoggedIn).user.hasLiked(post),
                   ),
                   const SizedBox(width: ICON_SPACING),
-                  PostCommentAction(post: post),
+                  PostCommentAction(
+                    post: post,
+                    onTap: () => _openPostDetails(context),
+                  ),
                   const SizedBox(width: ICON_SPACING),
                   PostAddReactionAction(post: post),
                 ],
@@ -39,5 +43,10 @@ class PostActionsBar extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _openPostDetails(BuildContext context) {
+    BlocProvider.of<NavigatorBloc>(context)
+        .add(NavigateToPostDetails(context, post.id));
   }
 }

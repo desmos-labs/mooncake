@@ -26,6 +26,9 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.post.images?.isEmpty != false)
+      return Container();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[

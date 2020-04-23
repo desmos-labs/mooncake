@@ -7,11 +7,15 @@ import 'package:mooncake/ui/ui.dart';
 class PostCommentAction extends StatelessWidget {
   final Post post;
   final double size;
+  final bool showCount;
+  final Function onTap;
 
   const PostCommentAction({
     Key key,
     @required this.post,
     this.size = 24.0,
+    this.showCount = true,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -26,17 +30,25 @@ class PostCommentAction extends StatelessWidget {
             child: IconButton(
               padding: EdgeInsets.zero,
               icon: FaIcon(MooncakeIcons.comment, size: size),
-              onPressed: () => _onTap(context),
+              onPressed: onTap ?? () => _onTap(context),
             ),
           ),
-          if (comments.isNotEmpty) SizedBox(width: size / 4),
-          if (comments.isNotEmpty)
-            Text(
-              comments.length.toString(),
-              style: Theme.of(context).accentTextTheme.bodyText2,
-            ),
+          if (showCount && comments.isNotEmpty)
+            _commentsCount(context, comments)
         ],
       ),
+    );
+  }
+
+  Widget _commentsCount(BuildContext context, List<String> comments) {
+    return Row(
+      children: [
+        SizedBox(width: size / 4),
+        Text(
+          comments.length.toString(),
+          style: Theme.of(context).accentTextTheme.bodyText2,
+        ),
+      ],
     );
   }
 

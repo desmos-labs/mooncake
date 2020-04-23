@@ -5,11 +5,13 @@
 - Added the possibility of scrolling past the latest 50 posts to load more
 - Added the possibility of logging out
 - Improved the colors of the dark mode
+- Improved the comments UX while browsing through posts
 
 ## Bug fixes
 - Fixed a bug that didn't allow to like or add a reaction to a post from within its detail screen
 - Fixed the splash screen colors
 - Fixed a bug that automatically made you log in after you uninstalled and re-installed the app
+- Fixed a bug that didn't allow to show the images inside comments
 
 # Version 0.1.0
 Version `0.1.0` brings a brand new UX and UI for a simplified usage of the application. Here is a sneak peek at what has changed with this version. 

@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/widgets/posts_list_item/list_item_content/post_images_previewer.dart';
 
 /// Represents single item entry inside the list of post comments.
 class PostCommentItem extends StatelessWidget {
-  final iconSize = 20.0;
+  static const ICON_SIZE = 20.0;
 
   final Post comment;
-  PostCommentItem({
-    Key key,
-    @required this.comment,
-  }) : super(key: key);
+  PostCommentItem({Key key, @required this.comment}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +30,8 @@ class PostCommentItem extends StatelessWidget {
               const SizedBox(height: PostsTheme.defaultPadding),
               Text(comment.message),
               const SizedBox(height: PostsTheme.defaultPadding),
+              PostImagesPreviewer(post: comment),
+              const SizedBox(height: PostsTheme.defaultPadding),
               _commentActions(isLiked),
             ],
           ),
@@ -45,9 +45,9 @@ class PostCommentItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        PostCommentAction(size: iconSize, post: comment),
-        SizedBox(width: iconSize),
-        PostLikeAction(size: iconSize, isLiked: isLiked, post: comment),
+        PostCommentAction(size: ICON_SIZE, post: comment),
+        SizedBox(width: ICON_SIZE),
+        PostLikeAction(size: ICON_SIZE, isLiked: isLiked, post: comment),
       ],
     );
   }
