@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -7,15 +8,11 @@ import 'package:mooncake/ui/ui.dart';
 class PostCommentAction extends StatelessWidget {
   final Post post;
   final double size;
-  final bool showCount;
-  final Function onTap;
 
   const PostCommentAction({
     Key key,
     @required this.post,
     this.size = 24.0,
-    this.showCount = true,
-    this.onTap,
   }) : super(key: key);
 
   @override
@@ -30,10 +27,10 @@ class PostCommentAction extends StatelessWidget {
             child: IconButton(
               padding: EdgeInsets.zero,
               icon: FaIcon(MooncakeIcons.comment, size: size),
-              onPressed: onTap ?? () => _onTap(context),
+              onPressed: () => _onTap(context),
             ),
           ),
-          if (showCount && comments.isNotEmpty)
+          if (comments.isNotEmpty)
             _commentsCount(context, comments)
         ],
       ),
@@ -45,7 +42,7 @@ class PostCommentAction extends StatelessWidget {
       children: [
         SizedBox(width: size / 4),
         Text(
-          comments.length.toString(),
+          NumberFormat.compact().format(comments.length),
           style: Theme.of(context).accentTextTheme.bodyText2,
         ),
       ],

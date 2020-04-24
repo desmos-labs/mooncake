@@ -1,6 +1,7 @@
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mooncake/entities/emojis/export.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
@@ -20,20 +21,42 @@ class PostAddReactionAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reactions = post.reactions.where((e) => !e.isLike).toList();
     return SizedBox(
       height: size,
-      width: size,
-      child: IconButton(
-        padding: EdgeInsets.all(0.0),
-        iconSize: size,
-        icon: Icon(MooncakeIcons.reaction),
-        onPressed: () {
-          showEmojiPicker(
-            context: context,
-            onEmojiSelected: (emoji, _) => _onEmojiSelected(context, emoji),
-          );
-        },
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: size,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(MooncakeIcons.reaction, size: size),
+              onPressed: () => _onTap(context),
+            ),
+          ),
+          if (reactions.length > 0)
+            _reactionsCount(context, reactions)
+        ],
       ),
+    );
+  }
+
+  Widget _reactionsCount(BuildContext context, List<Reaction> reactions) {
+    return Row(
+      children: [
+        SizedBox(width: size / 4),
+        Text(
+          NumberFormat.compact().format(reactions.length),
+          style: Theme.of(context).accentTextTheme.bodyText2,
+        ),
+      ],
+    );
+  }
+
+  void _onTap(BuildContext context) {
+    showEmojiPicker(
+      context: context,
+      onEmojiSelected: (emoji, _) => _onEmojiSelected(context, emoji),
     );
   }
 

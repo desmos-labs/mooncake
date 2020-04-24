@@ -34,12 +34,12 @@ class TabSelector extends StatelessWidget {
             onPressed: () => _createRoute(context),
             shape: CircleBorder(),
             child: Container(
-              padding: EdgeInsets.all(2),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: ThemeColors.gradient,
               ),
-              child: Icon(MooncakeIcons.plus, size: 48),
+              child: Icon(MooncakeIcons.plus),
             ),
           ),
           BottomNavigationButton(

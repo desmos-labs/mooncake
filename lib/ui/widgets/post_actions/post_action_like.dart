@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -21,21 +22,40 @@ class PostLikeAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final icon = isLiked
-        ? Icon(MooncakeIcons.heartF)
-        : Icon(MooncakeIcons.heart);
+        ? Icon(MooncakeIcons.heartF, size: size)
+        : Icon(MooncakeIcons.heart, size: size);
 
     return SizedBox(
       height: size,
-      width: size,
-      child: IconButton(
-        padding: EdgeInsets.all(0.0),
-        iconSize: size,
-        icon: icon,
-        onPressed: () {
-          BlocProvider.of<PostsListBloc>(context)
-              .add(AddOrRemoveLike(post));
-        },
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: size,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: icon,
+              onPressed: () => _onPressed(context),
+            ),
+          ),
+          if (post.likes.isNotEmpty) _likesCount(context, post.likes)
+        ],
       ),
     );
+  }
+
+  Widget _likesCount(BuildContext context, List<Reaction> likes) {
+    return Row(
+      children: [
+        SizedBox(width: size / 4),
+        Text(
+          NumberFormat.compact().format(likes.length),
+          style: Theme.of(context).accentTextTheme.bodyText2,
+        ),
+      ],
+    );
+  }
+
+  void _onPressed(BuildContext context) {
+    BlocProvider.of<PostsListBloc>(context).add(AddOrRemoveLike(post));
   }
 }

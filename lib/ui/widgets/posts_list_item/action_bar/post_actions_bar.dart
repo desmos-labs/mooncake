@@ -8,7 +8,7 @@ import 'post_likes_counter.dart';
 /// Represents the action bar containing all the actions that can be performed
 /// from a single post.
 class PostActionsBar extends StatelessWidget {
-  static const ICON_SPACING = 12.0;
+  static const ICON_SPACING = 8.0;
 
   final Post post;
 
@@ -21,24 +21,28 @@ class PostActionsBar extends StatelessWidget {
         return Row(
           children: <Widget>[
             Expanded(
+              child: post.likes.length > 0
+                  ? PostLikesCounter(post: post)
+                  : Container(),
+            ),
+            Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  PostLikeAction(
-                    post: post,
-                    isLiked: (state as LoggedIn).user.hasLiked(post),
+                  Expanded(
+                    child: PostLikeAction(
+                      post: post,
+                      isLiked: (state as LoggedIn).user.hasLiked(post),
+                    ),
                   ),
                   const SizedBox(width: ICON_SPACING),
-                  PostCommentAction(
-                    post: post,
-                    onTap: () => _openPostDetails(context),
-                  ),
+                  Expanded(child: PostCommentAction(post: post)),
                   const SizedBox(width: ICON_SPACING),
-                  PostAddReactionAction(post: post),
+                  Expanded(child: PostAddReactionAction(post: post)),
                 ],
               ),
             ),
-            if (post.likes.length > 0) PostLikesCounter(post: post),
+
           ],
         );
       },

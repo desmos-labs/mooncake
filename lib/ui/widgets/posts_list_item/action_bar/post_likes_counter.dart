@@ -17,7 +17,8 @@ class PostLikesCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final likesCount = post.likes.length;
+    final likes = post.reactions;
+    final likesCount = likes.length;
 
     final double afterIconSize = iconSize * 0.75;
     double iconsWidth = 0.0;
@@ -34,13 +35,8 @@ class PostLikesCounter extends StatelessWidget {
     }
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(
-          PostsLocalizations.of(context).likesCount(likesCount),
-          style: Theme.of(context).textTheme.caption,
-        ),
-        if (likesCount > 0) const SizedBox(width: 8),
         Container(
           width: iconsWidth,
           height: iconSize,
@@ -52,7 +48,7 @@ class PostLikesCounter extends StatelessWidget {
                   child: UserAvatar(
                     border: 1,
                     size: iconSize - 2,
-                    user: post.likes[2].user,
+                    user: likes[2].user,
                   ),
                 ),
               if (likesCount > 1)
@@ -61,7 +57,7 @@ class PostLikesCounter extends StatelessWidget {
                   child: UserAvatar(
                     border: 1,
                     size: iconSize - 2,
-                    user: post.likes[1].user,
+                    user: likes[1].user,
                   ),
                 ),
               if (likesCount > 0)
@@ -70,7 +66,7 @@ class PostLikesCounter extends StatelessWidget {
                   child: UserAvatar(
                     size: iconSize - 2,
                     border: 1,
-                    user: post.likes[0].user,
+                    user: likes[0].user,
                   ),
                 ),
             ],

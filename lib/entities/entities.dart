@@ -1,4 +1,4 @@
-export 'package:alan/alan.dart' hide ChainHelper;
+export 'package:alan/alan.dart';
 
 export 'account/export.dart';
 export 'app/export.dart';
