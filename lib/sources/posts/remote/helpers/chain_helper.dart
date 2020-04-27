@@ -59,7 +59,7 @@ class ChainHelper {
     return TxHelper.sendTx(
       txData.messages,
       txData.wallet,
-      fee: StdFee(amount: [], gas: "500000"),
+      fee: StdFee(amount: [], gas: "200000"),
     );
   }
 

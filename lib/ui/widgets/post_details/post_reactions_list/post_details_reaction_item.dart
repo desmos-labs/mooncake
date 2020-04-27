@@ -26,7 +26,7 @@ class PostReactionItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: PostsTheme.defaultPadding),
-          Text(reaction.rune),
+          Text(reaction.value),
         ],
       ),
     );

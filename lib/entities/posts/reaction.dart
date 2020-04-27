@@ -13,41 +13,29 @@ class Reaction extends Equatable {
   @JsonKey(name: "user")
   final User user;
 
-  /// Represents the
+  /// Represents the Unicode character that identifies the emoji.
   @JsonKey(name: "value")
+  final String value;
+
+  /// Represents the shortcode that identifies the emoji.
   final String code;
 
-  /// Represents the Unicode character that identifies the emoji.
-  final String rune;
-
   /// Tells whether or not this reaction represents a like.
-  bool get isLike => code == Constants.LIKE_REACTION;
+  bool get isLike => value.replaceAll("️", "") == Constants.LIKE_REACTION;
 
   Reaction({
     @required this.user,
-    @required String code,
+    @required String value,
   })  : assert(user != null),
-        assert(code != null),
-        this.code = EmojiUtils.getEmojiCode(code),
-        this.rune = EmojiUtils.getEmojiRune(code);
+        assert(value != null),
+        this.value = EmojiUtils.getEmojiRune(value),
+        this.code = EmojiUtils.getEmojiCode(value);
 
   factory Reaction.fromJson(Map<String, dynamic> json) =>
       _$ReactionFromJson(json);
 
   @override
-  List<Object> get props => [this.user, this.code];
-
-  /// Allows to create a copy of this [Reaction] having either [user] or
-  /// [code] changed.
-  Reaction copyWith({
-    User user,
-    String code,
-  }) {
-    return Reaction(
-      user: user ?? this.user,
-      code: code ?? this.code,
-    );
-  }
+  List<Object> get props => [this.user, this.value];
 
   Map<String, dynamic> toJson() => _$ReactionToJson(this);
 }

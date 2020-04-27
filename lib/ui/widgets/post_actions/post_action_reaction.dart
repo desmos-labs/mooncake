@@ -7,14 +7,14 @@ import 'package:mooncake/ui/ui.dart';
 /// reaction or remove an existing one.
 class PostReactionAction extends StatelessWidget {
   final Post post;
-  final String reactionRune;
+  final String reactionValue;
   final String reactionCode;
   final int reactionCount;
 
   const PostReactionAction({
     Key key,
     @required this.post,
-    @required this.reactionRune,
+    @required this.reactionValue,
     @required this.reactionCode,
     @required this.reactionCount,
   }) : super(key: key);
@@ -25,7 +25,7 @@ class PostReactionAction extends StatelessWidget {
       builder: (BuildContext context, AccountState state) {
         final userReacted = post.reactions.containsFrom(
           (state as LoggedIn).user,
-          reactionCode,
+          reactionValue,
         );
         final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
               color: userReacted ? Theme.of(context).accentColor : null,
@@ -37,14 +37,14 @@ class PostReactionAction extends StatelessWidget {
           label: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(reactionRune),
+              Text(reactionValue),
               SizedBox(width: 8),
               Text(reactionCount.toString(), style: textStyle)
             ],
           ),
           onPressed: () {
             BlocProvider.of<PostsListBloc>(context)
-                .add(AddOrRemovePostReaction(post, reactionCode));
+                .add(AddOrRemovePostReaction(post, reactionValue));
           },
           shape: StadiumBorder(
             side: BorderSide(

@@ -7,15 +7,15 @@ void main() {
       final reactions = [
         Reaction(
           user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          code: ":+1:",
+          value: ":+1:",
         ),
         Reaction(
           user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          code: ":heart:",
+          value: ":heart:",
         ),
         Reaction(
           user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          code: ":watermelon:",
+          value: ":watermelon:",
         ),
       ];
 
@@ -37,15 +37,15 @@ void main() {
       final reactions = [
         Reaction(
           user: User(address: "desmos1gxhn7cs4v3wy2z5ff296qvyd3fzggw9dkk2rmd"),
-          code: ":+1:",
+          value: ":+1:",
         ),
         Reaction(
           user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          code: ":heart:",
+          value: ":heart:",
         ),
         Reaction(
           user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          code: ":watermelon:",
+          value: ":watermelon:",
         ),
       ];
       expect(reactions.containsFrom(account, ":+1:"), isFalse);
@@ -58,11 +58,11 @@ void main() {
       final reactions = [
         Reaction(
           user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          code: ":+1:",
+          value: ":+1:",
         ),
         Reaction(
           user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          code: ":heart:",
+          value: ":heart:",
         ),
       ];
 
@@ -76,19 +76,19 @@ void main() {
           user: User(
             address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
           ),
-          code: ":+1:",
+          value: ":+1:",
         ),
         Reaction(
           user: User(
             address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u",
           ),
-          code: ":heart:",
+          value: ":heart:",
         ),
         Reaction(
           user: User(
             address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
           ),
-          code: ":watermelon:",
+          value: ":watermelon:",
         ),
       ];
       expect(result, equals(expected));
@@ -100,19 +100,19 @@ void main() {
           user: User(
             address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
           ),
-          code: ":+1:",
+          value: ":+1:",
         ),
         Reaction(
           user: User(
             address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u",
           ),
-          code: ":heart:",
+          value: ":heart:",
         ),
         Reaction(
           user: User(
             address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
           ),
-          code: ":watermelon:",
+          value: ":watermelon:",
         ),
       ];
 
@@ -124,11 +124,11 @@ void main() {
       final expected = [
         Reaction(
           user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          code: ":+1:",
+          value: ":+1:",
         ),
         Reaction(
           user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          code: ":heart:",
+          value: ":heart:",
         ),
       ];
       expect(result, equals(expected));

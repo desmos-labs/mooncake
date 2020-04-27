@@ -15,7 +15,7 @@ extension ReactionsExt on List<Reaction> {
   /// the specified [reactionCode] from the specified [address].
   bool containsFromAddress(String address, String reactionCode) {
     return this.where((element) {
-      return element.user.address == address && element.code == reactionCode;
+      return element.user.address == address && element.value == reactionCode;
     }).isNotEmpty;
   }
 
@@ -41,11 +41,11 @@ extension ReactionsExt on List<Reaction> {
   List<Reaction> _removeFrom(MooncakeAccount account, String reactionCode) {
     return this.where((element) {
       return element.user.address != account.cosmosAccount.address ||
-          element.code != reactionCode;
+          element.value != reactionCode;
     }).toList();
   }
 
   List<Reaction> _addFrom(MooncakeAccount account, String reactionCode) {
-    return this + [Reaction(user: account.toUser(), code: reactionCode)];
+    return this + [Reaction(user: account.toUser(), value: reactionCode)];
   }
 }

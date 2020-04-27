@@ -50,7 +50,7 @@ class PostDetailsLoaded extends PostDetailsState {
   bool get isLiked => post.reactions
       .where((element) =>
           element.user.address == user.cosmosAccount.address &&
-          element.code == Constants.LIKE_REACTION)
+          element.value == Constants.LIKE_REACTION)
       .isNotEmpty;
 
   PostDetailsLoaded({

@@ -13,7 +13,7 @@ class MsgAddPostReaction extends StdMsg {
   @JsonKey(name: "post_id")
   final String postId;
 
-  @JsonKey(name: "value")
+  @JsonKey(name: "reaction")
   final String reaction;
 
   @JsonKey(name: "user")

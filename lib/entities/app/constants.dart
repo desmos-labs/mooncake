@@ -31,7 +31,7 @@ class Constants {
   );
 
   // Reactions
-  static const LIKE_REACTION = ":heart:";
+  static const LIKE_REACTION = "❤";
 }
 
 /// Contains the data of a notification channel (required for Android 8.0+).

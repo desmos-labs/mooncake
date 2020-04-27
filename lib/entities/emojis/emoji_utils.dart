@@ -12,6 +12,6 @@ class EmojiUtils {
   /// such emoji.
   static String getEmojiRune(String code) {
     final parser = EmojiParser();
-    return parser.emojify(code);
+    return parser.emojify(code).replaceAll("️", "");
   }
 }

@@ -60,7 +60,7 @@ class _PostReactionsListState extends State<PostReactionsList> {
               return PostReactionAction(
                 post: widget.post,
                 reactionCode: entry.key.code,
-                reactionRune: entry.key.rune,
+                reactionValue: entry.key.value,
                 reactionCount: entry.value,
               );
             }).toList(),

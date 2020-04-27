@@ -207,7 +207,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     if (currentState is PostsLoaded) {
       final newPost = await _managePostReactionsUseCase.addOrRemove(
         post: event.post,
-        reaction: event.reactionCode,
+        reaction: event.reaction,
       );
       final posts = currentState.posts
           .map((post) => post.id == newPost.id ? newPost : post)

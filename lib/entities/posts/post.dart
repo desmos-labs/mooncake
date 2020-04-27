@@ -116,7 +116,7 @@ class Post extends Equatable implements Comparable<Post> {
         this.reactions = reactions ?? [],
         this.reactionsCount = groupBy<Reaction, String>(
           (reactions ?? []).where((r) => !r.isLike).toList(),
-          (r) => r.rune,
+          (r) => r.value,
         ).map((rune, reactions) => MapEntry(reactions[0], reactions.length)),
         this.commentsIds = commentsIds ?? [];
 
