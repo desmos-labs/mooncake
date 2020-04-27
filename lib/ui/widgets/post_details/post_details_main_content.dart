@@ -63,11 +63,14 @@ class PostDetailsMainContent extends StatelessWidget {
                     ),
                   ];
                 },
-                body: TabBarView(
-                  children: <Widget>[
-                    PostCommentsList(comments: state.comments),
-                    PostReactionsList(),
-                  ],
+                body: Padding(
+                  padding: EdgeInsets.only(bottom: bottomBarHeight),
+                  child: TabBarView(
+                    children: <Widget>[
+                      PostCommentsList(comments: state.comments),
+                      PostReactionsList(),
+                    ],
+                  ),
                 ),
               ),
               Positioned(
