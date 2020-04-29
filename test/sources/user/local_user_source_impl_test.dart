@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
@@ -11,7 +11,7 @@ class MockSecureStorage extends Mock implements FlutterSecureStorage {}
 
 // Tests for the LocalUserSourceImpl class
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+
 
   // Temporary directory in which all the databases will be saved
   final tempDir = Directory("./tmp");

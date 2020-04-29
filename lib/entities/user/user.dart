@@ -14,7 +14,7 @@ class User extends Equatable {
 
   /// Represents the username of the user.
   /// Do not use this directly, use [screenName] instead.
-  @JsonKey(name: "username", nullable: true)
+  @JsonKey(name: "moniker", nullable: true)
   final String username;
 
   /// Returns `true` iff the username is not null and not empty.

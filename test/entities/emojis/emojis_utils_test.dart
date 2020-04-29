@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mooncake/entities/emojis/emoji_utils.dart';
 
 void main() {

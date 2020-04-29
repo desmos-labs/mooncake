@@ -59,6 +59,7 @@ dev_dependencies:
   json_serializable:
   mockito:
   mock_web_server:
+  test:
 
 flutter:
   uses-material-design: true

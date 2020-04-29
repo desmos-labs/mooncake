@@ -12,11 +12,13 @@ import 'converter.dart';
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
   // Database
-  final store = StoreRef.main();
-  final Database database;
+  final StoreRef _store = StoreRef.main();
+  final Database _database;
 
   /// Public constructor
-  LocalPostsSourceImpl({this.database}) : assert(database != null);
+  LocalPostsSourceImpl({@required Database database})
+      : assert(database != null),
+        _database = database;
 
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
@@ -33,9 +35,9 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       sortOrders: [SortOrder(Post.DATE_FIELD, false)],
     );
 
-    return store
+    return _store
         .query(finder: finder)
-        .onSnapshots(database)
+        .onSnapshots(_database)
         .asyncMap(PostsConverter.deserializePosts);
   }
 
@@ -55,31 +57,32 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Stream<List<Post>> homePostsStream(int limit) {
-    return store
+    return _store
         .query(finder: _homeFinder(limit))
-        .onSnapshots(database)
+        .onSnapshots(_database)
         .asyncMap(PostsConverter.deserializePosts);
+  }
+
+  Finder _postFinder(String postId) {
+    return Finder(filter: Filter.equals(Post.ID_FIELD, postId));
   }
 
   @override
   Stream<Post> singlePostStream(String postId) {
-    final finder = Finder(filter: Filter.equals(Post.ID_FIELD, postId));
-    return store
-        .query(finder: finder)
-        .onSnapshots(database)
+    return _store
+        .query(finder: _postFinder(postId))
+        .onSnapshots(_database)
         .asyncMap(PostsConverter.deserializePosts)
-        .map((event) => event?.isNotEmpty == true ? event[0] : null);
+        .map((event) => event.isEmpty ? null : event.first);
   }
 
   @override
   Future<Post> getSinglePost(String postId) async {
-    final finder = Finder(filter: Filter.equals(Post.ID_FIELD, postId));
-    final record = await store.findFirst(database, finder: finder);
-    if (record == null) {
-      return null;
-    }
-
-    return PostsConverter.deserializePost(record);
+    final record = await _store.findFirst(
+      _database,
+      finder: _postFinder(postId),
+    );
+    return record == null ? null : PostsConverter.deserializePost(record);
   }
 
   @override
@@ -91,7 +94,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       ]),
     );
 
-    final records = await store.find(database, finder: finder);
+    final records = await _store.find(_database, finder: finder);
     return PostsConverter.deserializePosts(records);
   }
 
@@ -107,15 +110,18 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Stream<List<Post>> getPostCommentsStream(String postId) {
-    return store
+    return _store
         .query(finder: _commentsFinder(postId))
-        .onSnapshots(database)
+        .onSnapshots(_database)
         .asyncMap(PostsConverter.deserializePosts);
   }
 
   @override
   Future<List<Post>> getPostComments(String postId) async {
-    final records = await store.find(database, finder: _commentsFinder(postId));
+    final records = await _store.find(
+      _database,
+      finder: _commentsFinder(postId),
+    );
     return PostsConverter.deserializePosts(records);
   }
 
@@ -134,22 +140,34 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       ]),
     );
 
-    final records = await store.find(database, finder: finder);
+    final records = await _store.find(_database, finder: finder);
     return PostsConverter.deserializePosts(records);
   }
 
   @override
   Future<void> savePost(Post post) async {
     final value = await PostsConverter.serializePost(post);
-    await database.transaction((txn) async {
-      await store.record(getPostKey(post)).put(txn, value);
+    await _database.transaction((txn) async {
+      await _store.record(getPostKey(post)).put(txn, value);
     });
   }
 
-  void _mergePosts(List<Post> existingPosts, List<Post> newPosts) {
-    for (int index = 0; index < newPosts.length; index++) {
+  /// Takes a list of [existingPosts] and a list of [newPosts], and merges
+  /// them together.
+  /// Merging means that the reactions and comments ids will be unified, but
+  /// all the other information will be taken from the [newPosts] list elements.
+  ///
+  /// The two lists should have the same length, and for each `i`,
+  /// then `newPosts[i]` should represent the same post as `existingPosts[i]`.
+  /// If [existingPosts] does not contain al posts present inside [newPosts],
+  /// then the associated post can be null.
+  @visibleForTesting
+  List<Post> mergePosts(List<Post> existingPosts, List<Post> newPosts) {
+    final merged = List<Post>()..addAll(newPosts);
+
+    for (int index = 0; index < merged.length; index++) {
       final existing = existingPosts[index];
-      final updated = newPosts[index];
+      final updated = merged[index];
 
       Set<Reaction> reactions = updated.reactions.toSet();
       if (existing?.reactions != null) {
@@ -161,28 +179,30 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         commentIds.addAll(existing.commentsIds);
       }
 
-      newPosts[index] = updated.copyWith(
+      merged[index] = updated.copyWith(
         status: existing?.status,
         reactions: reactions.toList(),
         commentsIds: commentIds.toList(),
       );
     }
+
+    return merged;
   }
 
   @override
   Future<void> savePosts(List<Post> posts, {bool merge = false}) async {
     final keys = posts.map((e) => getPostKey(e)).toList();
 
-    await database.transaction((txn) async {
+    await _database.transaction((txn) async {
       if (merge) {
         final existingValues = await PostsConverter.deserializePosts(
-          await store.records(keys).get(txn),
+          await _store.records(keys).get(txn),
         );
-        _mergePosts(existingValues, posts);
+        posts = mergePosts(existingValues, posts);
       }
 
       final values = await PostsConverter.serializePosts(posts);
-      await store.records(keys).put(txn, values);
+      await _store.records(keys).put(txn, values);
     });
   }
 }
