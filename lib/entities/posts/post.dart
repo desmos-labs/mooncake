@@ -127,7 +127,7 @@ class Post extends Equatable implements Comparable<Post> {
 
   /// Tells if this post has a valid parent post or not.
   bool get hasParent {
-    return parentId != null && parentId.trim().isNotEmpty && parentId != "0";
+    return parentId != null && parentId.trim().isNotEmpty;
   }
 
   /// Returns only the list of images.

@@ -44,7 +44,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       filter: Filter.and([
         Filter.or([
           Filter.equals(Post.PARENT_ID_FIELD, null),
-          Filter.equals(Post.PARENT_ID_FIELD, "0"),
+          Filter.equals(Post.PARENT_ID_FIELD, ""),
         ]),
         Filter.equals(Post.HIDDEN_FIELD, false),
       ]),
