@@ -1,9 +1,9 @@
-import 'package:test/test.dart';
 import 'package:intl/intl.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:test/test.dart';
 
 void main() {
   Database database;
@@ -14,10 +14,6 @@ void main() {
     database = await factory.openDatabase(DateTime.now().toIso8601String());
     source = LocalPostsSourceImpl(database: database);
   });
-
-  void checkStreamDoesNotEmit(Stream stream) {
-    stream.listen((_) => throw Exception("No item should be emitted"));
-  }
 
   /// Allows to crete a mock post having the given id.
   Post _createPost(String id) {
@@ -32,6 +28,9 @@ void main() {
 
   /// Stores the given list of posts into the database.
   Future<void> _storePosts(List<Post> posts) async {
+    // Filter null elements out
+    posts = posts.where((element) => element != null).toList();
+
     final store = StoreRef.main();
     final keys = posts.map((e) => source.getPostKey(e)).toList();
     final values = posts.map((e) => e.toJson()).toList();
@@ -254,18 +253,117 @@ void main() {
     final merged = source.mergePosts(existingPosts, newPosts);
     expect(newPosts, hasLength(3));
 
-    expect(merged[0].commentsIds, ["5", "9", "2", "3"]);
-    expect(
-      merged[0].reactions,
-      [Reaction(value: ":grin:", user: User.fromAddress("user"))],
+    final expected0 = newPosts[0].copyWith(
+      commentsIds: ["5", "9", "2", "3"],
+      reactions: [Reaction(value: ":grin:", user: User.fromAddress("user"))],
     );
+    expect(merged[0], equals(expected0));
 
-    expect(merged[1], isNotNull);
+    final expected1 = newPosts[1];
+    expect(merged[1], equals(expected1));
 
-    expect(merged[2].commentsIds, ["20", "21"]);
-    expect(merged[2].reactions, [
-      Reaction(value: ":heart:", user: User.fromAddress("another-user")),
-      Reaction(value: ":smile:", user: User.fromAddress("address")),
-    ]);
+    final expected2 = newPosts[2].copyWith(
+      commentsIds: ["20", "21"],
+      reactions: [
+        Reaction(value: ":heart:", user: User.fromAddress("another-user")),
+        Reaction(value: ":smile:", user: User.fromAddress("address")),
+      ],
+    );
+    expect(merged[2], equals(expected2));
+  });
+
+  test('savePosts saves the data properly with merge false', () async {
+    final existingPosts = [
+      _createPost("1").copyWith(
+        commentsIds: ["2", "3"],
+      ),
+      null,
+      _createPost("10").copyWith(
+        commentsIds: ["20"],
+        reactions: [
+          Reaction(value: ":smile:", user: User.fromAddress("address")),
+        ],
+      )
+    ];
+    await _storePosts(existingPosts);
+
+    final newPosts = [
+      existingPosts[0].copyWith(
+        commentsIds: ["5", "9"],
+        reactions: [
+          Reaction(value: ":grin:", user: User.fromAddress("user")),
+        ],
+      ),
+      existingPosts[2].copyWith(
+        commentsIds: ["20", "21"],
+        reactions: [
+          Reaction(value: ":heart:", user: User.fromAddress("another-user")),
+        ],
+      ),
+      _createPost("2"),
+    ];
+    await source.savePosts(newPosts, merge: false);
+
+    final store = StoreRef.main();
+    final stored = (await store.find(database))
+        .map((e) => Post.fromJson(e.value))
+        .toList();
+    expect(stored, equals(newPosts));
+  });
+
+  test('savePosts saves the data properly with merge true', () async {
+    final existingPosts = [
+      _createPost("1").copyWith(
+        commentsIds: ["2", "3"],
+      ),
+      null,
+      _createPost("10").copyWith(
+        commentsIds: ["20"],
+        reactions: [
+          Reaction(value: ":smile:", user: User.fromAddress("address")),
+        ],
+      )
+    ];
+    await _storePosts(existingPosts);
+
+    final newPosts = [
+      existingPosts[0].copyWith(
+        commentsIds: ["5", "9"],
+        reactions: [
+          Reaction(value: ":grin:", user: User.fromAddress("user")),
+        ],
+      ),
+      existingPosts[2].copyWith(
+        commentsIds: ["20", "21"],
+        reactions: [
+          Reaction(value: ":heart:", user: User.fromAddress("another-user")),
+        ],
+      ),
+      _createPost("2"),
+    ];
+    await source.savePosts(newPosts, merge: true);
+
+    final store = StoreRef.main();
+    final stored = (await store.find(database))
+        .map((e) => Post.fromJson(e.value))
+        .toList();
+
+    final expected = [
+      newPosts[0].copyWith(
+        commentsIds: ["5", "9", "2", "3"],
+        reactions: [
+          Reaction(value: ":grin:", user: User.fromAddress("user")),
+        ],
+      ),
+      newPosts[1].copyWith(
+        commentsIds: ["20", "21"],
+        reactions: [
+          Reaction(value: ":heart:", user: User.fromAddress("another-user")),
+          Reaction(value: ":smile:", user: User.fromAddress("address")),
+        ],
+      ),
+      newPosts[2],
+    ];
+    expect(stored, equals(expected));
   });
 }

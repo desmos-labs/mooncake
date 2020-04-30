@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:test/test.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/sources/posts/export.dart';
-
-import '../../mocks/posts.dart';
+import 'package:mooncake/sources/sources.dart';
+import 'package:test/test.dart';
 
 class MockWallet extends Mock implements Wallet {
   @override
@@ -14,14 +12,36 @@ class MockWallet extends Mock implements Wallet {
 void main() {
   final converter = MsgConverter();
 
+  /// Allows to crete a mock post having the given id.
+  Post _createPost(String id) {
+    return Post(
+      id: id,
+      message: id,
+      created: DateFormat(Post.DATE_FORMAT).format(DateTime.now()),
+      subspace: id,
+      owner: User.fromAddress(id),
+    );
+  }
+
   test('convertPostsToMsg', () {
     final wallet = MockWallet();
+
+    final testPosts = [
+      _createPost("1"),
+      _createPost("2"),
+      _createPost("3"),
+    ];
 
     final posts = [
       testPosts[0],
       testPosts[1].copyWith(
         reactions: testPosts[1].reactions +
-            [Reaction(owner: wallet.bech32Address, value: "🤎")],
+            [
+              Reaction(
+                user: User.fromAddress(wallet.bech32Address),
+                value: "🤎",
+              )
+            ],
       ),
       testPosts[2],
     ];
@@ -30,7 +50,12 @@ void main() {
       testPosts[1],
       testPosts[2].copyWith(
         reactions: testPosts[2].reactions +
-            [Reaction(owner: wallet.bech32Address, value: "💗")],
+            [
+              Reaction(
+                user: User.fromAddress(wallet.bech32Address),
+                value: "💗",
+              )
+            ],
       ),
     ];
 
@@ -39,13 +64,14 @@ void main() {
     // The third post has a reaction that should be deleted
     final expected = [
       MsgCreatePost(
-        parentId: "0",
-        message: "Hello dreamers! ✨",
-        allowsComments: true,
-        subspace: "desmos",
-        optionalData: null,
+        parentId: testPosts[0].parentId,
+        message: testPosts[0].message,
+        allowsComments: testPosts[0].allowsComments,
+        subspace: testPosts[0].subspace,
         creator: wallet.bech32Address,
-        creationDate: "2020-01-21T13:16:10.123Z",
+        creationDate: testPosts[0].created,
+        optionalData: null, // Optional data should be null if empty
+        medias: null, // Medias should be null if empty
       ),
       MsgAddPostReaction(
         user: wallet.bech32Address,

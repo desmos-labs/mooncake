@@ -51,22 +51,27 @@ class MsgCreatePost extends StdMsg {
         assert(creationDate != null);
 
   @override
-  List<Object> get props => [
-        parentId,
-        message,
-        allowsComments,
-        subspace,
-        optionalData,
-        creator,
-        creationDate,
-        medias,
-      ];
+  List<Object> get props {
+    return [
+      parentId,
+      message,
+      allowsComments,
+      subspace,
+      optionalData,
+      creator,
+      creationDate,
+      medias,
+    ];
+  }
 
   @override
-  Map<String, dynamic> asJson() => _$MsgCreatePostToJson(this);
+  Map<String, dynamic> asJson() {
+    return _$MsgCreatePostToJson(this);
+  }
 
-  factory MsgCreatePost.fromJson(Map<String, dynamic> json) =>
-      _$MsgCreatePostFromJson(json);
+  factory MsgCreatePost.fromJson(Map<String, dynamic> json) {
+    return _$MsgCreatePostFromJson(json);
+  }
 
   @override
   Exception validate() {
@@ -91,5 +96,19 @@ class MsgCreatePost extends StdMsg {
     }
 
     return null;
+  }
+
+  @override
+  String toString() {
+    return 'MsgCreatePost { '
+        'parentId: $parentId, '
+        'message: $message, '
+        'allowsComments: $allowsComments, '
+        'subspace: $subspace, '
+        'optionalData: $optionalData, '
+        'creator: $creator, '
+        'creationDate: $creationDate, '
+        'medias: $medias '
+        '}';
   }
 }

@@ -11,7 +11,6 @@ import 'converter.dart';
 
 /// Implementation of [LocalPostsSource] that deals with local data.
 class LocalPostsSourceImpl implements LocalPostsSource {
-  // Database
   final StoreRef _store = StoreRef.main();
   final Database _database;
 
@@ -41,6 +40,8 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         .asyncMap(PostsConverter.deserializePosts);
   }
 
+  /// Given a [limit], returns the [Finder] that should be used to get
+  /// the home posts returning a list of the [limit] size.
   Finder _homeFinder(int limit) {
     return Finder(
       filter: Filter.and([
@@ -63,6 +64,8 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         .asyncMap(PostsConverter.deserializePosts);
   }
 
+  /// Given a [postId], returns the [Finder] that should be used to filter
+  /// the posts and find the one having the given id.
   Finder _postFinder(String postId) {
     return Finder(filter: Filter.equals(Post.ID_FIELD, postId));
   }
@@ -98,6 +101,8 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     return PostsConverter.deserializePosts(records);
   }
 
+  /// Given a [postId] returns the [Finder] that should be used in order
+  /// to get all the comments for the post having such id.
   Finder _commentsFinder(String postId) {
     return Finder(
       filter: Filter.and([
