@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:intl/intl.dart';
 import 'package:mooncake/entities/entities.dart';
 
@@ -18,7 +18,7 @@ void main() {
   });
 
   test('hasParent', () {
-    expect(stdPost.copyWith(parentId: "0").hasParent, isFalse);
+    expect(stdPost.copyWith(parentId: "").hasParent, isFalse);
     expect(stdPost.copyWith(parentId: null).hasParent, isFalse);
     expect(stdPost.copyWith(parentId: "1").hasParent, isTrue);
   });

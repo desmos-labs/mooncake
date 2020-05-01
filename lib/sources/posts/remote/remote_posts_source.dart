@@ -22,35 +22,18 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   /// Public constructor
   RemotePostsSourceImpl({
-    @required String graphQlEndpoint,
+    @required GraphQLClient graphQLClient,
     @required ChainHelper chainHelper,
     @required LocalUserSource userSource,
     @required MsgConverter msgConverter,
-  })  : assert(graphQlEndpoint != null),
+  })  : assert(graphQLClient != null),
+        _gqlClient = graphQLClient,
         assert(userSource != null),
         _userSource = userSource,
         assert(chainHelper != null),
         _chainHelper = chainHelper,
         assert(msgConverter != null),
-        _msgConverter = msgConverter {
-    // Init GraphQL
-    _initGql(graphQlEndpoint);
-  }
-
-  /// Initializes the GraphQL clients properly so that they can be
-  /// queried using [_gqlClient] and new posts will be retrieved using
-  /// the [postsStream].
-  void _initGql(String graphQlEndpoint) {
-    // Init the query client
-    _gqlClient = GraphQLClient(
-      link: HttpLink(uri: "https://$graphQlEndpoint"),
-      cache: InMemoryCache(),
-    );
-    _wsClient = GraphQLClient(
-      link: WebSocketLink(url: "wss://$graphQlEndpoint"),
-      cache: InMemoryCache(),
-    );
-  }
+        _msgConverter = msgConverter;
 
   @override
   Future<List<Post>> getHomePosts({

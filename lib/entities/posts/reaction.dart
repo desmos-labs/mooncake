@@ -38,4 +38,9 @@ class Reaction extends Equatable {
   List<Object> get props => [this.user, this.value];
 
   Map<String, dynamic> toJson() => _$ReactionToJson(this);
+
+  @override
+  String toString() {
+    return 'Reaction { value: $value }';
+  }
 }

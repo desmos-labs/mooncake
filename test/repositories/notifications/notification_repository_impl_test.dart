@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/notifications/notifications_repository_impl.dart';

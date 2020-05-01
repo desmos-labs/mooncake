@@ -1,6 +1,7 @@
 import 'package:dependencies/dependencies.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:graphql/client.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
@@ -53,11 +54,15 @@ class SourcesModule implements Module {
               ))
       ..bindLazySingleton<RemotePostsSource>(
           (injector, params) => RemotePostsSourceImpl(
-                graphQlEndpoint: _gqlEndpoint,
+                graphQLClient: GraphQLClient(
+                  link: HttpLink(uri: "https://$_gqlEndpoint")
+                      .concat(WebSocketLink(url: "wss://$_gqlEndpoint")),
+                  cache: InMemoryCache(),
+                ),
                 chainHelper: injector.get(),
                 userSource: injector.get(),
                 msgConverter: MsgConverter(),
-              ))
+              ),)
       // Notifications source
       ..bindLazySingleton<RemoteNotificationsSource>(
           (injector, params) => RemoteNotificationsSourceImpl(

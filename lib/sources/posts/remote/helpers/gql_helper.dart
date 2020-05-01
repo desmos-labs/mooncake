@@ -33,6 +33,7 @@ class GqlHelper {
   subspace
   created
   last_edited
+  allows_comments
   media: medias {
     uri
     mime_type

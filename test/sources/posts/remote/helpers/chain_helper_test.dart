@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -26,7 +26,10 @@ void main() {
     // Clean the dispatcher to avoid cross-testing conflicts
     server.dispatcher = null;
 
-    chainHelper = ChainHelper(lcdEndpoint: server.url);
+    chainHelper = ChainHelper(
+      ipfsEndpoint: server.url,
+      lcdEndpoint: server.url,
+    );
   });
 
   group('queryChainRaw', () {
@@ -147,6 +150,7 @@ void main() {
           optionalData: {},
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
+          medias: null,
         ),
       ];
       final data = TxData(msgs, wallet);
@@ -190,11 +194,13 @@ void main() {
           optionalData: {},
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
+          medias: null,
         ),
       ];
       final data = TxData(msgs, wallet);
-      final result = await ChainHelper.sendTxBackground(data);
-      expect(result.success, isTrue);
+      expect(() async {
+        await ChainHelper.sendTxBackground(data);
+      }, throwsException);
     });
   });
 
@@ -256,6 +262,7 @@ void main() {
           optionalData: {},
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
+          medias: null,
         ),
       ];
       expect(chainHelper.sendTx(msgs, wallet), throwsException);
@@ -274,7 +281,7 @@ void main() {
       // ignore: missing_return
       server.dispatcher = (HttpRequest request) async {
         final url = request.uri.toString();
-        if (url.contains("/auth/account")) {
+        if (url.contains("/auth/accounts")) {
           return MockResponse()
             ..httpCode = 200
             ..body = accountContents;
@@ -298,10 +305,12 @@ void main() {
           optionalData: {},
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
+          medias: null,
         ),
       ];
-      final result = await chainHelper.sendTx(msgs, wallet);
-      expect(result.success, isTrue);
+      expect(() async {
+        await chainHelper.sendTx(msgs, wallet);
+      }, throwsException);
     });
   });
 }

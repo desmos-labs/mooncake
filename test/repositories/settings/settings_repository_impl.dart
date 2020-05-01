@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/repositories/settings/settings_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';

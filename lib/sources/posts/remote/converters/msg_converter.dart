@@ -14,7 +14,7 @@ class ReactionData {
 class MsgConverter {
   /// Converts the given [post] into a [MsgCreatePost] allowing it
   /// to store such post into the chain.
-  MsgCreatePost toMsgCreatePost(Post post, String creator) {
+  MsgCreatePost _toMsgCreatePost(Post post, String creator) {
     return MsgCreatePost(
       parentId: post.parentId ?? "0",
       message: post.message ?? "",
@@ -82,7 +82,7 @@ class MsgConverter {
 
     final List<StdMsg> messages = [];
     messages.addAll(postsToCreate
-        .map((post) => toMsgCreatePost(post, wallet.bech32Address))
+        .map((post) => _toMsgCreatePost(post, wallet.bech32Address))
         .toList());
 
     messages.addAll(reactionsToAdd

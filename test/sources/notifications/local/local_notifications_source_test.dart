@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
@@ -11,7 +11,8 @@ void main() {
   LocalNotificationsSourceImpl source;
 
   setUp(() async {
-    database = await databaseFactoryIo.openDatabase("notifications.db");
+    database =
+        await databaseFactoryIo.openDatabase(DateTime.now().toIso8601String());
     source = LocalNotificationsSourceImpl(database: database);
   });
 

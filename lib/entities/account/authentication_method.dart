@@ -51,14 +51,19 @@ abstract class AuthenticationMethod extends Equatable {
 class BiometricAuthentication extends AuthenticationMethod {
   BiometricAuthentication() : super(type: AuthenticationMethod.TYPE_BIOMETRICS);
 
-  factory BiometricAuthentication.fromJson(Map<String, dynamic> json) =>
-      _$BiometricAuthenticationFromJson(json);
+  factory BiometricAuthentication.fromJson(Map<String, dynamic> json) {
+    return _$BiometricAuthenticationFromJson(json);
+  }
 
   @override
-  List<Object> get props => super.props + [];
+  List<Object> get props {
+    return super.props + [];
+  }
 
   @override
-  Map<String, dynamic> asJson() => _$BiometricAuthenticationToJson(this);
+  Map<String, dynamic> asJson() {
+    return _$BiometricAuthenticationToJson(this);
+  }
 }
 
 /// Represents the authentication method that consists of a password.
@@ -73,12 +78,17 @@ class PasswordAuthentication extends AuthenticationMethod {
   })  : assert(hashedPassword != null),
         super(type: AuthenticationMethod.TYPE_PASSWORD);
 
-  factory PasswordAuthentication.fromJson(Map<String, dynamic> json) =>
-      _$PasswordAuthenticationFromJson(json);
+  factory PasswordAuthentication.fromJson(Map<String, dynamic> json) {
+    return _$PasswordAuthenticationFromJson(json);
+  }
 
   @override
-  Map<String, dynamic> asJson() => _$PasswordAuthenticationToJson(this);
+  Map<String, dynamic> asJson() {
+    return _$PasswordAuthenticationToJson(this);
+  }
 
   @override
-  List<Object> get props => super.props + [hashedPassword];
+  List<Object> get props {
+    return super.props + [hashedPassword];
+  }
 }
