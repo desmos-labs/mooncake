@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:mooncake/entities/account/export.dart';
 import 'package:test/test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:mockito/mockito.dart';
@@ -23,6 +24,8 @@ void main() {
     server.dispatcher = null;
 
     chainHelper = ChainHelperMock();
+    when(chainHelper.lcdEndpoint).thenReturn(server.url);
+
     source = RemoteUserSourceImpl(
       chainHelper: chainHelper,
       faucetEndpoint: server.url,
@@ -35,7 +38,7 @@ void main() {
       when(chainHelper.queryChain(any))
           .thenAnswer((_) => Future.value(response));
 
-      expect(await source.getAccountData(""), isNull);
+      expect(await source.getAccount(""), isNull);
     });
 
     test('returns valid data with correct response', () async {
@@ -45,22 +48,28 @@ void main() {
       when(chainHelper.queryChain(any))
           .thenAnswer((_) => Future.value(accountResponse));
 
-      final account = await source.getAccountData("");
+      final account = await source
+          .getAccount("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");
       expect(account, isNotNull);
-      expect(account.address, "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");
-      expect(account.sequence, 39);
-      expect(account.accountNumber, 54);
-      expect(account.coins, [StdCoin(amount: "10000000", denom: "udaric")]);
+      expect(account.cosmosAccount.address,
+          "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");
+      expect(account.cosmosAccount.sequence, 39);
+      expect(account.cosmosAccount.accountNumber, 54);
+      expect(account.cosmosAccount.coins,
+          [StdCoin(amount: "10000000", denom: "udaric")]);
     });
   });
 
   group('fundAccount', () {
-    final account = AccountData(
-      address: "address",
-      sequence: 0,
-      accountNumber: 0,
-      coins: [],
-    );
+    final account = MooncakeAccount(
+        avatarUrl: null,
+        username: null,
+        cosmosAccount: CosmosAccount(
+          address: "address",
+          sequence: 0,
+          accountNumber: 0,
+          coins: [],
+        ));
 
     test('completes successfully if no exception is thrown', () async {
       server.dispatcher = (HttpRequest request) async {
