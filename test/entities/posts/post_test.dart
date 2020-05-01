@@ -18,7 +18,7 @@ void main() {
   });
 
   test('hasParent', () {
-    expect(stdPost.copyWith(parentId: "0").hasParent, isFalse);
+    expect(stdPost.copyWith(parentId: "").hasParent, isFalse);
     expect(stdPost.copyWith(parentId: null).hasParent, isFalse);
     expect(stdPost.copyWith(parentId: "1").hasParent, isTrue);
   });

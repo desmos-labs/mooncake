@@ -70,15 +70,19 @@ class ChainHelper {
   /// the raw body response.
   /// If an exception is thrown, returns `null`.
   Future<Map<String, dynamic>> queryChainRaw(String endpoint) async {
-    final result = await compute(
-      QueryHelper.queryChain,
-      _lcdEndpoint + endpoint,
-    );
-    if (!result.isSuccessful) {
-      print(result.error);
+    try {
+      final result = await compute(
+        QueryHelper.queryChain,
+        _lcdEndpoint + endpoint,
+      );
+      if (!result.isSuccessful) {
+        print(result.error);
+        return null;
+      }
+      return result.value;
+    } catch (e) {
       return null;
     }
-    return result.value;
   }
 
   /// Utility method to easily query any chain endpoint and

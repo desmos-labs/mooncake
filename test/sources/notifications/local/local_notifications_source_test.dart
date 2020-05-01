@@ -11,7 +11,8 @@ void main() {
   LocalNotificationsSourceImpl source;
 
   setUp(() async {
-    database = await databaseFactoryIo.openDatabase("notifications.db");
+    database =
+        await databaseFactoryIo.openDatabase(DateTime.now().toIso8601String());
     source = LocalNotificationsSourceImpl(database: database);
   });
 

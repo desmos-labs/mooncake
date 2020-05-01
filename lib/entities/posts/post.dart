@@ -94,7 +94,7 @@ class Post extends Equatable implements Comparable<Post> {
 
   Post({
     @required this.id,
-    this.parentId = "0",
+    this.parentId = "",
     @required this.message,
     @required this.created,
     this.lastEdited,

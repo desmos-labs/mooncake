@@ -3,92 +3,74 @@ import 'package:mooncake/entities/entities.dart';
 
 void main() {
   group('containsFrom', () {
-    test('should return true', () {
-      final reactions = [
-        Reaction(
-          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: ":+1:",
-        ),
-        Reaction(
-          user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          value: ":heart:",
-        ),
-        Reaction(
-          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: ":watermelon:",
-        ),
-      ];
+    final account = MooncakeAccount.local(
+      "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
+    );
+    final reactions = [
+      Reaction(
+        user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+        value: "👍",
+      ),
+      Reaction(
+        user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
+        value: "❤",
+      ),
+      Reaction(
+        user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+        value: "🍉",
+      ),
+    ];
 
-      final account = MooncakeAccount.local(
-        "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
-      );
-      expect(reactions.containsFrom(account, ":+1:"), isTrue);
-      expect(reactions.containsFrom(account, ":watermelon:"), isTrue);
+    test('should return true', () {
+      expect(reactions.containsFrom(account, "👍"), isTrue);
+      expect(reactions.containsFrom(account, "🍉"), isTrue);
     });
 
-    test('should return false', () {
-      final account = MooncakeAccount.local(
-        "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
-      );
-
+    test('should return false with empty list', () {
       final emptyReactions = List<Reaction>();
-      expect(emptyReactions.containsFrom(account, ":+1:"), isFalse);
+      expect(emptyReactions.containsFrom(account, "🍉"), isFalse);
+    });
 
-      final reactions = [
-        Reaction(
-          user: User(address: "desmos1gxhn7cs4v3wy2z5ff296qvyd3fzggw9dkk2rmd"),
-          value: ":+1:",
-        ),
-        Reaction(
-          user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          value: ":heart:",
-        ),
-        Reaction(
-          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: ":watermelon:",
-        ),
-      ];
-      expect(reactions.containsFrom(account, ":+1:"), isFalse);
-      expect(reactions.containsFrom(account, ":non-existing:"), isFalse);
+    test('should return false with wrong reaction or account', () {
+      expect(reactions.containsFrom(account, "✔"), isFalse);
+      expect(
+        reactions.containsFrom(MooncakeAccount.local("address"), "👍"),
+        isFalse,
+      );
     });
   });
 
   group('removeOrAdd', () {
-    test('shouldBeAdded', () {
-      final reactions = [
-        Reaction(
-          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: ":+1:",
-        ),
-        Reaction(
-          user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          value: ":heart:",
-        ),
-      ];
+    final account = MooncakeAccount.local(
+      "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
+    );
 
-      final account = MooncakeAccount.local(
-        "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
-      );
-      final result = reactions.removeOrAdd(account, ":watermelon:");
+    final reactions = [
+      Reaction(
+        user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+        value: "👍",
+      ),
+      Reaction(
+        user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
+        value: "❤",
+      ),
+    ];
+
+    test('shouldBeAdded', () {
+      final result = reactions.removeOrAdd(account, "🍉");
 
       final expected = [
         Reaction(
-          user: User(
-            address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
-          ),
-          value: ":+1:",
+          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+          value: "👍",
         ),
         Reaction(
-          user: User(
-            address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u",
-          ),
-          value: ":heart:",
+          user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
+          value: "❤",
         ),
         Reaction(
-          user: User(
-            address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
-          ),
-          value: ":watermelon:",
+          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+          value: "🍉",
         ),
       ];
       expect(result, equals(expected));
@@ -97,38 +79,32 @@ void main() {
     test('shouldBeRemoved', () {
       final reactions = [
         Reaction(
-          user: User(
-            address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
-          ),
-          value: ":+1:",
+          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+          value: "👍",
         ),
         Reaction(
-          user: User(
-            address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u",
-          ),
-          value: ":heart:",
+          user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
+          value: "❤",
         ),
         Reaction(
-          user: User(
-            address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
-          ),
-          value: ":watermelon:",
+          user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+          value: "🍉",
         ),
       ];
 
       final account = MooncakeAccount.local(
         "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
       );
-      final result = reactions.removeOrAdd(account, ":watermelon:");
+      final result = reactions.removeOrAdd(account, "🍉");
 
       final expected = [
         Reaction(
           user: User(address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: ":+1:",
+          value: "👍",
         ),
         Reaction(
           user: User(address: "desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          value: ":heart:",
+          value: "❤",
         ),
       ];
       expect(result, equals(expected));

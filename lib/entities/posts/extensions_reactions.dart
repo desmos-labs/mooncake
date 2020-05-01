@@ -6,16 +6,16 @@ import 'package:mooncake/entities/entities.dart';
 /// adding/removing one.
 extension ReactionsExt on List<Reaction> {
   /// Returns `true` if this list of reactions already contains one having
-  /// the specified [reactionCode] from the specified [account].
-  bool containsFrom(MooncakeAccount account, String reactionCode) {
-    return containsFromAddress(account.cosmosAccount.address, reactionCode);
+  /// the specified [reaction] from the specified [account].
+  bool containsFrom(MooncakeAccount account, String reaction) {
+    return containsFromAddress(account.cosmosAccount.address, reaction);
   }
 
   /// Returns `true` if this list of reactions already contains one having
-  /// the specified [reactionCode] from the specified [address].
-  bool containsFromAddress(String address, String reactionCode) {
+  /// the specified [reaction] from the specified [address].
+  bool containsFromAddress(String address, String reaction) {
     return this.where((element) {
-      return element.user.address == address && element.value == reactionCode;
+      return element.user.address == address && element.value == reaction;
     }).isNotEmpty;
   }
 
@@ -38,14 +38,14 @@ extension ReactionsExt on List<Reaction> {
     return reactions;
   }
 
-  List<Reaction> _removeFrom(MooncakeAccount account, String reactionCode) {
+  List<Reaction> _removeFrom(MooncakeAccount account, String reaction) {
     return this.where((element) {
       return element.user.address != account.cosmosAccount.address ||
-          element.value != reactionCode;
+          element.value != reaction;
     }).toList();
   }
 
-  List<Reaction> _addFrom(MooncakeAccount account, String reactionCode) {
-    return this + [Reaction(user: account.toUser(), value: reactionCode)];
+  List<Reaction> _addFrom(MooncakeAccount account, String reaction) {
+    return this + [Reaction(user: account.toUser(), value: reaction)];
   }
 }
