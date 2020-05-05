@@ -18,7 +18,6 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   // GraphQL
   GraphQLClient _gqlClient;
-  GraphQLClient _wsClient;
 
   /// Public constructor
   RemotePostsSourceImpl({
@@ -53,7 +52,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     final query = """subscription HomeEvents {
     ${GqlHelper.homeEvents}
     }""";
-    return _wsClient.subscribe(Operation(documentNode: gql(query)));
+    return _gqlClient.subscribe(Operation(documentNode: gql(query)));
   }
 
   /// Returns the [Post] object having the given [postId]

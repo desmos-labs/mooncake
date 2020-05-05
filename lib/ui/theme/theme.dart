@@ -16,46 +16,54 @@ class PostsTheme {
     final accentColor = ThemeColors.accentColor(brightness);
     final iconTheme = IconThemeData(color: accentColor);
     return ThemeData(
-      brightness: brightness,
-      appBarTheme: AppBarTheme(
-        elevation: 0,
-        color: Colors.transparent,
-        textTheme: TextTheme(
+        brightness: brightness,
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          color: Colors.transparent,
+          textTheme: TextTheme(
+            headline6: Typography.englishLike2018.headline6.copyWith(
+              color: accentColor,
+            ),
+          ),
+          iconTheme: iconTheme,
+          actionsIconTheme: iconTheme,
+        ),
+        iconTheme: iconTheme,
+        primarySwatch: Colors.deepPurple,
+        primaryColor: Colors.white,
+        primaryColorLight: Colors.white,
+        primaryColorDark: Color(0xFFF4F4FC),
+        accentColor: accentColor,
+        errorColor: Color(0xFFE84444),
+        scaffoldBackgroundColor: Color(0xFFF4F4FC),
+        cardColor: Colors.white,
+        accentTextTheme: Typography.englishLike2018.copyWith(
+          headline5:
+              Typography.englishLike2018.headline5.copyWith(color: accentColor),
           headline6: Typography.englishLike2018.headline6.copyWith(
             color: accentColor,
           ),
+          bodyText2: Typography.englishLike2018.bodyText2.copyWith(
+            color: accentColor,
+          ),
+          caption: Typography.englishLike2018.caption.copyWith(
+            color: accentColor,
+          ),
         ),
-        iconTheme: iconTheme,
-        actionsIconTheme: iconTheme,
-      ),
-      iconTheme: iconTheme,
-      primaryColor: Colors.white,
-      primaryColorLight: Colors.white,
-      primaryColorDark: Color(0xFFF4F4FC),
-      accentColor: accentColor,
-      errorColor: Color(0xFFE84444),
-      scaffoldBackgroundColor: Color(0xFFF4F4FC),
-      cardColor: Colors.white,
-      accentTextTheme: Typography.englishLike2018.copyWith(
-        headline5:
-            Typography.englishLike2018.headline5.copyWith(color: accentColor),
-        headline6: Typography.englishLike2018.headline6.copyWith(
-          color: accentColor,
+        buttonTheme: ButtonThemeData(
+          buttonColor: accentColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
         ),
-        bodyText2: Typography.englishLike2018.bodyText2.copyWith(
-          color: accentColor,
-        ),
-        caption: Typography.englishLike2018.caption.copyWith(
-          color: accentColor,
-        ),
-      ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: accentColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-      ),
-    );
+        inputDecorationTheme: InputDecorationTheme(
+          border: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+        ));
   }
 
   static ThemeData get _darkTheme {
@@ -77,6 +85,7 @@ class PostsTheme {
         actionsIconTheme: iconTheme,
       ),
       iconTheme: iconTheme,
+      primarySwatch: Colors.deepPurple,
       primaryColor: Color(0xFF423F64),
       primaryColorLight: Color(0xFF8d8ba2),
       primaryColorDark: Color(0xFF1F1C45),

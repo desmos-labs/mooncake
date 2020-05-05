@@ -40,6 +40,7 @@ class CreatePostContent extends StatelessWidget {
                     if (parentPost != null) _parentPostPreview(context),
                     _postTextInput(context, state),
                     if (state.medias.isNotEmpty) _imagesPreview(),
+                    PostPollCreator(),
                   ],
                 ),
               )

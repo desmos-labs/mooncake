@@ -138,6 +138,12 @@ What about adding some content?
   String get savingPostPopupDontShow => "Don't show again";
   String get savingPostPopupOkButton => "OK";
 
+  // Poll creation
+  String get pollQuestionHint => "What do you want to ask?";
+  String get pollOptionHint => "Choice";
+  String get pollAddOptionButton => "Add option";
+  String get pollEndDateText => "This poll will ends on";
+
   // Notifications screen
   String get allNotificationsTabTitle => "All";
   String get mentionsNotificationsTabTitle => "Mentions";

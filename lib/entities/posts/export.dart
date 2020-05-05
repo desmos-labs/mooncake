@@ -1,5 +1,6 @@
 export 'extensions_reactions.dart';
 export 'post.dart';
-export 'post_media.dart';
 export 'post_status.dart';
-export 'reaction.dart';
+export 'polls/export.dart';
+export 'medias/export.dart';
+export 'reactions/export.dart';
