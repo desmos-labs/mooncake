@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/localization/export.dart';
+import 'package:mooncake/ui/ui.dart';
 
-import 'poll_title_editor.dart';
+import 'poll_question_editor.dart';
 import 'poll_option_editor.dart';
 import 'poll_end_date_editor.dart';
 
@@ -9,30 +11,39 @@ import 'poll_end_date_editor.dart';
 class PostPollCreator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        PollTitleEditor(),
-        const SizedBox(height: 8),
-        ListView.separated(
-          shrinkWrap: true,
-          itemCount: 2,
-          itemBuilder: (context, index) {
-            return PollOptionEditor(index: index);
-          },
-          separatorBuilder: (context, index) {
-            return SizedBox(height: 8);
-          },
-        ),
-        const SizedBox(height: 4),
-        FlatButton(
-          textColor: Theme.of(context).accentColor,
-          child: Text(PostsLocalizations.of(context).pollAddOptionButton),
-          onPressed: (){},
-        ),
-        const SizedBox(height: 4),
-        PollEndDateEditor(),
-      ],
+    return BlocBuilder<PostInputBloc, PostInputState>(
+      builder: (context, state) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PollQuestionEditor(),
+            const SizedBox(height: 8),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: state.poll?.options?.length ?? 0,
+              itemBuilder: (context, index) {
+                return PollOptionEditor(option: state.poll.options[index]);
+              },
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 8);
+              },
+            ),
+            const SizedBox(height: 4),
+            FlatButton(
+              textColor: Theme.of(context).accentColor,
+              child: Text(PostsLocalizations.of(context).pollAddOptionButton),
+              onPressed: () => _addOption(context),
+            ),
+            const SizedBox(height: 4),
+            PollEndDateEditor(),
+          ],
+        );
+      },
     );
+  }
+
+  void _addOption(BuildContext context) {
+    BlocProvider.of<PostInputBloc>(context).add(AddPollOption());
   }
 }

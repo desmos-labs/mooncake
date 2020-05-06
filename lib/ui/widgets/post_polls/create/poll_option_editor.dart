@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'common.dart';
@@ -6,13 +8,14 @@ import 'common.dart';
 /// Allows to edit the text of a poll option, edit the associated image (or
 /// add a new one) or delete the option entirely.
 class PollOptionEditor extends StatelessWidget {
-  final int index;
-
-  const PollOptionEditor({Key key, this.index}) : super(key: key);
+  final PollOption option;
+  const PollOptionEditor({Key key, this.option}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final hintText = "${PostsLocalizations.of(context).pollOptionHint} $index";
+    final hintText =
+        "${PostsLocalizations.of(context).pollOptionHint} ${option.index + 1}";
+
     return Material(
       color: Colors.transparent,
       child: Container(
@@ -25,24 +28,36 @@ class PollOptionEditor extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
-                    decoration: InputDecoration(
-                      hintText: hintText,
-                    ),
+                    decoration: InputDecoration(hintText: hintText),
+                    onChanged: (value) => _onTextChanged(context, value),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(MooncakeIcons.picture),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(MooncakeIcons.delete),
-                  onPressed: () {},
-                )
+// TODO: Implement the association of an image to a poll option
+//                IconButton(
+//                  icon: Icon(MooncakeIcons.picture),
+//                  onPressed: () {},
+//                ),
+                if (option.index > 1)
+                  IconButton(
+                    icon: Icon(MooncakeIcons.delete),
+                    tooltip:
+                        PostsLocalizations.of(context).pollDeleteOptionHint,
+                    onPressed: () => _deleteOption(context),
+                  )
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  void _onTextChanged(BuildContext context, String value) {
+    BlocProvider.of<PostInputBloc>(context)
+        .add(UpdatePollOption(option.index, value));
+  }
+
+  void _deleteOption(BuildContext context) {
+    BlocProvider.of<PostInputBloc>(context).add(DeletePollOption(option.index));
   }
 }

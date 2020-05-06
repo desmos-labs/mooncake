@@ -33,11 +33,6 @@ class CreatePostScreen extends StatelessWidget {
                     bottom: 0,
                     child: PostCreateActions(height: bottomBarHeight),
                   ),
-                  Positioned(
-                    bottom: bottomBarHeight,
-                    right: 4,
-                    child: AllowCommentAction(),
-                  ),
                   if (state.showPopup)
                     GenericPopup(
                       backgroundColor: Colors.black.withOpacity(0.6),

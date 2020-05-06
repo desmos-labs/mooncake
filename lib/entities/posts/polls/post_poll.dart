@@ -20,12 +20,35 @@ class PostPoll extends Equatable {
         assert(endDate != null),
         assert(options != null);
 
+  factory PostPoll.empty() {
+    return PostPoll(
+      question: "",
+      endDate: DateTime.now().add(Duration(days: 30)),
+      options: [
+        PollOption(text: "", index: 0),
+        PollOption(text: "", index: 1),
+      ],
+    );
+  }
+
   factory PostPoll.fromJson(Map<String, dynamic> json) {
     return _$PostPollFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
     return _$PostPollToJson(this);
+  }
+
+  PostPoll copyWith({
+    String question,
+    DateTime endDate,
+    List<PollOption> options,
+  }) {
+    return PostPoll(
+      question: question ?? this.question,
+      endDate: endDate ?? this.endDate,
+      options: options ?? this.options,
+    );
   }
 
   @override

@@ -17,8 +17,6 @@ class PostCreateActions extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostInputBloc, PostInputState>(
       builder: (context, state) {
-        // ignore: close_sinks
-        final bloc = BlocProvider.of<PostInputBloc>(context);
         return Container(
           height: height,
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -34,13 +32,30 @@ class PostCreateActions extends StatelessWidget {
                     IconButton(
                       tooltip: PostsLocalizations.of(context).galleryTip,
                       icon: Icon(MooncakeIcons.picture),
-                      onPressed: () => _pickImage(bloc, ImageSource.gallery),
+                      onPressed: () => _pickImage(context, ImageSource.gallery),
                     ),
                     IconButton(
                       tooltip: PostsLocalizations.of(context).cameraTip,
                       icon: Icon(MooncakeIcons.camera),
-                      onPressed: () => _pickImage(bloc, ImageSource.camera),
+                      onPressed: () => _pickImage(context, ImageSource.camera),
                     ),
+                    IconButton(
+                      tooltip: state.allowsComments
+                          ? PostsLocalizations.of(context)
+                              .createPostDisableCommentsButtonHint
+                          : PostsLocalizations.of(context)
+                              .createPostEnableCommentsButtonHint,
+                      icon: Icon(state.allowsComments
+                          ? MooncakeIcons.comment
+                          : MooncakeIcons.comment),
+                      onPressed: () => _toggleComments(context),
+                    ),
+                    IconButton(
+                      tooltip: PostsLocalizations.of(context)
+                          .createPostCreatePollButtonHint,
+                      icon: Icon(MooncakeIcons.poll),
+                      onPressed: () => _createPoll(context),
+                    )
                   ],
                 ),
               ],
@@ -51,10 +66,18 @@ class PostCreateActions extends StatelessWidget {
     );
   }
 
-  void _pickImage(PostInputBloc bloc, ImageSource source) async {
+  void _pickImage(BuildContext context, ImageSource source) async {
     var image = await ImagePicker.pickImage(source: source);
     if (image != null) {
-      bloc.add(ImageAdded(image));
+      BlocProvider.of<PostInputBloc>(context).add(ImageAdded(image));
     }
+  }
+
+  void _toggleComments(BuildContext context) {
+    BlocProvider.of<PostInputBloc>(context).add(ToggleAllowsComments());
+  }
+
+  void _createPoll(BuildContext context) {
+    BlocProvider.of<PostInputBloc>(context).add(CreatePoll());
   }
 }

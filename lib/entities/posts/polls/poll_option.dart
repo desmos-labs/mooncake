@@ -26,6 +26,16 @@ class PollOption extends Equatable {
     return _$PollOptionToJson(this);
   }
 
+  PollOption copyWith({
+    int index,
+    String text,
+  }) {
+    return PollOption(
+      index: index ?? this.index,
+      text: text ?? this.text,
+    );
+  }
+
   @override
   List<Object> get props => [index, text];
 }

@@ -11,8 +11,6 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import '../export.dart';
-
 /// Implementation of [Bloc] that allows to deal with [PostInputEvent]
 /// and [PostInputState] objects.
 class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
@@ -67,22 +65,21 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     if (event is ResetForm) {
       yield PostInputState.empty(_parentPost);
     } else if (event is MessageChanged) {
-      yield state.update(message: event.message.trim());
+      yield state.copyWith(message: event.message.trim());
     } else if (event is ToggleAllowsComments) {
-      yield state.update(allowsComments: !state.allowsComments);
+      yield state.copyWith(allowsComments: !state.allowsComments);
     } else if (event is ImageAdded) {
-      final media = _convert(event.file);
-      final images = _removeFileIfPresent(state.medias, media);
-      yield state.update(medias: images + [media]);
+      yield* _mapImageAddedToState(event);
     } else if (event is ImageRemoved) {
-      final images = _removeFileIfPresent(state.medias, event.file);
-      yield state.update(medias: images);
+      yield* _mapImageRemovedToState(event);
+    } else if (event is PostInputPollEvent) {
+      yield* _mapPollEventsToState(event);
     } else if (event is ChangeWillShowPopup) {
       yield* _mapChangeWillShowPopupEventToState();
     } else if (event is SavePost) {
       yield* _mapSavePostEventToState();
     } else if (event is HidePopup) {
-      yield state.update(showPopup: false);
+      yield state.copyWith(showPopup: false);
     } else if (event is CreatePost) {
       yield* _mapCreatePostEventToState();
     }
@@ -114,9 +111,71 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
         .toList();
   }
 
+  // ------ Images ------
+
+  Stream<PostInputState> _mapImageAddedToState(ImageAdded event) async* {
+    final media = _convert(event.file);
+    final images = _removeFileIfPresent(state.medias, media);
+    yield state.copyWith(medias: images + [media]);
+  }
+
+  Stream<PostInputState> _mapImageRemovedToState(ImageRemoved event) async* {
+    final images = _removeFileIfPresent(state.medias, event.file);
+    yield state.copyWith(medias: images);
+  }
+
+  // ------ Polls ------
+
+  Stream<PostInputState> _mapPollEventsToState(
+    PostInputPollEvent event,
+  ) async* {
+    if (event is CreatePoll) {
+      yield state.copyWith(poll: state.poll ?? PostPoll.empty());
+    } else if (event is UpdatePollQuestion) {
+      final poll = state.poll.copyWith(question: event.question);
+      yield state.copyWith(poll: poll);
+    } else if (event is UpdatePollOption) {
+      // Update the option
+      final options = state.poll.options.map((option) {
+        return option.index == event.index
+            ? option.copyWith(text: event.option)
+            : option;
+      });
+
+      // Update the state
+      final poll = state.poll.copyWith(options: options);
+      yield state.copyWith(poll: poll);
+    } else if (event is AddPollOption) {
+      // Add the option
+      final options = state.poll.options +
+          [PollOption(index: state.poll.options.length, text: "")];
+
+      // Update the state
+      final poll = state.poll.copyWith(options: options);
+      yield state.copyWith(poll: poll);
+    } else if (event is DeletePollOption) {
+      // Delete the option
+      List<PollOption> options = state.poll.options
+          .where((option) => option.index != event.index)
+          .toList();
+
+      // Update the options indexes
+      for (int i = 0; i < options.length; i++) {
+        options[i] = options[i].copyWith(index: i);
+      }
+
+      // Update the state
+      final poll = state.poll.copyWith(options: options);
+      yield state.copyWith(poll: poll);
+    } else if (event is ChangePollDate) {
+      final poll = state.poll.copyWith(endDate: event.endDate);
+      yield state.copyWith(poll: poll);
+    }
+  }
+
   Stream<PostInputState> _mapSavePostEventToState() async* {
     final showPopup = await _getSettingUseCase.get(key: _SHOW_POPUP_KEY);
-    yield state.update(saving: true, showPopup: showPopup ?? true);
+    yield state.copyWith(saving: true, showPopup: showPopup ?? true);
 
     if (!(showPopup ?? true)) {
       add(CreatePost());
@@ -124,7 +183,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   }
 
   Stream<PostInputState> _mapCreatePostEventToState() async* {
-    yield state.update(saving: true, showPopup: false);
+    yield state.copyWith(saving: true, showPopup: false);
 
     final post = await _createPostUseCase.create(
       message: state.message,
@@ -139,6 +198,6 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   Stream<PostInputState> _mapChangeWillShowPopupEventToState() async* {
     final showAgain = !state.willShowPopupAgain;
     await _saveSettingUseCase.save(key: _SHOW_POPUP_KEY, value: showAgain);
-    yield state.update(willShowPopupAgain: showAgain);
+    yield state.copyWith(willShowPopupAgain: showAgain);
   }
 }

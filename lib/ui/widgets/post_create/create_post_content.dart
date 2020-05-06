@@ -40,7 +40,7 @@ class CreatePostContent extends StatelessWidget {
                     if (parentPost != null) _parentPostPreview(context),
                     _postTextInput(context, state),
                     if (state.medias.isNotEmpty) _imagesPreview(),
-                    PostPollCreator(),
+                    if (state.poll != null) _pollCreator(),
                   ],
                 ),
               )
@@ -93,7 +93,7 @@ class CreatePostContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         CreatePostImagesList(),
       ],
     );
@@ -105,5 +105,15 @@ class CreatePostContent extends StatelessWidget {
 
   void _onSubmitted(BuildContext context) {
     BlocProvider.of<PostInputBloc>(context).add(SavePost());
+  }
+
+  Widget _pollCreator() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 16),
+        PostPollCreator(),
+      ],
+    );
   }
 }

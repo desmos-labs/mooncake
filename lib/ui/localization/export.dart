@@ -122,12 +122,11 @@ What about adding some content?
 
   // Create post screen
   String get newPostHint => "What's going on?";
-  String get createPostEnableCommentsButton => "Enable comments";
   String get createPostEnableCommentsButtonHint =>
       "Comments to this post will be disabled. Tap to enable them";
-  String get createPostDisableCommentsButton => "Disable comments";
   String get createPostDisableCommentsButtonHint =>
       "Comments to this post will be enabled. Tap to disable them";
+  String get createPostCreatePollButtonHint => "Add poll";
   String get createPostCancelButton => "Cancel";
   String get createPostCreateButton => "Post";
   String get createPostHint => "What's on your mind?";
@@ -142,7 +141,8 @@ What about adding some content?
   String get pollQuestionHint => "What do you want to ask?";
   String get pollOptionHint => "Choice";
   String get pollAddOptionButton => "Add option";
-  String get pollEndDateText => "This poll will ends on";
+  String get pollEndDateText => "This poll will end on";
+  String get pollDeleteOptionHint => "Delete option";
 
   // Notifications screen
   String get allNotificationsTabTitle => "All";
