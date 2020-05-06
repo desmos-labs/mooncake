@@ -28,7 +28,9 @@ class PostInputState extends Equatable {
     @required this.willShowPopupAgain,
   });
 
-  bool get isValid => message != null && message.isNotEmpty;
+  bool get isValid {
+    return message?.trim()?.isNotEmpty == true || medias?.isNotEmpty == true;
+  }
 
   /// Builds an empty state.
   factory PostInputState.empty(Post parentPost) {

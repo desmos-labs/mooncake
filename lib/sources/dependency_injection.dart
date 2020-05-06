@@ -11,7 +11,7 @@ class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "ipfs.desmos.network";
 
-  static const _lcdUrl = "http://lcd.morpheus.desmos.network:1317";
+  static const _lcdUrl = "http://localhost:1317";
   static const _gqlEndpoint = "gql.morpheus.desmos.network/v1/graphql";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);

@@ -50,10 +50,10 @@ class CreatePostImageItem extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Color(0xFF000000).withOpacity(0.60),
               ),
-              padding: EdgeInsets.all(1),
-              child: FaIcon(
+              padding: EdgeInsets.all(6),
+              child: Icon(
                 MooncakeIcons.cross,
-                size: size / 6,
+                size: size / 12,
                 color: Colors.white,
               ),
             ),

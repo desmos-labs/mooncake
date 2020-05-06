@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/posts_list_item/list_item_content/post_images_previewer.dart';
+import 'package:mooncake/ui/widgets/post_content/images/post_images_previewer.dart';
 
 /// Represents single item entry inside the list of post comments.
 class PostCommentItem extends StatelessWidget {

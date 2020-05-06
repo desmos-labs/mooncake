@@ -18,6 +18,7 @@ class CreatePostUseCase {
     @required bool allowsComments,
     @required String parentId,
     List<PostMedia> medias,
+    PostPoll poll,
   }) async {
     final account = await _userRepository.getAccount();
     final user = User.fromAddress(account.cosmosAccount.address);
@@ -29,6 +30,7 @@ class CreatePostUseCase {
       message: message,
       allowsComments: allowsComments,
       medias: medias,
+      poll: poll,
       subspace: Constants.SUBSPACE,
       owner: user,
     );

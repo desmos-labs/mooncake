@@ -28,7 +28,10 @@ class PollEndDateEditor extends StatelessWidget {
                       style: Theme.of(context).inputDecorationTheme.hintStyle,
                     ),
                   ),
-                  Text(formatter.format(state.poll.endDate)),
+                  Text(
+                    formatter.format(state.poll.endDate),
+                    style: Theme.of(context).accentTextTheme.bodyText2,
+                  ),
                 ],
               ),
             ),

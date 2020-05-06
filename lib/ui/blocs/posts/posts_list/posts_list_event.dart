@@ -48,6 +48,21 @@ class AddOrRemovePostReaction extends PostsListEvent {
   String toString() => 'AddOrRemovePostReaction';
 }
 
+/// Tells the Bloc that the user has voted on poll contained inside the given
+/// post with the given option.
+class VotePoll extends PostsListEvent {
+  final Post post;
+  final PollOption option;
+
+  VotePoll(this.post, this.option);
+
+  @override
+  List<Object> get props => [post, option];
+
+  @override
+  String toString() => 'VotePoll { post: $post, option: $option }';
+}
+
 /// Tells the Bloc that the specified post should be hidden from the user view.
 class HidePost extends PostsListEvent {
   final Post post;

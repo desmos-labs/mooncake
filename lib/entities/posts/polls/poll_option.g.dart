@@ -7,8 +7,14 @@ part of 'poll_option.dart';
 // **************************************************************************
 
 PollOption _$PollOptionFromJson(Map<String, dynamic> json) {
-  return PollOption();
+  return PollOption(
+    id: json['id'] as int,
+    text: json['text'] as String,
+  );
 }
 
 Map<String, dynamic> _$PollOptionToJson(PollOption instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'id': instance.id,
+      'text': instance.text,
+    };

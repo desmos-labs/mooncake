@@ -1,3 +1,4 @@
+export 'extensions_post.dart';
 export 'extensions_reactions.dart';
 export 'post.dart';
 export 'post_status.dart';

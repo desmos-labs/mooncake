@@ -70,6 +70,10 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => UpdatePostsStatusUseCase(
             postsRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => VotePollUseCase(
+            userRepository: injector.get(),
+            postsRepository: injector.get(),
+          ))
 
       // Settings use cases
       ..bindFactory((injector, params) => SaveSettingUseCase(

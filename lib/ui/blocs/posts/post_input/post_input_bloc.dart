@@ -137,10 +137,10 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     } else if (event is UpdatePollOption) {
       // Update the option
       final options = state.poll.options.map((option) {
-        return option.index == event.index
+        return option.id == event.index
             ? option.copyWith(text: event.option)
             : option;
-      });
+      }).toList();
 
       // Update the state
       final poll = state.poll.copyWith(options: options);
@@ -148,7 +148,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     } else if (event is AddPollOption) {
       // Add the option
       final options = state.poll.options +
-          [PollOption(index: state.poll.options.length, text: "")];
+          [PollOption(id: state.poll.options.length, text: "")];
 
       // Update the state
       final poll = state.poll.copyWith(options: options);
@@ -156,7 +156,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     } else if (event is DeletePollOption) {
       // Delete the option
       List<PollOption> options = state.poll.options
-          .where((option) => option.index != event.index)
+          .where((option) => option.id != event.index)
           .toList();
 
       // Update the options indexes
@@ -190,6 +190,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       allowsComments: state.allowsComments,
       parentId: state.parentPost?.id,
       medias: state.medias,
+      poll: state.poll,
     );
     await _savePostUseCase.save(post);
     _navigatorBloc.add(GoBack());

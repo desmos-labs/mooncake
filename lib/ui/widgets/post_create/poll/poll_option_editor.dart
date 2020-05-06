@@ -14,7 +14,7 @@ class PollOptionEditor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hintText =
-        "${PostsLocalizations.of(context).pollOptionHint} ${option.index + 1}";
+        "${PostsLocalizations.of(context).pollOptionHint} ${option.id + 1}";
 
     return Material(
       color: Colors.transparent,
@@ -37,7 +37,7 @@ class PollOptionEditor extends StatelessWidget {
 //                  icon: Icon(MooncakeIcons.picture),
 //                  onPressed: () {},
 //                ),
-                if (option.index > 1)
+                if (option.id > 1)
                   IconButton(
                     icon: Icon(MooncakeIcons.delete),
                     tooltip:
@@ -54,10 +54,10 @@ class PollOptionEditor extends StatelessWidget {
 
   void _onTextChanged(BuildContext context, String value) {
     BlocProvider.of<PostInputBloc>(context)
-        .add(UpdatePollOption(option.index, value));
+        .add(UpdatePollOption(option.id, value));
   }
 
   void _deleteOption(BuildContext context) {
-    BlocProvider.of<PostInputBloc>(context).add(DeletePollOption(option.index));
+    BlocProvider.of<PostInputBloc>(context).add(DeletePollOption(option.id));
   }
 }

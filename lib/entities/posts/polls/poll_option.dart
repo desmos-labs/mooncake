@@ -9,13 +9,16 @@ part 'poll_option.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PollOption extends Equatable {
-  final int index;
+  @JsonKey(name: "id")
+  final int id;
+  
+  @JsonKey(name: "text")
   final String text;
 
   PollOption({
-    @required this.index,
+    @required this.id,
     @required this.text,
-  })  : assert(index != null),
+  })  : assert(id != null),
         assert(text != null);
 
   factory PollOption.fromJson(Map<String, dynamic> json) {
@@ -31,11 +34,11 @@ class PollOption extends Equatable {
     String text,
   }) {
     return PollOption(
-      index: index ?? this.index,
+      id: index ?? this.id,
       text: text ?? this.text,
     );
   }
 
   @override
-  List<Object> get props => [index, text];
+  List<Object> get props => [id, text];
 }

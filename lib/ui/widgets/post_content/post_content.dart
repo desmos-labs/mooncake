@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'post_item_header.dart';
-import 'post_images_previewer.dart';
-import 'post_content_message.dart';
+import 'header/export.dart';
+import 'text/export.dart';
+import 'images/export.dart';
+import 'poll/export.dart';
 
 /// Contains the main content of a post. Such content is made of
 /// - The header of the post, indicating the creator and the data
@@ -21,14 +22,22 @@ class PostContent extends StatelessWidget {
       children: <Widget>[
         PostItemHeader(key: PostsKeys.postItemHeader(post.id), post: post),
         const SizedBox(height: PostsTheme.defaultPadding),
-        if (post.message != null && post.message.isNotEmpty)
-          PostMessage(key: PostsKeys.postItemMessage(post.id), post: post),
-        if (post.message != null && post.message.isNotEmpty)
-          const SizedBox(height: PostsTheme.defaultPadding),
+        if (post.message?.isNotEmpty == true) _messagePreview(),
+        if (post.poll != null) PostPollContent(post: post),
         PostImagesPreviewer(
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
         ),
+      ],
+    );
+  }
+
+  Widget _messagePreview() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        PostMessage(key: PostsKeys.postItemMessage(post.id), post: post),
+        const SizedBox(height: PostsTheme.defaultPadding),
       ],
     );
   }

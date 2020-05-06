@@ -28,6 +28,15 @@ Post _$PostFromJson(Map<String, dynamic> json) {
                 : PostMedia.fromJson(e as Map<String, dynamic>))
             ?.toList() ??
         [],
+    poll: json['poll'] == null
+        ? null
+        : PostPoll.fromJson(json['poll'] as Map<String, dynamic>),
+    pollAnswers: (json['poll_answers'] as List)
+            ?.map((e) => e == null
+                ? null
+                : PollAnswer.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
     reactions: (json['reactions'] as List)
             ?.map((e) =>
                 e == null ? null : Reaction.fromJson(e as Map<String, dynamic>))
@@ -51,6 +60,8 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'user': instance.owner?.toJson(),
       'optional_data': instance.optionalData,
       'media': instance.medias?.map((e) => e?.toJson())?.toList(),
+      'poll': instance.poll?.toJson(),
+      'poll_answers': instance.pollAnswers?.map((e) => e?.toJson())?.toList(),
       'reactions': instance.reactions?.map((e) => e?.toJson())?.toList(),
       'children': instance.commentsIds,
       'status': instance.status?.toJson(),

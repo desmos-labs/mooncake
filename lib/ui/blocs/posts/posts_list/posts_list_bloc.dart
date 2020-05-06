@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 import '../export.dart';
@@ -26,6 +26,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final GetHomeEventsUseCase _getHomeEventsUseCase;
   final UpdatePostsStatusUseCase _updatePostsStatusUseCase;
   final ManagePostReactionsUseCase _managePostReactionsUseCase;
+  final VotePollUseCase _votePollUseCase;
   final HidePostUseCase _hidePostUseCase;
 
   // Subscriptions
@@ -43,6 +44,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
     @required ManagePostReactionsUseCase managePostReactionsUseCase,
     @required HidePostUseCase hidePostUseCase,
+    @required VotePollUseCase votePollUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getHomePostsUseCase != null),
         _getHomePostsUseCase = getHomePostsUseCase,
@@ -55,7 +57,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(managePostReactionsUseCase != null),
         _managePostReactionsUseCase = managePostReactionsUseCase,
         assert(hidePostUseCase != null),
-        _hidePostUseCase = hidePostUseCase {
+        _hidePostUseCase = hidePostUseCase,
+        assert(votePollUseCase != null),
+        _votePollUseCase = votePollUseCase {
     _initializeSyncTimer();
 
     // Subscribe to the posts changes
@@ -87,6 +91,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       updatePostsStatusUseCase: Injector.get(),
       managePostReactionsUseCase: Injector.get(),
       hidePostUseCase: Injector.get(),
+      votePollUseCase: Injector.get(),
     );
   }
 
@@ -110,6 +115,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield* _convertAddOrRemoveLikeEvent(event);
     } else if (event is AddOrRemovePostReaction) {
       yield* _mapAddPostReactionEventToState(event);
+    } else if (event is VotePoll) {
+      yield* _mapVotePollEventToState(event);
     } else if (event is HidePost) {
       yield* _mapHidePostEventToState(event);
     } else if (event is SyncPosts) {
@@ -213,6 +220,18 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
       yield currentState.copyWith(posts: posts);
+    }
+  }
+
+  /// Handles the event emitted when the user votes on a specific post poll.
+  Stream<PostsListState> _mapVotePollEventToState(VotePoll event) async* {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      final newPost = await _votePollUseCase.vote(event.post, event.option);
+      final newPosts = currentState.posts
+          .map((post) => post.id == newPost.id ? newPost : post)
+          .toList();
+      yield currentState.copyWith(posts: newPosts);
     }
   }
 
