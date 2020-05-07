@@ -7,9 +7,11 @@ import 'package:mooncake/ui/ui.dart';
 class PostPollOptionItem extends StatelessWidget {
   final Post post;
   final PollOption option;
+  final double height;
 
   const PostPollOptionItem({
     Key key,
+    this.height,
     @required this.post,
     @required this.option,
   }) : super(key: key);
@@ -17,7 +19,7 @@ class PostPollOptionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      height: height,
       child: FlatButton(
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Theme.of(context).accentColor),

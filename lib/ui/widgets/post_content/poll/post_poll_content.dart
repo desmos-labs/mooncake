@@ -4,9 +4,13 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'post_poll_option_item.dart';
+import 'post_poll_result_item.dart';
 
 /// Represents the widget used to show the details of a poll inside a post.
 class PostPollContent extends StatelessWidget {
+  static const double OPTION_HEIGHT = 30.0;
+  static const double SEPARATOR_HEIGHT = OPTION_HEIGHT * 0.25;
+
   final Post post;
 
   const PostPollContent({
@@ -30,23 +34,43 @@ class PostPollContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(post.poll.question, textAlign: TextAlign.center),
+                const SizedBox(height: SEPARATOR_HEIGHT),
                 if (!hasVoted)
-                  ListView.builder(
-                    itemCount: post.poll.options.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return PostPollOptionItem(
-                        post: post,
-                        option: post.poll.options[index],
-                      );
-                    },
-                  ),
+                _buildListView((option) {
+                  return PostPollOptionItem(
+                    height: OPTION_HEIGHT,
+                    post: post,
+                    option: option,
+                  );
+                }),
+                if (hasVoted)
+                  _buildListView((option) {
+                    return PostPollResultItem(
+                      height: OPTION_HEIGHT,
+                      post: post,
+                      option: option,
+                    );
+                  }),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildListView(Widget Function(PollOption option) builder) {
+    return ListView.separated(
+      itemCount: post.poll.options.length,
+      itemBuilder: (context, index) {
+        final option = post.poll.options[index];
+        return builder(option);
+      },
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: SEPARATOR_HEIGHT);
+      },
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
     );
   }
 }
