@@ -8,7 +8,7 @@ part of 'poll_answer.dart';
 
 PollAnswer _$PollAnswerFromJson(Map<String, dynamic> json) {
   return PollAnswer(
-    answers: (json['answers'] as List)?.map((e) => e as int)?.toList(),
+    answer: json['answer'] as int,
     user: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
@@ -17,6 +17,6 @@ PollAnswer _$PollAnswerFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PollAnswerToJson(PollAnswer instance) =>
     <String, dynamic>{
-      'answers': instance.answers,
+      'answer': instance.answer,
       'user': instance.user?.toJson(),
     };

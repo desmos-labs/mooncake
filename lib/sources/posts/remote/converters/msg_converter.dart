@@ -25,6 +25,7 @@ class MsgConverter {
       creator: creator,
       creationDate: post.created,
       medias: post.medias?.isNotEmpty == true ? post.medias : null,
+      poll: post.poll,
     );
   }
 
@@ -79,6 +80,8 @@ class MsgConverter {
         }
       }
     }
+
+    // TODO: Check for poll responses
 
     final List<StdMsg> messages = [];
     messages.addAll(postsToCreate

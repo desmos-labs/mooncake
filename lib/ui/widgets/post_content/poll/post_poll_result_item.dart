@@ -4,7 +4,7 @@ import 'package:mooncake/entities/entities.dart';
 /// Represents a single row showing the percentage of voting that the
 /// given poll option had.
 class PostPollResultItem extends StatelessWidget {
-  final Post post;
+  final PostPoll poll;
   final PollOption option;
   final double height;
 
@@ -15,17 +15,15 @@ class PostPollResultItem extends StatelessWidget {
   PostPollResultItem({
     Key key,
     this.height,
-    @required this.post,
+    @required this.poll,
     @required this.option,
   }) : super(key: key) {
     // Get the number of total answers
-    final totalAnswers = post.pollAnswers
-        .map((e) => e.answers.length)
-        .reduce((value, element) => value + element);
+    final totalAnswers = poll.userAnswers.length;
 
     // Get the number of answers for this option
-    final specificAnswers = post.pollAnswers
-        .where((element) => element.answers.contains(option.id))
+    final specificAnswers = poll.userAnswers
+        .where((element) => element.answer == option.id)
         .length;
 
     // Compute the percentage

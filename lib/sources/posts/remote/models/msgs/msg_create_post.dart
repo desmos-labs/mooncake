@@ -34,6 +34,9 @@ class MsgCreatePost extends StdMsg {
   @JsonKey(name: "medias", includeIfNull: false)
   final List<PostMedia> medias;
 
+  @JsonKey(name: "poll_data", includeIfNull: false)
+  final PostPoll poll;
+
   MsgCreatePost({
     @required this.parentId,
     @required this.message,
@@ -43,6 +46,7 @@ class MsgCreatePost extends StdMsg {
     @required this.creator,
     @required this.creationDate,
     @required this.medias,
+    @required this.poll,
   })  : assert(parentId != null),
         assert(message != null),
         assert(allowsComments != null),
@@ -61,6 +65,7 @@ class MsgCreatePost extends StdMsg {
       creator,
       creationDate,
       medias,
+      poll,
     ];
   }
 
@@ -108,7 +113,8 @@ class MsgCreatePost extends StdMsg {
         'optionalData: $optionalData, '
         'creator: $creator, '
         'creationDate: $creationDate, '
-        'medias: $medias '
+        'medias: $medias,'
+        'poll: $poll '
         '}';
   }
 }

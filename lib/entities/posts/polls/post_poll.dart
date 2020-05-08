@@ -15,9 +15,6 @@ class PostPoll extends Equatable {
   @JsonKey(name: "end_date")
   final DateTime endDate;
 
-  @JsonKey(name: "provided_answers")
-  final List<PollOption> options;
-
   @JsonKey(name: "open")
   final bool isOpen;
 
@@ -27,6 +24,12 @@ class PostPoll extends Equatable {
   @JsonKey(name: "allows_answer_edits")
   final bool allowsAnswerEdits;
 
+  @JsonKey(name: "available_answers")
+  final List<PollOption> options;
+
+  @JsonKey(name: "user_answers")
+  final List<PollAnswer> userAnswers;
+
   PostPoll({
     @required this.question,
     @required this.endDate,
@@ -34,12 +37,14 @@ class PostPoll extends Equatable {
     @required this.isOpen,
     @required this.allowsMultipleAnswers,
     @required this.allowsAnswerEdits,
+    List<PollAnswer> userAnswers = const [],
   })  : assert(question != null),
         assert(endDate != null),
         assert(options != null),
         assert(isOpen != null),
         assert(allowsMultipleAnswers != null),
-        assert(allowsAnswerEdits != null);
+        assert(allowsAnswerEdits != null),
+        userAnswers = userAnswers ?? [];
 
   bool get isValid {
     return question?.isNotEmpty == true &&
@@ -76,6 +81,7 @@ class PostPoll extends Equatable {
     bool isOpen,
     bool allowsMultipleAnswers,
     bool allowsAnswerEdits,
+    List<PollAnswer> userAnswers,
   }) {
     return PostPoll(
       question: question ?? this.question,
@@ -85,6 +91,7 @@ class PostPoll extends Equatable {
       allowsMultipleAnswers:
           allowsMultipleAnswers ?? this.allowsMultipleAnswers,
       allowsAnswerEdits: allowsAnswerEdits ?? this.allowsAnswerEdits,
+      userAnswers: userAnswers ?? this.userAnswers,
     );
   }
 
@@ -97,6 +104,7 @@ class PostPoll extends Equatable {
       isOpen,
       allowsMultipleAnswers,
       allowsAnswerEdits,
+      userAnswers,
     ];
   }
 
@@ -108,7 +116,8 @@ class PostPoll extends Equatable {
         'options: $options, '
         'isOpen: $isOpen, '
         'allowsMultipleAnswers: $allowsMultipleAnswers, '
-        'allowsAnswerEdits: $allowsAnswerEdits '
+        'allowsAnswerEdits: $allowsAnswerEdits,'
+        'userAnswers: $userAnswers  '
         '}';
   }
 }

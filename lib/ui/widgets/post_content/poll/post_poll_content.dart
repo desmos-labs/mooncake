@@ -47,7 +47,7 @@ class PostPollContent extends StatelessWidget {
                   _buildListView((option) {
                     return PostPollResultItem(
                       height: OPTION_HEIGHT,
-                      post: post,
+                      poll: post.poll,
                       option: option,
                     );
                   }),

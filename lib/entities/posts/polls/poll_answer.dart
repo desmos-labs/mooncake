@@ -9,16 +9,16 @@ part 'poll_answer.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PollAnswer extends Equatable {
-  @JsonKey(name: "answers")
-  final List<int> answers;
+  @JsonKey(name: "answer")
+  final int answer;
 
   @JsonKey(name: "user")
   final User user;
 
   PollAnswer({
-    @required this.answers,
+    @required this.answer,
     @required this.user,
-  })  : assert(answers != null),
+  })  : assert(answer != null),
         assert(user != null);
 
   factory PollAnswer.fromJson(Map<String, dynamic> json) {
@@ -30,17 +30,17 @@ class PollAnswer extends Equatable {
   }
 
   PollAnswer copyWith({
-    List<int> answers,
+    int answer,
     User user,
   }) {
     return PollAnswer(
-      answers: answers ?? this.answers,
+      answer: answer ?? this.answer,
       user: user ?? this.user,
     );
   }
 
   @override
   List<Object> get props {
-    return [answers, user];
+    return [answer, user];
   }
 }

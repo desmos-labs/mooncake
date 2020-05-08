@@ -74,9 +74,6 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "poll", nullable: true)
   final PostPoll poll;
 
-  @JsonKey(name: "poll_answers", defaultValue: [])
-  final List<PollAnswer> pollAnswers;
-
   @JsonKey(name: "reactions", defaultValue: [])
   final List<Reaction> reactions;
 
@@ -110,7 +107,6 @@ class Post extends Equatable implements Comparable<Post> {
     @required this.owner,
     List<PostMedia> medias = const [],
     this.poll,
-    List<PollAnswer> pollAnswers = const [],
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
     this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
@@ -121,7 +117,6 @@ class Post extends Equatable implements Comparable<Post> {
         assert(subspace != null),
         assert(owner != null),
         this.medias = medias ?? [],
-        this.pollAnswers = pollAnswers ?? [],
         this.reactions = reactions ?? [],
         this.reactionsCount = groupBy<Reaction, String>(
           (reactions ?? []).where((r) => !r.isLike).toList(),
@@ -171,7 +166,6 @@ class Post extends Equatable implements Comparable<Post> {
     String owner,
     List<PostMedia> medias,
     PostPoll poll,
-    List<PollAnswer> pollAnswers,
     List<Reaction> reactions,
     List<String> commentsIds,
     bool hidden,
@@ -189,7 +183,6 @@ class Post extends Equatable implements Comparable<Post> {
       owner: owner ?? this.owner,
       medias: medias ?? this.medias,
       poll: poll ?? this.poll,
-      pollAnswers: pollAnswers ?? this.pollAnswers,
       reactions: reactions ?? this.reactions,
       commentsIds: commentsIds ?? this.commentsIds,
       hidden: hidden ?? this.hidden,
@@ -215,7 +208,6 @@ class Post extends Equatable implements Comparable<Post> {
       this.optionalData,
       this.medias,
       this.poll,
-      this.pollAnswers,
       this.reactions,
       this.commentsIds,
       this.status,

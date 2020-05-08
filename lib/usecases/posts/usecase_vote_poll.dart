@@ -23,37 +23,28 @@ class VotePollUseCase {
     final account = await _userRepository.getAccount();
     final userAddress = account.cosmosAccount.address;
 
-    List<PollAnswer> pollAnswers = List<PollAnswer>()..addAll(post.pollAnswers);
-    PollAnswer userAnswer = pollAnswers.firstWhere(
-      (element) => element.user.address == userAddress,
+    final pollAnswers = List<PollAnswer>()..addAll(post.poll.userAnswers);
+    final userAnswer = pollAnswers.firstWhere(
+      (element) =>
+          element.user.address == userAddress && element.answer == option.id,
       orElse: () => null,
     );
 
     // The answer does not exist, create it
     if (userAnswer == null) {
       final answer = PollAnswer(
-        answers: [option.id],
+        answer: option.id,
         user: User.fromAddress(userAddress),
       );
       pollAnswers.add(answer);
+
+      // Update the post
+      final poll = post.poll.copyWith(userAnswers: pollAnswers);
+      post = post.copyWith(poll: poll);
+
+      // Store it
+      await _postsRepository.savePost(post);
     }
-
-    // The answer exists, update it
-    if (userAnswer != null) {
-      final answers = userAnswer.answers.toSet();
-      answers.add(option.id);
-
-      final answer = userAnswer.copyWith(answers: answers.toList());
-      pollAnswers = pollAnswers.map((a) {
-        return a.user.address == answer.user.address ? answer : a;
-      }).toList();
-    }
-
-    // Update the post
-    post = post.copyWith(pollAnswers: pollAnswers);
-
-    // Store it
-    await _postsRepository.savePost(post);
 
     return post;
   }

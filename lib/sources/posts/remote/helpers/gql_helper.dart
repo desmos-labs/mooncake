@@ -28,27 +28,50 @@ class PostDetailsData {
 
 /// Allows to easily work with GraphQL-related stuff.
 class GqlHelper {
+  static const String _userContents = """
+  address
+  moniker
+  """;
+
+  // TODO: Add Poll
   static const String _postContents = """
   id
+  parent_id
   subspace
   created
   last_edited
   allows_comments
+  message
+  optional_data
   media: medias {
     uri
     mime_type
   }
-  message
-  optional_data
-  parent_id
+  poll {
+    question
+    end_date
+    allows_answer_edits
+    allows_multiple_answers
+    open
+    available_answers {
+      id: answer_text
+      text: answer_id
+    }
+    user_answers {
+      answer
+      user {
+        $_userContents
+      }
+    }
+  }
   reactions {
     user: owner {
-      address
+      $_userContents
     }
     value
   }
   user: creator {
-    address
+    $_userContents
   }
   comments: comments {
     id
