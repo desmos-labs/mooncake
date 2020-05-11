@@ -5,7 +5,9 @@ extension PollExt on Post {
   /// Tells whether or not the given [account] has voted on the poll contained
   /// inside this post.
   bool hasVoted(MooncakeAccount account) {
-    return this.poll.userAnswers.any(
-        (element) => element.user.address == account.cosmosAccount.address);
+    return this
+        .poll
+        .userAnswers
+        .any((answer) => answer.user.address == account.cosmosAccount.address);
   }
 }

@@ -8,11 +8,14 @@ import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
 
 class SourcesModule implements Module {
+  static const _useLocalEndpoints = true;
+
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "ipfs.desmos.network";
 
-  static const _lcdUrl =
-      kDebugMode ? "http://10.0.2.2:1317" : "http://lcd.desmos.network:1317";
+  static const _lcdUrl = _useLocalEndpoints
+      ? "http://10.0.2.2:1317"
+      : "http://lcd.desmos.network:1317";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
@@ -56,11 +59,11 @@ class SourcesModule implements Module {
         (injector, params) => RemotePostsSourceImpl(
           graphQLClient: GraphQLClient(
             link: HttpLink(
-              uri: kDebugMode
+              uri: _useLocalEndpoints
                   ? "http://10.0.2.2:8080/v1/graphql"
                   : "https://gql.morpheus.desmos.network/v1/graphql",
             ).concat(WebSocketLink(
-              url: kDebugMode
+              url: _useLocalEndpoints
                   ? "ws://10.0.2.2:8080/v1/graphql"
                   : "wss://gql.morpheus.desmos.network/v1/graphql",
             )),

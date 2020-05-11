@@ -29,7 +29,7 @@ class PollEndDateEditor extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    formatter.format(state.poll.endDate),
+                    formatter.format(state.poll.endDateTime),
                     style: Theme.of(context).accentTextTheme.bodyText2,
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mooncake/entities/entities.dart';
 
@@ -13,9 +14,13 @@ class PostPoll extends Equatable {
   final String question;
 
   @JsonKey(name: "end_date")
-  final DateTime endDate;
+  final String endDate;
 
-  @JsonKey(name: "open")
+  DateTime get endDateTime {
+    return DateTime.parse(endDate);
+  }
+
+  @JsonKey(name: "is_open")
   final bool isOpen;
 
   @JsonKey(name: "allows_multiple_answers")
@@ -24,7 +29,7 @@ class PostPoll extends Equatable {
   @JsonKey(name: "allows_answer_edits")
   final bool allowsAnswerEdits;
 
-  @JsonKey(name: "available_answers")
+  @JsonKey(name: "provided_answers")
   final List<PollOption> options;
 
   @JsonKey(name: "user_answers")
@@ -55,7 +60,8 @@ class PostPoll extends Equatable {
   factory PostPoll.empty() {
     return PostPoll(
       question: "",
-      endDate: DateTime.now().add(Duration(days: 30)),
+      endDate: DateFormat(Post.DATE_FORMAT)
+          .format(DateTime.now().add(Duration(days: 30)).toUtc()),
       options: [
         PollOption(text: "", id: 0),
         PollOption(text: "", id: 1),
@@ -85,7 +91,8 @@ class PostPoll extends Equatable {
   }) {
     return PostPoll(
       question: question ?? this.question,
-      endDate: endDate ?? this.endDate,
+      endDate: DateFormat(Post.DATE_FORMAT)
+          .format((endDate ?? this.endDateTime).toUtc()),
       options: options ?? this.options,
       isOpen: isOpen ?? this.isOpen,
       allowsMultipleAnswers:
