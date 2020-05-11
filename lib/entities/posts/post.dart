@@ -46,7 +46,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: PARENT_ID_FIELD, nullable: true)
   final String parentId;
 
-  @JsonKey(name: "message")
+  @JsonKey(name: "message", nullable: true)
   final String message;
 
   /// RFC3339-formatted creation date
@@ -98,7 +98,7 @@ class Post extends Equatable implements Comparable<Post> {
   Post({
     @required this.id,
     this.parentId = "",
-    @required this.message,
+    this.message,
     @required this.created,
     this.lastEdited,
     this.allowsComments = false,
@@ -112,7 +112,6 @@ class Post extends Equatable implements Comparable<Post> {
     this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
     this.hidden = false,
   })  : assert(id != null),
-        assert(message != null && message.isNotEmpty),
         assert(created != null),
         assert(subspace != null),
         assert(owner != null),
@@ -122,7 +121,8 @@ class Post extends Equatable implements Comparable<Post> {
           (reactions ?? []).where((r) => !r.isLike).toList(),
           (r) => r.value,
         ).map((rune, reactions) => MapEntry(reactions[0], reactions.length)),
-        this.commentsIds = commentsIds ?? [];
+        this.commentsIds = commentsIds ?? [],
+        assert(message != null || medias?.isNotEmpty == true || poll != null);
 
   /// Returns the posts' data as a [DateTime] object.
   DateTime get dateTime {

@@ -7,10 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PostMessage extends StatelessWidget {
   final Post post;
 
-  const PostMessage({
-    Key key,
-    @required this.post
-  }) : super(key: key);
+  const PostMessage({Key key, @required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

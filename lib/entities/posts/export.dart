@@ -1,3 +1,4 @@
+export 'extensions_polls.dart';
 export 'extensions_post.dart';
 export 'extensions_reactions.dart';
 export 'post.dart';

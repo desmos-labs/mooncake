@@ -11,8 +11,8 @@ class SourcesModule implements Module {
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "ipfs.desmos.network";
 
-  static const _lcdUrl = "http://localhost:1317";
-  static const _gqlEndpoint = "gql.morpheus.desmos.network/v1/graphql";
+  static const _lcdUrl =
+      kDebugMode ? "http://10.0.2.2:1317" : "http://lcd.desmos.network:1317";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
@@ -53,16 +53,24 @@ class SourcesModule implements Module {
                 database: postsDatabase,
               ))
       ..bindLazySingleton<RemotePostsSource>(
-          (injector, params) => RemotePostsSourceImpl(
-                graphQLClient: GraphQLClient(
-                  link: HttpLink(uri: "https://$_gqlEndpoint")
-                      .concat(WebSocketLink(url: "wss://$_gqlEndpoint")),
-                  cache: InMemoryCache(),
-                ),
-                chainHelper: injector.get(),
-                userSource: injector.get(),
-                msgConverter: MsgConverter(),
-              ),)
+        (injector, params) => RemotePostsSourceImpl(
+          graphQLClient: GraphQLClient(
+            link: HttpLink(
+              uri: kDebugMode
+                  ? "http://10.0.2.2:8080/v1/graphql"
+                  : "https://gql.morpheus.desmos.network/v1/graphql",
+            ).concat(WebSocketLink(
+              url: kDebugMode
+                  ? "ws://10.0.2.2:8080/v1/graphql"
+                  : "wss://gql.morpheus.desmos.network/v1/graphql",
+            )),
+            cache: InMemoryCache(),
+          ),
+          chainHelper: injector.get(),
+          userSource: injector.get(),
+          msgConverter: MsgConverter(),
+        ),
+      )
       // Notifications source
       ..bindLazySingleton<RemoteNotificationsSource>(
           (injector, params) => RemoteNotificationsSourceImpl(

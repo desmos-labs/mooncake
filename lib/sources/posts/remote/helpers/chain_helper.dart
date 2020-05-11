@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/sources/posts/remote/models/msgs/msg_answer_poll.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/utils/logger.dart';
 
@@ -23,10 +24,8 @@ class TxData extends Equatable {
 void initCodec() {
   Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
   Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
-  Codec.registerMsgType(
-    "desmos/MsgRemovePostReaction",
-    MsgRemovePostReaction,
-  );
+  Codec.registerMsgType("desmos/MsgRemovePostReaction", MsgRemovePostReaction);
+  Codec.registerMsgType("desmos/MsgAnswerPoll", MsgAnswerPoll);
 }
 
 /// Allows to easily perform chain-related actions such as querying the

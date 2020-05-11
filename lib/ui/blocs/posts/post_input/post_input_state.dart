@@ -29,7 +29,9 @@ class PostInputState extends Equatable {
   });
 
   bool get isValid {
-    return message?.trim()?.isNotEmpty == true || medias?.isNotEmpty == true;
+    return message?.trim()?.isNotEmpty == true ||
+        medias?.isNotEmpty == true ||
+        poll != null;
   }
 
   /// Builds an empty state.

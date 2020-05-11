@@ -8,7 +8,7 @@ part 'msg_add_post_reaction.g.dart';
 /// to a post.
 @immutable
 @reflector
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class MsgAddPostReaction extends StdMsg {
   @JsonKey(name: "post_id")
   final String postId;

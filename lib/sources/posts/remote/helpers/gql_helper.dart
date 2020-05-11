@@ -54,8 +54,8 @@ class GqlHelper {
     allows_multiple_answers
     open
     available_answers {
-      id: answer_text
-      text: answer_id
+      id: answer_id
+      text: answer_text
     }
     user_answers {
       answer

@@ -40,7 +40,10 @@ class VotePollUseCase {
 
       // Update the post
       final poll = post.poll.copyWith(userAnswers: pollAnswers);
-      post = post.copyWith(poll: poll);
+      post = post.copyWith(
+        poll: poll,
+        status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+      );
 
       // Store it
       await _postsRepository.savePost(post);

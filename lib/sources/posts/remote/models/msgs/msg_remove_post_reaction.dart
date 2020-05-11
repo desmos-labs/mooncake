@@ -8,7 +8,7 @@ part 'msg_remove_post_reaction.g.dart';
 /// when removing a reaction from a post.
 @immutable
 @reflector
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class MsgRemovePostReaction extends StdMsg {
   @JsonKey(name: "post_id")
   final String postId;

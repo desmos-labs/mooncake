@@ -48,7 +48,6 @@ class MsgCreatePost extends StdMsg {
     @required this.medias,
     @required this.poll,
   })  : assert(parentId != null),
-        assert(message != null),
         assert(allowsComments != null),
         assert(subspace != null),
         assert(creator != null),
@@ -84,8 +83,8 @@ class MsgCreatePost extends StdMsg {
       return Exception("Parent ID cannot be empty");
     }
 
-    if (message.isEmpty) {
-      return Exception("Message cannot be both empty");
+    if (message?.isEmpty ==true && poll == null && medias?.isEmpty == true) {
+      return Exception("Message, medias and poll cannot be all empty");
     }
 
     if (subspace.isEmpty) {

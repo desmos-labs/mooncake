@@ -28,8 +28,7 @@ class PostCommentItem extends StatelessWidget {
             children: <Widget>[
               PostItemHeader(post: comment),
               const SizedBox(height: PostsTheme.defaultPadding),
-              Text(comment.message),
-              const SizedBox(height: PostsTheme.defaultPadding),
+              if (comment.message?.isNotEmpty == true) _textWidget(),
               PostImagesPreviewer(post: comment),
               const SizedBox(height: PostsTheme.defaultPadding),
               _commentActions(isLiked),
@@ -38,6 +37,15 @@ class PostCommentItem extends StatelessWidget {
         ),
       );
     });
+  }
+
+  Widget _textWidget() {
+    return Column(
+      children: [
+        Text(comment.message),
+        const SizedBox(height: PostsTheme.defaultPadding),
+      ],
+    );
   }
 
   Row _commentActions(bool isLiked) {

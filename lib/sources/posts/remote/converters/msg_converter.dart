@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/sources/posts/remote/models/msgs/msg_answer_poll.dart';
 import 'package:mooncake/sources/sources.dart';
 
 /// Contains the data of a reaction that should be added or removed from a post.
@@ -8,6 +9,13 @@ class ReactionData {
   final String value;
 
   ReactionData({@required this.postId, @required this.value});
+}
+
+class AnswerData {
+  final String postId;
+  final List<String> answers;
+
+  AnswerData({this.postId, this.answers});
 }
 
 /// Allows to convert data into messages that can be sent to the chain.
@@ -43,6 +51,8 @@ class MsgConverter {
     final List<Post> postsToCreate = [];
     final List<ReactionData> reactionsToAdd = [];
     final List<ReactionData> reactionsToRemove = [];
+    final List<AnswerData> answersToAdd = [];
+
     for (int index = 0; index < posts.length; index++) {
       final post = posts[index];
       final existingPost = existingPosts[index];
@@ -74,14 +84,29 @@ class MsgConverter {
           localReaction.user.address,
           localReaction.value,
         )) {
-          reactionsToAdd.add(
-            ReactionData(postId: post.id, value: localReaction.value),
-          );
+          reactionsToAdd.add(ReactionData(
+            postId: post.id,
+            value: localReaction.value,
+          ));
+        }
+      }
+
+      // Iterate over the local poll answers to find the ones that have been
+      // added new
+      final localPoll = post.poll ?? PostPoll.empty();
+      final existingPoll = existingPost.poll ?? PostPoll.empty();
+      for (final localAnswer in localPoll.userAnswers) {
+        if (!existingPoll.containsAnswerFrom(
+          localAnswer.user.address,
+          localAnswer.answer,
+        )) {
+          answersToAdd.add(AnswerData(
+            postId: post.id,
+            answers: [localAnswer.answer.toString()],
+          ));
         }
       }
     }
-
-    // TODO: Check for poll responses
 
     final List<StdMsg> messages = [];
     messages.addAll(postsToCreate
@@ -102,6 +127,13 @@ class MsgConverter {
               user: wallet.bech32Address,
               reaction: reaction.value,
             ))
+        .toList());
+
+    messages.addAll(answersToAdd
+        .map((answer) => MsgAnswerPoll(
+            postId: answer.postId,
+            answers: answer.answers,
+            user: wallet.bech32Address))
         .toList());
 
     return messages;

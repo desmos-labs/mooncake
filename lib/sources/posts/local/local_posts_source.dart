@@ -184,6 +184,11 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         commentIds.addAll(existing.commentsIds);
       }
 
+      // TODO: Handle posts answers
+      if (existing.poll != null && updated.poll != null) {
+
+      }
+
       merged[index] = updated.copyWith(
         status: existing?.status,
         reactions: reactions.toList(),

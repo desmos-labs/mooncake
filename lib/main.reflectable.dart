@@ -5,11 +5,13 @@ import 'dart:core';
 import 'package:alan/models/cosmos-sdk/tx/std_msg.dart' as prefix0;
 import 'package:alan/models/messages/msg_send.dart' as prefix1;
 import 'package:mooncake/sources/posts/remote/models/msgs/msg_add_post_reaction.dart'
-    as prefix3;
-import 'package:mooncake/sources/posts/remote/models/msgs/msg_create_post.dart'
-    as prefix2;
-import 'package:mooncake/sources/posts/remote/models/msgs/msg_remove_post_reaction.dart'
     as prefix4;
+import 'package:mooncake/sources/posts/remote/models/msgs/msg_answer_poll.dart'
+    as prefix2;
+import 'package:mooncake/sources/posts/remote/models/msgs/msg_create_post.dart'
+    as prefix3;
+import 'package:mooncake/sources/posts/remote/models/msgs/msg_remove_post_reaction.dart'
+    as prefix5;
 
 // ignore_for_file: prefer_adjacent_string_concatenation
 // ignore_for_file: prefer_collection_literals
@@ -54,10 +56,35 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             {}),
         r.NonGenericClassMirrorImpl(
+            r'MsgAnswerPoll',
+            r'.MsgAnswerPoll',
+            7,
+            1,
+            const prefix0.Reflector(),
+            const <int>[-1],
+            null,
+            null,
+            -1,
+            {},
+            {},
+            {
+              r'': (b) => ({postId, answers, user}) => b
+                  ? prefix2.MsgAnswerPoll(
+                      answers: answers, postId: postId, user: user)
+                  : null,
+              r'fromJson': (b) =>
+                  (json) => b ? prefix2.MsgAnswerPoll.fromJson(json) : null
+            },
+            -1,
+            -1,
+            const <int>[-1],
+            null,
+            {}),
+        r.NonGenericClassMirrorImpl(
             r'MsgCreatePost',
             r'.MsgCreatePost',
             7,
-            1,
+            2,
             const prefix0.Reflector(),
             const <int>[-1],
             null,
@@ -74,9 +101,10 @@ final _data = <r.Reflectable, r.ReflectorData>{
                       optionalData,
                       creator,
                       creationDate,
-                      medias}) =>
+                      medias,
+                      poll}) =>
                   b
-                      ? prefix2.MsgCreatePost(
+                      ? prefix3.MsgCreatePost(
                           allowsComments: allowsComments,
                           creationDate: creationDate,
                           creator: creator,
@@ -84,10 +112,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
                           message: message,
                           optionalData: optionalData,
                           parentId: parentId,
+                          poll: poll,
                           subspace: subspace)
                       : null,
               r'fromJson': (b) =>
-                  (json) => b ? prefix2.MsgCreatePost.fromJson(json) : null
+                  (json) => b ? prefix3.MsgCreatePost.fromJson(json) : null
             },
             -1,
             -1,
@@ -97,31 +126,6 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r.NonGenericClassMirrorImpl(
             r'MsgAddPostReaction',
             r'.MsgAddPostReaction',
-            7,
-            2,
-            const prefix0.Reflector(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {},
-            {},
-            {
-              r'': (b) => ({postId, reaction, user}) => b
-                  ? prefix3.MsgAddPostReaction(
-                      postId: postId, reaction: reaction, user: user)
-                  : null,
-              r'fromJson': (b) =>
-                  (json) => b ? prefix3.MsgAddPostReaction.fromJson(json) : null
-            },
-            -1,
-            -1,
-            const <int>[-1],
-            null,
-            {}),
-        r.NonGenericClassMirrorImpl(
-            r'MsgRemovePostReaction',
-            r'.MsgRemovePostReaction',
             7,
             3,
             const prefix0.Reflector(),
@@ -133,11 +137,36 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {
               r'': (b) => ({postId, reaction, user}) => b
-                  ? prefix4.MsgRemovePostReaction(
+                  ? prefix4.MsgAddPostReaction(
+                      postId: postId, reaction: reaction, user: user)
+                  : null,
+              r'fromJson': (b) =>
+                  (json) => b ? prefix4.MsgAddPostReaction.fromJson(json) : null
+            },
+            -1,
+            -1,
+            const <int>[-1],
+            null,
+            {}),
+        r.NonGenericClassMirrorImpl(
+            r'MsgRemovePostReaction',
+            r'.MsgRemovePostReaction',
+            7,
+            4,
+            const prefix0.Reflector(),
+            const <int>[-1],
+            null,
+            null,
+            -1,
+            {},
+            {},
+            {
+              r'': (b) => ({postId, reaction, user}) => b
+                  ? prefix5.MsgRemovePostReaction(
                       postId: postId, reaction: reaction, user: user)
                   : null,
               r'fromJson': (b) => (json) =>
-                  b ? prefix4.MsgRemovePostReaction.fromJson(json) : null
+                  b ? prefix5.MsgRemovePostReaction.fromJson(json) : null
             },
             -1,
             -1,
@@ -149,11 +178,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
       null,
       <Type>[
         prefix1.MsgSend,
-        prefix2.MsgCreatePost,
-        prefix3.MsgAddPostReaction,
-        prefix4.MsgRemovePostReaction
+        prefix2.MsgAnswerPoll,
+        prefix3.MsgCreatePost,
+        prefix4.MsgAddPostReaction,
+        prefix5.MsgRemovePostReaction
       ],
-      4,
+      5,
       {},
       {},
       null,
@@ -167,6 +197,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
+          const [#postId, #answers, #user]
+        ],
+        const [
+          0,
+          0,
           const [
             #parentId,
             #message,
@@ -175,7 +210,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             #optionalData,
             #creator,
             #creationDate,
-            #medias
+            #medias,
+            #poll
           ]
         ],
         const [
