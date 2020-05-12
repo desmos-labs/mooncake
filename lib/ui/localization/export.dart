@@ -88,6 +88,7 @@ What about adding some content?
   String get brightnessButtonTooltip => "Brightness";
   String get walletButtonTooltip => "Wallet";
   String get logoutButtonTooltip => "Logout";
+  String get viewMnemonicButtonTooltip => "View mnemonic";
 
   // Post item
   String likesCount(int count) => "$count likes";
@@ -161,6 +162,7 @@ What about adding some content?
 We do not support accounts yet, but you can always click on the wallet option
 inside the app bar to visualize your wallet
 """;
+
 
   // Wallet screen
   String get walletScreenName => "Wallet";
