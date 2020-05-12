@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
@@ -14,19 +15,24 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
 
   final CheckLoginUseCase _checkLoginUseCase;
   final CanUseBiometricsUseCase _canUseBiometricsUseCase;
+  final GetAuthenticationMethodUseCase _getAuthenticationMethodUseCase;
 
   NavigatorBloc({
     @required CheckLoginUseCase checkLoginUseCase,
     @required CanUseBiometricsUseCase canUseBiometricsUseCase,
+    @required GetAuthenticationMethodUseCase getAuthenticationMethodUseCase,
   })  : assert(checkLoginUseCase != null),
         _checkLoginUseCase = checkLoginUseCase,
         assert(canUseBiometricsUseCase != null),
-        _canUseBiometricsUseCase = canUseBiometricsUseCase;
+        _canUseBiometricsUseCase = canUseBiometricsUseCase,
+        assert(getAuthenticationMethodUseCase != null),
+        _getAuthenticationMethodUseCase = getAuthenticationMethodUseCase;
 
   factory NavigatorBloc.create() {
     return NavigatorBloc(
       checkLoginUseCase: Injector.get(),
       canUseBiometricsUseCase: Injector.get(),
+      getAuthenticationMethodUseCase: Injector.get(),
     );
   }
 
@@ -39,7 +45,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToHomeEventToState();
     } else if (event is NavigateToProtectAccount) {
       _mapNavigateToProtectAccountScreenEventToState();
-    }else if (event is NavigateToRecoverAccount) {
+    } else if (event is NavigateToRecoverAccount) {
       _mapNavigateToRecoverAccountEventToState();
     } else if (event is NavigateToEnableBiometrics) {
       _mapNavigateToBiometricScreenEventToState();
@@ -53,6 +59,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToWalletEventToState();
     } else if (event is GoBack) {
       _handleGoBack(event);
+    } else if (event is NavigateToShowMnemonic) {
+      _handleNavigateToShowMnemonic();
     }
   }
 
@@ -112,6 +120,19 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
       return WalletScreen();
     }));
+  }
+
+  void _handleNavigateToShowMnemonic() async {
+    final method = await _getAuthenticationMethodUseCase.get();
+    if (method is BiometricAuthentication) {
+      _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+        return LoginWithBiometricsScreen();
+      }));
+    } else if (method is PasswordAuthentication) {
+      _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+        return LoginWithPasswordScreen(hashedPassword: method.hashedPassword);
+      }));
+    }
   }
 
   void _handleGoBack(GoBack event) {

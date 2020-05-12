@@ -85,3 +85,9 @@ class NavigateToWallet extends NavigatorEvent {
   @override
   String toString() => 'NavigateToWallet';
 }
+
+/// Tells the Bloc to navigate to the screen that allows to show the mnemonic.
+class NavigateToShowMnemonic extends NavigatorEvent {
+  @override
+  String toString() => 'NavigateToShowMnemonic';
+}

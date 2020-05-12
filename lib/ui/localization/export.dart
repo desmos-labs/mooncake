@@ -45,6 +45,9 @@ can be used to access your account on this application
   """;
   String get savingBiometricsTitle => "Saving biomentrics";
   String get savingBiometricsBody => "This might take a while";
+  String get biometricsEnableButton => "Enable";
+  String get biometricsUsePasswordButton => "Use text password instead";
+  String get biometricsReason => "Authenticate into Mooncake";
 
   // Password screen
   String get passwordTitle => "Set password";
@@ -65,9 +68,27 @@ your mnemonic from scratch in the case of a future recovery.
   String get savingPasswordTitle => "Saving password";
   String get savingPasswordBody => "This might take a while";
 
-  String get biometricsEnableButton => "Enable";
-  String get biometricsUsePasswordButton => "Use text password instead";
-  String get biometricsReason => "Authenticate into Mooncake";
+  // Security login screen
+  String get viewMnemonic => "View mnemonic";
+  String get securityLoginText => """
+In order to prevent aby unwanted access to your mnemonic phrase, you are 
+required to log in using the authentication method you have previously set 
+during the the first login into the app.
+""";
+  String get securityLoginWarning => """
+Please note that your mnemonic should never be shown to anyone, and you should 
+see it only once when backing it up on a piece of paper. Allowing anyone to 
+see your mnemonic will most surely end in them stealing your account and all 
+your funds so proceed with caution.
+""";
+  String get securityLoginBiometrics => """
+If you understand the risks of viewing your mnemonic, please tap below to 
+start the authentication process.
+""";
+  String get securityLoginPassword => """
+If you understand the risks of viewing your mnemonic, please insert below 
+your password and press the button to view it
+""";
 
   // Main screen
   String get refreshButtonText => "New posts available. Tap to refresh";
@@ -162,7 +183,6 @@ What about adding some content?
 We do not support accounts yet, but you can always click on the wallet option
 inside the app bar to visualize your wallet
 """;
-
 
   // Wallet screen
   String get walletScreenName => "Wallet";

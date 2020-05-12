@@ -1,5 +1,6 @@
 export 'account/bloc.dart';
 export 'home/bloc.dart';
+export 'mnemonic/bloc.dart';
 export 'navigator/bloc.dart';
 export 'notifications/bloc.dart';
 export 'posts/export.dart';

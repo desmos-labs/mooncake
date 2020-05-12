@@ -4,10 +4,10 @@ import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to get the currently set local authentication method that the
 /// user has set.
-class GetAuthenticationMethod {
+class GetAuthenticationMethodUseCase {
   final UserRepository _userRepository;
 
-  GetAuthenticationMethod({
+  GetAuthenticationMethodUseCase({
     @required UserRepository userRepository,
   })  : assert(userRepository != null),
         _userRepository = userRepository;

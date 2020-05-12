@@ -4,6 +4,7 @@ export 'bottom_navigation_bar/export.dart';
 export 'buttons/export.dart';
 export 'loading_indicator.dart';
 export 'login/export.dart';
+export 'mnemonic/export.dart';
 export 'notifications_list/export.dart';
 export 'pickers/export.dart';
 export 'popup/export.dart';

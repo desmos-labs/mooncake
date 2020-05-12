@@ -10,7 +10,7 @@ import 'package:sembast/sembast.dart';
 
 /// Contains the information that needs to be given to derive a [Wallet].
 class _WalletInfo {
-  final String mnemonic;
+  final List<String> mnemonic;
   final NetworkInfo networkInfo;
   final String derivationPath;
 
@@ -54,7 +54,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   /// to run it in a different isolate.
   static Wallet _deriveWallet(_WalletInfo info) {
     return Wallet.derive(
-      info.mnemonic.split(" "),
+      info.mnemonic,
       info.networkInfo,
       derivationPath: info.derivationPath,
     );
@@ -72,12 +72,19 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<Wallet> getWallet() async {
+  Future<List<String>> getMnemonic() async {
     final mnemonic = await _storage.read(key: MNEMONIC_KEY);
     if (mnemonic == null) {
       // The mnemonic does not exist, no wallet can be created.
       return null;
     }
+    return mnemonic.split(" ");
+  }
+
+  @override
+  Future<Wallet> getWallet() async {
+    final mnemonic = await getMnemonic();
+    if (mnemonic == null) return null;
 
     final walletInfo = _WalletInfo(
       mnemonic,

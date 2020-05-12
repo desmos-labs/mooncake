@@ -2,6 +2,7 @@
 ## Changes 
 - Added the possibility of creating polls
 - Added the possibility of voting to existing polls
+- Added the ability to view your own mnemonic phrase from withing the app 
 
 ## Bug fixes
 - Fixed a bug that caused the impossibility of using the biometric protection when creating a new account

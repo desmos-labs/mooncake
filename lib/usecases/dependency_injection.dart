@@ -13,7 +13,10 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetAccountUseCase(
             userRepository: injector.get(),
           ))
-      ..bindFactory((injector, params) => GetAuthenticationMethod(
+      ..bindFactory((injector, params) => GetAuthenticationMethodUseCase(
+            userRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => GetMnemonicUseCase(
             userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => LoginUseCase(

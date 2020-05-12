@@ -13,7 +13,7 @@ AppBar accountAppBar(BuildContext context) {
   void _onSelected(BuildContext context, String option) {
     if (option == actions[0]) {
       // See mnemonic
-
+      BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonic());
     } else if (option == actions[1]) {
       // Logout
       BlocProvider.of<AccountBloc>(context).add(LogOut());
