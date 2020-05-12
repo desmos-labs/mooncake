@@ -15,7 +15,7 @@ class SourcesModule implements Module {
 
   static const _lcdUrl = _useLocalEndpoints
       ? "http://10.0.2.2:1317"
-      : "http://lcd.desmos.network:1317";
+      : "http://lcd.morpheus.desmos.network:1317";
 
   final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
