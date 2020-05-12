@@ -45,6 +45,6 @@ class AccountCreatedPopupContent extends StatelessWidget {
   }
 
   void _goToMooncake(BuildContext context) {
-    BlocProvider.of<NavigatorBloc>(context).add(NavigateToSetPassword());
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToProtectAccount());
   }
 }

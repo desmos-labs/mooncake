@@ -95,6 +95,7 @@ class RecoverAccountMainContent extends StatelessWidget {
   }
 
   void _debugMnemonic(BuildContext context) {
+    // TODO: Remove this
     final bloc = BlocProvider.of<RecoverAccountBloc>(context);
     bloc.add(WordSelected("frown"));
     bloc.add(WordSelected("spike"));
@@ -124,6 +125,6 @@ class RecoverAccountMainContent extends StatelessWidget {
 
   /// Handle the click on the continue button
   void _continueClicked(BuildContext context) {
-    BlocProvider.of<RecoverAccountBloc>(context).add(ContinueRecovery());
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToProtectAccount());
   }
 }

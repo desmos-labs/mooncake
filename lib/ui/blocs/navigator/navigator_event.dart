@@ -34,6 +34,12 @@ class NavigateToRecoverAccount extends NavigatorEvent {
   String toString() => 'NavigateToRecoverAccount';
 }
 
+/// Tells the Bloc to navigate either to the password or biometric setting
+/// screen in order to protect the account.
+class NavigateToProtectAccount extends NavigatorEvent {
+  @override String toString() => 'NavigateToProtectAccount';
+}
+
 /// Tells the Bloc to navigate to the screen that allows the user
 /// to set a biometric authentication.
 class NavigateToEnableBiometrics extends NavigatorEvent {
@@ -71,7 +77,7 @@ class NavigateToPostDetails extends NavigatorEvent {
   NavigateToPostDetails(this.context, this.postId);
 
   @override
-  String toString() => 'NavigateToPostdetail { postId: $postId }';
+  String toString() => 'NavigateToPostDetails { postId: $postId }';
 }
 
 /// Tells the Bloc to navigate to the wallet screen.

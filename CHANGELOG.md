@@ -1,4 +1,16 @@
-# Version 0.2.0 (Unreleased)
+# Version 0.3.0 (Unreleased)
+## Changes 
+- Added the possibility of creating polls
+- Added the possibility of voting to existing polls
+
+## Bug fixes
+- Fixed a bug that caused the impossibility of using the biometric protection when creating a new account
+
+# Version 0.2.1
+## Bug fixes
+- Fixed a bug inside the post creation
+
+# Version 0.2.0
 ## Changes
 - Added the possibility of reporting a post
 - Added the possibility of hiding a post

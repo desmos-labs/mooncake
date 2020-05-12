@@ -46,8 +46,6 @@ class RecoverAccountBloc
       yield* _mapWordSelectedEventToState(event);
     } else if (event is ChangeFocus) {
       yield* _mapChangeFocusEventToState(event);
-    } else if (event is ContinueRecovery) {
-      _handleContinueRecovery();
     }
   }
 
@@ -86,14 +84,5 @@ class RecoverAccountBloc
     ChangeFocus event,
   ) async* {
     yield state.copyWith(currentWordIndex: event.focusedField);
-  }
-
-  void _handleContinueRecovery() async {
-    final canUseBio = await _canUseBiometricsUseCase.check();
-    if (canUseBio) {
-      _navigatorBloc.add(NavigateToEnableBiometrics());
-    } else {
-      _navigatorBloc.add(NavigateToSetPassword());
-    }
   }
 }

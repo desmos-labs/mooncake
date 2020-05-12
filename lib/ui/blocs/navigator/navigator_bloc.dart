@@ -11,16 +11,22 @@ import 'package:mooncake/usecases/usecases.dart';
 /// BloC that controls the navigation to the different screens of the app.
 class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   final GlobalKey<NavigatorState> _navigatorKey = PostsKeys.navigatorKey;
+
   final CheckLoginUseCase _checkLoginUseCase;
+  final CanUseBiometricsUseCase _canUseBiometricsUseCase;
 
   NavigatorBloc({
     @required CheckLoginUseCase checkLoginUseCase,
+    @required CanUseBiometricsUseCase canUseBiometricsUseCase,
   })  : assert(checkLoginUseCase != null),
-        _checkLoginUseCase = checkLoginUseCase;
+        _checkLoginUseCase = checkLoginUseCase,
+        assert(canUseBiometricsUseCase != null),
+        _canUseBiometricsUseCase = canUseBiometricsUseCase;
 
   factory NavigatorBloc.create() {
     return NavigatorBloc(
       checkLoginUseCase: Injector.get(),
+      canUseBiometricsUseCase: Injector.get(),
     );
   }
 
@@ -31,7 +37,9 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   Stream<void> mapEventToState(NavigatorEvent event) async* {
     if (event is NavigateToHome) {
       _mapNavigateToHomeEventToState();
-    } else if (event is NavigateToRecoverAccount) {
+    } else if (event is NavigateToProtectAccount) {
+      _mapNavigateToProtectAccountScreenEventToState();
+    }else if (event is NavigateToRecoverAccount) {
       _mapNavigateToRecoverAccountEventToState();
     } else if (event is NavigateToEnableBiometrics) {
       _mapNavigateToBiometricScreenEventToState();
@@ -57,6 +65,15 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
 
   void _mapNavigateToRecoverAccountEventToState() {
     _navigatorKey.currentState.pushNamed(PostsRoutes.recoverAccount);
+  }
+
+  void _mapNavigateToProtectAccountScreenEventToState() async {
+    final canUseBio = await _canUseBiometricsUseCase.check();
+    if (canUseBio) {
+      _mapNavigateToBiometricScreenEventToState();
+    } else {
+      _mapNavigateToPasswordScreenEventToState();
+    }
   }
 
   void _mapNavigateToBiometricScreenEventToState() {

@@ -51,10 +51,3 @@ class ChangeFocus extends RecoverAccountEvent {
   @override
   List<Object> get props => [focusedField, currentText];
 }
-
-/// Tells the Bloc that the user has inserted the mnemonic and wants
-/// to continue to the next step.
-class ContinueRecovery extends RecoverAccountEvent {
-  @override
-  String toString() => 'ContinueRecovery';
-}
