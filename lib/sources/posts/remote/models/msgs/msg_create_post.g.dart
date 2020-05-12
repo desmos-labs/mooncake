@@ -23,7 +23,7 @@ MsgCreatePost _$MsgCreatePostFromJson(Map<String, dynamic> json) {
         ?.toList(),
     poll: json['poll_data'] == null
         ? null
-        : PostPoll.fromJson(json['poll_data'] as Map<String, dynamic>),
+        : ChainPollData.fromJson(json['poll_data'] as Map<String, dynamic>),
   );
 }
 

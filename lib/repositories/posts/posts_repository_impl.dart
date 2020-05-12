@@ -149,4 +149,9 @@ class PostsRepositoryImpl extends PostsRepository {
       );
     }
   }
+
+  @override
+  Future<void> deletePosts() {
+    return _localPostsSource.deletePosts();
+  }
 }

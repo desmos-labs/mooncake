@@ -38,4 +38,7 @@ abstract class LocalPostsSource {
   /// Upon having stored them properly, it emits the new set of posts
   /// to the [postsStream].
   Future<void> savePosts(List<Post> posts, {bool merge = false});
+
+  /// Deletes the locally stored posts.
+  Future<void> deletePosts();
 }

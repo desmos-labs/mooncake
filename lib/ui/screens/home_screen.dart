@@ -1,4 +1,5 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -43,6 +44,13 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             actions: [
+              if (kDebugMode)
+                IconButton(
+                  icon: Icon(MooncakeIcons.delete),
+                  onPressed: () {
+                    BlocProvider.of<PostsListBloc>(context).add(DeletePosts());
+                  },
+                ),
               IconButton(
                 icon: Icon(MooncakeIcons.wallet),
                 tooltip: PostsLocalizations.of(context).walletButtonTooltip,

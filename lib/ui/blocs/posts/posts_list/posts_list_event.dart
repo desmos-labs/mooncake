@@ -133,3 +133,8 @@ class TxFailed extends PostsListEvent {
   @override
   List<Object> get props => [txHash, error];
 }
+
+/// Event that tells the Bloc to download all the posts stored locally.
+/// WARNING: Use it ONLY during debug.
+class DeletePosts extends PostsListEvent {
+}

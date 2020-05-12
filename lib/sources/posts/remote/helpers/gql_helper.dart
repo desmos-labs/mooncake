@@ -52,8 +52,8 @@ class GqlHelper {
     end_date
     allows_answer_edits
     allows_multiple_answers
-    is_open: open
-    available_answers: available_answers {
+    open
+    available_answers {
       id: answer_id
       text: answer_text
     }

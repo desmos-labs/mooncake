@@ -20,11 +20,27 @@ class AnswerData {
 
 /// Allows to convert data into messages that can be sent to the chain.
 class MsgConverter {
+  ChainPollData _toChainPollData(PostPoll poll) {
+    return ChainPollData(
+      question: poll.question,
+      endDate: poll.endDate,
+      isOpen: poll.isOpen,
+      allowsMultipleAnswers: poll.allowsMultipleAnswers,
+      allowsAnswerEdits: poll.allowsAnswerEdits,
+      options: poll.options.map((e) {
+        return (ChainPollOption(
+          id: e.id.toString(),
+          text: e.text,
+        ));
+      }).toList(),
+    );
+  }
+
   /// Converts the given [post] into a [MsgCreatePost] allowing it
   /// to store such post into the chain.
   MsgCreatePost _toMsgCreatePost(Post post, String creator) {
     return MsgCreatePost(
-      parentId: post.parentId ?? "0",
+      parentId: post.parentId ?? "",
       message: post.message ?? "",
       allowsComments: post.allowsComments,
       optionalData:
@@ -33,7 +49,7 @@ class MsgConverter {
       creator: creator,
       creationDate: post.created,
       medias: post.medias?.isNotEmpty == true ? post.medias : null,
-      poll: post.poll,
+      poll: post.poll == null ? null : _toChainPollData(post.poll),
     );
   }
 

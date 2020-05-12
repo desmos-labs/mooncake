@@ -28,6 +28,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final ManagePostReactionsUseCase _managePostReactionsUseCase;
   final VotePollUseCase _votePollUseCase;
   final HidePostUseCase _hidePostUseCase;
+  final DeletePostsUseCase _deletePostsUseCase;
 
   // Subscriptions
   StreamSubscription _eventsSubscription;
@@ -45,6 +46,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required ManagePostReactionsUseCase managePostReactionsUseCase,
     @required HidePostUseCase hidePostUseCase,
     @required VotePollUseCase votePollUseCase,
+    @required DeletePostsUseCase deletePostsUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getHomePostsUseCase != null),
         _getHomePostsUseCase = getHomePostsUseCase,
@@ -59,7 +61,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(hidePostUseCase != null),
         _hidePostUseCase = hidePostUseCase,
         assert(votePollUseCase != null),
-        _votePollUseCase = votePollUseCase {
+        _votePollUseCase = votePollUseCase,
+        assert(deletePostsUseCase != null),
+        _deletePostsUseCase = deletePostsUseCase {
     _initializeSyncTimer();
 
     // Subscribe to the posts changes
@@ -92,6 +96,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       managePostReactionsUseCase: Injector.get(),
       hidePostUseCase: Injector.get(),
       votePollUseCase: Injector.get(),
+      deletePostsUseCase: Injector.get(),
     );
   }
 
@@ -133,6 +138,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       _handleTxSuccessfulEvent(event);
     } else if (event is TxFailed) {
       _handleTxFailedEvent(event);
+    } else if (event is DeletePosts) {
+      _handleDeletePosts();
     }
   }
 
@@ -348,6 +355,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       data: event.error,
     );
     await _updatePostsStatusUseCase.update(event.txHash, status);
+  }
+
+  void _handleDeletePosts() async {
+    await _deletePostsUseCase.delete();
+    add(RefreshPosts());
   }
 
   @override

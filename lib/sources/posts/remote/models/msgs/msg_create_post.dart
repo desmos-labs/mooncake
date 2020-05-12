@@ -2,6 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
+import 'chain_poll_data.dart';
+export 'chain_poll_data.dart';
+export 'chain_poll_option.dart';
+
 part 'msg_create_post.g.dart';
 
 /// Represents the message that should be used when creating a new post or
@@ -35,7 +39,7 @@ class MsgCreatePost extends StdMsg {
   final List<PostMedia> medias;
 
   @JsonKey(name: "poll_data", includeIfNull: false)
-  final PostPoll poll;
+  final ChainPollData poll;
 
   MsgCreatePost({
     @required this.parentId,
@@ -79,10 +83,6 @@ class MsgCreatePost extends StdMsg {
 
   @override
   Exception validate() {
-    if (parentId.isEmpty) {
-      return Exception("Parent ID cannot be empty");
-    }
-
     if (message?.isEmpty ==true && poll == null && medias?.isEmpty == true) {
       return Exception("Message, medias and poll cannot be all empty");
     }

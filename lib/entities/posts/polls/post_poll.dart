@@ -20,7 +20,7 @@ class PostPoll extends Equatable {
     return DateTime.parse(endDate);
   }
 
-  @JsonKey(name: "is_open")
+  @JsonKey(name: "open")
   final bool isOpen;
 
   @JsonKey(name: "allows_multiple_answers")
@@ -29,11 +29,17 @@ class PostPoll extends Equatable {
   @JsonKey(name: "allows_answer_edits")
   final bool allowsAnswerEdits;
 
-  @JsonKey(name: "provided_answers")
+  @JsonKey(name: "available_answers")
   final List<PollOption> options;
 
   @JsonKey(name: "user_answers")
   final List<PollAnswer> userAnswers;
+
+  bool get isValid {
+    return question?.isNotEmpty == true &&
+        endDate != null &&
+        options?.isNotEmpty == true;
+  }
 
   PostPoll({
     @required this.question,
@@ -50,12 +56,6 @@ class PostPoll extends Equatable {
         assert(allowsMultipleAnswers != null),
         assert(allowsAnswerEdits != null),
         userAnswers = userAnswers ?? [];
-
-  bool get isValid {
-    return question?.isNotEmpty == true &&
-        endDate != null &&
-        options?.isNotEmpty == true;
-  }
 
   factory PostPoll.empty() {
     return PostPoll(
@@ -92,7 +92,7 @@ class PostPoll extends Equatable {
     return PostPoll(
       question: question ?? this.question,
       endDate: DateFormat(Post.DATE_FORMAT)
-          .format((endDate ?? this.endDateTime).toUtc()),
+          .format(endDate?.toUtc() ?? this.endDateTime),
       options: options ?? this.options,
       isOpen: isOpen ?? this.isOpen,
       allowsMultipleAnswers:

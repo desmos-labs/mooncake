@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:sembast/sembast.dart';
 
 import 'converter.dart';
@@ -217,5 +218,10 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       final values = await PostsConverter.serializePosts(posts);
       await _store.records(keys).put(txn, values);
     });
+  }
+
+  @override
+  Future<void> deletePosts() async {
+    await _store.delete(_database);
   }
 }
