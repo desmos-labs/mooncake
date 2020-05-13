@@ -128,8 +128,10 @@ class LocalUserSourceImpl extends LocalUserSource {
   @override
   Stream<MooncakeAccount> get accountStream {
     return store
-        .stream(database, filter: Filter.byKey(USER_DATA_KEY))
-        .map((event) => MooncakeAccount.fromJson(event.value));
+        .query(finder: Finder(filter: Filter.byKey(USER_DATA_KEY)))
+        .onSnapshots(database)
+        .map((event) =>
+            event.isEmpty ? null : MooncakeAccount.fromJson(event.first.value));
   }
 
   @override

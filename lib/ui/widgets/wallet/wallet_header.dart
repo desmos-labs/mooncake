@@ -1,5 +1,6 @@
 import 'package:alan/alan.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the header that is shown inside the wallet screen.
@@ -20,12 +21,12 @@ class WalletHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              coin.amount,
+              NumberFormat("0.00").format(int.parse(coin.amount) / 1000000),
               style: Theme.of(context).textTheme.headline5,
             ),
             SizedBox(width: 5),
             Text(
-              coin.denom,
+              coin.denom.startsWith("u") ? coin.denom.substring(1) : coin.denom,
               style: Theme.of(context).textTheme.caption,
             )
           ],

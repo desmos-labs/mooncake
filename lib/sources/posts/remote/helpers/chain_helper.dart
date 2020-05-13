@@ -58,7 +58,10 @@ class ChainHelper {
     return TxHelper.sendTx(
       txData.messages,
       txData.wallet,
-      fee: StdFee(amount: [], gas: "200000"),
+      fee: StdFee(
+        amount: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
+        gas: "200000",
+      ),
     );
   }
 

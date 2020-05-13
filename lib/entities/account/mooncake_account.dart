@@ -53,7 +53,13 @@ class MooncakeAccount extends Equatable {
   Map<String, dynamic> toJson() => _$MooncakeAccountToJson(this);
 
   @override
-  List<Object> get props => [cosmosAccount, avatarUrl, username];
+  List<Object> get props {
+    return [
+      cosmosAccount,
+      avatarUrl,
+      username,
+    ];
+  }
 
   @override
   String toString() => 'MooncakeAccount {'
