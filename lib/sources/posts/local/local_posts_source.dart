@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/entities/posts/export.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:sembast/sembast.dart';
 
 import 'converter.dart';
@@ -174,6 +174,15 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     for (int index = 0; index < merged.length; index++) {
       final existing = existingPosts[index];
       final updated = merged[index];
+
+      final successfulExisting = existing.copyWith(
+        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
+      );
+      if (updated == successfulExisting) {
+        // The updated one is identical to the local, with only the status
+        // changed. For this reason we can use the updated to go faster.
+        continue;
+      }
 
       Set<Reaction> reactions = updated.reactions.toSet();
       if (existing?.reactions != null) {
