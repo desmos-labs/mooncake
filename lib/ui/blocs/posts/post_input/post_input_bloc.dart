@@ -155,9 +155,8 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       yield state.copyWith(poll: poll);
     } else if (event is DeletePollOption) {
       // Delete the option
-      List<PollOption> options = state.poll.options
-          .where((option) => option.id != event.index)
-          .toList();
+      List<PollOption> options = List<PollOption>()..addAll(state.poll.options);
+      options = options.where((option) => option.id != event.index).toList();
 
       // Update the options indexes
       for (int i = 0; i < options.length; i++) {

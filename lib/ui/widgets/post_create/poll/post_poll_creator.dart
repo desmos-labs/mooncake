@@ -13,6 +13,7 @@ class PostPollCreator extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostInputBloc, PostInputState>(
       builder: (context, state) {
+        final optionsLength = state.poll?.options?.length ?? 0;
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -21,7 +22,7 @@ class PostPollCreator extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: state.poll?.options?.length ?? 0,
+              itemCount: optionsLength,
               itemBuilder: (context, index) {
                 return PollOptionEditor(option: state.poll.options[index]);
               },
@@ -30,11 +31,12 @@ class PostPollCreator extends StatelessWidget {
               },
             ),
             const SizedBox(height: 4),
-            FlatButton(
-              textColor: Theme.of(context).accentColor,
-              child: Text(PostsLocalizations.of(context).pollAddOptionButton),
-              onPressed: () => _addOption(context),
-            ),
+            if (optionsLength < 5)
+              FlatButton(
+                textColor: Theme.of(context).accentColor,
+                child: Text(PostsLocalizations.of(context).pollAddOptionButton),
+                onPressed: () => _addOption(context),
+              ),
             const SizedBox(height: 4),
             PollEndDateEditor(),
           ],

@@ -31,7 +31,18 @@ class PostInputState extends Equatable {
   bool get isValid {
     return message?.trim()?.isNotEmpty == true ||
         medias?.isNotEmpty == true ||
-        poll != null;
+        _isPollValid;
+  }
+
+  bool get _isPollValid {
+    return poll != null &&
+        // The question must not be empty
+        poll.question.trim().isNotEmpty &&
+        // There have to be at least 2 options
+        poll.options
+                .where((element) => element.text.trim().isNotEmpty)
+                .length >=
+            2;
   }
 
   /// Builds an empty state.
