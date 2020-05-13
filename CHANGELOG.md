@@ -6,6 +6,7 @@
 
 ## Bug fixes
 - Fixed a bug that caused the impossibility of using the biometric protection when creating a new account
+- Fixed a UI bug inside the post details that didn't allow for a proper visualization if the reactions and comments list were empty
 
 # Version 0.2.1
 ## Bug fixes
