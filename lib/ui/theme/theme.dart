@@ -11,109 +11,71 @@ class PostsTheme {
 
   static EdgeInsets get postItemPadding => EdgeInsets.all(16);
 
-  static ThemeData get _lightTheme {
-    final brightness = Brightness.light;
-    final accentColor = ThemeColors.accentColor(brightness);
-    final iconTheme = IconThemeData(color: accentColor);
-    return ThemeData(
-        brightness: brightness,
-        appBarTheme: AppBarTheme(
-          elevation: 0,
-          color: Colors.transparent,
-          textTheme: TextTheme(
-            headline6: Typography.englishLike2018.headline6.copyWith(
-              color: accentColor,
-            ),
-          ),
-          iconTheme: iconTheme,
-          actionsIconTheme: iconTheme,
-        ),
-        iconTheme: iconTheme,
-        primarySwatch: Colors.deepPurple,
-        primaryColor: Colors.white,
-        primaryColorLight: Colors.white,
-        primaryColorDark: Color(0xFFF4F4FC),
-        accentColor: accentColor,
-        errorColor: Color(0xFFE84444),
-        scaffoldBackgroundColor: Color(0xFFF4F4FC),
-        cardColor: Colors.white,
-        accentTextTheme: Typography.englishLike2018.copyWith(
-          headline5:
-              Typography.englishLike2018.headline5.copyWith(color: accentColor),
-          headline6: Typography.englishLike2018.headline6.copyWith(
-            color: accentColor,
-          ),
-          bodyText2: Typography.englishLike2018.bodyText2.copyWith(
-            color: accentColor,
-          ),
-          caption: Typography.englishLike2018.caption.copyWith(
-            color: accentColor,
-          ),
-        ),
-        buttonTheme: ButtonThemeData(
-          buttonColor: accentColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: InputBorder.none,
-          disabledBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          focusedErrorBorder: InputBorder.none,
-        ));
-  }
-
-  static ThemeData get _darkTheme {
-    final brightness = Brightness.dark;
-    final accentColor = ThemeColors.accentColor(brightness);
-    final iconTheme = IconThemeData(color: accentColor);
-
-    return ThemeData(
-      brightness: brightness,
+  static ThemeData fromColorScheme(ColorScheme scheme) {
+    final iconTheme = IconThemeData(color: scheme.primary);
+    return ThemeData.from(colorScheme: scheme).copyWith(
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.transparent,
         textTheme: TextTheme(
           headline6: Typography.englishLike2018.headline6.copyWith(
-            color: accentColor,
+            color: scheme.primary,
           ),
         ),
         iconTheme: iconTheme,
         actionsIconTheme: iconTheme,
       ),
       iconTheme: iconTheme,
-      primarySwatch: Colors.deepPurple,
-      primaryColor: Color(0xFF423F64),
-      primaryColorLight: Color(0xFF8d8ba2),
-      primaryColorDark: Color(0xFF1F1C45),
-      accentColor: accentColor,
-      errorColor: Color(0xFFE84444),
-      scaffoldBackgroundColor: Color(0xFF1F1C45),
-      cardColor: Color(0xFF2C2A50),
-      accentTextTheme: Typography.englishLike2018.copyWith(
-        headline5: Typography.englishLike2018.headline5.copyWith(
-          color: Colors.white,
-        ),
-        headline6: Typography.englishLike2018.headline6.copyWith(
-          color: Colors.white,
-        ),
-        bodyText2: Typography.englishLike2018.bodyText2.copyWith(
-          color: Colors.white,
-        ),
-        caption: Typography.englishLike2018.caption.copyWith(
-          color: Colors.white,
-        ),
-      ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Color(0xFF6D4DDB),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+      ),
     );
+  }
+
+  static ThemeData get _lightTheme {
+    return fromColorScheme(ColorScheme(
+      primary: Color(0xFF6D4DDB),
+      primaryVariant: Color(0xFF904FFF),
+      secondary: Color(0xFF007AFF),
+      secondaryVariant: Color(0xFF5277FF),
+      surface: Color(0xFFFFFFFF),
+      background: Color(0xFFF4F4FC),
+      error: Color(0xFFE84444),
+      onPrimary: Color(0xFF000000),
+      onSecondary: Color(0xFF000000),
+      onSurface: Color(0xFF646464),
+      onBackground: Color(0xFF000000),
+      onError: Color(0xFFACACAC),
+      brightness: Brightness.light,
+    ));
+  }
+
+  static ThemeData get _darkTheme {
+    return fromColorScheme(ColorScheme(
+      primary: Color(0xFFA990FF),
+      primaryVariant: Color(0xFF6625EE),
+      secondary: Color(0xFF439DFF),
+      secondaryVariant: Color(0xFF5277FF),
+      surface: Color(0xFF2C2A50),
+      background: Color(0xFF1F1C45),
+      error: Color(0xFFE84444),
+      onPrimary: Color(0x5aFFFFFF),
+      onSecondary: Color(0x5aFFFFFF),
+      onSurface: Color(0x3cFFFFFF),
+      onBackground: Color(0x5aFFFFFF),
+      onError: Color(0x3cFFFFFF),
+      brightness: Brightness.dark,
+    ));
   }
 
   static ThemeData themeBuilder(Brightness brightness) {

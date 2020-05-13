@@ -38,12 +38,15 @@ class BottomNavigationButton extends StatelessWidget {
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, currentTab) {
         return IconButton(
-          tooltip: titles[tab],
-          onPressed: () => _showTab(context),
-          icon: tab != currentTab
-              ? Icon(icons[tab], key: key)
-              : Icon(selectedIcons[tab], key: key)
-        );
+            tooltip: titles[tab],
+            onPressed: () => _showTab(context),
+            icon: tab != currentTab
+                ? Icon(icons[tab], key: key)
+                : Icon(
+                    selectedIcons[tab],
+                    key: key,
+                    color: Theme.of(context).accentColor,
+                  ));
       },
     );
   }

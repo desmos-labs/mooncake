@@ -34,7 +34,7 @@ class _PostsAppState extends State<PostsApp> {
         }),
       ],
       child: DynamicTheme(
-        defaultBrightness: Brightness.light,
+        defaultBrightness: Brightness.dark,
         data: PostsTheme.themeBuilder,
         themedWidgetBuilder: (context, theme) => MaterialApp(
           debugShowCheckedModeBanner: false,
