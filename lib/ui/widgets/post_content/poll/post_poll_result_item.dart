@@ -10,25 +10,18 @@ class PostPollResultItem extends StatelessWidget {
 
   /// Represents the percentage of times that this option has
   /// been chosen over all the others.
-  double percentage;
+  final double percentage;
 
   PostPollResultItem({
     Key key,
     this.height,
     @required this.poll,
     @required this.option,
-  }) : super(key: key) {
-    // Get the number of total answers
-    final totalAnswers = poll.userAnswers.length;
-
-    // Get the number of answers for this option
-    final specificAnswers = poll.userAnswers
-        .where((element) => element.answer == option.id)
-        .length;
-
-    // Compute the percentage
-    percentage = specificAnswers / totalAnswers * 100.0;
-  }
+  })  : percentage = (poll.userAnswers
+                .where((answer) => answer.answer == option.id)
+                .length) /
+            poll.userAnswers.length,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +42,7 @@ class PostPollResultItem extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "${percentage.toInt()}%",
+                  "${(percentage * 100).toInt()}%",
                   style: Theme.of(context)
                       .textTheme
                       .bodyText2
