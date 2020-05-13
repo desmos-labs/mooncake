@@ -15,48 +15,60 @@ class PostReactionsList extends StatelessWidget {
         }
 
         final currentState = state as PostDetailsLoaded;
-        if (currentState.reactionsCount == 0) {
-          return Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  "assets/images/smile.png",
-                  width: 100,
-                ),
-                Text(
-                  PostsLocalizations.of(context).noReactionsYet,
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-          );
-        }
-
         return Container(
           padding: EdgeInsets.only(
             top: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
                 .layoutExtent,
           ),
-          child: CustomScrollView(
-            shrinkWrap: true,
-            key: PageStorageKey<String>("reactions"),
-            slivers: <Widget>[
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return PostReactionItem(
-                      reaction: currentState.post.reactions[index],
-                    );
-                  },
-                  childCount: currentState.post.reactions.length,
-                ),
-              )
-            ],
-          ),
+          child: currentState.reactionsCount == 0
+              ? _emptyReactionsContainer(context)
+              : _reactionsList(context, currentState),
         );
       },
+    );
+  }
+
+  Widget _emptyReactionsContainer(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(child: Center()),
+          Expanded(
+            child: Center(
+              child: Image.asset("assets/images/smile.png"),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Text(
+                PostsLocalizations.of(context).noReactionsYet,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _reactionsList(BuildContext context, PostDetailsLoaded state) {
+    return CustomScrollView(
+      shrinkWrap: true,
+      key: PageStorageKey<String>("reactions"),
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return PostReactionItem(
+                reaction: state.post.reactions[index],
+              );
+            },
+            childCount: state.post.reactions.length,
+          ),
+        )
+      ],
     );
   }
 }

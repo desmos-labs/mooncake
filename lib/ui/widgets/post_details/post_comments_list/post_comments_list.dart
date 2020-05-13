@@ -12,34 +12,36 @@ class PostCommentsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (comments.isEmpty) {
-      return _emptyCommentsContainer(context);
-    }
-
     final childCount = (comments.length * 2) - 1;
     return Container(
       padding: EdgeInsets.only(
         top: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
             .layoutExtent,
       ),
-      child: CustomScrollView(
-        shrinkWrap: true,
-        key: PageStorageKey<String>("comments"),
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                if (index.isEven) {
-                  final comment = comments[index ~/ 2];
-                  return _commentItem(comment);
-                }
+      child: comments.isEmpty
+          ? _emptyCommentsContainer(context)
+          : _commentsList(context, childCount),
+    );
+  }
 
-                return Container(
-                  height: 0.5,
-                  color: ThemeColors.textColorLight,
-                );
-              },
-              childCount: childCount,
+  Widget _emptyCommentsContainer(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(child: Center()),
+          Expanded(
+            child: Center(
+              child: Image.asset("assets/images/smile.png"),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Text(
+                PostsLocalizations.of(context).noCommentsYet,
+                textAlign: TextAlign.center,
+              ),
             ),
           )
         ],
@@ -47,29 +49,31 @@ class PostCommentsList extends StatelessWidget {
     );
   }
 
-  Container _emptyCommentsContainer(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset(
-            "assets/images/smile.png",
-            width: 100,
-          ),
-          Text(
-            PostsLocalizations.of(context).noCommentsYet,
-            textAlign: TextAlign.center,
-          )
-        ],
-      ),
-    );
-  }
+  Widget _commentsList(BuildContext context, int childCount) {
+    return CustomScrollView(
+      shrinkWrap: true,
+      key: PageStorageKey<String>("comments"),
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              if (index.isEven) {
+                final comment = comments[index ~/ 2];
+                return PostCommentItem(
+                  key: PostsKeys.postCommentItem(comment.id),
+                  comment: comment,
+                );
+              }
 
-  Widget _commentItem(Post comment) {
-    return PostCommentItem(
-      key: PostsKeys.postCommentItem(comment.id),
-      comment: comment,
+              return Container(
+                height: 0.5,
+                color: ThemeColors.textColorLight,
+              );
+            },
+            childCount: childCount,
+          ),
+        )
+      ],
     );
   }
 }
