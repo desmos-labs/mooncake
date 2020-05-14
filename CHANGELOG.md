@@ -1,4 +1,4 @@
-# Version 0.3.0 (Unreleased)
+# Version 0.3.0 (Currently in beta)
 ## Changes 
 - Added the possibility of creating polls
 - Added the possibility of voting to existing polls
