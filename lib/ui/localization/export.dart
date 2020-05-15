@@ -183,6 +183,13 @@ What about adding some content?
 We do not support accounts yet, but you can always click on the wallet option
 inside the app bar to visualize your wallet
 """;
+  String get editAccountButton => "Edit your account";
+
+  // Edit account
+  String get editAccountScreenTitle => "Edit account";
+  String get nameLabel => "Name";
+  String get surnameLabel => "Surname";
+  String get bioLabel => "Bio";
 
   // Wallet screen
   String get walletScreenName => "Wallet";

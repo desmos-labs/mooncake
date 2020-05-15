@@ -41,11 +41,15 @@ class BottomNavigationButton extends StatelessWidget {
             tooltip: titles[tab],
             onPressed: () => _showTab(context),
             icon: tab != currentTab
-                ? Icon(icons[tab], key: key)
+                ? Icon(
+                    icons[tab],
+                    key: key,
+                    color: Theme.of(context).primaryColor,
+                  )
                 : Icon(
                     selectedIcons[tab],
                     key: key,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).primaryColor,
                   ));
       },
     );

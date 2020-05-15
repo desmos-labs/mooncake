@@ -37,7 +37,8 @@ class NavigateToRecoverAccount extends NavigatorEvent {
 /// Tells the Bloc to navigate either to the password or biometric setting
 /// screen in order to protect the account.
 class NavigateToProtectAccount extends NavigatorEvent {
-  @override String toString() => 'NavigateToProtectAccount';
+  @override
+  String toString() => 'NavigateToProtectAccount';
 }
 
 /// Tells the Bloc to navigate to the screen that allows the user
@@ -90,4 +91,11 @@ class NavigateToWallet extends NavigatorEvent {
 class NavigateToShowMnemonic extends NavigatorEvent {
   @override
   String toString() => 'NavigateToShowMnemonic';
+}
+
+/// Tells the Bloc to navigate to the screen that allows the user to
+/// edit his account.
+class NavigateToEditAccount extends NavigatorEvent {
+  @override
+  String toString() => 'NavigateToEditAccount';
 }

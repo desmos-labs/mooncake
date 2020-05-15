@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the widget inside which all the users' account data
@@ -23,6 +24,14 @@ class AccountScreenContent extends StatelessWidget {
                 .replaceAll("\n", " "),
             textAlign: TextAlign.center,
           ),
+          FlatButton(
+            color: Theme.of(context).accentColor,
+            child: Text(PostsLocalizations.of(context).editAccountButton),
+            onPressed: () {
+              BlocProvider.of<NavigatorBloc>(context)
+                  .add(NavigateToEditAccount());
+            },
+          )
         ],
       ),
     );
