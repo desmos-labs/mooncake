@@ -175,15 +175,6 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       final existing = existingPosts[index];
       final updated = merged[index];
 
-      final successfulExisting = existing.copyWith(
-        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
-      );
-      if (updated == successfulExisting) {
-        // The updated one is identical to the local, with only the status
-        // changed. For this reason we can use the updated to go faster.
-        continue;
-      }
-
       Set<Reaction> reactions = updated.reactions.toSet();
       if (existing?.reactions != null) {
         reactions.addAll(existing.reactions);
