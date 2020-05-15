@@ -55,6 +55,7 @@ module.exports = {
         sidebar: [
             ["download", "Download"],
             ["development", "Development"],
+            ["eula", "Terms and Conditions"],
         ],
     }
 };
