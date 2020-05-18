@@ -10,11 +10,11 @@ class SplashScreen extends StatelessWidget {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
         // TODO: Handle the case where the user has logged out but he has biometrics or password
-//        if (state is LoggedOut) {
+        if (state is LoggedOut) {
         return LoginScreen();
-//        } else if (state is LoggedIn) {
-//          return _homeScreen();
-//        }
+        } else if (state is LoggedIn) {
+          return _homeScreen();
+        }
 
         return SafeArea(
           child: Container(

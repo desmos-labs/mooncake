@@ -31,7 +31,7 @@ class PostOptionsPopup extends StatelessWidget {
             _buildItem(
               context: context,
               icon: MooncakeIcons.report,
-              text: PostsLocalizations.of(context).postActionReport,
+              text: PostsLocalizations.of(context).postActionReportPost,
               action: () => _onReportClicked(context),
             ),
             _buildItem(
@@ -59,12 +59,18 @@ class PostOptionsPopup extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
               Icon(icon, color: Theme.of(context).textTheme.bodyText2.color),
               const SizedBox(width: 16),
-              Text(text, style: Theme.of(context).textTheme.bodyText2),
+              Expanded(
+                child: Text(
+                  text,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
         ),

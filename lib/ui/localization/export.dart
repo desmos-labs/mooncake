@@ -120,7 +120,7 @@ What about adding some content?
 
   // Post actions popup
   String get postActionsPopupTitle => "Post actions";
-  String get postActionReport => "Report";
+  String get postActionReportPost => "Report post";
   String get postActionHide => "Hide post";
 
   // Report popup
