@@ -21,8 +21,6 @@ Downloads and documentation can both be found on the [official website](https://
 
 <a target="_blank" href='https://play.google.com/apps/testing/com.forbole.mooncake'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="100"/></a> <a target="_blank" href='https://testflight.apple.com/join/3Zh9mWFk'><img alt='Get it on Google Play' src='https://pluspng.com/img-png/download-on-app-store-png-with-without-wifi-or-data-2000.png' width="100"/></a>
 
-
-
 ## Screens
 <img src="./.img/screen_login.png" alt="Login screen" width="200"> <img src="./.img/screen_list.png" alt="List screen" width="200"> <img src="./.img/screen_detail.png" alt="Detail screen" width="200">
 
