@@ -143,7 +143,7 @@ What about adding some content?
   String get syncErrorCopied => "Sync error copied to clipboard";
   String get syncSuccessTitle => "Transaction sent";
   String syncSuccessBody(String txHash) =>
-      "A transaction with hash %s has been sent to the chain";
+      "A transaction with hash $txHash has been sent to the chain";
   String get syncSuccessBrowseButton => "Browse transaction";
 
   // Create post screen
@@ -169,6 +169,11 @@ What about adding some content?
   String get pollAddOptionButton => "Add option";
   String get pollEndDateText => "This poll will end on";
   String get pollDeleteOptionHint => "Delete option";
+
+  // Poll visualization
+  String votes(int count) => "$count votes";
+  String pollEndOn(String date) => "Poll will end on $date";
+  String get finalResults => "Final results";
 
   // Notifications screen
   String get allNotificationsTabTitle => "All";
