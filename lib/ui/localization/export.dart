@@ -25,7 +25,9 @@ class PostsLocalizations {
   String get creatingAccountPopupTitle => "Creating account";
   String get creatingAccountText => "This might take a while...";
   String get termsDisclaimer => "By using this app you agree to ours";
-  String get termsAndConditions => "Terms & Conditions";
+  String get terms => "Terms";
+  String get and => "and";
+  String get privacyPolicy => "Privacy Policy";
 
   // Recover screen
   String get recoverScreenTitle => "Recover mnemonic";

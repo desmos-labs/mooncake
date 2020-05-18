@@ -24,16 +24,36 @@ class LoginTermsAndConditions extends StatelessWidget {
             style: textStyle.copyWith(
               decoration: TextDecoration.underline,
             ),
-            text: PostsLocalizations.of(context).termsAndConditions,
-            recognizer: TapGestureRecognizer()..onTap = _onClick,
+            text: PostsLocalizations.of(context).terms,
+            recognizer: TapGestureRecognizer()..onTap = _openTerms,
+          ),
+          WidgetSpan(child: const SizedBox(width: 4)),
+          TextSpan(
+            text: PostsLocalizations.of(context).and,
+            style: textStyle,
+          ),
+          WidgetSpan(child: const SizedBox(width: 4)),
+          TextSpan(
+            style: textStyle.copyWith(
+              decoration: TextDecoration.underline,
+            ),
+            text: PostsLocalizations.of(context).privacyPolicy,
+            recognizer: TapGestureRecognizer()..onTap = _openPrivacy,
           ),
         ],
       ),
     );
   }
 
-  void _onClick() async {
-    final url = 'https://mooncake.space/eula';
+  void _openTerms() async {
+    final url = 'https://mooncake.space/tos';
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
+  }
+
+  void _openPrivacy() async {
+    final url = 'https://mooncake.space/privacy';
     if (await canLaunch(url)) {
       await launch(url);
     }
