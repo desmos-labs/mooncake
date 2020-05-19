@@ -39,7 +39,13 @@ class PostOptionsPopup extends StatelessWidget {
               icon: MooncakeIcons.eyeClose,
               text: PostsLocalizations.of(context).postActionHide,
               action: () => _onHideClicked(context),
-            )
+            ),
+            _buildItem(
+              context: context,
+              icon: MooncakeIcons.block,
+              text: PostsLocalizations.of(context).postActionBlockUser,
+              action: () => _onBlockUserClicked(context),
+            ),
           ],
         ),
       ),
@@ -92,5 +98,10 @@ class PostOptionsPopup extends StatelessWidget {
   void _onHideClicked(BuildContext context) {
     Navigator.pop(context);
     BlocProvider.of<PostsListBloc>(context).add(HidePost(post));
+  }
+
+  void _onBlockUserClicked(BuildContext context) {
+    Navigator.pop(context);
+    BlocProvider.of<PostsListBloc>(context).add(BlockUser(post.owner));
   }
 }

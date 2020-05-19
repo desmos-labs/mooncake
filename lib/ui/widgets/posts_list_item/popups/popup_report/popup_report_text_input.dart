@@ -9,23 +9,16 @@ class PopupReportTextInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ReportPopupBloc, ReportPopupState>(
       builder: (context, state) {
-        return TextFormField(
-          autofocus: false,
-          onChanged: (value) => BlocProvider.of<ReportPopupBloc>(context)
-              .add(ChangeOtherText(value)),
-          decoration: InputDecoration(
-            hintText: PostsLocalizations.of(context).reportPopupEditBotHint,
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.grey,
-                width: 0.5,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Theme.of(context).accentColor,
-                width: 0.5,
-              ),
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: TextFormField(
+            autofocus: false,
+            onChanged: (value) {
+              BlocProvider.of<ReportPopupBloc>(context)
+                  .add(ChangeOtherText(value));
+            },
+            decoration: InputDecoration(
+              hintText: PostsLocalizations.of(context).reportPopupEditBotHint,
             ),
           ),
         );

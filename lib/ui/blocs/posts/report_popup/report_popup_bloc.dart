@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:meta/meta.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import './bloc.dart';
 
 class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
@@ -16,12 +18,21 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
 
   final Post _post;
 
-  ReportPopupBloc({@required Post post})
-      : assert(post != null),
-        _post = post;
+  final BlockUserUseCase _blockUserUseCase;
+
+  ReportPopupBloc({
+    @required Post post,
+    @required BlockUserUseCase blockUserUseCase,
+  })  : assert(post != null),
+        _post = post,
+        assert(blockUserUseCase != null),
+        _blockUserUseCase = blockUserUseCase;
 
   factory ReportPopupBloc.create(Post post) {
-    return ReportPopupBloc(post: post);
+    return ReportPopupBloc(
+      post: post,
+      blockUserUseCase: Injector.get(),
+    );
   }
 
   @override
@@ -33,6 +44,8 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
       yield* _mapToggleSelectionToState(event);
     } else if (event is ChangeOtherText) {
       yield* _mapChangeOtherTextToState(event);
+    } else if (event is ToggleBlockUser) {
+      yield state.copyWith(blockUser: event.blockUser);
     } else if (event is SubmitReport) {
       await _handleSubmitReport();
     }
@@ -54,6 +67,13 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
 
   Future<void> _handleSubmitReport() async {
     final currentState = state;
+
+    // If we need to block the user, block it
+    if (state.blockUser) {
+      await _blockUserUseCase.block(_post.owner);
+    }
+
+    // Build the report email
     final reasonsString = currentState.selectedValues.entries
         .map((entry) => entry.value ? REASONS[entry.key] : null)
         .where((value) => value != null)
@@ -72,6 +92,7 @@ Additional notes: ${currentState.otherText}
       recipients: ['report@forbole.com'],
     );
 
+    // Send the report email
     await FlutterEmailSender.send(email);
   }
 }

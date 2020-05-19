@@ -26,6 +26,16 @@ class ChangeOtherText extends ReportPopupEvent {
   List<Object> get props => [text];
 }
 
+/// Tells the Bloc that the selection for the user blocking option has changed.
+class ToggleBlockUser extends ReportPopupEvent {
+  final bool blockUser;
+
+  ToggleBlockUser(this.blockUser);
+
+  @override
+  List<Object> get props => [blockUser];
+}
+
 /// Tells the Bloc that the report should be sent.
 class SubmitReport extends ReportPopupEvent {
   @override

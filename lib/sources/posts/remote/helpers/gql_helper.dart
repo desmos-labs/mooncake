@@ -33,7 +33,6 @@ class GqlHelper {
   moniker
   """;
 
-  // TODO: Add Poll
   static const String _postContents = """
   id
   parent_id

@@ -7,6 +7,7 @@ import 'notifications/notifications_repository_impl.dart';
 import 'posts/posts_repository_impl.dart';
 import 'user/user_repository_impl.dart';
 import 'settings/settings_repository_impl.dart';
+import 'users/users_repository_impl.dart';
 
 /// Represents the module that is used during dependency injection
 /// to provide repositories instances.
@@ -32,6 +33,10 @@ class RepositoriesModule implements Module {
           (injector, params) => UserRepositoryImpl(
                 localUserSource: injector.get(),
                 remoteUserSource: injector.get(),
+              ))
+      ..bindLazySingleton<UsersRepository>(
+              (injector, params) => UsersRepositoryImpl(
+                localUsersSource: injector.get(),
               ));
   }
 }

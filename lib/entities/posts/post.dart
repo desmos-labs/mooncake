@@ -33,6 +33,9 @@ class Post extends Equatable implements Comparable<Post> {
   /// Identifier used to reference the hidden field or not.
   static const HIDDEN_FIELD = "hidden";
 
+  /// Identifier used to reference the user field.
+  static const OWNER_FIELD = "user";
+
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
   static String getDateStringNow() {
@@ -62,7 +65,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: "subspace")
   final String subspace;
 
-  @JsonKey(name: "user")
+  @JsonKey(name: OWNER_FIELD)
   final User owner;
 
   @JsonKey(name: "optional_data", defaultValue: {})
@@ -163,7 +166,7 @@ class Post extends Equatable implements Comparable<Post> {
     bool allowsComments,
     String subspace,
     Map<String, String> optionalData,
-    String owner,
+    User owner,
     List<PostMedia> medias,
     PostPoll poll,
     List<Reaction> reactions,

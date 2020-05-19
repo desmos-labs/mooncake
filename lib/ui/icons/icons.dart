@@ -8,6 +8,7 @@ class MooncakeIcons {
   static const IconData at = const IconDataMooncake(0xe901);
   static const IconData bell = const IconDataMooncake(0xe902);
   static const IconData bellF = const IconDataMooncake(0xe903);
+  static const IconData block = const IconDataMooncake(0xe930);
   static const IconData camera = const IconDataMooncake(0xe904);
   static const IconData comment = const IconDataMooncake(0xe905);
   static const IconData cross = const IconDataMooncake(0xe906);

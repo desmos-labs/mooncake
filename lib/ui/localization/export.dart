@@ -122,6 +122,7 @@ What about adding some content?
   String get postActionsPopupTitle => "Post actions";
   String get postActionReportPost => "Report post";
   String get postActionHide => "Hide post";
+  String get postActionBlockUser => "Block user";
 
   // Report popup
   String get reportPopupTitle => "What's wrong with this post?";
@@ -132,6 +133,7 @@ What about adding some content?
       "It's violent or prohibited content";
   String get reportPopupOther => "Other";
   String get reportPopupEditBotHint => "Write something (optional)";
+  String get reportPopupBlockUser => "Also block the user";
   String get reportPopupSubmit => "Submit";
 
   // Syncing
