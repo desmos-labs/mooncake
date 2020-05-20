@@ -13,6 +13,9 @@ abstract class LocalPostsSource {
   /// If no post with the given id was found, returns `null` instead.
   Stream<Post> singlePostStream(String postId);
 
+  /// Returns the list of home posts.
+  Future<List<Post>> getHomePosts(int limit);
+
   /// Returns the details of the post currently stored inside the device.
   Future<Post> getSinglePost(String postId);
 

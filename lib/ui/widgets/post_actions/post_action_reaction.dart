@@ -34,7 +34,7 @@ class PostReactionAction extends StatelessWidget {
 
         return ActionChip(
           backgroundColor: Theme.of(context).accentColor.withOpacity(
-                userReacted ? 1 : 0.60,
+                userReacted ? 0.70 : 0.25,
               ),
           label: Row(
             mainAxisSize: MainAxisSize.min,

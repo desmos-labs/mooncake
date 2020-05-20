@@ -102,6 +102,28 @@ class PostOptionsPopup extends StatelessWidget {
 
   void _onBlockUserClicked(BuildContext context) {
     Navigator.pop(context);
-    BlocProvider.of<PostsListBloc>(context).add(BlockUser(post.owner));
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Block user?"),
+            content: Text(
+                "By blocking ${post.owner.address} you will no longer see his posts. Would you like to continue?"),
+            actions: [
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  BlocProvider.of<PostsListBloc>(context)
+                      .add(BlockUser(post.owner));
+                },
+                child: Text("Block"),
+              ),
+            ],
+          );
+        });
   }
 }

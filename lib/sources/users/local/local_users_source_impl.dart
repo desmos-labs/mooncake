@@ -20,8 +20,9 @@ class LocalUsersSourceImpl extends LocalUsersSource {
     return _store
         .query(finder: finder)
         .onSnapshots(_database)
+        .map((event) => event.isEmpty ? null : event.first)
         .map((event) {
-      return ((event as List)?.map((e) => e as String)?.toList() ?? []);
+      return event == null ? [] : List.from(event?.value);
     });
   }
 
@@ -36,7 +37,7 @@ class LocalUsersSourceImpl extends LocalUsersSource {
       _database,
       finder: Finder(filter: Filter.byKey(BLOCKED_USERS_KEY)),
     );
-    return (result?.value as List)?.map((e) => e as String)?.toList() ?? [];
+    return result.value == null ? [] : List.from(result.value);
   }
 
   @override

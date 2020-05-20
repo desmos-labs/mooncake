@@ -16,7 +16,7 @@ void main() {
   });
 
   test('getBlockedUsers returns empty list if empty', () async {
-    final result = await source.getBlockedUsers();
+    final List<String> result = await source.getBlockedUsers();
     expect(result, isEmpty);
   });
 

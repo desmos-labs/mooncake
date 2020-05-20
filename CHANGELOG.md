@@ -2,6 +2,12 @@
 ## Changes
 - Improved the colors schema 
 - Added the ability to view the number of votes and ending date of a poll
+- Added the ability to block a user
+- Improved the UI colors
+
+## Bug fixes
+- Removed the constant warning for new posts even tho there were none 
+- Fixed the visualization of the users that have liked a post  
 
 # Version 0.3.1
 ## Bug fixes

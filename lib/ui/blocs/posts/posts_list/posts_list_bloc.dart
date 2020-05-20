@@ -324,7 +324,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
     final posts = await _getHomePostsUseCase.refresh(start: 0, limit: limit);
     if (currentState is PostsLoaded) {
-      yield currentState.copyWith(refreshing: false, posts: posts);
+      yield currentState.copyWith(
+          refreshing: false,
+          posts: posts,
+          shouldRefresh: false,
+      );
     } else if (currentState is PostsLoading) {
       yield PostsLoaded.first(posts: posts);
     }

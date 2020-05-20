@@ -17,7 +17,7 @@ class PostLikesCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final likes = post.reactions;
+    final likes = post.reactions.where((react) => react.isLike).toList();
     final likesCount = likes.length;
 
     final double afterIconSize = iconSize * 0.75;
