@@ -36,8 +36,8 @@ class EditAccountScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: PADDING),
                       child: PrimaryRoundedButton(
-                        text: "Save",
-                        onPressed: () {},
+                        text: PostsLocalizations.of(context).saveAccountButton,
+                        onPressed: () => _onSaveAccount(context),
                       ),
                     )
                   ],
@@ -56,5 +56,9 @@ class EditAccountScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onSaveAccount(BuildContext context) {
+    BlocProvider.of<EditAccountBloc>(context).add(SaveAccount());
   }
 }

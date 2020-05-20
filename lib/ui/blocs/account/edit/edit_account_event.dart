@@ -15,6 +15,9 @@ class MonikerChanged extends EditAccountEvent {
 
   @override
   List<Object> get props => [moniker];
+
+  @override
+  String toString() => 'MonikerChanged { moniker: $moniker }';
 }
 
 /// Tells the Bloc that the name has changed.
@@ -25,6 +28,9 @@ class NameChanged extends EditAccountEvent {
 
   @override
   List<Object> get props => [name];
+
+  @override
+  String toString() => 'NameChanged { name: $name }';
 }
 
 /// Tells the Bloc that the surname has changed.
@@ -35,6 +41,9 @@ class SurnameChanged extends EditAccountEvent {
 
   @override
   List<Object> get props => [surname];
+
+  @override
+  String toString() => 'SurnameChanged { surname: $surname }';
 }
 
 /// Tells the Bloc that the bio of the user has changed.
@@ -45,6 +54,9 @@ class BioChanged extends EditAccountEvent {
 
   @override
   List<Object> get props => [bio];
+
+  @override
+  String toString() => 'BioChanged { bio: $bio }';
 }
 
 /// Tells the Bloc that the cover picture has changed.
@@ -55,6 +67,9 @@ class CoverChanged extends EditAccountEvent {
 
   @override
   List<Object> get props => [cover];
+
+  @override
+  String toString() => 'CoverChanged { cover: ${cover.absolute} }';
 }
 
 /// Tells the Bloc that the profile picture has changed.
@@ -65,4 +80,18 @@ class ProfilePicChanged extends EditAccountEvent {
 
   @override
   List<Object> get props => [profilePic];
+
+  @override
+  String toString() => 'ProfilePicChanged { '
+      'profilePic: ${profilePic.absolute} '
+      '}';
+}
+
+/// Tells the Bloc that the user wants to save his account.
+class SaveAccount extends EditAccountEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'SaveAccount';
 }

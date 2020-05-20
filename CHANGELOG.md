@@ -1,3 +1,7 @@
+# Version 0.4.0
+## Changes
+- Implemented the profiles
+
 # Version 0.3.2
 ## Changes
 - Improved the colors schema 

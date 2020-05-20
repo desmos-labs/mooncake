@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
+import 'image_picker.dart';
+
 /// Represents the editor that allows the user to change his profile picture.
 class AccountProfileImageEditor extends StatelessWidget {
   final double radius;
@@ -29,32 +31,36 @@ class AccountProfileImageEditor extends StatelessWidget {
           coverImage = NetworkImage(coverImageValue.url);
         }
 
-        return Container(
-          child: CircleAvatar(
-            radius: radius,
-            backgroundColor: Theme.of(context).backgroundColor,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                CircleAvatar(
-                  radius: radius - border,
-                  backgroundColor: coverImage != null
-                      ? null
-                      : Theme.of(context).primaryColor.withOpacity(0.25),
-                  backgroundImage: coverImage,
+        return CircleAvatar(
+          radius: radius,
+          backgroundColor: Theme.of(context).backgroundColor,
+          child: Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(1000),
+            child: InkWell(
+              onTap: () => _chooseImage(context),
+              borderRadius: BorderRadius.circular(1000),
+              child: CircleAvatar(
+                radius: radius - border,
+                backgroundColor: coverImage != null
+                    ? null
+                    : Theme.of(context).primaryColor.withOpacity(0.25),
+                backgroundImage: coverImage,
+                child: Icon(
+                  MooncakeIcons.camera,
+                  color: Theme.of(context).iconTheme.color,
                 ),
-                IconButton(
-                  icon: Icon(
-                    MooncakeIcons.camera,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  onPressed: () {},
-                )
-              ],
+              ),
             ),
           ),
         );
       },
     );
+  }
+
+  void _chooseImage(BuildContext context) {
+    showImagePicker(context: context, onImageChosen: (image) {
+      BlocProvider.of<EditAccountBloc>(context).add(ProfilePicChanged(image));
+    });
   }
 }

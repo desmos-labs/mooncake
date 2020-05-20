@@ -195,6 +195,11 @@ We do not support accounts yet, but you can always click on the wallet option
 inside the app bar to visualize your wallet
 """;
   String get editAccountButton => "Edit your account";
+  String get saveAccountButton => "Save";
+
+  String get chooseImageSourceTitle => "Choose where to pick the image from";
+  String get chooseGalleryOption => "Gallery";
+  String get chooseCameraOption => "Camera";
 
   // Edit account
   String get editAccountScreenTitle => "Edit account";

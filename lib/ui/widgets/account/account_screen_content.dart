@@ -25,7 +25,7 @@ class AccountScreenContent extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           FlatButton(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).primaryColor,
             child: Text(PostsLocalizations.of(context).editAccountButton),
             onPressed: () {
               BlocProvider.of<NavigatorBloc>(context)
