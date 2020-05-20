@@ -3,7 +3,6 @@
 - Improved the colors schema 
 - Added the ability to view the number of votes and ending date of a poll
 - Added the ability to block a user
-- Improved the UI colors
 
 ## Bug fixes
 - Removed the constant warning for new posts even tho there were none 
