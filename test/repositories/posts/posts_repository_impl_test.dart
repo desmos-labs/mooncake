@@ -1,3 +1,4 @@
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -7,19 +8,25 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../mocks/mocks.dart';
 
-class LocalSource extends Mock implements LocalPostsSource {}
+class MockLocalPostsSource extends Mock implements LocalPostsSource {}
 
-class RemoteSource extends Mock implements RemotePostsSource {}
+class MockRemotePostsSource extends Mock implements RemotePostsSource {}
+
+class MockUsersRepository extends Mock implements UsersRepository {}
 
 void main() {
-  LocalSource localSource = LocalSource();
-  RemoteSource remoteSource = RemoteSource();
+  MockLocalPostsSource localSource = MockLocalPostsSource();
+  MockRemotePostsSource remoteSource = MockRemotePostsSource();
+  MockUsersRepository usersRepository = MockUsersRepository();
+
   PostsRepositoryImpl repository;
 
   setUp(() {
+    when(usersRepository.getBlockedUsers()).thenAnswer((_) => Future.value([]));
     repository = PostsRepositoryImpl(
       remoteSource: remoteSource,
       localSource: localSource,
+      usersRepository: usersRepository,
     );
   });
 
