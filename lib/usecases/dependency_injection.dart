@@ -87,6 +87,11 @@ class UseCaseModule implements Module {
           ))
       ..bindFactory((injector, params) => GetSettingUseCase(
             settingsRepository: injector.get(),
+          ))
+
+      // Users use cases
+      ..bindFactory((injector, params) => BlockUserUseCase(
+            usersRepository: injector.get(),
           ));
   }
 }

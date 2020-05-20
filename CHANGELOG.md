@@ -1,4 +1,18 @@
-# Version 0.3.0 (Currently in beta)
+# Version 0.3.2
+## Changes
+- Improved the colors schema 
+- Added the ability to view the number of votes and ending date of a poll
+- Added the ability to block a user
+
+## Bug fixes
+- Removed the constant warning for new posts even tho there were none 
+- Fixed the visualization of the users that have liked a post  
+
+# Version 0.3.1
+## Bug fixes
+- Fixed a huge performance problem inside the posts list
+
+# Version 0.3.0 
 ## Changes 
 - Added the possibility of creating polls
 - Added the possibility of voting to existing polls

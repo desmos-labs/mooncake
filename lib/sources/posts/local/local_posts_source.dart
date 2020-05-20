@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/entities/posts/export.dart';
 import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:sembast/sembast.dart';
 
 import 'converter.dart';
@@ -15,10 +16,16 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   final StoreRef _store = StoreRef.main();
   final Database _database;
 
+  final UsersRepository _usersRepository;
+
   /// Public constructor
-  LocalPostsSourceImpl({@required Database database})
-      : assert(database != null),
-        _database = database;
+  LocalPostsSourceImpl({
+    @required Database database,
+    @required UsersRepository usersRepository,
+  })  : assert(database != null),
+        _database = database,
+        assert(usersRepository != null),
+        _usersRepository = usersRepository;
 
   /// Returns the keys that should be used inside the database to store the
   /// given [post].
@@ -28,22 +35,35 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         post.owner.address;
   }
 
+  /// Returns a [Filter] that allows to filter out all the posts that are
+  /// created from a blocked user that is present inside the [users] list.
+  Filter _getBlockedUsersFilter(List<String> users) {
+    return Filter.custom((record) {
+      return !users.contains(record["user"]["address"]);
+    });
+  }
+
   @override
   Stream<List<Post>> get postsStream {
-    final finder = Finder(
-      filter: Filter.equals(Post.HIDDEN_FIELD, false),
-      sortOrders: [SortOrder(Post.DATE_FIELD, false)],
-    );
-
-    return _store
-        .query(finder: finder)
-        .onSnapshots(_database)
-        .asyncMap(PostsConverter.deserializePosts);
+    return _usersRepository.blockedUsersStream.map((users) {
+      return Finder(
+        filter: Filter.and([
+          Filter.equals(Post.HIDDEN_FIELD, false),
+          _getBlockedUsersFilter(users),
+        ]),
+        sortOrders: [SortOrder(Post.DATE_FIELD, false)],
+      );
+    }).asyncExpand((finder) {
+      return _store
+          .query(finder: finder)
+          .onSnapshots(_database)
+          .asyncMap(PostsConverter.deserializePosts);
+    });
   }
 
   /// Given a [limit], returns the [Finder] that should be used to get
   /// the home posts returning a list of the [limit] size.
-  Finder _homeFinder(int limit) {
+  Finder _homeFinder(int limit, List<String> blockedUsers) {
     return Finder(
       filter: Filter.and([
         Filter.or([
@@ -51,6 +71,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
           Filter.equals(Post.PARENT_ID_FIELD, ""),
         ]),
         Filter.equals(Post.HIDDEN_FIELD, false),
+        _getBlockedUsersFilter(blockedUsers),
       ]),
       sortOrders: [SortOrder(Post.DATE_FIELD, false)],
       limit: limit,
@@ -59,10 +80,12 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Stream<List<Post>> homePostsStream(int limit) {
-    return _store
-        .query(finder: _homeFinder(limit))
-        .onSnapshots(_database)
-        .asyncMap(PostsConverter.deserializePosts);
+    return _usersRepository.blockedUsersStream.asyncExpand((users) {
+      return _store
+          .query(finder: _homeFinder(limit, users))
+          .onSnapshots(_database)
+          .asyncMap(PostsConverter.deserializePosts);
+    });
   }
 
   /// Given a [postId], returns the [Finder] that should be used to filter
@@ -78,6 +101,13 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         .onSnapshots(_database)
         .asyncMap(PostsConverter.deserializePosts)
         .map((event) => event.isEmpty ? null : event.first);
+  }
+
+  @override
+  Future<List<Post>> getHomePosts(int limit) async {
+    final users = await _usersRepository.getBlockedUsers();
+    return _store.find(_database, finder: _homeFinder(limit, users))
+    .then(PostsConverter.deserializePosts);
   }
 
   @override
@@ -104,11 +134,12 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   /// Given a [postId] returns the [Finder] that should be used in order
   /// to get all the comments for the post having such id.
-  Finder _commentsFinder(String postId) {
+  Finder _commentsFinder(String postId, List<String> blockedUsers) {
     return Finder(
       filter: Filter.and([
         Filter.equals(Post.HIDDEN_FIELD, false),
         Filter.equals(Post.PARENT_ID_FIELD, postId),
+        _getBlockedUsersFilter(blockedUsers),
       ]),
       sortOrders: [SortOrder(Post.DATE_FIELD, false)],
     );
@@ -116,17 +147,20 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Stream<List<Post>> getPostCommentsStream(String postId) {
-    return _store
-        .query(finder: _commentsFinder(postId))
-        .onSnapshots(_database)
-        .asyncMap(PostsConverter.deserializePosts);
+    return _usersRepository.blockedUsersStream.asyncExpand((users) {
+      return _store
+          .query(finder: _commentsFinder(postId, users))
+          .onSnapshots(_database)
+          .asyncMap(PostsConverter.deserializePosts);
+    });
   }
 
   @override
   Future<List<Post>> getPostComments(String postId) async {
+    final blockedUsers = await _usersRepository.getBlockedUsers();
     final records = await _store.find(
       _database,
-      finder: _commentsFinder(postId),
+      finder: _commentsFinder(postId, blockedUsers),
     );
     return PostsConverter.deserializePosts(records);
   }

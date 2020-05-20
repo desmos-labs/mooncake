@@ -12,77 +12,108 @@ import 'popup_report_text_input.dart';
 class ReportPostPopup extends StatelessWidget {
   final Post post;
 
-  const ReportPostPopup({
-    Key key,
-    @required this.post
-  }) : super(key: key);
+  const ReportPostPopup({Key key, @required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Material(
-        color: Colors.transparent,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Flexible(
-              child: Container(
-                padding: MediaQuery.of(context).viewInsets,
-                decoration: new BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: new BorderRadius.only(
-                    topLeft: const Radius.circular(16),
-                    topRight: const Radius.circular(16),
+      child: BlocBuilder<ReportPopupBloc, ReportPopupState>(
+        builder: (context, state) {
+          return Material(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  padding: MediaQuery.of(context).viewInsets,
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(16),
+                      topRight: const Radius.circular(16),
+                    ),
+                  ),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      _title(context),
+                      _separator(),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: ReportType.values.length,
+                        separatorBuilder: (_, index) => _separator(),
+                        itemBuilder: (_, index) {
+                          return PopupReportOption(index: index);
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          children: [
+                            PopupReportTextInput(),
+                            const SizedBox(height: 16),
+                            _blockUserOption(context, state),
+                            const SizedBox(height: 16),
+                            _submitButton(context),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: Text(
-                        PostsLocalizations.of(context).reportPopupTitle,
-                        style: Theme.of(context).textTheme.headline6,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    _separator(),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: ReportType.values.length,
-                      separatorBuilder: (_, index) => _separator(),
-                      itemBuilder: (_, index) {
-                        return PopupReportOption(index: index);
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          PopupReportTextInput(),
-                          const SizedBox(height: 16),
-                          PrimaryRoundedButton(
-                            onPressed: () => _sendReport(context),
-                            text: PostsLocalizations.of(context)
-                                .reportPopupSubmit,
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _title(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Text(
+        PostsLocalizations.of(context).reportPopupTitle,
+        style: Theme.of(context).textTheme.headline6,
+        textAlign: TextAlign.center,
       ),
     );
   }
 
   Widget _separator() {
     return Container(width: double.infinity, height: 0.5, color: Colors.grey);
+  }
+
+  Widget _blockUserOption(BuildContext context, ReportPopupState state) {
+    return Material(
+      child: InkWell(
+        onTap: () {
+          BlocProvider.of<ReportPopupBloc>(context)
+              .add(ToggleBlockUser(!state.blockUser));
+        },
+        child: Row(
+          children: [
+            Checkbox(
+              value: state.blockUser,
+              onChanged: (value) {
+                BlocProvider.of<ReportPopupBloc>(context)
+                    .add(ToggleBlockUser(value));
+              },
+            ),
+            Text(PostsLocalizations.of(context).reportPopupBlockUser)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _submitButton(BuildContext context) {
+    return PrimaryRoundedButton(
+      onPressed: () => _sendReport(context),
+      text: PostsLocalizations.of(context).reportPopupSubmit,
+    );
   }
 
   void _sendReport(BuildContext context) {

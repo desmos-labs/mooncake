@@ -47,10 +47,7 @@ class PostLikeAction extends StatelessWidget {
     return Row(
       children: [
         SizedBox(width: size / 4),
-        Text(
-          NumberFormat.compact().format(likes.length),
-          style: Theme.of(context).accentTextTheme.bodyText2,
-        ),
+        Text(NumberFormat.compact().format(likes.length)),
       ],
     );
   }

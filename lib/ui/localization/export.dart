@@ -24,6 +24,10 @@ class PostsLocalizations {
   String get accountCreatedPopupBackupButtonText => "Backup mnemonic phrase";
   String get creatingAccountPopupTitle => "Creating account";
   String get creatingAccountText => "This might take a while...";
+  String get termsDisclaimer => "By using this app you agree to ours";
+  String get terms => "Terms";
+  String get and => "and";
+  String get privacyPolicy => "Privacy Policy";
 
   // Recover screen
   String get recoverScreenTitle => "Recover mnemonic";
@@ -116,8 +120,9 @@ What about adding some content?
 
   // Post actions popup
   String get postActionsPopupTitle => "Post actions";
-  String get postActionReport => "Report";
+  String get postActionReportPost => "Report post";
   String get postActionHide => "Hide post";
+  String get postActionBlockUser => "Block user";
 
   // Report popup
   String get reportPopupTitle => "What's wrong with this post?";
@@ -128,6 +133,7 @@ What about adding some content?
       "It's violent or prohibited content";
   String get reportPopupOther => "Other";
   String get reportPopupEditBotHint => "Write something (optional)";
+  String get reportPopupBlockUser => "Also block the user";
   String get reportPopupSubmit => "Submit";
 
   // Syncing
@@ -139,7 +145,7 @@ What about adding some content?
   String get syncErrorCopied => "Sync error copied to clipboard";
   String get syncSuccessTitle => "Transaction sent";
   String syncSuccessBody(String txHash) =>
-      "A transaction with hash %s has been sent to the chain";
+      "A transaction with hash $txHash has been sent to the chain";
   String get syncSuccessBrowseButton => "Browse transaction";
 
   // Create post screen
@@ -165,6 +171,11 @@ What about adding some content?
   String get pollAddOptionButton => "Add option";
   String get pollEndDateText => "This poll will end on";
   String get pollDeleteOptionHint => "Delete option";
+
+  // Poll visualization
+  String votes(int count) => "$count votes";
+  String pollEndOn(String date) => "Poll will end on $date";
+  String get finalResults => "Final results";
 
   // Notifications screen
   String get allNotificationsTabTitle => "All";

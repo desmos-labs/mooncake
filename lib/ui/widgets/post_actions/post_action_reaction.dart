@@ -28,12 +28,14 @@ class PostReactionAction extends StatelessWidget {
           reactionValue,
         );
         final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
-              color: userReacted ? Theme.of(context).accentColor : null,
               fontWeight: userReacted ? FontWeight.bold : null,
+              color: userReacted ? Colors.white : null,
             );
 
         return ActionChip(
-          backgroundColor: Theme.of(context).primaryColorDark,
+          backgroundColor: Theme.of(context).accentColor.withOpacity(
+                userReacted ? 0.70 : 0.25,
+              ),
           label: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -46,13 +48,6 @@ class PostReactionAction extends StatelessWidget {
             BlocProvider.of<PostsListBloc>(context)
                 .add(AddOrRemovePostReaction(post, reactionValue));
           },
-          shape: StadiumBorder(
-            side: BorderSide(
-              color: userReacted
-                  ? Theme.of(context).accentColor
-                  : Colors.transparent,
-            ),
-          ),
         );
       },
     );

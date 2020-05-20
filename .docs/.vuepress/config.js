@@ -55,6 +55,8 @@ module.exports = {
         sidebar: [
             ["download", "Download"],
             ["development", "Development"],
+            ["tos", "Terms"],
+            ["privacy", "Privacy"],
         ],
     }
 };

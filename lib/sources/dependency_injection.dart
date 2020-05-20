@@ -22,13 +22,17 @@ class SourcesModule implements Module {
   final Database accountDatabase;
   final Database postsDatabase;
   final Database notificationsDatabase;
+  final Database blockedUsersDatabase;
+
   SourcesModule({
     @required this.postsDatabase,
     @required this.accountDatabase,
     @required this.notificationsDatabase,
+    @required this.blockedUsersDatabase,
   })  : assert(postsDatabase != null),
         assert(accountDatabase != null),
-        assert(notificationsDatabase != null);
+        assert(notificationsDatabase != null),
+        assert(blockedUsersDatabase != null);
 
   @override
   void configure(Binder binder) {
@@ -54,6 +58,7 @@ class SourcesModule implements Module {
       ..bindLazySingleton<LocalPostsSource>(
           (injector, params) => LocalPostsSourceImpl(
                 database: postsDatabase,
+                usersRepository: injector.get(),
               ))
       ..bindLazySingleton<RemotePostsSource>(
         (injector, params) => RemotePostsSourceImpl(
@@ -82,6 +87,11 @@ class SourcesModule implements Module {
       ..bindLazySingleton<LocalNotificationsSource>(
           (injector, params) => LocalNotificationsSourceImpl(
                 database: accountDatabase,
+              ))
+      // Users source
+      ..bindLazySingleton<LocalUsersSource>(
+          (injector, params) => LocalUsersSourceImpl(
+                database: blockedUsersDatabase,
               ));
   }
 }

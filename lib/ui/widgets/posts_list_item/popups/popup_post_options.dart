@@ -31,7 +31,7 @@ class PostOptionsPopup extends StatelessWidget {
             _buildItem(
               context: context,
               icon: MooncakeIcons.report,
-              text: PostsLocalizations.of(context).postActionReport,
+              text: PostsLocalizations.of(context).postActionReportPost,
               action: () => _onReportClicked(context),
             ),
             _buildItem(
@@ -39,7 +39,13 @@ class PostOptionsPopup extends StatelessWidget {
               icon: MooncakeIcons.eyeClose,
               text: PostsLocalizations.of(context).postActionHide,
               action: () => _onHideClicked(context),
-            )
+            ),
+            _buildItem(
+              context: context,
+              icon: MooncakeIcons.block,
+              text: PostsLocalizations.of(context).postActionBlockUser,
+              action: () => _onBlockUserClicked(context),
+            ),
           ],
         ),
       ),
@@ -59,12 +65,18 @@ class PostOptionsPopup extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
               Icon(icon, color: Theme.of(context).textTheme.bodyText2.color),
               const SizedBox(width: 16),
-              Text(text, style: Theme.of(context).textTheme.bodyText2),
+              Expanded(
+                child: Text(
+                  text,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
         ),
@@ -86,5 +98,32 @@ class PostOptionsPopup extends StatelessWidget {
   void _onHideClicked(BuildContext context) {
     Navigator.pop(context);
     BlocProvider.of<PostsListBloc>(context).add(HidePost(post));
+  }
+
+  void _onBlockUserClicked(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Block user?"),
+            content: Text(
+                "By blocking ${post.owner.address} you will no longer see his posts. Would you like to continue?"),
+            actions: [
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  BlocProvider.of<PostsListBloc>(context)
+                      .add(BlockUser(post.owner));
+                },
+                child: Text("Block"),
+              ),
+            ],
+          );
+        });
   }
 }

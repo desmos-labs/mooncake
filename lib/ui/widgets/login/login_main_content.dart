@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
+import 'login_terms_conditions.dart';
+
 /// Represents the main login content containing the title and the
 /// login and recover account buttons.
 class LoginMainContent extends StatelessWidget {
@@ -46,6 +48,13 @@ class LoginMainContent extends StatelessWidget {
                   onPressed: () => _onRecoverAccount(context),
                 ),
               ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LoginTermsAndConditions(),
             ],
           )
         ],

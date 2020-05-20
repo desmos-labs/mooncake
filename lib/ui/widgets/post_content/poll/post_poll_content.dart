@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -36,13 +37,13 @@ class PostPollContent extends StatelessWidget {
                 Text(post.poll.question, textAlign: TextAlign.center),
                 const SizedBox(height: SEPARATOR_HEIGHT),
                 if (!hasVoted)
-                _buildListView((option) {
-                  return PostPollOptionItem(
-                    height: OPTION_HEIGHT,
-                    post: post,
-                    option: option,
-                  );
-                }),
+                  _buildListView((option) {
+                    return PostPollOptionItem(
+                      height: OPTION_HEIGHT,
+                      post: post,
+                      option: option,
+                    );
+                  }),
                 if (hasVoted)
                   _buildListView((option) {
                     return PostPollResultItem(
@@ -51,11 +52,38 @@ class PostPollContent extends StatelessWidget {
                       option: option,
                     );
                   }),
+                if (hasVoted) _votesAndEnding(context)
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _votesAndEnding(BuildContext context) {
+    final formatter = DateFormat.MMMd().add_jm();
+    final date = formatter.format(post.poll.endDateTime);
+
+    return Column(
+      children: [
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Text(
+              PostsLocalizations.of(context)
+                  .votes(post.poll.userAnswers.length),
+            ),
+            const SizedBox(width: 4),
+            const Text("•"),
+            const SizedBox(width: 4),
+            if (post.poll.isOpen)
+              Text(PostsLocalizations.of(context).pollEndOn(date)),
+            if (!post.poll.isOpen)
+              Text(PostsLocalizations.of(context).finalResults),
+          ],
+        ),
+      ],
     );
   }
 

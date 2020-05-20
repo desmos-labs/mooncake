@@ -1,18 +1,31 @@
 import 'package:intl/intl.dart';
+import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:test/test.dart';
 
+class MockUsersRepository extends Mock implements UsersRepository {}
+
 void main() {
   Database database;
+  MockUsersRepository usersRepo = MockUsersRepository();
+
   LocalPostsSourceImpl source;
 
   setUp(() async {
     final factory = databaseFactoryMemory;
     database = await factory.openDatabase(DateTime.now().toIso8601String());
-    source = LocalPostsSourceImpl(database: database);
+
+    when(usersRepo.getBlockedUsers()).thenAnswer((_) => Future.value([]));
+    when(usersRepo.blockedUsersStream).thenAnswer((_) => Stream.value([]));
+
+    source = LocalPostsSourceImpl(
+      database: database,
+      usersRepository: usersRepo,
+    );
   });
 
   /// Allows to crete a mock post having the given id.
@@ -46,16 +59,21 @@ void main() {
   });
 
   test('postsStream emits items correctly upon inserting', () async {
+    when(usersRepo.blockedUsersStream)
+        .thenAnswer((_) => Stream.value(["blocked"]));
+
     final posts = [
       _createPost("1").copyWith(
         created: DateFormat(Post.DATE_FORMAT).format(
           DateTime.now().add(Duration(seconds: 1)),
         ),
       ),
+      // Post from a blocked user
       _createPost("2").copyWith(
         created: DateFormat(Post.DATE_FORMAT).format(
           DateTime.now().add(Duration(seconds: 2)),
         ),
+        owner: User.fromAddress("blocked"),
       ),
       _createPost("3").copyWith(
         created: DateFormat(Post.DATE_FORMAT).format(
@@ -69,21 +87,27 @@ void main() {
     expectLater(
       stream,
       emitsInOrder([
-        [posts[2], posts[1], posts[0]],
+        [posts[2], posts[0]],
       ]),
     );
   });
 
   test('homePostsStream emits correct events', () async {
+    when(usersRepo.blockedUsersStream)
+        .thenAnswer((_) => Stream.value(["blocked"]));
+
     final homePost1 = _createPost("1").copyWith(parentId: "");
-    final secondDate = DateTime.now().add(Duration(seconds: 1));
     final homePost2 = _createPost("2").copyWith(
       parentId: "",
-      created: DateFormat(Post.DATE_FORMAT).format(secondDate),
+      created: DateFormat(Post.DATE_FORMAT)
+          .format(DateTime.now().add(Duration(seconds: 1))),
     );
+    final blockedHomePost =
+        _createPost("blocked").copyWith(owner: User.fromAddress("blocked"));
+
     final post1 = _createPost("3").copyWith(parentId: "1");
     final post2 = _createPost("4").copyWith(parentId: "1");
-    await _storePosts([homePost1, homePost2, post1, post2]);
+    await _storePosts([homePost1, homePost2, post1, post2, blockedHomePost]);
 
     final streamCapped1 = source.homePostsStream(1);
     final streamCapped2 = source.homePostsStream(2);
@@ -153,12 +177,21 @@ void main() {
   });
 
   test('getPostCommentsStream emits correct events', () async {
-    final comment = _createPost("2").copyWith(parentId: "1");
+    when(usersRepo.blockedUsersStream)
+        .thenAnswer((_) => Stream.value(["blocked"]));
+
+    final comment = _createPost("2").copyWith(
+      parentId: "1",
+    );
     final hiddenComment = _createPost("3").copyWith(
       parentId: "1",
       hidden: true,
     );
-    await _storePosts([comment, hiddenComment]);
+    final blockedComment = _createPost("4").copyWith(
+      owner: User.fromAddress("blocked"),
+    );
+
+    await _storePosts([comment, hiddenComment, blockedComment]);
 
     final stream = source.getPostCommentsStream("1");
     expectLater(
@@ -170,17 +203,25 @@ void main() {
   });
 
   test('getPostComments return the correct list', () async {
+    when(usersRepo.getBlockedUsers())
+        .thenAnswer((_) => Future.value(["blocked"]));
+
     final comment1 = _createPost("A").copyWith(parentId: "1");
     final hiddenComment = _createPost("B").copyWith(
       parentId: "1",
       hidden: true,
     );
-    final secondDate = DateTime.now().add(Duration(seconds: 1));
     final comment2 = _createPost("C").copyWith(
       parentId: "1",
-      created: DateFormat(Post.DATE_FORMAT).format(secondDate),
+      created: DateFormat(Post.DATE_FORMAT)
+          .format(DateTime.now().add(Duration(seconds: 1))),
     );
-    await _storePosts([comment1, hiddenComment, comment2]);
+    final blockedComment = _createPost("D").copyWith(
+      parentId: "1",
+      owner: User.fromAddress("blocked"),
+    );
+
+    await _storePosts([comment1, hiddenComment, comment2, blockedComment]);
 
     final stored = await source.getPostComments("1");
     expect(stored, equals([comment2, comment1]));

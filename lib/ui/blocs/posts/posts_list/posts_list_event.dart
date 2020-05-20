@@ -76,6 +76,19 @@ class HidePost extends PostsListEvent {
   String toString() => 'HidePost { post: $post }';
 }
 
+/// Tells the Bloc that the given [user] should be blocked.
+class BlockUser extends PostsListEvent {
+  final User user;
+
+  BlockUser(this.user);
+
+  @override
+  List<Object> get props => [user];
+
+  @override
+  String toString() => 'ReportUser { user: $user }';
+}
+
 /// Tells the Bloc to inform the user that he should refresh the
 /// home list of the posts.
 class ShouldRefreshPosts extends PostsListEvent {

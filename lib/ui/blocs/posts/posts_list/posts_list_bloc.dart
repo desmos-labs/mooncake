@@ -30,6 +30,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final HidePostUseCase _hidePostUseCase;
   final DeletePostsUseCase _deletePostsUseCase;
 
+  final BlockUserUseCase _blockUserUseCase;
+
   // Subscriptions
   StreamSubscription _eventsSubscription;
   StreamSubscription _postsSubscription;
@@ -47,6 +49,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required HidePostUseCase hidePostUseCase,
     @required VotePollUseCase votePollUseCase,
     @required DeletePostsUseCase deletePostsUseCase,
+    @required BlockUserUseCase blockUserUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getHomePostsUseCase != null),
         _getHomePostsUseCase = getHomePostsUseCase,
@@ -63,7 +66,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(votePollUseCase != null),
         _votePollUseCase = votePollUseCase,
         assert(deletePostsUseCase != null),
-        _deletePostsUseCase = deletePostsUseCase {
+        _deletePostsUseCase = deletePostsUseCase,
+        assert(blockUserUseCase != null),
+        _blockUserUseCase = blockUserUseCase {
     _initializeSyncTimer();
 
     // Subscribe to the posts changes
@@ -97,6 +102,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       hidePostUseCase: Injector.get(),
       votePollUseCase: Injector.get(),
       deletePostsUseCase: Injector.get(),
+      blockUserUseCase: Injector.get(),
     );
   }
 
@@ -124,6 +130,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield* _mapVotePollEventToState(event);
     } else if (event is HidePost) {
       yield* _mapHidePostEventToState(event);
+    } else if (event is BlockUser) {
+      yield* _mapBlockUserEventToState(event);
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
@@ -256,6 +264,18 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
+  /// Handles the event emitted when the user wants to block another user.
+  Stream<PostsListState> _mapBlockUserEventToState(BlockUser event) async* {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      await _blockUserUseCase.block(event.user);
+      final newPosts = currentState.posts
+          .where((post) => post.owner.address != event.user.address)
+          .toList();
+      yield currentState.copyWith(posts: newPosts);
+    }
+  }
+
   Stream<PostsListState> _mapFetchEventToState() async* {
     final currentState = state;
     if (currentState is PostsLoading) {
@@ -304,7 +324,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
     final posts = await _getHomePostsUseCase.refresh(start: 0, limit: limit);
     if (currentState is PostsLoaded) {
-      yield currentState.copyWith(refreshing: false, posts: posts);
+      yield currentState.copyWith(
+          refreshing: false,
+          posts: posts,
+          shouldRefresh: false,
+      );
     } else if (currentState is PostsLoading) {
       yield PostsLoaded.first(posts: posts);
     }
