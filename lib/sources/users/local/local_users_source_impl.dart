@@ -37,7 +37,7 @@ class LocalUsersSourceImpl extends LocalUsersSource {
       _database,
       finder: Finder(filter: Filter.byKey(BLOCKED_USERS_KEY)),
     );
-    return result.value == null ? [] : List.from(result.value);
+    return result?.value == null ? [] : List.from(result.value);
   }
 
   @override
