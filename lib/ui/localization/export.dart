@@ -203,6 +203,7 @@ inside the app bar to visualize your wallet
 
   // Edit account
   String get editAccountScreenTitle => "Edit account";
+  String get monikerLabel => "Moniker";
   String get nameLabel => "Name";
   String get surnameLabel => "Surname";
   String get bioLabel => "Bio";

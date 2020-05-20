@@ -11,6 +11,8 @@ class EditAccountState extends Equatable {
   final AccountImage coverImage;
   final AccountImage profileImage;
 
+  final bool saving;
+
   EditAccountState({
     @required this.moniker,
     @required this.name,
@@ -18,6 +20,7 @@ class EditAccountState extends Equatable {
     @required this.bio,
     @required this.coverImage,
     @required this.profileImage,
+    @required this.saving,
   });
 
   factory EditAccountState.initial() {
@@ -28,6 +31,27 @@ class EditAccountState extends Equatable {
       bio: null,
       coverImage: null,
       profileImage: null,
+      saving: false,
+    );
+  }
+
+  EditAccountState copyWith({
+    String moniker,
+    String name,
+    String surname,
+    String bio,
+    AccountImage coverImage,
+    AccountImage profileImage,
+    bool saving,
+  }) {
+    return EditAccountState(
+      moniker: moniker ?? this.moniker,
+      name: name ?? this.name,
+      surname: surname ?? this.surname,
+      bio: bio ?? this.bio,
+      coverImage: coverImage ?? this.coverImage,
+      profileImage: profileImage ?? this.profileImage,
+      saving: saving ?? this.saving,
     );
   }
 
@@ -40,6 +64,7 @@ class EditAccountState extends Equatable {
       bio,
       coverImage,
       profileImage,
+      saving,
     ];
   }
 }

@@ -35,6 +35,11 @@ class UserRepositoryImpl extends UserRepository {
     return _localUserSource.getWallet();
   }
 
+  @override
+  Future<void> saveAccount(MooncakeAccount account) {
+    return _localUserSource.saveAccount(account);
+  }
+
   Future<void> _updateAndStoreAccountData() async {
     final user = await _localUserSource.getAccount();
     if (user == null) {

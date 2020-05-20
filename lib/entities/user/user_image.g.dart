@@ -17,19 +17,20 @@ const _$AccountImageTypeEnumMap = {
   AccountImageType.NO_IMAGE: 'no_image',
 };
 
-NetworkUserImage _$NetworkImageFromJson(Map<String, dynamic> json) {
+NetworkUserImage _$NetworkUserImageFromJson(Map<String, dynamic> json) {
   return NetworkUserImage(
     json['url'] as String,
   );
 }
 
-Map<String, dynamic> _$NetworkImageToJson(NetworkUserImage instance) =>
+Map<String, dynamic> _$NetworkUserImageToJson(NetworkUserImage instance) =>
     <String, dynamic>{
       'url': instance.url,
     };
 
-NoUserImage _$NoImageFromJson(Map<String, dynamic> json) {
+NoUserImage _$NoUserImageFromJson(Map<String, dynamic> json) {
   return NoUserImage();
 }
 
-Map<String, dynamic> _$NoImageToJson(NoUserImage instance) => <String, dynamic>{};
+Map<String, dynamic> _$NoUserImageToJson(NoUserImage instance) =>
+    <String, dynamic>{};

@@ -34,11 +34,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
         return null;
       }
 
-      return MooncakeAccount(
-        cosmosAccount: cosmosAccount,
-        username: null,
-        avatarUrl: null,
-      );
+      return MooncakeAccount(cosmosAccount: cosmosAccount);
     } catch (e) {
       print(e);
       return null;

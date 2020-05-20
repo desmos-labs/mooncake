@@ -8,7 +8,7 @@ import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
 
 class SourcesModule implements Module {
-  static const _useLocalEndpoints = false;
+  static const _useLocalEndpoints = true;
 
   static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
   static const _ipfsEndpoint = "ipfs.desmos.network";

@@ -12,7 +12,7 @@ void main() {
 
       final user = User.fromJson(jsonDecode(contents));
       expect(user.address, "desmos10u276x6j0sltj4jzwnk892swcues3wehsv8dk3");
-      expect(user.avatarUrl, isNull);
+      expect(user.profilePicUrl, isNull);
       expect(user.username, isNull);
     });
   });
@@ -39,19 +39,19 @@ void main() {
 
   test('hasAvatater', () {
     expect(
-      User(address: "address", avatarUrl: null).hasAvatar,
+      User(address: "address", profilePicUrl: null).hasAvatar,
       isFalse,
       reason: "null avatar url should returns false",
     );
 
     expect(
-      User(address: "address", avatarUrl: "").hasAvatar,
+      User(address: "address", profilePicUrl: "").hasAvatar,
       isFalse,
       reason: "empty avatar url should return false",
     );
 
     expect(
-      User(address: "address", avatarUrl: "avatar").hasAvatar,
+      User(address: "address", profilePicUrl: "avatar").hasAvatar,
       isTrue,
       reason: "non-empty avatar url should return true",
     );
@@ -61,7 +61,7 @@ void main() {
     final user = User(
       address: "address",
       username: "random-username",
-      avatarUrl: "http://localhost/photo",
+      profilePicUrl: "http://localhost/photo",
     );
     final json = user.toJson();
     final recovered = User.fromJson(json);

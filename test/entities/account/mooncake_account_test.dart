@@ -5,7 +5,7 @@ import 'package:mooncake/entities/entities.dart';
 void main() {
   test('toJson and fromJson', () {
     final account = MooncakeAccount(
-      avatarUrl: "https://api.adorable.io/avatars/285/random.png",
+      profilePicUrl: "https://api.adorable.io/avatars/285/random.png",
       username: "random",
       cosmosAccount: CosmosAccount(
         address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
@@ -22,7 +22,7 @@ void main() {
   test('screenName', () {
     final accountWithUsername = MooncakeAccount(
       username: "desmos",
-      avatarUrl: null,
+      profilePicUrl: null,
       cosmosAccount: CosmosAccount.offline(
         "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
       ),

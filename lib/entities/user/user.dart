@@ -17,23 +17,26 @@ class User extends Equatable {
   @JsonKey(name: "moniker", nullable: true)
   final String username;
 
-  /// Returns `true` iff the username is not null and not empty.
-  bool get hasUsername => username != null && username.isNotEmpty;
+  @JsonKey(name: "bio", nullable: true)
+  final String bio;
 
-  /// Returns the name that should be used on the screen
-  String get screenName => username ?? address;
+  @JsonKey(name: "profile_pic", nullable: true)
+  final String profilePicUrl;
 
-  @JsonKey(name: "avatar_url", nullable: true)
-  final String avatarUrl;
-
-  /// Returns `true` iff the user has an associated avatar.
-  bool get hasAvatar => avatarUrl != null && avatarUrl.isNotEmpty;
+  @JsonKey(name: "cover_pic", nullable: true)
+  final String coverPicUrl;
 
   User({
     @required this.address,
     this.username,
-    this.avatarUrl,
-  }) : assert(address != null);
+    this.bio,
+    this.profilePicUrl,
+    this.coverPicUrl,
+  })  : assert(address != null && address.trim().isNotEmpty),
+        assert(username == null || username.trim().isNotEmpty),
+        assert(bio == null || bio.trim().isNotEmpty),
+        assert(profilePicUrl == null || profilePicUrl.trim().isNotEmpty),
+        assert(coverPicUrl == null || coverPicUrl.trim().isNotEmpty);
 
   factory User.fromAddress(String address) {
     return User(address: address);
@@ -43,16 +46,35 @@ class User extends Equatable {
     return _$UserFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  /// Returns `true` iff the username is not null and not empty.
+  bool get hasUsername => username != null && username.isNotEmpty;
+
+  /// Returns the name that should be used on the screen
+  String get screenName => username ?? address;
+
+  /// Returns `true` iff the user has an associated avatar.
+  bool get hasAvatar =>
+      profilePicUrl != null && profilePicUrl.trim().isNotEmpty;
+
+  /// Returns `true` iff the user has an associated cover picture.
+  bool get hasCover => coverPicUrl != null && coverPicUrl.trim().isNotEmpty;
+
+  Map<String, dynamic> toJson() {
+    return _$UserToJson(this);
+  }
 
   @override
-  List<Object> get props => [address, username, avatarUrl];
+  List<Object> get props {
+    return [address, username, bio, profilePicUrl, coverPicUrl];
+  }
 
-  // DONT COVER
   @override
-  String toString() => 'User { '
-      'address: $address, '
-      'username: $username, '
-      'avatarUrl : $avatarUrl '
-      '}';
+  String toString() {
+    return 'User { '
+        'address: $address, '
+        'bio: $bio, '
+        'username: $username, '
+        'avatarUrl : $profilePicUrl '
+        '}';
+  }
 }

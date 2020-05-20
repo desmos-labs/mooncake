@@ -133,7 +133,7 @@ void main() {
           owner: User(
             address: "desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u",
             username: null,
-            avatarUrl: null,
+            profilePicUrl: null,
           ),
           commentsIds: [],
         ),

@@ -85,12 +85,12 @@ class NetworkUserImage extends AccountImage {
   NetworkUserImage(this.url) : super(AccountImageType.NETWORK);
 
   factory NetworkUserImage.fromJson(Map<String, dynamic> json) {
-    return _$NetworkImageFromJson(json);
+    return _$NetworkUserImageFromJson(json);
   }
 
   @override
   Map<String, dynamic> asJson() {
-    return _$NetworkImageToJson(this);
+    return _$NetworkUserImageToJson(this);
   }
 
   @override
@@ -104,7 +104,7 @@ class NoUserImage extends AccountImage {
   NoUserImage() : super(AccountImageType.NO_IMAGE);
 
   factory NoUserImage.fromJson(Map<String, dynamic> json) {
-    return _$NoImageFromJson(json);
+    return _$NoUserImageFromJson(json);
   }
 
   @override
@@ -112,6 +112,6 @@ class NoUserImage extends AccountImage {
 
   @override
   Map<String, dynamic> asJson() {
-    return _$NoImageToJson(this);
+    return _$NoUserImageToJson(this);
   }
 }

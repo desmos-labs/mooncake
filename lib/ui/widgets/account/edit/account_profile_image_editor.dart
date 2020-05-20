@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/widgets/account/view/account_profile_image_viewer.dart';
 
 import 'image_picker.dart';
 
@@ -20,38 +21,22 @@ class AccountProfileImageEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EditAccountBloc, EditAccountState>(
       builder: (context, state) {
-        final hasImage =
-            state.coverImage != null && !(state.coverImage is NoUserImage);
-
-        ImageProvider coverImage;
-        final coverImageValue = state.coverImage;
-        if (coverImageValue is LocalUserImage) {
-          coverImage = FileImage(coverImageValue.image);
-        } else if (coverImageValue is NetworkUserImage) {
-          coverImage = NetworkImage(coverImageValue.url);
-        }
-
-        return CircleAvatar(
-          radius: radius,
-          backgroundColor: Theme.of(context).backgroundColor,
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(1000),
-            child: InkWell(
-              onTap: () => _chooseImage(context),
-              borderRadius: BorderRadius.circular(1000),
-              child: CircleAvatar(
-                radius: radius - border,
-                backgroundColor: coverImage != null
-                    ? null
-                    : Theme.of(context).primaryColor.withOpacity(0.25),
-                backgroundImage: coverImage,
-                child: Icon(
-                  MooncakeIcons.camera,
-                  color: Theme.of(context).iconTheme.color,
-                ),
+        return InkWell(
+          onTap: () => _chooseImage(context),
+          borderRadius: BorderRadius.circular(1000),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              AccountProfileImageViewer(
+                profileImage: state.profileImage,
+                border: border,
+                radius: radius,
               ),
-            ),
+              Icon(
+                MooncakeIcons.camera,
+                color: Theme.of(context).iconTheme.color,
+              ),
+            ],
           ),
         );
       },
@@ -59,8 +44,11 @@ class AccountProfileImageEditor extends StatelessWidget {
   }
 
   void _chooseImage(BuildContext context) {
-    showImagePicker(context: context, onImageChosen: (image) {
-      BlocProvider.of<EditAccountBloc>(context).add(ProfilePicChanged(image));
-    });
+    showImagePicker(
+      context: context,
+      onImageChosen: (image) {
+        BlocProvider.of<EditAccountBloc>(context).add(ProfilePicChanged(image));
+      },
+    );
   }
 }

@@ -5,7 +5,7 @@ import 'package:mooncake/ui/ui.dart';
 class EditAccountScreen extends StatelessWidget {
   static const double COVER_HEIGHT = 160;
   static const double PICTURE_RADIUS = 40;
-  static const double PADDING = 8;
+  static const double PADDING = 16;
 
   @override
   Widget build(BuildContext context) {

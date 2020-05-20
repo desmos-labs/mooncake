@@ -115,7 +115,7 @@ void main() {
     test('saveAccount works properly', () async {
       final account = MooncakeAccount(
         username: null,
-        avatarUrl: null,
+        profilePicUrl: null,
         cosmosAccount: CosmosAccount(
           address: "address",
           accountNumber: 1,
@@ -137,7 +137,7 @@ void main() {
 
     test('getAccount returns the correctly stored data', () async {
       final account = MooncakeAccount(
-        avatarUrl: "https://example.com/avatar.png",
+        profilePicUrl: "https://example.com/avatar.png",
         username: "john-doe",
         cosmosAccount: CosmosAccount(
           accountNumber: 153,
@@ -229,7 +229,7 @@ void main() {
   group('Data wiping', () {
     test('correctly deletes data', () async {
       final account = MooncakeAccount(
-        avatarUrl: "https://example.com/avatar",
+        profilePicUrl: "https://example.com/avatar",
         username: "account",
         cosmosAccount: CosmosAccount(
           address: "address",

@@ -12,14 +12,18 @@ MooncakeAccount _$MooncakeAccountFromJson(Map<String, dynamic> json) {
         ? null
         : CosmosAccount.fromJson(
             json['cosmos_account'] as Map<String, dynamic>),
-    username: json['username'] as String,
-    avatarUrl: json['avatar_url'] as String,
+    username: json['moniker'] as String,
+    bio: json['bio'] as String,
+    profilePicUrl: json['profile_pic'] as String,
+    coverPicUrl: json['cover_pic'] as String,
   );
 }
 
 Map<String, dynamic> _$MooncakeAccountToJson(MooncakeAccount instance) =>
     <String, dynamic>{
+      'moniker': instance.username,
+      'bio': instance.bio,
+      'profile_pic': instance.profilePicUrl,
+      'cover_pic': instance.coverPicUrl,
       'cosmos_account': instance.cosmosAccount?.toJson(),
-      'avatar_url': instance.avatarUrl,
-      'username': instance.username,
     };
