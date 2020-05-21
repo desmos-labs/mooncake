@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -9,7 +11,7 @@ import 'package:mooncake/entities/entities.dart';
 class AccountProfileImageViewer extends StatelessWidget {
   final double radius;
   final double border;
-  final AccountImage profileImage;
+  final String profileImage;
 
   const AccountProfileImageViewer({
     Key key,
@@ -21,11 +23,10 @@ class AccountProfileImageViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ImageProvider coverImage;
-    final coverImageValue = profileImage;
-    if (coverImageValue is LocalUserImage) {
-      coverImage = FileImage(coverImageValue.image);
-    } else if (coverImageValue is NetworkUserImage) {
-      coverImage = NetworkImage(coverImageValue.url);
+    if (profileImage?.startsWith("http") == false) {
+      coverImage = FileImage(File(profileImage));
+    } else if (profileImage?.startsWith("http") == true) {
+      coverImage = NetworkImage(profileImage);
     }
 
     return CircleAvatar(

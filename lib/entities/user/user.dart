@@ -15,7 +15,13 @@ class User extends Equatable {
   /// Represents the username of the user.
   /// Do not use this directly, use [screenName] instead.
   @JsonKey(name: "moniker", nullable: true)
-  final String username;
+  final String moniker;
+
+  @JsonKey(name: "name", nullable: true)
+  final String name;
+
+  @JsonKey(name: "surname", nullable: true)
+  final String surname;
 
   @JsonKey(name: "bio", nullable: true)
   final String bio;
@@ -28,12 +34,16 @@ class User extends Equatable {
 
   User({
     @required this.address,
-    this.username,
+    this.moniker,
+    this.name,
+    this.surname,
     this.bio,
     this.profilePicUrl,
     this.coverPicUrl,
   })  : assert(address != null && address.trim().isNotEmpty),
-        assert(username == null || username.trim().isNotEmpty),
+        assert(moniker == null || moniker.trim().isNotEmpty),
+        assert(name == null || moniker.trim().isNotEmpty),
+        assert(surname == null || moniker.trim().isNotEmpty),
         assert(bio == null || bio.trim().isNotEmpty),
         assert(profilePicUrl == null || profilePicUrl.trim().isNotEmpty),
         assert(coverPicUrl == null || coverPicUrl.trim().isNotEmpty);
@@ -46,18 +56,15 @@ class User extends Equatable {
     return _$UserFromJson(json);
   }
 
-  /// Returns `true` iff the username is not null and not empty.
-  bool get hasUsername => username != null && username.isNotEmpty;
-
-  /// Returns the name that should be used on the screen
-  String get screenName => username ?? address;
-
   /// Returns `true` iff the user has an associated avatar.
-  bool get hasAvatar =>
-      profilePicUrl != null && profilePicUrl.trim().isNotEmpty;
+  bool get hasAvatar {
+    return profilePicUrl != null && profilePicUrl.trim().isNotEmpty;
+  }
 
   /// Returns `true` iff the user has an associated cover picture.
-  bool get hasCover => coverPicUrl != null && coverPicUrl.trim().isNotEmpty;
+  bool get hasCover {
+    return coverPicUrl != null && coverPicUrl.trim().isNotEmpty;
+  }
 
   Map<String, dynamic> toJson() {
     return _$UserToJson(this);
@@ -65,7 +72,15 @@ class User extends Equatable {
 
   @override
   List<Object> get props {
-    return [address, username, bio, profilePicUrl, coverPicUrl];
+    return [
+      address,
+      moniker,
+      name,
+      surname,
+      bio,
+      profilePicUrl,
+      coverPicUrl,
+    ];
   }
 
   @override
@@ -73,7 +88,9 @@ class User extends Equatable {
     return 'User { '
         'address: $address, '
         'bio: $bio, '
-        'username: $username, '
+        'username: $moniker, '
+        'name: $name, '
+        'surname: $surname, '
         'avatarUrl : $profilePicUrl '
         '}';
   }

@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:mooncake/entities/account/export.dart';
+import 'package:mooncake/repositories/repositories.dart';
 import 'package:test/test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/sources/sources.dart';
 
-class ChainHelperMock extends Mock implements ChainHelper {}
+class ChainHelperMock extends Mock implements ChainSource {}
 
 void main() {
   MockWebServer server;

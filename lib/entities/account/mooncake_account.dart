@@ -14,28 +14,41 @@ class MooncakeAccount extends User {
 
   MooncakeAccount({
     @required this.cosmosAccount,
-    String username,
+    String moniker,
     String bio,
+    String name,
+    String surname,
     String profilePicUrl,
     String coverPicUrl,
   }) : super(
           address: cosmosAccount.address,
-          username: username,
+          moniker: moniker,
           bio: bio,
+          name: name,
+          surname: surname,
           profilePicUrl: profilePicUrl,
           coverPicUrl: coverPicUrl,
         );
 
   /// Creates a local account.
   factory MooncakeAccount.local(String address) {
-    return MooncakeAccount(
-      cosmosAccount: CosmosAccount.offline(address),
-    );
+    return MooncakeAccount(cosmosAccount: CosmosAccount.offline(address));
   }
 
   /// Creates a [MooncakeAccount] from the given JSON map.
   factory MooncakeAccount.fromJson(Map<String, dynamic> json) {
     return _$MooncakeAccountFromJson(json);
+  }
+
+  /// Creates a [MooncakeAccount] from the given [CosmosAccount] and [User].
+  factory MooncakeAccount.fromUser(CosmosAccount account, User user) {
+    return MooncakeAccount(
+      cosmosAccount: account,
+      moniker: user.moniker,
+      bio: user.bio,
+      profilePicUrl: user.profilePicUrl,
+      coverPicUrl: user.coverPicUrl,
+    );
   }
 
   /// Returns `true` iff the account needs to be funded.
@@ -45,17 +58,21 @@ class MooncakeAccount extends User {
   /// as the original, but with the specified data replaced instead.
   MooncakeAccount copyWith({
     CosmosAccount cosmosAccount,
-    String username,
+    String moniker,
     String bio,
+    String name,
+    String surname,
     String profilePicUrl,
     String coverPicUrl,
   }) {
     return MooncakeAccount(
-      cosmosAccount: cosmosAccount,
-      username: username,
-      bio: bio,
-      profilePicUrl: profilePicUrl,
-      coverPicUrl: coverPicUrl,
+      cosmosAccount: cosmosAccount ?? this.cosmosAccount,
+      moniker: moniker ?? this.moniker,
+      name: name ?? this.name,
+      surname: surname ?? this.surname,
+      bio: bio ?? this.bio,
+      profilePicUrl: profilePicUrl ?? this.profilePicUrl,
+      coverPicUrl: coverPicUrl ?? this.coverPicUrl,
     );
   }
 
@@ -73,9 +90,7 @@ class MooncakeAccount extends User {
   String toString() {
     return 'MooncakeAccount {'
         'cosmosAccount: $cosmosAccount, '
-        'username: $username, '
-        'profilePicUrl: $profilePicUrl, '
-        'coverPicUrl: $coverPicUrl '
+        'user: ${super.toString()} '
         '}';
   }
 }

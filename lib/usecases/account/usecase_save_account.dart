@@ -14,14 +14,7 @@ class SaveAccountUseCase {
         _userRepository = userRepository;
 
   /// Saves the given [account] as the current user account.
-  Future<void> save({
-    AccountImage coverPicture,
-    AccountImage profilePicture,
-    String moniker,
-    String name,
-    String surname,
-    String biography,
-  }) {
-    // TODO: Implement this
+  Future<void> save(MooncakeAccount account) {
+    return _userRepository.saveAccount(account);
   }
 }

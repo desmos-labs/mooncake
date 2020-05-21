@@ -2,30 +2,47 @@ import 'dart:convert';
 
 import 'package:alan/alan.dart';
 import 'package:flutter/foundation.dart';
+import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 
+import 'helpers/export.dart';
+
 /// Implementation of [RemoteUserSource]
 class RemoteUserSourceImpl implements RemoteUserSource {
   final String _faucetEndpoint;
-  final ChainHelper _chainHelper;
+  final GraphQLClient _gqlClient;
+  final UserMsgConverter _msgConverter;
+
+  final ChainSource _chainSource;
+  final LocalUserSource _userSource;
 
   RemoteUserSourceImpl({
-    @required ChainHelper chainHelper,
     @required String faucetEndpoint,
+    @required GraphQLClient graphQLClient,
+    @required UserMsgConverter msgConverter,
+    @required ChainSource chainHelper,
+    @required LocalUserSource userSource,
   })  : assert(chainHelper != null),
-        this._chainHelper = chainHelper,
+        this._chainSource = chainHelper,
+        assert(graphQLClient != null),
+        _gqlClient = graphQLClient,
         assert(faucetEndpoint != null),
-        _faucetEndpoint = faucetEndpoint;
+        _faucetEndpoint = faucetEndpoint,
+        assert(msgConverter != null),
+        _msgConverter = msgConverter,
+        assert(userSource != null),
+        _userSource = userSource;
 
   @override
   Future<MooncakeAccount> getAccount(String address) async {
     try {
+      // Get the chain data
       final cosmosAccount = await QueryHelper.getAccountData(
-        _chainHelper.lcdEndpoint,
+        _chainSource.lcdEndpoint,
         address,
       );
 
@@ -34,7 +51,9 @@ class RemoteUserSourceImpl implements RemoteUserSource {
         return null;
       }
 
-      return MooncakeAccount(cosmosAccount: cosmosAccount);
+      // Get the other data
+      final user = await GqlUsersHelper.getUserByAddress(_gqlClient, address);
+      return MooncakeAccount.fromUser(cosmosAccount, user);
     } catch (e) {
       print(e);
       return null;
@@ -48,5 +67,14 @@ class RemoteUserSourceImpl implements RemoteUserSource {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"address": user.cosmosAccount.address}),
     );
+  }
+
+  @override
+  Future<void> saveAccount(MooncakeAccount account) async {
+    final wallet = await _userSource.getWallet();
+
+    final remoteAccount = await getAccount(account.address);
+    final msg = _msgConverter.toUserMsg(account, remoteAccount);
+    return _chainSource.sendTx([msg], wallet);
   }
 }

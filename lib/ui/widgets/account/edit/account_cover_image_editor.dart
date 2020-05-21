@@ -26,7 +26,7 @@ class AccountCoverImageEditor extends StatelessWidget {
             children: [
               AccountCoverImageViewer(
                 height: height,
-                coverImage: state.coverImage,
+                coverImage: state.account.coverPicUrl,
               ),
               Icon(MooncakeIcons.camera),
             ],

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/account/view/account_profile_image_viewer.dart';
 
 import 'image_picker.dart';
 
@@ -28,7 +26,7 @@ class AccountProfileImageEditor extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               AccountProfileImageViewer(
-                profileImage: state.profileImage,
+                profileImage: state.account.profilePicUrl,
                 border: border,
                 radius: radius,
               ),

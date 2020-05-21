@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:mooncake/entities/entities.dart';
 
 /// Allows to properly show the given [coverImage].
 class AccountCoverImageViewer extends StatelessWidget {
   final double height;
-  final AccountImage coverImage;
+  final String coverImage;
 
   const AccountCoverImageViewer({
     Key key,
@@ -17,16 +18,16 @@ class AccountCoverImageViewer extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     final coverImage = this.coverImage;
-    if (coverImage is LocalUserImage) {
+    if (coverImage?.startsWith("http") == false) {
       return Image.file(
-        coverImage.image,
+        File(coverImage),
         width: width,
         height: height,
         fit: BoxFit.cover,
       );
-    } else if (coverImage is NetworkUserImage) {
+    } else if (coverImage?.startsWith("http") == true) {
       return Image.network(
-        coverImage.url,
+        coverImage,
         width: width,
         height: height,
         fit: BoxFit.cover,

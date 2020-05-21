@@ -17,52 +17,83 @@ class AccountTextInfoEditor extends StatelessWidget {
     // ignore: close_sinks
     final bloc = BlocProvider.of<EditAccountBloc>(context);
 
-    return Container(
-      padding: padding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            maxLength: 20,
-            decoration: InputDecoration(
-              labelText: PostsLocalizations.of(context).monikerLabel,
-            ),
-            onChanged: (value) => bloc.add(MonikerChanged(value)),
-          ),
-          const SizedBox(height: 16),
-          Row(
+    return BlocBuilder<EditAccountBloc, EditAccountState>(
+      builder: (context, state) {
+        return Container(
+          padding: padding,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: TextField(
-                  maxLength: 20,
-                  decoration: InputDecoration(
-                    labelText: PostsLocalizations.of(context).nameLabel,
-                  ),
-                  onChanged: (value) => bloc.add(NameChanged(value)),
-                ),
+              _buildEditor(
+                context: context,
+                maxLength: 20,
+                label: PostsLocalizations.of(context).monikerLabel,
+                value: state.account.moniker,
+                onChanged: (value) => bloc.add(MonikerChanged(value)),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: TextField(
-                  maxLength: 20,
-                  decoration: InputDecoration(
-                    labelText: PostsLocalizations.of(context).surnameLabel,
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildEditor(
+                      context: context,
+                      maxLength: 20,
+                      label: PostsLocalizations.of(context).nameLabel,
+                      value: state.account.name,
+                      onChanged: (value) => bloc.add(NameChanged(value)),
+                    ),
                   ),
-                  onChanged: (value) => bloc.add(SurnameChanged(value)),
-                ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildEditor(
+                      context: context,
+                      maxLength: 20,
+                      value: state.account.surname,
+                      label: PostsLocalizations.of(context).surnameLabel,
+                      onChanged: (value) => bloc.add(SurnameChanged(value)),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _buildEditor(
+                context: context,
+                maxLength: 200,
+                value: state.account.bio,
+                label: PostsLocalizations.of(context).bioLabel,
+                onChanged: (value) => bloc.add(BioChanged(value)),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          TextField(
-            maxLength: 200,
-            decoration: InputDecoration(
-              labelText: PostsLocalizations.of(context).bioLabel,
-            ),
-            onChanged: (value) => bloc.add(BioChanged(value)),
-          ),
-        ],
-      ),
+        );
+      },
+    );
+  }
+
+  /// Builds a [TextField] with the specified options.
+  Widget _buildEditor({
+    BuildContext context,
+    String label,
+    String value,
+    Function(String) onChanged,
+    int maxLength,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              .copyWith(color: Theme.of(context).accentColor),
+        ),
+        TextField(
+          maxLength: maxLength,
+          decoration: InputDecoration(hintText: value ?? label),
+          onChanged: onChanged,
+        ),
+      ],
     );
   }
 }

@@ -9,4 +9,5 @@ export 'security_login_password_screen.dart';
 export 'security_set_biometrics_screen.dart';
 export 'security_set_password_screen.dart';
 export 'splash_screen.dart';
+export 'user_details_screen.dart';
 export 'wallet_screen.dart';

@@ -4,66 +4,58 @@ import 'package:mooncake/entities/entities.dart';
 
 /// Represents the current state of the edit account screen.
 class EditAccountState extends Equatable {
-  final String moniker;
-  final String name;
-  final String surname;
-  final String bio;
-  final AccountImage coverImage;
-  final AccountImage profileImage;
+  final MooncakeAccount account;
 
   final bool saving;
 
   EditAccountState({
-    @required this.moniker,
-    @required this.name,
-    @required this.surname,
-    @required this.bio,
-    @required this.coverImage,
-    @required this.profileImage,
+    @required this.account,
     @required this.saving,
   });
 
-  factory EditAccountState.initial() {
+  factory EditAccountState.initial(MooncakeAccount account) {
     return EditAccountState(
-      moniker: null,
-      name: null,
-      surname: null,
-      bio: null,
-      coverImage: null,
-      profileImage: null,
+      account: account,
       saving: false,
     );
   }
 
   EditAccountState copyWith({
-    String moniker,
-    String name,
-    String surname,
-    String bio,
-    AccountImage coverImage,
-    AccountImage profileImage,
+    MooncakeAccount account,
     bool saving,
   }) {
     return EditAccountState(
-      moniker: moniker ?? this.moniker,
-      name: name ?? this.name,
-      surname: surname ?? this.surname,
-      bio: bio ?? this.bio,
-      coverImage: coverImage ?? this.coverImage,
-      profileImage: profileImage ?? this.profileImage,
+      account: account ?? this.account,
       saving: saving ?? this.saving,
+    );
+  }
+
+  EditAccountState updateAccount({
+    CosmosAccount cosmosAccount,
+    String moniker,
+    String bio,
+    String name,
+    String surname,
+    String profilePicUrl,
+    String coverPicUrl,
+  }) {
+    return copyWith(
+      account: account.copyWith(
+        cosmosAccount: cosmosAccount,
+        moniker: moniker,
+        bio: bio,
+        name: name,
+        surname: surname,
+        profilePicUrl: profilePicUrl,
+        coverPicUrl: coverPicUrl,
+      ),
     );
   }
 
   @override
   List<Object> get props {
     return [
-      moniker,
-      name,
-      surname,
-      bio,
-      coverImage,
-      profileImage,
+      account,
       saving,
     ];
   }

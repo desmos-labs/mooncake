@@ -13,25 +13,25 @@ void main() {
       final user = User.fromJson(jsonDecode(contents));
       expect(user.address, "desmos10u276x6j0sltj4jzwnk892swcues3wehsv8dk3");
       expect(user.profilePicUrl, isNull);
-      expect(user.username, isNull);
+      expect(user.moniker, isNull);
     });
   });
 
   test('hasUsername', () {
     expect(
-      User(address: "address", username: null).hasUsername,
+      User(address: "address", moniker: null).hasUsername,
       isFalse,
       reason: "null username should returns false",
     );
 
     expect(
-      User(address: "address", username: "").hasUsername,
+      User(address: "address", moniker: "").hasUsername,
       isFalse,
       reason: "empty username should return false",
     );
 
     expect(
-      User(address: "address", username: "username").hasUsername,
+      User(address: "address", moniker: "username").hasUsername,
       isTrue,
       reason: "non-empty username should return true",
     );
@@ -60,7 +60,7 @@ void main() {
   test('toJson', () {
     final user = User(
       address: "address",
-      username: "random-username",
+      moniker: "random-username",
       profilePicUrl: "http://localhost/photo",
     );
     final json = user.toJson();
