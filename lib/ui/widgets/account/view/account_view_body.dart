@@ -152,7 +152,8 @@ class _AccountViewBodyState extends State<AccountViewBody> {
           ),
 
           // Biography
-          if (widget.user.bio != null) _biography(context),
+          if (widget.user.bio != null)
+            _biography(context),
 
           // Separator
           Padding(

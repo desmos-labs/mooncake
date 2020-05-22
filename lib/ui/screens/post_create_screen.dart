@@ -38,7 +38,8 @@ class CreatePostScreen extends StatelessWidget {
                       backgroundColor: Colors.black.withOpacity(0.6),
                       content: PostSavingPopupContent(),
                       onTap: () {
-                        BlocProvider.of<PostInputBloc>(context).add(HidePopup());
+                        BlocProvider.of<PostInputBloc>(context)
+                            .add(HidePopup());
                       },
                     )
                 ],

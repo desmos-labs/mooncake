@@ -25,12 +25,6 @@ void main() {
     );
 
     expect(
-      User(address: "address", profilePicUri: "").hasAvatar,
-      isFalse,
-      reason: "empty avatar url should return false",
-    );
-
-    expect(
       User(address: "address", profilePicUri: "avatar").hasAvatar,
       isTrue,
       reason: "non-empty avatar url should return true",

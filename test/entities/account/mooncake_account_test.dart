@@ -34,7 +34,7 @@ void main() {
     );
     expect(
       accountWithoutUsername.screenName,
-      equals("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+      equals("desmos12rh...2yf0r"),
     );
   });
 }

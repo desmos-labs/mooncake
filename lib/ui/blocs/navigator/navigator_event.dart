@@ -103,13 +103,13 @@ class NavigateToEditAccount extends NavigatorEvent {
   String toString() => 'NavigateToEditAccount';
 }
 
-/// ShowAccountDetails tells the Bloc to navigate to the screen that 
+/// ShowAccountDetails tells the Bloc to navigate to the screen that
 /// displays the details of the user.
 class NavigateToUserDetails extends NavigatorEvent {
   final User user;
 
   NavigateToUserDetails(this.user);
-  
+
   @override
-  List<Object> get props => [user]; 
+  List<Object> get props => [user];
 }

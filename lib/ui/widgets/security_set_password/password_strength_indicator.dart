@@ -58,7 +58,6 @@ class PasswordStrengthIndicator extends StatelessWidget {
         ),
         SizedBox(width: spacer),
         Expanded(
-
           child: Text(
             text,
             textAlign: TextAlign.center,
