@@ -149,4 +149,5 @@ class TxFailed extends PostsListEvent {
 
 /// Event that tells the Bloc to download all the posts stored locally.
 /// WARNING: Use it ONLY during debug.
-class DeletePosts extends PostsListEvent {}
+class DeletePosts extends PostsListEvent {
+}

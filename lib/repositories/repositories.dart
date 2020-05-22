@@ -1,5 +1,3 @@
-export 'chain/export.dart';
-export 'medias/export.dart';
 export 'notifications/export.dart';
 export 'posts/export.dart';
 export 'user/export.dart';

@@ -1,30 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:graphql/client.dart';
 import 'package:mooncake/entities/account/export.dart';
-import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/repositories/repositories.dart';
 import 'package:test/test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/sources/sources.dart';
 
-class GraphQlClientMock extends Mock implements GraphQLClient {}
-
-class ChainHelperMock extends Mock implements ChainSource {}
-
-class LocalUserSourceMock extends Mock implements LocalUserSource {}
-
-class RemoteMediasSourceMock extends Mock implements RemoteMediasSource {}
+class ChainHelperMock extends Mock implements ChainHelper {}
 
 void main() {
   MockWebServer server;
-  GraphQlClientMock graphQlClient;
   ChainHelperMock chainHelper;
-  LocalUserSourceMock userSourceMock;
-  RemoteMediasSourceMock mediasSource;
-
   RemoteUserSourceImpl source;
 
   setUpAll(() {
@@ -39,18 +26,9 @@ void main() {
     chainHelper = ChainHelperMock();
     when(chainHelper.lcdEndpoint).thenReturn(server.url);
 
-    graphQlClient = GraphQlClientMock();
-
-    userSourceMock = LocalUserSourceMock();
-    mediasSource = RemoteMediasSourceMock();
-
     source = RemoteUserSourceImpl(
       chainHelper: chainHelper,
-      graphQLClient: graphQlClient,
-      msgConverter: UserMsgConverter(),
       faucetEndpoint: server.url,
-      remoteMediasSource: mediasSource,
-      userSource: userSourceMock,
     );
   });
 
@@ -65,15 +43,7 @@ void main() {
     final file = File("test_resources/account/account_response.json");
     final json = jsonDecode(file.readAsStringSync());
     final accountResponse = LcdResponse.fromJson(json);
-
     server.enqueue(body: jsonEncode(accountResponse));
-    when(graphQlClient.query(any))
-        .thenAnswer((_) => Future.value(QueryResult(data: {
-              "users": [
-                User(address: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl")
-                    .toJson()
-              ]
-            })));
 
     final account = await source
         .getAccount("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");

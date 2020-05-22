@@ -1,1 +1,1 @@
-export 'posts_msg_converter.dart';
+export 'msg_converter.dart';

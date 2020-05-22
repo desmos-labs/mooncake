@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mooncake/ui/theme/colors.dart';
 
 export 'colors.dart';
 export 'spaces.dart';
@@ -29,6 +30,14 @@ class PostsTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
       ),
     );
   }

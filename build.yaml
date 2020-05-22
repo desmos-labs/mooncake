@@ -5,8 +5,8 @@ targets:
         generate_for:
           # Generate the reflectable initializer only for the main class and the tests we need
           - lib/main.dart
-          - test/sources/chain/chain_source_impl_test.dart
-          - test/sources/posts/remote/remote_posts_source_test.dart
+          - test/sources/posts/chain_event_converter_test.dart
+          - test/sources/posts/remote_posts_source_test.dart
         options:
           formatted: true
       json_serializable:

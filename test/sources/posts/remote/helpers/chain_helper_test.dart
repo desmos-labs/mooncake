@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:mooncake/sources/sources.dart';
 import 'package:test/test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
-
-import 'chain_source_impl_test.reflectable.dart';
+import 'package:mooncake/sources/posts/export.dart';
 
 class MockTxBuilder extends Mock implements TxBuilder {}
 
@@ -16,10 +14,8 @@ class MockTxSigner extends Mock implements TxSigner {}
 class MockTxSender extends Mock implements TxSender {}
 
 void main() {
-  final fee = [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")];
-
   MockWebServer server;
-  ChainSourceImpl chainHelper;
+  ChainHelper chainHelper;
 
   setUpAll(() {
     server = MockWebServer();
@@ -30,7 +26,10 @@ void main() {
     // Clean the dispatcher to avoid cross-testing conflicts
     server.dispatcher = null;
 
-    chainHelper = ChainSourceImpl(lcdEndpoint: server.url);
+    chainHelper = ChainHelper(
+      ipfsEndpoint: server.url,
+      lcdEndpoint: server.url,
+    );
   });
 
   group('queryChainRaw', () {
@@ -134,8 +133,8 @@ void main() {
       // Enqueue an exception cause it shouldn't be called
       server.enqueue(httpCode: 500, body: null);
 
-      final txData = TxData(messages: [], wallet: wallet, feeAmount: fee);
-      final result = await ChainSourceImpl.sendTxBackground(txData);
+      final txData = TxData([], wallet);
+      final result = await ChainHelper.sendTxBackground(txData);
       expect(result, isNull);
     });
 
@@ -152,11 +151,10 @@ void main() {
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
           medias: null,
-          poll: null,
         ),
       ];
-      final data = TxData(messages: msgs, wallet: wallet, feeAmount: fee);
-      expect(ChainSourceImpl.sendTxBackground(data), throwsException);
+      final data = TxData(msgs, wallet);
+      expect(ChainHelper.sendTxBackground(data), throwsException);
     });
 
     test('throws exception when tx sending is not successful', () async {
@@ -197,12 +195,11 @@ void main() {
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
           medias: null,
-          poll: null,
         ),
       ];
-      final data = TxData(messages: msgs, wallet: wallet, feeAmount: fee);
+      final data = TxData(msgs, wallet);
       expect(() async {
-        await ChainSourceImpl.sendTxBackground(data);
+        await ChainHelper.sendTxBackground(data);
       }, throwsException);
     });
   });
@@ -266,7 +263,6 @@ void main() {
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
           medias: null,
-          poll: null,
         ),
       ];
       expect(chainHelper.sendTx(msgs, wallet), throwsException);
@@ -310,7 +306,6 @@ void main() {
           creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
           creationDate: "2020-01-01T15:00:00.000Z",
           medias: null,
-          poll: null,
         ),
       ];
       expect(() async {

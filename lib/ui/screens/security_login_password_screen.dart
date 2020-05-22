@@ -84,6 +84,9 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
           }),
           decoration: InputDecoration(
             hintText: PostsLocalizations.of(context).passwordHint,
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey[600]),
+            ),
           ),
         ),
         const SizedBox(height: 16),

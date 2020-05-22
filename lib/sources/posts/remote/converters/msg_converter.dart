@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/sources/posts/remote/models/msgs/msg_answer_poll.dart';
 import 'package:mooncake/sources/sources.dart';
 
 /// Contains the data of a reaction that should be added or removed from a post.
@@ -18,7 +19,7 @@ class AnswerData {
 }
 
 /// Allows to convert data into messages that can be sent to the chain.
-class PostsMsgConverter {
+class MsgConverter {
   ChainPollData _toChainPollData(PostPoll poll) {
     return ChainPollData(
       question: poll.question,

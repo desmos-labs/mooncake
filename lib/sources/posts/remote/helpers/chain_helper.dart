@@ -2,51 +2,45 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/sources/posts/remote/models/msgs/msg_answer_poll.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:mooncake/utils/logger.dart';
 
 /// Contains all the data needed to perform a transaction.
 @visibleForTesting
 class TxData extends Equatable {
+  final List<StdMsg> messages;
   final Wallet wallet;
 
-  final List<StdMsg> messages;
-  final List<StdCoin> feeAmount;
-
-  TxData({
-    @required this.messages,
-    @required this.wallet,
-    @required this.feeAmount,
-  });
+  TxData(this.messages, this.wallet);
 
   @override
-  List<Object> get props => [messages, wallet, feeAmount];
+  List<Object> get props => [messages, wallet];
 }
 
 void initCodec() {
-  // Posts messages
   Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
   Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
   Codec.registerMsgType("desmos/MsgRemovePostReaction", MsgRemovePostReaction);
   Codec.registerMsgType("desmos/MsgAnswerPoll", MsgAnswerPoll);
-
-  // Account messages
-  Codec.registerMsgType("desmos/MsgCreateProfile", MsgCreateProfile);
-  Codec.registerMsgType("desmos/MsgEditProfile", MsgEditProfile);
 }
 
 /// Allows to easily perform chain-related actions such as querying the
 /// chain state or sending transactions to it.
-class ChainSourceImpl extends ChainSource {
+class ChainHelper {
   final String _lcdEndpoint;
+  final String _ipfsEndpoint;
 
-  ChainSourceImpl({
+  ChainHelper({
+    @required String ipfsEndpoint,
     @required String lcdEndpoint,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
-        _lcdEndpoint = lcdEndpoint {
+        _lcdEndpoint = lcdEndpoint,
+        assert(ipfsEndpoint != null && ipfsEndpoint.isNotEmpty),
+        _ipfsEndpoint = ipfsEndpoint {
     // This call is duplicated here due to the fact that [sendTxBackground]
     // will be run on a different isolate and Dart singletons are not
     // cross-threads so this Codec is another instance from the one
@@ -64,16 +58,19 @@ class ChainSourceImpl extends ChainSource {
     return TxHelper.sendTx(
       txData.messages,
       txData.wallet,
-      fee: StdFee(amount: txData.feeAmount, gas: "200000"),
+      fee: StdFee(
+        amount: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
+        gas: "200000",
+      ),
     );
   }
 
-  @override
-  String get lcdEndpoint {
-    return _lcdEndpoint;
-  }
+  /// Returns the LCD endpoint to call.
+  String get lcdEndpoint => _lcdEndpoint;
 
-  @override
+  /// Queries the chain status using the given endpoint and returns
+  /// the raw body response.
+  /// If an exception is thrown, returns `null`.
   Future<Map<String, dynamic>> queryChainRaw(String endpoint) async {
     try {
       final result = await compute(
@@ -90,7 +87,9 @@ class ChainSourceImpl extends ChainSource {
     }
   }
 
-  @override
+  /// Utility method to easily query any chain endpoint and
+  /// read the response as an [LcdResponse] object instance.
+  /// If any exception is thrown, returns `null`.
   Future<LcdResponse> queryChain(String endpoint) async {
     try {
       final result = await queryChainRaw(endpoint);
@@ -101,22 +100,15 @@ class ChainSourceImpl extends ChainSource {
     }
   }
 
-  @override
-  Future<TransactionResult> sendTx(
-    List<StdMsg> messages,
-    Wallet wallet, {
-    List<StdCoin> feeAmount,
-  }) async {
-    final data = TxData(
-      messages: messages,
-      wallet: wallet,
-      feeAmount:
-          feeAmount ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
-    );
+  /// Creates, sings and sends a transaction having the given [messages]
+  /// and using the given [wallet].
+  Future<TransactionResult> sendTx(List<StdMsg> messages, Wallet wallet) async {
+    final data = TxData(messages, wallet);
     return compute(sendTxBackground, data);
   }
 
-  @override
+  /// Returns the list of transactions that are stored inside the block
+  /// having the given [height].
   Future<List<Transaction>> getTxsByHeight(String height) async {
     try {
       return await QueryHelper.getTxsByHeight(_lcdEndpoint, height);
@@ -124,5 +116,24 @@ class ChainSourceImpl extends ChainSource {
       Logger.log(e);
       return null;
     }
+  }
+
+  /// Uploads the given [media] to IPFS, returning the IPFS hash.
+  /// Throws an exception is something goes wrong.
+  Future<String> uploadMediaToIpfs(PostMedia media) async {
+    final url = "https://put.$_ipfsEndpoint/api/v0/add";
+    final multiPartFile = await http.MultipartFile.fromPath('file', media.url);
+    final request = new http.MultipartRequest("POST", Uri.parse(url));
+    request.files.add(multiPartFile);
+
+    final response = await request.send();
+    if (response.statusCode != 200) {
+      throw Exception(
+          "Ivalid IPFS answer. Expected 200, got ${response.statusCode}");
+    }
+
+    final body = await response.stream.bytesToString();
+    final uploadResponse = IpfsUploadResponse.fromJson(jsonDecode(body));
+    return "https://$_ipfsEndpoint/ipfs/${uploadResponse.hash}";
   }
 }

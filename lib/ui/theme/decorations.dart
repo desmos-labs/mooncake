@@ -22,8 +22,8 @@ class ThemeDecorations {
       image: DecorationImage(
         colorFilter: ColorFilter.mode(
           Colors.white.withOpacity(
-            Theme.of(context).brightness == Brightness.light ? 0.75 : 0.15,
-          ),
+                Theme.of(context).brightness == Brightness.light ? 0.75 : 0.15,
+              ),
           BlendMode.dstIn,
         ),
         image: AssetImage("assets/images/pattern.png"),

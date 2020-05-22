@@ -17,23 +17,7 @@ class SourcesModule implements Module {
       ? "http://10.0.2.2:1317"
       : "http://lcd.morpheus.desmos.network:1317";
 
-  final _networkInfo = NetworkInfo(
-    bech32Hrp: "desmos",
-    lcdUrl: _lcdUrl,
-  );
-
-  final _gqlClient = GraphQLClient(
-    link: HttpLink(
-      uri: _useLocalEndpoints
-          ? "http://10.0.2.2:8080/v1/graphql"
-          : "https://gql.morpheus.desmos.network/v1/graphql",
-    ).concat(WebSocketLink(
-      url: _useLocalEndpoints
-          ? "ws://10.0.2.2:8080/v1/graphql"
-          : "wss://gql.morpheus.desmos.network/v1/graphql",
-    )),
-    cache: InMemoryCache(),
-  );
+  final _networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl);
 
   final Database accountDatabase;
   final Database postsDatabase;
@@ -53,10 +37,11 @@ class SourcesModule implements Module {
   @override
   void configure(Binder binder) {
     binder
-      // Chain sources
-      ..bindLazySingleton<ChainSource>((injector, params) => ChainSourceImpl(
-            lcdEndpoint: _lcdUrl,
-          ))
+      // Utilities
+      ..bindSingleton(ChainHelper(
+        lcdEndpoint: _lcdUrl,
+        ipfsEndpoint: _ipfsEndpoint,
+      ))
       // User sources
       ..bindLazySingleton<LocalUserSource>(
           (injector, params) => LocalUserSourceImpl(
@@ -66,12 +51,8 @@ class SourcesModule implements Module {
               ))
       ..bindLazySingleton<RemoteUserSource>(
           (injector, params) => RemoteUserSourceImpl(
-                graphQLClient: _gqlClient,
-                faucetEndpoint: _faucetEndpoint,
                 chainHelper: injector.get(),
-                msgConverter: UserMsgConverter(),
-                userSource: injector.get(),
-                remoteMediasSource: injector.get(),
+                faucetEndpoint: _faucetEndpoint,
               ))
       // Post sources
       ..bindLazySingleton<LocalPostsSource>(
@@ -81,18 +62,23 @@ class SourcesModule implements Module {
               ))
       ..bindLazySingleton<RemotePostsSource>(
         (injector, params) => RemotePostsSourceImpl(
-          graphQLClient: _gqlClient,
+          graphQLClient: GraphQLClient(
+            link: HttpLink(
+              uri: _useLocalEndpoints
+                  ? "http://10.0.2.2:8080/v1/graphql"
+                  : "https://gql.morpheus.desmos.network/v1/graphql",
+            ).concat(WebSocketLink(
+              url: _useLocalEndpoints
+                  ? "ws://10.0.2.2:8080/v1/graphql"
+                  : "wss://gql.morpheus.desmos.network/v1/graphql",
+            )),
+            cache: InMemoryCache(),
+          ),
           chainHelper: injector.get(),
           userSource: injector.get(),
-          remoteMediasSource: injector.get(),
-          msgConverter: PostsMsgConverter(),
+          msgConverter: MsgConverter(),
         ),
       )
-      // Medias source
-      ..bindLazySingleton<RemoteMediasSource>(
-          (injector, params) => RemoteMediasSourceImpl(
-                ipfsEndpoint: _ipfsEndpoint,
-              ))
       // Notifications source
       ..bindLazySingleton<RemoteNotificationsSource>(
           (injector, params) => RemoteNotificationsSourceImpl(

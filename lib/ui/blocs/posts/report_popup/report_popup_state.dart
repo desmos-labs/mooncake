@@ -21,7 +21,7 @@ class ReportPopupState extends Equatable {
     @required this.blockUser,
   })  : assert(selectedValues != null),
         assert(otherText != null),
-        assert(blockUser != null);
+  assert(blockUser != null);
 
   factory ReportPopupState.initial() {
     return ReportPopupState(

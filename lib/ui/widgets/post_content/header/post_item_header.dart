@@ -24,40 +24,31 @@ class PostItemHeader extends StatelessWidget {
         final account = (state as LoggedIn).user;
         return Row(
           children: <Widget>[
+            // User picture
+            UserAvatar(size: 36, user: post.owner),
+
+            // Spacer
+            const SizedBox(width: PostsTheme.defaultPadding),
+
+            // Username and time ago
             Expanded(
-              child: InkWell(
-                borderRadius: BorderRadius.circular(1000),
-                onTap: () => _onTapUser(context),
-                child: Row(
-                  children: [
-                    // User picture
-                    UserAvatar(size: 36, user: post.owner),
-
-                    // Spacer
-                    const SizedBox(width: PostsTheme.defaultPadding),
-
-                    // Username and time ago
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            post.owner.screenName,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            timeago.format(post.dateTime.toLocal()),
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontWeight: FontWeight.w300,
-                                ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    post.owner.screenName,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    timeago.format(post.dateTime.toLocal()),
+                    style: Theme.of(context).textTheme.caption.copyWith(
+                          fontWeight: FontWeight.w300,
+                        ),
+                  )
+                ],
               ),
             ),
+
             if (post.owner.address != account.cosmosAccount.address)
               _moreActionButton(context)
           ],
@@ -87,19 +78,13 @@ class PostItemHeader extends StatelessWidget {
 
   void _showPostOptions(BuildContext context) async {
     await showDialog(
-      context: context,
-      builder: (context) {
-        return GenericPopup(
-          onTap: () => Navigator.pop(context),
-          padding: EdgeInsets.all(4),
-          content: PostOptionsPopup(post: post),
-        );
-      },
-    );
-  }
-
-  void _onTapUser(BuildContext context) {
-    BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigateToUserDetails(post.owner));
+        context: context,
+        builder: (context) {
+          return GenericPopup(
+            onTap: () => Navigator.pop(context),
+            padding: EdgeInsets.all(4),
+            content: PostOptionsPopup(post: post),
+          );
+        });
   }
 }

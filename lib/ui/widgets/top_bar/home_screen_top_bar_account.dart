@@ -6,19 +6,15 @@ import 'package:mooncake/ui/ui.dart';
 /// the account screen.
 AppBar accountAppBar(BuildContext context) {
   final actions = [
-    PostsLocalizations.of(context).editAccountOption,
-    PostsLocalizations.of(context).viewMnemonicOption,
-    PostsLocalizations.of(context).logoutOption,
+    PostsLocalizations.of(context).viewMnemonicButtonTooltip,
+    PostsLocalizations.of(context).logoutButtonTooltip,
   ];
 
   void _onSelected(BuildContext context, String option) {
     if (option == actions[0]) {
-      // Edit account
-      BlocProvider.of<NavigatorBloc>(context).add(NavigateToEditAccount());
-    } else if (option == actions[1]) {
       // See mnemonic
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonic());
-    } else if (option == actions[2]) {
+    } else if (option == actions[1]) {
       // Logout
       BlocProvider.of<AccountBloc>(context).add(LogOut());
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());

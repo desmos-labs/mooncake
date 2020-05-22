@@ -112,9 +112,8 @@ What about adding some content?
   // Action bar
   String get brightnessButtonTooltip => "Brightness";
   String get walletButtonTooltip => "Wallet";
-  String get editAccountOption => "Edit account";
-  String get viewMnemonicOption => "View mnemonic";
-  String get logoutOption => "Logout";
+  String get logoutButtonTooltip => "Logout";
+  String get viewMnemonicButtonTooltip => "View mnemonic";
 
   // Post item
   String likesCount(int count) => "$count likes";
@@ -195,21 +194,6 @@ What about adding some content?
 We do not support accounts yet, but you can always click on the wallet option
 inside the app bar to visualize your wallet
 """;
-  String get editAccountButton => "Edit your account";
-  String get saveAccountButton => "Save";
-
-  String get chooseImageSourceTitle => "Choose where to pick the image from";
-  String get chooseGalleryOption => "Gallery";
-  String get chooseCameraOption => "Camera";
-
-  // Edit account
-  String get editAccountScreenTitle => "Edit account";
-  String get monikerLabel => "Moniker";
-  String get nameLabel => "Name";
-  String get surnameLabel => "Surname";
-  String get bioLabel => "Bio";
-  String get errorMonikerInvalid =>
-      "Invalid moniker (must be 5 - 30 characters long)";
 
   // Wallet screen
   String get walletScreenName => "Wallet";

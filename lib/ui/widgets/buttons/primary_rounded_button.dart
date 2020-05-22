@@ -30,10 +30,9 @@ class PrimaryRoundedButton extends StatelessWidget {
       gradient: ThemeColors.primaryButtonBackgroundGradient,
       shadowColor: Colors.transparent,
       elevation: 0,
-      child: Text(text,
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: Colors.white,
-              )),
+      child: Text(text, style: Theme.of(context).textTheme.bodyText2.copyWith(
+        color: Colors.white,
+      )),
     );
   }
 }

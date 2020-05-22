@@ -7,5 +7,4 @@ export 'usecase_get_mnemonic.dart';
 export 'usecase_log_in.dart';
 export 'usecase_logout.dart';
 export 'usecase_refresh_account.dart';
-export 'usecase_save_account.dart';
 export 'usecase_set_authentication_method.dart';

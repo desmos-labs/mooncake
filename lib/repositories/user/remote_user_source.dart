@@ -9,7 +9,4 @@ abstract class RemoteUserSource {
 
   /// Allows to sends funds from the faucet to the specified [user].
   Future<void> fundAccount(MooncakeAccount user);
-
-  /// Saves the given [account] into the remote repository.
-  Future<void> saveAccount(MooncakeAccount account);
 }

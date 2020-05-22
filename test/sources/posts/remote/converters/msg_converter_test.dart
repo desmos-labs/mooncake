@@ -10,7 +10,7 @@ class MockWallet extends Mock implements Wallet {
 }
 
 void main() {
-  final converter = PostsMsgConverter();
+  final converter = MsgConverter();
 
   /// Allows to crete a mock post having the given id.
   Post _createPost(String id) {

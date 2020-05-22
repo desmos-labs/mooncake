@@ -48,9 +48,7 @@ void main() async {
   final selection = Selection.fromJson(jsonDecode(contents));
 
   final output = File(join(path, "icons.dart"));
-  output.writeAsStringSync(
-    "import 'package:flutter/widgets.dart';\n\n",
-  );
+  output.writeAsStringSync("import 'package:flutter/widgets.dart';\n\n",);
   output.writeAsStringSync(
     "import 'icon_data.dart';\n\n",
     mode: FileMode.append,
