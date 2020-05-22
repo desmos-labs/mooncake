@@ -46,7 +46,7 @@ class PostsLoaded extends PostsListState {
       shouldRefresh: false,
       refreshing: false,
       syncingPosts: false,
-      hasReachedMax: true,
+      hasReachedMax: false,
     );
   }
 

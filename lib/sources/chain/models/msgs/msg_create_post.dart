@@ -83,7 +83,7 @@ class MsgCreatePost extends StdMsg {
 
   @override
   Exception validate() {
-    if (message?.isEmpty ==true && poll == null && medias?.isEmpty == true) {
+    if (message?.isEmpty == true && poll == null && medias?.isEmpty == true) {
       return Exception("Message, medias and poll cannot be all empty");
     }
 

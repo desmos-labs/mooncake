@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
@@ -7,14 +8,18 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 
+import 'converters/converters.dart';
+import 'helpers/helpers.dart';
+
 /// Source that is responsible for handling the communication with the
 /// blockchain, allowing to read incoming posts and send new ones.
 class RemotePostsSourceImpl implements RemotePostsSource {
-  final ChainHelper _chainHelper;
+  final ChainSource _chainSource;
   final LocalUserSource _userSource;
+  final RemoteMediasSource _remoteMediasSource;
 
   // Converters
-  final MsgConverter _msgConverter;
+  final PostsMsgConverter _msgConverter;
 
   // GraphQL
   GraphQLClient _gqlClient;
@@ -22,15 +27,18 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   /// Public constructor
   RemotePostsSourceImpl({
     @required GraphQLClient graphQLClient,
-    @required ChainHelper chainHelper,
+    @required ChainSource chainHelper,
     @required LocalUserSource userSource,
-    @required MsgConverter msgConverter,
+    @required RemoteMediasSource remoteMediasSource,
+    @required PostsMsgConverter msgConverter,
   })  : assert(graphQLClient != null),
         _gqlClient = graphQLClient,
         assert(userSource != null),
         _userSource = userSource,
         assert(chainHelper != null),
-        _chainHelper = chainHelper,
+        _chainSource = chainHelper,
+        assert(remoteMediasSource != null),
+        _remoteMediasSource = remoteMediasSource,
         assert(msgConverter != null),
         _msgConverter = msgConverter;
 
@@ -44,13 +52,13 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       start: start,
       limit: limit,
     );
-    return GqlHelper.getHomePosts(_gqlClient, data);
+    return GqlPostsHelper.getHomePosts(_gqlClient, data);
   }
 
   @override
   Stream<dynamic> get homeEventsStream {
     final query = """subscription HomeEvents {
-    ${GqlHelper.homeEvents}
+    ${GqlPostsHelper.homeEvents}
     }""";
     return _gqlClient.subscribe(Operation(documentNode: gql(query)));
   }
@@ -64,7 +72,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       subspace: Constants.SUBSPACE,
       id: postId,
     );
-    return GqlHelper.getPostDetails(_gqlClient, data);
+    return GqlPostsHelper.getPostDetails(_gqlClient, data);
   }
 
   @override
@@ -73,7 +81,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       subspace: Constants.SUBSPACE,
       id: postId,
     );
-    return GqlHelper.getPostComments(_gqlClient, data);
+    return GqlPostsHelper.getPostComments(_gqlClient, data);
   }
 
   @override
@@ -95,8 +103,22 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       wallet: wallet,
     );
 
+    int feeAmount = 0;
+    messages.forEach((msg) {
+      if (msg is MsgCreatePost) {
+        feeAmount += 100000; // 0.10 per post/comment
+      } else if (msg is MsgAddPostReaction || msg is MsgRemovePostReaction) {
+        feeAmount += 50000; // 0.05 per post reaction added/removed
+      } else if (msg is MsgAnswerPoll) {
+        feeAmount += 50000; // 0.05 per poll answer
+      }
+    });
+
     // Get the result of the transactions
-    return _chainHelper.sendTx(messages, wallet);
+    final fees = [
+      StdCoin(denom: Constants.FEE_TOKEN, amount: feeAmount.toString())
+    ];
+    return _chainSource.sendTx(messages, wallet, feeAmount: fees);
   }
 
   /// Allows to upload the media of each [posts] item if necessary.
@@ -115,13 +137,14 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
       // Upload the medias if necessary
       final uploadedMedias = await Future.wait(post.medias.map((media) async {
-        if (!media.isLocal) {
+        final file = File(media.url);
+        if (!file.existsSync()) {
           // Already remote, do nothing
           return media;
         }
 
         // Upload to IPFS and return a new media with the changed URL
-        final ipfsUrl = await _chainHelper.uploadMediaToIpfs(media);
+        final ipfsUrl = await _remoteMediasSource.uploadMedia(file);
         return media.copyWith(url: ipfsUrl);
       }));
       newPosts[index] = post.copyWith(medias: uploadedMedias);

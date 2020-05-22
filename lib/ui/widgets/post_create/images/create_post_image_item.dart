@@ -41,7 +41,7 @@ class CreatePostImageItem extends StatelessWidget {
           top: 4,
           right: 4,
           child: InkWell(
-            onTap: (){
+            onTap: () {
               BlocProvider.of<PostInputBloc>(context)
                   .add(ImageRemoved(this.media));
             },

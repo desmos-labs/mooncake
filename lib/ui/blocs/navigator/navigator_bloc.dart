@@ -61,7 +61,15 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _handleGoBack(event);
     } else if (event is NavigateToShowMnemonic) {
       _handleNavigateToShowMnemonic();
+    } else if (event is NavigateToEditAccount) {
+      _handleNavigateToEditAccount();
+    } else if (event is NavigateToUserDetails) {
+      _handleNavigateToUserDetails(event);
     }
+  }
+
+  void _handleGoBack(GoBack event) {
+    _navigatorKey.currentState.pop(event.result);
   }
 
   void _mapNavigateToHomeEventToState() {
@@ -135,7 +143,15 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     }
   }
 
-  void _handleGoBack(GoBack event) {
-    _navigatorKey.currentState.pop(event.result);
+  void _handleNavigateToEditAccount() async {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return EditAccountScreen();
+    }));
+  }
+
+  void _handleNavigateToUserDetails(NavigateToUserDetails event) {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return UserDetailsScreen(user: event.user);
+    }));
   }
 }

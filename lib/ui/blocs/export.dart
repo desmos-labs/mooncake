@@ -1,4 +1,4 @@
-export 'account/bloc.dart';
+export 'account/export.dart';
 export 'home/bloc.dart';
 export 'mnemonic/bloc.dart';
 export 'navigator/bloc.dart';

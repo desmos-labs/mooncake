@@ -11,7 +11,7 @@ part 'poll_option.g.dart';
 class PollOption extends Equatable {
   @JsonKey(name: "id")
   final int id;
-  
+
   @JsonKey(name: "text")
   final String text;
 
