@@ -1,12 +1,12 @@
 import 'package:test/test.dart';
-import 'package:mooncake/entities/account/export.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 
 void main() {
   test('toJson and fromJson', () {
     final account = MooncakeAccount(
-      avatarUrl: "https://api.adorable.io/avatars/285/random.png",
-      username: "random",
+      profilePicUri: "https://api.adorable.io/avatars/285/random.png",
+      moniker: "random",
       cosmosAccount: CosmosAccount(
         address: "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
         accountNumber: 0,
@@ -21,8 +21,8 @@ void main() {
 
   test('screenName', () {
     final accountWithUsername = MooncakeAccount(
-      username: "desmos",
-      avatarUrl: null,
+      moniker: "desmos",
+      profilePicUri: null,
       cosmosAccount: CosmosAccount.offline(
         "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
       ),
@@ -34,7 +34,7 @@ void main() {
     );
     expect(
       accountWithoutUsername.screenName,
-      equals("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
+      equals("desmos12rh...2yf0r"),
     );
   });
 }

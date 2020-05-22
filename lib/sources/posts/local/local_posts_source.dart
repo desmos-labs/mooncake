@@ -106,8 +106,9 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   @override
   Future<List<Post>> getHomePosts(int limit) async {
     final users = await _usersRepository.getBlockedUsers();
-    return _store.find(_database, finder: _homeFinder(limit, users))
-    .then(PostsConverter.deserializePosts);
+    return _store
+        .find(_database, finder: _homeFinder(limit, users))
+        .then(PostsConverter.deserializePosts);
   }
 
   @override

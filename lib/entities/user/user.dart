@@ -15,25 +15,38 @@ class User extends Equatable {
   /// Represents the username of the user.
   /// Do not use this directly, use [screenName] instead.
   @JsonKey(name: "moniker", nullable: true)
-  final String username;
+  final String moniker;
 
-  /// Returns `true` iff the username is not null and not empty.
-  bool get hasUsername => username != null && username.isNotEmpty;
+  @JsonKey(name: "name", nullable: true)
+  final String name;
 
-  /// Returns the name that should be used on the screen
-  String get screenName => username ?? address;
+  @JsonKey(name: "surname", nullable: true)
+  final String surname;
 
-  @JsonKey(name: "avatar_url", nullable: true)
-  final String avatarUrl;
+  @JsonKey(name: "bio", nullable: true)
+  final String bio;
 
-  /// Returns `true` iff the user has an associated avatar.
-  bool get hasAvatar => avatarUrl != null && avatarUrl.isNotEmpty;
+  @JsonKey(name: "profile_pic")
+  final String profilePicUri;
+
+  @JsonKey(name: "cover_pic", nullable: true)
+  final String coverPicUri;
 
   User({
     @required this.address,
-    this.username,
-    this.avatarUrl,
-  }) : assert(address != null);
+    this.moniker,
+    this.name,
+    this.surname,
+    this.bio,
+    this.profilePicUri,
+    this.coverPicUri,
+  })  : assert(address != null && address.trim().isNotEmpty),
+        assert(moniker == null || moniker.trim().isNotEmpty),
+        assert(name == null || moniker.trim().isNotEmpty),
+        assert(surname == null || moniker.trim().isNotEmpty),
+        assert(bio == null || bio.trim().isNotEmpty),
+        assert(profilePicUri == null || profilePicUri.trim().isNotEmpty),
+        assert(coverPicUri == null || coverPicUri.trim().isNotEmpty);
 
   factory User.fromAddress(String address) {
     return User(address: address);
@@ -43,16 +56,43 @@ class User extends Equatable {
     return _$UserFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  /// Returns `true` iff the user has an associated avatar.
+  bool get hasAvatar {
+    return profilePicUri != null && profilePicUri.trim().isNotEmpty;
+  }
+
+  /// Returns `true` iff the user has an associated cover picture.
+  bool get hasCover {
+    return coverPicUri != null && coverPicUri.trim().isNotEmpty;
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$UserToJson(this);
+  }
 
   @override
-  List<Object> get props => [address, username, avatarUrl];
+  List<Object> get props {
+    return [
+      address,
+      moniker,
+      name,
+      surname,
+      bio,
+      profilePicUri,
+      coverPicUri,
+    ];
+  }
 
-  // DONT COVER
   @override
-  String toString() => 'User { '
-      'address: $address, '
-      'username: $username, '
-      'avatarUrl : $avatarUrl '
-      '}';
+  String toString() {
+    return 'User { '
+        'address: $address, '
+        'bio: $bio, '
+        'username: $moniker, '
+        'name: $name, '
+        'surname: $surname, '
+        'profilePic : $profilePicUri,'
+        'coverPic: $coverPicUri '
+        '}';
+  }
 }

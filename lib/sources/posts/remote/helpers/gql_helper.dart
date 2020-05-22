@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/sources/sources.dart';
 
 class HomePostsData {
   final String subspace;
@@ -27,12 +28,7 @@ class PostDetailsData {
 }
 
 /// Allows to easily work with GraphQL-related stuff.
-class GqlHelper {
-  static const String _userContents = """
-  address
-  moniker
-  """;
-
+class GqlPostsHelper {
   static const String _postContents = """
   id
   parent_id
@@ -59,18 +55,18 @@ class GqlHelper {
     user_answers {
       answer
       user {
-        $_userContents
+        ${GqlUsersHelper.userContents}
       }
     }
   }
   reactions {
     user: owner {
-      $_userContents
+      ${GqlUsersHelper.userContents}
     }
     value
   }
   user: creator {
-    $_userContents
+    ${GqlUsersHelper.userContents}
   }
   comments: comments {
     id

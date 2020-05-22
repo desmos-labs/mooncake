@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:mooncake/entities/entities.dart';
@@ -8,26 +5,28 @@ import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:web_socket_channel/io.dart';
 
-import '../common.dart';
 import '../../helpers.dart';
+import '../common.dart';
 
 import 'remote_posts_source_test.reflectable.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
 
-class MockChainHelper extends Mock implements ChainHelper {}
+class MockChainSource extends Mock implements ChainSource {}
 
 class MockLocalUserSource extends Mock implements LocalUserSource {}
 
-class MockMsgConverter extends Mock implements MsgConverter {}
+class MockRemoteMediasSource extends Mock implements RemoteMediasSource {}
+
+class MockMsgConverter extends Mock implements PostsMsgConverter {}
 
 void main() {
   MockHttpClient client;
-  ChainHelper chainHelper;
+  ChainSource chainSource;
   LocalUserSource userSource;
-  MsgConverter msgConverter;
+  RemoteMediasSource remoteMediasSource;
+  PostsMsgConverter msgConverter;
 
   RemotePostsSourceImpl source;
 
@@ -43,14 +42,16 @@ void main() {
 
     final graphQlClient = GraphQLClient(link: link, cache: InMemoryCache());
 
-    chainHelper = MockChainHelper();
+    chainSource = MockChainSource();
     userSource = MockLocalUserSource();
     msgConverter = MockMsgConverter();
+    remoteMediasSource = MockRemoteMediasSource();
     source = RemotePostsSourceImpl(
       graphQLClient: graphQlClient,
-      chainHelper: chainHelper,
+      chainHelper: chainSource,
       userSource: userSource,
       msgConverter: msgConverter,
+      remoteMediasSource: remoteMediasSource,
     );
   });
 
@@ -132,8 +133,8 @@ void main() {
           reactions: [],
           owner: User(
             address: "desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u",
-            username: null,
-            avatarUrl: null,
+            moniker: null,
+            profilePicUri: null,
           ),
           commentsIds: [],
         ),
@@ -166,7 +167,7 @@ void main() {
           ],
           owner: User(
             address: "desmos14dm0zdemeymhayucp7gchuus3k5m344f3v8nln",
-            username: null,
+            moniker: null,
           ),
           commentsIds: [],
         ),

@@ -15,6 +15,9 @@ abstract class UserRepository {
   /// If no [Wallet] instance has been saved yet, returns `null`.
   Future<Wallet> getWallet();
 
+  /// Saves the given [account] as the current user object.
+  Future<void> saveAccount(MooncakeAccount account);
+
   /// Returns the [AccountData] object containing the info of the current user.
   /// If no [MooncakeAccount] or [Wallet] have been saved using [saveWallet]
   /// and the account data cannot be retrieved, returns `null` instead.

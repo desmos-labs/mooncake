@@ -42,7 +42,6 @@ class PostActionsBar extends StatelessWidget {
                 ],
               ),
             ),
-
           ],
         );
       },
