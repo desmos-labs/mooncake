@@ -30,6 +30,9 @@ class AccountTextInfoEditor extends StatelessWidget {
                 label: PostsLocalizations.of(context).monikerLabel,
                 value: state.account.moniker,
                 onChanged: (value) => bloc.add(MonikerChanged(value)),
+                error: state.isMonikerValid
+                    ? null
+                    : PostsLocalizations.of(context).errorMonikerInvalid,
               ),
               const SizedBox(height: 16),
               Row(
@@ -72,11 +75,12 @@ class AccountTextInfoEditor extends StatelessWidget {
 
   /// Builds a [TextField] with the specified options.
   Widget _buildEditor({
-    BuildContext context,
-    String label,
-    String value,
-    Function(String) onChanged,
-    int maxLength,
+    @required BuildContext context,
+    @required String label,
+    @required String value,
+    @required Function(String) onChanged,
+    int maxLength = 100,
+    String error,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +94,10 @@ class AccountTextInfoEditor extends StatelessWidget {
         ),
         TextField(
           maxLength: maxLength,
-          decoration: InputDecoration(hintText: value ?? label),
+          decoration: InputDecoration(
+            hintText: value ?? label,
+            errorText: error,
+          ),
           onChanged: onChanged,
         ),
       ],

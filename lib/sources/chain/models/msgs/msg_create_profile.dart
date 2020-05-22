@@ -2,42 +2,40 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
-part 'msg_edit_account.g.dart';
+import 'user_pictures.dart';
+
+part 'msg_create_profile.g.dart';
 
 /// Represents the message to be used when the user wants to
 /// create a new account.
 @immutable
 @reflector
 @JsonSerializable(explicitToJson: true)
-class MsgEditAccount extends StdMsg {
-  @JsonKey(name: "new_moniker")
+class MsgCreateProfile extends StdMsg {
+  @JsonKey(name: "moniker")
   final String moniker;
 
-  @JsonKey(name: "name")
+  @JsonKey(name: "name", includeIfNull: false)
   final String name;
 
-  @JsonKey(name: "surname")
+  @JsonKey(name: "surname", includeIfNull: false)
   final String surname;
 
-  @JsonKey(name: "bio")
+  @JsonKey(name: "bio", includeIfNull: false)
   final String bio;
 
-  @JsonKey(name: "profile_pic")
-  final String profilePicture;
-
-  @JsonKey(name: "profile_cov")
-  final String coverPicture;
+  @JsonKey(name: "pictures", includeIfNull: false)
+  final UserPictures pictures;
 
   @JsonKey(name: "creator")
   final String creator;
 
-  MsgEditAccount({
+  MsgCreateProfile({
     @required this.moniker,
     this.name,
     this.surname,
     this.bio,
-    this.profilePicture,
-    this.coverPicture,
+    this.pictures,
     this.creator,
   })  : assert(moniker != null && moniker.trim().isNotEmpty),
         assert(creator != null && creator.trim().isNotEmpty),
@@ -45,13 +43,13 @@ class MsgEditAccount extends StdMsg {
         assert(surname == null || surname.trim().isNotEmpty),
         assert(bio == null || bio.trim().isNotEmpty);
 
-  factory MsgEditAccount.fromJson(Map<String, dynamic> json) {
-    return _$MsgEditAccountFromJson(json);
+  factory MsgCreateProfile.fromJson(Map<String, dynamic> json) {
+    return _$MsgCreateProfileFromJson(json);
   }
 
   @override
   Map<String, dynamic> asJson() {
-    return _$MsgEditAccountToJson(this);
+    return _$MsgCreateProfileToJson(this);
   }
 
   @override
@@ -61,8 +59,7 @@ class MsgEditAccount extends StdMsg {
       name,
       surname,
       bio,
-      profilePicture,
-      coverPicture,
+      pictures,
       creator,
     ];
   }

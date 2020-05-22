@@ -14,7 +14,7 @@ class GqlUsersHelper {
   /// Converts the given [gqlData] retrieved from the remote GraphQL
   /// server into a list of users.
   /// If no data is present, returns an empty list instead.
-  static List<User> _convertPostsGqlResponse(dynamic posts) {
+  static List<User> _convertUsersGqlResponse(dynamic posts) {
     return (posts as List<dynamic>)
         .map((json) => User.fromJson(json))
         .toList();
@@ -28,7 +28,7 @@ class GqlUsersHelper {
   ) async {
     final query = """
     query UserByAddress {
-      users:user(where:{address: {_eq:$address}}) {
+      users: user(where:{address: {_eq:"$address"}}) {
         address
         moniker
         name
@@ -46,7 +46,7 @@ class GqlUsersHelper {
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
-    final posts = await compute(_convertPostsGqlResponse, data.data["users"]);
-    return posts.isEmpty ? User.fromAddress(address) : posts[0];
+    final users = await compute(_convertUsersGqlResponse, data.data["users"]);
+    return users.isEmpty ? User.fromAddress(address) : users[0];
   }
 }

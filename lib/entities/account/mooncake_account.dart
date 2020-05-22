@@ -18,16 +18,16 @@ class MooncakeAccount extends User {
     String bio,
     String name,
     String surname,
-    String profilePicUrl,
-    String coverPicUrl,
+    String profilePicUri,
+    String coverPicUri,
   }) : super(
           address: cosmosAccount.address,
           moniker: moniker,
           bio: bio,
           name: name,
           surname: surname,
-          profilePicUrl: profilePicUrl,
-          coverPicUrl: coverPicUrl,
+          profilePicUri: profilePicUri,
+          coverPicUri: coverPicUri,
         );
 
   /// Creates a local account.
@@ -46,8 +46,10 @@ class MooncakeAccount extends User {
       cosmosAccount: account,
       moniker: user.moniker,
       bio: user.bio,
-      profilePicUrl: user.profilePicUrl,
-      coverPicUrl: user.coverPicUrl,
+      name: user.name,
+      surname: user.surname,
+      profilePicUri: user.profilePicUri,
+      coverPicUri: user.coverPicUri,
     );
   }
 
@@ -62,7 +64,7 @@ class MooncakeAccount extends User {
     String bio,
     String name,
     String surname,
-    String profilePicUrl,
+    String profilePicUri,
     String coverPicUrl,
   }) {
     return MooncakeAccount(
@@ -71,8 +73,8 @@ class MooncakeAccount extends User {
       name: name ?? this.name,
       surname: surname ?? this.surname,
       bio: bio ?? this.bio,
-      profilePicUrl: profilePicUrl ?? this.profilePicUrl,
-      coverPicUrl: coverPicUrl ?? this.coverPicUrl,
+      profilePicUri: profilePicUri ?? this.profilePicUri,
+      coverPicUri: coverPicUrl ?? this.coverPicUri,
     );
   }
 

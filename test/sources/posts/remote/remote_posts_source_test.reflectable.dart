@@ -8,11 +8,11 @@ import 'package:mooncake/sources/chain/models/msgs/msg_add_post_reaction.dart'
     as prefix7;
 import 'package:mooncake/sources/chain/models/msgs/msg_answer_poll.dart'
     as prefix4;
-import 'package:mooncake/sources/chain/models/msgs/msg_create_account.dart'
-    as prefix3;
 import 'package:mooncake/sources/chain/models/msgs/msg_create_post.dart'
     as prefix2;
-import 'package:mooncake/sources/chain/models/msgs/msg_edit_account.dart'
+import 'package:mooncake/sources/chain/models/msgs/msg_create_profile.dart'
+    as prefix3;
+import 'package:mooncake/sources/chain/models/msgs/msg_edit_profile.dart'
     as prefix5;
 import 'package:mooncake/sources/chain/models/msgs/msg_remove_post_reaction.dart'
     as prefix6;
@@ -103,8 +103,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             {}),
         r.NonGenericClassMirrorImpl(
-            r'MsgCreateAccount',
-            r'.MsgCreateAccount',
+            r'MsgCreateProfile',
+            r'.MsgCreateProfile',
             7,
             2,
             const prefix0.Reflector(),
@@ -117,7 +117,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {
               r'': (b) => ({moniker, name, surname, bio, pictures, creator}) =>
                   b
-                      ? prefix3.MsgCreateAccount(
+                      ? prefix3.MsgCreateProfile(
                           bio: bio,
                           creator: creator,
                           moniker: moniker,
@@ -126,7 +126,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
                           surname: surname)
                       : null,
               r'fromJson': (b) =>
-                  (json) => b ? prefix3.MsgCreateAccount.fromJson(json) : null
+                  (json) => b ? prefix3.MsgCreateProfile.fromJson(json) : null
             },
             -1,
             -1,
@@ -159,8 +159,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             {}),
         r.NonGenericClassMirrorImpl(
-            r'MsgEditAccount',
-            r'.MsgEditAccount',
+            r'MsgEditProfile',
+            r'.MsgEditProfile',
             7,
             4,
             const prefix0.Reflector(),
@@ -180,7 +180,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
                       coverPicture,
                       creator}) =>
                   b
-                      ? prefix5.MsgEditAccount(
+                      ? prefix5.MsgEditProfile(
                           bio: bio,
                           coverPicture: coverPicture,
                           creator: creator,
@@ -190,7 +190,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
                           surname: surname)
                       : null,
               r'fromJson': (b) =>
-                  (json) => b ? prefix5.MsgEditAccount.fromJson(json) : null
+                  (json) => b ? prefix5.MsgEditProfile.fromJson(json) : null
             },
             -1,
             -1,
@@ -253,9 +253,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
       <Type>[
         prefix1.MsgSend,
         prefix2.MsgCreatePost,
-        prefix3.MsgCreateAccount,
+        prefix3.MsgCreateProfile,
         prefix4.MsgAnswerPoll,
-        prefix5.MsgEditAccount,
+        prefix5.MsgEditProfile,
         prefix6.MsgRemovePostReaction,
         prefix7.MsgAddPostReaction
       ],

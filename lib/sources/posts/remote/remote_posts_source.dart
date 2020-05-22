@@ -6,6 +6,7 @@ import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/sources/sources.dart';
 
 import 'converters/converters.dart';
 import 'helpers/helpers.dart';
@@ -102,8 +103,22 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       wallet: wallet,
     );
 
+    int feeAmount = 0;
+    messages.forEach((msg) {
+      if (msg is MsgCreatePost) {
+        feeAmount += 100000; // 0.10 per post/comment
+      } else if (msg is MsgAddPostReaction || msg is MsgRemovePostReaction) {
+        feeAmount += 50000; // 0.05 per post reaction added/removed
+      } else if (msg is MsgAnswerPoll) {
+        feeAmount += 50000; // 0.05 per poll answer
+      }
+    });
+
     // Get the result of the transactions
-    return _chainSource.sendTx(messages, wallet);
+    final fees = [
+      StdCoin(denom: Constants.FEE_TOKEN, amount: feeAmount.toString())
+    ];
+    return _chainSource.sendTx(messages, wallet, feeAmount: fees);
   }
 
   /// Allows to upload the media of each [posts] item if necessary.

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 /// Implementation of [UserRepository].
@@ -36,9 +37,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> saveAccount(MooncakeAccount account) {
-    // TODO: Implement remote saving as well
-    return _localUserSource.saveAccount(account);
+  Future<void> saveAccount(MooncakeAccount account) async {
+    await _localUserSource.saveAccount(account);
+    return _remoteUserSource.saveAccount(account);
   }
 
   Future<void> _updateAndStoreAccountData() async {

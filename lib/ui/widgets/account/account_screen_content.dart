@@ -12,31 +12,6 @@ class AccountScreenContent extends StatelessWidget {
         final state = accountState as LoggedIn;
         return Container(
           child: AccountViewBody(user: state.user),
-//      child: Column(
-//        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//        children: <Widget>[
-//          Text(
-//            PostsLocalizations.of(context).accountPageTitle,
-//            style: Theme.of(context).textTheme.headline6,
-//            textAlign: TextAlign.center,
-//          ),
-//          Image.asset("assets/images/wink.png", width: 150),
-//          Text(
-//            PostsLocalizations.of(context)
-//                .accountPageText
-//                .replaceAll("\n", " "),
-//            textAlign: TextAlign.center,
-//          ),
-//          FlatButton(
-//            color: Theme.of(context).primaryColor,
-//            child: Text(PostsLocalizations.of(context).editAccountButton),
-//            onPressed: () {
-//              BlocProvider.of<NavigatorBloc>(context)
-//                  .add(NavigateToEditAccount());
-//            },
-//          )
-//        ],
-//      ),
         );
       },
     );

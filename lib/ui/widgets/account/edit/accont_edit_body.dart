@@ -37,6 +37,7 @@ class AccountEditorBody extends StatelessWidget {
                     child: state.saving
                         ? LoadingIndicator()
                         : PrimaryRoundedButton(
+                            enabled: state.canSave,
                             text: PostsLocalizations.of(context)
                                 .saveAccountButton,
                             onPressed: () => _onSaveAccount(context),

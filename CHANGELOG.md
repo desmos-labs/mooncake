@@ -1,6 +1,11 @@
 # Version 0.4.0
 ## Changes
-- Implemented the profiles
+- Implemented the profiles.  
+  Creating or editing a profile costs **0.20 Daric**. 
+- Operations fees have changed. Now they are: 
+  - **0.10 Daric** per post or comment
+  - **0.05 Daric** per reaction or like added or removed
+  - **0.05 Daric** per poll answer 
 
 # Version 0.3.2
 ## Changes

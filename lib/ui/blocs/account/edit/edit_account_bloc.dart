@@ -11,19 +11,25 @@ import './bloc.dart';
 
 class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
   final MooncakeAccount _account;
+  final NavigatorBloc _navigatorBloc;
+
   final SaveAccountUseCase _saveAccountUseCase;
 
   EditAccountBloc({
     @required MooncakeAccount account,
+    @required NavigatorBloc navigatorBloc,
     @required SaveAccountUseCase saveAccountUseCase,
   })  : assert(account != null),
         _account = account,
+        assert(navigatorBloc != null),
+        _navigatorBloc = navigatorBloc,
         assert(saveAccountUseCase != null),
         _saveAccountUseCase = saveAccountUseCase;
 
   factory EditAccountBloc.create(BuildContext context) {
     return EditAccountBloc(
       account: (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user,
+      navigatorBloc: BlocProvider.of(context),
       saveAccountUseCase: Injector.get(),
     );
   }
@@ -40,34 +46,65 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
   @override
   Stream<EditAccountState> mapEventToState(EditAccountEvent event) async* {
     if (event is CoverChanged) {
-      yield state.updateAccount(
-        coverPicUrl:
-            _firstOrSecond(event.cover.absolute.path, _account.coverPicUrl),
-      );
+      yield* _mapCoverChangedToState(event);
     } else if (event is ProfilePicChanged) {
-      yield state.updateAccount(
-        profilePicUrl: _firstOrSecond(
-            event.profilePic.absolute.path, _account.profilePicUrl),
-      );
+      yield* _mapProfilePicChangedToState(event);
     } else if (event is MonikerChanged) {
-      yield state.updateAccount(
-        moniker: _firstOrSecond(event.moniker, _account.moniker),
-      );
+      yield* _mapMonikerChangedToState(event);
     } else if (event is NameChanged) {
-      yield state.updateAccount(
-        name: _firstOrSecond(event.name, _account.name),
-      );
+      yield* _mapNameChangedToState(event);
     } else if (event is SurnameChanged) {
-      yield state.updateAccount(
-        surname: _firstOrSecond(event.surname, _account.surname),
-      );
+      yield* _mapSurnameChangedToState(event);
     } else if (event is BioChanged) {
-      yield state.updateAccount(
-        bio: _firstOrSecond(event.bio, _account.bio),
-      );
+      yield* _mapBioChangedToState(event);
     } else if (event is SaveAccount) {
       yield* _handleSaveAccount();
     }
+  }
+
+  Stream<EditAccountState> _mapCoverChangedToState(
+    CoverChanged event,
+  ) async* {
+    final pic = _firstOrSecond(event.cover.absolute.path, _account.coverPicUri);
+    yield state.updateAccount(coverPicUrl: pic);
+  }
+
+  Stream<EditAccountState> _mapProfilePicChangedToState(
+    ProfilePicChanged event,
+  ) async* {
+    final pic = _firstOrSecond(
+      event.profilePic.absolute.path,
+      _account.profilePicUri,
+    );
+    yield state.updateAccount(profilePicUrl: pic);
+  }
+
+  Stream<EditAccountState> _mapMonikerChangedToState(
+    MonikerChanged event,
+  ) async* {
+    final moniker = _firstOrSecond(event.moniker, _account.moniker);
+    yield state.updateAccount(moniker: moniker);
+  }
+
+  Stream<EditAccountState> _mapSurnameChangedToState(
+    SurnameChanged event,
+  ) async* {
+    final surname = _firstOrSecond(event.surname, _account.surname);
+    yield state.updateAccount(surname: surname);
+  }
+
+  Stream<EditAccountState> _mapNameChangedToState(
+    NameChanged event,
+  ) async* {
+    final name = _firstOrSecond(event.name, _account.name);
+    yield state.updateAccount(name: name);
+  }
+
+  Stream<EditAccountState> _mapBioChangedToState(
+    BioChanged event,
+  ) async* {
+    final bio = _firstOrSecond(event.bio, _account.bio);
+    yield state.updateAccount(bio: bio);
   }
 
   Stream<EditAccountState> _handleSaveAccount() async* {
@@ -76,5 +113,7 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
     print(account);
     await _saveAccountUseCase.save(state.account);
     yield state.copyWith(saving: false);
+
+    _navigatorBloc.add(GoBack());
   }
 }

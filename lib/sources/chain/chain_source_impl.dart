@@ -11,13 +11,19 @@ import 'package:mooncake/utils/logger.dart';
 /// Contains all the data needed to perform a transaction.
 @visibleForTesting
 class TxData extends Equatable {
-  final List<StdMsg> messages;
   final Wallet wallet;
 
-  TxData(this.messages, this.wallet);
+  final List<StdMsg> messages;
+  final List<StdCoin> feeAmount;
+
+  TxData({
+    @required this.messages,
+    @required this.wallet,
+    @required this.feeAmount,
+  });
 
   @override
-  List<Object> get props => [messages, wallet];
+  List<Object> get props => [messages, wallet, feeAmount];
 }
 
 void initCodec() {
@@ -28,7 +34,8 @@ void initCodec() {
   Codec.registerMsgType("desmos/MsgAnswerPoll", MsgAnswerPoll);
 
   // Account messages
-  Codec.registerMsgType("desmos/MsgCreateProfile", MsgCreateAccount);
+  Codec.registerMsgType("desmos/MsgCreateProfile", MsgCreateProfile);
+  Codec.registerMsgType("desmos/MsgEditProfile", MsgEditProfile);
 }
 
 /// Allows to easily perform chain-related actions such as querying the
@@ -57,10 +64,7 @@ class ChainSourceImpl extends ChainSource {
     return TxHelper.sendTx(
       txData.messages,
       txData.wallet,
-      fee: StdFee(
-        amount: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
-        gas: "200000",
-      ),
+      fee: StdFee(amount: txData.feeAmount, gas: "200000"),
     );
   }
 
@@ -98,8 +102,17 @@ class ChainSourceImpl extends ChainSource {
   }
 
   @override
-  Future<TransactionResult> sendTx(List<StdMsg> messages, Wallet wallet) async {
-    final data = TxData(messages, wallet);
+  Future<TransactionResult> sendTx(
+    List<StdMsg> messages,
+    Wallet wallet, {
+    List<StdCoin> feeAmount,
+  }) async {
+    final data = TxData(
+      messages: messages,
+      wallet: wallet,
+      feeAmount:
+          feeAmount ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
+    );
     return compute(sendTxBackground, data);
   }
 

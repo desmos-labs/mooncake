@@ -25,7 +25,7 @@ class UserAvatar extends StatelessWidget {
       backgroundColor: borderColor,
       child: CachedNetworkImage(
         imageUrl: user.hasAvatar
-            ? user.profilePicUrl
+            ? user.profilePicUri
             : "http://identicon-1132.appspot.com/${user.address}?s=10&p=8",
         imageBuilder: (context, image) => CircleAvatar(
           radius: radius,

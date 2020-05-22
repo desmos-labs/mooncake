@@ -16,6 +16,8 @@ class MockTxSigner extends Mock implements TxSigner {}
 class MockTxSender extends Mock implements TxSender {}
 
 void main() {
+  final fee = [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")];
+
   MockWebServer server;
   ChainSourceImpl chainHelper;
 
@@ -132,7 +134,7 @@ void main() {
       // Enqueue an exception cause it shouldn't be called
       server.enqueue(httpCode: 500, body: null);
 
-      final txData = TxData([], wallet);
+      final txData = TxData(messages: [], wallet: wallet, feeAmount: fee);
       final result = await ChainSourceImpl.sendTxBackground(txData);
       expect(result, isNull);
     });
@@ -153,7 +155,7 @@ void main() {
           poll: null,
         ),
       ];
-      final data = TxData(msgs, wallet);
+      final data = TxData(messages: msgs, wallet: wallet, feeAmount: fee);
       expect(ChainSourceImpl.sendTxBackground(data), throwsException);
     });
 
@@ -198,7 +200,7 @@ void main() {
           poll: null,
         ),
       ];
-      final data = TxData(msgs, wallet);
+      final data = TxData(messages: msgs, wallet: wallet, feeAmount: fee);
       expect(() async {
         await ChainSourceImpl.sendTxBackground(data);
       }, throwsException);

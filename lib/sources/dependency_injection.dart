@@ -71,6 +71,7 @@ class SourcesModule implements Module {
                 chainHelper: injector.get(),
                 msgConverter: UserMsgConverter(),
                 userSource: injector.get(),
+                remoteMediasSource: injector.get(),
               ))
       // Post sources
       ..bindLazySingleton<LocalPostsSource>(

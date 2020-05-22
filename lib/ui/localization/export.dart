@@ -112,8 +112,9 @@ What about adding some content?
   // Action bar
   String get brightnessButtonTooltip => "Brightness";
   String get walletButtonTooltip => "Wallet";
-  String get logoutButtonTooltip => "Logout";
-  String get viewMnemonicButtonTooltip => "View mnemonic";
+  String get editAccountOption => "Edit account";
+  String get viewMnemonicOption => "View mnemonic";
+  String get logoutOption => "Logout";
 
   // Post item
   String likesCount(int count) => "$count likes";
@@ -207,6 +208,8 @@ inside the app bar to visualize your wallet
   String get nameLabel => "Name";
   String get surnameLabel => "Surname";
   String get bioLabel => "Bio";
+  String get errorMonikerInvalid =>
+      "Invalid moniker (must be 5 - 30 characters long)";
 
   // Wallet screen
   String get walletScreenName => "Wallet";

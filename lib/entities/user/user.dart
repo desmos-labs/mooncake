@@ -26,11 +26,11 @@ class User extends Equatable {
   @JsonKey(name: "bio", nullable: true)
   final String bio;
 
-  @JsonKey(name: "profile_pic", nullable: true)
-  final String profilePicUrl;
+  @JsonKey(name: "profile_pic")
+  final String profilePicUri;
 
   @JsonKey(name: "cover_pic", nullable: true)
-  final String coverPicUrl;
+  final String coverPicUri;
 
   User({
     @required this.address,
@@ -38,15 +38,15 @@ class User extends Equatable {
     this.name,
     this.surname,
     this.bio,
-    this.profilePicUrl,
-    this.coverPicUrl,
+    this.profilePicUri,
+    this.coverPicUri,
   })  : assert(address != null && address.trim().isNotEmpty),
         assert(moniker == null || moniker.trim().isNotEmpty),
         assert(name == null || moniker.trim().isNotEmpty),
         assert(surname == null || moniker.trim().isNotEmpty),
         assert(bio == null || bio.trim().isNotEmpty),
-        assert(profilePicUrl == null || profilePicUrl.trim().isNotEmpty),
-        assert(coverPicUrl == null || coverPicUrl.trim().isNotEmpty);
+        assert(profilePicUri == null || profilePicUri.trim().isNotEmpty),
+        assert(coverPicUri == null || coverPicUri.trim().isNotEmpty);
 
   factory User.fromAddress(String address) {
     return User(address: address);
@@ -58,12 +58,12 @@ class User extends Equatable {
 
   /// Returns `true` iff the user has an associated avatar.
   bool get hasAvatar {
-    return profilePicUrl != null && profilePicUrl.trim().isNotEmpty;
+    return profilePicUri != null && profilePicUri.trim().isNotEmpty;
   }
 
   /// Returns `true` iff the user has an associated cover picture.
   bool get hasCover {
-    return coverPicUrl != null && coverPicUrl.trim().isNotEmpty;
+    return coverPicUri != null && coverPicUri.trim().isNotEmpty;
   }
 
   Map<String, dynamic> toJson() {
@@ -78,8 +78,8 @@ class User extends Equatable {
       name,
       surname,
       bio,
-      profilePicUrl,
-      coverPicUrl,
+      profilePicUri,
+      coverPicUri,
     ];
   }
 
@@ -91,7 +91,8 @@ class User extends Equatable {
         'username: $moniker, '
         'name: $name, '
         'surname: $surname, '
-        'avatarUrl : $profilePicUrl '
+        'profilePic : $profilePicUri,'
+        'coverPic: $coverPicUri '
         '}';
   }
 }

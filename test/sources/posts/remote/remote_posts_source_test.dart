@@ -134,7 +134,7 @@ void main() {
           owner: User(
             address: "desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u",
             moniker: null,
-            profilePicUrl: null,
+            profilePicUri: null,
           ),
           commentsIds: [],
         ),

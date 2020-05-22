@@ -26,7 +26,7 @@ class AccountProfileImageEditor extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               AccountProfileImageViewer(
-                profileImage: state.account.profilePicUrl,
+                profileImage: state.account.profilePicUri,
                 border: border,
                 radius: radius,
               ),

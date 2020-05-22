@@ -22,11 +22,13 @@ class AccountProfileImageViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(profileImage);
+
     ImageProvider coverImage;
-    if (profileImage?.startsWith("http") == false) {
-      coverImage = FileImage(File(profileImage));
-    } else if (profileImage?.startsWith("http") == true) {
+    if (profileImage?.startsWith("http") == true) {
       coverImage = NetworkImage(profileImage);
+    } else if (profileImage?.startsWith("http") == false) {
+      coverImage = FileImage(File(profileImage));
     }
 
     return CircleAvatar(

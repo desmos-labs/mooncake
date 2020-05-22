@@ -2,40 +2,42 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
-import 'user_pictures.dart';
-
-part 'msg_create_account.g.dart';
+part 'msg_edit_profile.g.dart';
 
 /// Represents the message to be used when the user wants to
 /// create a new account.
 @immutable
 @reflector
 @JsonSerializable(explicitToJson: true)
-class MsgCreateAccount extends StdMsg {
-  @JsonKey(name: "moniker")
+class MsgEditProfile extends StdMsg {
+  @JsonKey(name: "new_moniker", includeIfNull: false)
   final String moniker;
 
-  @JsonKey(name: "name")
+  @JsonKey(name: "name", includeIfNull: false)
   final String name;
 
-  @JsonKey(name: "surname")
+  @JsonKey(name: "surname", includeIfNull: false)
   final String surname;
 
-  @JsonKey(name: "bio")
+  @JsonKey(name: "bio", includeIfNull: false)
   final String bio;
 
-  @JsonKey(name: "pictures")
-  final UserPictures pictures;
+  @JsonKey(name: "profile_pic", includeIfNull: false)
+  final String profilePicture;
+
+  @JsonKey(name: "profile_cov", includeIfNull: false)
+  final String coverPicture;
 
   @JsonKey(name: "creator")
   final String creator;
 
-  MsgCreateAccount({
+  MsgEditProfile({
     @required this.moniker,
     this.name,
     this.surname,
     this.bio,
-    this.pictures,
+    this.profilePicture,
+    this.coverPicture,
     this.creator,
   })  : assert(moniker != null && moniker.trim().isNotEmpty),
         assert(creator != null && creator.trim().isNotEmpty),
@@ -43,13 +45,13 @@ class MsgCreateAccount extends StdMsg {
         assert(surname == null || surname.trim().isNotEmpty),
         assert(bio == null || bio.trim().isNotEmpty);
 
-  factory MsgCreateAccount.fromJson(Map<String, dynamic> json) {
-    return _$MsgCreateAccountFromJson(json);
+  factory MsgEditProfile.fromJson(Map<String, dynamic> json) {
+    return _$MsgEditProfileFromJson(json);
   }
 
   @override
   Map<String, dynamic> asJson() {
-    return _$MsgCreateAccountToJson(this);
+    return _$MsgEditProfileToJson(this);
   }
 
   @override
@@ -59,7 +61,8 @@ class MsgCreateAccount extends StdMsg {
       name,
       surname,
       bio,
-      pictures,
+      profilePicture,
+      coverPicture,
       creator,
     ];
   }

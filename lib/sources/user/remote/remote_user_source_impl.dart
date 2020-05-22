@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:alan/alan.dart';
 import 'package:flutter/foundation.dart';
@@ -19,6 +20,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
 
   final ChainSource _chainSource;
   final LocalUserSource _userSource;
+  final RemoteMediasSource _remoteMediasSource;
 
   RemoteUserSourceImpl({
     @required String faucetEndpoint,
@@ -26,6 +28,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
     @required UserMsgConverter msgConverter,
     @required ChainSource chainHelper,
     @required LocalUserSource userSource,
+    @required RemoteMediasSource remoteMediasSource,
   })  : assert(chainHelper != null),
         this._chainSource = chainHelper,
         assert(graphQLClient != null),
@@ -35,7 +38,9 @@ class RemoteUserSourceImpl implements RemoteUserSource {
         assert(msgConverter != null),
         _msgConverter = msgConverter,
         assert(userSource != null),
-        _userSource = userSource;
+        _userSource = userSource,
+        assert(remoteMediasSource != null),
+        _remoteMediasSource = remoteMediasSource;
 
   @override
   Future<MooncakeAccount> getAccount(String address) async {
@@ -72,9 +77,26 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   @override
   Future<void> saveAccount(MooncakeAccount account) async {
     final wallet = await _userSource.getWallet();
-
     final remoteAccount = await getAccount(account.address);
+
+    // Upload the images to IPFS if they need to be uploaded
+    final profilePicFile = File(account.profilePicUri ?? "");
+    if (profilePicFile.existsSync()) {
+      final profilePic = await _remoteMediasSource.uploadMedia(profilePicFile);
+      account = account.copyWith(profilePicUri: profilePic);
+    }
+
+    final coverPicFile = File(account.coverPicUri ?? "");
+    if (coverPicFile.existsSync()) {
+      final coverPic = await _remoteMediasSource.uploadMedia(coverPicFile);
+      account = account.copyWith(coverPicUrl: coverPic);
+    }
+
+    // Create the transaction message
     final msg = _msgConverter.toUserMsg(account, remoteAccount);
-    return _chainSource.sendTx([msg], wallet);
+
+    // Send the message to the chain
+    final feeAmount = [StdCoin(amount: "200000", denom: Constants.FEE_TOKEN)];
+    return _chainSource.sendTx([msg], wallet, feeAmount: feeAmount);
   }
 }
