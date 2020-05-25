@@ -16,7 +16,7 @@ class PostReactionItem extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          UserAvatar(size: 36, user: reaction.user),
+          AccountAvatar(size: 36, user: reaction.user),
           const SizedBox(width: PostsTheme.defaultPadding),
           Expanded(
             child: Text(

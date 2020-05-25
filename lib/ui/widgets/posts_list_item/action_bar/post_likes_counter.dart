@@ -45,7 +45,7 @@ class PostLikesCounter extends StatelessWidget {
               if (likesCount > 2)
                 Positioned(
                   right: afterIconSize * 2,
-                  child: UserAvatar(
+                  child: AccountAvatar(
                     border: 1,
                     size: iconSize - 2,
                     user: likes[2].user,
@@ -54,7 +54,7 @@ class PostLikesCounter extends StatelessWidget {
               if (likesCount > 1)
                 Positioned(
                   right: afterIconSize,
-                  child: UserAvatar(
+                  child: AccountAvatar(
                     border: 1,
                     size: iconSize - 2,
                     user: likes[1].user,
@@ -63,7 +63,7 @@ class PostLikesCounter extends StatelessWidget {
               if (likesCount > 0)
                 Positioned(
                   right: 0,
-                  child: UserAvatar(
+                  child: AccountAvatar(
                     size: iconSize - 2,
                     border: 1,
                     user: likes[0].user,

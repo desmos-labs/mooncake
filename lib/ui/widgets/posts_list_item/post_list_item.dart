@@ -10,7 +10,7 @@ import 'popups/export.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
 /// It is made of the following components:
-/// - a [UserAvatar] object, containing the avatar of the post creator.
+/// - a [AccountAvatar] object, containing the avatar of the post creator.
 /// - a [PostItemHeader] object containing information such as the post
 ///    creator's username, his address and the creation date
 /// - a [Text] containing the actual post message

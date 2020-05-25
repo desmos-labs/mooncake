@@ -49,7 +49,7 @@ class AccountEditorBody extends StatelessWidget {
                 top: COVER_HEIGHT - PICTURE_RADIUS,
                 left: PADDING,
                 child: AccountProfileImageEditor(
-                  radius: PICTURE_RADIUS,
+                  size: PICTURE_RADIUS * 2,
                   border: PICTURE_RADIUS / 10,
                 ),
               ),

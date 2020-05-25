@@ -6,7 +6,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'account_cover_image_viewer.dart';
-import 'account_profile_image_viewer.dart';
+import 'account_avatar.dart';
 import 'account_posts_viewer.dart';
 
 /// Represents the body of the screen that is used by the user to view an
@@ -106,10 +106,10 @@ class _AccountViewBodyState extends State<AccountViewBody> {
   Widget _profileImage() {
     return Positioned(
       left: AccountViewBody.PADDING,
-      child: AccountProfileImageViewer(
-        radius: AccountViewBody.PICTURE_RADIUS,
+      child: AccountAvatar(
+        size: AccountViewBody.PICTURE_RADIUS * 2,
         border: AccountViewBody.PICTURE_RADIUS / 10,
-        profileImage: widget.user.profilePicUri,
+        user: widget.user,
       ),
     );
   }

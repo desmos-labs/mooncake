@@ -6,12 +6,12 @@ import 'image_picker.dart';
 
 /// Represents the editor that allows the user to change his profile picture.
 class AccountProfileImageEditor extends StatelessWidget {
-  final double radius;
+  final double size;
   final double border;
 
   const AccountProfileImageEditor({
     Key key,
-    @required this.radius,
+    @required this.size,
     @required this.border,
   }) : super(key: key);
 
@@ -25,10 +25,10 @@ class AccountProfileImageEditor extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              AccountProfileImageViewer(
-                profileImage: state.account.profilePicUri,
+              AccountAvatar(
+                user: state.account,
                 border: border,
-                radius: radius,
+                size: size,
               ),
               Icon(
                 MooncakeIcons.camera,

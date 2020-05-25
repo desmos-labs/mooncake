@@ -31,7 +31,7 @@ class PostItemHeader extends StatelessWidget {
                 child: Row(
                   children: [
                     // User picture
-                    UserAvatar(size: 36, user: post.owner),
+                    AccountAvatar(size: 36, user: post.owner),
 
                     // Spacer
                     const SizedBox(width: PostsTheme.defaultPadding),
