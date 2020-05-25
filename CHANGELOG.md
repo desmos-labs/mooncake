@@ -6,6 +6,7 @@
   - **0.10 Daric** per post or comment
   - **0.05 Daric** per reaction or like added or removed
   - **0.05 Daric** per poll answer 
+- Implemented users jazz icons instead of old identicons
 
 # Version 0.3.2
 ## Changes
@@ -26,7 +27,7 @@
 - Added the possibility of creating polls
 - Added the possibility of voting to existing polls
 - Added the ability to view your own mnemonic phrase from withing the app 
-- Added a fee of 0.01 daric while sending the transactions
+- Added a fee of 0.10 daric while sending the transactions
 - Improved the visualization of your wallet balance
 
 ## Bug fixes
