@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:password_strength/password_strength.dart';
 
 enum PasswordSecurity { UNKNOWN, LOW, MEDIUM, HIGH }
 
@@ -16,7 +17,22 @@ class SetPasswordState extends Equatable {
   bool get isPasswordValid => inputPassword.length >= 6;
 
   /// Indicates the security of the password.
-  final PasswordSecurity passwordSecurity;
+  PasswordSecurity get passwordSecurity {
+    if (inputPassword == null) {
+      return PasswordSecurity.UNKNOWN;
+    }
+
+    final strength = estimatePasswordStrength(inputPassword);
+    PasswordSecurity security = PasswordSecurity.UNKNOWN;
+    if (strength < 0.50) {
+      security = PasswordSecurity.LOW;
+    } else if (strength < 0.75) {
+      security = PasswordSecurity.MEDIUM;
+    } else {
+      security = PasswordSecurity.HIGH;
+    }
+    return security;
+  }
 
   /// Tells whether or not the password is being saved.
   final bool savingPassword;
@@ -24,7 +40,6 @@ class SetPasswordState extends Equatable {
   const SetPasswordState({
     @required this.showPassword,
     @required this.inputPassword,
-    @required this.passwordSecurity,
     @required this.savingPassword,
   });
 
@@ -32,7 +47,6 @@ class SetPasswordState extends Equatable {
     return SetPasswordState(
       showPassword: false,
       inputPassword: "",
-      passwordSecurity: PasswordSecurity.UNKNOWN,
       savingPassword: false,
     );
   }
@@ -40,13 +54,11 @@ class SetPasswordState extends Equatable {
   SetPasswordState copyWith({
     bool showPassword,
     String inputPassword,
-    PasswordSecurity passwordSecurity,
     bool savingPassword,
   }) {
     return SetPasswordState(
       showPassword: showPassword ?? this.showPassword,
       inputPassword: inputPassword ?? this.inputPassword,
-      passwordSecurity: passwordSecurity ?? this.passwordSecurity,
       savingPassword: savingPassword ?? this.savingPassword,
     );
   }
@@ -55,14 +67,12 @@ class SetPasswordState extends Equatable {
   List<Object> get props => [
         showPassword,
         inputPassword,
-        passwordSecurity,
         savingPassword,
       ];
 
   @override
   String toString() => 'SetPasswordState { '
       'showPassword: $showPassword, '
-      'passwordSecurity: $passwordSecurity, '
       'savingPassword: $savingPassword '
       '}';
 }

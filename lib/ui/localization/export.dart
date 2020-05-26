@@ -94,6 +94,26 @@ If you understand the risks of viewing your mnemonic, please insert below
 your password and press the button to view it
 """;
 
+  // Mnemonic export
+  String get exportMnemonic => "Export mnemonic";
+  String get exportMnemonicDialogTitle => "Exporting mnemonic";
+  String get exportMnemonicDialogText => """
+In order to export your mnemonic properly, we need a password with which it
+will be encrypted for security reasons. Please insert below such passwords
+that you will also be required later when importing it.
+""";
+  String get exportMnemonicDialogPasswordHint => "Encryption password";
+  String get exportMnemonicDialogCancelButton => "Cancel";
+  String get exportMnemonicDialogExportButton => "Export";
+  String get mnemonicExportScreenText => """
+Following is your mnemonic encrypted data. You can export this data whenever
+you want, even sending it to a friend of yours for backup, if you have used 
+a strong enough password. If you would like to share it somewhere, click on the
+Share button below""";
+  String get mnemonicExportShareButton => "Share";
+  String get mnemonicExportShareText =>
+      "Hey, here is my encrypted mnemonic for Mooncake! Please keep it safe!";
+
   // Main screen
   String get refreshButtonText => "New posts available. Tap to refresh";
   String get allPostsTabTitle => "Posts";

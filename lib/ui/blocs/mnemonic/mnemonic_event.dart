@@ -10,7 +10,24 @@ abstract class MnemonicEvent extends Equatable {
 }
 
 /// Tells the Bloc to load the mnemonic and show it.
-class ShowMnemonic extends MnemonicEvent {
+class ShowMnemonic extends MnemonicEvent {}
+
+/// Tells the Bloc to show the export popup.
+class ShowExportPopup extends MnemonicEvent {}
+
+/// Tells the Bloc to close the export popup.
+class CloseExportPopup extends MnemonicEvent {}
+
+/// Tells the Bloc that the user has changed the password which which to
+/// encrypt the mnemonic.
+class ChangeEncryptPassword extends MnemonicEvent {
+  final String password;
+
+  ChangeEncryptPassword(this.password);
+
   @override
-  String toString() => 'ShowMnemonic';
+  List<Object> get props => [password];
 }
+
+/// Tells the Bloc to export the mnemonic.
+class ExportMnemonic extends MnemonicEvent {}

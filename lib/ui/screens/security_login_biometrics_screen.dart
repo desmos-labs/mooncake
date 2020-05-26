@@ -19,43 +19,50 @@ class LoginWithBiometricsScreen extends StatelessWidget {
         title: Text(PostsLocalizations.of(context).viewMnemonic),
       ),
       body: BlocProvider<MnemonicBloc>(
-        create: (_) => MnemonicBloc.create(),
+        create: (context) => MnemonicBloc.create(context),
         child: BlocBuilder<MnemonicBloc, MnemonicState>(
           builder: (context, state) {
-            return Container(
-              padding: EdgeInsets.all(16),
-              child: ListView(
-                children: [
-                  Text(
-                    PostsLocalizations.of(context)
-                        .securityLoginText
-                        .replaceAll("\n", ""),
-                    textAlign: TextAlign.center,
+            return Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16),
+                  child: ListView(
+                    children: [
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginText
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginWarning
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginBiometrics
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      if (!state.showMnemonic)
+                        PrimaryRoundedButton(
+                          onPressed: () => _enableButtonClicked(context),
+                          text: PostsLocalizations.of(context).viewMnemonic,
+                        ),
+                      if (state.showMnemonic)
+                        MnemonicVisualizer(mnemonic: state.mnemonic),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    PostsLocalizations.of(context)
-                        .securityLoginWarning
-                        .replaceAll("\n", ""),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    PostsLocalizations.of(context)
-                        .securityLoginBiometrics
-                        .replaceAll("\n", ""),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  if (!state.showMnemonic)
-                    PrimaryRoundedButton(
-                      onPressed: () => _enableButtonClicked(context),
-                      text: PostsLocalizations.of(context).viewMnemonic,
-                    ),
-                  if (state.showMnemonic)
-                    MnemonicVisualizer(mnemonic: state.mnemonic),
-                ],
-              ),
+                ),
+
+                // Exporting popup
+                if (state is ExportingMnemonic) ExportMnemonicPopup(),
+              ],
             );
           },
         ),

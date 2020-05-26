@@ -1,4 +1,5 @@
 export 'account_edit_screen.dart';
+export 'export_mnemonic_screen.dart';
 export 'post_create_screen.dart';
 export 'home_screen.dart';
 export 'login_screen.dart';

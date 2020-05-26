@@ -17,6 +17,7 @@ dependencies:
   crypto:
   dependencies:
   dynamic_theme:
+  encrypt:
   emoji_picker:
   equatable:
   firebase_analytics:
@@ -43,10 +44,12 @@ dependencies:
   package_info:
   path_provider:
   password_strength:
+  pointycastle:
   recase:
   rxdart:
   sembast:
   sentry:
+  share:
   shared_preferences:
   timeago:
   url_launcher:

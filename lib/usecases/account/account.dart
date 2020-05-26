@@ -1,9 +1,11 @@
 export 'repository_user.dart';
 export 'usecase_check_login.dart';
+export 'usecase_encrypt_mnemonic.dart';
 export 'usecase_generate_mnemonic.dart';
 export 'usecase_get_account.dart';
 export 'usecase_get_authentication_method.dart';
 export 'usecase_get_mnemonic.dart';
+export 'usecase_decrypt_mnemonic.dart';
 export 'usecase_log_in.dart';
 export 'usecase_logout.dart';
 export 'usecase_refresh_account.dart';

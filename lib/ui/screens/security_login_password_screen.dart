@@ -32,39 +32,46 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
         title: Text(PostsLocalizations.of(context).viewMnemonic),
       ),
       body: BlocProvider<MnemonicBloc>(
-        create: (_) => MnemonicBloc.create(),
+        create: (context) => MnemonicBloc.create(context),
         child: BlocBuilder<MnemonicBloc, MnemonicState>(
           builder: (context, state) {
-            return Container(
-              padding: EdgeInsets.all(16),
-              child: ListView(
-                children: [
-                  Text(
-                    PostsLocalizations.of(context)
-                        .securityLoginText
-                        .replaceAll("\n", ""),
-                    textAlign: TextAlign.center,
+            return Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16),
+                  child: ListView(
+                    children: [
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginText
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginWarning
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginPassword
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      if (!state.showMnemonic) _passwordInput(context),
+                      if (state.showMnemonic)
+                        MnemonicVisualizer(mnemonic: state.mnemonic),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    PostsLocalizations.of(context)
-                        .securityLoginWarning
-                        .replaceAll("\n", ""),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    PostsLocalizations.of(context)
-                        .securityLoginPassword
-                        .replaceAll("\n", ""),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  if (!state.showMnemonic) _passwordInput(context),
-                  if (state.showMnemonic)
-                    MnemonicVisualizer(mnemonic: state.mnemonic),
-                ],
-              ),
+                ),
+
+                // Exporting popup
+                if (state is ExportingMnemonic) ExportMnemonicPopup(),
+              ],
             );
           },
         ),

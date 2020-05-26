@@ -94,6 +94,17 @@ class NavigateToShowMnemonic extends NavigatorEvent {
   String toString() => 'NavigateToShowMnemonic';
 }
 
+/// Tells the Bloc to navigate to the page that allows the user
+/// to export his previously encrypted mnemonic data.
+class NavigateToExportMnemonic extends NavigatorEvent {
+  final MnemonicData mnemonicData;
+
+  NavigateToExportMnemonic({@required this.mnemonicData});
+
+  @override
+  List<Object> get props => [mnemonicData];
+}
+
 // ____________________________________________
 
 /// Tells the Bloc to navigate to the screen that allows the user to

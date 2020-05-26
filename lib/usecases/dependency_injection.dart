@@ -9,6 +9,7 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => CheckLoginUseCase(
             walletRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => EncryptMnemonicUseCase())
       ..bindFactory((injector, params) => GenerateMnemonicUseCase())
       ..bindFactory((injector, params) => GetAccountUseCase(
             userRepository: injector.get(),
@@ -19,6 +20,7 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetMnemonicUseCase(
             userRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => DecryptMnemonicUseCase())
       ..bindFactory((injector, params) => LoginUseCase(
             userRepository: injector.get(),
           ))

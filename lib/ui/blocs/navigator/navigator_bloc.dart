@@ -61,6 +61,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _handleGoBack(event);
     } else if (event is NavigateToShowMnemonic) {
       _handleNavigateToShowMnemonic();
+    } else if (event is NavigateToExportMnemonic) {
+      _handleNavigateToExportMnemonic(event);
     } else if (event is NavigateToEditAccount) {
       _handleNavigateToEditAccount();
     } else if (event is NavigateToUserDetails) {
@@ -141,6 +143,12 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
         return LoginWithPasswordScreen(hashedPassword: method.hashedPassword);
       }));
     }
+  }
+
+  void _handleNavigateToExportMnemonic(NavigateToExportMnemonic event) async {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return ExportMnemonicScreen(mnemonicData: event.mnemonicData);
+    }));
   }
 
   void _handleNavigateToEditAccount() async {

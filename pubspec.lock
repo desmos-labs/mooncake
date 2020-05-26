@@ -276,6 +276,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
+  encrypt:
+    dependency: "direct main"
+    description:
+      name: encrypt
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.2"
   equatable:
     dependency: "direct main"
     description:
@@ -691,7 +698,7 @@ packages:
     source: hosted
     version: "1.0.2"
   pointycastle:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pointycastle
       url: "https://pub.dartlang.org"
@@ -767,6 +774,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  share:
+    dependency: "direct main"
+    description:
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.4+3"
   shared_preferences:
     dependency: "direct main"
     description:
