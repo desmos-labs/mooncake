@@ -17,44 +17,30 @@ class GoBack extends NavigatorEvent {
   final dynamic result;
 
   GoBack([this.result]);
-
-  @override
-  String toString() => 'GoBack';
 }
 
 /// Tells the Bloc to navigate to the home screen.
-class NavigateToHome extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToHome';
-}
+class NavigateToHome extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows to recover
 /// an existing account using a mnemonic phrase.
-class NavigateToRecoverAccount extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToRecoverAccount';
-}
+class NavigateToRecoverAccount extends NavigatorEvent {}
+
+/// Tells the Bloc to navigate to the screen that allows the user to
+/// import a mnemonic backup.
+class NavigateToRestoreBackup extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate either to the password or biometric setting
 /// screen in order to protect the account.
-class NavigateToProtectAccount extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToProtectAccount';
-}
+class NavigateToProtectAccount extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows the user
 /// to set a biometric authentication.
-class NavigateToEnableBiometrics extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToEnableBiometrics';
-}
+class NavigateToEnableBiometrics extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows the user
 /// to set a password to protect the account.
-class NavigateToSetPassword extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToSetPassword';
-}
+class NavigateToSetPassword extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows the user
 /// to create a new post.
@@ -83,16 +69,10 @@ class NavigateToPostDetails extends NavigatorEvent {
 }
 
 /// Tells the Bloc to navigate to the wallet screen.
-class NavigateToWallet extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToWallet';
-}
+class NavigateToWallet extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows to show the mnemonic.
-class NavigateToShowMnemonic extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToShowMnemonic';
-}
+class NavigateToShowMnemonic extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the page that allows the user
 /// to export his previously encrypted mnemonic data.
@@ -109,10 +89,7 @@ class NavigateToExportMnemonic extends NavigatorEvent {
 
 /// Tells the Bloc to navigate to the screen that allows the user to
 /// edit his account.
-class NavigateToEditAccount extends NavigatorEvent {
-  @override
-  String toString() => 'NavigateToEditAccount';
-}
+class NavigateToEditAccount extends NavigatorEvent {}
 
 /// ShowAccountDetails tells the Bloc to navigate to the screen that
 /// displays the details of the user.

@@ -44,8 +44,19 @@ class LoginMainContent extends StatelessWidget {
                   child: Text(
                     PostsLocalizations.of(context)
                         .alreadyHaveMnemonicButtonText,
+                    textAlign: TextAlign.center,
                   ),
                   onPressed: () => _onRecoverAccount(context),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: SecondaryLightRoundedButton(
+                  child: Text(
+                    PostsLocalizations.of(context).useMnemonicBackup,
+                    textAlign: TextAlign.center,
+                  ),
+                  onPressed: () => _onRecoverBackup(context),
                 ),
               ),
             ],
@@ -60,6 +71,10 @@ class LoginMainContent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onRecoverBackup(BuildContext context) {
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToRestoreBackup());
   }
 
   void _onRecoverAccount(BuildContext context) {

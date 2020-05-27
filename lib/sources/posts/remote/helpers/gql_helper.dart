@@ -3,6 +3,7 @@ import 'package:graphql/client.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:mooncake/utils/utils.dart';
 
 class HomePostsData {
   final String subspace;
@@ -124,13 +125,18 @@ class GqlPostsHelper {
       }
     }
     """;
-    final data = await client.query(
-      QueryOptions(
-        documentNode: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly,
-      ),
-    );
-    return compute(_convertPostsGqlResponse, data.data["posts"]);
+    final data = await measureExecTime(() async {
+      return client.query(
+        QueryOptions(
+          documentNode: gql(query),
+          fetchPolicy: FetchPolicy.networkOnly,
+        ),
+      );
+    }, name: "Query posts");
+
+    return await measureExecTime(() async {
+      return compute(_convertPostsGqlResponse, data.data["posts"]);
+    }, name: "Convert posts");
   }
 
   /// Returns the details of the post having the specified id and present

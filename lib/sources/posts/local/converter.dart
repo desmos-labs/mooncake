@@ -6,8 +6,8 @@ import 'package:sembast/sembast.dart';
 /// running the conversion on another isolate to improve the efficiency.
 class PostsConverter {
   /// Serializes the given [post] to a [Map].
-  static Future<Map<String, dynamic>> serializePost(Post post) {
-    return compute<Post, Map<String, dynamic>>(Post.asJson, post);
+  static Future<Map<String, dynamic>> serializePost(Post post) async {
+    return await compute<Post, Map<String, dynamic>>(Post.asJson, post);
   }
 
   static List<Map<String, dynamic>> _serializeList(List<Post> posts) {
@@ -18,16 +18,18 @@ class PostsConverter {
   }
 
   /// Serializes the given list of [posts] into a list of [Map] objects.
-  static Future<List<Map<String, dynamic>>> serializePosts(List<Post> posts) {
-    return compute(_serializeList, posts);
+  static Future<List<Map<String, dynamic>>> serializePosts(
+    List<Post> posts,
+  ) async {
+    return await compute(_serializeList, posts);
   }
 
   /// Deserializes a post reading its value from the given [record].
   /// Such record can be either a [RecordSnapshot] or a `Map<String, dynamic>`.
-  static Future<Post> deserializePost(dynamic record) {
+  static Future<Post> deserializePost(dynamic record) async {
     if (record == null) return null;
     final value = (record is RecordSnapshot) ? record.value : record;
-    return compute<Map<String, dynamic>, Post>(Post.fromJson, value);
+    return await compute<Map<String, dynamic>, Post>(Post.fromJson, value);
   }
 
   static List<Post> _deserializeList(List<dynamic> records) {
@@ -41,6 +43,6 @@ class PostsConverter {
   /// Each object inside the given [records] list can be either a
   /// [RecordSnapshot] or a `Map<String, dynamic>`.
   static Future<List<Post>> deserializePosts(List<dynamic> records) async {
-    return compute(_deserializeList, records);
+    return await compute(_deserializeList, records);
   }
 }

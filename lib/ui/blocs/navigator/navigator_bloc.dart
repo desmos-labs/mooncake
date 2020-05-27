@@ -47,6 +47,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToProtectAccountScreenEventToState();
     } else if (event is NavigateToRecoverAccount) {
       _mapNavigateToRecoverAccountEventToState();
+    } else if (event is NavigateToRestoreBackup) {
+      _mapNavigateToRestoreBackupEventToState();
     } else if (event is NavigateToEnableBiometrics) {
       _mapNavigateToBiometricScreenEventToState();
     } else if (event is NavigateToSetPassword) {
@@ -75,14 +77,22 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   }
 
   void _mapNavigateToHomeEventToState() {
-    _navigatorKey.currentState.pushNamedAndRemoveUntil(
-      PostsRoutes.home,
+    _navigatorKey.currentState.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => SplashScreen()),
       (_) => false,
     );
   }
 
   void _mapNavigateToRecoverAccountEventToState() {
-    _navigatorKey.currentState.pushNamed(PostsRoutes.recoverAccount);
+    _navigatorKey.currentState.push(MaterialPageRoute(
+      builder: (context) => RecoverAccountScreen(),
+    ));
+  }
+
+  void _mapNavigateToRestoreBackupEventToState() {
+    _navigatorKey.currentState.push(MaterialPageRoute(
+      builder: (context) => RestoreMnemonicBackupScreen(),
+    ));
   }
 
   void _mapNavigateToProtectAccountScreenEventToState() async {

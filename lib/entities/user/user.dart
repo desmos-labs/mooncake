@@ -32,7 +32,7 @@ class User extends Equatable {
   @JsonKey(name: "cover_pic", nullable: true)
   final String coverPicUri;
 
-  User({
+  const User({
     @required this.address,
     this.moniker,
     this.name,
@@ -40,13 +40,7 @@ class User extends Equatable {
     this.bio,
     this.profilePicUri,
     this.coverPicUri,
-  })  : assert(address != null && address.trim().isNotEmpty),
-        assert(moniker == null || moniker.trim().isNotEmpty),
-        assert(name == null || moniker.trim().isNotEmpty),
-        assert(surname == null || moniker.trim().isNotEmpty),
-        assert(bio == null || bio.trim().isNotEmpty),
-        assert(profilePicUri == null || profilePicUri.trim().isNotEmpty),
-        assert(coverPicUri == null || coverPicUri.trim().isNotEmpty);
+  }) : assert(address != null);
 
   factory User.fromAddress(String address) {
     return User(address: address);

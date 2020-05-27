@@ -84,8 +84,7 @@ class ExportingMnemonic extends MnemonicState {
     @required this.exportingMnemonic,
     @required bool showMnemonic,
     @required List<String> mnemonic,
-  })  : assert(encryptPassword != null),
-        assert(exportingMnemonic != null),
+  })  : assert(exportingMnemonic != null),
         super(mnemonic: mnemonic, showMnemonic: showMnemonic);
 
   factory ExportingMnemonic.fromMnemonicState(MnemonicState state) {

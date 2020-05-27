@@ -33,25 +33,20 @@ class _PostsAppState extends State<PostsApp> {
           return NotificationsBloc.create()..add(LoadNotifications());
         }),
       ],
-      child: DynamicTheme(
-        defaultBrightness: Brightness.dark,
-        data: PostsTheme.themeBuilder,
-        themedWidgetBuilder: (context, theme) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          navigatorKey: PostsKeys.navigatorKey,
-          title: PostsLocalizations().appName,
-          theme: theme,
-          localizationsDelegates: [
-            FlutterBlocLocalizationsDelegate(),
-          ],
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: Injector.get()),
-          ],
-          routes: {
-            PostsRoutes.home: (context) => SplashScreen(),
-            PostsRoutes.recoverAccount: (context) => RecoverAccountScreen(),
-          },
-        ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: PostsKeys.navigatorKey,
+        title: PostsLocalizations().appName,
+        themeMode: ThemeMode.system,
+        theme: PostsTheme.lightTheme,
+        darkTheme: PostsTheme.darkTheme,
+        home: SplashScreen(),
+        localizationsDelegates: [
+          FlutterBlocLocalizationsDelegate(),
+        ],
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: Injector.get()),
+        ],
       ),
     );
   }

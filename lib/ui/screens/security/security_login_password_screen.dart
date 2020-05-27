@@ -25,6 +25,12 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
   bool enableButton = false;
 
   @override
+  void initState() {
+    print(widget.hashedPassword);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

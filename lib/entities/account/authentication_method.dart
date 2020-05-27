@@ -17,7 +17,7 @@ abstract class AuthenticationMethod extends Equatable {
   static const TYPE_BIOMETRICS = "biometrics";
   static const TYPE_PASSWORD = "password";
 
-  AuthenticationMethod({@required this.type}) : assert(type != null);
+  const AuthenticationMethod({@required this.type}) : assert(type != null);
 
   factory AuthenticationMethod.fromJson(Map<String, dynamic> json) {
     final type = json[KEY_TYPE];
@@ -49,7 +49,7 @@ abstract class AuthenticationMethod extends Equatable {
 /// device biometric authentication.
 @JsonSerializable()
 class BiometricAuthentication extends AuthenticationMethod {
-  BiometricAuthentication() : super(type: AuthenticationMethod.TYPE_BIOMETRICS);
+  const BiometricAuthentication() : super(type: AuthenticationMethod.TYPE_BIOMETRICS);
 
   factory BiometricAuthentication.fromJson(Map<String, dynamic> json) {
     return _$BiometricAuthenticationFromJson(json);
@@ -73,7 +73,7 @@ class PasswordAuthentication extends AuthenticationMethod {
   @JsonKey(name: "password")
   final String hashedPassword;
 
-  PasswordAuthentication({
+  const PasswordAuthentication({
     @required this.hashedPassword,
   })  : assert(hashedPassword != null),
         super(type: AuthenticationMethod.TYPE_PASSWORD);

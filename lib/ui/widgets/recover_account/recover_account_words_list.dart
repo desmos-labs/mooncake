@@ -22,7 +22,7 @@ class RecoverAccountWordsList extends StatelessWidget {
 
         return Container(
           height: height,
-          color: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).cardColor,
           padding: EdgeInsets.all(5),
           width: MediaQuery.of(context).size.width,
           child: Row(
@@ -41,7 +41,7 @@ class RecoverAccountWordsList extends StatelessWidget {
                     return ActionChip(
                       elevation: 0,
                       pressElevation: 0,
-                      backgroundColor: Theme.of(context).primaryColorDark,
+                      backgroundColor: Theme.of(context).accentColor,
                       label: Text(word),
                       onPressed: () => _wordSelected(context, word),
                     );

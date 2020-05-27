@@ -13,7 +13,7 @@ packages:
     description:
       path: "."
       ref: "cosmos-v0.38.0"
-      resolved-ref: "8bca9c4a9be7f4a5472b0b6026b4cb0c49fb18d2"
+      resolved-ref: ecd937fe061e622bb438bdb10de0240992138119
       url: "git://github.com/alan-sdk/alan.dart.git"
     source: git
     version: "0.0.1"

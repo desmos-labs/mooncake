@@ -15,7 +15,7 @@ class PollAnswer extends Equatable {
   @JsonKey(name: "user")
   final User user;
 
-  PollAnswer({
+  const PollAnswer({
     @required this.answer,
     @required this.user,
   })  : assert(answer != null),

@@ -11,18 +11,6 @@ AppBar postsAppBar(BuildContext context) {
     centerTitle: true,
     title: Text(PostsLocalizations.of(context).appName),
     backgroundColor: Colors.transparent,
-    leading: IconButton(
-      icon: Icon(Theme.of(context).brightness == Brightness.light
-          ? MooncakeIcons.lightbulb
-          : MooncakeIcons.lightbulbF),
-      tooltip: PostsLocalizations.of(context).brightnessButtonTooltip,
-      onPressed: () {
-        DynamicTheme.of(context).setBrightness(
-            Theme.of(context).brightness == Brightness.dark
-                ? Brightness.light
-                : Brightness.dark);
-      },
-    ),
     actions: [
       if (kDebugMode)
         IconButton(

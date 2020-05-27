@@ -16,7 +16,8 @@ class PostsLocalizations {
 
   // Login
   String get createAccountButtonText => "Create account";
-  String get alreadyHaveMnemonicButtonText => "I already have a mnemonic";
+  String get alreadyHaveMnemonicButtonText => "I have a written mnemonic";
+  String get useMnemonicBackup => "Use mnemonic backup";
   String get accountCreatedPopupTitleFirstRow => "The account";
   String get accountCreatedPopupTitleSecondRow => "Has been created";
   String get accountCreatedPopupText => "You can backup your phrase later";
@@ -31,6 +32,17 @@ class PostsLocalizations {
 
   // Recover screen
   String get recoverScreenTitle => "Recover mnemonic";
+
+  // Recover mnemonic backup
+  String get restoreMnemonicBackupScreenTitle => "Restore mnemonic backup";
+  String get restoreMnemonicInstructions => """
+This page allows you to restore a previously exported mnemonic backup.
+In order to do so, please insert below your mnenonic backup text and the password
+you used to encrypt it. Then press the below button to proceed. 
+""";
+  String get restoreBackupFieldHint => "Your backup here (it should end with an =)";
+  String get restorePasswordFieldHint => "Your encryption password";
+  String get restoreButtonText => "Restore backup";
 
   // Mnemonic recover screen
   String get recoverAccountInstructions => "Please enter your mnemonic phrase"

@@ -41,7 +41,7 @@ class PostPoll extends Equatable {
         options?.isNotEmpty == true;
   }
 
-  PostPoll({
+  const PostPoll({
     @required this.question,
     @required this.endDate,
     @required this.options,
@@ -55,7 +55,7 @@ class PostPoll extends Equatable {
         assert(isOpen != null),
         assert(allowsMultipleAnswers != null),
         assert(allowsAnswerEdits != null),
-        userAnswers = userAnswers ?? [];
+        userAnswers = userAnswers ?? const [];
 
   factory PostPoll.empty() {
     return PostPoll(

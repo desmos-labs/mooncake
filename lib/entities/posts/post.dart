@@ -118,13 +118,13 @@ class Post extends Equatable implements Comparable<Post> {
         assert(created != null),
         assert(subspace != null),
         assert(owner != null),
-        this.medias = medias ?? [],
-        this.reactions = reactions ?? [],
+        this.medias = medias ?? const [],
+        this.reactions = reactions ?? const [],
         this.reactionsCount = groupBy<Reaction, String>(
           (reactions ?? []).where((r) => !r.isLike).toList(),
           (r) => r.value,
         ).map((rune, reactions) => MapEntry(reactions[0], reactions.length)),
-        this.commentsIds = commentsIds ?? [],
+        this.commentsIds = commentsIds ?? const [],
         assert(message != null || medias?.isNotEmpty == true || poll != null);
 
   /// Returns the posts' data as a [DateTime] object.

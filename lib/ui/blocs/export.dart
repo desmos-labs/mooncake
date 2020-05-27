@@ -6,4 +6,5 @@ export 'notifications/bloc.dart';
 export 'posts/export.dart';
 export 'recover_account/bloc.dart';
 export 'simple_bloc_delegate.dart';
+export 'restore_backup/bloc.dart';
 export 'security/export.dart';

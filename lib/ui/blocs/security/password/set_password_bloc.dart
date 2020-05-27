@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:password_strength/password_strength.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'bloc.dart';
 

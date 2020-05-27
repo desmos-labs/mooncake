@@ -11,7 +11,7 @@ abstract class TxNotification extends NotificationData {
   @JsonKey(name: "tx_hash")
   final String txHash;
 
-  TxNotification({
+  const TxNotification({
     @required String type,
     @required DateTime date,
     @required this.txHash,
@@ -30,7 +30,7 @@ abstract class TxNotification extends NotificationData {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class TxSuccessfulNotification extends TxNotification {
-  TxSuccessfulNotification({
+  const TxSuccessfulNotification({
     @required DateTime date,
     @required String txHash,
   }) : super(
@@ -59,7 +59,7 @@ class TxFailedNotification extends TxNotification {
   @JsonKey(name: "error")
   final String error;
 
-  TxFailedNotification({
+  const TxFailedNotification({
     @required DateTime date,
     @required String txHash,
     @required this.error,

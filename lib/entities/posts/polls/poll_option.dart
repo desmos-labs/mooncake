@@ -15,7 +15,7 @@ class PollOption extends Equatable {
   @JsonKey(name: "text")
   final String text;
 
-  PollOption({
+  const PollOption({
     @required this.id,
     @required this.text,
   })  : assert(id != null),

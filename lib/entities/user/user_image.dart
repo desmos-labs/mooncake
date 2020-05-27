@@ -58,7 +58,7 @@ abstract class AccountImage extends Equatable {
 class LocalUserImage extends AccountImage {
   final File image;
 
-  LocalUserImage(this.image) : super(AccountImageType.LOCAL);
+  const LocalUserImage(this.image) : super(AccountImageType.LOCAL);
 
   factory LocalUserImage.fromJson(Map<String, dynamic> json) {
     return LocalUserImage(File(json['image'] as String));
@@ -82,7 +82,7 @@ class NetworkUserImage extends AccountImage {
   @JsonKey(name: "url")
   final String url;
 
-  NetworkUserImage(this.url) : super(AccountImageType.NETWORK);
+  const NetworkUserImage(this.url) : super(AccountImageType.NETWORK);
 
   factory NetworkUserImage.fromJson(Map<String, dynamic> json) {
     return _$NetworkUserImageFromJson(json);
@@ -101,7 +101,7 @@ class NetworkUserImage extends AccountImage {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class NoUserImage extends AccountImage {
-  NoUserImage() : super(AccountImageType.NO_IMAGE);
+  const NoUserImage() : super(AccountImageType.NO_IMAGE);
 
   factory NoUserImage.fromJson(Map<String, dynamic> json) {
     return _$NoUserImageFromJson(json);

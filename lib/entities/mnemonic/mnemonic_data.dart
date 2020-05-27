@@ -17,7 +17,7 @@ class MnemonicData extends Equatable {
   @JsonKey(name: "encryptedMnemonicBase64")
   final String encryptedMnemonicBase64;
 
-  MnemonicData({
+  const MnemonicData({
     @required this.ivBase64,
     @required this.encryptedMnemonicBase64,
   })  : assert(ivBase64 != null),

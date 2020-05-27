@@ -13,22 +13,10 @@ import 'package:mooncake/usecases/usecases.dart';
 /// and emits the correct states.
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
-  final CanUseBiometricsUseCase _canUseBiometricsUseCase;
-  final NavigatorBloc _navigatorBloc;
+  RecoverAccountBloc();
 
-  RecoverAccountBloc({
-    @required CanUseBiometricsUseCase canUseBiometricsUseCase,
-    @required NavigatorBloc navigatorBloc,
-  })  : assert(canUseBiometricsUseCase != null),
-        _canUseBiometricsUseCase = canUseBiometricsUseCase,
-        assert(navigatorBloc != null),
-        _navigatorBloc = navigatorBloc;
-
-  factory RecoverAccountBloc.create(BuildContext context) {
-    return RecoverAccountBloc(
-      canUseBiometricsUseCase: Injector.get(),
-      navigatorBloc: BlocProvider.of(context),
-    );
+  factory RecoverAccountBloc.create() {
+    return RecoverAccountBloc();
   }
 
   @override

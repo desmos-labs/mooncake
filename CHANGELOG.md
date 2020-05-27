@@ -8,6 +8,7 @@
   - **0.05 Daric** per poll answer 
 - Implemented users jazz icons instead of old identicons
 - Implemented the ability of exporting and importing the mnemonic as an encrypted object safely
+- Removed the ability to manually set the app theme. Now it is the same set system-wide. 
 
 # Version 0.3.2
 ## Changes

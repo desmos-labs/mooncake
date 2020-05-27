@@ -33,7 +33,7 @@ class PostsTheme {
     );
   }
 
-  static ThemeData get _lightTheme {
+  static ThemeData get lightTheme {
     return fromColorScheme(ColorScheme(
       primary: Color(0xFF6D4DDB),
       primaryVariant: Color(0xFF904FFF),
@@ -51,7 +51,7 @@ class PostsTheme {
     ));
   }
 
-  static ThemeData get _darkTheme {
+  static ThemeData get darkTheme {
     return fromColorScheme(ColorScheme(
       primary: Color(0xFFA990FF),
       primaryVariant: Color(0xFF6625EE),
@@ -67,14 +67,5 @@ class PostsTheme {
       onError: Color(0x3cFFFFFF),
       brightness: Brightness.dark,
     ));
-  }
-
-  static ThemeData themeBuilder(Brightness brightness) {
-    switch (brightness) {
-      case Brightness.dark:
-        return _darkTheme;
-      default:
-        return _lightTheme;
-    }
   }
 }

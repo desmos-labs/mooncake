@@ -15,7 +15,7 @@ abstract class BasePostInteractionNotification extends NotificationData {
   @JsonKey(name: "user", nullable: false)
   final User user;
 
-  BasePostInteractionNotification({
+  const BasePostInteractionNotification({
     @required String type,
     @required DateTime date,
     String action,
@@ -46,7 +46,7 @@ class PostCommentNotification extends BasePostInteractionNotification {
   @JsonKey(name: "message")
   final String comment;
 
-  PostCommentNotification({
+  const PostCommentNotification({
     @required String postId,
     @required User user,
     @required this.comment,
@@ -83,7 +83,7 @@ class PostMentionNotification extends BasePostInteractionNotification {
   @JsonKey(name: "text")
   final String text;
 
-  PostMentionNotification({
+  const PostMentionNotification({
     @required String postId,
     @required User user,
     @required DateTime date,
@@ -111,7 +111,7 @@ class PostMentionNotification extends BasePostInteractionNotification {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PostTagNotification extends BasePostInteractionNotification {
-  PostTagNotification({
+  const PostTagNotification({
     @required String postId,
     @required User user,
     @required DateTime date,
@@ -143,7 +143,7 @@ class PostReactionNotification extends BasePostInteractionNotification {
   @JsonKey(name: "reaction")
   final String reaction;
 
-  PostReactionNotification({
+  const PostReactionNotification({
     @required String postId,
     @required User user,
     @required DateTime date,
@@ -173,7 +173,7 @@ class PostReactionNotification extends BasePostInteractionNotification {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PostLikeNotification extends BasePostInteractionNotification {
-  PostLikeNotification({
+  const PostLikeNotification({
     @required String postId,
     @required User user,
     @required DateTime date,

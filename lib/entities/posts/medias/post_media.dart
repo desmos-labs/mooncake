@@ -21,8 +21,10 @@ class PostMedia extends Equatable {
   @JsonKey(name: "mime_type")
   final String mimeType;
 
-  PostMedia({@required this.url, @required this.mimeType})
-      : assert(url != null),
+  const PostMedia({
+    @required this.url,
+    @required this.mimeType,
+  })  : assert(url != null),
         assert(mimeType != null);
 
   /// Tells whether the image is stored only locally or not.

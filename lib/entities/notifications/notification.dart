@@ -52,7 +52,7 @@ abstract class NotificationData extends Equatable {
     return DateFormat(_DATE_FORMAT).parse(date);
   }
 
-  NotificationData({
+  const NotificationData({
     @required this.type,
     @required this.date,
     this.action,

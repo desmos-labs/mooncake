@@ -7,6 +7,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/entities/posts/export.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/usecases/usecases.dart';
+import 'package:mooncake/utils/measure_exec_time.dart';
 import 'package:sembast/sembast.dart';
 
 import 'converter.dart';
@@ -244,14 +245,21 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
     await _database.transaction((txn) async {
       if (merge) {
-        final existingValues = await PostsConverter.deserializePosts(
-          await _store.records(keys).get(txn),
-        );
+        final existingValues = await measureExecTime(() async {
+          final posts = await _store.records(keys).get(txn);
+          return PostsConverter.deserializePosts(posts);
+        }, name: "Local posts reading");
         posts = mergePosts(existingValues, posts);
       }
 
-      final values = await PostsConverter.serializePosts(posts);
-      await _store.records(keys).put(txn, values);
+      final values = await measureExecTime(() async {
+        return PostsConverter.serializePosts(posts);
+      }, name: "Local posts conversion");
+
+
+      await measureExecTime(() async {
+        return _store.records(keys).put(txn, values);
+      }, name: "Local posts storing");
     });
   }
 
