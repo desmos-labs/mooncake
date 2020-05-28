@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart';
 
+// DONTCOVER
+
 /// Contains the application-wide constants.
 class Constants {
   /// Explorer
