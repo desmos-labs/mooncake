@@ -32,6 +32,9 @@ jobs:
 
             # Exclude app entities (constants)
             pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'lib/entities/app'
+
+            # Exlcude dependency injection files
+            pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'dependency_injection*'
       - codecov/upload:
           file: coverage/lcov.info
           token: $CODECOV_TOKEN
