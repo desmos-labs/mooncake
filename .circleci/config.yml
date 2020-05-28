@@ -24,14 +24,14 @@ jobs:
           command: flutter test --coverage test
       - run:
           name: Cleanup coverage
-          command:
-            - pub global activate remove_from_coverage
+          command: |
+            pub global activate remove_from_coverage
 
             # Exclude all g.dart files
-            - pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.g.dart$'
+            pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.g.dart$'
 
             # Exclude app entities (constants)
-            - pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'lib/entities/app'
+            pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'lib/entities/app'
       - codecov/upload:
           file: coverage/lcov.info
           token: $CODECOV_TOKEN
