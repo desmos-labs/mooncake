@@ -54,7 +54,13 @@ class MooncakeAccount extends User {
   }
 
   /// Returns `true` iff the account needs to be funded.
-  bool get needsFunding => cosmosAccount.coins.isEmpty;
+  bool get needsFunding {
+    final feeTokens = cosmosAccount.coins.firstWhere(
+      (element) => element.denom == Constants.FEE_TOKEN,
+      orElse: () => null,
+    );
+    return feeTokens == null || int.parse(feeTokens.amount) < 1;
+  }
 
   /// Creates a new [MooncakeAccount] object containing the same data
   /// as the original, but with the specified data replaced instead.
