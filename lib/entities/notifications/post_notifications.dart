@@ -37,19 +37,6 @@ abstract class BasePostInteractionNotification extends NotificationData {
   List<Object> get props {
     return super.props + [postId, user];
   }
-
-  @override
-  String toString() {
-    return 'BasePostInteractionNotification {'
-        'type: $type, '
-        'date: $date, '
-        'action: $action, '
-        'title: $title, '
-        'body: $body, '
-        'postId: $postId, '
-        'user: $user '
-        '}';
-  }
 }
 
 /// Represents a notification telling that a comment has been added to
@@ -93,20 +80,6 @@ class PostCommentNotification extends BasePostInteractionNotification {
   Map<String, dynamic> toJson() {
     return _$PostCommentNotificationToJson(this);
   }
-
-  @override
-  String toString() {
-    return 'PostCommentNotification {'
-        'type: $type, '
-        'date: $date, '
-        'action: $action, '
-        'title: $title, '
-        'body: $body, '
-        'postId: $postId, '
-        'user: $user,'
-        'comment: $comment '
-        '}';
-  }
 }
 
 /// Represents a notification telling that the user has been mentioned
@@ -146,20 +119,6 @@ class PostMentionNotification extends BasePostInteractionNotification {
 
   @override
   List<Object> get props => super.props + [text];
-
-  @override
-  String toString() {
-    return 'BasePostInteractionNotification {'
-        'type: $type, '
-        'date: $date, '
-        'action: $action, '
-        'title: $title, '
-        'body: $body, '
-        'postId: $postId, '
-        'user: $user, '
-        'text: $text, '
-        '}';
-  }
 }
 
 /// Represents a notification telling the user he's been tagged inside a post.
@@ -189,19 +148,6 @@ class PostTagNotification extends BasePostInteractionNotification {
   @override
   Map<String, dynamic> toJson() {
     return _$PostTagNotificationToJson(this);
-  }
-
-  @override
-  String toString() {
-    return 'PostTagNotification {'
-        'type: $type, '
-        'date: $date, '
-        'action: $action, '
-        'title: $title, '
-        'body: $body, '
-        'postId: $postId, '
-        'user: $user '
-        '}';
   }
 }
 
@@ -243,20 +189,6 @@ class PostReactionNotification extends BasePostInteractionNotification {
 
   @override
   List<Object> get props => super.props + [reaction];
-
-  @override
-  String toString() {
-    return 'PostReactionNotification {'
-        'type: $type, '
-        'date: $date, '
-        'action: $action, '
-        'title: $title, '
-        'body: $body, '
-        'postId: $postId, '
-        'user: $user, '
-        'reaction: $reaction, '
-        '}';
-  }
 }
 
 /// Represents a notification telling that a like has been added
@@ -287,18 +219,5 @@ class PostLikeNotification extends BasePostInteractionNotification {
   @override
   Map<String, dynamic> toJson() {
     return _$PostLikeNotificationToJson(this);
-  }
-
-  @override
-  String toString() {
-    return 'PostLikeNotification {'
-        'type: $type, '
-        'date: $date, '
-        'action: $action, '
-        'title: $title, '
-        'body: $body, '
-        'postId: $postId, '
-        'user: $user '
-        '}';
   }
 }

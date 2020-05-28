@@ -28,12 +28,14 @@ abstract class AccountImage extends Equatable {
 
   const AccountImage(this.type);
 
-  @deprecated
+  @Deprecated("Use toJson instead")
   Map<String, dynamic> asJson();
 
+  /// Transforms the given JSO?N [json] into an [AccountImage] instance
+  /// based on its type.
   static AccountImage fromJson(Map<String, dynamic> json) {
     final type = _$AccountImageTypeEnumMap.entries.firstWhere(
-      (element) => element == json['type'],
+      (element) => element.value == json['type'],
       orElse: () => null,
     );
     switch (type?.key) {
@@ -46,6 +48,7 @@ abstract class AccountImage extends Equatable {
     }
   }
 
+  /// Converts this [AccountImage] instance into a JSON map.
   Map<String, dynamic> toJson() {
     final json = asJson();
     json.addAll(_$AccountImageToJson(this));
@@ -65,7 +68,9 @@ class LocalUserImage extends AccountImage {
   }
 
   @override
-  List<Object> get props => [image];
+  List<Object> get props {
+    return [image.absolute.path];
+  }
 
   @override
   Map<String, dynamic> asJson() {

@@ -17,21 +17,41 @@ void main() {
     });
   });
 
-  test('hasAvatater', () {
-    expect(
-      User(address: "address", profilePicUri: null).hasAvatar,
-      isFalse,
-      reason: "null avatar url should returns false",
-    );
+  group('hasAvatater', () {
+    test('returns true with valid avatar', () {
+      final user = User(address: "address", profilePicUri: "avatar");
+      expect(user.hasAvatar, isTrue);
+    });
 
-    expect(
-      User(address: "address", profilePicUri: "avatar").hasAvatar,
-      isTrue,
-      reason: "non-empty avatar url should return true",
-    );
+    test('returns false with empty avatar', () {
+      final user = User(address: "address", profilePicUri: null);
+      expect(user.hasAvatar, isFalse);
+    });
+
+    test('returns false with empty avatar', () {
+      final user = User(address: "address", profilePicUri: "");
+      expect(user.hasAvatar, isFalse);
+    });
   });
 
-  test('toJson', () {
+  group('hasCover', () {
+    test('returns true with valid cover', () {
+      final user = User(address: "address", coverPicUri: "cover");
+      expect(user.hasCover, isTrue);
+    });
+
+    test('returns false with empty cover', () {
+      final user = User(address: "address", coverPicUri: null);
+      expect(user.hasCover, isFalse);
+    });
+
+    test('returns false with empty cover', () {
+      final user = User(address: "address", coverPicUri: "");
+      expect(user.hasCover, isFalse);
+    });
+  });
+
+  test('toJson and fromJson', () {
     final user = User(
       address: "address",
       moniker: "random-username",
