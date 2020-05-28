@@ -19,7 +19,7 @@ class PostContentImage extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
         onTap: _openImage,
-        child: media.isLocal ? _localImage(media.url) : _remoteImage(media.url),
+        child: media.isLocal ? _localImage(media.uri) : _remoteImage(media.uri),
       ),
     );
   }
@@ -36,14 +36,14 @@ class PostContentImage extends StatelessWidget {
     return CachedNetworkImage(
       width: double.infinity,
       fit: BoxFit.cover,
-      imageUrl: media.url,
+      imageUrl: media.uri,
       placeholder: (context, _) => LoadingIndicator(),
     );
   }
 
   void _openImage() async {
-    if (await canLaunch(media.url)) {
-      await launch(media.url);
+    if (await canLaunch(media.uri)) {
+      await launch(media.uri);
     }
   }
 }

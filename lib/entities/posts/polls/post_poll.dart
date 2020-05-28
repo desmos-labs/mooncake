@@ -10,36 +10,37 @@ part 'post_poll.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PostPoll extends Equatable {
+  /// Question associated to this poll.
   @JsonKey(name: "question")
   final String question;
 
+  /// Ending date of the poll. After this date, the user should not be
+  /// allowed to answer the poll anymore.
   @JsonKey(name: "end_date")
   final String endDate;
 
-  DateTime get endDateTime {
-    return DateTime.parse(endDate);
-  }
-
+  /// Tells if the the poll is open or not.
   @JsonKey(name: "open")
   final bool isOpen;
 
+  /// Tells whether the post allows a single user to answer multiple
+  /// times to it (so it is a checkbox-based poll) or if it allows only one
+  /// answer per user.
   @JsonKey(name: "allows_multiple_answers")
   final bool allowsMultipleAnswers;
 
+  /// Tells whether the user should be allowed to change his mind once he
+  /// has voted, or if the answer should be locked when added.
   @JsonKey(name: "allows_answer_edits")
   final bool allowsAnswerEdits;
 
+  /// List of all the available options that the user can choose from.
   @JsonKey(name: "available_answers")
   final List<PollOption> options;
 
+  /// List of all the user answers that have been added to this poll.
   @JsonKey(name: "user_answers")
   final List<PollAnswer> userAnswers;
-
-  bool get isValid {
-    return question?.isNotEmpty == true &&
-        endDate != null &&
-        options?.isNotEmpty == true;
-  }
 
   const PostPoll({
     @required this.question,
@@ -57,6 +58,7 @@ class PostPoll extends Equatable {
         assert(allowsAnswerEdits != null),
         userAnswers = userAnswers ?? const [];
 
+  /// Allows to create an empty [PostPoll] object.
   factory PostPoll.empty() {
     return PostPoll(
       question: "",
@@ -72,10 +74,25 @@ class PostPoll extends Equatable {
     );
   }
 
+  /// Takes the given [json] JSON object and creates a [PostPoll] from it.
   factory PostPoll.fromJson(Map<String, dynamic> json) {
     return _$PostPollFromJson(json);
   }
 
+  /// Returns the [endDate] as a [DateTime] object.
+  DateTime get endDateTime {
+    return DateTime.parse(endDate);
+  }
+
+  /// Returns `true` if this post is valid, meaning it has a non-empty question
+  /// as well as **at least** two different options provided.
+  bool get isValid {
+    return question?.isNotEmpty == true &&
+        endDate != null &&
+        options?.isNotEmpty == true;
+  }
+
+  /// Returns the JSON representation of this post poll as a [Map].
   Map<String, dynamic> toJson() {
     return _$PostPollToJson(this);
   }

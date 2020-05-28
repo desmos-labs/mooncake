@@ -25,13 +25,13 @@ class CreatePostImageItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: media.isLocal
               ? Image.file(
-                  File(media.url),
+                  File(media.uri),
                   height: size,
                   width: size,
                   fit: BoxFit.cover,
                 )
               : Image.network(
-                  media.url,
+                  media.uri,
                   height: size,
                   width: size,
                   fit: BoxFit.cover,

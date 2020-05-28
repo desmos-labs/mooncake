@@ -62,25 +62,37 @@ abstract class NotificationData extends Equatable {
         assert(date != null);
 
   @override
-  List<Object> get props => [type, action, date];
+  List<Object> get props {
+    return [
+      type,
+      DateFormat(_DATE_FORMAT).format(date),
+      action,
+      title,
+      body,
+    ];
+  }
 
   /// Converts this instance into a JSON object properly.
   /// This relies on the [toJson] implementation to get the serialization
   /// of custom fields.
   Map<String, dynamic> asJson() {
     Map<String, dynamic> base = _$NotificationDataToJson(this);
+    // ignore: deprecated_member_use_from_same_package
     base.addAll(toJson());
     return base;
   }
 
   /// Leaves the implementation to the specific classes.
   /// NOTE: Do not use this method directly! Use [asJson] instead.
+  @Deprecated("Use asJson instead")
   Map<String, dynamic> toJson();
 
   /// Calls the inheriting classes to build the correct notification based
   /// on the [type] field.
   factory NotificationData.fromJson(Map<String, dynamic> json) {
     final type = json[DATE_TYPE];
+
+    // Posts
     if (type == NotificationTypes.COMMENT) {
       return PostCommentNotification.fromJson(json);
     } else if (type == NotificationTypes.REACTION) {
@@ -89,11 +101,27 @@ abstract class NotificationData extends Equatable {
       return PostLikeNotification.fromJson(json);
     } else if (type == NotificationTypes.MENTION) {
       return PostMentionNotification.fromJson(json);
-    } else if (type == NotificationTypes.TRANSACTION_SUCCESS) {
+    } else if (type == NotificationTypes.TAG) {
+      return PostTagNotification.fromJson(json);
+    }
+
+    // Transactions
+    else if (type == NotificationTypes.TRANSACTION_SUCCESS) {
       return TxSuccessfulNotification.fromJson(json);
     } else if (type == NotificationTypes.TRANSACTION_FAIL) {
       return TxFailedNotification.fromJson(json);
     }
     return null;
+  }
+
+  @override
+  String toString() {
+    return 'NotificationData {'
+        'type: $type, '
+        'date: $date, '
+        'action: $action, '
+        'title: $title, '
+        'body: $body '
+        '}';
   }
 }
