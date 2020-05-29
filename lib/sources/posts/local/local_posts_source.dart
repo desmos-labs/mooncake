@@ -64,7 +64,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   /// Given a [limit], returns the [Finder] that should be used to get
   /// the home posts returning a list of the [limit] size.
-  Finder _homeFinder(int limit, List<String> blockedUsers) {
+  Finder _homeFinder({int start = 0, int limit, List<String> blockedUsers}) {
     return Finder(
       filter: Filter.and([
         Filter.or([
@@ -75,6 +75,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         _getBlockedUsersFilter(blockedUsers),
       ]),
       sortOrders: [SortOrder(Post.DATE_FIELD, false)],
+      offset: start,
       limit: limit,
     );
   }
@@ -83,7 +84,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   Stream<List<Post>> homePostsStream(int limit) {
     return _usersRepository.blockedUsersStream.asyncExpand((users) {
       return _store
-          .query(finder: _homeFinder(limit, users))
+          .query(finder: _homeFinder(limit: limit, blockedUsers: users))
           .onSnapshots(_database)
           .asyncMap(PostsConverter.deserializePosts);
     });
@@ -105,15 +106,16 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<List<Post>> getHomePosts(int limit) async {
+  Future<List<Post>> getHomePosts({int start = 0, int limit = 50}) async {
     final users = await _usersRepository.getBlockedUsers();
+    final finder = _homeFinder(start: start, limit: limit, blockedUsers: users);
     return _store
-        .find(_database, finder: _homeFinder(limit, users))
+        .find(_database, finder: finder)
         .then(PostsConverter.deserializePosts);
   }
 
   @override
-  Future<Post> getSinglePost(String postId) async {
+  Future<Post> getPostById(String postId) async {
     final record = await _store.findFirst(
       _database,
       finder: _postFinder(postId),
@@ -255,7 +257,6 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       final values = await measureExecTime(() async {
         return PostsConverter.serializePosts(posts);
       }, name: "Local posts conversion");
-
 
       await measureExecTime(() async {
         return _store.records(keys).put(txn, values);

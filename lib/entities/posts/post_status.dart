@@ -28,13 +28,18 @@ class PostStatus extends Equatable {
     this.data,
   }) : assert(value != null);
 
+  factory PostStatus.fromJson(Map<String, dynamic> json) {
+    return _$PostStatusFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$PostStatusToJson(this);
+  }
+
   @override
-  List<Object> get props => [value, data];
-
-  factory PostStatus.fromJson(Map<String, dynamic> json) =>
-      _$PostStatusFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PostStatusToJson(this);
+  List<Object> get props {
+    return [value, data];
+  }
 }
 
 /// Contains the possible values of a post status.

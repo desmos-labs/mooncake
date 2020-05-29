@@ -279,13 +279,13 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Stream<PostsListState> _mapFetchEventToState() async* {
     final currentState = state;
     if (currentState is PostsLoading) {
-      final posts = await _getHomePostsUseCase.refresh(
+      final posts = await _getHomePostsUseCase.get(
         start: 0,
         limit: _HOME_LIMIT,
       );
       yield PostsLoaded.first(posts: posts);
     } else if (currentState is PostsLoaded) {
-      final posts = await _getHomePostsUseCase.refresh(
+      final posts = await _getHomePostsUseCase.get(
         start: currentState.posts.length,
         limit: _HOME_LIMIT,
       );
@@ -322,7 +322,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield currentState.copyWith(refreshing: true, shouldRefresh: false);
     }
 
-    final posts = await _getHomePostsUseCase.refresh(start: 0, limit: limit);
+    final posts = await _getHomePostsUseCase.get(start: 0, limit: limit);
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(
         refreshing: false,

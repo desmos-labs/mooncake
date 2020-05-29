@@ -14,10 +14,10 @@ abstract class LocalPostsSource {
   Stream<Post> singlePostStream(String postId);
 
   /// Returns the list of home posts.
-  Future<List<Post>> getHomePosts(int limit);
+  Future<List<Post>> getHomePosts({int start = 0, int limit = 50});
 
   /// Returns the details of the post currently stored inside the device.
-  Future<Post> getSinglePost(String postId);
+  Future<Post> getPostById(String postId);
 
   /// Returns the list of posts that have been included inside the
   /// transaction having the given [txHash].

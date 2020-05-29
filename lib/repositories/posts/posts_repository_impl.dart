@@ -12,21 +12,16 @@ import 'package:mooncake/usecases/usecases.dart';
 /// This is to have a single source of through (the local data) instead
 /// of multiple once.
 class PostsRepositoryImpl extends PostsRepository {
-  final UsersRepository _usersRepository;
-
   final LocalPostsSource _localPostsSource;
   final RemotePostsSource _remotePostsSource;
 
   PostsRepositoryImpl({
     @required LocalPostsSource localSource,
     @required RemotePostsSource remoteSource,
-    @required UsersRepository usersRepository,
   })  : assert(localSource != null),
         _localPostsSource = localSource,
         assert(remoteSource != null),
-        _remotePostsSource = remoteSource,
-        assert(usersRepository != null),
-        _usersRepository = usersRepository;
+        _remotePostsSource = remoteSource;
 
   @override
   Stream<List<Post>> getHomePostsStream(int limit) {
@@ -39,19 +34,16 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<List<Post>> refreshHomePosts({
+  Future<List<Post>> getHomePosts({
     @required int start,
     @required int limit,
   }) async {
-    final blockedUsers = await _usersRepository.getBlockedUsers();
     final remotes = await _remotePostsSource.getHomePosts(
       start: start,
       limit: limit,
     );
     await _localPostsSource.savePosts(remotes, merge: true);
-    return remotes
-        .where((post) => !blockedUsers.contains(post.owner.address))
-        .toList();
+    return _localPostsSource.getHomePosts(start: start, limit: limit);
   }
 
   @override
@@ -66,7 +58,7 @@ class PostsRepositoryImpl extends PostsRepository {
       await _localPostsSource.savePost(updated);
     }
 
-    return _localPostsSource.getSinglePost(postId);
+    return _localPostsSource.getPostById(postId);
   }
 
   @override
