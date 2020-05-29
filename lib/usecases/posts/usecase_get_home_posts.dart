@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/usecases/posts/posts.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to read all the posts that should be seen inside the main page.
 class GetHomePostsUseCase {

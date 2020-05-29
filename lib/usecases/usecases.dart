@@ -1,7 +1,7 @@
-export 'account/account.dart';
-export 'biometrics/biometrics.dart';
-export 'medias/medias.dart';
-export 'notifications/notifications.dart';
-export 'posts/posts.dart';
-export 'settings/settings.dart';
+export 'account/export.dart';
+export 'biometrics/export.dart';
+export 'medias/export.dart';
+export 'notifications/export.dart';
+export 'posts/export.dart';
+export 'settings/export.dart';
 export 'users/export.dart';

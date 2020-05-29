@@ -1,5 +1,5 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:mooncake/usecases/posts/posts.dart';
+import 'package:mooncake/usecases/posts/export.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
