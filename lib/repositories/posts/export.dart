@@ -1,2 +1,2 @@
-export 'local_posts_source.dart';
-export 'remote_posts_source.dart';
+export 'source_posts_local.dart';
+export 'source_posts_remote.dart';

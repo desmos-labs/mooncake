@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/user/user.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import 'local_users_source.dart';
+import 'source_users_local.dart';
 
 /// Implementation of [UsersRepository].
 class UsersRepositoryImpl extends UsersRepository {
