@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mooncake/entities/account/export.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 import 'common.dart';
@@ -10,7 +10,7 @@ void main() {
   CheckLoginUseCase checkLoginUseCase;
 
   setUp(() {
-    repository = MockUserRepository();
+    repository = UserRepositoryMock();
     checkLoginUseCase = CheckLoginUseCase(userRepository: repository);
   });
 

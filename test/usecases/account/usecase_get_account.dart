@@ -12,7 +12,7 @@ void main() {
   GetAccountUseCase getAccountUseCase;
 
   setUp(() {
-    repository = MockUserRepository();
+    repository = UserRepositoryMock();
     getAccountUseCase = GetAccountUseCase(userRepository: repository);
   });
 

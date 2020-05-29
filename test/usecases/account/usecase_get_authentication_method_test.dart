@@ -10,7 +10,7 @@ void main() {
   GetAuthenticationMethodUseCase getAuthenticationMethodUseCase;
 
   setUp(() {
-    repository = MockUserRepository();
+    repository = UserRepositoryMock();
     getAuthenticationMethodUseCase = GetAuthenticationMethodUseCase(
       userRepository: repository,
     );
@@ -21,11 +21,9 @@ void main() {
     when(repository.getAuthenticationMethod())
         .thenAnswer((_) => Future.value(authMethod));
 
-    final result = await repository.getAuthenticationMethod();
+    final result = await getAuthenticationMethodUseCase.get();
     expect(result, equals(authMethod));
 
     verify(repository.getAuthenticationMethod()).called(1);
   });
-
-
 }
