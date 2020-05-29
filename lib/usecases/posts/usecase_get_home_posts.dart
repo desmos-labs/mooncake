@@ -17,7 +17,7 @@ class GetHomePostsUseCase {
 
   /// Refreshes the home posts by downloading them from the remote
   /// repository.
-  Future<List<Post>> get({int start, int limit}) {
+  Future<List<Post>> get({int start = 0, int limit = 50}) {
     return _postsRepository.getHomePosts(start: start, limit: limit);
   }
 }

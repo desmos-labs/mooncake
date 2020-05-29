@@ -7,9 +7,9 @@ class CreatePostUseCase {
   final UserRepository _userRepository;
 
   CreatePostUseCase({
-    @required UserRepository walletRepository,
-  })  : assert(walletRepository != null),
-        _userRepository = walletRepository;
+    @required UserRepository userRepository,
+  })  : assert(userRepository != null),
+        _userRepository = userRepository;
 
   /// Creates a new [Post] object having the given data inside.
   /// Returns the newly created object.
@@ -21,7 +21,6 @@ class CreatePostUseCase {
     PostPoll poll,
   }) async {
     final account = await _userRepository.getAccount();
-    final user = User.fromAddress(account.cosmosAccount.address);
     final date = Post.getDateStringNow();
     return Post(
       id: date,
@@ -32,7 +31,7 @@ class CreatePostUseCase {
       medias: medias,
       poll: poll,
       subspace: Constants.SUBSPACE,
-      owner: user,
+      owner: account,
     );
   }
 }
