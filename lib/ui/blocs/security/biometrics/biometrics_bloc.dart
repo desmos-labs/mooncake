@@ -72,7 +72,7 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
   }
 
   Stream<BiometricsState> _mapCheckAuthenticationTypeEventToState() async* {
-    final types = await _getAvailableBiometricsUseCase.check();
+    final types = await _getAvailableBiometricsUseCase.get();
     if (types.contains(BiometricType.face)) {
       yield state.copyWith(availableBiometric: BiometricType.face);
     }

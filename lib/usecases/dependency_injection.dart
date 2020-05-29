@@ -1,9 +1,12 @@
 import 'package:dependencies/dependencies.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 class UseCaseModule implements Module {
   @override
   void configure(Binder binder) {
+    final authentication = LocalAuthentication();
+
     binder
       // Account use cases
       ..bindFactory((injector, params) => CheckLoginUseCase(
@@ -38,8 +41,12 @@ class UseCaseModule implements Module {
           ))
 
       // Biometrics use cases
-      ..bindFactory((injector, params) => CanUseBiometricsUseCase())
-      ..bindFactory((injector, params) => GetAvailableBiometricsUseCase())
+      ..bindFactory((injector, params) => CanUseBiometricsUseCase(
+            localAuthentication: authentication,
+          ))
+      ..bindFactory((injector, params) => GetAvailableBiometricsUseCase(
+            localAuthentication: authentication,
+          ))
 
       // Notifications use cases
       ..bindFactory((injector, params) => GetNotificationsUseCase(
