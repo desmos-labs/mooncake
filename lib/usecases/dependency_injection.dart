@@ -7,7 +7,7 @@ class UseCaseModule implements Module {
     binder
       // Account use cases
       ..bindFactory((injector, params) => CheckLoginUseCase(
-            walletRepository: injector.get(),
+            userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => EncryptMnemonicUseCase())
       ..bindFactory((injector, params) => GenerateMnemonicUseCase())
