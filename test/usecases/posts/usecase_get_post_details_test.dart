@@ -44,4 +44,16 @@ void main() {
     final result = await getPostDetailsUseCase.local(postId);
     expect(result, equals(post));
   });
+
+  test('fromRemote performs correct calls', () async {
+    final post = testPost;
+    when(repository.getPostById(any, refresh: anyNamed("refresh")))
+        .thenAnswer((_) => Future.value(post));
+
+    final postId = "post-id";
+    final answer = await getPostDetailsUseCase.fromRemote(postId);
+    expect(answer, equals(post));
+
+    verify(repository.getPostById(postId, refresh: true));
+  });
 }

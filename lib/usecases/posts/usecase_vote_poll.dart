@@ -21,27 +21,26 @@ class VotePollUseCase {
   /// that is given inside the provided [option].
   Future<Post> vote(Post post, PollOption option) async {
     final account = await _userRepository.getAccount();
-    final userAddress = account.cosmosAccount.address;
 
     final pollAnswers = List<PollAnswer>()..addAll(post.poll.userAnswers);
     final userAnswer = pollAnswers.firstWhere(
-      (element) =>
-          element.user.address == userAddress && element.answer == option.id,
+      (element) => element.user.address == account.address,
       orElse: () => null,
     );
 
+    // The answer exists and the post does not allow for multiple answers
+    if (userAnswer != null && !post.poll.allowsMultipleAnswers) {
+      return post;
+    }
+
     // The answer does not exist, create it
     if (userAnswer == null) {
-      final answer = PollAnswer(
-        answer: option.id,
-        user: User.fromAddress(userAddress),
-      );
+      final answer = PollAnswer(answer: option.id, user: account);
       pollAnswers.add(answer);
 
       // Update the post
-      final poll = post.poll.copyWith(userAnswers: pollAnswers);
       post = post.copyWith(
-        poll: poll,
+        poll: post.poll.copyWith(userAnswers: pollAnswers),
         status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
       );
 
