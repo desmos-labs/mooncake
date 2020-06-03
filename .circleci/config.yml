@@ -36,6 +36,9 @@ jobs:
             # Exclude dependency injection files
             pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'dependency_injection*'
 
+            # Exlude utils files
+            pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'lib/utils/*.dart'
+
             # Exclude repository interfaces files
             pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '^repository/*.dart'
 
