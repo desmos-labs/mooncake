@@ -3,14 +3,14 @@ import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to easily log out the user from the application.
 class LogoutUseCase {
-  final UserRepository _walletRepository;
+  final UserRepository _userRepository;
 
-  LogoutUseCase({@required UserRepository walletRepository})
-      : assert(walletRepository != null),
-        _walletRepository = walletRepository;
+  LogoutUseCase({@required UserRepository userRepository})
+      : assert(userRepository != null),
+        _userRepository = userRepository;
 
   /// Log outs the user from the application.
   Future<void> logout() {
-    return _walletRepository.deleteData();
+    return _userRepository.deleteData();
   }
 }

@@ -9,9 +9,14 @@ part 'poll_option.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PollOption extends Equatable {
+  /// Id of the option.
+  /// This same id will be used by users in order to reference this option when
+  /// answering the poll. For this reason, it will be used inside
+  /// [PollAnswer.id] field.
   @JsonKey(name: "id")
   final int id;
 
+  /// Textual option that the user will be able to read inside the poll.
   @JsonKey(name: "text")
   final String text;
 
@@ -40,5 +45,7 @@ class PollOption extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, text];
+  List<Object> get props {
+    return [id, text];
+  }
 }

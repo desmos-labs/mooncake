@@ -24,7 +24,7 @@ class PostPollContent extends StatelessWidget {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
         final account = (state as LoggedIn).user;
-        final hasVoted = post.hasVoted(account);
+        final hasVoted = account.hasVoted(post.poll);
 
         return Container(
           width: double.infinity,

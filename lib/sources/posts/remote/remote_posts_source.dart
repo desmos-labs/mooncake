@@ -137,7 +137,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
       // Upload the medias if necessary
       final uploadedMedias = await Future.wait(post.medias.map((media) async {
-        final file = File(media.url);
+        final file = File(media.uri);
         if (!file.existsSync()) {
           // Already remote, do nothing
           return media;
@@ -145,7 +145,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
         // Upload to IPFS and return a new media with the changed URL
         final ipfsUrl = await _remoteMediasSource.uploadMedia(file);
-        return media.copyWith(url: ipfsUrl);
+        return media.copyWith(uri: ipfsUrl);
       }));
       newPosts[index] = post.copyWith(medias: uploadedMedias);
     }

@@ -34,7 +34,9 @@ abstract class BasePostInteractionNotification extends NotificationData {
         );
 
   @override
-  List<Object> get props => super.props + [postId, user];
+  List<Object> get props {
+    return super.props + [postId, user];
+  }
 }
 
 /// Represents a notification telling that a comment has been added to
@@ -65,13 +67,19 @@ class PostCommentNotification extends BasePostInteractionNotification {
         );
 
   @override
-  List<Object> get props => super.props + [];
+  List<Object> get props {
+    return super.props + [comment];
+  }
 
-  factory PostCommentNotification.fromJson(Map<String, dynamic> json) =>
-      _$PostCommentNotificationFromJson(json);
+  factory PostCommentNotification.fromJson(Map<String, dynamic> json) {
+    return _$PostCommentNotificationFromJson(json);
+  }
 
+  @Deprecated("Use asJson instead")
   @override
-  Map<String, dynamic> toJson() => _$PostCommentNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$PostCommentNotificationToJson(this);
+  }
 }
 
 /// Represents a notification telling that the user has been mentioned
@@ -100,11 +108,17 @@ class PostMentionNotification extends BasePostInteractionNotification {
           body: body,
         );
 
-  factory PostMentionNotification.fromJson(Map<String, dynamic> json) =>
-      _$PostMentionNotificationFromJson(json);
+  factory PostMentionNotification.fromJson(Map<String, dynamic> json) {
+    return _$PostMentionNotificationFromJson(json);
+  }
 
   @override
-  Map<String, dynamic> toJson() => _$PostMentionNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$PostMentionNotificationToJson(this);
+  }
+
+  @override
+  List<Object> get props => super.props + [text];
 }
 
 /// Represents a notification telling the user he's been tagged inside a post.
@@ -127,11 +141,14 @@ class PostTagNotification extends BasePostInteractionNotification {
           body: body,
         );
 
-  factory PostTagNotification.fromJson(Map<String, dynamic> json) =>
-      _$PostTagNotificationFromJson(json);
+  factory PostTagNotification.fromJson(Map<String, dynamic> json) {
+    return _$PostTagNotificationFromJson(json);
+  }
 
   @override
-  Map<String, dynamic> toJson() => _$PostTagNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$PostTagNotificationToJson(this);
+  }
 }
 
 /// Represents a notification telling that a reaction has been added
@@ -161,11 +178,17 @@ class PostReactionNotification extends BasePostInteractionNotification {
           body: body,
         );
 
-  factory PostReactionNotification.fromJson(Map<String, dynamic> json) =>
-      _$PostReactionNotificationFromJson(json);
+  factory PostReactionNotification.fromJson(Map<String, dynamic> json) {
+    return _$PostReactionNotificationFromJson(json);
+  }
 
   @override
-  Map<String, dynamic> toJson() => _$PostReactionNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$PostReactionNotificationToJson(this);
+  }
+
+  @override
+  List<Object> get props => super.props + [reaction];
 }
 
 /// Represents a notification telling that a like has been added
@@ -189,9 +212,12 @@ class PostLikeNotification extends BasePostInteractionNotification {
           body: body,
         );
 
-  factory PostLikeNotification.fromJson(Map<String, dynamic> json) =>
-      _$PostLikeNotificationFromJson(json);
+  factory PostLikeNotification.fromJson(Map<String, dynamic> json) {
+    return _$PostLikeNotificationFromJson(json);
+  }
 
   @override
-  Map<String, dynamic> toJson() => _$PostLikeNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$PostLikeNotificationToJson(this);
+  }
 }

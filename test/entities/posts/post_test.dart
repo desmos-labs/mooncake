@@ -25,13 +25,13 @@ void main() {
 
   test('images', () {
     final images = [
-      PostMedia(url: "https://example.com/1", mimeType: "image/jpeg"),
-      PostMedia(url: "https://example.com/2", mimeType: "image/png"),
-      PostMedia(url: "https://example.com/3", mimeType: "image/gif"),
+      PostMedia(uri: "https://example.com/1", mimeType: "image/jpeg"),
+      PostMedia(uri: "https://example.com/2", mimeType: "image/png"),
+      PostMedia(uri: "https://example.com/3", mimeType: "image/gif"),
     ];
     final post = stdPost.copyWith(
       medias: images +
-          [PostMedia(url: "https://example.com/4", mimeType: "text/plain")],
+          [PostMedia(uri: "https://example.com/4", mimeType: "text/plain")],
     );
     expect(post.medias, hasLength(4));
     expect(post.images, equals(images));

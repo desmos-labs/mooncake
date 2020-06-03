@@ -22,7 +22,9 @@ abstract class TxNotification extends NotificationData {
         );
 
   @override
-  List<Object> get props => super.props + [txHash];
+  List<Object> get props {
+    return super.props + [txHash];
+  }
 }
 
 /// Represents the notification that is sent to the user after a transaction
@@ -39,15 +41,26 @@ class TxSuccessfulNotification extends TxNotification {
           txHash: txHash,
         );
 
-  factory TxSuccessfulNotification.fromJson(Map<String, dynamic> json) =>
-      _$TxSuccessfulNotificationFromJson(json);
+  factory TxSuccessfulNotification.fromJson(Map<String, dynamic> json) {
+    return _$TxSuccessfulNotificationFromJson(json);
+  }
 
   @override
-  Map<String, dynamic> toJson() => _$TxSuccessfulNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$TxSuccessfulNotificationToJson(this);
+  }
+
+  @override
+  List<Object> get props {
+    return super.props;
+  }
 
   @override
   String toString() {
-    return 'TxSuccessfulNotification { date: $date, txHash: $txHash }';
+    return 'TxSuccessfulNotification { '
+        'date: $date, '
+        'txHash: $txHash '
+        '}';
   }
 }
 
@@ -70,12 +83,17 @@ class TxFailedNotification extends TxNotification {
           txHash: txHash,
         );
 
-  factory TxFailedNotification.fromJson(Map<String, dynamic> json) =>
-      _$TxFailedNotificationFromJson(json);
+  factory TxFailedNotification.fromJson(Map<String, dynamic> json) {
+    return _$TxFailedNotificationFromJson(json);
+  }
 
   @override
-  List<Object> get props => super.props + [error];
+  Map<String, dynamic> toJson() {
+    return _$TxFailedNotificationToJson(this);
+  }
 
   @override
-  Map<String, dynamic> toJson() => _$TxFailedNotificationToJson(this);
+  List<Object> get props {
+    return super.props + [error];
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:dependencies/dependencies.dart';
-import 'package:mooncake/usecases/posts/posts.dart';
+import 'package:mooncake/usecases/posts/export.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +29,6 @@ class RepositoriesModule implements Module {
           (injector, params) => PostsRepositoryImpl(
                 localSource: injector.get(),
                 remoteSource: injector.get(),
-                usersRepository: injector.get(),
               ))
       ..bindLazySingleton<SettingsRepository>(
           (injector, params) => SettingsRepositoryImpl(

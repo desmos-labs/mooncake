@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 /// Implementation of [UserRepository].
@@ -19,11 +18,26 @@ class UserRepositoryImpl extends UserRepository {
         assert(remoteUserSource != null),
         this._remoteUserSource = remoteUserSource;
 
+  @visibleForTesting
+  Future<void> updateAndStoreAccountData() async {
+    final user = await _localUserSource.getAccount();
+    if (user == null) {
+      // No User stored locally, nothing to update
+      return;
+    }
+
+    // Update the data from the remote source and save it locally
+    final data = await _remoteUserSource.getAccount(user.cosmosAccount.address);
+    if (data != null) {
+      await _localUserSource.saveAccount(data);
+    }
+  }
+
   @override
   Future<void> saveWallet(String mnemonic) async {
     return _localUserSource
         .saveWallet(mnemonic)
-        .then((_) => _updateAndStoreAccountData());
+        .then((_) => updateAndStoreAccountData());
   }
 
   @override
@@ -42,29 +56,15 @@ class UserRepositoryImpl extends UserRepository {
     return _remoteUserSource.saveAccount(account);
   }
 
-  Future<void> _updateAndStoreAccountData() async {
-    final user = await _localUserSource.getAccount();
-    if (user == null) {
-      // No User stored locally, nothing to update
-      return;
-    }
-
-    // Update the data from the remote source and save it locally
-    final data = await _remoteUserSource.getAccount(user.cosmosAccount.address);
-    if (data != null) {
-      await _localUserSource.saveAccount(data);
-    }
-  }
-
   @override
   Future<MooncakeAccount> getAccount() {
-    return _updateAndStoreAccountData()
+    return updateAndStoreAccountData()
         .then((_) => _localUserSource.getAccount());
   }
 
   @override
   Future<void> refreshAccount() {
-    return _updateAndStoreAccountData();
+    return updateAndStoreAccountData();
   }
 
   @override

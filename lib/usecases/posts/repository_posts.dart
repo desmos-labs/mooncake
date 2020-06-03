@@ -13,7 +13,7 @@ abstract class PostsRepository {
 
   /// Refreshes the home posts downloading the ones present remotely and
   /// saving them locally.
-  Future<List<Post>> refreshHomePosts({
+  Future<List<Post>> getHomePosts({
     @required int start,
     @required int limit,
   });

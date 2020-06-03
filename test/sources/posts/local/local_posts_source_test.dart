@@ -149,10 +149,10 @@ void main() {
     final post = _createPost("1");
     await _storePosts([post]);
 
-    final stored = await source.getSinglePost("1");
+    final stored = await source.getPostById("1");
     expect(stored, equals(post));
 
-    final nonExistent = await source.getSinglePost("non-existent");
+    final nonExistent = await source.getPostById("non-existent");
     expect(nonExistent, isNull);
   });
 

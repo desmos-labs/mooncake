@@ -1,13 +1,16 @@
 import 'package:dependencies/dependencies.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 class UseCaseModule implements Module {
   @override
   void configure(Binder binder) {
+    final authentication = LocalAuthentication();
+
     binder
       // Account use cases
       ..bindFactory((injector, params) => CheckLoginUseCase(
-            walletRepository: injector.get(),
+            userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => EncryptMnemonicUseCase())
       ..bindFactory((injector, params) => GenerateMnemonicUseCase())
@@ -25,7 +28,7 @@ class UseCaseModule implements Module {
             userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => LogoutUseCase(
-            walletRepository: injector.get(),
+            userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => RefreshAccountUseCase(
             userRepository: injector.get(),
@@ -38,8 +41,12 @@ class UseCaseModule implements Module {
           ))
 
       // Biometrics use cases
-      ..bindFactory((injector, params) => CanUseBiometricsUseCase())
-      ..bindFactory((injector, params) => GetAvailableBiometricsUseCase())
+      ..bindFactory((injector, params) => CanUseBiometricsUseCase(
+            localAuthentication: authentication,
+          ))
+      ..bindFactory((injector, params) => GetAvailableBiometricsUseCase(
+            localAuthentication: authentication,
+          ))
 
       // Notifications use cases
       ..bindFactory((injector, params) => GetNotificationsUseCase(
@@ -48,7 +55,7 @@ class UseCaseModule implements Module {
 
       // Posts use cases
       ..bindFactory((injector, params) => CreatePostUseCase(
-            walletRepository: injector.get(),
+            userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => DeletePostsUseCase(
             postsRepository: injector.get(),
@@ -70,7 +77,7 @@ class UseCaseModule implements Module {
           ))
       ..bindFactory((injector, params) => ManagePostReactionsUseCase(
             postsRepository: injector.get(),
-            walletRepository: injector.get(),
+            userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => SyncPostsUseCase(
             postsRepository: injector.get(),

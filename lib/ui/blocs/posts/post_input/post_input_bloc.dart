@@ -94,7 +94,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   /// Converts the given [file] to a [PostMedia] instance.
   PostMedia _convert(File file) {
     return PostMedia(
-      url: file.absolute.path,
+      uri: file.absolute.path,
       mimeType: mime(file.absolute.path),
     );
   }
@@ -105,8 +105,8 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     PostMedia media,
   ) {
     return medias
-        .map((m) => File(m.url))
-        .where((f) => !_contentsEquals(f, File(media.url)))
+        .map((m) => File(m.uri))
+        .where((f) => !_contentsEquals(f, File(media.uri)))
         .map((f) => _convert(f))
         .toList();
   }

@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:mooncake/usecases/posts/posts.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to sync all the posts that have been created offline as well as

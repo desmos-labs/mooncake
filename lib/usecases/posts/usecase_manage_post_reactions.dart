@@ -9,10 +9,10 @@ class ManagePostReactionsUseCase {
   final PostsRepository _postsRepository;
 
   ManagePostReactionsUseCase({
-    @required UserRepository walletRepository,
+    @required UserRepository userRepository,
     @required PostsRepository postsRepository,
-  })  : assert(walletRepository != null),
-        _userRepository = walletRepository,
+  })  : assert(userRepository != null),
+        _userRepository = userRepository,
         assert(postsRepository != null),
         _postsRepository = postsRepository;
 

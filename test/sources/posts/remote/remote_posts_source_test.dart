@@ -148,7 +148,7 @@ void main() {
           allowsComments: false,
           medias: [
             PostMedia(
-              url:
+              uri:
                   "https://ipfs.desmos.network/ipfs/QmPKQBed922AEDThJ3pVeJPk7B4hm9z8uJxzg4v8EHZGhb",
               mimeType: "image/jpeg",
             )

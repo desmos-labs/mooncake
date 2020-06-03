@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:mooncake/usecases/account/account.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to easily refresh the account.
 class RefreshAccountUseCase {
