@@ -84,7 +84,7 @@ void main() {
               User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
           value: "❤",
         ),
-        Reaction(user: account, value: "🍉"),
+        Reaction(user: account.toUser(), value: "🍉"),
       ];
       expect(result, equals(expected));
     });

@@ -31,13 +31,18 @@ class Reaction extends Equatable {
         this.value = EmojiUtils.getEmojiRune(value),
         this.code = EmojiUtils.getEmojiCode(value);
 
-  factory Reaction.fromJson(Map<String, dynamic> json) =>
-      _$ReactionFromJson(json);
+  factory Reaction.fromJson(Map<String, dynamic> json) {
+    return _$ReactionFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() {
+    return _$ReactionToJson(this);
+  }
 
   @override
-  List<Object> get props => [this.user, this.value];
-
-  Map<String, dynamic> toJson() => _$ReactionToJson(this);
+  List<Object> get props {
+    return [this.user, this.value];
+  }
 
   @override
   String toString() {
