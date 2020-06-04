@@ -94,19 +94,32 @@ void main() {
     verify(localUserSource.getWallet()).called(1);
   });
 
-  test('saveAccount works properly', () async {
-    final account = MooncakeAccount.local("address");
-    when(localUserSource.saveAccount(any))
-        .thenAnswer((_) => Future.value(null));
-    when(remoteUserSource.saveAccount(any))
-        .thenAnswer((_) => Future.value(null));
+  group('saveAccount works properly', () {
+    test('when syncRemote is false', () async {
+      final account = MooncakeAccount.local("address");
+      when(localUserSource.saveAccount(any))
+          .thenAnswer((_) => Future.value(null));
 
-    await repository.saveAccount(account);
+      await repository.saveAccount(account);
 
-    verifyInOrder([
-      localUserSource.saveAccount(account),
-      remoteUserSource.saveAccount(account),
-    ]);
+      verify(localUserSource.saveAccount(account));
+      verifyNever(remoteUserSource.saveAccount(any));
+    });
+
+    test('when syncRemote is true', () async {
+      final account = MooncakeAccount.local("address");
+      when(localUserSource.saveAccount(any))
+          .thenAnswer((_) => Future.value(null));
+      when(remoteUserSource.saveAccount(any))
+          .thenAnswer((_) => Future.value(null));
+
+      await repository.saveAccount(account, syncRemote: true);
+
+      verifyInOrder([
+        remoteUserSource.saveAccount(account),
+        localUserSource.saveAccount(account),
+      ]);
+    });
   });
 
   group('getAccount works properly', () {

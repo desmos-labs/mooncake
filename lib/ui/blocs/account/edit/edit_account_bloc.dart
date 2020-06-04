@@ -109,9 +109,7 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
 
   Stream<EditAccountState> _handleSaveAccount() async* {
     yield state.copyWith(saving: true);
-    final account = state.account;
-    print(account);
-    await _saveAccountUseCase.save(state.account);
+    await _saveAccountUseCase.save(state.account, syncRemote: true);
     yield state.copyWith(saving: false);
 
     _navigatorBloc.add(GoBack());

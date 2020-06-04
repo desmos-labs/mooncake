@@ -16,7 +16,7 @@ abstract class UserRepository {
   Future<Wallet> getWallet();
 
   /// Saves the given [account] as the current user object.
-  Future<void> saveAccount(MooncakeAccount account);
+  Future<void> saveAccount(MooncakeAccount account, {bool syncRemote = false});
 
   /// Returns the [AccountData] object containing the info of the current user.
   /// If no [MooncakeAccount] or [Wallet] have been saved using [saveWallet]

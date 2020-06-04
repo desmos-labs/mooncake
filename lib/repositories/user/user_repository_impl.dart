@@ -49,9 +49,14 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> saveAccount(MooncakeAccount account) async {
-    await _localUserSource.saveAccount(account);
-    return _remoteUserSource.saveAccount(account);
+  Future<void> saveAccount(
+    MooncakeAccount account, {
+    bool syncRemote = false,
+  }) async {
+    if (syncRemote) {
+      await _remoteUserSource.saveAccount(account);
+    }
+    return _localUserSource.saveAccount(account);
   }
 
   @override
