@@ -1,8 +1,3 @@
-# Version 0.4.1
-## Changes
-- Improved the performances of the adding and removal of the reactions
-- Improved the performance of the poll voting
-
 # Version 0.4.0
 ## Changes
 - Implemented the profiles.  
