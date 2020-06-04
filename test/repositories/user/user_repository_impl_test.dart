@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -117,10 +116,7 @@ void main() {
       final result = await repository.getAccount();
       expect(result, isNull);
 
-      verifyInOrder([
-        localUserSource.getAccount(),
-        localUserSource.getAccount(),
-      ]);
+      verify(localUserSource.getAccount()).called(1);
     });
 
     test('when account exists locally', () async {
@@ -128,23 +124,10 @@ void main() {
       when(localUserSource.getAccount())
           .thenAnswer((_) => Future.value(account));
 
-      final remoteAccount = account.copyWith(moniker: "test-moniker");
-      when(remoteUserSource.getAccount(any))
-          .thenAnswer((_) => Future.value(remoteAccount));
-
-      when(localUserSource.saveAccount(any))
-          .thenAnswer((_) => Future.value(null));
-
       final result = await repository.getAccount();
-      // The last call will be to the local source
       expect(result, equals(account));
 
-      verifyInOrder([
-        localUserSource.getAccount(),
-        remoteUserSource.getAccount(account.address),
-        localUserSource.saveAccount(remoteAccount),
-        localUserSource.getAccount(),
-      ]);
+      verify(localUserSource.getAccount()).called(1);
     });
   });
 

@@ -24,14 +24,14 @@ void main() {
       ),
     );
     when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
-    when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+    when(repository.refreshAccount()).thenAnswer((_) => Future.value(account));
 
     final mnemonic = "mnemonic";
     await loginUseCase.login(mnemonic);
 
     verifyInOrder([
       repository.saveWallet(mnemonic),
-      repository.getAccount(),
+      repository.refreshAccount(),
     ]);
     verifyNever(repository.fundAccount(any));
   });
@@ -39,7 +39,7 @@ void main() {
   test('login works properly when funding is required', () async {
     final account = MooncakeAccount.local("address");
     when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
-    when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+    when(repository.refreshAccount()).thenAnswer((_) => Future.value(account));
     when(repository.fundAccount(any)).thenAnswer((_) => Future.value(null));
 
     final mnemonic = "mnemonic";
@@ -47,7 +47,7 @@ void main() {
 
     verifyInOrder([
       repository.saveWallet(mnemonic),
-      repository.getAccount(),
+      repository.refreshAccount(),
       repository.fundAccount(account),
     ]);
   });

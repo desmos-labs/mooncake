@@ -16,7 +16,7 @@ class LoginUseCase {
     await _userRepository.saveWallet(mnemonic);
 
     // Get the account data
-    final user = await _userRepository.getAccount();
+    final user = await _userRepository.refreshAccount();
 
     // If needed, send the funds to the user
     if (user?.needsFunding == true) {

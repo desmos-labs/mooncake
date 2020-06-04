@@ -95,10 +95,11 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<void> saveAccount(MooncakeAccount data) async {
+  Future<MooncakeAccount> saveAccount(MooncakeAccount data) async {
     await database.transaction((txn) async {
       await store.record(USER_DATA_KEY).put(txn, data?.toJson());
     });
+    return data;
   }
 
   @override

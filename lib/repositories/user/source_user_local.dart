@@ -16,7 +16,7 @@ abstract class LocalUserSource {
   Future<Wallet> getWallet();
 
   /// Saves the given [data] as the current local user data.
-  Future<void> saveAccount(MooncakeAccount data);
+  Future<MooncakeAccount> saveAccount(MooncakeAccount data);
 
   /// Returns the [User] containing the data of the current app user.
   /// If no [User] or [Wallet] have been saved yet, returns `null`.

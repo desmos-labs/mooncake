@@ -19,18 +19,16 @@ class UserRepositoryImpl extends UserRepository {
         this._remoteUserSource = remoteUserSource;
 
   @visibleForTesting
-  Future<void> updateAndStoreAccountData() async {
+  Future<MooncakeAccount> updateAndStoreAccountData() async {
     final user = await _localUserSource.getAccount();
     if (user == null) {
       // No User stored locally, nothing to update
-      return;
+      return null;
     }
 
     // Update the data from the remote source and save it locally
     final data = await _remoteUserSource.getAccount(user.cosmosAccount.address);
-    if (data != null) {
-      await _localUserSource.saveAccount(data);
-    }
+    return data == null ? null : _localUserSource.saveAccount(data);
   }
 
   @override
@@ -58,12 +56,11 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<MooncakeAccount> getAccount() {
-    return updateAndStoreAccountData()
-        .then((_) => _localUserSource.getAccount());
+    return _localUserSource.getAccount();
   }
 
   @override
-  Future<void> refreshAccount() {
+  Future<MooncakeAccount> refreshAccount() {
     return updateAndStoreAccountData();
   }
 
