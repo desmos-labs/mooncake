@@ -12,10 +12,12 @@ Reaction _$ReactionFromJson(Map<String, dynamic> json) {
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
     value: json['value'] as String,
+    code: json['code'] as String,
   );
 }
 
 Map<String, dynamic> _$ReactionToJson(Reaction instance) => <String, dynamic>{
       'user': instance.user?.toJson(),
       'value': instance.value,
+      'code': instance.code,
     };

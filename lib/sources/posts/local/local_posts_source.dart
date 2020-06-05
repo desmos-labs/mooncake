@@ -249,13 +249,13 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       if (merge) {
         final existingValues = await measureExecTime(() async {
           final posts = await _store.records(keys).get(txn);
-          return PostsConverter.deserializePosts(posts);
+          return PostsConverter.deserializePostsSync(posts);
         }, name: "Local posts reading");
         posts = mergePosts(existingValues, posts);
       }
 
       final values = await measureExecTime(() async {
-        return PostsConverter.serializePosts(posts);
+        return PostsConverter.serializePostsSync(posts);
       }, name: "Local posts conversion");
 
       await measureExecTime(() async {

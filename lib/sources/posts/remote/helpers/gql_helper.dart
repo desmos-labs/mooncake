@@ -126,12 +126,10 @@ class GqlPostsHelper {
     }
     """;
     final data = await measureExecTime(() async {
-      return client.query(
-        QueryOptions(
-          documentNode: gql(query),
-          fetchPolicy: FetchPolicy.networkOnly,
-        ),
-      );
+      return client.query(QueryOptions(
+        documentNode: gql(query),
+        fetchPolicy: FetchPolicy.networkOnly,
+      ));
     }, name: "Query posts");
 
     return await measureExecTime(() async {
@@ -157,13 +155,11 @@ class GqlPostsHelper {
       }
     }
     """;
-    final data = await client.query(
-      QueryOptions(
-        documentNode: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly,
-      ),
-    );
-    final posts = await compute(_convertPostsGqlResponse, data.data["post"]);
+    final data = await client.query(QueryOptions(
+      documentNode: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+    final posts = _convertPostsGqlResponse(data.data["post"]);
     return posts.isEmpty ? null : posts[0];
   }
 
@@ -186,12 +182,10 @@ class GqlPostsHelper {
       }
     }
     """;
-    final data = await client.query(
-      QueryOptions(
-        documentNode: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly,
-      ),
-    );
-    return compute(_convertPostsGqlResponse, data.data["comments"]);
+    final data = await client.query(QueryOptions(
+      documentNode: gql(query),
+      fetchPolicy: FetchPolicy.networkOnly,
+    ));
+    return _convertPostsGqlResponse(data.data["comments"]);
   }
 }

@@ -46,6 +46,6 @@ extension ReactionsExt on List<Reaction> {
   }
 
   List<Reaction> _addFrom(MooncakeAccount account, String reaction) {
-    return this + [Reaction(user: account.toUser(), value: reaction)];
+    return this + [Reaction.fromValue(reaction, account.toUser())];
   }
 }

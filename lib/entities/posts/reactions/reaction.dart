@@ -18,34 +18,59 @@ class Reaction extends Equatable {
   final String value;
 
   /// Represents the shortcode that identifies the emoji.
+  @JsonKey(name: "code", nullable: true)
   final String code;
 
   /// Tells whether or not this reaction represents a like.
   bool get isLike => value.replaceAll("️", "") == Constants.LIKE_REACTION;
 
-  Reaction({
+  const Reaction({
     @required this.user,
-    @required String value,
+    @required this.value,
+    @required this.code,
   })  : assert(user != null),
-        assert(value != null),
-        this.value = EmojiUtils.getEmojiRune(value),
-        this.code = EmojiUtils.getEmojiCode(value);
+        assert(value != null);
+
+  factory Reaction.fromValue(String value, User user) {
+    return Reaction(
+      user: user,
+      value: EmojiUtils.getEmojiRune(value),
+      code: EmojiUtils.getEmojiCode(value),
+    );
+  }
 
   factory Reaction.fromJson(Map<String, dynamic> json) {
-    return _$ReactionFromJson(json);
+    final react = _$ReactionFromJson(json);
+    return react.code != null
+        ? react
+        : react.copyWith(
+            code: EmojiUtils.getEmojiCode(react.value),
+          );
   }
 
   Map<String, dynamic> toJson() {
     return _$ReactionToJson(this);
   }
 
+  Reaction copyWith({
+    String code,
+    String value,
+    User user,
+  }) {
+    return Reaction(
+      code: code ?? this.code,
+      value: value ?? this.value,
+      user: user ?? this.user,
+    );
+  }
+
   @override
   List<Object> get props {
-    return [this.user, this.value];
+    return [this.user, this.value, this.code];
   }
 
   @override
   String toString() {
-    return 'Reaction { value: $value }';
+    return 'Reaction { value: $value, code: $code, user: ${user.address} }';
   }
 }

@@ -14,7 +14,7 @@ import '../export.dart';
 /// Implementation of [Bloc] that allows to properly deal with
 /// events and states related to the list of posts.
 class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
-  static const _HOME_LIMIT = 50;
+  static const _HOME_LIMIT = 25;
 
   // Synchronization
   final int _syncPeriod;
