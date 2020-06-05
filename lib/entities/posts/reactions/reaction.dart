@@ -18,7 +18,7 @@ class Reaction extends Equatable {
   final String value;
 
   /// Represents the shortcode that identifies the emoji.
-  @JsonKey(name: "code", nullable: true)
+  @JsonKey(name: "short_code", nullable: true)
   final String code;
 
   /// Tells whether or not this reaction represents a like.
