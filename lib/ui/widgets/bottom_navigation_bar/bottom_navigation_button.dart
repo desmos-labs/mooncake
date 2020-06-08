@@ -14,7 +14,7 @@ class BottomNavigationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titles = {
-      AppTab.allPosts: PostsLocalizations.of(context).allPostsTabTitle,
+      AppTab.home: PostsLocalizations.of(context).allPostsTabTitle,
       AppTab.likedPosts: PostsLocalizations.of(context).likedPostsTabTitle,
       AppTab.notifications:
           PostsLocalizations.of(context).notificationsTabTitle,
@@ -22,14 +22,14 @@ class BottomNavigationButton extends StatelessWidget {
     };
 
     final icons = {
-      AppTab.allPosts: MooncakeIcons.home,
+      AppTab.home: MooncakeIcons.home,
       AppTab.likedPosts: MooncakeIcons.heart,
       AppTab.notifications: MooncakeIcons.bell,
       AppTab.account: MooncakeIcons.user,
     };
 
     final selectedIcons = {
-      AppTab.allPosts: MooncakeIcons.homeF,
+      AppTab.home: MooncakeIcons.homeF,
       AppTab.likedPosts: MooncakeIcons.heartF,
       AppTab.notifications: MooncakeIcons.bellF,
       AppTab.account: MooncakeIcons.userF,
@@ -37,12 +37,15 @@ class BottomNavigationButton extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, currentTab) {
+        final isSelected = tab == currentTab;
         return IconButton(
-            tooltip: titles[tab],
-            onPressed: () => _showTab(context),
-            icon: tab != currentTab
-                ? Icon(icons[tab], key: key)
-                : Icon(selectedIcons[tab], key: key));
+          tooltip: titles[tab],
+          onPressed: () => _showTab(context),
+          color: isSelected ? Theme.of(context).primaryColor : null,
+          icon: isSelected
+              ? Icon(selectedIcons[tab], key: key)
+              : Icon(icons[tab], key: key),
+        );
       },
     );
   }

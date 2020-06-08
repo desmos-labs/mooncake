@@ -21,16 +21,16 @@ class PostCommentItem extends StatelessWidget {
       return InkWell(
         onTap: () => _onTap(context),
         child: Container(
-          padding: PostsTheme.postItemPadding,
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               PostItemHeader(post: comment),
-              const SizedBox(height: PostsTheme.defaultPadding),
+              const SizedBox(height: ThemeSpaces.smallGutter),
               if (comment.message?.isNotEmpty == true) _textWidget(),
               PostImagesPreviewer(post: comment),
-              const SizedBox(height: PostsTheme.defaultPadding),
+              const SizedBox(height: ThemeSpaces.smallGutter),
               _commentActions(isLiked),
             ],
           ),
@@ -43,7 +43,7 @@ class PostCommentItem extends StatelessWidget {
     return Column(
       children: [
         Text(comment.message),
-        const SizedBox(height: PostsTheme.defaultPadding),
+        const SizedBox(height: ThemeSpaces.smallGutter),
       ],
     );
   }

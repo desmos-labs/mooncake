@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -12,12 +11,11 @@ class PostReactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: PostsTheme.postItemPadding,
+      padding: EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           AccountAvatar(size: 36, user: reaction.user),
-          const SizedBox(width: PostsTheme.defaultPadding),
           Expanded(
             child: Text(
               reaction.user.screenName,
@@ -25,7 +23,6 @@ class PostReactionItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: PostsTheme.defaultPadding),
           Text(reaction.value),
         ],
       ),

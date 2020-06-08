@@ -18,14 +18,7 @@ class PostsListSyncingIndicator extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(
-            height: 3,
-            child: LinearProgressIndicator(
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(Theme.of(context).accentColor),
-              backgroundColor: ThemeColors.loadingBarBackgroundColor,
-            ),
-          ),
+          SizedBox(height: 3, child: LinearProgressIndicator()),
           const SizedBox(height: 4),
           Text(
             PostsLocalizations.of(context).syncingActivities,

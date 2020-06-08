@@ -21,7 +21,7 @@ class PostContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         PostItemHeader(key: PostsKeys.postItemHeader(post.id), post: post),
-        const SizedBox(height: PostsTheme.defaultPadding),
+        const SizedBox(height: ThemeSpaces.smallGutter),
         if (post.message?.isNotEmpty == true) _messagePreview(),
         if (post.poll != null) PostPollContent(post: post),
         PostImagesPreviewer(
@@ -37,7 +37,7 @@ class PostContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         PostMessage(key: PostsKeys.postItemMessage(post.id), post: post),
-        const SizedBox(height: PostsTheme.defaultPadding),
+        const SizedBox(height: ThemeSpaces.smallGutter),
       ],
     );
   }

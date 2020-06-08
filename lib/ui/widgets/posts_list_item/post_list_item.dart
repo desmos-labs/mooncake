@@ -32,7 +32,7 @@ class PostListItem extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 0),
       child: Material(
         color: color,
         borderRadius: BorderRadius.circular(4.0),
@@ -40,15 +40,15 @@ class PostListItem extends StatelessWidget {
           onTap: () => _openPostDetails(context),
           onLongPress: _handleLongClick(context),
           child: Container(
-            padding: PostsTheme.postItemPadding,
+            padding: EdgeInsets.all(12.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 PostContent(post: post),
-                const SizedBox(height: ThemeSpaces.postItemSectionsSpacer),
+                const SizedBox(height: ThemeSpaces.smallMargin),
                 PostActionsBar(post: post),
                 if (post.reactions.isNotEmpty)
-                  const SizedBox(height: ThemeSpaces.postItemSectionsSpacer),
+                  const SizedBox(height: ThemeSpaces.smallMargin),
                 if (post.reactions.isNotEmpty) PostReactionsList(post: post),
               ],
             ),

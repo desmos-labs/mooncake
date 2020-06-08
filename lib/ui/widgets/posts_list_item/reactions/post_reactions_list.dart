@@ -46,7 +46,7 @@ class _PostReactionsListState extends State<PostReactionsList> {
       children: <Widget>[
         Expanded(
           child: Wrap(
-            spacing: ThemeSpaces.postItemActionBarSpacer,
+            spacing: 6.0,
             alignment: WrapAlignment.start,
             children: List.generate(itemCount, (index) {
               if (showMore && index == itemCount - 1) {

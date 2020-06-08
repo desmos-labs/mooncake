@@ -183,7 +183,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         orElse: () => null,
       );
       return newPost != null ? newPost : post;
-    });
+    }).toList();
   }
 
   /// Handles the event emitted when a new list of posts has been emitted.

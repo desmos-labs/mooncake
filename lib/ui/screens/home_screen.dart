@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<HomeBloc, AppTab>(
       builder: (context, activeTab) {
         Widget body = Container();
-        if (activeTab == AppTab.allPosts) {
+        if (activeTab == AppTab.home) {
           body = PostsList();
         } else if (activeTab == AppTab.notifications) {
           body = NotificationsMainContent();
@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
         }
 
         return Scaffold(
-          appBar: activeTab == AppTab.allPosts
+          appBar: activeTab == AppTab.home
               ? postsAppBar(context)
               : accountAppBar(context),
           body: body,

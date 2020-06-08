@@ -31,10 +31,10 @@ class PostItemHeader extends StatelessWidget {
                 child: Row(
                   children: [
                     // User picture
-                    AccountAvatar(size: 36, user: post.owner),
+                    AccountAvatar(size: 40, user: post.owner),
 
                     // Spacer
-                    const SizedBox(width: PostsTheme.defaultPadding),
+                    const SizedBox(width: ThemeSpaces.smallGutter),
 
                     // Username and time ago
                     Expanded(
@@ -44,12 +44,14 @@ class PostItemHeader extends StatelessWidget {
                           Text(
                             post.owner.screenName,
                             overflow: TextOverflow.ellipsis,
+                            style:
+                                Theme.of(context).textTheme.subtitle1.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                           ),
                           Text(
                             timeago.format(post.dateTime.toLocal()),
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontWeight: FontWeight.w300,
-                                ),
+                            style: Theme.of(context).textTheme.caption,
                           )
                         ],
                       ),

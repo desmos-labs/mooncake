@@ -6,66 +6,69 @@ export 'decorations.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
-  static const double defaultPadding = 10.0;
-
-  static EdgeInsets get postItemPadding => EdgeInsets.all(16);
-
-  static ThemeData fromColorScheme(ColorScheme scheme) {
-    final iconTheme = IconThemeData(color: scheme.primary);
-    return ThemeData.from(colorScheme: scheme).copyWith(
+  static ThemeData from({
+    @required ColorScheme colorScheme,
+    @required IconThemeData iconTheme,
+  }) {
+    return ThemeData.from(colorScheme: colorScheme).copyWith(
       appBarTheme: AppBarTheme(
         elevation: 0,
         color: Colors.transparent,
-        textTheme: TextTheme(
+        textTheme: Typography.englishLike2018.copyWith(
           headline6: Typography.englishLike2018.headline6.copyWith(
-            color: scheme.primary,
+            color: colorScheme.primary,
           ),
         ),
-        iconTheme: iconTheme,
-        actionsIconTheme: iconTheme,
+        iconTheme: IconThemeData(color: colorScheme.primary),
       ),
       iconTheme: iconTheme,
       buttonTheme: ButtonThemeData(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
+        focusColor: colorScheme.primary,
       ),
+      buttonColor: colorScheme.primary,
     );
   }
 
   static ThemeData get lightTheme {
-    return fromColorScheme(ColorScheme(
+    final scheme = ColorScheme(
       primary: Color(0xFF6D4DDB),
       primaryVariant: Color(0xFF904FFF),
       secondary: Color(0xFF007AFF),
       secondaryVariant: Color(0xFF5277FF),
       surface: Color(0xFFFFFFFF),
-      background: Color(0xFFF4F4FC),
+      background: Color(0xFFF7F7F7),
       error: Color(0xFFE84444),
       onPrimary: Color(0xFF000000),
-      onSecondary: Color(0xFF000000),
-      onSurface: Color(0xFF646464),
-      onBackground: Color(0xFF000000),
+      onSecondary: Color(0xFF646464),
       onError: Color(0xFFACACAC),
+      onSurface: Color(0xFF000000),
+      onBackground: Color(0xFF646464),
       brightness: Brightness.light,
-    ));
+    );
+    final iconTheme = IconThemeData(color: Color(0xFF646464));
+    return from(colorScheme: scheme, iconTheme: iconTheme);
   }
 
   static ThemeData get darkTheme {
-    return fromColorScheme(ColorScheme(
+    final scheme = ColorScheme(
       primary: Color(0xFFA990FF),
       primaryVariant: Color(0xFF6625EE),
       secondary: Color(0xFF439DFF),
       secondaryVariant: Color(0xFF5277FF),
-      surface: Color(0xFF2C2A50),
-      background: Color(0xFF1F1C45),
       error: Color(0xFFE84444),
-      onPrimary: Color(0x5aFFFFFF),
-      onSecondary: Color(0x5aFFFFFF),
-      onSurface: Color(0x3cFFFFFF),
-      onBackground: Color(0x5aFFFFFF),
-      onError: Color(0x3cFFFFFF),
+      surface: Color(0xFF1A1A1F),
+      background: Color(0xFF020207),
+      onPrimary: Color(0xFFFFFFFF).withOpacity(0.85),
+      onSecondary: Color(0xFFFFFFFF).withOpacity(0.60),
+      onError: Color(0xFFFFFFFF),
+      onSurface: Color(0xFF32323E),
+      onBackground: Color(0xFFFFFFFF).withOpacity(0.6),
       brightness: Brightness.dark,
-    ));
+    );
+    final iconTheme = IconThemeData(color: Color(0xFFFFFFFF).withOpacity(0.6));
+    return from(colorScheme: scheme, iconTheme: iconTheme);
   }
 }

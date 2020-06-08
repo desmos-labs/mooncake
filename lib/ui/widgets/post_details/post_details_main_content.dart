@@ -26,10 +26,10 @@ class PostDetailsMainContent extends StatelessWidget {
                     SliverList(
                       delegate: SliverChildListDelegate([
                         Container(
-                          padding: PostsTheme.postItemPadding,
+                          padding: EdgeInsets.all(12.0),
                           child: PostContent(post: state.post),
                         ),
-                        SizedBox(height: PostsTheme.defaultPadding),
+                        SizedBox(height: ThemeSpaces.smallGutter),
                       ]),
                     ),
                     // Tab bar

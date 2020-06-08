@@ -16,8 +16,15 @@ class ThemeColors {
 
   // --- Texts ---
   static Color get textColorLight => Colors.grey[700];
-  static Color get textColorVeryLight => Colors.grey[500];
 
   // --- Loading bars ---
   static Color get loadingBarBackgroundColor => Color(0xFFECECEC);
+
+  // --- Others ---
+  static Color reactionBackground(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.light) {
+      return Color(0xFF7F7F7);
+    }
+    return Color(0xFF7F7F7);
+  }
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/blocs/export.dart';
-import 'package:mooncake/ui/localization/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Allows the user to visualize the counter of the likes that a post has.

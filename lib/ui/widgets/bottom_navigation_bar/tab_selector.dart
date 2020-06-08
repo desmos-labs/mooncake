@@ -26,7 +26,7 @@ class TabSelector extends StatelessWidget {
         children: [
           BottomNavigationButton(
             key: PostsKeys.allPostsTab,
-            tab: AppTab.allPosts,
+            tab: AppTab.home,
           ),
           MaterialButton(
             textColor: Colors.white,

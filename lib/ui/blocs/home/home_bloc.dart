@@ -31,7 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, AppTab> {
   }
 
   @override
-  AppTab get initialState => AppTab.allPosts;
+  AppTab get initialState => AppTab.home;
 
   @override
   Stream<AppTab> mapEventToState(HomeEvent event) async* {

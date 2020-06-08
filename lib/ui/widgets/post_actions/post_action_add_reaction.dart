@@ -31,6 +31,7 @@ class PostAddReactionAction extends StatelessWidget {
             child: IconButton(
               padding: EdgeInsets.zero,
               icon: Icon(MooncakeIcons.reaction, size: size),
+              color: Theme.of(context).primaryColor,
               onPressed: () => _onTap(context),
             ),
           ),
@@ -44,7 +45,12 @@ class PostAddReactionAction extends StatelessWidget {
     return Row(
       children: [
         SizedBox(width: size / 4),
-        Text(NumberFormat.compact().format(reactions.length)),
+        Text(
+          NumberFormat.compact().format(reactions.length),
+          style: Theme.of(context).textTheme.bodyText2.copyWith(
+                color: Theme.of(context).primaryColor,
+              ),
+        ),
       ],
     );
   }

@@ -29,13 +29,15 @@ class PostReactionAction extends StatelessWidget {
         );
         final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
               fontWeight: userReacted ? FontWeight.bold : null,
-              color: userReacted ? Colors.white : null,
+              color: userReacted ? Theme.of(context).primaryColor : null,
             );
 
+        final backgroundColor = userReacted
+            ? Theme.of(context).primaryColor.withOpacity(0.25)
+            : ThemeColors.reactionBackground(context);
+
         return ActionChip(
-          backgroundColor: Theme.of(context).accentColor.withOpacity(
-                userReacted ? 0.70 : 0.25,
-              ),
+          backgroundColor: backgroundColor,
           label: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
