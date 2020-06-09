@@ -33,8 +33,8 @@ class MnemonicVisualizer extends StatelessWidget {
                 return MnemonicItem(index: index + 1, word: mnemonic[index]);
               },
             ),
-            PrimaryRoundedButton(
-              text: PostsLocalizations.of(context).exportMnemonic,
+            PrimaryButton(
+              child: Text(PostsLocalizations.of(context).exportMnemonic),
               onPressed: () => _openExportPopup(context),
             )
           ],

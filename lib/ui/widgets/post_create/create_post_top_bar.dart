@@ -26,9 +26,11 @@ class CreatePostTopBar extends StatelessWidget {
             actions: <Widget>[
               SizedBox(
                 width: 65,
-                child: PrimaryRoundedButton(
+                child: PrimaryButton(
                   enabled: state.isValid,
-                  text: PostsLocalizations.of(context).createPostCreateButton,
+                  child: Text(
+                    PostsLocalizations.of(context).createPostCreateButton,
+                  ),
                   borderRadius: 25,
                   onPressed: () {
                     BlocProvider.of<PostInputBloc>(context).add(SavePost());

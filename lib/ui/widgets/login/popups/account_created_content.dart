@@ -32,10 +32,10 @@ class AccountCreatedPopupContent extends StatelessWidget {
         Row(
           children: <Widget>[
             Expanded(
-              child: PrimaryRoundedButton(
+              child: PrimaryButton(
                 onPressed: () => _goToMooncake(context),
-                text: PostsLocalizations.of(context)
-                    .accountCreatedPopupMainButtonText,
+                child: Text(PostsLocalizations.of(context)
+                    .accountCreatedPopupMainButtonText),
               ),
             ),
           ],

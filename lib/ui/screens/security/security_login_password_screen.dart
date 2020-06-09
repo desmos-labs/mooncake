@@ -100,10 +100,10 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        PrimaryRoundedButton(
+        PrimaryButton(
           onPressed: () => _viewMnemonic(context),
           enabled: enableButton,
-          text: PostsLocalizations.of(context).viewMnemonic,
+          child: Text(PostsLocalizations.of(context).viewMnemonic),
         ),
       ],
     );

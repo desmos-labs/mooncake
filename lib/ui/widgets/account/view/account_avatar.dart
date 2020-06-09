@@ -36,7 +36,7 @@ class AccountAvatar extends StatelessWidget {
 
   Widget _favIcon() {
     return CustomPaint(
-      painter: JazzIconPainter(user.address),
+      painter: JazzIconPainter(seed: user.address),
     );
   }
 

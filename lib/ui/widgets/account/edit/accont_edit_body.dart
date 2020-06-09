@@ -36,10 +36,11 @@ class AccountEditorBody extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: PADDING),
                     child: state.saving
                         ? LoadingIndicator()
-                        : PrimaryRoundedButton(
+                        : PrimaryButton(
                             enabled: state.canSave,
-                            text: PostsLocalizations.of(context)
-                                .saveAccountButton,
+                            child: Text(
+                              PostsLocalizations.of(context).saveAccountButton,
+                            ),
                             onPressed: () => _onSaveAccount(context),
                           ),
                   )

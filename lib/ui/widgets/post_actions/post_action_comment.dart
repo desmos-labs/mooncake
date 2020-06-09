@@ -27,7 +27,7 @@ class PostCommentAction extends StatelessWidget {
             child: IconButton(
               padding: EdgeInsets.zero,
               icon: FaIcon(MooncakeIcons.comment, size: size),
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.primary,
               onPressed: () => _onTap(context),
             ),
           ),
@@ -44,7 +44,7 @@ class PostCommentAction extends StatelessWidget {
         Text(
           NumberFormat.compact().format(comments.length),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ],

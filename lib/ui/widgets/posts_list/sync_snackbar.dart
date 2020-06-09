@@ -8,7 +8,7 @@ class SyncSnackBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).colorScheme.primary,
       child: Row(
         children: <Widget>[
           Icon(

@@ -28,7 +28,7 @@ class LoginMainContent extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                child: PrimaryLightRoundedButton(
+                child: PrimaryLightButton(
                   child: Text(
                     PostsLocalizations.of(context).createAccountButtonText,
                   ),

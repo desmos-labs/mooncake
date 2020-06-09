@@ -33,7 +33,7 @@ class PostLikeAction extends StatelessWidget {
             width: size,
             child: IconButton(
               padding: EdgeInsets.zero,
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.primary,
               icon: icon,
               onPressed: () => _onPressed(context),
             ),
@@ -51,7 +51,7 @@ class PostLikeAction extends StatelessWidget {
         Text(
           NumberFormat.compact().format(likes.length),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ],

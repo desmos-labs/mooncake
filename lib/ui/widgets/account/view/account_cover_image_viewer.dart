@@ -35,7 +35,7 @@ class AccountCoverImageViewer extends StatelessWidget {
     }
 
     return Container(
-      color: Theme.of(context).primaryColor.withOpacity(0.25),
+      color: Theme.of(context).colorScheme.primary.withOpacity(0.25),
       width: width,
       height: height,
     );

@@ -65,7 +65,7 @@ class RecoverAccountMainContent extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Expanded(
-                    child: SecondaryRoundedButton(
+                    child: FlatButton(
                       child: Text(PostsLocalizations.of(context)
                           .recoverAccountContinueButton),
                       onPressed: () => _debugMnemonic(context),
@@ -79,9 +79,9 @@ class RecoverAccountMainContent extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Expanded(
-                  child: PrimaryRoundedButton(
-                    text: PostsLocalizations.of(context)
-                        .recoverAccountContinueButton,
+                  child: PrimaryButton(
+                    child: Text(PostsLocalizations.of(context)
+                        .recoverAccountContinueButton),
                     onPressed: () => _continueClicked(context),
                     enabled: state.isMnemonicValid,
                   ),

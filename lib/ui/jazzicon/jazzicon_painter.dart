@@ -26,7 +26,7 @@ class JazzIconPainter extends CustomPainter {
 
   final String seed;
 
-  JazzIconPainter(this.seed);
+  JazzIconPainter({@required String seed}) : seed = seed ?? "icon";
 
   @override
   bool shouldRepaint(JazzIconPainter oldDelegate) {

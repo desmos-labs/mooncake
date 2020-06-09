@@ -50,9 +50,10 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       if (!state.showMnemonic)
-                        PrimaryRoundedButton(
+                        PrimaryButton(
                           onPressed: () => _enableButtonClicked(context),
-                          text: PostsLocalizations.of(context).viewMnemonic,
+                          child:
+                              Text(PostsLocalizations.of(context).viewMnemonic),
                         ),
                       if (state.showMnemonic)
                         MnemonicVisualizer(mnemonic: state.mnemonic),

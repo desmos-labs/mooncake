@@ -13,15 +13,20 @@ class SecondaryLightRoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color color = Colors.white;
+    if (Theme.of(context).brightness == Brightness.dark) {
+      color = Theme.of(context).colorScheme.primary;
+    }
+
     return FlatButton(
       onPressed: onPressed,
       child: child,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4),
-        side: BorderSide(color: Theme.of(context).accentColor, width: 0.5),
+        side: BorderSide(color: color, width: 0.5),
       ),
       color: Colors.transparent,
-      textColor: Theme.of(context).accentColor,
+      textColor: color,
     );
   }
 }

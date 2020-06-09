@@ -52,9 +52,10 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   if (!state.restoring)
-                    PrimaryRoundedButton(
+                    PrimaryButton(
                       onPressed: () => _restoreBackup(context),
-                      text: PostsLocalizations.of(context).restoreButtonText,
+                      child: Text(
+                          PostsLocalizations.of(context).restoreButtonText),
                     ),
                   if (state.restoring) LoadingIndicator(),
                 ],

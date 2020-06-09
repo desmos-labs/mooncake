@@ -49,7 +49,7 @@ class ExportMnemonicPopup extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  PrimaryLightRoundedButton(
+                  PrimaryLightButton(
                     onPressed: state.enableExport
                         ? () => _exportMnemonic(context)
                         : null,

@@ -36,9 +36,9 @@ class SetPasswordContent extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 50),
-            PrimaryRoundedButton(
+            PrimaryButton(
               enabled: state.isPasswordValid,
-              text: PostsLocalizations.of(context).passwordSaveButton,
+              child: Text(PostsLocalizations.of(context).passwordSaveButton),
               onPressed: () => _onSavePassword(context),
             )
           ],

@@ -110,9 +110,9 @@ class ReportPostPopup extends StatelessWidget {
   }
 
   Widget _submitButton(BuildContext context) {
-    return PrimaryRoundedButton(
+    return PrimaryButton(
       onPressed: () => _sendReport(context),
-      text: PostsLocalizations.of(context).reportPopupSubmit,
+      child: Text(PostsLocalizations.of(context).reportPopupSubmit),
     );
   }
 

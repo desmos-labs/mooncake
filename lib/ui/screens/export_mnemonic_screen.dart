@@ -40,9 +40,10 @@ class ExportMnemonicScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(mnemonicText),
             const SizedBox(height: 16),
-            PrimaryRoundedButton(
+            PrimaryButton(
               onPressed: () => _shareData(context),
-              text: PostsLocalizations.of(context).mnemonicExportShareButton,
+              child: Text(
+                  PostsLocalizations.of(context).mnemonicExportShareButton),
             )
           ],
         ),

@@ -33,27 +33,26 @@ class PostsTheme {
   }
 
   static ThemeData get lightTheme {
-    final scheme = ColorScheme(
+    final scheme = ColorScheme.light(
       primary: Color(0xFF6D4DDB),
-      primaryVariant: Color(0xFF904FFF),
-      secondary: Color(0xFF007AFF),
-      secondaryVariant: Color(0xFF5277FF),
+      primaryVariant: Color(0xFF904FFF), // <---
+      secondary: Color(0xFF147AFC),
+      secondaryVariant: Color(0xFF5277FF), // <---
       surface: Color(0xFFFFFFFF),
-      background: Color(0xFFF7F7F7),
+      background: Color(0xFFF4F4FC),
       error: Color(0xFFE84444),
       onPrimary: Color(0xFF000000),
       onSecondary: Color(0xFF646464),
       onError: Color(0xFFACACAC),
       onSurface: Color(0xFF000000),
       onBackground: Color(0xFF646464),
-      brightness: Brightness.light,
     );
     final iconTheme = IconThemeData(color: Color(0xFF646464));
     return from(colorScheme: scheme, iconTheme: iconTheme);
   }
 
   static ThemeData get darkTheme {
-    final scheme = ColorScheme(
+    final scheme = ColorScheme.dark(
       primary: Color(0xFFA990FF),
       primaryVariant: Color(0xFF6625EE),
       secondary: Color(0xFF439DFF),
@@ -63,10 +62,9 @@ class PostsTheme {
       background: Color(0xFF020207),
       onPrimary: Color(0xFFFFFFFF).withOpacity(0.85),
       onSecondary: Color(0xFFFFFFFF).withOpacity(0.60),
-      onError: Color(0xFFFFFFFF),
+      onError: Color(0xFFFFFFFF).withOpacity(0.60),
       onSurface: Color(0xFF32323E),
       onBackground: Color(0xFFFFFFFF).withOpacity(0.6),
-      brightness: Brightness.dark,
     );
     final iconTheme = IconThemeData(color: Color(0xFFFFFFFF).withOpacity(0.6));
     return from(colorScheme: scheme, iconTheme: iconTheme);
