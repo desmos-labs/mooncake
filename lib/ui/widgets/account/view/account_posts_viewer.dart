@@ -31,6 +31,7 @@ class AccountPostsViewer extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: state.hasReachedMax ? posts.length : posts.length + 1,
+          padding: EdgeInsets.zero,
           itemBuilder: (context, index) {
             return index >= posts.length
                 ? BottomLoader()

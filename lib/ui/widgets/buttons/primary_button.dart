@@ -9,6 +9,7 @@ class PrimaryButton extends StatelessWidget {
   final Widget child;
   final bool enabled;
   final double borderRadius;
+  final bool expanded;
 
   const PrimaryButton({
     Key key,
@@ -16,6 +17,7 @@ class PrimaryButton extends StatelessWidget {
     @required this.child,
     this.borderRadius = 4.0,
     this.enabled = true,
+    this.expanded = true,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class PrimaryButton extends StatelessWidget {
   Widget _gradientButton(BuildContext context) {
     return GradientButton(
       isEnabled: enabled,
-      increaseWidthBy: double.infinity,
+      increaseWidthBy: expanded ? double.infinity : 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),

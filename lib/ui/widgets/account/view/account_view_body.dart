@@ -8,6 +8,8 @@ import 'package:mooncake/ui/ui.dart';
 import 'account_cover_image_viewer.dart';
 import 'account_avatar.dart';
 import 'account_posts_viewer.dart';
+import 'account_info_viewer.dart';
+import 'account_options_button.dart';
 
 /// Represents the body of the screen that is used by the user to view an
 /// account details.
@@ -49,7 +51,18 @@ class _AccountViewBodyState extends State<AccountViewBody> {
     return Stack(
       children: [
         // Cover
-        _coverImage(),
+        Stack(
+          children: [
+            AccountCoverImageViewer(
+              height: AccountViewBody.COVER_HEIGHT,
+              coverImage: widget.user.coverPicUri,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [],
+            )
+          ],
+        ),
 
         // Body
         RefreshIndicator(
@@ -78,25 +91,27 @@ class _AccountViewBodyState extends State<AccountViewBody> {
                     children: [
                       _mainBody(context),
                       _profileImage(),
+
+                      BlocBuilder<AccountBloc, AccountState>(
+                        builder: (context, state) {
+                          final account = (state as LoggedIn).user;
+                          if (widget.user.address == account.address) {
+                            return Positioned(
+                              top: 8,
+                              right: AccountViewBody.PADDING,
+                              child: AccountOptionsButton(),
+                            );
+                          }
+
+                          return Container();
+                        },
+                      ),
                     ],
                   )
                 ],
               );
             },
           ),
-        ),
-      ],
-    );
-  }
-
-  /// Returns a widget that allows to properly display the user cover image.
-  Widget _coverImage() {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        AccountCoverImageViewer(
-          height: AccountViewBody.COVER_HEIGHT,
-          coverImage: widget.user.coverPicUri,
         ),
       ],
     );
@@ -118,12 +133,8 @@ class _AccountViewBodyState extends State<AccountViewBody> {
   /// profile and cover images.
   Widget _mainBody(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-        top: AccountViewBody.PICTURE_RADIUS,
-      ),
-      padding: EdgeInsets.only(
-        top: AccountViewBody.PICTURE_RADIUS,
-      ),
+      margin: EdgeInsets.only(top: AccountViewBody.PICTURE_RADIUS),
+      padding: EdgeInsets.only(top: AccountViewBody.PICTURE_RADIUS),
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,62 +144,21 @@ class _AccountViewBodyState extends State<AccountViewBody> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AccountViewBody.PADDING),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 8),
-                Text(
-                  widget.user.screenName,
-                  style: Theme.of(context).textTheme.headline6.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  widget.user.address,
-                  style: Theme.of(context).textTheme.caption,
-                ),
+                AccountInfoViewer(user: widget.user),
+                if (widget.user.bio != null)
+                  AccountBiographyViewer(user: widget.user),
               ],
             ),
           ),
 
-          // Biography
-          if (widget.user.bio != null)
-            _biography(context),
-
           // Separator
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Container(height: 0.5, width: 400, color: Colors.grey[500]),
-          ),
+          const SizedBox(height: 16),
+          Container(height: 0.5, width: 400, color: Colors.grey[500]),
+          const SizedBox(height: 16),
 
           // Posts list
           Flexible(child: AccountPostsViewer(user: widget.user)),
-        ],
-      ),
-    );
-  }
-
-  /// Returns a widget that allows to display the user biography.
-  Widget _biography(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AccountViewBody.PADDING),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              SizedBox(
-                height: 2,
-                width: 80,
-                child: Container(
-                  color: Theme.of(context).primaryColorLight,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          if (widget.user.bio != null) Text(widget.user.bio),
         ],
       ),
     );

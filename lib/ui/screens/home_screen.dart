@@ -13,11 +13,22 @@ class HomeScreen extends StatelessWidget {
       builder: (context, activeTab) {
         Widget body = Container();
         if (activeTab == AppTab.home) {
-          body = PostsList();
+          return Scaffold(
+            body: Column(
+              children: [
+                postsAppBar(context),
+                Expanded(child: PostsList()),
+              ],
+            ),
+            bottomNavigationBar: SafeArea(child: TabSelector()),
+          );
         } else if (activeTab == AppTab.notifications) {
           body = NotificationsMainContent();
         } else if (activeTab == AppTab.account) {
-          body = AccountScreenContent();
+          return Scaffold(
+            body: AccountScreenContent(),
+            bottomNavigationBar: SafeArea(child: TabSelector()),
+          );
         }
 
         return Scaffold(

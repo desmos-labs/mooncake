@@ -10,7 +10,7 @@ class AccountScreenContent extends StatelessWidget {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, accountState) {
         final state = accountState as LoggedIn;
-        return Container(
+        return Material(
           child: AccountViewBody(user: state.user),
         );
       },

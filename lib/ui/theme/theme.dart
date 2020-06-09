@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 export 'colors.dart';
-export 'spaces.dart';
 export 'decorations.dart';
+export 'spaces.dart';
 
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
@@ -35,7 +35,7 @@ class PostsTheme {
   static ThemeData get lightTheme {
     final scheme = ColorScheme.light(
       primary: Color(0xFF6D4DDB),
-      primaryVariant: Color(0xFF904FFF), // <---
+      primaryVariant: Color(0xFF904FFF),
       secondary: Color(0xFF147AFC),
       secondaryVariant: Color(0xFF5277FF), // <---
       surface: Color(0xFFFFFFFF),

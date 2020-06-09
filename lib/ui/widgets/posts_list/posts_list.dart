@@ -65,9 +65,10 @@ class _PostsListState extends State<PostsList> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  PostsListSyncingIndicator(visible: state.syncingPosts),
+                  if (state.syncingPosts) PostsListSyncingIndicator(),
                   Expanded(
                     child: ListView.builder(
+                      padding: EdgeInsets.zero,
                       key: PostsKeys.postsList,
                       itemCount: state.hasReachedMax
                           ? state.posts.length
