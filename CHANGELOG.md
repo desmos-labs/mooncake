@@ -10,6 +10,9 @@
 - Implemented the ability of exporting and importing the mnemonic as an encrypted object safely
 - Removed the ability to manually set the app theme. Now it is the same set system-wide. 
 
+## Improvements
+- Improved the themes colors
+
 # Version 0.3.2
 ## Changes
 - Improved the colors schema 
