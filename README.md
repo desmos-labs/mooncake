@@ -30,3 +30,6 @@ As of today, the syncing of posts and reactions is performed **once every 30 sec
 This is due to avoid uploading or downloading new content too much quickly. 
 
 For users, this means that everything you do **will stay on your device for 30 seconds**. After that time, it will be sent to the chain and will be public.  
+
+## Disclaimer
+Some of the code inside this repo has been taken and adapted from the awesome [Flutter Twitter clone project](https://github.com/TheAlphamerc/flutter_twitter_clone).
