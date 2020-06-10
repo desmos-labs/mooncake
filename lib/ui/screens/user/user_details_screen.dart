@@ -14,11 +14,6 @@ class UserDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(PostsLocalizations.of(context).accountScreenTitle +
-            ": ${user.screenName}"),
-        centerTitle: true,
-      ),
       body: AccountViewBody(user: user),
     );
   }

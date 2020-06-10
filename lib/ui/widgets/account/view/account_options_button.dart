@@ -2,45 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
+/// Represents the list of options that the user can select from the
+/// account popup.
+enum AccountOptions {
+  EditAccount,
+  ViewMnemonic,
+  Logout,
+}
+
+/// Button used to display the options of the current user account.
+/// This buttons allows to show a popup that contains the options to
+/// either edit the account, logout of show his mnemonic.
 class AccountOptionsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final actions = [
-      PostsLocalizations.of(context).editAccountOption,
-      PostsLocalizations.of(context).viewMnemonicOption,
-      PostsLocalizations.of(context).logoutOption,
-    ];
+    final Map<AccountOptions, String> titles = {
+      AccountOptions.EditAccount:
+          PostsLocalizations.of(context).editAccountOption,
+      AccountOptions.ViewMnemonic:
+          PostsLocalizations.of(context).viewMnemonicOption,
+      AccountOptions.Logout: PostsLocalizations.of(context).logoutOption,
+    };
 
-    return PopupMenuButton<String>(
-      onSelected: (option) => _onSelected(context, actions, option),
+    return PopupMenuButton<AccountOptions>(
+      onSelected: (option) => _onSelected(context, option),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: Colors.grey.withOpacity(0.75),
+          color: Colors.grey.withOpacity(0.50),
         ),
         padding: EdgeInsets.all(4),
         child: Icon(MooncakeIcons.more, color: Colors.white, size: 18),
       ),
       itemBuilder: (context) {
-        return actions.map((entry) {
-          return PopupMenuItem<String>(
-            value: entry,
-            child: Text(entry),
+        return AccountOptions.values.map((value) {
+          return PopupMenuItem<AccountOptions>(
+            value: value,
+            child: Text(titles[value]),
           );
         }).toList();
       },
     );
   }
 
-  void _onSelected(BuildContext context, List<String> actions, String option) {
-    if (option == actions[0]) {
-      // Edit account
+  void _onSelected(BuildContext context, AccountOptions option) {
+    if (option == AccountOptions.EditAccount) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToEditAccount());
-    } else if (option == actions[1]) {
-      // See mnemonic
+    } else if (option == AccountOptions.ViewMnemonic) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonic());
-    } else if (option == actions[2]) {
-      // Logout
+    } else if (option == AccountOptions.Logout) {
       BlocProvider.of<AccountBloc>(context).add(LogOut());
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
     }

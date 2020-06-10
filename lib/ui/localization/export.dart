@@ -40,7 +40,8 @@ This page allows you to restore a previously exported mnemonic backup.
 In order to do so, please insert below your mnenonic backup text and the password
 you used to encrypt it. Then press the below button to proceed. 
 """;
-  String get restoreBackupFieldHint => "Your backup here (it should end with an =)";
+  String get restoreBackupFieldHint =>
+      "Your backup here (it should end with an =)";
   String get restorePasswordFieldHint => "Your encryption password";
   String get restoreButtonText => "Restore backup";
 
@@ -168,6 +169,14 @@ What about adding some content?
   String get reportPopupEditBotHint => "Write something (optional)";
   String get reportPopupBlockUser => "Also block the user";
   String get reportPopupSubmit => "Submit";
+
+  // Block user popup
+  String get blockDialogTitle => "Block user?";
+  String blockDialogText(String screenName) =>
+      "By blocking $screenName you will no longer see his posts. "
+      "Would you like to continue?";
+  String get blockDialogCancelButton => "Cancel";
+  String get blockDialogBlockButton => "Block";
 
   // Syncing
   String get syncingActivities => "Syncing activities to the chain";

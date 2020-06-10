@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -57,10 +58,6 @@ class _AccountViewBodyState extends State<AccountViewBody> {
               height: AccountViewBody.COVER_HEIGHT,
               coverImage: widget.user.coverPicUri,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [],
-            )
           ],
         ),
 
@@ -89,23 +86,10 @@ class _AccountViewBodyState extends State<AccountViewBody> {
                 children: [
                   Stack(
                     children: [
+                      _backButton(),
                       _mainBody(context),
                       _profileImage(),
-
-                      BlocBuilder<AccountBloc, AccountState>(
-                        builder: (context, state) {
-                          final account = (state as LoggedIn).user;
-                          if (widget.user.address == account.address) {
-                            return Positioned(
-                              top: 8,
-                              right: AccountViewBody.PADDING,
-                              child: AccountOptionsButton(),
-                            );
-                          }
-
-                          return Container();
-                        },
-                      ),
+                      _moreButton(),
                     ],
                   )
                 ],
@@ -114,6 +98,22 @@ class _AccountViewBodyState extends State<AccountViewBody> {
           ),
         ),
       ],
+    );
+  }
+
+  /// Represents the
+  Widget _backButton() {
+    return BlocBuilder<AccountBloc, AccountState>(
+      builder: (context, state) {
+        final account = (state as LoggedIn).user;
+        if (widget.user.address != account.address) {
+          return AppBar(
+            backgroundColor: Colors.transparent,
+          );
+        }
+
+        return Container();
+      },
     );
   }
 
@@ -126,6 +126,24 @@ class _AccountViewBodyState extends State<AccountViewBody> {
         border: AccountViewBody.PICTURE_RADIUS / 10,
         user: widget.user,
       ),
+    );
+  }
+
+  /// Returns the button that allows further operations on the account.
+  Widget _moreButton() {
+    return BlocBuilder<AccountBloc, AccountState>(
+      builder: (context, state) {
+        final account = (state as LoggedIn).user;
+        if (widget.user.address == account.address) {
+          return Positioned(
+            top: 8,
+            right: AccountViewBody.PADDING,
+            child: AccountOptionsButton(),
+          );
+        }
+
+        return Container();
+      },
     );
   }
 

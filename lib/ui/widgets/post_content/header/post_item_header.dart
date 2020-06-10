@@ -5,6 +5,8 @@ import 'package:mooncake/ui/theme/theme.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'post_more_button.dart';
+
 /// Contains the info that are shown on top of a [PostListItem]. The following
 /// data are :
 /// - the owner o the post
@@ -61,40 +63,8 @@ class PostItemHeader extends StatelessWidget {
               ),
             ),
             if (post.owner.address != account.cosmosAccount.address)
-              _moreActionButton(context)
+              PostMoreButton(post: post),
           ],
-        );
-      },
-    );
-  }
-
-  Widget _moreActionButton(BuildContext context) {
-    final size = 16.0;
-    return Row(
-      children: <Widget>[
-        SizedBox(width: 16),
-        SizedBox(
-          width: size,
-          height: size,
-          child: IconButton(
-            alignment: Alignment.center,
-            padding: EdgeInsets.zero,
-            icon: Icon(MooncakeIcons.more, size: size),
-            onPressed: () => _showPostOptions(context),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _showPostOptions(BuildContext context) async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return GenericPopup(
-          onTap: () => Navigator.pop(context),
-          padding: EdgeInsets.all(4),
-          content: PostOptionsPopup(post: post),
         );
       },
     );

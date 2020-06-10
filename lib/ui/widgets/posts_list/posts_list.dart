@@ -88,7 +88,7 @@ class _PostsListState extends State<PostsList> {
                   alignment: Alignment.topCenter,
                   child: FlatButton(
                     textColor: Colors.white,
-                    color: Theme.of(context).iconTheme.color,
+                    color: Theme.of(context).colorScheme.secondary,
                     onPressed: () {
                       _indicator.currentState.show();
                     },
