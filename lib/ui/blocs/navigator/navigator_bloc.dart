@@ -169,7 +169,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
 
   void _handleNavigateToUserDetails(NavigateToUserDetails event) {
     _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
-      return UserDetailsScreen(user: event.user);
+      return UserDetailsScreen(user: event.user, isMyProfile: false);
     }));
   }
 }

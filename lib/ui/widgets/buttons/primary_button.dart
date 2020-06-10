@@ -28,20 +28,24 @@ class PrimaryButton extends StatelessWidget {
   }
 
   Widget _gradientButton(BuildContext context) {
-    return GradientButton(
-      isEnabled: enabled,
-      increaseWidthBy: expanded ? double.infinity : 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      callback: onPressed,
-      gradient: ThemeColors.primaryButtonBackgroundGradient,
-      shadowColor: Colors.transparent,
-      elevation: 0,
-      textStyle: Theme.of(context).textTheme.bodyText2.copyWith(
-            color: Colors.white,
+    return Wrap(
+      children: [
+        GradientButton(
+          isEnabled: enabled,
+          increaseWidthBy: expanded ? double.infinity : 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-      child: child,
+          callback: onPressed,
+          gradient: ThemeColors.primaryButtonBackgroundGradient,
+          shadowColor: Colors.transparent,
+          elevation: 0,
+          textStyle: Theme.of(context).textTheme.bodyText2.copyWith(
+                color: Colors.white,
+              ),
+          child: child,
+        ),
+      ],
     );
   }
 

@@ -25,9 +25,10 @@ class HomeScreen extends StatelessWidget {
         } else if (activeTab == AppTab.notifications) {
           body = NotificationsMainContent();
         } else if (activeTab == AppTab.account) {
-          return Scaffold(
-            body: AccountScreenContent(),
-            bottomNavigationBar: SafeArea(child: TabSelector()),
+          final state = BlocProvider.of<AccountBloc>(context).state;
+          return UserDetailsScreen(
+            isMyProfile: true,
+            user: (state as LoggedIn).user,
           );
         }
 
