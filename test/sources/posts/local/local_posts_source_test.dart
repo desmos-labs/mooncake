@@ -270,7 +270,7 @@ void main() {
       _createPost("10").copyWith(
         commentsIds: ["20"],
         reactions: [
-          Reaction(value: ":smile:", user: User.fromAddress("address")),
+          Reaction.fromValue(":smile:", User.fromAddress("address")),
         ],
       )
     ];
@@ -279,14 +279,14 @@ void main() {
       _createPost("1").copyWith(
         commentsIds: ["5", "9"],
         reactions: [
-          Reaction(value: ":grin:", user: User.fromAddress("user")),
+          Reaction.fromValue(":grin:", User.fromAddress("user")),
         ],
       ),
       _createPost("2"),
       _createPost("10").copyWith(
         commentsIds: ["20", "21"],
         reactions: [
-          Reaction(value: ":heart:", user: User.fromAddress("another-user")),
+          Reaction.fromValue(":heart:", User.fromAddress("another-user")),
         ],
       ),
     ];
@@ -296,7 +296,7 @@ void main() {
 
     final expected0 = newPosts[0].copyWith(
       commentsIds: ["5", "9", "2", "3"],
-      reactions: [Reaction(value: ":grin:", user: User.fromAddress("user"))],
+      reactions: [Reaction.fromValue(":grin:", User.fromAddress("user"))],
     );
     expect(merged[0], equals(expected0));
 
@@ -306,8 +306,8 @@ void main() {
     final expected2 = newPosts[2].copyWith(
       commentsIds: ["20", "21"],
       reactions: [
-        Reaction(value: ":heart:", user: User.fromAddress("another-user")),
-        Reaction(value: ":smile:", user: User.fromAddress("address")),
+        Reaction.fromValue(":heart:", User.fromAddress("another-user")),
+        Reaction.fromValue(":smile:", User.fromAddress("address")),
       ],
     );
     expect(merged[2], equals(expected2));
@@ -322,7 +322,7 @@ void main() {
       _createPost("10").copyWith(
         commentsIds: ["20"],
         reactions: [
-          Reaction(value: ":smile:", user: User.fromAddress("address")),
+          Reaction.fromValue(":smile:", User.fromAddress("address")),
         ],
       )
     ];
@@ -332,13 +332,13 @@ void main() {
       existingPosts[0].copyWith(
         commentsIds: ["5", "9"],
         reactions: [
-          Reaction(value: ":grin:", user: User.fromAddress("user")),
+          Reaction.fromValue(":grin:", User.fromAddress("user")),
         ],
       ),
       existingPosts[2].copyWith(
         commentsIds: ["20", "21"],
         reactions: [
-          Reaction(value: ":heart:", user: User.fromAddress("another-user")),
+          Reaction.fromValue(":heart:", User.fromAddress("another-user")),
         ],
       ),
       _createPost("2"),
@@ -361,7 +361,7 @@ void main() {
       _createPost("10").copyWith(
         commentsIds: ["20"],
         reactions: [
-          Reaction(value: ":smile:", user: User.fromAddress("address")),
+          Reaction.fromValue(":smile:", User.fromAddress("address")),
         ],
       )
     ];
@@ -371,13 +371,13 @@ void main() {
       existingPosts[0].copyWith(
         commentsIds: ["5", "9"],
         reactions: [
-          Reaction(value: ":grin:", user: User.fromAddress("user")),
+          Reaction.fromValue(":grin:", User.fromAddress("user")),
         ],
       ),
       existingPosts[2].copyWith(
         commentsIds: ["20", "21"],
         reactions: [
-          Reaction(value: ":heart:", user: User.fromAddress("another-user")),
+          Reaction.fromValue(":heart:", User.fromAddress("another-user")),
         ],
       ),
       _createPost("2"),
@@ -393,14 +393,14 @@ void main() {
       newPosts[0].copyWith(
         commentsIds: ["5", "9", "2", "3"],
         reactions: [
-          Reaction(value: ":grin:", user: User.fromAddress("user")),
+          Reaction.fromValue(":grin:", User.fromAddress("user")),
         ],
       ),
       newPosts[1].copyWith(
         commentsIds: ["20", "21"],
         reactions: [
-          Reaction(value: ":heart:", user: User.fromAddress("another-user")),
-          Reaction(value: ":smile:", user: User.fromAddress("address")),
+          Reaction.fromValue(":heart:", User.fromAddress("another-user")),
+          Reaction.fromValue(":smile:", User.fromAddress("address")),
         ],
       ),
       newPosts[2],

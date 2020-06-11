@@ -7,12 +7,12 @@ void main() {
       "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r",
     );
     final reactions = [
-      Reaction(user: account, value: "👍"),
-      Reaction(
-        user: User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-        value: "❤",
+      Reaction.fromValue("👍", account),
+      Reaction.fromValue(
+        "❤",
+        User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
       ),
-      Reaction(user: account, value: "🍉"),
+      Reaction.fromValue("🍉", account),
     ];
 
     test('should return true', () {
@@ -37,12 +37,12 @@ void main() {
   group('containsFromAddress', () {
     final address = "desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r";
     final reactions = [
-      Reaction(user: User.fromAddress(address), value: "👍"),
-      Reaction(
-        user: User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-        value: "❤",
+      Reaction.fromValue("👍", User.fromAddress(address)),
+      Reaction.fromValue(
+        "❤",
+        User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
       ),
-      Reaction(user: User.fromAddress(address), value: "🍉"),
+      Reaction.fromValue("🍉", User.fromAddress(address)),
     ];
 
     test('should return true', () {
@@ -67,44 +67,38 @@ void main() {
     );
 
     final reactions = [
-      Reaction(user: account, value: "👍"),
-      Reaction(
-        user: User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-        value: "❤",
-      ),
+      Reaction.fromValue("👍", account),
+      Reaction.fromValue("❤",
+          User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u")),
     ];
 
     test('should add missing reaction properly', () {
       final result = reactions.removeOrAdd(account, "🍉");
 
       final expected = [
-        Reaction(user: account, value: "👍"),
-        Reaction(
-          user:
-              User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          value: "❤",
+        Reaction.fromValue("👍", account),
+        Reaction.fromValue(
+          "❤",
+          User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
         ),
-        Reaction(user: account.toUser(), value: "🍉"),
+        Reaction.fromValue("🍉", account.toUser()),
       ];
       expect(result, equals(expected));
     });
 
     test('should remove missing reaction properly', () {
       final reactions = [
-        Reaction(
-          user:
-              User.fromAddress("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: "👍",
+        Reaction.fromValue(
+          "👍",
+          User.fromAddress("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
         ),
-        Reaction(
-          user:
-              User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          value: "❤",
+        Reaction.fromValue(
+          "❤",
+          User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
         ),
-        Reaction(
-          user:
-              User.fromAddress("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: "🍉",
+        Reaction.fromValue(
+          "🍉",
+          User.fromAddress("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
         ),
       ];
 
@@ -114,15 +108,13 @@ void main() {
       final result = reactions.removeOrAdd(account, "🍉");
 
       final expected = [
-        Reaction(
-          user:
-              User.fromAddress("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
-          value: "👍",
+        Reaction.fromValue(
+          "👍",
+          User.fromAddress("desmos12rhdh3muv0ndpm2p7ava2hcnh9t3wxrhw2yf0r"),
         ),
-        Reaction(
-          user:
-              User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
-          value: "❤",
+        Reaction.fromValue(
+          "❤",
+          User.fromAddress("desmos10kll2dl8klqwzgy2h6py7gryakamjdhkyl6w2u"),
         ),
       ];
       expect(result, equals(expected));

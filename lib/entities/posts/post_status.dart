@@ -40,6 +40,14 @@ class PostStatus extends Equatable {
   List<Object> get props {
     return [value, data];
   }
+
+  @override
+  String toString() {
+    return 'PostStatus {'
+        'value: $value, '
+        'data: $data '
+        '}';
+  }
 }
 
 /// Contains the possible values of a post status.

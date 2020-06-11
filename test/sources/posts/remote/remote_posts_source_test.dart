@@ -158,11 +158,9 @@ void main() {
           optionalData: {},
           parentId: null,
           reactions: [
-            Reaction(
-              user: User(
-                address: "desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u",
-              ),
-              value: "❤",
+            Reaction.fromValue(
+              "❤",
+              User.fromAddress("desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u"),
             ),
           ],
           owner: User(

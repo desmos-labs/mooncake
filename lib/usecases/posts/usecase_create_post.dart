@@ -31,7 +31,7 @@ class CreatePostUseCase {
       medias: medias,
       poll: poll,
       subspace: Constants.SUBSPACE,
-      owner: account,
+      owner: account.toUser(),
     );
   }
 }

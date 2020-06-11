@@ -35,7 +35,7 @@ void main() {
     );
     final savedPost = post.copyWith(
       status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
-      reactions: [Reaction(value: "😊", user: account.toUser())],
+      reactions: [Reaction.fromValue("😊", account.toUser())],
     );
     expect(result, equals(savedPost));
 

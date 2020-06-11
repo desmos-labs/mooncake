@@ -34,7 +34,7 @@ void main() {
       expect(post.allowsComments, equals(allowsComments));
       expect(post.parentId, equals(parentId));
       expect(post.created, isNotNull);
-      expect(post.owner, equals(account));
+      expect(post.owner, equals(account.toUser()));
 
       expect(post.medias, []);
       expect(post.poll, isNull);
@@ -60,7 +60,7 @@ void main() {
       expect(post.parentId, equals(parentId));
       expect(post.medias, equals(medias));
       expect(post.created, isNotNull);
-      expect(post.owner, equals(account));
+      expect(post.owner, equals(account.toUser()));
     });
 
     test('with poll post', () async {
@@ -90,7 +90,7 @@ void main() {
       expect(post.parentId, equals(parentId));
       expect(post.poll, poll);
       expect(post.created, isNotNull);
-      expect(post.owner, equals(account));
+      expect(post.owner, equals(account.toUser()));
     });
   });
 }

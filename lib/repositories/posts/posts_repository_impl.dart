@@ -94,35 +94,13 @@ class PostsRepositoryImpl extends PostsRepository {
     return _localPostsSource.savePosts(posts);
   }
 
-  @override
-  Future<void> syncPosts() async {
-    // Get the posts
-    final posts = await _localPostsSource.getPostsToSync();
-    if (posts.isEmpty) {
-      // We do not have any post to be synced, so return.
-      return;
-    }
-
-    // Set the posts as syncing
-    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
-    final syncingPosts = posts.map((post) {
-      return post.copyWith(status: syncingStatus);
-    }).toList();
-    await _localPostsSource.savePosts(syncingPosts);
-
-    // Sync the posts and update the status based on the result
-    final status = await savePostsAndGetStatus(syncingPosts);
-    final updatedPosts = syncingPosts.map((post) {
-      return post.copyWith(status: status);
-    }).toList();
-    await _localPostsSource.savePosts(updatedPosts);
-  }
-
+  /// Saves the given [posts] remotely and returns the proper status
+  /// for each post based on the result of the operation.
   @visibleForTesting
-  Future<PostStatus> savePostsAndGetStatus(List<Post> syncingPosts) async {
+  Future<PostStatus> savePostsRemotelyAndGetStatus(List<Post> posts) async {
     try {
       // Send the post transactions
-      final result = await _remotePostsSource.savePosts(syncingPosts);
+      final result = await _remotePostsSource.savePosts(posts);
 
       // Update the posts based on the sync result
       PostStatus postStatus;
@@ -148,6 +126,30 @@ class PostsRepositoryImpl extends PostsRepository {
         data: error.toString(),
       );
     }
+  }
+
+  @override
+  Future<void> syncPosts() async {
+    // Get the posts
+    final posts = await _localPostsSource.getPostsToSync();
+    if (posts.isEmpty) {
+      // We do not have any post to be synced, so return.
+      return;
+    }
+
+    // Set the posts as syncing
+    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
+    final syncingPosts = posts.map((post) {
+      return post.copyWith(status: syncingStatus);
+    }).toList();
+    await _localPostsSource.savePosts(syncingPosts);
+
+    // Sync the posts and update the status based on the result
+    final status = await savePostsRemotelyAndGetStatus(syncingPosts);
+    final updatedPosts = syncingPosts.map((post) {
+      return post.copyWith(status: status);
+    }).toList();
+    await _localPostsSource.savePosts(updatedPosts);
   }
 
   @override

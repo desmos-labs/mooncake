@@ -37,7 +37,7 @@ void main() {
       testPosts[1].copyWith(
         reactions: testPosts[1].reactions +
             [
-              Reaction(
+              Reaction._(
                 user: User.fromAddress(wallet.bech32Address),
                 value: "🤎",
               )
@@ -51,7 +51,7 @@ void main() {
       testPosts[2].copyWith(
         reactions: testPosts[2].reactions +
             [
-              Reaction(
+              Reaction._(
                 user: User.fromAddress(wallet.bech32Address),
                 value: "💗",
               )

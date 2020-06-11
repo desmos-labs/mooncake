@@ -344,7 +344,7 @@ void main() {
       when(remoteSource.savePosts(any)).thenAnswer((_) => Future.value(result));
 
       final posts = [testPost];
-      final status = await repository.savePostsAndGetStatus(posts);
+      final status = await repository.savePostsRemotelyAndGetStatus(posts);
       expect(
           status,
           equals(PostStatus(
@@ -365,7 +365,7 @@ void main() {
       when(remoteSource.savePosts(any)).thenAnswer((_) => Future.value(result));
 
       final posts = [testPost];
-      final status = await repository.savePostsAndGetStatus(posts);
+      final status = await repository.savePostsRemotelyAndGetStatus(posts);
       expect(
           status,
           equals(PostStatus(
@@ -380,7 +380,7 @@ void main() {
       when(remoteSource.savePosts(any)).thenThrow(exception);
 
       final posts = [testPost];
-      final status = await repository.savePostsAndGetStatus(posts);
+      final status = await repository.savePostsRemotelyAndGetStatus(posts);
       expect(
           status,
           equals(PostStatus(

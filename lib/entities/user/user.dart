@@ -76,4 +76,17 @@ class User extends Equatable {
       coverPicUri,
     ];
   }
+
+  @override
+  String toString() {
+    return 'User {'
+        'address: $address, '
+        'moniker: $moniker, '
+        'name: $name, '
+        'surname: $surname, '
+        'bio: $bio, '
+        'profilePicUri: $profilePicUri, '
+        'coverPicUri: $coverPicUri '
+        '}';
+  }
 }

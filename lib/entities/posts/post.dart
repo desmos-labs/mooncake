@@ -220,7 +220,23 @@ class Post extends Equatable implements Comparable<Post> {
 
   @override
   String toString() {
-    return 'Post { id: $id, status: $status }';
+    return 'Post { '
+        'id: $id, '
+        'parentId: $parentId, '
+        'message: $message, '
+        'created: $created, '
+        'lastEdited: $lastEdited, '
+        'allowsComments: $allowsComments, '
+        'subspace: $subspace, '
+        'owner: $owner, '
+        'optionalData: $optionalData, '
+        'medias: $medias, '
+        'poll: $poll, '
+        'reactions: $reactions, '
+        'commentIds: $commentsIds, '
+        'status: $status, '
+        'hidden: $hidden '
+        '}';
   }
 
   static Post fromJson(Map<String, dynamic> json) {
