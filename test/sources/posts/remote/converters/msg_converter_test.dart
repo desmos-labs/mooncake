@@ -36,12 +36,7 @@ void main() {
       testPosts[0],
       testPosts[1].copyWith(
         reactions: testPosts[1].reactions +
-            [
-              Reaction._(
-                user: User.fromAddress(wallet.bech32Address),
-                value: "🤎",
-              )
-            ],
+            [Reaction.fromValue("🤎", User.fromAddress(wallet.bech32Address))],
       ),
       testPosts[2],
     ];
@@ -50,12 +45,7 @@ void main() {
       testPosts[1],
       testPosts[2].copyWith(
         reactions: testPosts[2].reactions +
-            [
-              Reaction._(
-                user: User.fromAddress(wallet.bech32Address),
-                value: "💗",
-              )
-            ],
+            [Reaction.fromValue("💗", User.fromAddress(wallet.bech32Address))],
       ),
     ];
 
@@ -72,6 +62,7 @@ void main() {
         creationDate: testPosts[0].created,
         optionalData: null, // Optional data should be null if empty
         medias: null, // Medias should be null if empty
+        poll: null, // Poll should be null
       ),
       MsgAddPostReaction(
         user: wallet.bech32Address,

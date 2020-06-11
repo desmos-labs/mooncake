@@ -28,7 +28,7 @@ void main() {
     expect(account.hasLiked(post), isFalse);
 
     final likedPost = post.copyWith(reactions: [
-      Reaction._(
+      Reaction(
         user: User.fromAddress(account.address),
         value: Constants.LIKE_REACTION,
       ),

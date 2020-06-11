@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
-http.StreamedResponse simpleResponse({@required String body, int status}) {
-  final List<int> bytes = utf8.encode(body);
-  final Stream<List<int>> stream =
-      Stream<List<int>>.fromIterable(<List<int>>[bytes]);
-
-  final http.StreamedResponse r = http.StreamedResponse(stream, status ?? 200);
-
-  return r;
+/// Allows to create an http mock response having the given [body] and [status].
+http.Response simpleResponse({@required String body, int status}) {
+  return http.Response(body, status ?? 200, headers: {
+    'Content-Type': 'application/json',
+    'Authorization': '',
+  });
 }

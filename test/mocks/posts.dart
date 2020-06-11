@@ -41,11 +41,11 @@ final List<Post> testPosts = [
     optionalData: {},
     owner: User.fromAddress("desmos16r460yaek3uqncjhnxez8v327qnxjw5k0crg9x"),
     reactions: [
-      Reaction._(
+      Reaction(
         value: ":smile:",
         user: User.fromAddress("desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h"),
       ),
-      Reaction._(
+      Reaction(
         value: ":100:",
         user: User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"),
       )
@@ -78,7 +78,7 @@ final List<Post> testPosts = [
     optionalData: {},
     owner: User.fromAddress("desmos15x3e6md5gdcsszc2nx88trnn85nn0qzgjwl9pj"),
     reactions: [
-      Reaction._(
+      Reaction(
         value: ":angry:",
         user: User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"),
       )

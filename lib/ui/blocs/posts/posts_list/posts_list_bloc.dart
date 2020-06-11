@@ -110,9 +110,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   PostsListState get initialState => PostsLoading();
 
   @override
-  Stream<PostsListState> transformEvents(
+  Stream<Transition<PostsListEvent, PostsListState>> transformEvents(
     Stream<PostsListEvent> events,
-    Function next,
+    TransitionFunction<PostsListEvent, PostsListState> next,
   ) {
     return super.transformEvents(events.distinct(), next);
   }

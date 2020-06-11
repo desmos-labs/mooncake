@@ -39,9 +39,11 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
 
   CarouselSlider _imagesCarousel() {
     return CarouselSlider(
-      viewportFraction: 1.0,
-      enableInfiniteScroll: false,
-      onPageChanged: (index) => _onPageChanged(index),
+      options: CarouselOptions(
+        viewportFraction: 1.0,
+        enableInfiniteScroll: false,
+        onPageChanged: (index, _) => _onPageChanged(index),
+      ),
       items: List.generate(widget.post.images.length, (index) {
         return PostContentImage(media: widget.post.images[index]);
       }),
