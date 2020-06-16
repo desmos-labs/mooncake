@@ -42,7 +42,9 @@ class ReportPostPopup extends StatelessWidget {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: ReportType.values.length,
-                        separatorBuilder: (_, index) => _separator(),
+                        separatorBuilder: (_, index) {
+                          return _separator();
+                        },
                         itemBuilder: (_, index) {
                           return PopupReportOption(index: index);
                         },
@@ -83,29 +85,20 @@ class ReportPostPopup extends StatelessWidget {
   }
 
   Widget _separator() {
-    return Container(width: double.infinity, height: 0.5, color: Colors.grey);
+    return Container(
+      width: double.infinity,
+      height: 0.5,
+      color: Color(0xFFECECEC),
+    );
   }
 
   Widget _blockUserOption(BuildContext context, ReportPopupState state) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          BlocProvider.of<ReportPopupBloc>(context)
-              .add(ToggleBlockUser(!state.blockUser));
-        },
-        child: Row(
-          children: [
-            Checkbox(
-              value: state.blockUser,
-              onChanged: (value) {
-                BlocProvider.of<ReportPopupBloc>(context)
-                    .add(ToggleBlockUser(value));
-              },
-            ),
-            Text(PostsLocalizations.of(context).reportPopupBlockUser)
-          ],
-        ),
-      ),
+    return CheckBoxButton(
+      value: state.blockUser,
+      child: Text(PostsLocalizations.of(context).reportPopupBlockUser),
+      onChanged: (value) {
+        BlocProvider.of<ReportPopupBloc>(context).add(ToggleBlockUser(value));
+      },
     );
   }
 
