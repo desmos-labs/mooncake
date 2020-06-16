@@ -4,7 +4,7 @@ import 'package:mooncake/ui/ui.dart';
 
 /// Allows the user to visualize the counter of the likes that a post has.
 class PostLikesCounter extends StatelessWidget {
-  final double iconSize = 26.0;
+  final double iconSize = 24.0;
 
   final Post post;
   const PostLikesCounter({

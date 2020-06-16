@@ -25,6 +25,10 @@ class PostLikeAction extends StatelessWidget {
         ? Icon(MooncakeIcons.heartF, size: size)
         : Icon(MooncakeIcons.heart, size: size);
 
+    final color = isLiked ?
+        Theme.of(context).colorScheme.error :
+        Theme.of(context).iconTheme.color;
+
     return SizedBox(
       height: size,
       child: Row(
@@ -33,7 +37,7 @@ class PostLikeAction extends StatelessWidget {
             width: size,
             child: IconButton(
               padding: EdgeInsets.zero,
-              color: Theme.of(context).colorScheme.primary,
+              color: color,
               icon: icon,
               onPressed: () => _onPressed(context),
             ),
@@ -51,7 +55,7 @@ class PostLikeAction extends StatelessWidget {
         Text(
           NumberFormat.compact().format(likes.length),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).iconTheme.color,
           ),
         ),
       ],

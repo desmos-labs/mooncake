@@ -54,8 +54,10 @@ class PostCommentItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         PostCommentAction(size: ICON_SIZE, post: comment),
-        SizedBox(width: ICON_SIZE),
+        const SizedBox(width: ICON_SIZE),
         PostLikeAction(size: ICON_SIZE, isLiked: isLiked, post: comment),
+        const SizedBox(width: ICON_SIZE),
+        PostAddReactionAction(size: ICON_SIZE, post: comment),
       ],
     );
   }
