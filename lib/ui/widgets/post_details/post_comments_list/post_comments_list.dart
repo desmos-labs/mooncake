@@ -65,10 +65,7 @@ class PostCommentsList extends StatelessWidget {
                 );
               }
 
-              return Container(
-                height: 0.5,
-                color: ThemeColors.textColorLight,
-              );
+              return Container(height: 0.5, color: ThemeColors.textColorLight);
             },
             childCount: childCount,
           ),
