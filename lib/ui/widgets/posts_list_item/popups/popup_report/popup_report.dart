@@ -49,16 +49,16 @@ class ReportPostPopup extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Column(
-                          children: [
-                            PopupReportTextInput(),
-                            const SizedBox(height: 16),
-                            _blockUserOption(context, state),
-                            const SizedBox(height: 16),
-                            _submitButton(context),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
+                        child: PopupReportTextInput(),
+                      ),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        child: _submitButton(context),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: _blockUserOption(context, state),
                       ),
                     ],
                   ),
