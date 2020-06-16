@@ -62,10 +62,10 @@ class PostReactionsList extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               return PostReactionItem(
-                reaction: state.post.reactions[index],
+                reaction: state.reactions[index],
               );
             },
-            childCount: state.post.reactions.length,
+            childCount: state.reactions.length,
           ),
         )
       ],

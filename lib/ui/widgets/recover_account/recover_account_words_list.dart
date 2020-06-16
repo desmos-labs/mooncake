@@ -41,7 +41,7 @@ class RecoverAccountWordsList extends StatelessWidget {
                     return ActionChip(
                       elevation: 0,
                       pressElevation: 0,
-                      backgroundColor: Theme.of(context).accentColor,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       label: Text(word),
                       onPressed: () => _wordSelected(context, word),
                     );

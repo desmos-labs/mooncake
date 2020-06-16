@@ -45,9 +45,10 @@ class PostDetailsMainContent extends StatelessWidget {
                         leading: Container(),
                         pinned: true,
                         flexibleSpace: TabBar(
-                          labelColor: Theme.of(context).accentColor,
+                          labelColor: Theme.of(context).colorScheme.primary,
                           unselectedLabelColor: Colors.grey[500],
                           indicatorSize: TabBarIndicatorSize.label,
+                          indicatorColor: Theme.of(context).colorScheme.primary,
                           tabs: <Widget>[
                             Tab(
                               text: PostsLocalizations.of(context)

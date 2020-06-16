@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,12 @@ void showEmojiPicker({
           children: <Widget>[
             EmojiPicker(
               onEmojiSelected: onEmojiSelected,
+              buttonMode: Platform.isAndroid
+                  ? ButtonMode.MATERIAL
+                  : ButtonMode.CUPERTINO,
+              noRecentsStyle: Theme.of(context).textTheme.bodyText2,
+              indicatorColor: Theme.of(context).colorScheme.primary,
+              bgColor: Theme.of(context).colorScheme.background,
             ),
           ],
         ),

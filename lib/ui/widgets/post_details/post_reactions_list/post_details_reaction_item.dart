@@ -11,11 +11,12 @@ class PostReactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           AccountAvatar(size: 36, user: reaction.user),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
               reaction.user.screenName,

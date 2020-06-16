@@ -41,10 +41,13 @@ class PostDetailsLoaded extends PostDetailsState {
   /// Returns the number of comments associated to this post.
   int get commentsCount => comments.length;
 
+  /// Returns the list of reactions associated to the post.
+  List<Reaction> get reactions =>
+      post.reactions.where((element) => !element.isLike).toList();
+
   /// Returns the number of reactions (excluding the likes) that the
   /// current post has.
-  int get reactionsCount =>
-      post.reactions.where((element) => !element.isLike).length;
+  int get reactionsCount => reactions.length;
 
   /// Tells whether or not the post has been liked from the user.
   bool get isLiked => post.reactions
