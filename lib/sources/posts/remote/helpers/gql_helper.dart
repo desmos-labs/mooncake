@@ -35,6 +35,7 @@ class GqlPostsHelper {
   parent_id
   subspace
   created
+  hidden
   last_edited
   allows_comments
   message

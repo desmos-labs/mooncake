@@ -9,7 +9,7 @@ dependencies:
   alan:
     git:
       url: git://github.com/alan-sdk/alan.dart.git
-      ref: cosmos-v0.38.0
+      ref: cosmos-v0.38.x
   bip39:
   carousel_slider:
   cached_network_image:
