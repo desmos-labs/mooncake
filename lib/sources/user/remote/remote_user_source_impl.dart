@@ -70,7 +70,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
     await http.Client().post(
       _faucetEndpoint,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"address": user.cosmosAccount.address}),
+      body: jsonEncode({"address": user.address}),
     );
   }
 

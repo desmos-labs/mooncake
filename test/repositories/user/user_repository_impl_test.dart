@@ -148,7 +148,8 @@ void main() {
     test('when account does not exist locally', () async {
       when(localUserSource.getAccount()).thenAnswer((_) => Future.value(null));
 
-      await repository.refreshAccount();
+      final stored = await repository.refreshAccount();
+      expect(stored, isNull);
 
       verify(localUserSource.getAccount()).called(1);
       verifyNever(remoteUserSource.getAccount(any));
@@ -161,7 +162,8 @@ void main() {
       when(remoteUserSource.getAccount(any))
           .thenAnswer((_) => Future.value(null));
 
-      await repository.refreshAccount();
+      final stored = await repository.refreshAccount();
+      expect(stored, equals(account));
 
       verifyInOrder([
         localUserSource.getAccount(),
@@ -179,8 +181,11 @@ void main() {
       final remoteAccount = account.copyWith(moniker: "test-moniker");
       when(remoteUserSource.getAccount(any))
           .thenAnswer((_) => Future.value(remoteAccount));
+      when(localUserSource.saveAccount(any))
+          .thenAnswer((_) => Future.value(remoteAccount));
 
-      await repository.refreshAccount();
+      final stored = await repository.refreshAccount();
+      expect(stored, equals(remoteAccount));
 
       verifyInOrder([
         localUserSource.getAccount(),

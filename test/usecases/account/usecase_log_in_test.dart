@@ -14,41 +14,45 @@ void main() {
     loginUseCase = LoginUseCase(userRepository: repository);
   });
 
-  test('login works properly when no funding is necessary', () async {
-    final account = MooncakeAccount.local("address").copyWith(
-      cosmosAccount: CosmosAccount(
-        sequence: 0,
-        accountNumber: 0,
-        address: "address",
-        coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
-      ),
-    );
-    when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
-    when(repository.refreshAccount()).thenAnswer((_) => Future.value(account));
+  group('login works properly', () {
+    test('when no funding is necessary', () async {
+      final account = MooncakeAccount.local("address").copyWith(
+        cosmosAccount: CosmosAccount(
+          sequence: 0,
+          accountNumber: 0,
+          address: "address",
+          coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
+        ),
+      );
+      when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
+      when(repository.refreshAccount())
+          .thenAnswer((_) => Future.value(account));
 
-    final mnemonic = "mnemonic";
-    await loginUseCase.login(mnemonic);
+      final mnemonic = "mnemonic";
+      await loginUseCase.login(mnemonic);
 
-    verifyInOrder([
-      repository.saveWallet(mnemonic),
-      repository.refreshAccount(),
-    ]);
-    verifyNever(repository.fundAccount(any));
-  });
+      verifyInOrder([
+        repository.saveWallet(mnemonic),
+        repository.refreshAccount(),
+      ]);
+      verifyNever(repository.fundAccount(any));
+    });
 
-  test('login works properly when funding is required', () async {
-    final account = MooncakeAccount.local("address");
-    when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
-    when(repository.refreshAccount()).thenAnswer((_) => Future.value(account));
-    when(repository.fundAccount(any)).thenAnswer((_) => Future.value(null));
+    test('when funding is required', () async {
+      final account = MooncakeAccount.local("address");
+      when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
+      when(repository.refreshAccount())
+          .thenAnswer((_) => Future.value(account));
+      when(repository.fundAccount(any)).thenAnswer((_) => Future.value(null));
 
-    final mnemonic = "mnemonic";
-    await loginUseCase.login(mnemonic);
+      final mnemonic = "mnemonic";
+      await loginUseCase.login(mnemonic);
 
-    verifyInOrder([
-      repository.saveWallet(mnemonic),
-      repository.refreshAccount(),
-      repository.fundAccount(account),
-    ]);
+      verifyInOrder([
+        repository.saveWallet(mnemonic),
+        repository.refreshAccount(),
+        repository.fundAccount(account),
+      ]);
+    });
   });
 }

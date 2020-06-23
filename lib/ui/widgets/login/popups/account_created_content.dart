@@ -15,19 +15,20 @@ class AccountCreatedPopupContent extends StatelessWidget {
           PostsLocalizations.of(context)
               .accountCreatedPopupTitleFirstRow
               .toUpperCase(),
-          style: Theme.of(context).accentTextTheme.headline6,
+          style: Theme.of(context).textTheme.headline6.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
         ),
         Text(
           PostsLocalizations.of(context)
               .accountCreatedPopupTitleSecondRow
               .toUpperCase(),
-          style: Theme.of(context).accentTextTheme.headline6,
+          style: Theme.of(context).textTheme.headline6.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
         ),
         SizedBox(height: 10),
-        Text(
-          PostsLocalizations.of(context).accountCreatedPopupText,
-          style: Theme.of(context).accentTextTheme.bodyText2,
-        ),
+        Text(PostsLocalizations.of(context).accountCreatedPopupText),
         SizedBox(height: 25),
         Row(
           children: <Widget>[

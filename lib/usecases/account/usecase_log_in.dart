@@ -17,9 +17,10 @@ class LoginUseCase {
 
     // Get the account data
     final user = await _userRepository.refreshAccount();
+    assert(user != null);
 
     // If needed, send the funds to the user
-    if (user?.needsFunding == true) {
+    if (user.needsFunding) {
       await _userRepository.fundAccount(user);
     }
   }
