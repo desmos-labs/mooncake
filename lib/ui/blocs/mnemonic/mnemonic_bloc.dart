@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import './bloc.dart';
@@ -11,6 +13,8 @@ import './bloc.dart';
 /// Represents the Bloc that is used when wanting to display the mnemonic
 /// to the user.
 class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
+  final FirebaseAnalytics _analytics;
+
   final NavigatorBloc _navigatorBloc;
 
   final GetMnemonicUseCase _getMnemonicUseCase;
@@ -20,23 +24,29 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     @required NavigatorBloc navigatorBloc,
     @required GetMnemonicUseCase getMnemonicUseCase,
     @required EncryptMnemonicUseCase encryptMnemonicUseCase,
+    @required FirebaseAnalytics analytics,
   })  : assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(getMnemonicUseCase != null),
         _getMnemonicUseCase = getMnemonicUseCase,
         assert(encryptMnemonicUseCase != null),
-        _encryptMnemonicUseCase = encryptMnemonicUseCase;
+        _encryptMnemonicUseCase = encryptMnemonicUseCase,
+        assert(analytics != null),
+        _analytics = analytics;
 
   factory MnemonicBloc.create(BuildContext context) {
     return MnemonicBloc(
       navigatorBloc: BlocProvider.of(context),
       getMnemonicUseCase: Injector.get(),
       encryptMnemonicUseCase: Injector.get(),
+      analytics: Injector.get(),
     );
   }
 
   @override
-  MnemonicState get initialState => MnemonicState.initial();
+  MnemonicState get initialState {
+    return MnemonicState.initial();
+  }
 
   @override
   Stream<MnemonicState> mapEventToState(MnemonicEvent event) async* {
@@ -49,7 +59,7 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     } else if (event is CloseExportPopup) {
       yield* _mapCloseExportPopupEventToState();
     } else if (event is ExportMnemonic) {
-      yield* _mapEncryptMnemonicEventToState();
+      yield* _mapExportMnemonicEventToState();
     }
   }
 
@@ -67,7 +77,7 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     }
   }
 
-  Stream<MnemonicState> _mapEncryptMnemonicEventToState() async* {
+  Stream<MnemonicState> _mapExportMnemonicEventToState() async* {
     final currentState = state;
     if (currentState is ExportingMnemonic) {
       yield currentState.copyWith(exportingMnemonic: true);
@@ -82,6 +92,7 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
       yield* _mapCloseExportPopupEventToState();
 
       // Go to the page where the exported data can be shared
+      await _analytics.logEvent(name: Constants.EVENT_MNEMONIC_EXPORT);
       _navigatorBloc.add(NavigateToExportMnemonic(mnemonicData: mnemonicData));
     }
   }

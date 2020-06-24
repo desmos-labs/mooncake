@@ -71,7 +71,7 @@ void main() {
 
   test('remoteStream returns local one', () async {
     final localStream = BehaviorSubject<NotificationData>();
-    when(localSource.notificationsStream).thenAnswer((_) => localStream);
+    when(localSource.liveNotificationsStream).thenAnswer((_) => localStream);
 
     final remoteNotification =
         TxFailedNotification(date: DateTime.now(), error: "", txHash: "");
@@ -81,7 +81,7 @@ void main() {
         TxSuccessfulNotification(txHash: "", date: DateTime.now());
     localStream.add(localNotification);
 
-    final stream = repository.notificationsStream;
+    final stream = repository.liveNotificationsStream;
     expectLater(stream, emitsInOrder([localNotification]));
 
     localStream.close();

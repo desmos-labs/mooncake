@@ -24,6 +24,9 @@ Downloads and documentation can both be found on the [official website](https://
 ## Screens
 <img src="./.img/screen_login.png" alt="Login screen" width="200"> <img src="./.img/screen_list.png" alt="List screen" width="200"> <img src="./.img/screen_detail.png" alt="Detail screen" width="200">
 
+## Development
+You can read more about the development on the [official website](https://mooncake.space/development).
+
 ## Caveats
 ### Syncing
 As of today, the syncing of posts and reactions is performed **once every 30 seconds**.  

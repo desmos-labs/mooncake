@@ -3,24 +3,25 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/notifications/notifications.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'notifications_converter.dart';
 
+/// Implementation of [RemoteNotificationsSource].
 class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   final LocalUserSource _localUserSource;
 
   final _fcm = FirebaseMessaging();
-  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final _notificationConverter = NotificationConverter();
 
-  final _converter = NotificationConverter();
-
-  /// Represents the last FCM topic of an address to which we have subscribed.
+  // Represents the last FCM topic of an address to which we have subscribed.
   String _lastAddressSubscribedTopic;
 
   final _backgroundNotificationStream = BehaviorSubject<FcmMessage>();
@@ -40,27 +41,6 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
     // Initialize FCM
     _configureFcm();
     _subscribeToAddressTopic();
-
-    // Initialize local notifications
-    _initLocalNotifications();
-  }
-
-  /// Initializes the local notifications plugin.
-  void _initLocalNotifications() {
-    final initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_notification');
-    final initializationSettingsIOS = IOSInitializationSettings();
-    final initializationSettings = InitializationSettings(
-      initializationSettingsAndroid,
-      initializationSettingsIOS,
-    );
-    _flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onSelectNotification: (payload) async {
-        final fcmMessage = FcmMessage.fromJson(jsonDecode(payload));
-        _backgroundNotificationStream.add(fcmMessage);
-      },
-    );
   }
 
   /// If the user has logged in, subscribes the FCM instance to the topic
@@ -74,7 +54,7 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
 
       final address = account?.cosmosAccount?.address ?? "";
       if (address.isNotEmpty) {
-        print("Susbcribing to FCM topic: $address");
+        print("Subscribing to FCM topic: $address");
         _fcm.subscribeToTopic(address);
         _lastAddressSubscribedTopic = address;
       }
@@ -107,14 +87,14 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   @override
   Stream<NotificationData> get foregroundStream {
     return _foregroundNotificationStream.stream
-        .map(_converter.convertFcmMessage)
+        .map(_notificationConverter.convert)
         .where((event) => event != null);
   }
 
   @override
   Stream<NotificationData> get backgroundStream {
     return _backgroundNotificationStream.stream
-        .map(_converter.convertFcmMessage)
+        .map(_notificationConverter.convert)
         .where((element) => element != null);
   }
 }

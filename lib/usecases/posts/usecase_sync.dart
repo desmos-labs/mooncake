@@ -18,7 +18,12 @@ class SyncPostsUseCase {
   /// Syncs the locally stored data to the chain.
   Future<void> sync() async {
     // Refresh the account
-    await _userRepository.refreshAccount();
+    final account = await _userRepository.refreshAccount();
+    if (account.needsFunding) {
+      // If the account needs the funds, ask for them and skip
+      // the rest of the process
+      return _userRepository.fundAccount(account);
+    }
 
     // Sync the posts
     return _postsRepository.syncPosts();

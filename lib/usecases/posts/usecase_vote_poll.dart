@@ -35,7 +35,7 @@ class VotePollUseCase {
 
     // The answer does not exist, create it
     if (userAnswer == null) {
-      final answer = PollAnswer(answer: option.id, user: account);
+      final answer = PollAnswer(answer: option.id, user: account.toUser());
       pollAnswers.add(answer);
 
       // Update the post

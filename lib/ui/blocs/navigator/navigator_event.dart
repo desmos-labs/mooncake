@@ -59,10 +59,9 @@ class NavigateToCreatePost extends NavigatorEvent {
 /// Tells the Bloc to navigate to the screen that displays the post
 /// having the specified id.
 class NavigateToPostDetails extends NavigatorEvent {
-  final BuildContext context;
   final String postId;
 
-  NavigateToPostDetails(this.context, this.postId);
+  NavigateToPostDetails(this.postId);
 
   @override
   String toString() => 'NavigateToPostDetails { postId: $postId }';

@@ -18,12 +18,12 @@ abstract class ChainSource {
 
   /// Creates, sings and sends a transaction having the given [messages]
   /// and using the given [wallet].
-  /// Optionally, a [feeAmount] can also be specified. If not, a default
+  /// Optionally, a [fees] can also be specified. If not, a default
   /// 0.1 * 100.000 [Constants.FEE_TOKEN] will be used instead.
   Future<TransactionResult> sendTx(
     List<StdMsg> messages,
     Wallet wallet, {
-    List<StdCoin> feeAmount,
+    List<StdCoin> fees,
   });
 
   /// Returns the list of transactions that are stored inside the block

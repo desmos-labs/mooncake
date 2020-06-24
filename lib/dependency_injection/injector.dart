@@ -1,7 +1,9 @@
 import 'package:dependencies/dependencies.dart' as di;
 import 'package:meta/meta.dart';
+import 'package:mooncake/notifications/dependency_injection.dart';
 import 'package:mooncake/repositories/dependency_injection.dart';
 import 'package:mooncake/sources/dependency_injection.dart';
+import 'package:mooncake/ui/dependency_injection.dart';
 import 'package:mooncake/usecases/dependency_injection.dart';
 import 'package:mooncake/utils/dependency_injector.dart';
 import 'package:sembast/sembast.dart';
@@ -24,7 +26,9 @@ class Injector {
       ))
       ..install(RepositoriesModule())
       ..install(UseCaseModule())
-      ..install(UtilsModule());
+      ..install(UtilsModule())
+      ..install(NotificationsModule())
+      ..install(BlocsModule());
     final injector = builder.build();
     di.InjectorRegistry.instance.register(injector);
   }

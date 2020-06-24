@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -7,9 +9,12 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
+
 import './bloc.dart';
 
 class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
+  final FirebaseAnalytics _analytics;
+
   final MooncakeAccount _account;
   final NavigatorBloc _navigatorBloc;
 
@@ -19,18 +24,22 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
     @required MooncakeAccount account,
     @required NavigatorBloc navigatorBloc,
     @required SaveAccountUseCase saveAccountUseCase,
+    @required FirebaseAnalytics analytics,
   })  : assert(account != null),
         _account = account,
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(saveAccountUseCase != null),
-        _saveAccountUseCase = saveAccountUseCase;
+        _saveAccountUseCase = saveAccountUseCase,
+        assert(analytics != null),
+        _analytics = analytics;
 
   factory EditAccountBloc.create(BuildContext context) {
     return EditAccountBloc(
       account: (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user,
       navigatorBloc: BlocProvider.of(context),
       saveAccountUseCase: Injector.get(),
+      analytics: Injector.get(),
     );
   }
 

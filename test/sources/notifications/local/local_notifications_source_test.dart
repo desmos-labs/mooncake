@@ -46,7 +46,23 @@ void main() {
     expect(result, equals([second, first]));
   });
 
-  test('notificationsStream returns valid data', () async {
+  test('liveNotificationsStream emits valid data', () async {
+    final first = TxSuccessfulNotification(
+      date: DateTime.fromMicrosecondsSinceEpoch(10000),
+      txHash: "hash1",
+    );
+    final second = TxSuccessfulNotification(
+      date: DateTime.fromMicrosecondsSinceEpoch(20000),
+      txHash: "hash2",
+    );
+
+    expectLater(source.liveNotificationsStream, emitsInOrder([first, second]));
+
+    await source.saveNotification(first);
+    await source.saveNotification(second);
+  });
+
+  test('storedNotificationsStream returns valid data', () async {
     final first = TxSuccessfulNotification(
       date: DateTime.fromMicrosecondsSinceEpoch(10000),
       txHash: "hash1",
@@ -60,6 +76,9 @@ void main() {
     await store.add(database, first.asJson());
     await store.add(database, second.asJson());
 
-    expectLater(source.notificationsStream, emitsInOrder([first, second]));
+    expectLater(
+      source.storedNotificationsStream,
+      emitsInOrder([second, first]),
+    );
   });
 }

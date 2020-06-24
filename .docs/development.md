@@ -37,6 +37,11 @@ flutter pub run build_runner build
 ### Syncing
 If you want to try a faster sync time, you can change it from withing the `main.dart` file, setting the desired `syncPeriod` when creating the `PostsBloc` instance.  
 
+## Analytics
+In order to constantly improve the application workings, we use [Firebase Analytics](https://firebase.google.com/docs/analytics) to track **completely anonymous** usage of the application by the users. This include tracking when they log in, add/remove a reaction, create a post etc. 
+
+In order to do so, we use the [Flutter Firebase Plugins](https://firebase.google.com/docs/flutter/setup). 
+
 ## Formatting
 When writing code we follow the [Flutter formatting guideline](https://flutter.dev/docs/development/tools/formatting). To ensure your files also follow the same formatting, please run the given commands once you edited or added new files:
 

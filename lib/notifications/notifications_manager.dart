@@ -3,36 +3,33 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/notifications/notifications.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:mooncake/ui/ui.dart';
 
 /// Utility class which contains all the logic to properly handle notifications.
 class NotificationsManager {
-  final BuildContext _context;
+  final NotificationTapHandler _notificationsHandler;
   final RemoteNotificationsSource _notificationsSource;
 
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   StreamSubscription _foregroundSub;
   StreamSubscription _backgroundSub;
 
   NotificationsManager({
-    @required BuildContext context,
+    @required NotificationTapHandler notificationsHandler,
     @required RemoteNotificationsSource remoteNotificationsSource,
-  })  : assert(context != null),
-        _context = context,
+  })  : assert(notificationsHandler != null),
+        _notificationsHandler = notificationsHandler,
         assert(remoteNotificationsSource != null),
         _notificationsSource = remoteNotificationsSource;
 
-  /// Allows to easily create a new [NotificationManager] from the
-  /// provided [context].
-  factory NotificationsManager.create(BuildContext context) {
+  factory NotificationsManager.create() {
     return NotificationsManager(
-      context: context,
+      notificationsHandler: Injector.get(),
       remoteNotificationsSource: Injector.get(),
     );
   }
@@ -40,12 +37,31 @@ class NotificationsManager {
   /// Initializes the manager subscribing to the proper streams as well
   /// as setting up necessary plugins.
   void init() {
+    // Initialize the local notifications
+    final initializationSettingsAndroid = AndroidInitializationSettings(
+      'ic_notification',
+    );
+    final initializationSettingsIOS = IOSInitializationSettings();
+    final initializationSettings = InitializationSettings(
+      initializationSettingsAndroid,
+      initializationSettingsIOS,
+    );
+
+    _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onSelectNotification: (payload) async {
+        final notification = NotificationData.fromJson(jsonDecode(payload));
+        _notificationsHandler.handleMessage(notification);
+      },
+    );
+
+    // Listen for foreground notifications
     _foregroundSub = _notificationsSource.foregroundStream.listen((message) {
       _showLocalNotification(message);
     });
     _backgroundSub = _notificationsSource.backgroundStream.listen((message) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _handleMessage(_context, message);
+        _notificationsHandler.handleMessage(message);
       });
     });
   }
@@ -54,19 +70,6 @@ class NotificationsManager {
   void dispose() {
     _foregroundSub.cancel();
     _backgroundSub.cancel();
-  }
-
-  /// Handles the given [message] accordingly, performing the needed
-  /// operation(s) based on its type and data payload.
-  void _handleMessage(BuildContext context, NotificationData notification) {
-    if (notification is BasePostInteractionNotification) {
-      switch (notification?.action) {
-        case NotificationActions.ACTION_SHOW_POST:
-          BlocProvider.of<NavigatorBloc>(context)
-            ..add(NavigateToPostDetails(context, notification.postId));
-          break;
-      }
-    }
   }
 
   /// Allows to properly show a local notification containing
@@ -92,7 +95,7 @@ class NotificationsManager {
       iOSPlatformChannelSpecifics,
     );
 
-    await flutterLocalNotificationsPlugin.show(
+    await _flutterLocalNotificationsPlugin.show(
       Random.secure().nextInt(1024),
       notification.title,
       notification.body,

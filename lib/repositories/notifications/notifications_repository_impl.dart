@@ -27,7 +27,7 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
   }
 
   @override
-  Stream<NotificationData> get notificationsStream {
-    return _localSource.notificationsStream;
+  Stream<NotificationData> get liveNotificationsStream {
+    return _localSource.liveNotificationsStream;
   }
 }

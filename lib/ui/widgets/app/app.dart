@@ -1,4 +1,3 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +17,7 @@ class _PostsAppState extends State<PostsApp> {
   @override
   void initState() {
     super.initState();
-    _notificationsManager = NotificationsManager.create(context);
+    _notificationsManager = NotificationsManager.create();
     _notificationsManager.init();
   }
 
@@ -49,11 +48,5 @@ class _PostsAppState extends State<PostsApp> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _notificationsManager.dispose();
   }
 }
