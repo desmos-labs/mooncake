@@ -54,6 +54,8 @@ class MooncakeAccount extends User {
   }
 
   /// Returns `true` iff the account needs to be funded.
+  /// An account is defined to been in need for funding if the
+  /// number of tokens are less than 1 token.
   bool get needsFunding {
     final feeTokens = cosmosAccount.coins.firstWhere(
       (element) => element.denom == Constants.FEE_TOKEN,
