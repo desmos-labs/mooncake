@@ -105,13 +105,13 @@ class ChainSourceImpl extends ChainSource {
   Future<TransactionResult> sendTx(
     List<StdMsg> messages,
     Wallet wallet, {
-    List<StdCoin> feeAmount,
+    List<StdCoin> fees,
   }) async {
     final data = TxData(
       messages: messages,
       wallet: wallet,
       feeAmount:
-          feeAmount ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
+          fees ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
     );
     return compute(sendTxBackground, data);
   }

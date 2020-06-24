@@ -96,7 +96,10 @@ class RemoteUserSourceImpl implements RemoteUserSource {
     final msg = _msgConverter.toUserMsg(account, remoteAccount);
 
     // Send the message to the chain
-    final feeAmount = [StdCoin(amount: "200000", denom: Constants.FEE_TOKEN)];
-    return _chainSource.sendTx([msg], wallet, feeAmount: feeAmount);
+    final feeAmount = Constants.FEE_ACCOUNT_EDIT;
+    final fees = [
+      StdCoin(denom: Constants.FEE_TOKEN, amount: feeAmount.toString())
+    ];
+    return _chainSource.sendTx([msg], wallet, fees: fees);
   }
 }

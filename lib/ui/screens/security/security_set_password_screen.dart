@@ -16,18 +16,16 @@ class SetPasswordScreen extends StatelessWidget {
         create: (context) => SetPasswordBloc.create(context),
         child: BlocBuilder<SetPasswordBloc, SetPasswordState>(
           builder: (context, state) {
-            return SafeArea(
-              child: Stack(
-                children: <Widget>[
-                  SetPasswordContent(),
-                  if (state.savingPassword)
-                    GenericPopup(
-                      backgroundColor:
-                          Theme.of(context).cardColor.withOpacity(0.5),
-                      content: SavingPasswordPopupContent(),
-                    )
-                ],
-              ),
+            return Stack(
+              children: <Widget>[
+                SetPasswordContent(),
+                if (state.savingPassword)
+                  GenericPopup(
+                    backgroundColor:
+                        Theme.of(context).cardColor.withOpacity(0.5),
+                    content: SavingPasswordPopupContent(),
+                  )
+              ],
             );
           },
         ),

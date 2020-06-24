@@ -106,11 +106,11 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     int feeAmount = 0;
     messages.forEach((msg) {
       if (msg is MsgCreatePost) {
-        feeAmount += 100000; // 0.10 per post/comment
+        feeAmount += Constants.FEE_POST;
       } else if (msg is MsgAddPostReaction || msg is MsgRemovePostReaction) {
-        feeAmount += 50000; // 0.05 per post reaction added/removed
+        feeAmount += Constants.FEE_REACTION;
       } else if (msg is MsgAnswerPoll) {
-        feeAmount += 50000; // 0.05 per poll answer
+        feeAmount += Constants.FEE_POLL_ANSWER;
       }
     });
 
@@ -118,7 +118,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     final fees = [
       StdCoin(denom: Constants.FEE_TOKEN, amount: feeAmount.toString())
     ];
-    return _chainSource.sendTx(messages, wallet, feeAmount: fees);
+    return _chainSource.sendTx(messages, wallet, fees: fees);
   }
 
   /// Allows to upload the media of each [posts] item if necessary.
