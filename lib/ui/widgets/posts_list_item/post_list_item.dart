@@ -59,8 +59,7 @@ class PostListItem extends StatelessWidget {
   }
 
   void _openPostDetails(BuildContext context) {
-    BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigateToPostDetails(context, post.id));
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToPostDetails(post.id));
   }
 
   Function _handleLongClick(BuildContext context) {

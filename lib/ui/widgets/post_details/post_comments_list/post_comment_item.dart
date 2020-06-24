@@ -64,6 +64,6 @@ class PostCommentItem extends StatelessWidget {
 
   void _onTap(BuildContext context) {
     BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigateToPostDetails(context, comment.id));
+        .add(NavigateToPostDetails(comment.id));
   }
 }

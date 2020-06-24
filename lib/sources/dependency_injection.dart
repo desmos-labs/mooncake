@@ -3,37 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql/client.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/notifications/notifications.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
 
+/// Dependency injection that provides the definition of all the
+/// sources interfaces implementations.
 class SourcesModule implements Module {
+  // Debug option to use local running servers
   static const _useLocalEndpoints = false;
-
-  static const _faucetEndpoint = "https://faucet.desmos.network/airdrop";
-  static const _ipfsEndpoint = "ipfs.desmos.network";
-
-  static const _lcdUrl = _useLocalEndpoints
-      ? "http://10.0.2.2:1317"
-      : "http://lcd.morpheus.desmos.network:1317";
-
-  final _networkInfo = NetworkInfo(
-    bech32Hrp: "desmos",
-    lcdUrl: _lcdUrl,
-  );
-
-  final _gqlClient = GraphQLClient(
-    link: HttpLink(
-      _useLocalEndpoints
-          ? "http://10.0.2.2:8080/v1/graphql"
-          : "https://gql.morpheus.desmos.network/v1/graphql",
-    ).concat(WebSocketLink(
-      _useLocalEndpoints
-          ? "ws://10.0.2.2:8080/v1/graphql"
-          : "wss://gql.morpheus.desmos.network/v1/graphql",
-    )),
-    cache: GraphQLCache(),
-  );
 
   final Database accountDatabase;
   final Database postsDatabase;
@@ -52,6 +31,25 @@ class SourcesModule implements Module {
 
   @override
   void configure(Binder binder) {
+    // Endpoint to the Desmos chain REST APIs
+    final _lcdUrl = _useLocalEndpoints
+        ? "http://10.0.2.2:1317"
+        : "http://lcd.morpheus.desmos.network:1317";
+
+    // GraphQL client
+    final _gqlClient = GraphQLClient(
+      link: HttpLink(
+        _useLocalEndpoints
+            ? "http://10.0.2.2:8080/v1/graphql"
+            : "https://gql.morpheus.desmos.network/v1/graphql",
+      ).concat(WebSocketLink(
+        _useLocalEndpoints
+            ? "ws://10.0.2.2:8080/v1/graphql"
+            : "wss://gql.morpheus.desmos.network/v1/graphql",
+      )),
+      cache: GraphQLCache(),
+    );
+
     binder
       // Chain sources
       ..bindLazySingleton<ChainSource>((injector, params) => ChainSourceImpl(
@@ -60,14 +58,14 @@ class SourcesModule implements Module {
       // User sources
       ..bindLazySingleton<LocalUserSource>(
           (injector, params) => LocalUserSourceImpl(
-                networkInfo: _networkInfo,
+                networkInfo: NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl),
                 database: accountDatabase,
                 secureStorage: FlutterSecureStorage(),
               ))
       ..bindLazySingleton<RemoteUserSource>(
           (injector, params) => RemoteUserSourceImpl(
                 graphQLClient: _gqlClient,
-                faucetEndpoint: _faucetEndpoint,
+                faucetEndpoint: "https://faucet.desmos.network/airdrop",
                 chainHelper: injector.get(),
                 msgConverter: UserMsgConverter(),
                 userSource: injector.get(),
@@ -91,7 +89,7 @@ class SourcesModule implements Module {
       // Medias source
       ..bindLazySingleton<RemoteMediasSource>(
           (injector, params) => RemoteMediasSourceImpl(
-                ipfsEndpoint: _ipfsEndpoint,
+                ipfsEndpoint: "ipfs.desmos.network",
               ))
       // Notifications source
       ..bindLazySingleton<RemoteNotificationsSource>(
@@ -100,7 +98,7 @@ class SourcesModule implements Module {
               ))
       ..bindLazySingleton<LocalNotificationsSource>(
           (injector, params) => LocalNotificationsSourceImpl(
-                database: accountDatabase,
+                database: notificationsDatabase,
               ))
       // Users source
       ..bindLazySingleton<LocalUsersSource>(

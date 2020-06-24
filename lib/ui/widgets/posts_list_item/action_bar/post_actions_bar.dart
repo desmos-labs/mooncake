@@ -45,9 +45,4 @@ class PostActionsBar extends StatelessWidget {
       },
     );
   }
-
-  void _openPostDetails(BuildContext context) {
-    BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigateToPostDetails(context, post.id));
-  }
 }

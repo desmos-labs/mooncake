@@ -20,6 +20,6 @@ class GetNotificationsUseCase {
   /// Returns a [Stream] that emits all the new notifications
   /// that are created during time.
   Stream<NotificationData> stream() {
-    return _repository.notificationsStream;
+    return _repository.liveNotificationsStream;
   }
 }

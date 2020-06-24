@@ -15,12 +15,13 @@ class Constants {
   static const FEE_TOKEN = "udaric";
 
   // Analytics constants
-  static const EVENT_MNEMONIC_GENERATE = "mnemonic_generated";
   static const EVENT_ACCOUNT_RECOVERED = "account_recovered";
   static const EVENT_LOGOUT = "logout";
+  static const EVENT_MNEMONIC_EXPORT = "mnemonic_exported";
+  static const EVENT_MNEMONIC_GENERATE = "mnemonic_generated";
   static const EVENT_NAVIGATE_TO_SCREEN = "navigate_to_screen";
-  static const EVENT_SAVE_POST = "save_post";
   static const EVENT_REACTION_CHANGED = "reaction_changed";
+  static const EVENT_SAVE_POST = "save_post";
 
   // Post creation
   static const POST_PARAM_OWNER = "owner";

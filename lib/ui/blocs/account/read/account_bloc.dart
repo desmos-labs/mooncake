@@ -103,6 +103,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
     final account = await _getUserUseCase.single();
     if (account != null) {
+      await _analytics.setUserId(account.address);
+      await _analytics.logLogin();
       yield LoggedIn.initial(account);
     } else {
       yield LoggedOut();
@@ -121,7 +123,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well
   /// as sending the user to the Home screen.
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
-    _analytics.logLogin();
     final account = await _getUserUseCase.single();
     yield LoggedIn.initial(account);
     _navigatorBloc.add(NavigateToHome());
@@ -130,7 +131,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// Handles the [LogOut] event emitting the [LoggedOut] state after
   /// effectively logging out the user.
   Stream<AccountState> _mapLogOutEventToState() async* {
-    _analytics.logEvent(name: Constants.EVENT_LOGOUT);
+    await _analytics.logEvent(name: Constants.EVENT_LOGOUT);
     await _logoutUseCase.logout();
     yield LoggedOut();
   }

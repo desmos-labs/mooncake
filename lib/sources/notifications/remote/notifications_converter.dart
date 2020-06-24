@@ -8,7 +8,7 @@ export 'models/models.dart';
 /// [NotificationData] instance.
 class NotificationConverter {
   /// Converts the given [message] to the proper [NotificationData] instance.
-  NotificationData convertFcmMessage(FcmMessage message) {
+  NotificationData convert(FcmMessage message) {
     switch (message.type) {
       case NotificationTypes.COMMENT:
         return PostCommentNotification(
@@ -30,6 +30,16 @@ class NotificationConverter {
           body: message.notification?.body,
         );
 
+      case NotificationTypes.REACTION:
+        return PostReactionNotification(
+          postId: message.data["post_id"],
+          user: User.fromAddress(message.data["post_reaction_owner"]),
+          date: DateTime.now(),
+          reaction: message.data["post_reaction_value"],
+          title: message.notification?.title,
+          body: message.notification?.body,
+        );
+
       case NotificationTypes.TRANSACTION_SUCCESS:
         return TxSuccessfulNotification(
           date: DateTime.now(),
@@ -43,7 +53,7 @@ class NotificationConverter {
           error: message.data["tx_error"],
         );
 
-      // TODO: Add other types
+    // TODO: Add other types
 
       default:
         return null;

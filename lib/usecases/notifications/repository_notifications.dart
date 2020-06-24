@@ -9,5 +9,5 @@ abstract class NotificationsRepository {
 
   /// Returns a Stream that emits all the new notifications
   /// when they are created.
-  Stream<NotificationData> get notificationsStream;
+  Stream<NotificationData> get liveNotificationsStream;
 }
