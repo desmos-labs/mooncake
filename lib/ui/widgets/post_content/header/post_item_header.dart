@@ -27,39 +27,38 @@ class PostItemHeader extends StatelessWidget {
         return Row(
           children: <Widget>[
             Expanded(
-              child: InkWell(
-                borderRadius: BorderRadius.circular(1000),
-                onTap: () => _onTapUser(context),
-                child: Row(
-                  children: [
-                    // User picture
-                    AccountAvatar(size: 40, user: post.owner),
+              child: Row(
+                children: [
+                  // User picture
+                  InkWell(
+                    borderRadius: BorderRadius.circular(1000),
+                    onTap: () => _onTapUser(context),
+                    child: AccountAvatar(size: 40, user: post.owner),
+                  ),
 
-                    // Spacer
-                    const SizedBox(width: ThemeSpaces.smallGutter),
+                  // Spacer
+                  const SizedBox(width: ThemeSpaces.smallGutter),
 
-                    // Username and time ago
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            post.owner.screenName,
-                            overflow: TextOverflow.ellipsis,
-                            style:
-                                Theme.of(context).textTheme.subtitle1.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                          ),
-                          Text(
-                            timeago.format(post.dateTime.toLocal()),
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
+                  // Username and time ago
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          post.owner.screenName,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                        Text(
+                          timeago.format(post.dateTime.toLocal()),
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             if (post.owner.address != account.cosmosAccount.address)
