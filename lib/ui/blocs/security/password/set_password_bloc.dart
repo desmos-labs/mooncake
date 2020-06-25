@@ -1,10 +1,12 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/usecases/usecases.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/usecases/usecases.dart';
+
 import 'bloc.dart';
 
 /// Represents the Bloc that is used inside the screen allowing the user
@@ -61,6 +63,8 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
     // Log In
     final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
     await _loginUseCase.login(mnemonic);
+
+    _recoverAccountBloc.add(ResetRecoverAccountState());
     _accountBloc.add(LogIn());
   }
 }

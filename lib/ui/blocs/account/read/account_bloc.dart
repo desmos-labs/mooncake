@@ -14,15 +14,15 @@ import 'package:mooncake/usecases/usecases.dart';
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   static const SETTING_FIRST_START = "first_start";
 
+  final FirebaseAnalytics _analytics;
+
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
   final LogoutUseCase _logoutUseCase;
   final GetAccountUseCase _getUserUseCase;
   final RefreshAccountUseCase _refreshAccountUseCase;
-
   final GetSettingUseCase _getSettingUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
 
-  final FirebaseAnalytics _analytics;
   final NavigatorBloc _navigatorBloc;
 
   StreamSubscription _accountSubscription;
