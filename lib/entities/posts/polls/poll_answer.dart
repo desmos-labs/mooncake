@@ -44,6 +44,6 @@ class PollAnswer extends Equatable {
 
   @override
   List<Object> get props {
-    return [answer, user];
+    return [answer, user.address];
   }
 }

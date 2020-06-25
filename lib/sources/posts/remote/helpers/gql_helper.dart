@@ -129,7 +129,7 @@ class GqlPostsHelper {
     final data = await measureExecTime(() async {
       return client.query(QueryOptions(
         document: gql(query),
-        fetchPolicy: FetchPolicy.networkOnly,
+        fetchPolicy: FetchPolicy.noCache,
       ));
     }, name: "Query posts");
 
@@ -158,7 +158,7 @@ class GqlPostsHelper {
     """;
     final data = await client.query(QueryOptions(
       document: gql(query),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     final posts = _convertPostsGqlResponse(data.data["post"]);
     return posts.isEmpty ? null : posts[0];
@@ -185,7 +185,7 @@ class GqlPostsHelper {
     """;
     final data = await client.query(QueryOptions(
       document: gql(query),
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     ));
     return _convertPostsGqlResponse(data.data["comments"]);
   }
