@@ -12,14 +12,15 @@ class PollQuestionEditor extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Container(
-        decoration: getInputDecoration(context),
+        decoration: getInputOutline(context),
         padding: EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              decoration: InputDecoration(
-                hintText: PostsLocalizations.of(context).pollQuestionHint,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: getInputDecoration(
+                PostsLocalizations.of(context).pollQuestionHint,
               ),
               onChanged: (value) => _onChanged(context, value),
             )

@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 
 /// Returns the decoration that is used on all poll input fields.
-Decoration getInputDecoration(BuildContext context) {
+Decoration getInputOutline(BuildContext context) {
   return BoxDecoration(
     border: Border.all(
-      width: 2,
-      color: Theme.of(context).primaryColorDark,
+      width: 0.5,
+      color: Theme.of(context).colorScheme.onBackground,
     ),
     borderRadius: BorderRadius.all(Radius.circular(4)),
+  );
+}
+
+InputDecoration getInputDecoration(String hint) {
+  return InputDecoration(
+    hintText: hint,
+    border: InputBorder.none,
+    focusedErrorBorder: InputBorder.none,
+    focusedBorder: InputBorder.none,
+    errorBorder: InputBorder.none,
+    enabledBorder: InputBorder.none,
+    disabledBorder: InputBorder.none,
   );
 }

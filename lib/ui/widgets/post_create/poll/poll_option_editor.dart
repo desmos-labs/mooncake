@@ -30,7 +30,7 @@ class _PollOptionEditorState extends State<PollOptionEditor> {
     return Material(
       color: Colors.transparent,
       child: Container(
-        decoration: getInputDecoration(context),
+        decoration: getInputOutline(context),
         padding: EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +40,9 @@ class _PollOptionEditorState extends State<PollOptionEditor> {
                 Expanded(
                   child: TextField(
                     controller: _textEditingController,
-                    decoration: InputDecoration(hintText: hintText),
+                    keyboardType: TextInputType.text,
+                    decoration: getInputDecoration(hintText),
+                    textCapitalization: TextCapitalization.sentences,
                     onChanged: (value) => _onTextChanged(context, value),
                   ),
                 ),
