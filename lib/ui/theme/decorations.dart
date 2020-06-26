@@ -3,30 +3,41 @@ import 'package:mooncake/ui/theme/colors.dart';
 
 /// Contains the decorations of the applications
 class ThemeDecorations {
-  static List<Color> _patternColors(BuildContext context) {
+  static Map _generateModeResources(BuildContext context) {
     switch (Theme.of(context).brightness) {
       case Brightness.light:
-        return [Color(0xFF5b53ed), Color(0xFF6747ee)];
+        return {
+          'colors': [Color(0xFF575FFF), Color(0xFF8655FF)],
+          'pattern': AssetImage("assets/images/pattern.png"),
+          'opacity': 0.35,
+          'alignment': Alignment(0.5, 0.5),
+        };
       default:
-        return [Color(0xFF1B1659), Color(0xFF11101D)];
+        return {
+          'colors': [Color(0xFF020207), Color(0xFF0D0B21)],
+          'pattern': AssetImage("assets/images/pattern_dark.png"),
+          'opacity': 0.35,
+          'alignment': Alignment.bottomCenter,
+        };
     }
   }
 
   static BoxDecoration pattern(BuildContext context) {
+    final resources = _generateModeResources(context);
     return BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: _patternColors(context),
+        end: resources['alignment'],
+        colors: resources['colors'],
       ),
       image: DecorationImage(
         colorFilter: ColorFilter.mode(
           Colors.white.withOpacity(
-            Theme.of(context).brightness == Brightness.light ? 0.75 : 0.15,
+            resources['opacity'],
           ),
           BlendMode.dstIn,
         ),
-        image: AssetImage("assets/images/pattern.png"),
+        image: resources['pattern'],
         repeat: ImageRepeat.repeat,
       ),
     );

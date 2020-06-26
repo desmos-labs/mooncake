@@ -20,7 +20,7 @@ void main() {
     ];
 
     final encrypted = [];
-    for (int i = 0 ; i < 100; i++) {
+    for (int i = 0; i < 100; i++) {
       encrypted.add(await encryptMnemonicUseCase.encrypt(mnemonic, password));
     }
     expect(encrypted, isNotEmpty);

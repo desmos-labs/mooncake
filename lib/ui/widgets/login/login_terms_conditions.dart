@@ -5,6 +5,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// Allows to view Mooncake terms and conditions
 class LoginTermsAndConditions extends StatelessWidget {
+  final TextAlign align;
+
+  LoginTermsAndConditions({this.align = TextAlign.start});
+
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme.bodyText2.copyWith(
@@ -13,6 +17,7 @@ class LoginTermsAndConditions extends StatelessWidget {
         );
 
     return RichText(
+      textAlign: align,
       text: TextSpan(
         children: [
           TextSpan(

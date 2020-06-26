@@ -43,8 +43,8 @@ class PostCommentAction extends StatelessWidget {
         Text(
           NumberFormat.compact().format(comments.length),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
-            color: Theme.of(context).iconTheme.color,
-          ),
+                color: Theme.of(context).iconTheme.color,
+              ),
         ),
       ],
     );

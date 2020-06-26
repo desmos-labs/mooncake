@@ -25,49 +25,42 @@ class LoginMainContent extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: PrimaryLightButton(
-                  child: Text(
-                    PostsLocalizations.of(context).createAccountButtonText,
-                  ),
-                  onPressed: () => _onCreateAccountClicked(context),
-                ),
+          SizedBox(
+            width: double.infinity,
+            child: PrimaryLightButton(
+              child: Text(
+                PostsLocalizations.of(context).createAccountButtonText,
               ),
-            ],
+              onPressed: () => _onCreateAccountClicked(context),
+            ),
           ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: SecondaryLightRoundedButton(
-                  child: Text(
-                    PostsLocalizations.of(context)
-                        .alreadyHaveMnemonicButtonText,
-                    textAlign: TextAlign.center,
-                  ),
-                  onPressed: () => _onRecoverAccount(context),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 4),
+            child: SizedBox(
+              width: double.infinity,
+              child: SecondaryLightRoundedButton(
+                child: Text(
+                  PostsLocalizations.of(context).alreadyHaveMnemonicButtonText,
+                  textAlign: TextAlign.center,
                 ),
+                onPressed: () => _onRecoverAccount(context),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: SecondaryLightRoundedButton(
-                  child: Text(
-                    PostsLocalizations.of(context).useMnemonicBackup,
-                    textAlign: TextAlign.center,
-                  ),
-                  onPressed: () => _onRecoverBackup(context),
-                ),
-              ),
-            ],
+            ),
           ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LoginTermsAndConditions(),
-            ],
-          )
+          SizedBox(
+            width: double.infinity,
+            child: SecondaryLightRoundedButton(
+              child: Text(
+                PostsLocalizations.of(context).useMnemonicBackup,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: () => _onRecoverBackup(context),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 15, bottom: 10),
+            child: LoginTermsAndConditions(align: TextAlign.center),
+          ),
         ],
       ),
     );

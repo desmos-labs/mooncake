@@ -7,7 +7,7 @@ class UtilsModule implements Module {
   @override
   void configure(Binder binder) {
     binder
-    ..bindSingleton(FlutterLocalNotificationsPlugin())
+      ..bindSingleton(FlutterLocalNotificationsPlugin())
       ..bindSingleton(FirebaseAnalytics())
       ..bindSingleton(LocalAuthentication());
   }

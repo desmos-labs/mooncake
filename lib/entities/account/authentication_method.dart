@@ -49,7 +49,8 @@ abstract class AuthenticationMethod extends Equatable {
 /// device biometric authentication.
 @JsonSerializable()
 class BiometricAuthentication extends AuthenticationMethod {
-  const BiometricAuthentication() : super(type: AuthenticationMethod.TYPE_BIOMETRICS);
+  const BiometricAuthentication()
+      : super(type: AuthenticationMethod.TYPE_BIOMETRICS);
 
   factory BiometricAuthentication.fromJson(Map<String, dynamic> json) {
     return _$BiometricAuthenticationFromJson(json);
