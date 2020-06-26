@@ -18,7 +18,7 @@ class PollEndDateEditor extends StatelessWidget {
           child: GestureDetector(
             onTap: () => _showDatePicker(context, state),
             child: Container(
-              decoration: getInputDecoration(context),
+              decoration: getInputOutline(context),
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
               child: Row(
                 children: [
@@ -28,10 +28,7 @@ class PollEndDateEditor extends StatelessWidget {
                       style: Theme.of(context).inputDecorationTheme.hintStyle,
                     ),
                   ),
-                  Text(
-                    formatter.format(state.poll.endDateTime),
-                    style: Theme.of(context).accentTextTheme.bodyText2,
-                  ),
+                  Text(formatter.format(state.poll.endDateTime)),
                 ],
               ),
             ),
@@ -42,7 +39,7 @@ class PollEndDateEditor extends StatelessWidget {
   }
 
   void _showDatePicker(BuildContext context, PostInputState state) async {
-    final currentDate = state.poll.endDate;
+    final currentDate = state.poll.endDateTime;
 
     // Ask for a date
     final date = await showDatePicker(

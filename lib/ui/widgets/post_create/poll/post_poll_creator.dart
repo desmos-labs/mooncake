@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/localization/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'poll_question_editor.dart';
-import 'poll_option_editor.dart';
 import 'poll_end_date_editor.dart';
+import 'poll_option_editor.dart';
+import 'poll_question_editor.dart';
 
 /// Represents the serie of widgets that allow to create a poll for a post.
 class PostPollCreator extends StatelessWidget {
@@ -33,7 +33,7 @@ class PostPollCreator extends StatelessWidget {
             const SizedBox(height: 4),
             if (optionsLength < 5)
               FlatButton(
-                textColor: Theme.of(context).accentColor,
+                textColor: Theme.of(context).colorScheme.primary,
                 child: Text(PostsLocalizations.of(context).pollAddOptionButton),
                 onPressed: () => _addOption(context),
               ),

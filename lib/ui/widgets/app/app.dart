@@ -25,8 +25,9 @@ class _PostsAppState extends State<PostsApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PostsListBloc>(create: (_) {
-          return PostsListBloc.create(syncPeriod: 30)..add(FetchPosts());
+        BlocProvider<PostsListBloc>(create: (context) {
+          return PostsListBloc.create(context, syncPeriod: 30)
+            ..add(FetchPosts());
         }),
         BlocProvider<NotificationsBloc>(create: (_) {
           return NotificationsBloc.create()..add(LoadNotifications());

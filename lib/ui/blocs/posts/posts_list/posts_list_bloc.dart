@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -22,6 +24,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Timer _syncTimer;
 
   // Use cases
+  final GetNotificationsUseCase _getNotifications;
   final GetHomePostsUseCase _getHomePostsUseCase;
   final GetHomeEventsUseCase _getHomeEventsUseCase;
   final UpdatePostsStatusUseCase _updatePostsStatusUseCase;
@@ -36,9 +39,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   StreamSubscription _eventsSubscription;
   StreamSubscription _postsSubscription;
   StreamSubscription _txSubscription;
+  StreamSubscription _logoutSubscription;
 
   PostsListBloc({
     @required int syncPeriod,
+    @required AccountBloc accountBloc,
     @required FirebaseAnalytics analytics,
     @required GetHomePostsUseCase getHomePostsUseCase,
     @required GetHomeEventsUseCase getHomeEventsUseCase,
@@ -51,6 +56,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required DeletePostsUseCase deletePostsUseCase,
     @required BlockUserUseCase blockUserUseCase,
   })  : _syncPeriod = syncPeriod,
+        assert(getNotificationsUseCase != null),
+        _getNotifications = getNotificationsUseCase,
         assert(getHomePostsUseCase != null),
         _getHomePostsUseCase = getHomePostsUseCase,
         assert(getHomeEventsUseCase != null),
@@ -69,29 +76,24 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         _deletePostsUseCase = deletePostsUseCase,
         assert(blockUserUseCase != null),
         _blockUserUseCase = blockUserUseCase {
-    _initializeSyncTimer();
-
-    // Subscribe to the posts changes
-    _listToHomePosts(_HOME_LIMIT);
-
-    // Subscribe to tell the user he should refresh
-    _eventsSubscription = _getHomeEventsUseCase.stream.listen((event) {
-      add(ShouldRefreshPosts());
-    });
-
-    // Subscribe to the transactions notifications
-    _txSubscription = getNotificationsUseCase.stream().listen((notification) {
-      if (notification is TxSuccessfulNotification) {
-        add(TxSuccessful(txHash: notification.txHash));
-      } else if (notification is TxFailedNotification) {
-        add(TxFailed(txHash: notification.txHash, error: notification.error));
+    // Subscribe to account state changes in order to perform setup
+    // operations upon login and cleanup ones upong loggin out
+    _logoutSubscription = accountBloc.listen((state) async {
+      if (state is LoggedOut) {
+        print("User logged out, stopping sync and deleting posts");
+        _stopListeningToUpdates();
+        await _deletePostsUseCase.delete();
+      } else if (state is LoggedIn) {
+        print("User logged in, starting posts sync");
+        _startListeningToUpdates();
       }
     });
   }
 
-  factory PostsListBloc.create({int syncPeriod = 30}) {
+  factory PostsListBloc.create(BuildContext context, {int syncPeriod = 30}) {
     return PostsListBloc(
       syncPeriod: syncPeriod,
+      accountBloc: BlocProvider.of(context),
       getHomePostsUseCase: Injector.get(),
       getHomeEventsUseCase: Injector.get(),
       syncPostsUseCase: Injector.get(),
@@ -151,7 +153,54 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
-  void _listToHomePosts(int limit) {
+  /// Starts all the needed periodic operations (eg. sync) and
+  /// the listening of all the useful events.
+  void _startListeningToUpdates() {
+    // Start the syncing timer
+    _initializeSyncTimer();
+
+    // Subscribe to the posts changes
+    if (_postsSubscription == null) {
+      _listenHomePosts(_HOME_LIMIT);
+    }
+
+    // Subscribe to tell the user he should refresh
+    if (_eventsSubscription == null) {
+      _eventsSubscription = _getHomeEventsUseCase.stream.listen((event) {
+        add(ShouldRefreshPosts());
+      });
+    }
+
+    // Subscribe to the transactions notifications
+    if (_txSubscription == null) {
+      _txSubscription = _getNotifications.stream().listen((notification) {
+        if (notification is TxSuccessfulNotification) {
+          add(TxSuccessful(txHash: notification.txHash));
+        } else if (notification is TxFailedNotification) {
+          add(TxFailed(txHash: notification.txHash, error: notification.error));
+        }
+      });
+    }
+  }
+
+  /// Stop all periodic activities as well as all subscriptions.
+  void _stopListeningToUpdates() {
+    _syncTimer?.cancel();
+    _syncTimer = null;
+
+    _postsSubscription?.cancel();
+    _postsSubscription = null;
+
+    _eventsSubscription?.cancel();
+    _eventsSubscription = null;
+
+    _txSubscription?.cancel();
+    _txSubscription = null;
+  }
+
+  /// Refreshes the subscription that listens to changes inside the number
+  /// of home posts.
+  void _listenHomePosts(int limit) {
     _postsSubscription?.cancel();
     _postsSubscription = _getHomePostsUseCase.stream(limit).listen((posts) {
       if (posts.isEmpty) return;
@@ -159,6 +208,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     });
   }
 
+  /// Tells whether all the posts have been fetched from the remote source
+  /// or there are still some pages left.
   bool _hasReachedMax(PostsListState state) {
     return state is PostsLoaded && state.hasReachedMax;
   }
@@ -298,7 +349,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
       // Listen to new changes on all the posts
       if (posts.isNotEmpty) {
-        _listToHomePosts(currentState.posts.length + posts.length);
+        _listenHomePosts(currentState.posts.length + posts.length);
       }
     }
   }
@@ -392,6 +443,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     _postsSubscription?.cancel();
     _txSubscription?.cancel();
     _syncTimer?.cancel();
+    _logoutSubscription?.cancel();
     return super.close();
   }
 }

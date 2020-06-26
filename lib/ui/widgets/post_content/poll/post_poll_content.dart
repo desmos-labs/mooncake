@@ -9,9 +9,6 @@ import 'post_poll_result_item.dart';
 
 /// Represents the widget used to show the details of a poll inside a post.
 class PostPollContent extends StatelessWidget {
-  static const double OPTION_HEIGHT = 30.0;
-  static const double SEPARATOR_HEIGHT = OPTION_HEIGHT * 0.15;
-
   final Post post;
 
   const PostPollContent({
@@ -39,7 +36,6 @@ class PostPollContent extends StatelessWidget {
                 if (!hasVoted)
                   _buildListView((option) {
                     return PostPollOptionItem(
-                      height: OPTION_HEIGHT,
                       post: post,
                       option: option,
                     );
@@ -47,7 +43,6 @@ class PostPollContent extends StatelessWidget {
                 if (hasVoted)
                   _buildListView((option) {
                     return PostPollResultItem(
-                      height: OPTION_HEIGHT,
                       poll: post.poll,
                       option: option,
                     );
@@ -95,7 +90,7 @@ class PostPollContent extends StatelessWidget {
         return builder(option);
       },
       separatorBuilder: (context, index) {
-        return const SizedBox(height: SEPARATOR_HEIGHT);
+        return const SizedBox(height: ThemeSpaces.smallGutter);
       },
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,

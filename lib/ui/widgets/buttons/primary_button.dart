@@ -22,35 +22,36 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light
-        ? _gradientButton(context)
-        : _flatButton(context);
+    return Wrap(
+      children: [
+        Theme.of(context).brightness == Brightness.light
+            ? _gradientButton(context)
+            : _flatButton(context)
+      ],
+    );
   }
 
   Widget _gradientButton(BuildContext context) {
-    return Wrap(
-      children: [
-        GradientButton(
-          isEnabled: enabled,
-          increaseWidthBy: expanded ? double.infinity : 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
+    return GradientButton(
+      isEnabled: enabled,
+      increaseWidthBy: expanded ? double.infinity : 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      callback: onPressed,
+      gradient: ThemeColors.primaryButtonBackgroundGradient,
+      shadowColor: Colors.transparent,
+      elevation: 0,
+      textStyle: Theme.of(context).textTheme.bodyText2.copyWith(
+            color: Colors.white,
           ),
-          callback: onPressed,
-          gradient: ThemeColors.primaryButtonBackgroundGradient,
-          shadowColor: Colors.transparent,
-          elevation: 0,
-          textStyle: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: Colors.white,
-              ),
-          child: child,
-        ),
-      ],
+      child: child,
     );
   }
 
   Widget _flatButton(BuildContext context) {
     return FlatButton(
+      padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
       ),
