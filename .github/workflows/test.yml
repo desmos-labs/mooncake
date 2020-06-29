@@ -3,7 +3,7 @@ on: [push,pull_request]
 
 jobs:
 
-  Analyze:
+  analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -15,7 +15,7 @@ jobs:
       - run: flutter analyze
       - run: flutter format --dry-run .
 
-  Run unit tests:
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
