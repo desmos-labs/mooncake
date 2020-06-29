@@ -65,7 +65,7 @@ class Reaction extends Equatable {
 
   @override
   List<Object> get props {
-    return [this.user, this.value, this.code];
+    return [this.user.address, this.value, this.code];
   }
 
   @override

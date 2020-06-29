@@ -152,7 +152,8 @@ class Post extends Equatable implements Comparable<Post> {
 
   /// Returns the list of all the likes that have been added.
   List<Reaction> get likes {
-    return reactions?.where((reaction) => reaction.isLike)?.toList() ?? [];
+    return reactions?.toSet()?.where((reaction) => reaction.isLike)?.toList() ??
+        [];
   }
 
   /// Returns a new [Post] having the same data as `this` one, but

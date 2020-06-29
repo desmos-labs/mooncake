@@ -4,12 +4,17 @@ import 'package:mooncake/entities/entities.dart';
 
 void main() {
   final stdPost = Post(
-    id: "0",
-    message: "This is a test message",
-    created: DateFormat(Post.DATE_FORMAT).format(DateTime.now()),
-    subspace: "${Constants.SUBSPACE}",
-    owner: User.fromAddress("desmos1gxhn7cs4v3wy2z5ff296qvyd3fzggw9dkk2rmd"),
-  );
+      id: "0",
+      message: "This is a test message",
+      created: DateFormat(Post.DATE_FORMAT).format(DateTime.now()),
+      subspace: "${Constants.SUBSPACE}",
+      owner: User.fromAddress("desmos1gxhn7cs4v3wy2z5ff296qvyd3fzggw9dkk2rmd"),
+      reactions: [
+        Reaction.fromValue('❤',
+            User.fromAddress("desmos1gxhn7cs4v3wy2z5ff296qvyd3fzggw9dkk2rmd")),
+        Reaction.fromValue('❤',
+            User.fromAddress("desmos1gxhn7cs4v3wy2z5ff296qvyd3fzggw9dkk2rmd"))
+      ]);
 
   test('dateTime', () {
     final dateTime = DateTime.now();
@@ -35,5 +40,9 @@ void main() {
     );
     expect(post.medias, hasLength(4));
     expect(post.images, equals(images));
+  });
+
+  test('likes', () {
+    expect(stdPost.likes.length, 1);
   });
 }
