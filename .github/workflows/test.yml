@@ -1,5 +1,8 @@
-name:  Build and Test Mooncake
-on: [push,pull_request]
+name:  Flutter
+on:
+  push:
+    branches: '!gh-pages'
+  pull_request:
 
 jobs:
 
