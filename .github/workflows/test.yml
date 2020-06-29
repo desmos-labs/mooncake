@@ -33,7 +33,7 @@ jobs:
         with:
           flutter-version: '1.19.0-5.0.pre'
           channel: 'dev'
-        run: |
+      - run: |
           flutter pub get
           flutter test --coverage test
 
