@@ -15,9 +15,9 @@ class PostsLocalizations {
   String get splashLoadingData => "Loading data...";
 
   // Login
-  String get createAccountButtonText => "Create account";
-  String get alreadyHaveMnemonicButtonText => "I have a written mnemonic";
-  String get useMnemonicBackup => "Use mnemonic backup";
+  String get createAccountButtonText => "Create Account";
+  String get alreadyHaveMnemonicButtonText => "I Have A Written Mnemonic";
+  String get useMnemonicBackup => "Use Mnemonic Backup";
   String get accountCreatedPopupTitleFirstRow => "The account";
   String get accountCreatedPopupTitleSecondRow => "Has been created";
   String get accountCreatedPopupText => "You can backup your phrase later";
@@ -38,7 +38,7 @@ class PostsLocalizations {
   String get restoreMnemonicInstructions => """
 This page allows you to restore a previously exported mnemonic backup.
 In order to do so, please insert below your mnenonic backup text and the password
-you used to encrypt it. Then press the below button to proceed. 
+you used to encrypt it. Then press the below button to proceed.
 """;
   String get restoreBackupFieldHint =>
       "Your backup here (it should end with an =)";
@@ -71,7 +71,7 @@ can be used to access your account on this application
   String get passwordBody => """
 Due to security reasons, we require you to input a password if you will ever
 want to recover your mnemonic phrase from within the application later on.
-Please note that if you loose this password you will be required to enter 
+Please note that if you loose this password you will be required to enter
 your mnemonic from scratch in the case of a future recovery.
 """;
   String get passwordHint => "Password";
@@ -88,22 +88,22 @@ your mnemonic from scratch in the case of a future recovery.
   // Security login screen
   String get viewMnemonic => "View mnemonic";
   String get securityLoginText => """
-In order to prevent aby unwanted access to your mnemonic phrase, you are 
-required to log in using the authentication method you have previously set 
+In order to prevent aby unwanted access to your mnemonic phrase, you are
+required to log in using the authentication method you have previously set
 during the the first login into the app.
 """;
   String get securityLoginWarning => """
-Please note that your mnemonic should never be shown to anyone, and you should 
-see it only once when backing it up on a piece of paper. Allowing anyone to 
-see your mnemonic will most surely end in them stealing your account and all 
+Please note that your mnemonic should never be shown to anyone, and you should
+see it only once when backing it up on a piece of paper. Allowing anyone to
+see your mnemonic will most surely end in them stealing your account and all
 your funds so proceed with caution.
 """;
   String get securityLoginBiometrics => """
-If you understand the risks of viewing your mnemonic, please tap below to 
+If you understand the risks of viewing your mnemonic, please tap below to
 start the authentication process.
 """;
   String get securityLoginPassword => """
-If you understand the risks of viewing your mnemonic, please insert below 
+If you understand the risks of viewing your mnemonic, please insert below
 your password and press the button to view it
 """;
 
@@ -120,7 +120,7 @@ that you will also be required later when importing it.
   String get exportMnemonicDialogExportButton => "Export";
   String get mnemonicExportScreenText => """
 Following is your mnemonic encrypted data. You can export this data whenever
-you want, even sending it to a friend of yours for backup, if you have used 
+you want, even sending it to a friend of yours for backup, if you have used
 a strong enough password. If you would like to share it somewhere, click on the
 Share button below""";
   String get mnemonicExportShareButton => "Share";
@@ -256,7 +256,7 @@ inside the app bar to visualize your wallet
   String get walletScreenName => "Wallet";
   String get walletTitle => "Welcome to your wallet";
   String get walletBodyText => """
-We do not support transactions history yet, but you can always see the current 
+We do not support transactions history yet, but you can always see the current
 amount of tokens you own on the top of the page
 """;
   String get emptyWalletTitle => "No tokens available";

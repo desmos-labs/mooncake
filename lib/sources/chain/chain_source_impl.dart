@@ -110,8 +110,7 @@ class ChainSourceImpl extends ChainSource {
     final data = TxData(
       messages: messages,
       wallet: wallet,
-      feeAmount:
-          fees ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
+      feeAmount: fees ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
     );
     return compute(sendTxBackground, data);
   }

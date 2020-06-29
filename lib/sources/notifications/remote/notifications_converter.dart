@@ -53,7 +53,7 @@ class NotificationConverter {
           error: message.data["tx_error"],
         );
 
-    // TODO: Add other types
+      // TODO: Add other types
 
       default:
         return null;

@@ -19,6 +19,7 @@ class SecondaryLightRoundedButton extends StatelessWidget {
     }
 
     return FlatButton(
+      padding: EdgeInsets.all(13),
       onPressed: onPressed,
       child: child,
       shape: RoundedRectangleBorder(
