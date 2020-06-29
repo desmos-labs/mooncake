@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override

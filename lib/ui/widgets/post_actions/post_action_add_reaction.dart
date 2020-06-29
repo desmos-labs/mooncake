@@ -2,7 +2,6 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:mooncake/entities/emojis/export.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -34,7 +33,7 @@ class PostAddReactionAction extends StatelessWidget {
               onPressed: () => _onTap(context),
             ),
           ),
-          if (reactions.length > 0) _reactionsCount(context, reactions)
+          if (reactions.isNotEmpty) _reactionsCount(context, reactions)
         ],
       ),
     );

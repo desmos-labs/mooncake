@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:mooncake/usecases/usecases.dart';
-import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/posts/posts_repository_impl.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:test/test.dart';
 
 import '../../mocks/mocks.dart';
 
@@ -39,7 +38,7 @@ void main() {
     localStream.close();
   });
 
-  test('homeEventsStream works properly', () async {
+  test('homeEventsStream works properly', () {
     final eventsControllers = StreamController<dynamic>();
     when(remoteSource.homeEventsStream)
         .thenAnswer((_) => eventsControllers.stream);
@@ -80,7 +79,7 @@ void main() {
     ]);
   });
 
-  test('getPostByIdStream returns correct stream', () async {
+  test('getPostByIdStream returns correct stream', () {
     final controller = StreamController<Post>();
     when(localSource.singlePostStream(any))
         .thenAnswer((_) => controller.stream);
@@ -144,7 +143,7 @@ void main() {
     verify(localSource.getPostsByTxHash(txHash)).called(1);
   });
 
-  test('getPostCommentsStream performs correct calls', () async {
+  test('getPostCommentsStream performs correct calls', () {
     final controller = StreamController<List<Post>>();
     when(localSource.getPostCommentsStream(any))
         .thenAnswer((_) => controller.stream);

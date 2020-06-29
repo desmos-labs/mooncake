@@ -21,7 +21,7 @@ abstract class AuthenticationMethod extends Equatable {
 
   factory AuthenticationMethod.fromJson(Map<String, dynamic> json) {
     final type = json[KEY_TYPE];
-    switch (type) {
+    switch (type as String) {
       case TYPE_BIOMETRICS:
         return BiometricAuthentication.fromJson(json);
       case TYPE_PASSWORD:

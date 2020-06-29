@@ -21,11 +21,11 @@ class FcmMessage extends Equatable {
 
   /// Returns the associated action.
   /// If no action is associated, it returns `null` instead.
-  String get action => data["action"];
+  String get action => data["action"] as String;
 
   /// Returns the associated type.
   /// If no type is associated, it returns `null` instead.
-  String get type => data["type"];
+  String get type => data["type"] as String;
 
   FcmMessage({this.notification, this.data});
 

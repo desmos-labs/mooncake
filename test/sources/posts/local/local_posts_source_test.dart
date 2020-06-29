@@ -84,7 +84,7 @@ void main() {
     await _storePosts(posts);
 
     final stream = source.postsStream;
-    expectLater(
+    await expectLater(
       stream,
       emitsInOrder([
         [posts[2], posts[0]],
@@ -112,14 +112,14 @@ void main() {
     final streamCapped1 = source.homePostsStream(1);
     final streamCapped2 = source.homePostsStream(2);
 
-    expectLater(
+    await expectLater(
       streamCapped1,
       emitsInOrder([
         [homePost2]
       ]),
     );
 
-    expectLater(
+    await expectLater(
       streamCapped2,
       emitsInOrder([
         [homePost2, homePost1],
@@ -134,15 +134,8 @@ void main() {
     final existingStream = source.singlePostStream("1");
     final invalidStream = source.singlePostStream("non-existent");
 
-    expectLater(
-      existingStream,
-      emitsInOrder([post]),
-    );
-
-    expectLater(
-      invalidStream,
-      emitsInOrder([null]),
-    );
+    await expectLater(existingStream, emitsInOrder([post]));
+    await expectLater(invalidStream, emitsInOrder([null]));
   });
 
   test('getSinglePost returns correct value', () async {
@@ -194,7 +187,7 @@ void main() {
     await _storePosts([comment, hiddenComment, blockedComment]);
 
     final stream = source.getPostCommentsStream("1");
-    expectLater(
+    await expectLater(
       stream,
       emitsInOrder([
         [comment],
@@ -257,7 +250,7 @@ void main() {
     expect(count, equals(1));
 
     final records = await store.find(database);
-    final stored = Post.fromJson(records[0].value);
+    final stored = Post.fromJson(records[0].value as Map<String, dynamic>);
     expect(stored, equals(post));
   });
 
@@ -347,7 +340,7 @@ void main() {
 
     final store = StoreRef.main();
     final stored = (await store.find(database))
-        .map((e) => Post.fromJson(e.value))
+        .map((e) => Post.fromJson(e.value as Map<String, dynamic>))
         .toList();
     expect(stored, equals(newPosts));
   });
@@ -386,7 +379,7 @@ void main() {
 
     final store = StoreRef.main();
     final stored = (await store.find(database))
-        .map((e) => Post.fromJson(e.value))
+        .map((e) => Post.fromJson(e.value as Map<String, dynamic>))
         .toList();
 
     final expected = [

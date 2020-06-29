@@ -33,7 +33,7 @@ class Constants {
   static const POST_PARAM_OWNER = "owner";
 
   // Notifications
-  static const NOTIFICATION_CHANNEL_POSTS = const NotificationChannel(
+  static const NOTIFICATION_CHANNEL_POSTS = NotificationChannel(
     id: "mooncake_posts",
     title: "Posts interactions",
     description: "Make sound and pop on a new post interaction",

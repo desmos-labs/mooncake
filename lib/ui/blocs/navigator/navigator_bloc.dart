@@ -121,12 +121,14 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   ) async {
     final isLoggedIn = await _checkLoginUseCase.isLoggedIn();
     if (isLoggedIn) {
-      _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
-        return BlocProvider<PostDetailsBloc>(
-          create: (context) => PostDetailsBloc.create(context, event.postId),
-          child: PostDetailsScreen(),
-        );
-      }));
+      await _navigatorKey.currentState.push(MaterialPageRoute(
+        builder: (context) {
+          return BlocProvider<PostDetailsBloc>(
+            create: (context) => PostDetailsBloc.create(context, event.postId),
+            child: PostDetailsScreen(),
+          );
+        },
+      ));
     }
   }
 
@@ -145,23 +147,25 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   void _handleNavigateToShowMnemonic() async {
     final method = await _getAuthenticationMethodUseCase.get();
     if (method is BiometricAuthentication) {
-      _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
-        return LoginWithBiometricsScreen();
-      }));
+      await _navigatorKey.currentState.push(MaterialPageRoute(
+        builder: (context) => LoginWithBiometricsScreen(),
+      ));
     } else if (method is PasswordAuthentication) {
-      _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
-        return LoginWithPasswordScreen(hashedPassword: method.hashedPassword);
-      }));
+      await await _navigatorKey.currentState.push(MaterialPageRoute(
+        builder: (_) => LoginWithPasswordScreen(
+          hashedPassword: method.hashedPassword,
+        ),
+      ));
     }
   }
 
-  void _handleNavigateToExportMnemonic(NavigateToExportMnemonic event) async {
+  void _handleNavigateToExportMnemonic(NavigateToExportMnemonic event) {
     _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
       return ExportMnemonicScreen(mnemonicData: event.mnemonicData);
     }));
   }
 
-  void _handleNavigateToEditAccount() async {
+  void _handleNavigateToEditAccount() {
     _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
       return EditAccountScreen();
     }));

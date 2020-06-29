@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:graphql/client.dart';
+import 'package:mock_web_server/mock_web_server.dart';
+import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/account/export.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
-import 'package:test/test.dart';
-import 'package:mock_web_server/mock_web_server.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:test/test.dart';
 
 class GraphQlClientMock extends Mock implements GraphQLClient {}
 
@@ -64,16 +64,18 @@ void main() {
   test('getAccountData returns valid data with correct response', () async {
     final file = File("test_resources/account/account_response.json");
     final json = jsonDecode(file.readAsStringSync());
-    final accountResponse = LcdResponse.fromJson(json);
+    final accountResponse = LcdResponse.fromJson(json as Map<String, dynamic>);
 
     server.enqueue(body: jsonEncode(accountResponse));
-    when(graphQlClient.query(any))
-        .thenAnswer((_) => Future.value(QueryResult(data: {
-              "users": [
-                User(address: "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl")
-                    .toJson()
-              ]
-            })));
+    when(graphQlClient.query(any)).thenAnswer((_) => Future.value(QueryResult(
+          source: QueryResultSource.network,
+          data: {
+            "users": [
+              User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl")
+                  .toJson()
+            ]
+          },
+        )));
 
     final account = await source
         .getAccount("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");

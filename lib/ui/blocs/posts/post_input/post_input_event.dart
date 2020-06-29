@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
-import 'package:mooncake/entities/entities.dart';
 
 /// Represents a generic event that is emitted while the user is
 /// editing the comment to a post.

@@ -15,7 +15,9 @@ class GqlUsersHelper {
   /// server into a list of users.
   /// If no data is present, returns an empty list instead.
   static List<User> _convertUsersGqlResponse(dynamic posts) {
-    return (posts as List<dynamic>).map((json) => User.fromJson(json)).toList();
+    return (posts as List<dynamic>)
+        .map((json) => User.fromJson(json as Map<String, dynamic>))
+        .toList();
   }
 
   /// Gets the user having the given [address] by using the given [client].
@@ -40,7 +42,7 @@ class GqlUsersHelper {
 
     final data = await client.query(
       QueryOptions(
-        documentNode: gql(query),
+        document: gql(query),
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );

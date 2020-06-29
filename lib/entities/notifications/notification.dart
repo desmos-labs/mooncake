@@ -73,7 +73,7 @@ abstract class NotificationData extends Equatable {
   }
 
   /// Converts this instance into a JSON object properly.
-  /// This relies on the [toJson] implementation to get the serialization
+  /// This relies on the `toJson` implementation to get the serialization
   /// of custom fields.
   Map<String, dynamic> asJson() {
     Map<String, dynamic> base = _$NotificationDataToJson(this);

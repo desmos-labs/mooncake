@@ -4,6 +4,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:test/test.dart';
 
+// ignore: must_be_immutable
 class MockWallet extends Mock implements Wallet {
   @override
   String get bech32Address => "address";

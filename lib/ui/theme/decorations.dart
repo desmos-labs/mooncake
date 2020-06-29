@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mooncake/ui/theme/colors.dart';
 
 /// Contains the decorations of the applications
 class ThemeDecorations {
@@ -27,17 +26,17 @@ class ThemeDecorations {
     return BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topCenter,
-        end: resources['alignment'],
-        colors: resources['colors'],
+        end: resources['alignment'] as Alignment,
+        colors: resources['colors'] as List<Color>,
       ),
       image: DecorationImage(
         colorFilter: ColorFilter.mode(
           Colors.white.withOpacity(
-            resources['opacity'],
+            resources['opacity'] as double,
           ),
           BlendMode.dstIn,
         ),
-        image: resources['pattern'],
+        image: resources['pattern'] as AssetImage,
         repeat: ImageRepeat.repeat,
       ),
     );

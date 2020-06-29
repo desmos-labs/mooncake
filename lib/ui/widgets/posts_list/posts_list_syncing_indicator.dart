@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mooncake/ui/localization/export.dart';
-import 'package:mooncake/ui/theme/colors.dart';
 
 /// Used to show the user the fact that activities are being synced.
 class PostsListSyncingIndicator extends StatelessWidget {

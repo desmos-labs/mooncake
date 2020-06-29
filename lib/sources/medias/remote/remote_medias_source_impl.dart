@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/repositories/repositories.dart';
@@ -20,7 +21,7 @@ class RemoteMediasSourceImpl extends RemoteMediasSource {
     final url = "https://put.$_ipfsEndpoint/api/v0/add";
     final multiPartFile =
         await http.MultipartFile.fromPath('file', file.absolute.path);
-    final request = new http.MultipartRequest("POST", Uri.parse(url));
+    final request = http.MultipartRequest("POST", Uri.parse(url));
     request.files.add(multiPartFile);
 
     final response = await request.send();
@@ -31,7 +32,9 @@ class RemoteMediasSourceImpl extends RemoteMediasSource {
     }
 
     final body = await response.stream.bytesToString();
-    final uploadResponse = IpfsUploadResponse.fromJson(jsonDecode(body));
+    final uploadResponse = IpfsUploadResponse.fromJson(
+      jsonDecode(body) as Map<String, dynamic>,
+    );
     return "https://$_ipfsEndpoint/ipfs/${uploadResponse.hash}";
   }
 }

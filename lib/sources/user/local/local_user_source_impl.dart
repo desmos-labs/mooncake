@@ -107,7 +107,7 @@ class LocalUserSourceImpl extends LocalUserSource {
     // Try getting the user from the database
     final record = await store.record(USER_DATA_KEY).get(database);
     if (record != null) {
-      return MooncakeAccount.fromJson(record);
+      return MooncakeAccount.fromJson(record as Map<String, dynamic>);
     }
 
     // If the database does not have the user, build it from the address
@@ -131,8 +131,11 @@ class LocalUserSourceImpl extends LocalUserSource {
     return store
         .query(finder: Finder(filter: Filter.byKey(USER_DATA_KEY)))
         .onSnapshots(database)
-        .map((event) =>
-            event.isEmpty ? null : MooncakeAccount.fromJson(event.first.value));
+        .map((event) => event.isEmpty
+            ? null
+            : MooncakeAccount.fromJson(
+                event.first.value as Map<String, dynamic>,
+              ));
   }
 
   @override
@@ -148,7 +151,9 @@ class LocalUserSourceImpl extends LocalUserSource {
       return null;
     }
 
-    return AuthenticationMethod.fromJson(jsonDecode(methodString));
+    return AuthenticationMethod.fromJson(
+      jsonDecode(methodString) as Map<String, dynamic>,
+    );
   }
 
   @override

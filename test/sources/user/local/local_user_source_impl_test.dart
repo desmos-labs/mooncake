@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/account/export.dart';
+import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:test/test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mooncake/sources/sources.dart';
 
 class MockSecureStorage extends Mock implements FlutterSecureStorage {}
 
@@ -131,7 +131,9 @@ void main() {
         database,
         finder: Finder(filter: Filter.byKey(LocalUserSourceImpl.USER_DATA_KEY)),
       );
-      final stored = MooncakeAccount.fromJson(record.value);
+      final stored = MooncakeAccount.fromJson(
+        record.value as Map<String, dynamic>,
+      );
       expect(stored, equals(account));
     });
 

@@ -94,7 +94,7 @@ class ChainSourceImpl extends ChainSource {
   Future<LcdResponse> queryChain(String endpoint) async {
     try {
       final result = await queryChainRaw(endpoint);
-      return result == null ? result : LcdResponse.fromJson(result);
+      return result == null ? null : LcdResponse.fromJson(result);
     } catch (e) {
       print("LcdResponse parsing exception: $e");
       return null;

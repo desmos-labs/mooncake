@@ -51,8 +51,9 @@ Widget _option(
         Navigator.pop(context);
 
         // Pick the image
-        var image = await ImagePicker.pickImage(source: source);
-        callback(image);
+        final picker = ImagePicker();
+        var image = await picker.getImage(source: source);
+        callback(File(image.path));
       },
       child: Padding(
         padding: EdgeInsets.all(16),

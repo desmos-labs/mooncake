@@ -53,6 +53,6 @@ class ExportMnemonicScreen extends StatelessWidget {
 
   void _shareData(BuildContext context) async {
     final text = PostsLocalizations.of(context).mnemonicExportShareText;
-    Share.share("$text\n\n$mnemonicText");
+    await Share.share("$text\n\n$mnemonicText");
   }
 }

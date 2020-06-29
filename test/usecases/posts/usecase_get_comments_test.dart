@@ -17,7 +17,7 @@ void main() {
     getCommentsUseCase = GetCommentsUseCase(postsRepository: repository);
   });
 
-  test('stream performs the correct calls', () async {
+  test('stream performs the correct calls', () {
     final controller = StreamController<List<Post>>();
     when(repository.getPostCommentsStream(any))
         .thenAnswer((realInvocation) => controller.stream);

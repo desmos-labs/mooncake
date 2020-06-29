@@ -42,10 +42,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
     // Load the notifications
     final notifications = await _getNotificationsUseCase.single();
-    final notificationsToShow = notifications
-        .where((e) => e is BasePostInteractionNotification)
-        .map((e) => e as BasePostInteractionNotification)
-        .toList();
+    final notificationsToShow =
+        notifications.whereType<BasePostInteractionNotification>().toList();
 
     yield NotificationsLoaded(notificationsToShow);
   }

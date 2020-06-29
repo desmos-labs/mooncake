@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'posts_list_syncing_indicator.dart';
+import 'posts_bottom_loader.dart';
 import 'posts_list_empty_container.dart';
 import 'posts_list_loading_container.dart';
-import 'posts_bottom_loader.dart';
+import 'posts_list_syncing_indicator.dart';
 
 /// Represents a list of [Post] objects.
 /// It simply builds a list using the [ListView.separated] builder
@@ -19,7 +19,7 @@ class PostsList extends StatefulWidget {
 }
 
 class _PostsListState extends State<PostsList> {
-  final _indicator = new GlobalKey<RefreshIndicatorState>();
+  final _indicator = GlobalKey<RefreshIndicatorState>();
   Completer<void> _refreshCompleter;
 
   final _scrollController = ScrollController();

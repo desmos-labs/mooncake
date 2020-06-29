@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mooncake/ui/ui.dart';
 
 class SecondaryLightRoundedButton extends StatelessWidget {
-  final Function onPressed;
+  final void Function() onPressed;
   final Widget child;
 
   const SecondaryLightRoundedButton({

@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:path/path.dart';
 import 'package:recase/recase.dart';
 
 part 'generator.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Selection {
   @JsonKey(name: "icons")
   final List<Icon> icons;
@@ -18,7 +18,7 @@ class Selection {
       _$SelectionFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Icon {
   @JsonKey(name: "properties")
   final Properties properties;
@@ -28,7 +28,7 @@ class Icon {
   factory Icon.fromJson(Map<String, dynamic> json) => _$IconFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Properties {
   @JsonKey(name: "name")
   final String name;
@@ -45,7 +45,9 @@ class Properties {
 void main() async {
   final path = dirname(Platform.script.toFilePath());
   final contents = File(join(path, "selection.json")).readAsStringSync();
-  final selection = Selection.fromJson(jsonDecode(contents));
+  final selection = Selection.fromJson(
+    jsonDecode(contents) as Map<String, dynamic>,
+  );
 
   final output = File(join(path, "icons.dart"));
   output.writeAsStringSync(
@@ -70,5 +72,5 @@ void main() async {
 String _getIconLine(Icon icon) {
   final name = icon.properties.name.camelCase;
   final code = icon.properties.code.toRadixString(16);
-  return "\tstatic const IconData $name = const IconDataMooncake(0x$code);\n";
+  return "\tstatic const IconData $name = IconDataMooncake(0x$code);\n";
 }

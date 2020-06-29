@@ -394,7 +394,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield currentState.copyWith(syncingPosts: true);
 
       // Wait for the sync
-      _syncPostsUseCase.sync().catchError((error) {
+      await _syncPostsUseCase.sync().catchError((error) {
         print("Sync error: $error");
         add(SyncPostsCompleted());
       }).then((syncedPosts) {

@@ -17,7 +17,9 @@ class EncryptMnemonicUseCase {
 
     final keyDerivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
       ..init(Pbkdf2Parameters(Uint8List(0), 1000, 32));
-    final keyBytes = keyDerivator.process(utf8.encode(password));
+    final keyBytes = keyDerivator.process(
+      Uint8List.fromList(utf8.encode(password)),
+    );
     final key = base64Encode(keyBytes);
 
     final iv = IV.fromSecureRandom(16);

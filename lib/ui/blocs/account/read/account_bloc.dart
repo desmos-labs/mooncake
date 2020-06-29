@@ -96,7 +96,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapCheckStatusEventToState() async* {
     // Remove any info if it's the first start
     final firstStart = await _getSettingUseCase.get(key: SETTING_FIRST_START);
-    if (firstStart ?? true) {
+    if (firstStart as bool ?? true) {
       await _logoutUseCase.logout();
       await _saveSettingUseCase.save(key: SETTING_FIRST_START, value: false);
     }
@@ -157,7 +157,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   }
 
   @override
-  Future<Function> close() {
+  Future<void> close() {
     _accountSubscription?.cancel();
     return super.close();
   }

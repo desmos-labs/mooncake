@@ -33,7 +33,9 @@ class LocalNotificationsSourceImpl extends LocalNotificationsSource {
         .query(finder: finder)
         .onSnapshots(_database)
         .expand((element) => element)
-        .map((record) => NotificationData.fromJson(record.value));
+        .map((record) => NotificationData.fromJson(
+              record.value as Map<String, dynamic>,
+            ));
   }
 
   @override
@@ -44,7 +46,9 @@ class LocalNotificationsSourceImpl extends LocalNotificationsSource {
 
     final records = await _store.find(_database, finder: finder);
     return (records ?? [])
-        .map((record) => NotificationData.fromJson(record.value))
+        .map((record) => NotificationData.fromJson(
+              record.value as Map<String, dynamic>,
+            ))
         .toList();
   }
 

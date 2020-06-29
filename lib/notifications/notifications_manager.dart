@@ -50,7 +50,9 @@ class NotificationsManager {
     _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onSelectNotification: (payload) async {
-        final notification = NotificationData.fromJson(jsonDecode(payload));
+        final notification = NotificationData.fromJson(
+          jsonDecode(payload) as Map<String, dynamic>,
+        );
         _notificationsHandler.handleMessage(notification);
       },
     );

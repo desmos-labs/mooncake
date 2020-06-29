@@ -15,7 +15,7 @@ void main() {
     getHomeEventsUseCase = GetHomeEventsUseCase(postsRepository: repository);
   });
 
-  test('stream performs the correct calls', () async {
+  test('stream performs the correct calls', () {
     final controller = StreamController<dynamic>();
     when(repository.homeEventsStream).thenAnswer((_) => controller.stream);
 

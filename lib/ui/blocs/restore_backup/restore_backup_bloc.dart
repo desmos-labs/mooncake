@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
+
 import './bloc.dart';
 
 /// Represents the Bloc that handles the event for the mnemonic backup restore.
@@ -54,7 +56,7 @@ class RestoreBackupBloc extends Bloc<RestoreBackupEvent, RestoreBackupState> {
     yield state.copyWith(restoring: true);
 
     final jsonData = jsonDecode(utf8.decode(base64Decode(state.backup)));
-    final data = MnemonicData.fromJson(jsonData);
+    final data = MnemonicData.fromJson(jsonData as Map<String, dynamic>);
     final password = state.password;
     final mnemonic = await _decryptMnemonicUseCase.decrypt(data, password);
 

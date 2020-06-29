@@ -2,12 +2,8 @@ import 'dart:async';
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/usecases/usecases.dart';
 
 /// Bloc that allows to properly handle the recovering account events
 /// and emits the correct states.

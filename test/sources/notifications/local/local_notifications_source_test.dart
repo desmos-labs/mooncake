@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:test/test.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
+import 'package:test/test.dart';
 
 void main() {
   Database database;
@@ -56,7 +56,11 @@ void main() {
       txHash: "hash2",
     );
 
-    expectLater(source.liveNotificationsStream, emitsInOrder([first, second]));
+    // ignore: unawaited_futures
+    expectLater(
+      source.liveNotificationsStream,
+      emitsInOrder([first, second]),
+    );
 
     await source.saveNotification(first);
     await source.saveNotification(second);
@@ -76,7 +80,7 @@ void main() {
     await store.add(database, first.asJson());
     await store.add(database, second.asJson());
 
-    expectLater(
+    await expectLater(
       source.storedNotificationsStream,
       emitsInOrder([second, first]),
     );
