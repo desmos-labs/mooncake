@@ -1,10 +1,6 @@
 name:  Build and Test Flutter App
 on: [push,pull_request]
 
-flutter:
-  version: '1.19.0-5.0.pre'
-  channel: 'dev'
-
 jobs:
 
   test:
@@ -13,8 +9,8 @@ jobs:
       - uses: actions/checkout@v1
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: ${{ flutter.version }}
-          channel: ${{ flutter.channel }}
+          flutter-version: '1.19.0-5.0.pre'
+          channel: 'dev'
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter format --dry-run .
@@ -73,8 +69,8 @@ jobs:
 #      - uses: actions/checkout@v1
 #      - uses: subosito/flutter-action@v1
 #        with:
-#          flutter-version: ${{ flutter.version }}
-#          channel: ${{ flutter.channel }}
+#          flutter-version: '1.19.0-5.0.pre'
+#          channel: 'dev'
 #      # Run flutter integrate tests
 #      - name: Run Flutter Driver tests
 #        run: flutter drive --target=test_driver/app.dart
@@ -93,8 +89,8 @@ jobs:
 #      - uses: actions/checkout@v1
 #      - uses: subosito/flutter-action@v1
 #        with:
-#          flutter-version: ${{ flutter.version }}
-#          channel: ${{ flutter.channel }}
+#          flutter-version: '1.19.0-5.0.pre'
+#          channel: 'dev'
 #      - name: Run Flutter Driver tests
 #        uses: reactivecircus/android-emulator-runner@v1
 #        with:
