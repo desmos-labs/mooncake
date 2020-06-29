@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart' as Foundation;
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
@@ -25,13 +25,13 @@ void main() async {
   await _setupDependencyInjection();
 
   // Setup the Bloc delegate to observe transitions
-  if (Foundation.kDebugMode) {
+  if (foundation.kDebugMode) {
     BlocSupervisor.delegate = SimpleBlocDelegate();
   }
 
   // This captures errors reported by the Flutter framework.
   FlutterError.onError = (FlutterErrorDetails details) {
-    if (Foundation.kDebugMode) {
+    if (foundation.kDebugMode) {
       // In development mode, simply print to console.
       FlutterError.dumpErrorToConsole(details);
     } else {

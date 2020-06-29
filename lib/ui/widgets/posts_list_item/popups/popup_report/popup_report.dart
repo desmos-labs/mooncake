@@ -26,9 +26,9 @@ class ReportPostPopup extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: MediaQuery.of(context).viewInsets,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: new BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(16),
                       topRight: const Radius.circular(16),
                     ),

@@ -101,7 +101,9 @@ class GqlPostsHelper {
   /// If no data is present, returns an empty list instead.
   static List<Post> _convertPostsGqlResponse(dynamic posts) {
     return (posts as List<dynamic>)
-        .map((json) => Post.fromJson(_convertFields(json)))
+        .map((json) => Post.fromJson(_convertFields(
+              json as Map<String, dynamic>,
+            )))
         .toList();
   }
 

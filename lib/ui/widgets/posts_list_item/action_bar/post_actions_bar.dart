@@ -21,7 +21,7 @@ class PostActionsBar extends StatelessWidget {
         return Row(
           children: <Widget>[
             Expanded(
-              child: post.likes.length > 0
+              child: post.likes.isNotEmpty
                   ? PostLikesCounter(post: post)
                   : Container(),
             ),

@@ -5,8 +5,8 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'action_bar/export.dart';
-import 'reactions/post_reactions_list.dart';
 import 'popups/export.dart';
+import 'reactions/post_reactions_list.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
 /// It is made of the following components:
@@ -38,7 +38,7 @@ class PostListItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(4.0),
         child: InkWell(
           onTap: () => _openPostDetails(context),
-          onLongPress: _handleLongClick(context),
+          onLongPress: () => _handleLongClick(context),
           child: Container(
             padding: EdgeInsets.all(12.0),
             child: Column(

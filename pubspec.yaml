@@ -57,11 +57,13 @@ dependencies:
 dev_dependencies:
   bloc_test:
   build_runner:
+  effective_dart:
   flutter_test:
     sdk: flutter
   json_serializable:
   mockito:
   mock_web_server:
+  pedantic:
   test:
 
 flutter:

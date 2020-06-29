@@ -50,6 +50,7 @@ abstract class AccountImage extends Equatable {
 
   /// Converts this [AccountImage] instance into a JSON map.
   Map<String, dynamic> toJson() {
+    // ignore: deprecated_member_use_from_same_package
     final json = asJson();
     json.addAll(_$AccountImageToJson(this));
     return json;

@@ -6,6 +6,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/repositories/user/user_repository_impl.dart';
 
+// ignore: must_be_immutable
 class WalletMock extends Mock implements Wallet {}
 
 class RemoteUserSourceMock extends Mock implements RemoteUserSource {}
@@ -195,7 +196,7 @@ void main() {
     });
   });
 
-  test('accountStream emits correct events', () async {
+  test('accountStream emits correct events', () {
     final account = MooncakeAccount.local("address");
     final controller = StreamController<MooncakeAccount>();
 

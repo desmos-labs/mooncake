@@ -26,7 +26,7 @@ void main() {
     verify(repository.getAccount()).called(1);
   });
 
-  test('stream performs correct calls', () async {
+  test('stream performs correct calls', () {
     final account = MooncakeAccount.local("address");
 
     final controller = StreamController<MooncakeAccount>();

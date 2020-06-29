@@ -28,9 +28,9 @@ void main() {
     expect(account.hasLiked(post), isFalse);
 
     final likedPost = post.copyWith(reactions: [
-      Reaction(
-        user: User.fromAddress(account.address),
-        value: Constants.LIKE_REACTION,
+      Reaction.fromValue(
+        Constants.LIKE_REACTION,
+        User.fromAddress(account.address),
       ),
     ]);
     expect(account.hasLiked(likedPost), isTrue);

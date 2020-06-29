@@ -41,13 +41,13 @@ final List<Post> testPosts = [
     optionalData: {},
     owner: User.fromAddress("desmos16r460yaek3uqncjhnxez8v327qnxjw5k0crg9x"),
     reactions: [
-      Reaction(
-        value: ":smile:",
-        user: User.fromAddress("desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h"),
+      Reaction.fromValue(
+        ":smile:",
+        User.fromAddress("desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h"),
       ),
-      Reaction(
-        value: ":100:",
-        user: User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"),
+      Reaction.fromValue(
+        ":100:",
+        User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"),
       )
     ],
     commentsIds: ["10"],
@@ -78,9 +78,9 @@ final List<Post> testPosts = [
     optionalData: {},
     owner: User.fromAddress("desmos15x3e6md5gdcsszc2nx88trnn85nn0qzgjwl9pj"),
     reactions: [
-      Reaction(
-        value: ":angry:",
-        user: User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"),
+      Reaction.fromValue(
+        ":angry:",
+        User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl"),
       )
     ],
     commentsIds: [],

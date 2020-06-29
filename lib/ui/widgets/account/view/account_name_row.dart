@@ -22,21 +22,6 @@ class AccountNameRow extends StatelessWidget {
     }
   }
 
-  Widget _tappbleText(
-      BuildContext context, String count, String text, String navigateTo) {
-    return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, '/$navigateTo');
-      },
-      child: Row(
-        children: <Widget>[
-          Text('$count '),
-          Text('$text'),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(

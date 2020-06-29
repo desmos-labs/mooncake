@@ -1,0 +1,127 @@
+name:  Flutter
+on:
+  push:
+    branches: '!gh-pages'
+  pull_request:
+
+jobs:
+
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Analyzing 🔍
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.19.0-5.0.pre'
+          channel: 'dev'
+      - run: |
+          flutter pub get
+          flutter analyze
+          flutter format --dry-run .
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Test 🔧
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.19.0-5.0.pre'
+          channel: 'dev'
+      - run: |
+          flutter pub get
+          flutter test --coverage test
+
+      - name: Clean coverage 🧹
+        run: |
+          pub global activate remove_from_coverage
+
+          # Exclude all g.dart files
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '.g.dart$'
+
+          # Exclude app entities (constants)
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'lib/entities/app'
+
+          # Exclude dependency injection files
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'dependency_injection*'
+
+          # Exlude utils files
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r 'lib/utils/*.dart'
+
+          # Exclude repository interfaces files
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '^repository/*.dart'
+
+          # Exclude sources interfaces files
+          pub global run remove_from_coverage:remove_from_coverage -f coverage/lcov.info -r '^source/*.dart'
+
+      - name: Upload coverage 📤
+        uses: codecov/codecov-action@v1
+        with:
+          file: coverage/lcov.info
+          fail_ci_if_error: true
+
+  # Test the app on iOS
+# TODO: Uncomment when ready to do integration tests
+#  drive_ios:
+#    strategy:
+#      matrix:
+#        device:
+#          - "iPhone 8 (13.3)"
+#          - "iPhone 11 Pro (13.3)"
+#      fail-fast: false
+#    runs-on: macos-latest
+#    needs: test
+#    steps:
+#      - name: List all simulators
+#        run: xcrun instruments -s
+#      # Get UUID simulator and boot a simulator on Mac from command line
+#      - name: Start Simulator
+#        run: |
+#          UDID=$(
+#            xcrun instruments -s |
+#            awk \
+#              -F ' *[][]' \
+#              -v 'device=${{ matrix.device }}' \
+#              '$1 == device { print $2 }'
+#          )
+#          xcrun simctl boot "${UDID:?No Simulator with this name found}"
+#      - uses: actions/checkout@v1
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: '1.19.0-5.0.pre'
+#          channel: 'dev'
+#      # Run flutter integrate tests
+#      - name: Run Flutter Driver tests
+#        run: flutter drive --target=test_driver/app.dart
+
+  # Test the app on Android
+# TODO: Uncomment when ready to do integration tests
+#  drive_android:
+#    runs-on: macos-latest
+#    #creates a build matrix for your jobs
+#    strategy:
+#      #set of different configurations of the virtual environment.
+#      matrix:
+#        api-level: [21, 29]
+#        target: [default]
+#    needs: test
+#    steps:
+#      - uses: actions/checkout@v1
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          flutter-version: '1.19.0-5.0.pre'
+#          channel: 'dev'
+#      - name: Run Flutter Driver tests
+#        uses: reactivecircus/android-emulator-runner@v1
+#        with:
+#          api-level: ${{ matrix.api-level }}
+#          target: ${{ matrix.target }}
+#          arch: x86_64
+#          profile: Nexus 6
+#          script: flutter drive --target=test_driver/app.dart
+

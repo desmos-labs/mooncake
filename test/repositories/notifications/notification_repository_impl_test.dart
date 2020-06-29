@@ -1,9 +1,9 @@
-import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/notifications/notifications_repository_impl.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:test/test.dart';
 
 class LocalSourceMock extends Mock implements LocalNotificationsSource {}
 
@@ -69,7 +69,7 @@ void main() {
     expect(result, equals(notifications));
   });
 
-  test('remoteStream returns local one', () async {
+  test('remoteStream returns local one', () {
     final localStream = BehaviorSubject<NotificationData>();
     when(localSource.liveNotificationsStream).thenAnswer((_) => localStream);
 

@@ -5,7 +5,7 @@ class GenericPopup extends StatelessWidget {
   final Color backgroundColor;
   final Widget content;
   final EdgeInsets padding;
-  final Function onTap;
+  final void Function() onTap;
 
   const GenericPopup({
     Key key,

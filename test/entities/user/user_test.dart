@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:test/test.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('fromJson', () {
@@ -10,7 +10,7 @@ void main() {
       final file = File("test_resources/user/user.json");
       final contents = file.readAsStringSync();
 
-      final user = User.fromJson(jsonDecode(contents));
+      final user = User.fromJson(jsonDecode(contents) as Map<String, dynamic>);
       expect(user.address, "desmos10u276x6j0sltj4jzwnk892swcues3wehsv8dk3");
       expect(user.profilePicUri, isNull);
       expect(user.moniker, isNull);

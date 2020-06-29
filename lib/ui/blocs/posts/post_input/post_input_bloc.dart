@@ -173,7 +173,8 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   }
 
   Stream<PostInputState> _mapSavePostEventToState() async* {
-    final showPopup = await _getSettingUseCase.get(key: _SHOW_POPUP_KEY);
+    final showPopup =
+        await _getSettingUseCase.get(key: _SHOW_POPUP_KEY) as bool;
     yield state.copyWith(saving: true, showPopup: showPopup ?? true);
 
     if (!(showPopup ?? true)) {

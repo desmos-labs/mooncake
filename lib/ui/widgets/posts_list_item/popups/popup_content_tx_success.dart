@@ -44,7 +44,7 @@ class PostSuccessPopupContent extends StatelessWidget {
   void _browseTx() async {
     final url = "${Constants.EXPLORER}/transactions/$txHash";
     if (await canLaunch(url)) {
-      launch(url);
+      await launch(url);
     }
   }
 }

@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:mooncake/sources/sources.dart';
-import 'package:test/test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
-
-import 'chain_source_impl_test.reflectable.dart';
+import 'package:mooncake/sources/sources.dart';
+import 'package:test/test.dart';
 
 class MockTxBuilder extends Mock implements TxBuilder {}
 

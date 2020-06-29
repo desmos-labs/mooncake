@@ -6,7 +6,7 @@ import 'package:mooncake/ui/ui.dart';
 /// Represents the input inside which the user will write a word of his
 /// mnemonic code.
 class MnemonicInputItem extends StatefulWidget {
-  final index;
+  final int index;
 
   const MnemonicInputItem({
     Key key,

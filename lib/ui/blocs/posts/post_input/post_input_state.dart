@@ -15,7 +15,7 @@ class PostInputState extends Equatable {
 
   final bool showPopup;
   final bool saving;
-  final willShowPopupAgain;
+  final bool willShowPopupAgain;
 
   PostInputState({
     @required this.parentPost,

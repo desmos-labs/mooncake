@@ -15,10 +15,6 @@ Selection _$SelectionFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SelectionToJson(Selection instance) => <String, dynamic>{
-      'icons': instance.icons,
-    };
-
 Icon _$IconFromJson(Map<String, dynamic> json) {
   return Icon(
     json['properties'] == null
@@ -27,19 +23,9 @@ Icon _$IconFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$IconToJson(Icon instance) => <String, dynamic>{
-      'properties': instance.properties,
-    };
-
 Properties _$PropertiesFromJson(Map<String, dynamic> json) {
   return Properties(
     json['name'] as String,
     json['code'] as int,
   );
 }
-
-Map<String, dynamic> _$PropertiesToJson(Properties instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'code': instance.code,
-    };

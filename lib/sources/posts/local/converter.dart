@@ -29,13 +29,18 @@ class PostsConverter {
   static Future<Post> deserializePost(dynamic record) async {
     if (record == null) return null;
     final value = (record is RecordSnapshot) ? record.value : record;
-    return await compute<Map<String, dynamic>, Post>(Post.fromJson, value);
+    return await compute<Map<String, dynamic>, Post>(
+      Post.fromJson,
+      value as Map<String, dynamic>,
+    );
   }
 
   static List<Post> deserializePostsSync(List<dynamic> records) {
     return records.map((snapshot) {
       final value = snapshot is RecordSnapshot ? snapshot.value : snapshot;
-      return value == null ? (value as Post) : Post.fromJson(value);
+      return value == null
+          ? (value as Post)
+          : Post.fromJson(value as Map<String, dynamic>);
     }).toList();
   }
 
