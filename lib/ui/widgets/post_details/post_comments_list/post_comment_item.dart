@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/post_content/images/post_images_previewer.dart';
@@ -42,7 +43,9 @@ class PostCommentItem extends StatelessWidget {
   Widget _textWidget() {
     return Column(
       children: [
-        Text(comment.message),
+        MarkdownBody(
+          data: comment.message,
+        ),
         const SizedBox(height: ThemeSpaces.smallGutter),
       ],
     );
