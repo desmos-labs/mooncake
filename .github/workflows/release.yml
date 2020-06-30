@@ -17,19 +17,30 @@ jobs:
           flutter-version: '1.19.0-5.0.pre'
           channel: 'dev'
 
+      - name: Decrypt secrets 🔓
+        env:
+          GOOGLE_PLAY_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_PLAY_SERVICES_PASSPHRASE }}
+          SERVICE_ACCOUNT_PASSPHRASE: ${{ secrets.SERVICE_ACCOUNT_PASSPHRASE }}
+        run: |
+          mkdir android/app/src/release
+          gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
+            --output android/app/src/release/google-services.json distribution/google-services.json.gpg
+
+          gpg --quiet --batch --yes --decrypt --passphrase="$SERVICE_ACCOUNT_PASSPHRASE" \
+            --output distribution/serice-account.json distribution/service-account.json.gpg
+
+
       - name: Build 🔧
         run: |
           flutter pub get
-          mkdir ./android/app/src/release
-          echo ${{ secrets.GOOGLE_PLAY_SERVICES }} > ./android/app/src/release/google-services.json
           flutter build appbundle
 
       - name: Deploy 🚀
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: ${{ secrets.SERVICE_ACCOUNT }}
+          serviceAccountJson: distribution/service-account.json
           packageName: com.forbole.mooncake
           releaseFile: ./build/app/outputs/bundle/release/app-release.aab
           track: internal
-          whatsNewDirectory: ./distribution/whatsnew
-          mappingFile: ./build/app/outputs/mapping/release/mapping.txt
+          whatsNewDirectory: distribution/whatsnew
+          mappingFile: build/app/outputs/mapping/release/mapping.txt
