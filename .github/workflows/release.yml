@@ -28,15 +28,16 @@ jobs:
           gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
             --output android/app/src/release/google-services.json distribution/google-services.json.gpg
 
+          mkdir $HOME/distribution
           gpg --quiet --batch --yes --decrypt --passphrase="$SERVICE_ACCOUNT_PASSPHRASE" \
-            --output distribution/service-account.json distribution/service-account.json.gpg
+            --output $HOME/distribution/service-account.json distribution/service-account.json.gpg
 
           gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASSPHRASE" \
-            --output distribution/keystore.jks distribution/keystore.jks.gpg
+            --output $HOME/distribution/keystore.jks distribution/keystore.jks.gpg
 
       - name: Build 🔧
         env:
-          KEYSTORE_PATH: distribution/keystore.jks
+          KEYSTORE_PATH: $HOME/distribution/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -47,7 +48,7 @@ jobs:
       - name: Deploy 🚀
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: distribution/service-account.json
+          serviceAccountJson: $HOME/distribution/service-account.json
           packageName: com.forbole.mooncake
           releaseFile: build/app/outputs/bundle/release/app-release.aab
           track: internal
