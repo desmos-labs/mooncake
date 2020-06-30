@@ -300,41 +300,6 @@ void main() {
         localSource.savePosts(secondUpdate),
       ]);
     });
-
-    test('sync throwing exception updates correcty the status', () async {
-      // --- SETUP
-      final syncPosts = testPosts.take(2).toList();
-      when(localSource.getPostsToSync())
-          .thenAnswer((_) => Future.value(syncPosts));
-
-      final firstUpdate = syncPosts.map((e) {
-        return e.copyWith(
-          status: PostStatus(value: PostStatusValue.SENDING_TX),
-        );
-      }).toList();
-
-      final error = Exception("error");
-      when(remoteSource.savePosts(any)).thenThrow(error);
-
-      final secondUpdate = syncPosts.map((e) {
-        return e.copyWith(
-          status: PostStatus(
-            value: PostStatusValue.ERRORED,
-            data: error.toString(),
-          ),
-        );
-      }).toList();
-
-      // --- CALL
-      await repository.syncPosts();
-
-      // --- VERIFICATION
-      verifyInOrder([
-        localSource.savePosts(firstUpdate),
-        remoteSource.savePosts(firstUpdate),
-        localSource.savePosts(secondUpdate),
-      ]);
-    });
   });
 
   group('savePostsAndGetStatus returns the correct result', () {
@@ -372,21 +337,6 @@ void main() {
             data: result.error.errorMessage,
           )));
       verify(remoteSource.savePosts(posts)).called(1);
-    });
-
-    test('when saving throws an exception', () async {
-      final exception = Exception("Exception message");
-      when(remoteSource.savePosts(any)).thenThrow(exception);
-
-      final posts = [testPost];
-      final status = await repository.savePostsRemotelyAndGetStatus(posts);
-      expect(
-          status,
-          equals(PostStatus(
-            value: PostStatusValue.ERRORED,
-            data: exception.toString(),
-          )));
-      verify(remoteSource.savePosts(posts));
     });
   });
 

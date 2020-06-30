@@ -137,7 +137,7 @@ void main() {
       expect(result, isNull);
     });
 
-    test('propagates exception from TxSigner or TxSender', () async {
+    test('returns correct result with exception', () async {
       server.enqueue(httpCode: 500, body: null);
 
       final msgs = [
@@ -154,7 +154,8 @@ void main() {
         ),
       ];
       final data = TxData(messages: msgs, wallet: wallet, feeAmount: fee);
-      expect(ChainSourceImpl.sendTxBackground(data), throwsException);
+      final result = await ChainSourceImpl.sendTxBackground(data);
+      expect(result.success, isFalse);
     });
 
     test('throws exception when tx sending is not successful', () async {
@@ -199,9 +200,8 @@ void main() {
         ),
       ];
       final data = TxData(messages: msgs, wallet: wallet, feeAmount: fee);
-      expect(() async {
-        await ChainSourceImpl.sendTxBackground(data);
-      }, throwsException);
+      final result = await ChainSourceImpl.sendTxBackground(data);
+      expect(result.success, isFalse);
     });
   });
 
@@ -251,7 +251,7 @@ void main() {
       expect(result, isNull);
     });
 
-    test('propagates exception from TxSigner or TxSender', () async {
+    test('returns correct result when exception is thrown', () async {
       server.enqueue(httpCode: 500, body: null);
 
       final msgs = [
@@ -267,10 +267,11 @@ void main() {
           poll: null,
         ),
       ];
-      expect(chainHelper.sendTx(msgs, wallet), throwsException);
+      final result = await chainHelper.sendTx(msgs, wallet);
+      expect(result.success, isFalse);
     });
 
-    test('throws exception when tx sending is not successful', () async {
+    test('returns correct result when exception is thrown', () async {
       final accountFile = File("test_resources/account/account_response.json");
       final accountContents = accountFile.readAsStringSync();
 
@@ -311,9 +312,8 @@ void main() {
           poll: null,
         ),
       ];
-      expect(() async {
-        await chainHelper.sendTx(msgs, wallet);
-      }, throwsException);
+      final result = await chainHelper.sendTx(msgs, wallet);
+      expect(result.success, isFalse);
     });
   });
 }
