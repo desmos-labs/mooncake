@@ -4,7 +4,6 @@ on:
     branches:
       - '**'
       - '!gh-pages'
-  pull_request:
 
 jobs:
 
