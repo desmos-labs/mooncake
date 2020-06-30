@@ -37,7 +37,7 @@ jobs:
 
       - name: Build 🔧
         env:
-          KEYSTORE_PATH: "$HOME/distribution/keystore.jks"
+          KEYSTORE_PATH: ${{ env.HOME }}/distribution/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
