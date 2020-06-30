@@ -14,12 +14,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      - name: Analyzing 🔍
+      - name: Setup 🔨
         uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.19.0-5.0.pre'
           channel: 'dev'
-      - run: |
+
+      - name: Analyze 🔍
+        run: |
           flutter pub get
           flutter analyze
           flutter format --dry-run .

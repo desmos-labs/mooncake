@@ -11,15 +11,17 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Build 🔧
+      - name: Setup 🔨
         uses: subosito/flutter-action@v1
         with:
           flutter-version: '1.19.0-5.0.pre'
           channel: 'dev'
 
+      - name: Build 🔧
       - run: |
           flutter pub get
           flutter pub run build_runner build --delete-conflicting-outputs
+          echo ${{ secrects.GOOGLE_PLAY_SERVICES }} > /android/app/src/release/google-services.json
           flutter build appbundle
 
       - name: Deploy 🚀
