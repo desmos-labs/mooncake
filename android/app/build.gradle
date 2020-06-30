@@ -29,13 +29,25 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     signingConfigs {
         release {
-            Properties localProps = new Properties()
-            localProps.load(new FileInputStream(file('../local.properties')))
-            if (localProps["signing.storeFile"] != null) {
-                storeFile file(localProps["signing.storeFile"])
-                storePassword localProps["signing.storePassword"]
-                keyPassword localProps["signing.keyPassword"]
-                keyAlias localProps["signing.keyAlias"]
+            // Read the key properties either from the key.properties file
+            // or from the environmental variables (these will be used by the CI)
+            def keystoreProperties = new Properties()
+            def keystorePropertiesFile = rootProject.file('key.properties')
+            if (keystorePropertiesFile.exists()) {
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+            } else {
+                keystoreProperties.setProperty('storeFile', System.getenv('KEYSTORE_PATH'));
+                keystoreProperties.setProperty('storePassword', System.getenv('KEYSTORE_PASSWORD'));
+                keystoreProperties.setProperty('keyAlias', System.getenv('KEY_ALIAS'));
+                keystoreProperties.setProperty('keyPassword', System.getenv('KEY_PASSWORD'));
+            }
+
+            // If the store file is set, set the Gradle variables accordingly
+            if (keystoreProperties.containsKey('storeFile')) {
+                storeFile file(keystoreProperties.storeFile)
+                storePassword keystoreProperties.storePassword
+                keyPassword keystoreProperties.keyPassword
+                keyAlias keystoreProperties.keyAlias
             }
         }
     }
