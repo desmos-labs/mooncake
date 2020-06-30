@@ -6,6 +6,7 @@ class GenericPopup extends StatelessWidget {
   final Widget content;
   final EdgeInsets padding;
   final void Function() onTap;
+  final double width;
 
   const GenericPopup({
     Key key,
@@ -13,6 +14,7 @@ class GenericPopup extends StatelessWidget {
     this.backgroundColor,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
     this.onTap,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class GenericPopup extends StatelessWidget {
             elevation: 6,
             color: Colors.transparent,
             child: Container(
+              width: width,
               padding: padding,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
