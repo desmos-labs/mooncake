@@ -31,13 +31,12 @@ jobs:
           gpg --quiet --batch --yes --decrypt --passphrase="$SERVICE_ACCOUNT_PASSPHRASE" \
             --output distribution/service-account.json distribution/service-account.json.gpg
 
-          mkdir android/distribution
           gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASSPHRASE" \
-            --output android/distribution/keystore.jks distribution/keystore.jks.gpg
+            --output android/app/keystore.jks distribution/keystore.jks.gpg
 
       - name: Build 🔧
         env:
-          KEYSTORE_PATH: distribution/keystore.jks
+          KEYSTORE_PATH: keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
