@@ -21,7 +21,8 @@ jobs:
         run: |
           flutter pub get
           flutter pub run build_runner build --delete-conflicting-outputs
-          echo ${{ secrets.GOOGLE_PLAY_SERVICES }} > /android/app/src/release/google-services.json
+          mkdir ./android/app/src/release
+          echo ${{ secrets.GOOGLE_PLAY_SERVICES }} > ./android/app/src/release/google-services.json
           flutter build appbundle
 
       - name: Deploy 🚀
@@ -29,7 +30,7 @@ jobs:
         with:
           serviceAccountJson: ${{ secrets.SERVICE_ACCOUNT }}
           packageName: com.forbole.mooncake
-          releaseFile: /build/app/outputs/bundle/release/app-release.aab
+          releaseFile: ./build/app/outputs/bundle/release/app-release.aab
           track: internal
-          whatsNewDirectory: /distribution/whatsnew
-          mappingFile: /build/app/outputs/mapping/release/mapping.txt
+          whatsNewDirectory: ./distribution/whatsnew
+          mappingFile: ./build/app/outputs/mapping/release/mapping.txt
