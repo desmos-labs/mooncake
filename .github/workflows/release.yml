@@ -33,7 +33,7 @@ jobs:
             --output distribution/service-account.json distribution/service-account.json.gpg
 
           gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASSPHRASE" \
-            --output distribution/keystore.jks distribution/keystore.jks.gpg
+            --output "$HOME/distribution/keystore.jks" distribution/keystore.jks.gpg
 
       - name: Build 🔧
         env:
