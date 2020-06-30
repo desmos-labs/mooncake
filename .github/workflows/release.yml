@@ -21,7 +21,7 @@ jobs:
         run: |
           flutter pub get
           flutter pub run build_runner build --delete-conflicting-outputs
-          echo ${{ secrects.GOOGLE_PLAY_SERVICES }} > /android/app/src/release/google-services.json
+          echo ${{ secrets.GOOGLE_PLAY_SERVICES }} > /android/app/src/release/google-services.json
           flutter build appbundle
 
       - name: Deploy 🚀
