@@ -25,7 +25,7 @@ jobs:
       - name: Deploy 🚀
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: ${{ SERVICE_ACCOUNT }}
+          serviceAccountJson: ${{ secrets.SERVICE_ACCOUNT }}
           packageName: com.forbole.mooncake
           releaseFile: /build/app/outputs/bundle/release/app-release.aab
           track: internal
