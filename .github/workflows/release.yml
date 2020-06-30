@@ -28,12 +28,11 @@ jobs:
           gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
             --output android/app/src/release/google-services.json distribution/google-services.json.gpg
 
-
           gpg --quiet --batch --yes --decrypt --passphrase="$SERVICE_ACCOUNT_PASSPHRASE" \
             --output distribution/service-account.json distribution/service-account.json.gpg
 
           gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASSPHRASE" \
-            --output distribution/keystore.jks" distribution/keystore.jks.gpg
+            --output distribution/keystore.jks distribution/keystore.jks.gpg
 
       - name: Build 🔧
         env:
