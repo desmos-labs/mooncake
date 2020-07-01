@@ -82,7 +82,6 @@ jobs:
           APPLE_DISTR_CERTIFICATE_PASSPHRASE: ${{ secrets.APPLE_DISTR_CERTIFICATE_PASSPHRASE }}
 
         run: |
-          brew install gnupg
 
           # Decrypt the certificates
           mkdir distribution/ios
@@ -90,7 +89,7 @@ jobs:
             --output distribution/ios/mooncake-prov-profile.cer distribution/mooncake-prov-profile.cer.gpg
 
           gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_DISTR_CERTIFICATE_PASSPHRASE" \
-            --output distribution/ios/mooncake-distr-certificate.cer distribution/mooncake-distr-certificate.cer
+            --output distribution/ios/mooncake-distr-certificate.cer distribution/mooncake-distr-certificate.cer.gpg
 
           # Install the provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
