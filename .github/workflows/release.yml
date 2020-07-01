@@ -104,7 +104,7 @@ jobs:
 
           security create-keychain -p "" build.keychain
           security import distribution/ios/MooncakeDevelopment.cer -t agg \
-            -k ~/Library/Keychains/build.keychain -P "$PROVISIONING_PASSWORD" -A
+            -k ~/Library/Keychains/build.keychain -P "" -A
 
           # Install distribution cert and key
           security list-keychains -s ~/Library/Keychains/build.keychain
