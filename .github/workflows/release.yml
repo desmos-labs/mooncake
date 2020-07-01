@@ -89,7 +89,7 @@ jobs:
             distribution/ios/MooncakeDevelopment.cer.gpg
 
           gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
-            --output provisioning/Mooncake.mobileprovision \
+            --output distribution/ios/Mooncake.mobileprovision \
             distribution/ios/Mooncake.mobileprovision.gpg
 
           # Install the provisioning profiles
