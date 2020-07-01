@@ -90,7 +90,7 @@ jobs:
 
           gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
             --output provisioning/Mooncake.mobileprovision \
-            provisioning/Mooncake.mobileprovision.gpg
+            distribution/ios/Mooncake.mobileprovision.gpg
 
           # Install the provisioning profiles
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
@@ -98,12 +98,12 @@ jobs:
           echo "List profiles"
           ls ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "Move profiles"
-          cp provisioning/*.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+          cp distribution/ios/*.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
           echo "List profiles"
           ls ~/Library/MobileDevice/Provisioning\ Profiles/
 
           security create-keychain -p "" build.keychain
-          security import provisioning/MooncakeDevelopment.cer -t agg \
+          security import distribution/ios/MooncakeDevelopment.cer -t agg \
             -k ~/Library/Keychains/build.keychain -P "$PROVISIONING_PASSWORD" -A
 
           # Install distribution cert and key
