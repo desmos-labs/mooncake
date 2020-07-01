@@ -98,34 +98,27 @@ class PostsRepositoryImpl extends PostsRepository {
   /// for each post based on the result of the operation.
   @visibleForTesting
   Future<PostStatus> savePostsRemotelyAndGetStatus(List<Post> posts) async {
-    try {
-      // Send the post transactions
-      final result = await _remotePostsSource.savePosts(posts);
+    // Send the post transactions
+    final result = await _remotePostsSource.savePosts(posts);
 
-      // Update the posts based on the sync result
-      PostStatus postStatus;
-      switch (result.success) {
-        case true:
-          postStatus = PostStatus(
-            value: PostStatusValue.TX_SENT,
-            data: result.hash,
-          );
-          break;
-        case false:
-          postStatus = PostStatus(
-            value: PostStatusValue.ERRORED,
-            data: result.error.errorMessage,
-          );
-          break;
-      }
-
-      return postStatus;
-    } catch (error) {
-      return PostStatus(
-        value: PostStatusValue.ERRORED,
-        data: error.toString(),
-      );
+    // Update the posts based on the sync result
+    PostStatus postStatus;
+    switch (result.success) {
+      case true:
+        postStatus = PostStatus(
+          value: PostStatusValue.TX_SENT,
+          data: result.hash,
+        );
+        break;
+      case false:
+        postStatus = PostStatus(
+          value: PostStatusValue.ERRORED,
+          data: result.error.errorMessage,
+        );
+        break;
     }
+
+    return postStatus;
   }
 
   @override
