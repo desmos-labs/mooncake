@@ -61,6 +61,8 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
       yield* _mapBioChangedToState(event);
     } else if (event is SaveAccount) {
       yield* _handleSaveAccount();
+    } else if (event is HideErrorPopup) {
+      yield state.copyWith(showErrorPopup: false);
     }
   }
 
@@ -110,10 +112,24 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
   }
 
   Stream<EditAccountState> _handleSaveAccount() async* {
+    // Set the state as saving
     yield state.copyWith(saving: true);
-    await _saveAccountUseCase.save(state.account, syncRemote: true);
-    yield state.copyWith(saving: false);
 
-    _navigatorBloc.add(GoBack());
+    // Save the account
+    final result = await _saveAccountUseCase.save(
+      state.account,
+      syncRemote: true,
+    );
+
+    // Set back the state
+    yield state.copyWith(
+      saving: false,
+      savingError: result.error,
+      showErrorPopup: !result.success,
+    );
+
+    if (result.success) {
+      _navigatorBloc.add(GoBack());
+    }
   }
 }

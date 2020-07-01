@@ -12,7 +12,6 @@ class ExportMnemonicPopup extends StatelessWidget {
       builder: (context, mnemonicState) {
         final state = mnemonicState as ExportingMnemonic;
         return GenericPopup(
-          backgroundColor: Theme.of(context).primaryColorDark.withOpacity(0.25),
           content: Column(
             children: [
               Text(
