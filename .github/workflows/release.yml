@@ -84,11 +84,11 @@ jobs:
         run: |
 
           # Decrypt the certificates
-          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
+          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_DISTR_CERTIFICATE_PASSPHRASE" \
             --output distribution/ios/MooncakeDevelopment.cer \
             distribution/ios/MooncakeDevelopment.cer.gpg
 
-          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_DISTR_CERTIFICATE_PASSPHRASE" \
+          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
             --output provisioning/Mooncake.mobileprovision \
             provisioning/Mooncake.mobileprovision.gpg
 
