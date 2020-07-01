@@ -63,7 +63,7 @@ jobs:
 
   Release-iOS:
     runs-on: macOS-latest
-
+    steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
         with:
