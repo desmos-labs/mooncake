@@ -20,9 +20,13 @@ class MnemonicBackupPopup extends StatelessWidget {
       create: (context) => MnemonicBloc.create(context),
       child: BlocBuilder<MnemonicBloc, MnemonicState>(
         builder: (context, state) {
+          print('=================');
+          print('i rerendered');
+          print('=================');
           BlocProvider.of<MnemonicBloc>(context)
               .add(ValidateBackupMnemonicPopupState());
-
+          print('state');
+          print(state.showBackupPhrasePopup);
           if (state.showBackupPhrasePopup) {
             return GenericPopup(
               backgroundColor: Colors.black54,
@@ -52,28 +56,31 @@ class MnemonicBackupPopup extends StatelessWidget {
                       ),
                       onPressed: () => null,
                     ),
-                    PrimaryButton(
+                    SecondaryLightInvertRoundedButton(
                       child: Text(
                         PostsLocalizations.of(context)
                             .mnemonicRemindMeLaterButton,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.button.copyWith(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                       ),
                       onPressed: () => _closePopup(context),
                     ),
-                    SecondaryLightInvertRoundedButton(
-                      width: double.infinity,
-                      child: Text(
-                        PostsLocalizations.of(context)
-                            .mnemonicDoNotShowAgainButton,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.button.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: GestureDetector(
+                        onTap: () => _turnOffPopupPermission(context),
+                        child: Text(
+                          PostsLocalizations.of(context)
+                              .mnemonicDoNotShowAgainButton,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.button.copyWith(
+                                fontSize: 12,
+                                color: Color(0xFFB8B8B8),
+                              ),
+                        ),
                       ),
-                      onPressed: () => _turnOffPopupPermission(context),
                     ),
                   ],
                 ),
