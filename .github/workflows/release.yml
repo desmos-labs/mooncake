@@ -121,4 +121,9 @@ jobs:
       - name: Build 🔧
         run: |
           flutter pub get
-          flutter build ios --release --no-codesign
+          xcodebuild -workspace Runner.xcworkspace \
+            -scheme Mooncake \
+            -sdk iphoneos \
+            -configuration AppStoreDistribution \
+            -archivePath $PWD/build/Calculator.xcarchive \
+            clean archive | xcpretty
