@@ -89,9 +89,9 @@ jobs:
             --output distribution/ios/iOS-Team.mobileprovision \
             distribution/ios/iOS-Team.mobileprovision.gpg
 
-          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
-            --output distribution/ios/iOS-Team-Store.mobileprovision \
-            distribution/ios/iOS-Team-Store.mobileprovision.gpg
+          # gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
+          #  --output distribution/ios/iOS-Team-Store.mobileprovision \
+          #  distribution/ios/iOS-Team-Store.mobileprovision.gpg
 
           # Install the provisioning profiles
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
