@@ -107,9 +107,13 @@ jobs:
             -k ~/Library/Keychains/build.keychain -P "" -A
 
           # Install distribution cert and key
+          echo "List keychains"
           security list-keychains -s ~/Library/Keychains/build.keychain
+          echo "Default keychain"
           security default-keychain -s ~/Library/Keychains/build.keychain
+          echo "Unlock keychains"
           security unlock-keychain -p "" ~/Library/Keychains/build.keychain
+          echo "Set key partition list"
           security set-key-partition-list -S apple-tool:,apple: -s \
             -k "" ~/Library/Keychains/build.keychain
 
