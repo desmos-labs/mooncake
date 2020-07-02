@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
@@ -24,3 +25,12 @@ class SignOut extends HomeEvent {
   @override
   String toString() => 'SignOut';
 }
+
+/// Shows mnemonic backup popup
+class ShowBackupMnemonicPhrasePopup extends HomeEvent {}
+
+/// Hides mnemonic backup popup
+class HideBackupMnemonicPhrasePopup extends HomeEvent {}
+
+/// Turns off backup popup permission and prevents future backup popups from showing
+class TurnOffBackupMnemonicPopupPermission extends HomeEvent {}

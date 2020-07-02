@@ -33,7 +33,7 @@ class HomeState extends Equatable {
 
   @override
   String toString() => 'MnemonicState { '
-      'appTab: $activeTab '
+      'activeTab: $activeTab '
       'showBackupPhrasePopup: $showBackupPhrasePopup '
       ' }';
 

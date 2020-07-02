@@ -32,12 +32,3 @@ class ChangeEncryptPassword extends MnemonicEvent {
 
 /// Tells the Bloc to export the mnemonic.
 class ExportMnemonic extends MnemonicEvent {}
-
-/// Hides mnemonic backup popup
-class HideBackupMnemonicPhrasePopup extends MnemonicEvent {}
-
-/// Initial check to see if backup popup needs to be shown
-class ValidateBackupMnemonicPopupState extends MnemonicEvent {}
-
-/// Turns off backup popup permission and prevents future backup popups from showing
-class TurnOffBackupMnemonicPopupPermission extends MnemonicEvent {}

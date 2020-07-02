@@ -103,14 +103,15 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<bool> shouldDisplayMnemonicBackupPopup() async {
+  Stream<bool> shouldDisplayMnemonicBackupPopup() async* {
     final txAmount = await _settingsRepository.get('txAmount') ?? 5;
     final popupPermission =
         await _settingsRepository.get('backupPopupPermission') ?? true;
     final txCheck = (txAmount == 5) || (txAmount != 0 && txAmount % 10 == 0);
     if (txCheck && popupPermission == true) {
-      return true;
+      yield true;
+    } else {
+      yield false;
     }
-    return false;
   }
 }

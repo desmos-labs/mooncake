@@ -38,6 +38,7 @@ class RepositoriesModule implements Module {
           (injector, params) => UserRepositoryImpl(
                 localUserSource: injector.get(),
                 remoteUserSource: injector.get(),
+                settingsRepository: injector.get(),
               ))
       ..bindLazySingleton<UsersRepository>(
           (injector, params) => UsersRepositoryImpl(
