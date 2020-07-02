@@ -4,12 +4,25 @@ import 'package:mooncake/ui/ui.dart';
 
 class MnemonicBackupPopup extends StatelessWidget {
   final test = true;
+
+  void _closePopup(BuildContext context) {
+    BlocProvider.of<MnemonicBloc>(context).add(HideBackupMnemonicPhrasePopup());
+  }
+
+  void _turnOffPopupPermission(BuildContext context) {
+    BlocProvider.of<MnemonicBloc>(context)
+        .add(TurnOffBackupMnemonicPopupPermission());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MnemonicBloc.create(context),
       child: BlocBuilder<MnemonicBloc, MnemonicState>(
         builder: (context, state) {
+          BlocProvider.of<MnemonicBloc>(context)
+              .add(ValidateBackupMnemonicPopupState());
+
           if (state.showBackupPhrasePopup) {
             return GenericPopup(
               backgroundColor: Colors.black54,
@@ -48,10 +61,7 @@ class MnemonicBackupPopup extends StatelessWidget {
                               color: Colors.white,
                             ),
                       ),
-                      onPressed: () => {
-                        BlocProvider.of<MnemonicBloc>(context)
-                            .add(HideBackupMnemonicPhrasePopup())
-                      },
+                      onPressed: () => _closePopup(context),
                     ),
                     SecondaryLightInvertRoundedButton(
                       width: double.infinity,
@@ -63,7 +73,7 @@ class MnemonicBackupPopup extends StatelessWidget {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                       ),
-                      onPressed: () => null,
+                      onPressed: () => _turnOffPopupPermission(context),
                     ),
                   ],
                 ),

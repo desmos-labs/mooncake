@@ -20,11 +20,16 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
   final GetMnemonicUseCase _getMnemonicUseCase;
   final EncryptMnemonicUseCase _encryptMnemonicUseCase;
 
+  final SaveSettingUseCase _saveSettingUseCase;
+  final GetSettingUseCase _getSettingUseCase;
+
   MnemonicBloc({
     @required NavigatorBloc navigatorBloc,
     @required GetMnemonicUseCase getMnemonicUseCase,
     @required EncryptMnemonicUseCase encryptMnemonicUseCase,
     @required FirebaseAnalytics analytics,
+    @required SaveSettingUseCase saveSettingUseCase,
+    @required GetSettingUseCase getSettingUseCase,
   })  : assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(getMnemonicUseCase != null),
@@ -32,7 +37,11 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
         assert(encryptMnemonicUseCase != null),
         _encryptMnemonicUseCase = encryptMnemonicUseCase,
         assert(analytics != null),
-        _analytics = analytics;
+        _analytics = analytics,
+        assert(saveSettingUseCase != null),
+        _saveSettingUseCase = saveSettingUseCase,
+        assert(getSettingUseCase != null),
+        _getSettingUseCase = getSettingUseCase;
 
   factory MnemonicBloc.create(BuildContext context) {
     return MnemonicBloc(
@@ -40,6 +49,8 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
       getMnemonicUseCase: Injector.get(),
       encryptMnemonicUseCase: Injector.get(),
       analytics: Injector.get(),
+      saveSettingUseCase: Injector.get(),
+      getSettingUseCase: Injector.get(),
     );
   }
 
@@ -62,6 +73,10 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
       yield* _mapExportMnemonicEventToState();
     } else if (event is HideBackupMnemonicPhrasePopup) {
       yield state.copyWith(showBackupPhrasePopup: false);
+    } else if (event is ValidateBackupMnemonicPopupState) {
+      yield* _mapValidateBackupMnemonicPopupStateToState();
+    } else if (event is TurnOffBackupMnemonicPopupPermission) {
+      yield* _mapTurnOffBackupMnemonicPopupPermissionToState();
     }
   }
 
@@ -105,5 +120,21 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
       showMnemonic: state.showMnemonic,
       showBackupPhrasePopup: state.showBackupPhrasePopup,
     );
+  }
+
+  Stream<MnemonicState> _mapValidateBackupMnemonicPopupStateToState() async* {
+    final txAmount = await _getSettingUseCase.get(key: 'txAmount') ?? 5;
+    final popupPermission =
+        await _getSettingUseCase.get(key: 'backupPopupPermission') ?? true;
+    final txCheck = (txAmount == 5) || (txAmount != 0 && txAmount % 10 == 0);
+    if (txCheck && popupPermission == true) {
+      yield state.copyWith(showBackupPhrasePopup: true);
+    }
+  }
+
+  Stream<MnemonicState>
+      _mapTurnOffBackupMnemonicPopupPermissionToState() async* {
+    await _saveSettingUseCase.save(key: 'backupPopupPermission', value: false);
+    yield state.copyWith(showBackupPhrasePopup: false);
   }
 }

@@ -23,7 +23,7 @@ class MnemonicState extends Equatable {
     return MnemonicState(
       showMnemonic: false,
       mnemonic: [],
-      showBackupPhrasePopup: true,
+      showBackupPhrasePopup: false,
     );
   }
 
