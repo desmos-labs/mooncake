@@ -18,7 +18,6 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    // should have widget here
                     postsAppBar(context),
                     Expanded(child: PostsList()),
                   ],
