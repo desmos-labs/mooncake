@@ -122,6 +122,7 @@ jobs:
         run: |
           flutter pub get
           cd ios
+          pod install
           xcodebuild -workspace Runner.xcworkspace \
             -scheme Runner \
             -sdk iphoneos \
