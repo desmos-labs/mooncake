@@ -121,4 +121,4 @@ jobs:
       - name: Build 🔧
         run: |
           flutter pub get
-          flutter build ios --no-codesign
+          flutter build ios --release
