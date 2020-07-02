@@ -121,4 +121,4 @@ jobs:
       - name: Build 🔧
         run: |
           flutter pub get
-          flutter build ios --release
+          flutter build ios --release --code-sign
