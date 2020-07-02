@@ -121,9 +121,11 @@ jobs:
       - name: Build 🔧
         run: |
           flutter pub get
-          xcodebuild -workspace ios/Runner.xcworkspace \
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace \
             -scheme Runner \
             -sdk iphoneos \
             -configuration AppStoreDistribution \
-            -archivePath $PWD/build/Calculator.xcarchive \
+            -archivePath $PWD/build/Mooncake.xcarchive \
             clean archive | xcpretty
+          ls $PWD/build
