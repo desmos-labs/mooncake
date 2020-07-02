@@ -14,14 +14,22 @@ import '../export.dart';
 class HomeBloc extends Bloc<HomeEvent, AppTab> {
   final AccountBloc _loginBloc;
   final LogoutUseCase _logoutUseCase;
+  final GetSettingUseCase _getSettingUseCase;
 
   HomeBloc({
     @required AccountBloc loginBloc,
     @required LogoutUseCase logoutUseCase,
+    @required GetSettingUseCase getSettingUseCase,
   })  : assert(loginBloc != null),
         _loginBloc = loginBloc,
         assert(logoutUseCase != null),
-        _logoutUseCase = logoutUseCase;
+        _logoutUseCase = logoutUseCase,
+        assert(getSettingUseCase != null),
+        _getSettingUseCase = getSettingUseCase {
+    // i want to call the first check here
+    // BlocProvider.of<MnemonicBloc>(context)
+    //           .add(ValidateBackupMnemonicPopupState());
+  }
 
   factory HomeBloc.create(BuildContext context) {
     return HomeBloc(

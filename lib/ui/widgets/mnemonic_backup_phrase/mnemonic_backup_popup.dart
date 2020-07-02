@@ -20,11 +20,6 @@ class MnemonicBackupPopup extends StatelessWidget {
       create: (context) => MnemonicBloc.create(context),
       child: BlocBuilder<MnemonicBloc, MnemonicState>(
         builder: (context, state) {
-          print('=================');
-          print('i rerendered');
-          print('=================');
-          BlocProvider.of<MnemonicBloc>(context)
-              .add(ValidateBackupMnemonicPopupState());
           print('state');
           print(state.showBackupPhrasePopup);
           if (state.showBackupPhrasePopup) {
