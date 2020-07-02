@@ -9,27 +9,34 @@ import 'package:password_strength/password_strength.dart';
 class MnemonicState extends Equatable {
   final bool showMnemonic;
   final List<String> mnemonic;
+  final bool showBackupPhrasePopup;
 
   MnemonicState({
     @required this.showMnemonic,
     @required this.mnemonic,
+    @required this.showBackupPhrasePopup,
   })  : assert(showMnemonic != null),
-        assert(mnemonic != null);
+        assert(mnemonic != null),
+        assert(showBackupPhrasePopup != null);
 
   factory MnemonicState.initial() {
     return MnemonicState(
       showMnemonic: false,
       mnemonic: [],
+      showBackupPhrasePopup: true,
     );
   }
 
   MnemonicState copyWith({
     bool showMnemonic,
     List<String> mnemonic,
+    bool showBackupPhrasePopup,
   }) {
     return MnemonicState(
       showMnemonic: showMnemonic ?? this.showMnemonic,
       mnemonic: mnemonic ?? this.mnemonic,
+      showBackupPhrasePopup:
+          showBackupPhrasePopup ?? this.showBackupPhrasePopup,
     );
   }
 
@@ -84,8 +91,12 @@ class ExportingMnemonic extends MnemonicState {
     @required this.exportingMnemonic,
     @required bool showMnemonic,
     @required List<String> mnemonic,
+    @required bool showBackupPhrasePopup,
   })  : assert(exportingMnemonic != null),
-        super(mnemonic: mnemonic, showMnemonic: showMnemonic);
+        super(
+            mnemonic: mnemonic,
+            showMnemonic: showMnemonic,
+            showBackupPhrasePopup: showBackupPhrasePopup);
 
   factory ExportingMnemonic.fromMnemonicState(MnemonicState state) {
     return ExportingMnemonic(
@@ -93,6 +104,7 @@ class ExportingMnemonic extends MnemonicState {
       exportingMnemonic: false,
       showMnemonic: state.showMnemonic,
       mnemonic: state.mnemonic,
+      showBackupPhrasePopup: state.showBackupPhrasePopup,
     );
   }
 
@@ -102,12 +114,15 @@ class ExportingMnemonic extends MnemonicState {
     List<String> mnemonic,
     String encryptPassword,
     bool exportingMnemonic,
+    bool showBackupPhrasePopup,
   }) {
     return ExportingMnemonic(
       showMnemonic: showMnemonic ?? this.showMnemonic,
       mnemonic: mnemonic ?? this.mnemonic,
       encryptPassword: encryptPassword ?? this.encryptPassword,
       exportingMnemonic: exportingMnemonic ?? this.exportingMnemonic,
+      showBackupPhrasePopup:
+          showBackupPhrasePopup ?? this.showBackupPhrasePopup,
     );
   }
 

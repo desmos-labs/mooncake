@@ -60,6 +60,8 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
       yield* _mapCloseExportPopupEventToState();
     } else if (event is ExportMnemonic) {
       yield* _mapExportMnemonicEventToState();
+    } else if (event is HideBackupMnemonicPhrasePopup) {
+      yield state.copyWith(showBackupPhrasePopup: false);
     }
   }
 

@@ -31,3 +31,5 @@ class ChangeEncryptPassword extends MnemonicEvent {
 
 /// Tells the Bloc to export the mnemonic.
 class ExportMnemonic extends MnemonicEvent {}
+
+class HideBackupMnemonicPhrasePopup extends MnemonicEvent {}
