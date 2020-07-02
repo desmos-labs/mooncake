@@ -44,4 +44,7 @@ abstract class UserRepository {
 
   /// Deletes entirely the currently stored account data.
   Future<void> deleteData();
+
+  /// Checks if Mnemonic backup phrase popup should be used
+  Future<bool> shouldDisplayMnemonicBackupPopup();
 }
