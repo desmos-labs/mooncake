@@ -122,7 +122,7 @@ jobs:
         run: |
           flutter pub get
           xcodebuild -workspace ios/Runner.xcworkspace \
-            -scheme Mooncake \
+            -scheme Runner \
             -sdk iphoneos \
             -configuration AppStoreDistribution \
             -archivePath $PWD/build/Calculator.xcarchive \
