@@ -121,7 +121,7 @@ jobs:
       - name: Build 🔧
         run: |
           flutter pub get
-          xcodebuild -workspace Runner.xcworkspace \
+          xcodebuild -workspace ios/Runner.xcworkspace \
             -scheme Mooncake \
             -sdk iphoneos \
             -configuration AppStoreDistribution \
