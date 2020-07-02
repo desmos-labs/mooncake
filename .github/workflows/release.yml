@@ -8,58 +8,58 @@ on: [push]
 
 jobs:
 
-#  Release-Android:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout 🛎️
-#        uses: actions/checkout@v2
-#        with:
-#          persist-credentials: false
-#
-#      - name: Setup 🔨
-#        uses: subosito/flutter-action@v1
-#        with:
-#          flutter-version: '1.19.0-5.0.pre'
-#          channel: 'dev'
-#
-#      - name: Decrypt secrets 🔓
-#        env:
-#          GOOGLE_PLAY_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_PLAY_SERVICES_PASSPHRASE }}
-#          SERVICE_ACCOUNT_PASSPHRASE: ${{ secrets.ANDROID_SERVICE_ACCOUNT_PASSPHRASE }}
-#          KEYSTORE_PASSPHRASE: ${{ secrets.ANDROID_KEYSTORE_PASSPHRASE }}
-#
-#        run: |
-#          mkdir android/app/src/release
-#          gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
-#            --output android/app/src/release/google-services.json distribution/google-services.json.gpg
-#
-#          mkdir distribution/android
-#          gpg --quiet --batch --yes --decrypt --passphrase="$SERVICE_ACCOUNT_PASSPHRASE" \
-#            --output distribution/android/service-account.json distribution/service-account.json.gpg
-#
-#          # The keystore here is saved insidethe android/app folder so that Grandle can access it properly
-#          gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASSPHRASE" \
-#            --output android/app/keystore.jks distribution/keystore.jks.gpg
-#
-#      - name: Build 🔧
-#        env:
-#          KEYSTORE_PATH: keystore.jks
-#          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-#          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-#          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-#        run: |
-#          flutter pub get
-#          flutter build appbundle
-#
-#      - name: Deploy 🚀
-#        uses: r0adkll/upload-google-play@v1
-#        with:
-#          serviceAccountJson: distribution/android/service-account.json
-#          packageName: com.forbole.mooncake
-#          releaseFile: build/app/outputs/bundle/release/app-release.aab
-#          track: internal
-#          whatsNewDirectory: distribution/whatsnew
-#          mappingFile: build/app/outputs/mapping/release/mapping.txt
+  #  Release-Android:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - name: Checkout 🛎️
+  #        uses: actions/checkout@v2
+  #        with:
+  #          persist-credentials: false
+  #
+  #      - name: Setup 🔨
+  #        uses: subosito/flutter-action@v1
+  #        with:
+  #          flutter-version: '1.19.0-5.0.pre'
+  #          channel: 'dev'
+  #
+  #      - name: Decrypt secrets 🔓
+  #        env:
+  #          GOOGLE_PLAY_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_PLAY_SERVICES_PASSPHRASE }}
+  #          SERVICE_ACCOUNT_PASSPHRASE: ${{ secrets.ANDROID_SERVICE_ACCOUNT_PASSPHRASE }}
+  #          KEYSTORE_PASSPHRASE: ${{ secrets.ANDROID_KEYSTORE_PASSPHRASE }}
+  #
+  #        run: |
+  #          mkdir android/app/src/release
+  #          gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
+  #            --output android/app/src/release/google-services.json distribution/google-services.json.gpg
+  #
+  #          mkdir distribution/android
+  #          gpg --quiet --batch --yes --decrypt --passphrase="$SERVICE_ACCOUNT_PASSPHRASE" \
+  #            --output distribution/android/service-account.json distribution/service-account.json.gpg
+  #
+  #          # The keystore here is saved insidethe android/app folder so that Grandle can access it properly
+  #          gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASSPHRASE" \
+  #            --output android/app/keystore.jks distribution/keystore.jks.gpg
+  #
+  #      - name: Build 🔧
+  #        env:
+  #          KEYSTORE_PATH: keystore.jks
+  #          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+  #          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+  #          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+  #        run: |
+  #          flutter pub get
+  #          flutter build appbundle
+  #
+  #      - name: Deploy 🚀
+  #        uses: r0adkll/upload-google-play@v1
+  #        with:
+  #          serviceAccountJson: distribution/android/service-account.json
+  #          packageName: com.forbole.mooncake
+  #          releaseFile: build/app/outputs/bundle/release/app-release.aab
+  #          track: internal
+  #          whatsNewDirectory: distribution/whatsnew
+  #          mappingFile: build/app/outputs/mapping/release/mapping.txt
 
   Release-iOS:
     runs-on: macOS-latest
@@ -85,8 +85,12 @@ jobs:
 
           # Decrypt the certificates
           gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_DISTR_CERTIFICATE_PASSPHRASE" \
-            --output distribution/ios/MooncakeDevelopment.cer \
-            distribution/ios/MooncakeDevelopment.cer.gpg
+            --output distribution/ios/Development-Certificates.p12 \
+            distribution/ios/Development-Certificates.p12.gpg
+
+          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_DISTR_CERTIFICATE_PASSPHRASE" \
+            --output distribution/ios/Distribution-Certificates.p12 \
+            distribution/ios/Distribution-Certificates.p12.gpg
 
           gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
             --output distribution/ios/Mooncake.mobileprovision \
@@ -94,24 +98,18 @@ jobs:
 
           # Install the provisioning profiles
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-
-          echo "List profiles"
-          ls ~/Library/MobileDevice/Provisioning\ Profiles/
-          echo "Move profiles"
           cp distribution/ios/*.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
-          echo "List profiles"
           ls ~/Library/MobileDevice/Provisioning\ Profiles/
 
           security create-keychain -p "" build.keychain
-          security import distribution/ios/MooncakeDevelopment.cer -t agg \
+          security import distribution/ios/Development-Certificates.p12 -t agg \
+            -k ~/Library/Keychains/build.keychain -P "" -A
+          security import distribution/ios/Distribution-Certificates.p12 -t agg \
             -k ~/Library/Keychains/build.keychain -P "" -A
 
           # Install distribution cert and key
-          echo "List keychains"
           security list-keychains -s ~/Library/Keychains/build.keychain
-          echo "Default keychain"
           security default-keychain -s ~/Library/Keychains/build.keychain
-          echo "Unlock keychains"
           security unlock-keychain -p "" ~/Library/Keychains/build.keychain
           echo "Set key partition list"
           security set-key-partition-list -S apple-tool:,apple: -s \
