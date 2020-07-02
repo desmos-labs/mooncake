@@ -103,6 +103,7 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     yield MnemonicState(
       mnemonic: state.mnemonic,
       showMnemonic: state.showMnemonic,
+      showBackupPhrasePopup: state.showBackupPhrasePopup,
     );
   }
 }

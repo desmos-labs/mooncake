@@ -300,7 +300,7 @@ Glad you see you here,
 One of the most important steps you can take to secure your account is to backup your Mnemonic Phrase.
   """;
   String get mnemonicBackupButton => "Backup phrase";
-  String get mnemonicReturnButton => "Remind me later";
+  String get mnemonicRemindMeLaterButton => "Remind me later";
   String get mnemonicDoNotShowAgainButton => "Do not show this popup again";
 }
 

@@ -43,6 +43,7 @@ class MnemonicState extends Equatable {
   @override
   String toString() => 'MnemonicState { '
       'showMnemonic: $showMnemonic '
+      'showBackupPhrasePopup: $showBackupPhrasePopup '
       ' }';
 
   @override
@@ -50,6 +51,7 @@ class MnemonicState extends Equatable {
     return [
       showMnemonic,
       mnemonic,
+      showBackupPhrasePopup,
     ];
   }
 }

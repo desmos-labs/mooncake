@@ -10,11 +10,6 @@ class MnemonicBackupPopup extends StatelessWidget {
       create: (context) => MnemonicBloc.create(context),
       child: BlocBuilder<MnemonicBloc, MnemonicState>(
         builder: (context, state) {
-          print('@@@@@@@@');
-          print('@@@@@@@@');
-          print(state);
-          print('@@@@@@@@');
-          print('@@@@@@@@');
           if (state.showBackupPhrasePopup) {
             return GenericPopup(
               backgroundColor: Colors.black54,
@@ -46,7 +41,8 @@ class MnemonicBackupPopup extends StatelessWidget {
                     ),
                     PrimaryButton(
                       child: Text(
-                        PostsLocalizations.of(context).mnemonicReturnButton,
+                        PostsLocalizations.of(context)
+                            .mnemonicRemindMeLaterButton,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.button.copyWith(
                               color: Colors.white,
