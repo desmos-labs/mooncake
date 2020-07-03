@@ -1,0 +1,2 @@
+json_key_file("../distribution/android/service-account.json")
+package_name("com.forbole.mooncake")

@@ -41,5 +41,6 @@ node_modules/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # Secret data
+**/service-account.json
 **/google-services.json
 **/GoogleService-Info.plist
