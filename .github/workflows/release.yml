@@ -53,6 +53,8 @@ jobs:
         - name: Deploy 🚀
           run: |
             cd android
+            apt install ruby
+            gem install bundler
             bundle install
             bundle exec fastlane deploy_internal
 
