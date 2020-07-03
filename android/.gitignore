@@ -6,3 +6,6 @@ gradle-wrapper.jar
 /local.properties
 /key.properties
 GeneratedPluginRegistrant.java
+
+# Fastlane
+fastlane/report.xml
