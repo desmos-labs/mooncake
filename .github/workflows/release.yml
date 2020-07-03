@@ -33,13 +33,12 @@ jobs:
             gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
               --output android/app/src/release/google-services.json distribution/google-services.json.gpg
 
-            mkdir distribution/android
             gpg --quiet --batch --yes --decrypt --passphrase="$SERVICE_ACCOUNT_PASSPHRASE" \
-              --output distribution/android/service-account.json distribution/service-account.json.gpg
+              --output distribution/android/service-account.json distribution/android/service-account.json.gpg
 
             # The keystore here is saved insidethe android/app folder so that Grandle can access it properly
             gpg --quiet --batch --yes --decrypt --passphrase="$KEYSTORE_PASSPHRASE" \
-              --output android/app/keystore.jks distribution/keystore.jks.gpg
+              --output android/app/keystore.jks distribution/android/keystore.jks.gpg
 
         - name: Build 🔧
           env:
