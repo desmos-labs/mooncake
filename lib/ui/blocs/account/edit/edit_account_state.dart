@@ -1,5 +1,5 @@
-import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents the current state of the edit account screen.
@@ -9,12 +9,11 @@ class EditAccountState extends Equatable {
   final bool saving;
 
   bool get containsCustomData {
-    return originalAccount.coverPicUri != account.coverPicUri ||
-        originalAccount.profilePicUri != account.profilePicUri ||
+    return originalAccount.dtag != account.dtag ||
         originalAccount.moniker != account.moniker ||
-        originalAccount.name != account.name ||
-        originalAccount.surname != account.surname ||
-        originalAccount.bio != account.bio;
+        originalAccount.bio != account.bio ||
+        originalAccount.coverPicUri != account.coverPicUri ||
+        originalAccount.profilePicUri != account.profilePicUri;
   }
 
   bool get isMonikerValid {

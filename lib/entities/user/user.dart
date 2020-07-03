@@ -12,16 +12,13 @@ class User extends Equatable {
   @JsonKey(name: "address", nullable: false)
   final String address;
 
+  /// Represents the unique DTag of the user.
+  @JsonKey(name: "dtag", nullable: true)
+  final String dtag;
+
   /// Represents the username of the user.
-  /// Do not use this directly, use [screenName] instead.
   @JsonKey(name: "moniker", nullable: true)
   final String moniker;
-
-  @JsonKey(name: "name", nullable: true)
-  final String name;
-
-  @JsonKey(name: "surname", nullable: true)
-  final String surname;
 
   @JsonKey(name: "bio", nullable: true)
   final String bio;
@@ -34,9 +31,8 @@ class User extends Equatable {
 
   const User({
     @required this.address,
+    this.dtag,
     this.moniker,
-    this.name,
-    this.surname,
     this.bio,
     this.profilePicUri,
     this.coverPicUri,
@@ -68,9 +64,8 @@ class User extends Equatable {
   List<Object> get props {
     return [
       address,
+      dtag,
       moniker,
-      name,
-      surname,
       bio,
       profilePicUri,
       coverPicUri,
@@ -81,9 +76,8 @@ class User extends Equatable {
   String toString() {
     return 'User {'
         'address: $address, '
+        'dtag: $dtag, '
         'moniker: $moniker, '
-        'name: $name, '
-        'surname: $surname, '
         'bio: $bio, '
         'profilePicUri: $profilePicUri, '
         'coverPicUri: $coverPicUri '

@@ -7,8 +7,6 @@ extension UserExt on User {
   String get screenName {
     if (moniker != null && moniker.isNotEmpty) return moniker;
 
-    if (name != null && name.isNotEmpty) return name;
-
     if (address == null) {
       Logger.log("User $this is invalid");
       return "<Invalid account>";
