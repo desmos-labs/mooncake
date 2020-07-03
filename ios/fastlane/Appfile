@@ -1,0 +1,8 @@
+app_identifier("com.forbole.mooncake") # The bundle identifier of your app
+apple_id("kwun@forbole.com") # Your Apple email address
+
+itc_team_id("120850204") # App Store Connect Team ID
+team_id("S7CFLM85H9") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
