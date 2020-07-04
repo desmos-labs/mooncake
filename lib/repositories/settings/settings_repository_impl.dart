@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Implementation of [SettingsRepository]
 class SettingsRepositoryImpl extends SettingsRepository {
   final Future<SharedPreferences> _sharedPrefs;
+  StreamController<dynamic> _watch = StreamController();
 
   SettingsRepositoryImpl({
     @required Future<SharedPreferences> sharedPreferences,
@@ -29,5 +31,10 @@ class SettingsRepositoryImpl extends SettingsRepository {
 
     final jsonValue = prefs.getString(key);
     return jsonDecode(jsonValue);
+  }
+
+  @override
+  StreamController<dynamic> get watch {
+    return _watch;
   }
 }

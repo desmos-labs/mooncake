@@ -11,30 +11,28 @@ import '../export.dart';
 
 /// Represents the Bloc associated with the home screen.
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  static const INIT_CHECK = 'INIT_CHECK';
+  static const CHECK_BACKUP_PHRASE_POPUP_ELIGIBILITY =
+      'CHECK_BACKUP_PHRASE_POPUP_ELIGIBILITY';
   final AccountBloc _loginBloc;
   final LogoutUseCase _logoutUseCase;
   final SetMnemonicBackupPopupUseCase _setMnemonicBackupPopupUseCase;
-  final SaveSettingUseCase _saveSettingUseCase;
-  final GetSettingUseCase _getSettingUseCase;
-
-  StreamSubscription _setMnemonicBackupPopupSubscription;
+  final WatchSettingUseCase _watchSettingUseCase;
+  StreamSubscription<dynamic> _watchSettingSubscription;
 
   HomeBloc({
     @required AccountBloc loginBloc,
     @required LogoutUseCase logoutUseCase,
-    @required GetSettingUseCase getSettingUseCase,
     @required SetMnemonicBackupPopupUseCase setMnemonicBackupPopupUseCase,
-    @required SaveSettingUseCase saveSettingUseCase,
+    @required WatchSettingUseCase watchSettingUseCase,
   })  : assert(loginBloc != null),
         _loginBloc = loginBloc,
         assert(setMnemonicBackupPopupUseCase != null),
         _setMnemonicBackupPopupUseCase = setMnemonicBackupPopupUseCase,
         assert(logoutUseCase != null),
         _logoutUseCase = logoutUseCase,
-        assert(saveSettingUseCase != null),
-        _saveSettingUseCase = saveSettingUseCase,
-        assert(getSettingUseCase != null),
-        _getSettingUseCase = getSettingUseCase {
+        assert(watchSettingUseCase != null),
+        _watchSettingUseCase = watchSettingUseCase {
     // we want to attach listners here for whenever there is a setMnemonicBackupPopup
     _startSubscription();
   }
@@ -43,9 +41,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return HomeBloc(
       loginBloc: BlocProvider.of(context),
       logoutUseCase: Injector.get(),
-      saveSettingUseCase: Injector.get(),
-      getSettingUseCase: Injector.get(),
       setMnemonicBackupPopupUseCase: Injector.get(),
+      watchSettingUseCase: Injector.get(),
     );
   }
 
@@ -71,21 +68,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   /// starts all subscriptions
   void _startSubscription() {
-    if (_setMnemonicBackupPopupSubscription == null) {
-      _setMnemonicBackupPopupSubscription =
-          _setMnemonicBackupPopupUseCase.stream().listen((shouldShow) {
-        if (shouldShow) {
-          this.add(ShowBackupMnemonicPhrasePopup());
-        } else {
-          this.add(HideBackupMnemonicPhrasePopup());
+    if (_watchSettingSubscription == null) {
+      _watchSettingSubscription =
+          _watchSettingUseCase.watch.stream.listen((event) {
+        if (event == INIT_CHECK ||
+            event == CHECK_BACKUP_PHRASE_POPUP_ELIGIBILITY) {
+          print('the data that comes back!');
+          print('the data that comes back! : $event');
         }
       });
+      _watchSettingUseCase.watch.add(INIT_CHECK);
+      // _setMnemonicBackupPopupSubscription =
+      //     _setMnemonicBackupPopupUseCase.stream().listen((shouldShow) {
+      //   if (shouldShow) {
+      //     this.add(ShowBackupMnemonicPhrasePopup());
+      //   } else {
+      //     this.add(HideBackupMnemonicPhrasePopup());
+      //   }
+      // });
     }
   }
 
   /// Stops all valid subscriptons
   void _stopSubscription() {
-    _setMnemonicBackupPopupSubscription?.cancel();
-    _setMnemonicBackupPopupSubscription = null;
+    // _setMnemonicBackupPopupSubscription?.cancel();
+    // _setMnemonicBackupPopupSubscription = null;
   }
 }
