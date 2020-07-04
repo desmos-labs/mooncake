@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:mooncake/repositories/user/user_repository_impl.dart';
 import 'package:mooncake/repositories/settings/settings_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsMock extends Mock implements SharedPreferences {}
+
+class UserRepositoryImplMock extends Mock implements UserRepositoryImpl {}
 
 void main() {
   final prefs = SharedPrefsMock();
@@ -46,5 +50,24 @@ void main() {
       await repository.get("third"),
       equals({"first": "value", "second": 2}),
     );
+  });
+
+  test('watch returns a stream controller', () async {
+    // final streamControllerMock = StreamController<dynamic>();
+    // when(repository.watch).thenReturn(streamControllerMock);
+    final streamController = repository.watch;
+
+    expect(streamController, isA<StreamController>());
+
+    final stream = streamController.stream;
+    expect(
+        stream,
+        emitsInOrder([
+          'one',
+          'two',
+        ]));
+
+    streamController.add('one');
+    streamController.add('two');
   });
 }

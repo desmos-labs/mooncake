@@ -274,4 +274,11 @@ void main() {
 
     verify(localUserSource.wipeData()).called(1);
   });
+
+  test('shouldDisplayMnemonicBackupPopup performs correctly', () async {
+    when(localUserSource.shouldDisplayMnemonicBackupPopup())
+        .thenAnswer((_) => Future.value(true));
+    await repository.shouldDisplayMnemonicBackupPopup();
+    verify(localUserSource.shouldDisplayMnemonicBackupPopup()).called(1);
+  });
 }
