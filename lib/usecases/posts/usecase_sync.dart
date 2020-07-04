@@ -7,17 +7,13 @@ import 'package:mooncake/usecases/usecases.dart';
 class SyncPostsUseCase {
   final UserRepository _userRepository;
   final PostsRepository _postsRepository;
-  final SettingsRepository _settingsRepository;
   SyncPostsUseCase({
     @required UserRepository userRepository,
     @required PostsRepository postsRepository,
-    @required SettingsRepository settingsRepository,
   })  : assert(userRepository != null),
         _userRepository = userRepository,
         assert(postsRepository != null),
-        _postsRepository = postsRepository,
-        assert(settingsRepository != null),
-        _settingsRepository = settingsRepository;
+        _postsRepository = postsRepository;
 
   /// Syncs the locally stored data to the chain.
   Future<dynamic> sync() async {
