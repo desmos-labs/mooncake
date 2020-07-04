@@ -410,15 +410,12 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         print("Sync error: $error");
         add(SyncPostsCompleted());
       }).then((success) async {
-        print('IN SUCCES');
-        print('IN SUCCES $success');
         if (success is int && success > 0) {
-          print('YES IN HERE');
           final successPostSyncedCount = success;
-          final currentTxCount =
-              await _getSettingUseCase.get(key: 'txCount') ?? 0;
+          final currentTxAmount =
+              await _getSettingUseCase.get(key: 'txAmount') ?? 0;
           await _saveSettingUseCase.save(
-              key: 'txCount', value: currentTxCount + successPostSyncedCount);
+              key: 'txAmount', value: currentTxAmount + successPostSyncedCount);
         }
         add(SyncPostsCompleted());
       });

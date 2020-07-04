@@ -20,7 +20,6 @@ class SettingsRepositoryImpl extends SettingsRepository {
     final jsonValue = jsonEncode(value);
     final prefs = await _sharedPrefs;
     await prefs.setString(key, jsonValue);
-    print('I GOT CALLED IN SAVE WITH: $key');
     this._watch.add(key);
   }
 

@@ -24,7 +24,6 @@ class SyncPostsUseCase {
     // Refresh the account
     final account = await _userRepository.refreshAccount();
     if (account.needsFunding) {
-      print('im in need functings');
       // If the account needs the funds, ask for them and skip
       // the rest of the process
       return _userRepository.fundAccount(account);
@@ -32,10 +31,7 @@ class SyncPostsUseCase {
 
     // Sync the posts
     final response = await _postsRepository.syncPosts();
-    print('AFTER SYNC');
     var successTxCount = 0;
-    print('LENGTH');
-    print(response.length);
     response.forEach((e) {
       if (e.status.value == PostStatusValue.TX_SENT) {
         successTxCount++;
