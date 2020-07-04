@@ -4,17 +4,21 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/account/export.dart';
 import 'package:mooncake/sources/sources.dart';
+import 'package:mooncake/usecases/settings/export.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:test/test.dart';
 
 class MockSecureStorage extends Mock implements FlutterSecureStorage {}
 
+class MockSettingsRepository extends Mock implements SettingsRepository {}
+
 // Tests for the LocalUserSourceImpl class
 void main() {
   Database database;
   NetworkInfo networkInfo;
   MockSecureStorage secureStorage;
+  MockSettingsRepository settingsRepo = MockSettingsRepository();
 
   LocalUserSourceImpl source;
 
@@ -28,6 +32,7 @@ void main() {
       database: database,
       networkInfo: networkInfo,
       secureStorage: secureStorage,
+      settingsRepository: settingsRepo,
     );
   });
 
@@ -257,4 +262,13 @@ void main() {
       verify(secureStorage.deleteAll());
     });
   });
+
+  // group('miscellaneous', () {
+  //   test('shouldDisplayMnemonicBackupPopup should function correctly',
+  //       () async {
+  //     // when(settingsRepo.get("txAmount")).thenReturn(Future(() => 0));
+  //     // when(settingsRepo.get("backupPopupPermission")).thenReturn(Future(() => true));
+  //     expect(await source.getAuthenticationMethod(), false);
+  //   });
+  // });
 }

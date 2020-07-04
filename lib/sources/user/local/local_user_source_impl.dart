@@ -170,7 +170,7 @@ class LocalUserSourceImpl extends LocalUserSource {
 
   @override
   Future<bool> shouldDisplayMnemonicBackupPopup() async {
-    final txAmount = await _settingsRepository.get('txAmount') ?? 9;
+    final txAmount = await _settingsRepository.get('txAmount') ?? 0;
     final popupPermission =
         await _settingsRepository.get('backupPopupPermission') ?? false;
     final txCheck = (txAmount == 5) || (txAmount != 0 && txAmount % 10 == 0);
