@@ -46,5 +46,5 @@ abstract class UserRepository {
   Future<void> deleteData();
 
   /// Checks if Mnemonic backup phrase popup should be used
-  Stream<bool> shouldDisplayMnemonicBackupPopup();
+  Future<bool> shouldDisplayMnemonicBackupPopup();
 }

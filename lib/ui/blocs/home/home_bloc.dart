@@ -33,7 +33,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _logoutUseCase = logoutUseCase,
         assert(watchSettingUseCase != null),
         _watchSettingUseCase = watchSettingUseCase {
-    // we want to attach listners here for whenever there is a setMnemonicBackupPopup
     _startSubscription();
   }
 
@@ -67,31 +66,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   /// starts all subscriptions
-  void _startSubscription() {
+  void _startSubscription() async {
     if (_watchSettingSubscription == null) {
       _watchSettingSubscription =
-          _watchSettingUseCase.watch.stream.listen((event) {
+          _watchSettingUseCase.watch.stream.listen((event) async {
         if (event == INIT_CHECK ||
             event == CHECK_BACKUP_PHRASE_POPUP_ELIGIBILITY) {
-          print('the data that comes back!');
-          print('the data that comes back! : $event');
+          bool shouldShowPopup = await _setMnemonicBackupPopupUseCase.check();
+          if (shouldShowPopup) {
+            this.add(ShowBackupMnemonicPhrasePopup());
+          } else {
+            this.add(HideBackupMnemonicPhrasePopup());
+          }
         }
       });
       _watchSettingUseCase.watch.add(INIT_CHECK);
-      // _setMnemonicBackupPopupSubscription =
-      //     _setMnemonicBackupPopupUseCase.stream().listen((shouldShow) {
-      //   if (shouldShow) {
-      //     this.add(ShowBackupMnemonicPhrasePopup());
-      //   } else {
-      //     this.add(HideBackupMnemonicPhrasePopup());
-      //   }
-      // });
     }
   }
 
   /// Stops all valid subscriptons
   void _stopSubscription() {
-    // _setMnemonicBackupPopupSubscription?.cancel();
-    // _setMnemonicBackupPopupSubscription = null;
+    _watchSettingSubscription?.cancel();
+    _watchSettingSubscription = null;
   }
 }

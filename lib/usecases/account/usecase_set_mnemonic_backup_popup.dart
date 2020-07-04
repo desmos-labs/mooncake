@@ -9,7 +9,7 @@ class SetMnemonicBackupPopupUseCase {
   })  : assert(userRepository != null),
         _userRepository = userRepository;
 
-  Stream<bool> stream() {
+  Future<bool> check() {
     return _userRepository.shouldDisplayMnemonicBackupPopup();
   }
 }
