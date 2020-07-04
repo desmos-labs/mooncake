@@ -9,6 +9,7 @@ class PostsTheme {
   static ThemeData from({
     @required ColorScheme colorScheme,
     @required IconThemeData iconTheme,
+    @required Brightness brightnessTheme,
   }) {
     return ThemeData.from(colorScheme: colorScheme).copyWith(
       appBarTheme: AppBarTheme(
@@ -20,6 +21,7 @@ class PostsTheme {
           ),
         ),
         iconTheme: IconThemeData(color: colorScheme.primary),
+        brightness: brightnessTheme,
       ),
       iconTheme: iconTheme,
       buttonTheme: ButtonThemeData(
@@ -48,7 +50,11 @@ class PostsTheme {
       onBackground: Color(0xFF646464),
     );
     final iconTheme = IconThemeData(color: Color(0xFF646464));
-    return from(colorScheme: scheme, iconTheme: iconTheme);
+    final brightnessTheme = Brightness.light;
+    return from(
+        colorScheme: scheme,
+        iconTheme: iconTheme,
+        brightnessTheme: brightnessTheme);
   }
 
   static ThemeData get darkTheme {
@@ -67,6 +73,10 @@ class PostsTheme {
       onBackground: Color(0xFFFFFFFF).withOpacity(0.6),
     );
     final iconTheme = IconThemeData(color: Color(0xFFFFFFFF).withOpacity(0.6));
-    return from(colorScheme: scheme, iconTheme: iconTheme);
+    final brightnessTheme = Brightness.dark;
+    return from(
+        colorScheme: scheme,
+        iconTheme: iconTheme,
+        brightnessTheme: brightnessTheme);
   }
 }
