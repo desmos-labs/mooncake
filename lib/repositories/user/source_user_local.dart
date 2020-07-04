@@ -35,4 +35,7 @@ abstract class LocalUserSource {
 
   /// Completely wipes the currently stored wallet for the user.
   Future<void> wipeData();
+
+  /// Checks if Mnemonic backup phrase popup should be used
+  Future<bool> shouldDisplayMnemonicBackupPopup();
 }

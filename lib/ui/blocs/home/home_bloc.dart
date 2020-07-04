@@ -12,8 +12,7 @@ import '../export.dart';
 /// Represents the Bloc associated with the home screen.
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   static const INIT_CHECK = 'INIT_CHECK';
-  static const CHECK_BACKUP_PHRASE_POPUP_ELIGIBILITY =
-      'CHECK_BACKUP_PHRASE_POPUP_ELIGIBILITY';
+  static const LOCAL_SAVE_TX_AMOUNT = 'txAmount';
   final AccountBloc _loginBloc;
   final LogoutUseCase _logoutUseCase;
   final SetMnemonicBackupPopupUseCase _setMnemonicBackupPopupUseCase;
@@ -70,8 +69,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (_watchSettingSubscription == null) {
       _watchSettingSubscription =
           _watchSettingUseCase.watch.stream.listen((event) async {
-        if (event == INIT_CHECK ||
-            event == CHECK_BACKUP_PHRASE_POPUP_ELIGIBILITY) {
+        if (event == INIT_CHECK || event == LOCAL_SAVE_TX_AMOUNT) {
           bool shouldShowPopup = await _setMnemonicBackupPopupUseCase.check();
           if (shouldShowPopup) {
             this.add(ShowBackupMnemonicPhrasePopup());

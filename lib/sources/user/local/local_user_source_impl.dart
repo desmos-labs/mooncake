@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
+import 'package:mooncake/usecases/settings/export.dart';
 import 'package:sembast/sembast.dart';
 
 /// Contains the information that needs to be given to derive a [Wallet].
@@ -38,16 +39,21 @@ class LocalUserSourceImpl extends LocalUserSource {
 
   final store = StoreRef.main();
 
+  final SettingsRepository _settingsRepository;
+
   LocalUserSourceImpl({
     @required Database database,
     @required NetworkInfo networkInfo,
     @required FlutterSecureStorage secureStorage,
+    @required SettingsRepository settingsRepository,
   })  : assert(database != null),
         database = database,
         assert(networkInfo != null),
         this._networkInfo = networkInfo,
         assert(secureStorage != null),
-        this._storage = secureStorage;
+        this._storage = secureStorage,
+        assert(settingsRepository != null),
+        _settingsRepository = settingsRepository;
 
   /// Allows to derive a [Wallet] instance from the given [_WalletInfo] object.
   /// This method is static so that it can be called using the [compute] method
@@ -160,5 +166,17 @@ class LocalUserSourceImpl extends LocalUserSource {
   Future<void> wipeData() async {
     await _storage.deleteAll();
     await store.delete(database);
+  }
+
+  @override
+  Future<bool> shouldDisplayMnemonicBackupPopup() async {
+    final txAmount = await _settingsRepository.get('txAmount') ?? 9;
+    final popupPermission =
+        await _settingsRepository.get('backupPopupPermission') ?? false;
+    final txCheck = (txAmount == 5) || (txAmount != 0 && txAmount % 10 == 0);
+    if (txCheck && popupPermission == true) {
+      return true;
+    }
+    return false;
   }
 }

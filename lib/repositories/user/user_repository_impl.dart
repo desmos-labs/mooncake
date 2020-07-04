@@ -9,17 +9,13 @@ import 'package:mooncake/usecases/usecases.dart';
 class UserRepositoryImpl extends UserRepository {
   final RemoteUserSource _remoteUserSource;
   final LocalUserSource _localUserSource;
-  final SettingsRepository _settingsRepository;
   UserRepositoryImpl({
     @required LocalUserSource localUserSource,
     @required RemoteUserSource remoteUserSource,
-    @required SettingsRepository settingsRepository,
   })  : assert(localUserSource != null),
         _localUserSource = localUserSource,
         assert(remoteUserSource != null),
-        this._remoteUserSource = remoteUserSource,
-        assert(settingsRepository != null),
-        this._settingsRepository = settingsRepository;
+        this._remoteUserSource = remoteUserSource;
 
   @visibleForTesting
   Future<MooncakeAccount> updateAndStoreAccountData() async {
@@ -103,14 +99,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<bool> shouldDisplayMnemonicBackupPopup() async {
-    final txAmount = await _settingsRepository.get('txAmount') ?? 5;
-    final popupPermission =
-        await _settingsRepository.get('backupPopupPermission') ?? true;
-    final txCheck = (txAmount == 5) || (txAmount != 0 && txAmount % 10 == 0);
-    if (txCheck && popupPermission == true) {
-      return true;
-    }
-    return false;
+  Future<bool> shouldDisplayMnemonicBackupPopup() {
+    return _localUserSource.shouldDisplayMnemonicBackupPopup();
   }
 }

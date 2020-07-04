@@ -60,6 +60,7 @@ class SourcesModule implements Module {
                 networkInfo: NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl),
                 database: accountDatabase,
                 secureStorage: FlutterSecureStorage(),
+                settingsRepository: injector.get(),
               ))
       ..bindLazySingleton<RemoteUserSource>(
           (injector, params) => RemoteUserSourceImpl(
