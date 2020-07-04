@@ -35,6 +35,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
   final BlockUserUseCase _blockUserUseCase;
 
+  final GetSettingUseCase _getSettingUseCase;
+  final SaveSettingUseCase _saveSettingUseCase;
   // Subscriptions
   StreamSubscription _eventsSubscription;
   StreamSubscription _postsSubscription;
@@ -55,6 +57,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required VotePollUseCase votePollUseCase,
     @required DeletePostsUseCase deletePostsUseCase,
     @required BlockUserUseCase blockUserUseCase,
+    @required GetSettingUseCase getSettingUseCase,
+    @required SaveSettingUseCase saveSettingUseCase,
+    @required WatchSettingUseCase watchSettingUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getNotificationsUseCase != null),
         _getNotifications = getNotificationsUseCase,
@@ -75,7 +80,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(deletePostsUseCase != null),
         _deletePostsUseCase = deletePostsUseCase,
         assert(blockUserUseCase != null),
-        _blockUserUseCase = blockUserUseCase {
+        _blockUserUseCase = blockUserUseCase,
+        assert(getSettingUseCase != null),
+        _getSettingUseCase = getSettingUseCase,
+        assert(saveSettingUseCase != null),
+        _saveSettingUseCase = saveSettingUseCase {
     // Subscribe to account state changes in order to perform setup
     // operations upon login and cleanup ones upong loggin out
     _logoutSubscription = accountBloc.listen((state) async {
@@ -105,6 +114,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       votePollUseCase: Injector.get(),
       deletePostsUseCase: Injector.get(),
       blockUserUseCase: Injector.get(),
+      saveSettingUseCase: Injector.get(),
+      getSettingUseCase: Injector.get(),
+      watchSettingUseCase: Injector.get(),
     );
   }
 
@@ -397,7 +409,17 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       await _syncPostsUseCase.sync().catchError((error) {
         print("Sync error: $error");
         add(SyncPostsCompleted());
-      }).then((syncedPosts) {
+      }).then((success) async {
+        print('IN SUCCES');
+        print('IN SUCCES $success');
+        if (success is int && success > 0) {
+          print('YES IN HERE');
+          final successPostSyncedCount = success;
+          final currentTxCount =
+              await _getSettingUseCase.get(key: 'txCount') ?? 0;
+          await _saveSettingUseCase.save(
+              key: 'txCount', value: currentTxCount + successPostSyncedCount);
+        }
         add(SyncPostsCompleted());
       });
     }

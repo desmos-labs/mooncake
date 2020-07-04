@@ -122,12 +122,12 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<void> syncPosts() async {
+  Future<List<Post>> syncPosts() async {
     // Get the posts
     final posts = await _localPostsSource.getPostsToSync();
     if (posts.isEmpty) {
       // We do not have any post to be synced, so return.
-      return;
+      return [];
     }
 
     // Set the posts as syncing
@@ -143,6 +143,7 @@ class PostsRepositoryImpl extends PostsRepository {
       return post.copyWith(status: status);
     }).toList();
     await _localPostsSource.savePosts(updatedPosts);
+    return updatedPosts;
   }
 
   @override

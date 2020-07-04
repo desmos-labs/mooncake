@@ -48,7 +48,7 @@ abstract class PostsRepository {
   Future<void> savePosts(List<Post> posts);
 
   /// Syncs all the posts that are currently awaiting to be synced.
-  Future<void> syncPosts();
+  Future<List<Post>> syncPosts();
 
   /// Deletes the locally stored posts.
   Future<void> deletePosts();
