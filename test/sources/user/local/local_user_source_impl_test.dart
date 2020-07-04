@@ -263,12 +263,26 @@ void main() {
     });
   });
 
-  // group('miscellaneous', () {
-  //   test('shouldDisplayMnemonicBackupPopup should function correctly',
-  //       () async {
-  //     // when(settingsRepo.get("txAmount")).thenReturn(Future(() => 0));
-  //     // when(settingsRepo.get("backupPopupPermission")).thenReturn(Future(() => true));
-  //     expect(await source.getAuthenticationMethod(), false);
-  //   });
-  // });
+  group('miscellaneous', () {
+    test('shouldDisplayMnemonicBackupPopup should function correctly',
+        () async {
+      expect(await source.shouldDisplayMnemonicBackupPopup(), false);
+
+      when(settingsRepo.get("txAmount")).thenAnswer((_) => Future(() => 5));
+      expect(await source.shouldDisplayMnemonicBackupPopup(), true);
+
+      when(settingsRepo.get("txAmount")).thenAnswer((_) => Future(() => 6));
+      expect(await source.shouldDisplayMnemonicBackupPopup(), false);
+
+      when(settingsRepo.get("txAmount")).thenAnswer((_) => Future(() => 10));
+      expect(await source.shouldDisplayMnemonicBackupPopup(), true);
+
+      when(settingsRepo.get("txAmount")).thenAnswer((_) => Future(() => 20));
+      expect(await source.shouldDisplayMnemonicBackupPopup(), true);
+
+      when(settingsRepo.get("backupPopupPermission"))
+          .thenAnswer((_) => Future(() => false));
+      expect(await source.shouldDisplayMnemonicBackupPopup(), false);
+    });
+  });
 }
