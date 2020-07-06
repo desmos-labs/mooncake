@@ -35,7 +35,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _logoutUseCase = logoutUseCase,
         assert(watchSettingUseCase != null),
         _watchSettingUseCase = watchSettingUseCase,
-        assert(SaveSettingUseCase != null),
+        assert(saveSettingUseCase != null),
         _saveSettingUseCase = saveSettingUseCase {
     _startSubscription();
   }
@@ -73,10 +73,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   /// starts all subscriptions
-  void _startSubscription() async {
+  _startSubscription() async {
+    // wingman remove later
+    await _saveSettingUseCase.save(key: 'backupPopupPermission', value: true);
+    await _saveSettingUseCase.save(key: 'txAmount', value: 5);
     if (_watchSettingSubscription == null) {
       _watchSettingSubscription =
           _watchSettingUseCase.watch.stream.listen((event) async* {
+        print('====EVENT=====');
+        print(event);
+        print('====EVENT=====');
         if (event == INIT_CHECK || event == LOCAL_SAVE_TX_AMOUNT) {
           bool shouldShowPopup = await _setMnemonicBackupPopupUseCase.check();
           if (shouldShowPopup) {
@@ -86,8 +92,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }
         }
       });
-      await _saveSettingUseCase.save(key: 'backupPopupPermission', value: true);
-      await _saveSettingUseCase.save(key: 'txAmount', value: 5);
+      print('===i was in here===');
       _watchSettingUseCase.watch.add(INIT_CHECK);
     }
   }
