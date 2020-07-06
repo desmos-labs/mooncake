@@ -119,6 +119,11 @@ jobs:
           flutter-version: '1.19.0-5.0.pre'
           channel: 'dev'
 
+      - name: Build 🔧
+        run: |
+          flutter pub get
+          flutter build ios --release --no-codesign
+
       - name: Deploy 🚀
         run: |
           # Install gem and bundler
