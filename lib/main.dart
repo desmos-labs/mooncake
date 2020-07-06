@@ -77,6 +77,9 @@ void _runApp() {
       BlocProvider<RecoverAccountBloc>(
         create: (context) => RecoverAccountBloc.create(),
       ),
+      BlocProvider<MnemonicBloc>(
+        create: (context) => MnemonicBloc.create(context),
+      ),
     ],
     child: PostsApp(),
   ));

@@ -159,6 +159,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       await await pushMethod(MaterialPageRoute(
         builder: (_) => LoginWithPasswordScreen(
           hashedPassword: method.hashedPassword,
+          backupPhrase: event.backupPhrase,
         ),
       ));
     }

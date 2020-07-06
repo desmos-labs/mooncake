@@ -10,10 +10,12 @@ import 'package:crypto/crypto.dart';
 class LoginWithPasswordScreen extends StatefulWidget {
   /// Represents the hashed password of the user.
   final String hashedPassword;
+  final bool backupPhrase;
 
   const LoginWithPasswordScreen({
     Key key,
     @required this.hashedPassword,
+    this.backupPhrase = false,
   }) : super(key: key);
 
   @override
@@ -37,52 +39,49 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
         centerTitle: true,
         title: Text(PostsLocalizations.of(context).viewMnemonic),
       ),
-      body: BlocProvider<MnemonicBloc>(
-        create: (context) => MnemonicBloc.create(context),
-        child: BlocBuilder<MnemonicBloc, MnemonicState>(
-          builder: (context, state) {
-            return Stack(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16),
-                  child: state.showMnemonic
-                      ? MnemonicVisualizer(mnemonic: state.mnemonic)
-                      : ListView(
-                          children: [
-                            Text(
-                              PostsLocalizations.of(context)
-                                  .securityLoginText
-                                  .replaceAll("\n", ""),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              PostsLocalizations.of(context)
-                                  .securityLoginWarning
-                                  .replaceAll("\n", ""),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              PostsLocalizations.of(context)
-                                  .securityLoginPassword
-                                  .replaceAll("\n", ""),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            if (!state.showMnemonic) _passwordInput(context),
-                            if (state.showMnemonic)
-                              MnemonicVisualizer(mnemonic: state.mnemonic),
-                          ],
-                        ),
-                ),
-
-                // Exporting popup
-                // if (state is ExportingMnemonic) ExportMnemonicPopup(),
-              ],
-            );
-          },
-        ),
+      body: BlocBuilder<MnemonicBloc, MnemonicState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16),
+                child: state.showMnemonic
+                    ? MnemonicVisualizer(
+                        allowExport: widget.backupPhrase ? false : true,
+                        backupPhrase: widget.backupPhrase,
+                      )
+                    : ListView(
+                        children: [
+                          Text(
+                            PostsLocalizations.of(context)
+                                .securityLoginText
+                                .replaceAll("\n", ""),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            PostsLocalizations.of(context)
+                                .securityLoginWarning
+                                .replaceAll("\n", ""),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            PostsLocalizations.of(context)
+                                .securityLoginPassword
+                                .replaceAll("\n", ""),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          _passwordInput(context),
+                        ],
+                      ),
+              ),
+              // Exporting popup
+              if (state is ExportingMnemonic) ExportMnemonicPopup(),
+            ],
+          );
+        },
       ),
     );
   }
@@ -120,7 +119,5 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
     // wingman remove
     // check if we are adding or doing a nav reroute
     BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
-    // BlocProvider.of<NavigatorBloc>(context)
-    //     .add(NavigateToShowMnemonicVisualiser());
   }
 }
