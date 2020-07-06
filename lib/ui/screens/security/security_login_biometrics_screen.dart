@@ -10,7 +10,9 @@ import 'package:mooncake/ui/ui.dart';
 /// setting up the account.
 class LoginWithBiometricsScreen extends StatelessWidget {
   final LocalAuthentication localAuth = Injector.get();
+  final bool backupPhrase;
 
+  LoginWithBiometricsScreen({this.backupPhrase = false});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,54 +20,59 @@ class LoginWithBiometricsScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(PostsLocalizations.of(context).viewMnemonic),
       ),
-      body: BlocBuilder<MnemonicBloc, MnemonicState>(
-        builder: (context, state) {
-          return Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.all(16),
-                child: ListView(
-                  children: [
-                    Text(
-                      PostsLocalizations.of(context)
-                          .securityLoginText
-                          .replaceAll("\n", ""),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      PostsLocalizations.of(context)
-                          .securityLoginWarning
-                          .replaceAll("\n", ""),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      PostsLocalizations.of(context)
-                          .securityLoginBiometrics
-                          .replaceAll("\n", ""),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    if (!state.showMnemonic)
-                      PrimaryButton(
-                        onPressed: () => _enableButtonClicked(context),
-                        child:
-                            Text(PostsLocalizations.of(context).viewMnemonic),
+      body: BlocProvider(
+        create: (context) => MnemonicBloc.create(context),
+        child: BlocBuilder<MnemonicBloc, MnemonicState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(16),
+                  child: ListView(
+                    children: [
+                      state.showMnemonic
+                          ? MnemonicVisualizer(
+                              mnemonic: state.mnemonic,
+                              allowExport: backupPhrase ? false : true,
+                              backupPhrase: backupPhrase,
+                            )
+                          : Text(
+                              PostsLocalizations.of(context)
+                                  .securityLoginText
+                                  .replaceAll("\n", ""),
+                              textAlign: TextAlign.center,
+                            ),
+                      const SizedBox(height: 16),
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginWarning
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
                       ),
-                    if (state.showMnemonic)
-                      MnemonicVisualizer(
-                        mnemonic: state.mnemonic,
+                      const SizedBox(height: 16),
+                      Text(
+                        PostsLocalizations.of(context)
+                            .securityLoginBiometrics
+                            .replaceAll("\n", ""),
+                        textAlign: TextAlign.center,
                       ),
-                  ],
+                      const SizedBox(height: 16),
+                      if (!state.showMnemonic)
+                        PrimaryButton(
+                          onPressed: () => _enableButtonClicked(context),
+                          child:
+                              Text(PostsLocalizations.of(context).viewMnemonic),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
 
-              // Exporting popup
-              if (state is ExportingMnemonic) ExportMnemonicPopup(),
-            ],
-          );
-        },
+                // Exporting popup
+                if (state is ExportingMnemonic) ExportMnemonicPopup(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

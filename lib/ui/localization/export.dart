@@ -93,19 +93,13 @@ your mnemonic from scratch in the case of a future recovery.
   // Security login screen
   String get viewMnemonic => "View mnemonic";
   String get securityLoginText => """
-In order to prevent aby unwanted access to your mnemonic phrase, you are
-required to log in using the authentication method you have previously set
-during the the first login into the app.
+In order to prevent any unwanted access to your mnemonic phrase, you are required to log in using the authentication method you previously set during the the first login into the app.
 """;
   String get securityLoginWarning => """
-Please note that your mnemonic should never be shown to anyone, and you should
-see it only once when backing it up on a piece of paper. Allowing anyone to
-see your mnemonic will most surely end in them stealing your account and all
-your funds so proceed with caution.
+Please note that your mnemonic should never be shown to anyone, and you should see it only once when backing it up on a piece of paper. Allowing anyone to see your mnemonic will most surely end in them stealing your account and all your funds so proceed with caution.
 """;
   String get securityLoginBiometrics => """
-If you understand the risks of viewing your mnemonic, please tap below to
-start the authentication process.
+If you understand the risks of viewing your mnemonic, please tap below to start the authentication process.
 """;
   String get securityLoginPassword => """
 If you understand the risks of viewing your mnemonic, please insert below

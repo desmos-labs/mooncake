@@ -150,11 +150,9 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   void _handleNavigateToShowMnemonicAuth(
       NavigateToShowMnemonicAuth event) async {
     dynamic pushMethod = _navigatorKey.currentState.push;
-    // wingman clean up later
-    // if (event.backupPhrase) {
-    //   pushMethod = _navigatorKey.currentState.pushReplacement;
-    // }
+
     final method = await _getAuthenticationMethodUseCase.get();
+
     if (method is BiometricAuthentication) {
       await pushMethod(MaterialPageRoute(
         builder: (context) => LoginWithBiometricsScreen(),
