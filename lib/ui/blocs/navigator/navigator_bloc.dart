@@ -69,6 +69,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _handleNavigateToEditAccount();
     } else if (event is NavigateToUserDetails) {
       _handleNavigateToUserDetails(event);
+    } else if (event is NavigateToShowMnemonicVisualiser) {
+      _handleNavigateToShowMnemonicVisualiser();
     }
   }
 
@@ -179,6 +181,12 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   void _handleNavigateToUserDetails(NavigateToUserDetails event) {
     _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
       return UserDetailsScreen(user: event.user, isMyProfile: false);
+    }));
+  }
+
+  void _handleNavigateToShowMnemonicVisualiser() {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return ShowMnemonicVisualiser();
     }));
   }
 }

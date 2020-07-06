@@ -107,3 +107,5 @@ class NavigateToUserDetails extends NavigatorEvent {
   @override
   List<Object> get props => [user];
 }
+
+class NavigateToShowMnemonicVisualiser extends NavigatorEvent {}

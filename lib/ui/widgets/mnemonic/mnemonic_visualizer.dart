@@ -9,10 +9,11 @@ import 'mnemonic_item.dart';
 /// inserted himself or created from scratch.
 class MnemonicVisualizer extends StatelessWidget {
   final List<String> mnemonic;
-
+  final bool allowBackup;
   const MnemonicVisualizer({
     Key key,
     @required this.mnemonic,
+    this.allowBackup = true,
   }) : super(key: key);
 
   @override
@@ -33,10 +34,11 @@ class MnemonicVisualizer extends StatelessWidget {
                 return MnemonicItem(index: index + 1, word: mnemonic[index]);
               },
             ),
-            PrimaryButton(
-              child: Text(PostsLocalizations.of(context).exportMnemonic),
-              onPressed: () => _openExportPopup(context),
-            )
+            if (allowBackup)
+              PrimaryButton(
+                child: Text(PostsLocalizations.of(context).exportMnemonic),
+                onPressed: () => _openExportPopup(context),
+              )
           ],
         );
       },
