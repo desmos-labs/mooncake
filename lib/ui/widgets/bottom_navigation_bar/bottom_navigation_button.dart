@@ -37,7 +37,7 @@ class BottomNavigationButton extends StatelessWidget {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, currentTab) {
-        final isSelected = tab == currentTab;
+        final isSelected = tab == currentTab.activeTab;
         return IconButton(
           tooltip: titles[tab],
           onPressed: () => _showTab(context),
