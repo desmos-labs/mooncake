@@ -3,21 +3,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
 class BackupMnemonicButton extends StatelessWidget {
+  void onConfirmationClick(BuildContext context) {
+    BlocProvider.of<NavigatorBloc>(context)
+        .add(NavigateToConfirmMnemonicBackupPhrase());
+  }
+
   @override
   Widget build(BuildContext context) {
-    // void _openExportPopup(BuildContext context) {
-    //   BlocProvider.of<MnemonicBloc>(context).add(ShowExportPopup());
-    // }
-
+    // wingman come back and fix styling later
     return Expanded(
       child: Align(
-        alignment: Alignment.bottomCenter,
+        alignment: AlignmentDirectional.bottomEnd,
         child: Container(
           margin: EdgeInsets.only(bottom: 15),
-          child: PrimaryButton(
-            child: Text(
-                PostsLocalizations.of(context).mnemonicBackupWrittenConfirm),
-            onPressed: () => null,
+          child: Container(
+            child: Column(
+              children: [
+                PrimaryButton(
+                  child: Text(PostsLocalizations.of(context)
+                      .mnemonicBackupWrittenConfirm),
+                  onPressed: () => onConfirmationClick(context),
+                ),
+                Text(
+                    PostsLocalizations.of(context).mnemonicWrittenConfirmation),
+              ],
+            ),
           ),
         ),
       ),

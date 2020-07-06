@@ -53,7 +53,10 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                         child:
                             Text(PostsLocalizations.of(context).viewMnemonic),
                       ),
-                    if (state.showMnemonic) MnemonicVisualizer(),
+                    if (state.showMnemonic)
+                      MnemonicVisualizer(
+                        mnemonic: state.mnemonic,
+                      ),
                   ],
                 ),
               ),

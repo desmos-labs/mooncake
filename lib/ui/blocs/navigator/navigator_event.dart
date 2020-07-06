@@ -109,3 +109,5 @@ class NavigateToUserDetails extends NavigatorEvent {
 }
 
 class NavigateToShowMnemonicVisualiser extends NavigatorEvent {}
+
+class NavigateToConfirmMnemonicBackupPhrase extends NavigatorEvent {}
