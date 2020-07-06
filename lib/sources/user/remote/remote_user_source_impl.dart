@@ -75,7 +75,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   }
 
   @override
-  Future<void> saveAccount(MooncakeAccount account) async {
+  Future<AccountSaveResult> saveAccount(MooncakeAccount account) async {
     final wallet = await _userSource.getWallet();
     final remoteAccount = await getAccount(account.address);
 
@@ -100,6 +100,10 @@ class RemoteUserSourceImpl implements RemoteUserSource {
     final fees = [
       StdCoin(denom: Constants.FEE_TOKEN, amount: feeAmount.toString())
     ];
-    return _chainSource.sendTx([msg], wallet, fees: fees);
+
+    final result = await _chainSource.sendTx([msg], wallet, fees: fees);
+    return result.success
+        ? AccountSaveResult.success()
+        : AccountSaveResult.error(result.error.errorMessage);
   }
 }

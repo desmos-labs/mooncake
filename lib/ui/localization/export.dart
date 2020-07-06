@@ -12,7 +12,12 @@ class PostsLocalizations {
   }
 
   String get appName => "Mooncake";
+
+  // Loading screen
   String get splashLoadingData => "Loading data...";
+
+  // Generic
+  String get dismiss => "Dismiss";
 
   // Login
   String get createAccountButtonText => "Create Account";
@@ -238,6 +243,11 @@ inside the app bar to visualize your wallet
 """;
   String get editAccountButton => "Edit your account";
   String get saveAccountButton => "Save";
+  String get saveAccountErrorPopupTitle => "Account saving error";
+  String get saveAccountErrorPopupBody => """
+An error has verified while saving your account.
+Please try later.
+""";
 
   String get chooseImageSourceTitle => "Choose where to pick the image from";
   String get chooseGalleryOption => "Gallery";

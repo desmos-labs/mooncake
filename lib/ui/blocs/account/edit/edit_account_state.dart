@@ -1,5 +1,5 @@
-import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents the current state of the edit account screen.
@@ -7,6 +7,9 @@ class EditAccountState extends Equatable {
   final MooncakeAccount originalAccount;
   final MooncakeAccount account;
   final bool saving;
+
+  final String savingError;
+  final bool showErrorPopup;
 
   bool get containsCustomData {
     return originalAccount.coverPicUri != account.coverPicUri ||
@@ -36,24 +39,35 @@ class EditAccountState extends Equatable {
     @required this.originalAccount,
     @required this.account,
     @required this.saving,
-  });
+    @required this.savingError,
+    @required this.showErrorPopup,
+  })  : assert(originalAccount != null),
+        assert(account != null),
+        assert(saving != null),
+        assert(showErrorPopup != null);
 
   factory EditAccountState.initial(MooncakeAccount account) {
     return EditAccountState(
       originalAccount: account,
       account: account,
       saving: false,
+      savingError: null,
+      showErrorPopup: false,
     );
   }
 
   EditAccountState copyWith({
     MooncakeAccount account,
     bool saving,
+    String savingError,
+    bool showErrorPopup,
   }) {
     return EditAccountState(
       originalAccount: originalAccount,
       account: account ?? this.account,
       saving: saving ?? this.saving,
+      savingError: savingError ?? this.savingError,
+      showErrorPopup: showErrorPopup ?? this.showErrorPopup,
     );
   }
 
@@ -85,6 +99,19 @@ class EditAccountState extends Equatable {
       originalAccount,
       account,
       saving,
+      savingError,
+      showErrorPopup,
     ];
+  }
+
+  @override
+  String toString() {
+    return 'EditAccountState {'
+        'originalAccount: $originalAccount, '
+        'account: $account, '
+        'saving: $saving, '
+        'savingError: $savingError,'
+        'showErrorPopup: $showErrorPopup '
+        '}';
   }
 }

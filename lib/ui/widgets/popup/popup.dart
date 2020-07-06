@@ -10,7 +10,7 @@ class GenericPopup extends StatelessWidget {
   const GenericPopup({
     Key key,
     @required this.content,
-    this.backgroundColor = Colors.transparent,
+    this.backgroundColor,
     this.padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
     this.onTap,
   }) : super(key: key);
@@ -20,7 +20,8 @@ class GenericPopup extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        color: backgroundColor,
+        color: backgroundColor ??
+            Theme.of(context).colorScheme.onSurface.withOpacity(0.50),
         alignment: Alignment.center,
         child: Padding(
           padding: const EdgeInsets.all(24),

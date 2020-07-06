@@ -11,5 +11,5 @@ abstract class RemoteUserSource {
   Future<void> fundAccount(MooncakeAccount user);
 
   /// Saves the given [account] into the remote repository.
-  Future<void> saveAccount(MooncakeAccount account);
+  Future<AccountSaveResult> saveAccount(MooncakeAccount account);
 }
