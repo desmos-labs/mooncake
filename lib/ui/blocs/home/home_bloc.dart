@@ -68,7 +68,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } else if (event is HideBackupMnemonicPhrasePopup) {
       yield state.copyWith(showBackupPhrasePopup: false);
     } else if (event is TurnOffBackupMnemonicPopupPermission) {
-      await _mapTurnOffBackupMnemonicPopupPermissionToState();
+      _mapTurnOffBackupMnemonicPopupPermissionToState();
     }
   }
 
@@ -76,7 +76,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _startSubscription() async {
     if (_watchSettingSubscription == null) {
       _watchSettingSubscription =
-          _watchSettingUseCase.watch.stream.listen((event) async {
+          _watchSettingUseCase.watch.stream.listen((event) async* {
         if (event == INIT_CHECK || event == LOCAL_SAVE_TX_AMOUNT) {
           bool shouldShowPopup = await _setMnemonicBackupPopupUseCase.check();
           if (shouldShowPopup) {
@@ -86,6 +86,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }
         }
       });
+      await _saveSettingUseCase.save(key: 'backupPopupPermission', value: true);
+      await _saveSettingUseCase.save(key: 'txAmount', value: 5);
       _watchSettingUseCase.watch.add(INIT_CHECK);
     }
   }
@@ -96,8 +98,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _watchSettingSubscription = null;
   }
 
-  Future<void> _mapTurnOffBackupMnemonicPopupPermissionToState() async {
+  _mapTurnOffBackupMnemonicPopupPermissionToState() async {
     await _saveSettingUseCase.save(key: 'backupPopupPermission', value: false);
-    state.copyWith(showBackupPhrasePopup: false);
+    this.add(HideBackupMnemonicPhrasePopup());
   }
 }
