@@ -45,38 +45,40 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
               children: [
                 Container(
                   padding: EdgeInsets.all(16),
-                  child: ListView(
-                    children: [
-                      Text(
-                        PostsLocalizations.of(context)
-                            .securityLoginText
-                            .replaceAll("\n", ""),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        PostsLocalizations.of(context)
-                            .securityLoginWarning
-                            .replaceAll("\n", ""),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        PostsLocalizations.of(context)
-                            .securityLoginPassword
-                            .replaceAll("\n", ""),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      if (!state.showMnemonic) _passwordInput(context),
-                      if (state.showMnemonic)
-                        MnemonicVisualizer(mnemonic: state.mnemonic),
-                    ],
-                  ),
+                  child: state.showMnemonic
+                      ? MnemonicVisualizer(mnemonic: state.mnemonic)
+                      : ListView(
+                          children: [
+                            Text(
+                              PostsLocalizations.of(context)
+                                  .securityLoginText
+                                  .replaceAll("\n", ""),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              PostsLocalizations.of(context)
+                                  .securityLoginWarning
+                                  .replaceAll("\n", ""),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              PostsLocalizations.of(context)
+                                  .securityLoginPassword
+                                  .replaceAll("\n", ""),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            if (!state.showMnemonic) _passwordInput(context),
+                            if (state.showMnemonic)
+                              MnemonicVisualizer(mnemonic: state.mnemonic),
+                          ],
+                        ),
                 ),
 
                 // Exporting popup
-                if (state is ExportingMnemonic) ExportMnemonicPopup(),
+                // if (state is ExportingMnemonic) ExportMnemonicPopup(),
               ],
             );
           },
@@ -115,10 +117,10 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
   }
 
   void _viewMnemonic(BuildContext context) {
-    // wingman remove later
+    // wingman remove
     // check if we are adding or doing a nav reroute
-    // BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
-    BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigateToShowMnemonicVisualiser());
+    BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
+    // BlocProvider.of<NavigatorBloc>(context)
+    //     .add(NavigateToShowMnemonicVisualiser());
   }
 }

@@ -34,18 +34,10 @@ class MnemonicVisualizer extends StatelessWidget {
                 return MnemonicItem(index: index + 1, word: mnemonic[index]);
               },
             ),
-            if (allowBackup)
-              PrimaryButton(
-                child: Text(PostsLocalizations.of(context).exportMnemonic),
-                onPressed: () => _openExportPopup(context),
-              )
+            if (allowBackup) ExportMnemonicButton()
           ],
         );
       },
     );
-  }
-
-  void _openExportPopup(BuildContext context) {
-    BlocProvider.of<MnemonicBloc>(context).add(ShowExportPopup());
   }
 }
