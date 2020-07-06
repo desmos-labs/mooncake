@@ -158,7 +158,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
         builder: (context) => LoginWithBiometricsScreen(),
       ));
     } else if (method is PasswordAuthentication) {
-      await await pushMethod(MaterialPageRoute(
+      await pushMethod(MaterialPageRoute(
         builder: (_) => LoginWithPasswordScreen(
           hashedPassword: method.hashedPassword,
           backupPhrase: event.backupPhrase,
