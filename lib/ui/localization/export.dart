@@ -309,6 +309,7 @@ One of the most important steps you can take to secure your account is to backup
   String get mnemonicBackupWrittenConfirm => "I have written them down";
   String get mnemonicWrittenConfirmation => "We'll confirm on the next screen";
   String get mnemonicCopy => "copy";
+  String get mnemonicConfirmPhrase => "Confirm Phrase";
 }
 
 class FlutterBlocLocalizationsDelegate

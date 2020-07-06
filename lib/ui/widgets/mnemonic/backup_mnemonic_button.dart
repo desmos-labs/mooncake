@@ -16,7 +16,6 @@ class BackupMnemonicButton extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 15),
         child: Container(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               PrimaryButton(
                 child: Text(PostsLocalizations.of(context)

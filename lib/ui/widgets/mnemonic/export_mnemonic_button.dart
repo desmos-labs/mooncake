@@ -11,7 +11,7 @@ class ExportMnemonicButton extends StatelessWidget {
 
     return Expanded(
       child: Align(
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.topCenter,
         child: Container(
           margin: EdgeInsets.only(bottom: 15),
           child: PrimaryButton(

@@ -62,33 +62,28 @@ class RecoverAccountMainContent extends StatelessWidget {
               ),
 
             // TODO: Remove this
-            if (kDebugMode)
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                    child: FlatButton(
-                      child: Text(PostsLocalizations.of(context)
-                          .recoverAccountContinueButton),
-                      onPressed: () => _debugMnemonic(context),
-                    ),
-                  ),
-                ],
-              ),
+            // if (kDebugMode)
+            //   Row(
+            //     mainAxisSize: MainAxisSize.max,
+            //     children: <Widget>[
+            //       Expanded(
+            //         child: FlatButton(
+            //           child: Text(PostsLocalizations.of(context)
+            //               .recoverAccountContinueButton),
+            //           onPressed: () => _debugMnemonic(context),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
 
             // Continue button
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                  child: PrimaryButton(
-                    child: Text(PostsLocalizations.of(context)
-                        .recoverAccountContinueButton),
-                    onPressed: () => _continueClicked(context),
-                    enabled: state.isMnemonicValid,
-                  ),
-                ),
-              ],
+            Expanded(
+              child: PrimaryButton(
+                child: Text(PostsLocalizations.of(context)
+                    .recoverAccountContinueButton),
+                onPressed: () => _continueClicked(context),
+                enabled: state.isMnemonicValid,
+              ),
             ),
           ],
         );
