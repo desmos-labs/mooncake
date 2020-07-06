@@ -9,7 +9,7 @@ class AccountSaveResult extends Equatable {
   AccountSaveResult({
     @required this.success,
     @required this.error,
-  })  : assert(success != null);
+  }) : assert(success != null);
 
   factory AccountSaveResult.success() {
     return AccountSaveResult(success: true, error: null);
