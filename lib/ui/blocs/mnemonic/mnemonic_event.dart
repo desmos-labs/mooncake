@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic event that can be emitted from withing the mnemonic
 /// screen.

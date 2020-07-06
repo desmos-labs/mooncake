@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
