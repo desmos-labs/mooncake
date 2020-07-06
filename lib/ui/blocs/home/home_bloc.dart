@@ -17,6 +17,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final LogoutUseCase _logoutUseCase;
   final SetMnemonicBackupPopupUseCase _setMnemonicBackupPopupUseCase;
   final WatchSettingUseCase _watchSettingUseCase;
+  final SaveSettingUseCase _saveSettingUseCase;
+
   StreamSubscription<dynamic> _watchSettingSubscription;
 
   HomeBloc({
@@ -24,6 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     @required LogoutUseCase logoutUseCase,
     @required SetMnemonicBackupPopupUseCase setMnemonicBackupPopupUseCase,
     @required WatchSettingUseCase watchSettingUseCase,
+    @required SaveSettingUseCase saveSettingUseCase,
   })  : assert(loginBloc != null),
         _loginBloc = loginBloc,
         assert(setMnemonicBackupPopupUseCase != null),
@@ -31,7 +34,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         assert(logoutUseCase != null),
         _logoutUseCase = logoutUseCase,
         assert(watchSettingUseCase != null),
-        _watchSettingUseCase = watchSettingUseCase {
+        _watchSettingUseCase = watchSettingUseCase,
+        assert(SaveSettingUseCase != null),
+        _saveSettingUseCase = saveSettingUseCase {
     _startSubscription();
   }
 
@@ -41,6 +46,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       logoutUseCase: Injector.get(),
       setMnemonicBackupPopupUseCase: Injector.get(),
       watchSettingUseCase: Injector.get(),
+      saveSettingUseCase: Injector.get(),
     );
   }
 
@@ -61,6 +67,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield state.copyWith(showBackupPhrasePopup: true);
     } else if (event is HideBackupMnemonicPhrasePopup) {
       yield state.copyWith(showBackupPhrasePopup: false);
+    } else if (event is TurnOffBackupMnemonicPopupPermission) {
+      await _mapTurnOffBackupMnemonicPopupPermissionToState();
     }
   }
 
@@ -86,5 +94,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _stopSubscription() {
     _watchSettingSubscription?.cancel();
     _watchSettingSubscription = null;
+  }
+
+  Future<void> _mapTurnOffBackupMnemonicPopupPermissionToState() async {
+    await _saveSettingUseCase.save(key: 'backupPopupPermission', value: false);
+    state.copyWith(showBackupPhrasePopup: false);
   }
 }

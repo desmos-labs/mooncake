@@ -61,13 +61,6 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     } else if (event is ExportMnemonic) {
       yield* _mapExportMnemonicEventToState();
     }
-    // else if (event is HideBackupMnemonicPhrasePopup) {
-    // yield state.copyWith(showBackupPhrasePopup: false);
-    // } else if (event is ValidateBackupMnemonicPopupState) {
-    // yield* _mapValidateBackupMnemonicPopupStateToState();
-    // } else if (event is TurnOffBackupMnemonicPopupPermission) {
-    // yield* _mapTurnOffBackupMnemonicPopupPermissionToState();
-    // }
   }
 
   Stream<MnemonicState> _mapShowMnemonicEventToState() async* {
@@ -108,23 +101,6 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     yield MnemonicState(
       mnemonic: state.mnemonic,
       showMnemonic: state.showMnemonic,
-      // showBackupPhrasePopup: state.showBackupPhrasePopup,
     );
   }
-
-  // Stream<MnemonicState> _mapValidateBackupMnemonicPopupStateToState() async* {
-  //   final txAmount = await _getSettingUseCase.get(key: 'txAmount') ?? 5;
-  //   final popupPermission =
-  //       await _getSettingUseCase.get(key: 'backupPopupPermission') ?? true;
-  //   final txCheck = (txAmount == 5) || (txAmount != 0 && txAmount % 10 == 0);
-  //   if (txCheck && popupPermission == true) {
-  //     yield state.copyWith(showBackupPhrasePopup: true);
-  //   }
-  // }
-
-  // Stream<MnemonicState>
-  //     _mapTurnOffBackupMnemonicPopupPermissionToState() async* {
-  //   await _saveSettingUseCase.save(key: 'backupPopupPermission', value: false);
-  //   yield state.copyWith(showBackupPhrasePopup: false);
-  // }
 }
