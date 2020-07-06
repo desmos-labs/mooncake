@@ -207,13 +207,13 @@ void main() {
         stream,
         emitsInOrder([
           account,
-          account.copyWith(moniker: "test"),
-          account.copyWith(name: "John")
+          account.copyWith(moniker: "John Doe"),
+          account.copyWith(dtag: "John")
         ]));
 
     controller.add(account);
-    controller.add(account.copyWith(moniker: "test"));
-    controller.add(account.copyWith(name: "John"));
+    controller.add(account.copyWith(moniker: "John Doe"));
+    controller.add(account.copyWith(dtag: "John"));
     controller.close();
   });
 

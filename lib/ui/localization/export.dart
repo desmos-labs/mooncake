@@ -245,12 +245,15 @@ inside the app bar to visualize your wallet
 
   // Edit account
   String get editAccountScreenTitle => "Edit account";
+  String get dtagLabel => "DTag";
   String get monikerLabel => "Moniker";
-  String get nameLabel => "Name";
-  String get surnameLabel => "Surname";
   String get bioLabel => "Bio";
-  String get errorMonikerInvalid =>
-      "Invalid moniker (must be 5 - 30 characters long)";
+  String get errorDTagInvalid => """
+DTag must be 3 - 20 characters lsong and contain only [a-z 0-9 _]
+""";
+  String get errorMonikerInvalid => """
+Moniker must be 3 - 20 characters long.
+""";
 
   // Wallet screen
   String get walletScreenName => "Wallet";

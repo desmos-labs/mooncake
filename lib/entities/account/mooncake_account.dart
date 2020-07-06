@@ -14,18 +14,16 @@ class MooncakeAccount extends User {
 
   MooncakeAccount({
     @required this.cosmosAccount,
+    String dtag,
     String moniker,
     String bio,
-    String name,
-    String surname,
     String profilePicUri,
     String coverPicUri,
   }) : super(
           address: cosmosAccount.address,
+          dtag: dtag,
           moniker: moniker,
           bio: bio,
-          name: name,
-          surname: surname,
           profilePicUri: profilePicUri,
           coverPicUri: coverPicUri,
         );
@@ -44,10 +42,9 @@ class MooncakeAccount extends User {
   factory MooncakeAccount.fromUser(CosmosAccount account, User user) {
     return MooncakeAccount(
       cosmosAccount: account,
+      dtag: user.dtag,
       moniker: user.moniker,
       bio: user.bio,
-      name: user.name,
-      surname: user.surname,
       profilePicUri: user.profilePicUri,
       coverPicUri: user.coverPicUri,
     );
@@ -68,18 +65,16 @@ class MooncakeAccount extends User {
   /// as the original, but with the specified data replaced instead.
   MooncakeAccount copyWith({
     CosmosAccount cosmosAccount,
+    String dtag,
     String moniker,
     String bio,
-    String name,
-    String surname,
     String profilePicUri,
     String coverPicUrl,
   }) {
     return MooncakeAccount(
       cosmosAccount: cosmosAccount ?? this.cosmosAccount,
+      dtag: dtag ?? this.dtag,
       moniker: moniker ?? this.moniker,
-      name: name ?? this.name,
-      surname: surname ?? this.surname,
       bio: bio ?? this.bio,
       profilePicUri: profilePicUri ?? this.profilePicUri,
       coverPicUri: coverPicUrl ?? this.coverPicUri,

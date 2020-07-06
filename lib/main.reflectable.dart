@@ -6,20 +6,21 @@ import 'dart:core';
 import 'package:alan/models/cosmos-sdk/tx/std_msg.dart' as prefix0;
 import 'package:alan/models/messages/msg_send.dart' as prefix1;
 import 'package:mooncake/sources/chain/models/msgs/msg_add_post_reaction.dart'
-    as prefix7;
+    as prefix6;
 import 'package:mooncake/sources/chain/models/msgs/msg_answer_poll.dart'
-    as prefix4;
+    as prefix3;
 import 'package:mooncake/sources/chain/models/msgs/msg_create_post.dart'
     as prefix2;
-import 'package:mooncake/sources/chain/models/msgs/msg_create_profile.dart'
-    as prefix3;
-import 'package:mooncake/sources/chain/models/msgs/msg_edit_profile.dart'
-    as prefix5;
 import 'package:mooncake/sources/chain/models/msgs/msg_remove_post_reaction.dart'
-    as prefix6;
+    as prefix5;
+import 'package:mooncake/sources/chain/models/msgs/msg_save_profile.dart'
+    as prefix4;
 import 'package:reflectable/mirrors.dart' as m;
 import 'package:reflectable/reflectable.dart' as r show Reflectable;
-import 'package:reflectable/src/reflectable_builder_based.dart' as rata(
+import 'package:reflectable/src/reflectable_builder_based.dart' as r;
+
+final _data = <r.Reflectable, r.ReflectorData>{
+  const prefix0.Reflector(): r.ReflectorData(
       <m.TypeMirror>[
         r.NonGenericClassMirrorImpl(
             r'MsgSend',

@@ -43,12 +43,12 @@ class MsgSaveProfile extends StdMsg {
         assert(creator != null && creator.trim().isNotEmpty);
 
   factory MsgSaveProfile.fromJson(Map<String, dynamic> json) {
-    return _$MsgCreateProfileFromJson(json);
+    return _$MsgSaveProfileFromJson(json);
   }
 
   @override
   Map<String, dynamic> asJson() {
-    return _$MsgCreateProfileToJson(this);
+    return _$MsgSaveProfileToJson(this);
   }
 
   @override

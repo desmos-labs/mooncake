@@ -51,12 +51,10 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
       yield* _mapCoverChangedToState(event);
     } else if (event is ProfilePicChanged) {
       yield* _mapProfilePicChangedToState(event);
+    } else if (event is DTagChanged) {
+      yield* _mapDTagChangedToState(event);
     } else if (event is MonikerChanged) {
       yield* _mapMonikerChangedToState(event);
-    } else if (event is NameChanged) {
-      yield* _mapNameChangedToState(event);
-    } else if (event is SurnameChanged) {
-      yield* _mapSurnameChangedToState(event);
     } else if (event is BioChanged) {
       yield* _mapBioChangedToState(event);
     } else if (event is SaveAccount) {
@@ -81,25 +79,18 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
     yield state.updateAccount(profilePicUrl: pic);
   }
 
+  Stream<EditAccountState> _mapDTagChangedToState(
+    DTagChanged event,
+  ) async* {
+    final dtag = _firstOrSecond(event.dtag, _account.dtag);
+    yield state.updateAccount(dtag: dtag);
+  }
+
   Stream<EditAccountState> _mapMonikerChangedToState(
     MonikerChanged event,
   ) async* {
     final moniker = _firstOrSecond(event.moniker, _account.moniker);
     yield state.updateAccount(moniker: moniker);
-  }
-
-  Stream<EditAccountState> _mapSurnameChangedToState(
-    SurnameChanged event,
-  ) async* {
-    final surname = _firstOrSecond(event.surname, _account.surname);
-    yield state.updateAccount(surname: surname);
-  }
-
-  Stream<EditAccountState> _mapNameChangedToState(
-    NameChanged event,
-  ) async* {
-    final name = _firstOrSecond(event.name, _account.name);
-    yield state.updateAccount(name: name);
   }
 
   Stream<EditAccountState> _mapBioChangedToState(

@@ -8,6 +8,8 @@ class EditAccountState extends Equatable {
   final MooncakeAccount account;
   final bool saving;
 
+  /// Tells whether the current state contains some custom data
+  /// different from the already existing user profile, or not.
   bool get containsCustomData {
     return originalAccount.dtag != account.dtag ||
         originalAccount.moniker != account.moniker ||
@@ -16,6 +18,29 @@ class EditAccountState extends Equatable {
         originalAccount.profilePicUri != account.profilePicUri;
   }
 
+  /// Tells whether the user can edit or not it's DTag.
+  /// This is only permitted when the original one is empty, which
+  /// means he's creating the profile for the first time.
+  bool get canEditDTag {
+    return originalAccount.dtag?.trim()?.isNotEmpty != true;
+  }
+
+  /// Returns `true` if the input DTag is valid, `false` otherwise.
+  bool get isDTagValid {
+    final originalDTag = originalAccount.dtag?.trim() ?? "";
+    final newDTag = account.dtag?.trim() ?? "";
+
+    if (originalDTag.isNotEmpty && newDTag.isEmpty) {
+      return true;
+    }
+
+    return RegExp(r"^[A-Za-z0-9_]+$").hasMatch(newDTag) &&
+        newDTag.length >= 3 &&
+        newDTag.length <= 20;
+  }
+
+  /// Returns `true` iff the moniker input by the user is valid,
+  /// or `false` otherwise.
   bool get isMonikerValid {
     final originalMoniker = originalAccount.moniker?.trim() ?? "";
     final newMoniker = account.moniker?.trim() ?? "";
@@ -24,11 +49,12 @@ class EditAccountState extends Equatable {
       return true;
     }
 
-    return newMoniker.length > 4 && newMoniker.length < 20;
+    return newMoniker.length >= 3 && newMoniker.length <= 20;
   }
 
+  /// Tells whether the user can save the profile or not.
   bool get canSave {
-    return containsCustomData && isMonikerValid;
+    return containsCustomData && isDTagValid && isMonikerValid;
   }
 
   EditAccountState({
@@ -58,20 +84,18 @@ class EditAccountState extends Equatable {
 
   EditAccountState updateAccount({
     CosmosAccount cosmosAccount,
+    String dtag,
     String moniker,
     String bio,
-    String name,
-    String surname,
     String profilePicUrl,
     String coverPicUrl,
   }) {
     return copyWith(
       account: account.copyWith(
         cosmosAccount: cosmosAccount,
+        dtag: dtag,
         moniker: moniker,
         bio: bio,
-        name: name,
-        surname: surname,
         profilePicUri: profilePicUrl,
         coverPicUrl: coverPicUrl,
       ),

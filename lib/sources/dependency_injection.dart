@@ -11,7 +11,7 @@ import 'package:sembast/sembast.dart';
 /// sources interfaces implementations.
 class SourcesModule implements Module {
   // Debug option to use local running servers
-  static const _useLocalEndpoints = false;
+  static const _useLocalEndpoints = true;
 
   final Database accountDatabase;
   final Database postsDatabase;
