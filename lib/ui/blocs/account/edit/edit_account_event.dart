@@ -82,3 +82,12 @@ class SaveAccount extends EditAccountEvent {
   @override
   String toString() => 'SaveAccount';
 }
+
+/// Tells the Bloc to hide the error popup.
+class HideErrorPopup extends EditAccountEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'HideErrorPopup';
+}

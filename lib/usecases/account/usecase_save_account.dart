@@ -12,7 +12,10 @@ class SaveAccountUseCase {
         _userRepository = userRepository;
 
   /// Saves the given [account] as the current user account.
-  Future<void> save(MooncakeAccount account, {bool syncRemote = false}) {
+  Future<AccountSaveResult> save(
+    MooncakeAccount account, {
+    bool syncRemote = false,
+  }) {
     return _userRepository.saveAccount(account, syncRemote: syncRemote);
   }
 }

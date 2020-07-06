@@ -13,7 +13,7 @@ class PostsListEmptyContainer extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Image.asset("assets/images/sad.png", width: 150),
+          Expanded(child: Image.asset("assets/images/sad.png", width: 150)),
           Text(
             PostsLocalizations.of(context).noPostsYet,
             textAlign: TextAlign.center,

@@ -21,7 +21,10 @@ class LoginPopup extends StatelessWidget {
             painter: _BackgroundPainter(color: Theme.of(context).cardColor),
           ),
         ),
-        GenericPopup(content: content),
+        GenericPopup(
+          content: content,
+          backgroundColor: Colors.transparent,
+        ),
       ],
     );
   }

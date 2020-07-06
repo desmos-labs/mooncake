@@ -35,7 +35,6 @@ class CreatePostScreen extends StatelessWidget {
                   ),
                   if (state.showPopup)
                     GenericPopup(
-                      backgroundColor: Colors.black.withOpacity(0.6),
                       content: PostSavingPopupContent(),
                       onTap: () {
                         BlocProvider.of<PostInputBloc>(context)

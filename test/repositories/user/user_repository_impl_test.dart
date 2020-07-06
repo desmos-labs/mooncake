@@ -101,25 +101,44 @@ void main() {
       when(localUserSource.saveAccount(any))
           .thenAnswer((_) => Future.value(null));
 
-      await repository.saveAccount(account);
+      final result = await repository.saveAccount(account);
+      expect(result, equals(AccountSaveResult.success()));
 
       verify(localUserSource.saveAccount(account));
       verifyNever(remoteUserSource.saveAccount(any));
     });
 
-    test('when syncRemote is true', () async {
-      final account = MooncakeAccount.local("address");
-      when(localUserSource.saveAccount(any))
-          .thenAnswer((_) => Future.value(null));
-      when(remoteUserSource.saveAccount(any))
-          .thenAnswer((_) => Future.value(null));
+    group('when syncRemote is true', () {
+      test('and error is returned', () async {
+        final account = MooncakeAccount.local("address");
+        final expected = AccountSaveResult.error("My error");
+        when(remoteUserSource.saveAccount(any))
+            .thenAnswer((_) => Future.value(expected));
 
-      await repository.saveAccount(account, syncRemote: true);
+        final result = await repository.saveAccount(account, syncRemote: true);
+        expect(result, equals(expected));
 
-      verifyInOrder([
-        remoteUserSource.saveAccount(account),
-        localUserSource.saveAccount(account),
-      ]);
+        verify(remoteUserSource.saveAccount(account)).called(1);
+        verifyNever(localUserSource.saveAccount(account));
+      });
+
+      test('and success is returned', () async {
+        final account = MooncakeAccount.local("address");
+        final expected = AccountSaveResult.success();
+
+        when(remoteUserSource.saveAccount(any))
+            .thenAnswer((_) => Future.value(expected));
+        when(localUserSource.saveAccount(any))
+            .thenAnswer((_) => Future.value(null));
+
+        final result = await repository.saveAccount(account, syncRemote: true);
+        expect(result, equals(expected));
+
+        verifyInOrder([
+          remoteUserSource.saveAccount(account),
+          localUserSource.saveAccount(account),
+        ]);
+      });
     });
   });
 
