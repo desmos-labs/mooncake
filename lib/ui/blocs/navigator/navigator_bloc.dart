@@ -79,7 +79,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   }
 
   void _mapNavigateToHomeEventToState() {
-    _navigatorKey.currentState.pushAndRemoveUntil(
+    dynamic pushMethod = _navigatorKey.currentState.pushAndRemoveUntil;
+    pushMethod(
       MaterialPageRoute(builder: (context) => SplashScreen()),
       (_) => false,
     );
@@ -149,9 +150,10 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   void _handleNavigateToShowMnemonicAuth(
       NavigateToShowMnemonicAuth event) async {
     dynamic pushMethod = _navigatorKey.currentState.push;
-    if (event.backupPhrase) {
-      pushMethod = _navigatorKey.currentState.pushReplacement;
-    }
+    // wingman clean up later
+    // if (event.backupPhrase) {
+    //   pushMethod = _navigatorKey.currentState.pushReplacement;
+    // }
     final method = await _getAuthenticationMethodUseCase.get();
     if (method is BiometricAuthentication) {
       await pushMethod(MaterialPageRoute(

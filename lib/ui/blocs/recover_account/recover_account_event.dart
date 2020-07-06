@@ -51,3 +51,5 @@ class ChangeFocus extends RecoverAccountEvent {
   @override
   List<Object> get props => [focusedField, currentText];
 }
+
+class BackupMnemonicSuccess extends RecoverAccountEvent {}

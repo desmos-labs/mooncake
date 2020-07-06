@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Implementation of [SettingsRepository]
 class SettingsRepositoryImpl extends SettingsRepository {
   final Future<SharedPreferences> _sharedPrefs;
-  StreamController<dynamic> _watch = StreamController();
+  StreamController<dynamic> _watch = StreamController.broadcast();
 
   SettingsRepositoryImpl({
     @required Future<SharedPreferences> sharedPreferences,
@@ -20,7 +20,12 @@ class SettingsRepositoryImpl extends SettingsRepository {
     final jsonValue = jsonEncode(value);
     final prefs = await _sharedPrefs;
     await prefs.setString(key, jsonValue);
-    this._watch.add(key);
+    print('IS IT CLOSED');
+    print('IS IT CLOSED');
+    print(this.watch.isPaused);
+    if (!this.watch.isClosed || !this.watch.isPaused) {
+      this._watch.add(key);
+    }
   }
 
   @override

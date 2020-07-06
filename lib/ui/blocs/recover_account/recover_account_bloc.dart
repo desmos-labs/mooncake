@@ -3,16 +3,31 @@ import 'dart:async';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:meta/meta.dart';
+import 'package:mooncake/usecases/usecases.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Bloc that allows to properly handle the recovering account events
 /// and emits the correct states.
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
-  RecoverAccountBloc();
+  final SaveSettingUseCase _saveSettingUseCase;
+  final GetSettingUseCase _getSettingUseCase;
+
+  RecoverAccountBloc(
+      {@required SaveSettingUseCase saveSettingUseCase,
+      @required GetSettingUseCase getSettingUseCase})
+      : assert(saveSettingUseCase != null),
+        _saveSettingUseCase = saveSettingUseCase,
+        assert(getSettingUseCase != null),
+        _getSettingUseCase = getSettingUseCase;
 
   factory RecoverAccountBloc.create() {
-    return RecoverAccountBloc();
+    return RecoverAccountBloc(
+      getSettingUseCase: Injector.get(),
+      saveSettingUseCase: Injector.get(),
+    );
   }
 
   @override
@@ -30,6 +45,8 @@ class RecoverAccountBloc
       yield* _mapWordSelectedEventToState(event);
     } else if (event is ChangeFocus) {
       yield* _mapChangeFocusEventToState(event);
+    } else if (event is BackupMnemonicSuccess) {
+      await _mapBackupMnemonicSuccessToState();
     }
   }
 
@@ -68,5 +85,10 @@ class RecoverAccountBloc
     ChangeFocus event,
   ) async* {
     yield state.copyWith(currentWordIndex: event.focusedField);
+  }
+
+  void _mapBackupMnemonicSuccessToState() async {
+    final currentTxAmount = await _getSettingUseCase.get(key: 'txAmount') ?? 0;
+    await _saveSettingUseCase.save(key: 'txAmount', value: currentTxAmount + 1);
   }
 }
