@@ -61,65 +61,71 @@ jobs:
 #          bundle install
 #          bundle exec fastlane deploy_internal
 
-#  Release-iOS:
-#    runs-on: macOS-latest
-#    steps:
-#      - name: Checkout 🛎️
-#        uses: actions/checkout@v2
-#        with:
-#          persist-credentials: false
-#
-#      - name: Decrypt secrets 🔓
-#        env:
-#
-#          APPLE_PROV_PROFILE_PASSPHRASE: ${{ secrets.APPLE_PROV_PROFILE_PASSPHRASE }}
-#          APPLE_CERTIFICATE_PASSPHRASE: ${{ secrets.APPLE_CERTIFICATE_PASSPHRASE }}
-#          GOOGLE_PLAY_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_PLAY_SERVICES_PASSPHRASE }}
-#
-#        run: |
-#          # Decrypt the certificates
-#          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_CERTIFICATE_PASSPHRASE" \
-#            --output distribution/ios/Development-Certificates.p12 \
-#            distribution/ios/Development-Certificates.p12.gpg
-#
-#          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_CERTIFICATE_PASSPHRASE" \
-#            --output distribution/ios/Distribution-Certificates.p12 \
-#            distribution/ios/Distribution-Certificates.p12.gpg
-#
-#          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
-#            --output distribution/ios/iOS-Team.mobileprovision \
-#            distribution/ios/iOS-Team.mobileprovision.gpg
-#
-#          # Decrypt the Google Play Services file
-#          gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
-#            --output ios/Runner/GoogleService-Info.plist distribution/ios/GoogleService-Info.plist.gpg
-#
-#          # Install the provisioning profiles
-#          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-#          cp distribution/ios/*.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
-#          ls ~/Library/MobileDevice/Provisioning\ Profiles/
-#
-#          security create-keychain -p "" build.keychain
-#          security import distribution/ios/Development-Certificates.p12 -t agg \
-#            -k ~/Library/Keychains/build.keychain -P "" -A
-#          security import distribution/ios/Distribution-Certificates.p12 -t agg \
-#            -k ~/Library/Keychains/build.keychain -P "" -A
-#
-#          # Install distribution cert and key
-#          security list-keychains -s ~/Library/Keychains/build.keychain
-#          security default-keychain -s ~/Library/Keychains/build.keychain
-#          security unlock-keychain -p "" ~/Library/Keychains/build.keychain
-#          echo "Set key partition list"
-#          security set-key-partition-list -S apple-tool:,apple: -s \
-#            -k "" ~/Library/Keychains/build.keychain
-#
-#      - name: Setup 🔨
-#        uses: subosito/flutter-action@v1
-#        with:
-#          flutter-version: '1.19.0-5.0.pre'
-#          channel: 'dev'
-#
-#      - name: Build 🔧
-#        run: |
-#          flutter pub get
-#          flutter build ios --release
+  Release-iOS:
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Decrypt secrets 🔓
+        env:
+
+          APPLE_PROV_PROFILE_PASSPHRASE: ${{ secrets.APPLE_PROV_PROFILE_PASSPHRASE }}
+          APPLE_CERTIFICATE_PASSPHRASE: ${{ secrets.APPLE_CERTIFICATE_PASSPHRASE }}
+          GOOGLE_PLAY_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_PLAY_SERVICES_PASSPHRASE }}
+
+        run: |
+          # Decrypt the certificates
+          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_CERTIFICATE_PASSPHRASE" \
+            --output distribution/ios/Development-Certificates.p12 \
+            distribution/ios/Development-Certificates.p12.gpg
+
+          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_CERTIFICATE_PASSPHRASE" \
+            --output distribution/ios/Distribution-Certificates.p12 \
+            distribution/ios/Distribution-Certificates.p12.gpg
+
+          gpg --quiet --batch --yes --decrypt --passphrase="$APPLE_PROV_PROFILE_PASSPHRASE" \
+            --output distribution/ios/iOS-Team.mobileprovision \
+            distribution/ios/iOS-Team.mobileprovision.gpg
+
+          # Decrypt the Google Play Services file
+          gpg --quiet --batch --yes --decrypt --passphrase="$GOOGLE_PLAY_SERVICES_PASSPHRASE" \
+            --output ios/Runner/GoogleService-Info.plist distribution/ios/GoogleService-Info.plist.gpg
+
+          # Install the provisioning profiles
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp distribution/ios/*.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+          ls ~/Library/MobileDevice/Provisioning\ Profiles/
+
+          security create-keychain -p "" build.keychain
+          security import distribution/ios/Development-Certificates.p12 -t agg \
+            -k ~/Library/Keychains/build.keychain -P "" -A
+          security import distribution/ios/Distribution-Certificates.p12 -t agg \
+            -k ~/Library/Keychains/build.keychain -P "" -A
+
+          # Install distribution cert and key
+          security list-keychains -s ~/Library/Keychains/build.keychain
+          security default-keychain -s ~/Library/Keychains/build.keychain
+          security unlock-keychain -p "" ~/Library/Keychains/build.keychain
+          echo "Set key partition list"
+          security set-key-partition-list -S apple-tool:,apple: -s \
+            -k "" ~/Library/Keychains/build.keychain
+
+      - name: Setup 🔨
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.19.0-5.0.pre'
+          channel: 'dev'
+
+      - name: Deploy 🚀
+        run: |
+          # Install gem and bundler
+          sudo apt-get install ruby
+          sudo gem install bundler
+
+          # Execute fastlane
+          cd ios
+          bundle install
+          bundle exec fastlane beta
