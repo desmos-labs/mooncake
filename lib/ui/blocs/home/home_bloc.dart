@@ -13,12 +13,12 @@ import '../export.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   static const INIT_CHECK = 'INIT_CHECK';
   static const LOCAL_SAVE_TX_AMOUNT = 'txAmount';
+  static const BACKUP_PERMISSION = 'backupPopupPermission';
   final AccountBloc _loginBloc;
   final LogoutUseCase _logoutUseCase;
   final SetMnemonicBackupPopupUseCase _setMnemonicBackupPopupUseCase;
   final WatchSettingUseCase _watchSettingUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
-
   StreamSubscription<dynamic> _watchSettingSubscription;
 
   HomeBloc({
@@ -73,17 +73,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   /// starts all subscriptions
-  _startSubscription() async {
+  void _startSubscription() async {
     // wingman remove later
-    await _saveSettingUseCase.save(key: 'backupPopupPermission', value: true);
-    await _saveSettingUseCase.save(key: 'txAmount', value: 5);
+    // await _saveSettingUseCase.save(key: 'backupPopupPermission', value: true);
+    // await _saveSettingUseCase.save(key: 'txAmount', value: 5);
     if (_watchSettingSubscription == null) {
       _watchSettingSubscription =
-          _watchSettingUseCase.watch.stream.listen((event) async* {
-        print('====EVENT=====');
+          _watchSettingUseCase.watch.stream.listen((event) async {
+        print('=====event======');
         print(event);
-        print('====EVENT=====');
-        if (event == INIT_CHECK || event == LOCAL_SAVE_TX_AMOUNT) {
+        print('=====event======');
+        if ([INIT_CHECK, LOCAL_SAVE_TX_AMOUNT, BACKUP_PERMISSION]
+            .contains(event)) {
           bool shouldShowPopup = await _setMnemonicBackupPopupUseCase.check();
           if (shouldShowPopup) {
             this.add(ShowBackupMnemonicPhrasePopup());
@@ -92,7 +93,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }
         }
       });
-      print('===i was in here===');
       _watchSettingUseCase.watch.add(INIT_CHECK);
     }
   }
@@ -105,6 +105,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   _mapTurnOffBackupMnemonicPopupPermissionToState() async {
     await _saveSettingUseCase.save(key: 'backupPopupPermission', value: false);
-    this.add(HideBackupMnemonicPhrasePopup());
   }
 }

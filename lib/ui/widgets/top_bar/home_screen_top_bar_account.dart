@@ -17,7 +17,7 @@ AppBar accountAppBar(BuildContext context) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToEditAccount());
     } else if (option == actions[1]) {
       // See mnemonic
-      BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonic());
+      BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonicAuth());
     } else if (option == actions[2]) {
       // Logout
       BlocProvider.of<AccountBloc>(context).add(LogOut());

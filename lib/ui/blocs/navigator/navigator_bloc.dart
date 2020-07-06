@@ -61,8 +61,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToWalletEventToState();
     } else if (event is GoBack) {
       _handleGoBack(event);
-    } else if (event is NavigateToShowMnemonic) {
-      _handleNavigateToShowMnemonic();
+    } else if (event is NavigateToShowMnemonicAuth) {
+      _handleNavigateToShowMnemonicAuth(event);
     } else if (event is NavigateToExportMnemonic) {
       _handleNavigateToExportMnemonic(event);
     } else if (event is NavigateToEditAccount) {
@@ -144,14 +144,19 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     }));
   }
 
-  void _handleNavigateToShowMnemonic() async {
+  void _handleNavigateToShowMnemonicAuth(
+      NavigateToShowMnemonicAuth event) async {
+    dynamic pushMethod = _navigatorKey.currentState.push;
+    if (event.backupPhrase) {
+      pushMethod = _navigatorKey.currentState.pushReplacement;
+    }
     final method = await _getAuthenticationMethodUseCase.get();
     if (method is BiometricAuthentication) {
-      await _navigatorKey.currentState.push(MaterialPageRoute(
+      await pushMethod(MaterialPageRoute(
         builder: (context) => LoginWithBiometricsScreen(),
       ));
     } else if (method is PasswordAuthentication) {
-      await await _navigatorKey.currentState.push(MaterialPageRoute(
+      await await pushMethod(MaterialPageRoute(
         builder: (_) => LoginWithPasswordScreen(
           hashedPassword: method.hashedPassword,
         ),

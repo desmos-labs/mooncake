@@ -14,8 +14,9 @@ class MnemonicBackupPopup extends StatelessWidget {
         .add(TurnOffBackupMnemonicPopupPermission());
   }
 
-  void _navigateToShowMnemonic(BuildContext context) {
-    BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonic());
+  void _NavigateToShowMnemonicAuth(BuildContext context) {
+    BlocProvider.of<NavigatorBloc>(context)
+        .add(NavigateToShowMnemonicAuth(backupPhrase: true));
   }
 
   @override
@@ -48,7 +49,7 @@ class MnemonicBackupPopup extends StatelessWidget {
                         color: Colors.white,
                       ),
                 ),
-                onPressed: () => _navigateToShowMnemonic(context),
+                onPressed: () => _NavigateToShowMnemonicAuth(context),
               ),
               SecondaryLightInvertRoundedButton(
                 child: Text(
