@@ -20,10 +20,7 @@ class SettingsRepositoryImpl extends SettingsRepository {
     final jsonValue = jsonEncode(value);
     final prefs = await _sharedPrefs;
     await prefs.setString(key, jsonValue);
-    print('IS IT CLOSED');
-    print('IS IT CLOSED');
-    print(this.watch.isPaused);
-    if (!this.watch.isClosed || !this.watch.isPaused) {
+    if (!this.watch.isClosed) {
       this._watch.add(key);
     }
   }

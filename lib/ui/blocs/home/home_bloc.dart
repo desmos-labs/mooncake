@@ -74,15 +74,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   /// starts all subscriptions
   void _startSubscription() async {
-    // wingman remove later
-    // await _saveSettingUseCase.save(key: 'backupPopupPermission', value: true);
-    await _saveSettingUseCase.save(key: 'txAmount', value: 5);
     if (_watchSettingSubscription == null) {
       _watchSettingSubscription =
           _watchSettingUseCase.watch.stream.listen((event) async {
-        print('=====event======');
-        print(event);
-        print('=====event======');
         if ([INIT_CHECK, LOCAL_SAVE_TX_AMOUNT, BACKUP_PERMISSION]
             .contains(event)) {
           bool shouldShowPopup = await _setMnemonicBackupPopupUseCase.check();

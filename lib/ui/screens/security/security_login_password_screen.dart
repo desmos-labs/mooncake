@@ -119,8 +119,6 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
   }
 
   void _viewMnemonic(BuildContext context) {
-    // wingman remove
-    // check if we are adding or doing a nav reroute
     BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
   }
 }

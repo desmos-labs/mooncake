@@ -10,7 +10,6 @@ class BackupMnemonicButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // wingman come back and fix styling later
     return Expanded(
       child: Container(
         margin: EdgeInsets.only(bottom: 15),
