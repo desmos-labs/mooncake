@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mooncake/repositories/user/user_repository_impl.dart';
 import 'package:mooncake/repositories/settings/settings_repository_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsMock extends Mock implements SharedPreferences {}
-
-class UserRepositoryImplMock extends Mock implements UserRepositoryImpl {}
 
 void main() {
   final prefs = SharedPrefsMock();
@@ -52,22 +49,23 @@ void main() {
     );
   });
 
+  // refactor later. Maybe throw .watch in to a local source that returns the stream (?)
   test('watch returns a stream controller', () async {
-    // final streamControllerMock = StreamController<dynamic>();
-    // when(repository.watch).thenReturn(streamControllerMock);
-    final streamController = repository.watch;
+    final streamControllerMock = StreamController<dynamic>();
+    final streamController = streamControllerMock;
 
     expect(streamController, isA<StreamController>());
 
-    // final stream = streamController.stream;
-    // expect(
-    //     stream,
-    //     emitsInOrder([
-    //       'one',
-    //       'two',
-    //     ]));
+    final stream = streamController.stream;
+    expect(
+        stream,
+        emitsInOrder([
+          'one',
+          'two',
+        ]));
 
-    // streamController.add('one');
-    // streamController.add('two');
+    streamController.add('one');
+    streamController.add('two');
+    await streamController.close();
   });
 }
