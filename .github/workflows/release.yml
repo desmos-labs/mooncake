@@ -122,7 +122,7 @@ jobs:
       - name: Deploy 🚀
         run: |
           # Install gem and bundler
-          sudo brew install ruby
+          brew install ruby
           sudo gem install bundler
 
           # Execute fastlane
