@@ -129,7 +129,7 @@ class RecoverAccountMainContent extends StatelessWidget {
   void _continueClicked(BuildContext context) {
     if (backupPhrase) {
       BlocProvider.of<RecoverAccountBloc>(context).add(BackupMnemonicSuccess());
-      // BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
+      BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
     } else {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToProtectAccount());
     }

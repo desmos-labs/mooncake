@@ -23,7 +23,15 @@ class BackupMnemonicButton extends StatelessWidget {
                     .mnemonicBackupWrittenConfirm),
                 onPressed: () => onConfirmationClick(context),
               ),
-              Text(PostsLocalizations.of(context).mnemonicWrittenConfirmation),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  PostsLocalizations.of(context).mnemonicWrittenConfirmation,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
