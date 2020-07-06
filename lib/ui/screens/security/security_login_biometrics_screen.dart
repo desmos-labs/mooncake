@@ -18,55 +18,51 @@ class LoginWithBiometricsScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(PostsLocalizations.of(context).viewMnemonic),
       ),
-      body: BlocProvider<MnemonicBloc>(
-        create: (context) => MnemonicBloc.create(context),
-        child: BlocBuilder<MnemonicBloc, MnemonicState>(
-          builder: (context, state) {
-            return Stack(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16),
-                  child: ListView(
-                    children: [
-                      Text(
-                        PostsLocalizations.of(context)
-                            .securityLoginText
-                            .replaceAll("\n", ""),
-                        textAlign: TextAlign.center,
+      body: BlocBuilder<MnemonicBloc, MnemonicState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16),
+                child: ListView(
+                  children: [
+                    Text(
+                      PostsLocalizations.of(context)
+                          .securityLoginText
+                          .replaceAll("\n", ""),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      PostsLocalizations.of(context)
+                          .securityLoginWarning
+                          .replaceAll("\n", ""),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      PostsLocalizations.of(context)
+                          .securityLoginBiometrics
+                          .replaceAll("\n", ""),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    if (!state.showMnemonic)
+                      PrimaryButton(
+                        onPressed: () => _enableButtonClicked(context),
+                        child:
+                            Text(PostsLocalizations.of(context).viewMnemonic),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        PostsLocalizations.of(context)
-                            .securityLoginWarning
-                            .replaceAll("\n", ""),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        PostsLocalizations.of(context)
-                            .securityLoginBiometrics
-                            .replaceAll("\n", ""),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      if (!state.showMnemonic)
-                        PrimaryButton(
-                          onPressed: () => _enableButtonClicked(context),
-                          child:
-                              Text(PostsLocalizations.of(context).viewMnemonic),
-                        ),
-                      if (state.showMnemonic)
-                        MnemonicVisualizer(mnemonic: state.mnemonic),
-                    ],
-                  ),
+                    if (state.showMnemonic) MnemonicVisualizer(),
+                  ],
                 ),
+              ),
 
-                // Exporting popup
-                if (state is ExportingMnemonic) ExportMnemonicPopup(),
-              ],
-            );
-          },
-        ),
+              // Exporting popup
+              if (state is ExportingMnemonic) ExportMnemonicPopup(),
+            ],
+          );
+        },
       ),
     );
   }
