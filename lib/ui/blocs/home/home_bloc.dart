@@ -76,7 +76,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _startSubscription() async {
     // wingman remove later
     // await _saveSettingUseCase.save(key: 'backupPopupPermission', value: true);
-    // await _saveSettingUseCase.save(key: 'txAmount', value: 5);
+    await _saveSettingUseCase.save(key: 'txAmount', value: 5);
     if (_watchSettingSubscription == null) {
       _watchSettingSubscription =
           _watchSettingUseCase.watch.stream.listen((event) async {

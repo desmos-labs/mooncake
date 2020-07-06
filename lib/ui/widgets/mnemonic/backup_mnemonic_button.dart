@@ -12,22 +12,19 @@ class BackupMnemonicButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // wingman come back and fix styling later
     return Expanded(
-      child: Align(
-        alignment: AlignmentDirectional.bottomEnd,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 15),
         child: Container(
-          margin: EdgeInsets.only(bottom: 15),
-          child: Container(
-            child: Column(
-              children: [
-                PrimaryButton(
-                  child: Text(PostsLocalizations.of(context)
-                      .mnemonicBackupWrittenConfirm),
-                  onPressed: () => onConfirmationClick(context),
-                ),
-                Text(
-                    PostsLocalizations.of(context).mnemonicWrittenConfirmation),
-              ],
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              PrimaryButton(
+                child: Text(PostsLocalizations.of(context)
+                    .mnemonicBackupWrittenConfirm),
+                onPressed: () => onConfirmationClick(context),
+              ),
+              Text(PostsLocalizations.of(context).mnemonicWrittenConfirmation),
+            ],
           ),
         ),
       ),

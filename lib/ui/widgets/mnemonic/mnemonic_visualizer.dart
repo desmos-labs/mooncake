@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -22,25 +21,7 @@ class MnemonicVisualizer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (backupPhrase)
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
-                children: <TextSpan>[
-                  TextSpan(
-                      text: PostsLocalizations.of(context).mnemonicViewBody1),
-                  TextSpan(
-                      text: PostsLocalizations.of(context).mnemonicViewBody2,
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(
-                      text: PostsLocalizations.of(context).mnemonicViewBody3),
-                ],
-              ),
-            ),
-          ),
+        if (backupPhrase) BackupMnemonicDetails(),
         StaggeredGridView.countBuilder(
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
