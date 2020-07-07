@@ -10,7 +10,4 @@ abstract class SettingsRepository {
 
   /// [Stream] that emits a value each time the given key is saved in to shared preference.
   Stream watch(String key);
-
-  /// Adds events to the stream.
-  void add(String event);
 }
