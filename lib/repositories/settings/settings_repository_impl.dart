@@ -20,4 +20,9 @@ class SettingsRepositoryImpl extends SettingsRepository {
   Future<dynamic> get(String key) async {
     return _localSettingsSource.get(key);
   }
+
+  // @override
+  // Stream watch(String key) {
+  //   return _localSettingsSource.watch(key);
+  // }
 }
