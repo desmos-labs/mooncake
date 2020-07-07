@@ -6,6 +6,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Dependency injection that provides the definition of all the
 /// sources interfaces implementations.
@@ -103,6 +104,11 @@ class SourcesModule implements Module {
       ..bindLazySingleton<LocalUsersSource>(
           (injector, params) => LocalUsersSourceImpl(
                 database: blockedUsersDatabase,
+              ))
+      // Settings source
+      ..bindLazySingleton<LocalSettingsSource>(
+          (injector, params) => LocalSettingsSourceImpl(
+                sharedPreferences: SharedPreferences.getInstance(),
               ));
   }
 }

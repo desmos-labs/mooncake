@@ -32,7 +32,7 @@ class RepositoriesModule implements Module {
               ))
       ..bindLazySingleton<SettingsRepository>(
           (injector, params) => SettingsRepositoryImpl(
-                sharedPreferences: SharedPreferences.getInstance(),
+                localSettingsSource: injector.get(),
               ))
       ..bindLazySingleton<UserRepository>(
           (injector, params) => UserRepositoryImpl(

@@ -1,33 +1,23 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
+import 'package:mooncake/repositories/settings/source_settings_local.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Implementation of [SettingsRepository]
 class SettingsRepositoryImpl extends SettingsRepository {
-  final Future<SharedPreferences> _sharedPrefs;
+  final LocalSettingsSource _localSettingsSource;
 
   SettingsRepositoryImpl({
-    @required Future<SharedPreferences> sharedPreferences,
-  })  : assert(sharedPreferences != null),
-        _sharedPrefs = sharedPreferences;
+    @required LocalSettingsSource localSettingsSource,
+  })  : assert(localSettingsSource != null),
+        _localSettingsSource = localSettingsSource;
 
   @override
   Future<void> save(String key, value) async {
-    final jsonValue = jsonEncode(value);
-    final prefs = await _sharedPrefs;
-    await prefs.setString(key, jsonValue);
+    return _localSettingsSource.save(key, value);
   }
 
   @override
   Future<dynamic> get(String key) async {
-    final prefs = await _sharedPrefs;
-    if (!prefs.containsKey(key)) {
-      return null;
-    }
-
-    final jsonValue = prefs.getString(key);
-    return jsonDecode(jsonValue);
+    return _localSettingsSource.get(key);
   }
 }
