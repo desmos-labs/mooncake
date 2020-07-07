@@ -7,4 +7,10 @@ abstract class SettingsRepository {
   /// Reads the value associated to the given [key].
   /// If not value can be read, returns `null` instead.
   Future<dynamic> get(String key);
+
+  /// [Stream] that emits a value each time the given key is saved in to shared preference.
+  Stream watch(String key);
+
+  /// Adds events to the stream.
+  void add(String event);
 }
