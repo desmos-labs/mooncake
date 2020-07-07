@@ -79,8 +79,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   }
 
   void _mapNavigateToHomeEventToState() {
-    dynamic pushMethod = _navigatorKey.currentState.pushAndRemoveUntil;
-    pushMethod(
+    _navigatorKey.currentState.pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => SplashScreen()),
       (_) => false,
     );
