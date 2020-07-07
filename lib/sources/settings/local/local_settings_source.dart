@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Implementation of [LocalSettingsSource] that deals with local data.
 class LocalSettingsSourceImpl implements LocalSettingsSource {
   final Future<SharedPreferences> _sharedPrefs;
 
