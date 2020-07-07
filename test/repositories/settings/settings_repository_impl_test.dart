@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/repositories/settings/settings_repository_impl.dart';
