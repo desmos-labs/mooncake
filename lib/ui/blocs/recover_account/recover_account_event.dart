@@ -52,4 +52,5 @@ class ChangeFocus extends RecoverAccountEvent {
   List<Object> get props => [focusedField, currentText];
 }
 
+/// Event that is emitted when MnemonicBackup has been successfully confirmed
 class BackupMnemonicSuccess extends RecoverAccountEvent {}

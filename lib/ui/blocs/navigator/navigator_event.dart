@@ -71,6 +71,7 @@ class NavigateToPostDetails extends NavigatorEvent {
 class NavigateToWallet extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows to show the mnemonic.
+/// Takes an optional argument [backupPhrase] in the event that this is a backup and not an export event
 class NavigateToShowMnemonicAuth extends NavigatorEvent {
   final bool backupPhrase;
 

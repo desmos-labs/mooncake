@@ -10,7 +10,7 @@ class CheckLoginUseCase {
       : assert(userRepository != null),
         _userRepository = userRepository;
 
-  /// Returns `true` iff the user has logged in, `false` otherwise.
+  /// Returns `true` if the user has logged in, `false` otherwise.
   Future<bool> isLoggedIn() async {
     return await _userRepository.getAccount() != null;
   }
