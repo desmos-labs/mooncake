@@ -108,6 +108,5 @@ class NavigateToUserDetails extends NavigatorEvent {
   List<Object> get props => [user];
 }
 
-class NavigateToShowMnemonicVisualiser extends NavigatorEvent {}
-
+/// Tells the Bloc to navigate to the screen that asks for confirmation of their mnemonic phrase
 class NavigateToConfirmMnemonicBackupPhrase extends NavigatorEvent {}
