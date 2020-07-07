@@ -21,8 +21,8 @@ class SettingsRepositoryImpl extends SettingsRepository {
     return _localSettingsSource.get(key);
   }
 
-  // @override
-  // Stream watch(String key) {
-  //   return _localSettingsSource.watch(key);
-  // }
+  @override
+  Stream watch(String key) {
+    return _localSettingsSource.watch(key);
+  }
 }

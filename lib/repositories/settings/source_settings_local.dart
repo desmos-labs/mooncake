@@ -5,5 +5,5 @@ abstract class LocalSettingsSource {
   /// Returns value of the given key and null if not found.
   Future<dynamic> get(String key);
 
-  // Stream watch(String key);
+  Stream watch(String key);
 }
