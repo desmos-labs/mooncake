@@ -27,6 +27,11 @@ class LocalSettingsSourceImpl implements LocalSettingsSource {
     final jsonValue = jsonEncode(value);
     final prefs = await _sharedPrefs;
     await prefs.setString(key, jsonValue);
+
+    _controller.add(SettingChangeEvent(
+      key: key,
+      value: value,
+    ));
   }
 
   @override
