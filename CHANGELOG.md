@@ -9,7 +9,7 @@
 - Implemented users jazz icons instead of old identicons
 - Implemented the ability of exporting and importing the mnemonic as an encrypted object safely
 - Removed the ability to manually set the app theme. Now it is the same set system-wide.
-- Add initial backup phrase feature
+- Added a mnemonic phrase backup popup reminder
 
 ## Improvements
 - Improved the themes colors
