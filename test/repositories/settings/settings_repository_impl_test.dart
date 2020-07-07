@@ -12,10 +12,10 @@ void main() {
   final repository = SettingsRepositoryImpl(localSettingsSource: localSource);
 
   test('watch returns a stream', () {
-    final String event = 'event';
+    final keys = ['event'];
     final StreamController controller = StreamController();
     when(localSource.watch(any)).thenAnswer((_) => controller.stream);
-    repository.watch(event);
-    verify(localSource.watch(event)).called(1);
+    repository.watch(keys);
+    verify(localSource.watch(keys)).called(1);
   });
 }

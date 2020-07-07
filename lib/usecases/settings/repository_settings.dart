@@ -9,5 +9,5 @@ abstract class SettingsRepository {
   Future<dynamic> get(String key);
 
   /// [Stream] that emits a value each time the given key is saved in to shared preference.
-  Stream watch(String key);
+  Stream watch(List<String> key);
 }

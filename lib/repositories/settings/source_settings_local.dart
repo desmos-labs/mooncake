@@ -6,5 +6,5 @@ abstract class LocalSettingsSource {
   Future<dynamic> get(String key);
 
   /// Returns a stream based on the given key
-  Stream watch(String key);
+  Stream watch(List<String> keys);
 }
