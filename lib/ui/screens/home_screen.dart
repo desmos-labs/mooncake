@@ -14,10 +14,15 @@ class HomeScreen extends StatelessWidget {
         Widget body = Container();
         if (state.activeTab == AppTab.home) {
           return Scaffold(
-            body: Column(
+            body: Stack(
               children: [
-                postsAppBar(context),
-                Expanded(child: PostsList()),
+                Column(
+                  children: [
+                    postsAppBar(context),
+                    Expanded(child: PostsList()),
+                  ],
+                ),
+                if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
               ],
             ),
             bottomNavigationBar: SafeArea(child: TabSelector()),

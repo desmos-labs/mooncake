@@ -62,11 +62,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _mapSignOutToState();
       _loginBloc.add(LogOut());
     } else if (event is ShowBackupMnemonicPhrasePopup) {
-      yield state.copyWith(showBackupPhrasePopup: true);
+      yield* _mapShowBackupMnemonicPhrasePopupToState();
     } else if (event is HideBackupMnemonicPhrasePopup) {
-      yield state.copyWith(showBackupPhrasePopup: false);
+      yield* _mapHideBackupMnemonicPhrasePopupToState();
     } else if (event is TurnOffBackupMnemonicPopupPermission) {
-      _mapTurnOffBackupMnemonicPopupPermissionToState();
+      yield* _mapTurnOffBackupMnemonicPopupPermissionToState();
     }
   }
 
@@ -88,6 +88,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     // wingman testing
+    await _saveSettingUseCase.save(
+        key: SettingKeys.BACKUP_POPUP_PERMISSION, value: true);
     await _saveSettingUseCase.save(key: SettingKeys.TX_AMOUNT, value: 5);
   }
 
@@ -103,9 +105,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _watchSettingSubscription = null;
   }
 
+  /// Tells the state to show mnemonic phrase backup popup
+  Stream<HomeState> _mapShowBackupMnemonicPhrasePopupToState() async* {
+    yield state.copyWith(showBackupPhrasePopup: true);
+  }
+
+  /// Tells the state to hide mnemonic phrase backup popup
+  Stream<HomeState> _mapHideBackupMnemonicPhrasePopupToState() async* {
+    yield state.copyWith(showBackupPhrasePopup: false);
+  }
+
   /// handles TurnOffBackupMnemonicPopupPermission [event]
-  _mapTurnOffBackupMnemonicPopupPermissionToState() async {
+  Stream<HomeState> _mapTurnOffBackupMnemonicPopupPermissionToState() async* {
     await _saveSettingUseCase.save(
         key: SettingKeys.BACKUP_POPUP_PERMISSION, value: false);
+    this.add(HideBackupMnemonicPhrasePopup());
   }
 }

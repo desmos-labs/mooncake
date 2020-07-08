@@ -292,6 +292,24 @@ Currently there are no reactions to this post yet.
 Be the first to add one!
 """;
   String reactionsTabLabel(int reactions) => "Reactions $reactions";
+
+  // mnemonic backup phrase
+  String get mnemonicBackupBody1 => 'Hi,';
+  String get mnemonicBackupBody2 => """
+Glad you see you here,
+One of the most important steps you can take to secure your account is to backup your Mnemonic Phrase.
+  """;
+  String get mnemonicBackupButton => "Backup phrase";
+  String get mnemonicRemindMeLaterButton => "Remind me later";
+  String get mnemonicDoNotShowAgainButton => "Do not show this popup again";
+  String get mnemonicViewBody1 =>
+      "Please write down and save your mnemonic phrase, It's the ";
+  String get mnemonicViewBody2 => "ONLY WAY";
+  String get mnemonicViewBody3 => " to restore your account";
+  String get mnemonicBackupWrittenConfirm => "I have written them down";
+  String get mnemonicWrittenConfirmation => "We'll confirm on the next screen";
+  String get mnemonicCopy => "copy";
+  String get mnemonicConfirmPhrase => "Confirm Phrase";
 }
 
 class FlutterBlocLocalizationsDelegate
