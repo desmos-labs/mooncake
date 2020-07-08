@@ -1,13 +1,11 @@
 import 'package:mockito/mockito.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
-import 'package:mooncake/usecases/usecases.dart';
 import 'package:test/test.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsMock extends Mock implements SharedPreferences {}
-
-class MockSettingsRepository extends Mock implements SettingsRepository {}
 
 void main() {
   final prefs = SharedPrefsMock();
@@ -52,16 +50,18 @@ void main() {
     );
   });
 
-  // wingman Not sure how to test this
-  // test('watch listens to selected keys only', () async {
-  //   final event1 = 'event1';
-  //   final stream = repository.watch(['event1']);
+  test('watch listens to selected keys only', () async {
+    final stream = repository.watch(SettingKeys.TX_AMOUNT);
 
-  //   await expectLater(
-  //     stream,
-  //     emitsInOrder([
-  //       [event1],
-  //     ]),
-  //   );
-  // });
+    await repository.save(SettingKeys.TX_AMOUNT, 1);
+    await repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false);
+    await repository.save(SettingKeys.TX_AMOUNT, 2);
+    await expectLater(
+      stream,
+      emitsInOrder([
+        1,
+        2,
+      ]),
+    );
+  });
 }
