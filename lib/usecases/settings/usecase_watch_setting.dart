@@ -11,7 +11,7 @@ class WatchSettingUseCase {
         _settingsRepository = settingsRepository;
 
   /// Returns a stream that returns the value being saved by the given key in shared preference
-  Stream watch({List<String> keys}) {
-    return _settingsRepository.watch(keys);
+  Stream watch({String key}) {
+    return _settingsRepository.watch(key);
   }
 }

@@ -22,7 +22,7 @@ class SettingsRepositoryImpl extends SettingsRepository {
   }
 
   @override
-  Stream watch(List<String> keys) {
-    return _localSettingsSource.watch(keys);
+  Stream watch(String key) {
+    return _localSettingsSource.watch(key);
   }
 }
