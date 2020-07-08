@@ -10,7 +10,7 @@ class WatchSettingUseCase {
   })  : assert(settingsRepository != null),
         _settingsRepository = settingsRepository;
 
-  /// Returns a stream that returns the value being saved by the given key in shared preference
+  /// Returns a [Stream] that emits all the values that will be stored to the setting having the given [key].
   Stream watch({String key}) {
     return _settingsRepository.watch(key);
   }
