@@ -77,7 +77,8 @@ class RecoverAccountMainContent extends StatelessWidget {
               ),
 
             // Continue button
-            Expanded(
+            SizedBox(
+              width: double.infinity,
               child: PrimaryButton(
                 child: Text(PostsLocalizations.of(context)
                     .recoverAccountContinueButton),

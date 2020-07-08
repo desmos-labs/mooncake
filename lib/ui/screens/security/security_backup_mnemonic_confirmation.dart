@@ -18,9 +18,11 @@ class BackupMnemonicConfirmationScreen extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 RecoverAccountMainContent(
-                    bottomPadding: bottomPadding, backupPhrase: true),
+                  bottomPadding: bottomPadding,
+                  backupPhrase: true,
+                ),
 
-                // Words list
+                // // Words list
                 Positioned(
                   bottom: 0,
                   child: RecoverAccountWordsList(height: bottomPadding),
