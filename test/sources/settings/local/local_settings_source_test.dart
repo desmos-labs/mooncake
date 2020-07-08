@@ -52,15 +52,24 @@ void main() {
 
   test('watch listens to selected keys only', () async {
     final stream = repository.watch(SettingKeys.TX_AMOUNT);
+    final stream2 = repository.watch(SettingKeys.BACKUP_POPUP_PERMISSION);
 
     await repository.save(SettingKeys.TX_AMOUNT, 1);
     await repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false);
     await repository.save(SettingKeys.TX_AMOUNT, 2);
+
     await expectLater(
       stream,
       emitsInOrder([
         1,
         2,
+      ]),
+    );
+
+    await expectLater(
+      stream2,
+      emitsInOrder([
+        false,
       ]),
     );
   });

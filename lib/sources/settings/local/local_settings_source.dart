@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,7 +16,7 @@ class SettingChangeEvent {
 /// Implementation of [LocalSettingsSource] that deals with local data.
 class LocalSettingsSourceImpl implements LocalSettingsSource {
   final Future<SharedPreferences> _sharedPrefs;
-  final StreamController _controller = StreamController();
+  final StreamController _controller = BehaviorSubject<SettingChangeEvent>();
 
   LocalSettingsSourceImpl({
     @required Future<SharedPreferences> sharedPreferences,
