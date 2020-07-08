@@ -54,9 +54,9 @@ void main() {
     final stream = repository.watch(SettingKeys.TX_AMOUNT);
     final stream2 = repository.watch(SettingKeys.BACKUP_POPUP_PERMISSION);
 
-    await repository.save(SettingKeys.TX_AMOUNT, 1);
-    await repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false);
-    await repository.save(SettingKeys.TX_AMOUNT, 2);
+    repository.save(SettingKeys.TX_AMOUNT, 1);
+    repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false);
+    repository.save(SettingKeys.TX_AMOUNT, 2);
 
     await expectLater(
       stream,
@@ -65,6 +65,9 @@ void main() {
         2,
       ]),
     );
+
+    repository.save(SettingKeys.TX_AMOUNT, 1);
+    repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false);
 
     await expectLater(
       stream2,
