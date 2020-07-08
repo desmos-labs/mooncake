@@ -33,6 +33,7 @@ class PrimaryButton extends StatelessWidget {
 
   Widget _gradientButton(BuildContext context) {
     return GradientButton(
+      disabledGradient: ThemeColors.primaryButtonBackgroundGradientDiabled,
       isEnabled: enabled,
       increaseWidthBy: expanded ? double.infinity : 0,
       shape: RoundedRectangleBorder(
@@ -50,15 +51,20 @@ class PrimaryButton extends StatelessWidget {
   }
 
   Widget _flatButton(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
+    return SizedBox(
+      width: double.infinity,
+      child: FlatButton(
+        padding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        onPressed: enabled ? onPressed : null,
+        color: Theme.of(context).colorScheme.primary,
+        child: child,
+        textColor: Colors.white,
+        disabledColor: Color.fromRGBO(169, 144, 255, 0.6),
+        disabledTextColor: Colors.white,
       ),
-      onPressed: enabled ? onPressed : null,
-      color: Theme.of(context).colorScheme.primary,
-      child: child,
-      textColor: Colors.white,
     );
   }
 }
