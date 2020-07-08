@@ -19,3 +19,4 @@ export 'security_set_biometric/export.dart';
 export 'security_set_password/export.dart';
 export 'top_bar/export.dart';
 export 'wallet/export.dart';
+export 'mnemonic_backup_phrase/export.dart';

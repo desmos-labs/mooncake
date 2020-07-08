@@ -9,10 +9,10 @@ import 'package:mooncake/ui/ui.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, AppTab>(
-      builder: (context, activeTab) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
         Widget body = Container();
-        if (activeTab == AppTab.home) {
+        if (state.activeTab == AppTab.home) {
           return Scaffold(
             body: Column(
               children: [
@@ -22,9 +22,9 @@ class HomeScreen extends StatelessWidget {
             ),
             bottomNavigationBar: SafeArea(child: TabSelector()),
           );
-        } else if (activeTab == AppTab.notifications) {
+        } else if (state.activeTab == AppTab.notifications) {
           body = NotificationsMainContent();
-        } else if (activeTab == AppTab.account) {
+        } else if (state.activeTab == AppTab.account) {
           final state = BlocProvider.of<AccountBloc>(context).state;
           return UserDetailsScreen(
             isMyProfile: true,
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
         }
 
         return Scaffold(
-          appBar: activeTab == AppTab.home
+          appBar: state.activeTab == AppTab.home
               ? postsAppBar(context)
               : accountAppBar(context),
           body: body,

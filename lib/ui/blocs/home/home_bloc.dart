@@ -5,13 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 import '../export.dart';
 
 /// Represents the Bloc associated with the home screen.
-class HomeBloc extends Bloc<HomeEvent, AppTab> {
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AccountBloc _loginBloc;
   final LogoutUseCase _logoutUseCase;
 
@@ -31,12 +30,14 @@ class HomeBloc extends Bloc<HomeEvent, AppTab> {
   }
 
   @override
-  AppTab get initialState => AppTab.home;
+  HomeState get initialState {
+    return HomeState.initial();
+  }
 
   @override
-  Stream<AppTab> mapEventToState(HomeEvent event) async* {
+  Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is UpdateTab) {
-      yield event.tab;
+      yield state.copyWith(activeTab: event.tab);
     } else if (event is SignOut) {
       await _logoutUseCase.logout();
       _loginBloc.add(LogOut());

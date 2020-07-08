@@ -35,9 +35,9 @@ class BottomNavigationButton extends StatelessWidget {
       AppTab.account: MooncakeIcons.userF,
     };
 
-    return BlocBuilder<HomeBloc, AppTab>(
-      builder: (context, currentTab) {
-        final isSelected = tab == currentTab;
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        final isSelected = tab == state.activeTab;
         return IconButton(
           tooltip: titles[tab],
           onPressed: () => _showTab(context),
