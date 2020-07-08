@@ -15,10 +15,8 @@ class MnemonicBackupPopup extends StatelessWidget {
   }
 
   void _NavigateToShowMnemonicAuthAuth(BuildContext context) {
-    // wingman
-    print('i clicked backup');
-    // BlocProvider.of<NavigatorBloc>(context)
-    //     .add(NavigateToShowMnemonicAuthAuth(backupPhrase: true));
+    BlocProvider.of<NavigatorBloc>(context)
+        .add(NavigateToShowMnemonicAuth(backupPhrase: true));
   }
 
   @override
