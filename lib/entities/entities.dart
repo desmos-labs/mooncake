@@ -7,3 +7,4 @@ export 'mnemonic/export.dart';
 export 'notifications/export.dart';
 export 'posts/export.dart';
 export 'user/export.dart';
+export 'settings/export.dart';

@@ -265,8 +265,8 @@ void main() {
         localSource.savePosts(firstUpdate),
         remoteSource.savePosts(firstUpdate),
         localSource.savePosts(secondUpdate),
-        localSettingsSource.get('txAmount'),
-        localSettingsSource.save('txAmount', 2),
+        localSettingsSource.get(SettingKeys.TX_AMOUNT),
+        localSettingsSource.save(SettingKeys.TX_AMOUNT, 2),
       ]);
     });
 
@@ -308,10 +308,10 @@ void main() {
         localSource.savePosts(secondUpdate),
       ]);
       verifyNever(
-        localSettingsSource.get('txAmount'),
+        localSettingsSource.get(SettingKeys.TX_AMOUNT),
       );
       verifyNever(
-        localSettingsSource.save('txAmount', 2),
+        localSettingsSource.save(SettingKeys.TX_AMOUNT, 2),
       );
     });
   });
