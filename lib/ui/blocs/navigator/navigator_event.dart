@@ -71,7 +71,7 @@ class NavigateToPostDetails extends NavigatorEvent {
 class NavigateToWallet extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows to show the mnemonic.
-class NavigateToShowMnemonic extends NavigatorEvent {}
+class NavigateToShowMnemonicAuth extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the page that allows the user
 /// to export his previously encrypted mnemonic data.

@@ -61,8 +61,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToWalletEventToState();
     } else if (event is GoBack) {
       _handleGoBack(event);
-    } else if (event is NavigateToShowMnemonic) {
-      _handleNavigateToShowMnemonic();
+    } else if (event is NavigateToShowMnemonicAuth) {
+      _handleNavigateToShowMnemonicAuth();
     } else if (event is NavigateToExportMnemonic) {
       _handleNavigateToExportMnemonic(event);
     } else if (event is NavigateToEditAccount) {
@@ -144,7 +144,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     }));
   }
 
-  void _handleNavigateToShowMnemonic() async {
+  void _handleNavigateToShowMnemonicAuth() async {
     final method = await _getAuthenticationMethodUseCase.get();
     if (method is BiometricAuthentication) {
       await _navigatorKey.currentState.push(MaterialPageRoute(
