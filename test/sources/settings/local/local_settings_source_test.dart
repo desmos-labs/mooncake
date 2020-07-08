@@ -51,4 +51,17 @@ void main() {
       equals({"first": "value", "second": 2}),
     );
   });
+
+  // wingman Not sure how to test this
+  // test('watch listens to selected keys only', () async {
+  //   final event1 = 'event1';
+  //   final stream = repository.watch(['event1']);
+
+  //   await expectLater(
+  //     stream,
+  //     emitsInOrder([
+  //       [event1],
+  //     ]),
+  //   );
+  // });
 }
