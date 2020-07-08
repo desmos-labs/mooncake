@@ -46,8 +46,8 @@ class LocalSettingsSourceImpl implements LocalSettingsSource {
 
   @override
   Stream<dynamic> watch(String key) {
-    return _controller.stream.where((event) {
-      return (key == event.key);
-    }).map((event) => event.value);
+    return _controller.stream
+        .where((event) => key == event.key)
+        .map((event) => event.value);
   }
 }
