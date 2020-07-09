@@ -52,15 +52,16 @@ void main() {
   });
 
   test('watch listens to selected keys only', () async {
-    final stream = repository.watch(SettingKeys.TX_AMOUNT);
-    final stream2 = repository.watch(SettingKeys.BACKUP_POPUP_PERMISSION);
+    final txAmountStream = repository.watch(SettingKeys.TX_AMOUNT);
+    final backupPermissionStream =
+        repository.watch(SettingKeys.BACKUP_POPUP_PERMISSION);
 
     unawaited(repository.save(SettingKeys.TX_AMOUNT, 1));
     unawaited(repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false));
     unawaited(repository.save(SettingKeys.TX_AMOUNT, 2));
 
     await expectLater(
-      stream,
+      txAmountStream,
       emitsInOrder([
         1,
         2,
@@ -71,7 +72,7 @@ void main() {
     unawaited(repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false));
 
     await expectLater(
-      stream2,
+      backupPermissionStream,
       emitsInOrder([
         false,
       ]),
