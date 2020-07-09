@@ -296,7 +296,7 @@ Be the first to add one!
   // mnemonic backup phrase
   String get mnemonicBackupBody1 => 'Hi,';
   String get mnemonicBackupBody2 => """
-Glad you see you here,
+Glad to see you here,
 One of the most important steps you can take to secure your account is to backup your Mnemonic Phrase.
   """;
   String get mnemonicBackupButton => "Backup phrase";

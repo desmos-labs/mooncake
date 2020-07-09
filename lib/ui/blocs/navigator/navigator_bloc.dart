@@ -152,7 +152,9 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
 
     if (method is BiometricAuthentication) {
       await _navigatorKey.currentState.push(MaterialPageRoute(
-        builder: (context) => LoginWithBiometricsScreen(),
+        builder: (context) => LoginWithBiometricsScreen(
+          backupPhrase: event.backupPhrase,
+        ),
       ));
     } else if (method is PasswordAuthentication) {
       await _navigatorKey.currentState.push(MaterialPageRoute(

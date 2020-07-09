@@ -67,8 +67,8 @@ void main() {
       ]),
     );
 
-    repository.save(SettingKeys.TX_AMOUNT, 1);
-    repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false);
+    unawaited(repository.save(SettingKeys.TX_AMOUNT, 1));
+    unawaited(repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false));
 
     await expectLater(
       stream2,
