@@ -1,3 +1,4 @@
+import 'package:pedantic/pedantic.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
@@ -54,9 +55,9 @@ void main() {
     final stream = repository.watch(SettingKeys.TX_AMOUNT);
     final stream2 = repository.watch(SettingKeys.BACKUP_POPUP_PERMISSION);
 
-    repository.save(SettingKeys.TX_AMOUNT, 1);
-    repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false);
-    repository.save(SettingKeys.TX_AMOUNT, 2);
+    unawaited(repository.save(SettingKeys.TX_AMOUNT, 1));
+    unawaited(repository.save(SettingKeys.BACKUP_POPUP_PERMISSION, false));
+    unawaited(repository.save(SettingKeys.TX_AMOUNT, 2));
 
     await expectLater(
       stream,

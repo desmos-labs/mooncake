@@ -1,7 +1,6 @@
 import 'package:dependencies/dependencies.dart';
 import 'package:mooncake/usecases/posts/export.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'notifications/notifications_repository_impl.dart';
 import 'posts/posts_repository_impl.dart';
