@@ -35,7 +35,7 @@ android {
             def keystorePropertiesFile = rootProject.file('key.properties')
             if (keystorePropertiesFile.exists()) {
                 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-            } else {
+            } else if (System.getenv('CI') == true) {
                 keystoreProperties.setProperty('storeFile', System.getenv('KEYSTORE_PATH'));
                 keystoreProperties.setProperty('storePassword', System.getenv('KEYSTORE_PASSWORD'));
                 keystoreProperties.setProperty('keyAlias', System.getenv('KEY_ALIAS'));

@@ -8,6 +8,16 @@ class ThemeColors {
     end: Alignment(1, 1),
   );
 
+  static const LinearGradient primaryButtonBackgroundGradientDiabled =
+      LinearGradient(
+    colors: [
+      Color.fromRGBO(82, 119, 255, 0.6),
+      Color.fromRGBO(144, 79, 255, 0.6)
+    ],
+    begin: Alignment(-0.44, -0.89),
+    end: Alignment(1, 1),
+  );
+
   static LinearGradient get gradient => LinearGradient(
         colors: [Color(0xFF904FFF), Color(0xFF5277FF)],
         begin: Alignment.topCenter,

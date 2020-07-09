@@ -14,14 +14,18 @@ import 'package:mooncake/usecases/usecases.dart';
 class PostsRepositoryImpl extends PostsRepository {
   final LocalPostsSource _localPostsSource;
   final RemotePostsSource _remotePostsSource;
+  final LocalSettingsSource _localSettingsSource;
 
   PostsRepositoryImpl({
     @required LocalPostsSource localSource,
     @required RemotePostsSource remoteSource,
+    @required LocalSettingsSource localSettingsSource,
   })  : assert(localSource != null),
         _localPostsSource = localSource,
         assert(remoteSource != null),
-        _remotePostsSource = remoteSource;
+        _remotePostsSource = remoteSource,
+        assert(localSettingsSource != null),
+        _localSettingsSource = localSettingsSource;
 
   @override
   Stream<List<Post>> getHomePostsStream(int limit) {
@@ -143,6 +147,14 @@ class PostsRepositoryImpl extends PostsRepository {
       return post.copyWith(status: status);
     }).toList();
     await _localPostsSource.savePosts(updatedPosts);
+
+    // emit event that tx has been successfully added to the chain
+    if (status.value == PostStatusValue.TX_SENT) {
+      final currentTxAmount =
+          await _localSettingsSource.get(SettingKeys.TX_AMOUNT) ?? 0;
+      await _localSettingsSource.save(
+          SettingKeys.TX_AMOUNT, currentTxAmount + updatedPosts.length);
+    }
   }
 
   @override

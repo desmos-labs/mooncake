@@ -13,9 +13,12 @@ class MockLocalPostsSource extends Mock implements LocalPostsSource {}
 
 class MockRemotePostsSource extends Mock implements RemotePostsSource {}
 
+class MockLocalSettingsSource extends Mock implements LocalSettingsSource {}
+
 void main() {
   MockLocalPostsSource localSource = MockLocalPostsSource();
   MockRemotePostsSource remoteSource = MockRemotePostsSource();
+  MockLocalSettingsSource localSettingsSource = MockLocalSettingsSource();
 
   PostsRepositoryImpl repository;
 
@@ -23,6 +26,7 @@ void main() {
     repository = PostsRepositoryImpl(
       remoteSource: remoteSource,
       localSource: localSource,
+      localSettingsSource: localSettingsSource,
     );
   });
 
@@ -229,7 +233,9 @@ void main() {
       verifyNever(localSource.savePosts(any));
     });
 
-    test('success sync updates correctly the statuts', () async {
+    test(
+        'success sync updates correctly the statuts and saves to sharedpreferenced',
+        () async {
       // --- SETUP
       final syncPosts = testPosts.take(2).toList();
       when(localSource.getPostsToSync())
@@ -259,6 +265,8 @@ void main() {
         localSource.savePosts(firstUpdate),
         remoteSource.savePosts(firstUpdate),
         localSource.savePosts(secondUpdate),
+        localSettingsSource.get(SettingKeys.TX_AMOUNT),
+        localSettingsSource.save(SettingKeys.TX_AMOUNT, 2),
       ]);
     });
 
@@ -299,6 +307,12 @@ void main() {
         remoteSource.savePosts(firstUpdate),
         localSource.savePosts(secondUpdate),
       ]);
+      verifyNever(
+        localSettingsSource.get(SettingKeys.TX_AMOUNT),
+      );
+      verifyNever(
+        localSettingsSource.save(SettingKeys.TX_AMOUNT, 2),
+      );
     });
   });
 

@@ -7,4 +7,7 @@ abstract class SettingsRepository {
   /// Reads the value associated to the given [key].
   /// If not value can be read, returns `null` instead.
   Future<dynamic> get(String key);
+
+  /// Returns a [Stream] that emits a value each time the value for the setting having the given [key] is changed.
+  Stream watch(String key);
 }
