@@ -29,7 +29,7 @@ class GqlUsersHelper {
   ) async {
     final query = """
     query UserByAddress {
-      users: profile(where:{address: {_eq:"$address"}}) {
+      users: profile (where:{address: {_eq:"$address"}}) {
         ${GqlUsersHelper.userContents}
       }
     }

@@ -23,8 +23,8 @@ jobs:
       - name: Decrypt secrets 🔓
         env:
           GOOGLE_PLAY_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_PLAY_SERVICES_PASSPHRASE }}
-          SERVICE_ACCOUNT_PASSPHRASE: ${{ secrets.SERVICE_ACCOUNT_PASSPHRASE }}
-          KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
+          SERVICE_ACCOUNT_PASSPHRASE: ${{ secrets.ANDROID_SERVICE_ACCOUNT_PASSPHRASE }}
+          KEYSTORE_PASSPHRASE: ${{ secrets.ANDROID_KEYSTORE_PASSPHRASE }}
 
         run: |
           mkdir android/app/src/release
