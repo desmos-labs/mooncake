@@ -71,7 +71,15 @@ class NavigateToPostDetails extends NavigatorEvent {
 class NavigateToWallet extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the screen that allows to show the mnemonic.
-class NavigateToShowMnemonic extends NavigatorEvent {}
+/// Takes an optional argument [backupPhrase] in the event that this is a backup and not an export event
+class NavigateToShowMnemonicAuth extends NavigatorEvent {
+  final bool backupPhrase;
+
+  NavigateToShowMnemonicAuth({this.backupPhrase = false});
+
+  @override
+  List<Object> get props => [backupPhrase];
+}
 
 /// Tells the Bloc to navigate to the page that allows the user
 /// to export his previously encrypted mnemonic data.
@@ -100,3 +108,6 @@ class NavigateToUserDetails extends NavigatorEvent {
   @override
   List<Object> get props => [user];
 }
+
+/// Tells the Bloc to navigate to the screen that asks for confirmation of their mnemonic phrase
+class NavigateToConfirmMnemonicBackupPhrase extends NavigatorEvent {}

@@ -42,7 +42,15 @@ class RecoverAccountWordsList extends StatelessWidget {
                       elevation: 0,
                       pressElevation: 0,
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      label: Text(word),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      label: Text(
+                        word,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                       onPressed: () => _wordSelected(context, word),
                     );
                   },

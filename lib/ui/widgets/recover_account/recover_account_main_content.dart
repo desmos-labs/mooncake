@@ -9,10 +9,12 @@ import 'mnemonic_input_item.dart';
 /// Represents the main content of the recover account screen.
 class RecoverAccountMainContent extends StatelessWidget {
   final double bottomPadding;
+  final bool backupPhrase;
 
   const RecoverAccountMainContent({
     Key key,
     @required this.bottomPadding,
+    this.backupPhrase = false,
   }) : super(key: key);
 
   @override
@@ -75,18 +77,14 @@ class RecoverAccountMainContent extends StatelessWidget {
               ),
 
             // Continue button
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                  child: PrimaryButton(
-                    child: Text(PostsLocalizations.of(context)
-                        .recoverAccountContinueButton),
-                    onPressed: () => _continueClicked(context),
-                    enabled: state.isMnemonicValid,
-                  ),
-                ),
-              ],
+            SizedBox(
+              width: double.infinity,
+              child: PrimaryButton(
+                child: Text(PostsLocalizations.of(context)
+                    .recoverAccountContinueButton),
+                onPressed: () => _continueClicked(context),
+                enabled: state.isMnemonicValid,
+              ),
             ),
           ],
         );
@@ -125,6 +123,10 @@ class RecoverAccountMainContent extends StatelessWidget {
 
   /// Handle the click on the continue button
   void _continueClicked(BuildContext context) {
-    BlocProvider.of<NavigatorBloc>(context).add(NavigateToProtectAccount());
+    if (backupPhrase) {
+      BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
+    } else {
+      BlocProvider.of<NavigatorBloc>(context).add(NavigateToProtectAccount());
+    }
   }
 }

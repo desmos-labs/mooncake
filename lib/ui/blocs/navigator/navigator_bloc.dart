@@ -61,14 +61,16 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _mapNavigateToWalletEventToState();
     } else if (event is GoBack) {
       _handleGoBack(event);
-    } else if (event is NavigateToShowMnemonic) {
-      _handleNavigateToShowMnemonic();
+    } else if (event is NavigateToShowMnemonicAuth) {
+      _handleNavigateToShowMnemonicAuth(event);
     } else if (event is NavigateToExportMnemonic) {
       _handleNavigateToExportMnemonic(event);
     } else if (event is NavigateToEditAccount) {
       _handleNavigateToEditAccount();
     } else if (event is NavigateToUserDetails) {
       _handleNavigateToUserDetails(event);
+    } else if (event is NavigateToConfirmMnemonicBackupPhrase) {
+      _handleNavigateToConfirmMnemonicBackupPhrase();
     }
   }
 
@@ -144,16 +146,21 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     }));
   }
 
-  void _handleNavigateToShowMnemonic() async {
+  void _handleNavigateToShowMnemonicAuth(
+      NavigateToShowMnemonicAuth event) async {
     final method = await _getAuthenticationMethodUseCase.get();
+
     if (method is BiometricAuthentication) {
       await _navigatorKey.currentState.push(MaterialPageRoute(
-        builder: (context) => LoginWithBiometricsScreen(),
+        builder: (context) => LoginWithBiometricsScreen(
+          backupPhrase: event.backupPhrase,
+        ),
       ));
     } else if (method is PasswordAuthentication) {
-      await await _navigatorKey.currentState.push(MaterialPageRoute(
+      await _navigatorKey.currentState.push(MaterialPageRoute(
         builder: (_) => LoginWithPasswordScreen(
           hashedPassword: method.hashedPassword,
+          backupPhrase: event.backupPhrase,
         ),
       ));
     }
@@ -174,6 +181,12 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   void _handleNavigateToUserDetails(NavigateToUserDetails event) {
     _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
       return UserDetailsScreen(user: event.user, isMyProfile: false);
+    }));
+  }
+
+  void _handleNavigateToConfirmMnemonicBackupPhrase() {
+    _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
+      return BackupMnemonicConfirmationScreen();
     }));
   }
 }

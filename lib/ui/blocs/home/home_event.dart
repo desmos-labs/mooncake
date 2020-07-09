@@ -24,3 +24,12 @@ class SignOut extends HomeEvent {
   @override
   String toString() => 'SignOut';
 }
+
+/// Tells a bloc to show mnemonic backup popup
+class ShowBackupMnemonicPhrasePopup extends HomeEvent {}
+
+/// Tells a bloc to hide mnemonic backup popup
+class HideBackupMnemonicPhrasePopup extends HomeEvent {}
+
+/// Tells a bloc to turn off mnemonic backup popup permission
+class TurnOffBackupMnemonicPopupPermission extends HomeEvent {}

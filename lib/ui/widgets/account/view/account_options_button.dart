@@ -42,7 +42,7 @@ class AccountOptionsButton extends StatelessWidget {
     if (option == AccountOptions.EditAccount) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToEditAccount());
     } else if (option == AccountOptions.ViewMnemonic) {
-      BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonic());
+      BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonicAuth());
     } else if (option == AccountOptions.Logout) {
       BlocProvider.of<AccountBloc>(context).add(LogOut());
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
