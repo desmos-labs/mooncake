@@ -5,6 +5,7 @@ import 'package:mooncake/entities/entities.dart';
 class GqlUsersHelper {
   static const String userContents = """
   address
+  dtag
   moniker
   cover_pic
   profile_pic
@@ -28,14 +29,8 @@ class GqlUsersHelper {
   ) async {
     final query = """
     query UserByAddress {
-      users: user(where:{address: {_eq:"$address"}}) {
-        address
-        moniker
-        name
-        surname
-        cover_pic
-        profile_pic
-        bio
+      users: profile (where:{address: {_eq:"$address"}}) {
+        ${GqlUsersHelper.userContents}
       }
     }
     """;

@@ -1,26 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'msg_create_profile.dart';
+part of 'msg_save_profile.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MsgCreateProfile _$MsgCreateProfileFromJson(Map<String, dynamic> json) {
-  return MsgCreateProfile(
+MsgSaveProfile _$MsgSaveProfileFromJson(Map<String, dynamic> json) {
+  return MsgSaveProfile(
+    dtag: json['dtag'] as String,
     moniker: json['moniker'] as String,
-    name: json['name'] as String,
-    surname: json['surname'] as String,
     bio: json['bio'] as String,
-    pictures: json['pictures'] == null
-        ? null
-        : UserPictures.fromJson(json['pictures'] as Map<String, dynamic>),
+    profilePic: json['profile_picture'] as String,
+    coverPic: json['cover_picture'] as String,
     creator: json['creator'] as String,
   );
 }
 
-Map<String, dynamic> _$MsgCreateProfileToJson(MsgCreateProfile instance) {
+Map<String, dynamic> _$MsgSaveProfileToJson(MsgSaveProfile instance) {
   final val = <String, dynamic>{
+    'dtag': instance.dtag,
     'moniker': instance.moniker,
   };
 
@@ -30,10 +29,9 @@ Map<String, dynamic> _$MsgCreateProfileToJson(MsgCreateProfile instance) {
     }
   }
 
-  writeNotNull('name', instance.name);
-  writeNotNull('surname', instance.surname);
   writeNotNull('bio', instance.bio);
-  writeNotNull('pictures', instance.pictures?.toJson());
+  writeNotNull('profile_picture', instance.profilePic);
+  writeNotNull('cover_picture', instance.coverPic);
   val['creator'] = instance.creator;
   return val;
 }

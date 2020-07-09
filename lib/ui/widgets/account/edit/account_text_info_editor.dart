@@ -27,36 +27,24 @@ class AccountTextInfoEditor extends StatelessWidget {
               _buildEditor(
                 context: context,
                 maxLength: 20,
+                label: PostsLocalizations.of(context).dtagLabel,
+                value: state.account.dtag,
+                enabled: state.canEditDTag,
+                onChanged: (value) => bloc.add(DTagChanged(value)),
+                error: state.isDTagValid
+                    ? null
+                    : PostsLocalizations.of(context).errorDTagInvalid,
+              ),
+              const SizedBox(height: 16),
+              _buildEditor(
+                context: context,
+                maxLength: 20,
                 label: PostsLocalizations.of(context).monikerLabel,
                 value: state.account.moniker,
                 onChanged: (value) => bloc.add(MonikerChanged(value)),
                 error: state.isMonikerValid
                     ? null
                     : PostsLocalizations.of(context).errorMonikerInvalid,
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildEditor(
-                      context: context,
-                      maxLength: 20,
-                      label: PostsLocalizations.of(context).nameLabel,
-                      value: state.account.name,
-                      onChanged: (value) => bloc.add(NameChanged(value)),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _buildEditor(
-                      context: context,
-                      maxLength: 20,
-                      value: state.account.surname,
-                      label: PostsLocalizations.of(context).surnameLabel,
-                      onChanged: (value) => bloc.add(SurnameChanged(value)),
-                    ),
-                  ),
-                ],
               ),
               const SizedBox(height: 16),
               _buildEditor(
@@ -81,6 +69,7 @@ class AccountTextInfoEditor extends StatelessWidget {
     @required Function(String) onChanged,
     int maxLength = 100,
     String error,
+    bool enabled = true,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,6 +82,7 @@ class AccountTextInfoEditor extends StatelessWidget {
               .copyWith(color: Theme.of(context).accentColor),
         ),
         TextField(
+          enabled: enabled,
           maxLength: maxLength,
           decoration: InputDecoration(
             hintText: value ?? label,

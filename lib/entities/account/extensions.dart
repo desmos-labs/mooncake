@@ -17,9 +17,8 @@ extension AccountExtensions on MooncakeAccount {
   User toUser() {
     return User(
       address: this.address,
+      dtag: this.dtag,
       moniker: this.moniker,
-      name: this.name,
-      surname: this.surname,
       bio: this.bio,
       profilePicUri: this.profilePicUri,
       coverPicUri: this.coverPicUri,

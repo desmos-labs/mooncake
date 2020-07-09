@@ -7,6 +7,19 @@ abstract class EditAccountEvent extends Equatable {
   const EditAccountEvent();
 }
 
+/// Tells the Bloc that the user DTag has changed.
+class DTagChanged extends EditAccountEvent {
+  final String dtag;
+
+  DTagChanged(this.dtag);
+
+  @override
+  List<Object> get props => [dtag];
+
+  @override
+  String toString() => 'DTagChanged { dtag: $dtag }';
+}
+
 /// Tells the Bloc that the user moniker has changed.
 class MonikerChanged extends EditAccountEvent {
   final String moniker;
@@ -18,32 +31,6 @@ class MonikerChanged extends EditAccountEvent {
 
   @override
   String toString() => 'MonikerChanged { moniker: $moniker }';
-}
-
-/// Tells the Bloc that the name has changed.
-class NameChanged extends EditAccountEvent {
-  final String name;
-
-  NameChanged(this.name);
-
-  @override
-  List<Object> get props => [name];
-
-  @override
-  String toString() => 'NameChanged { name: $name }';
-}
-
-/// Tells the Bloc that the surname has changed.
-class SurnameChanged extends EditAccountEvent {
-  final String surname;
-
-  SurnameChanged(this.surname);
-
-  @override
-  List<Object> get props => [surname];
-
-  @override
-  String toString() => 'SurnameChanged { surname: $surname }';
 }
 
 /// Tells the Bloc that the bio of the user has changed.

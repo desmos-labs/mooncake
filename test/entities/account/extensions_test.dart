@@ -9,9 +9,8 @@ void main() {
       address: "desmos1y447pj22mtx5h8tu9m67qer28t7dvzrxc7mxwe",
       accountNumber: 10,
     ),
-    name: "Harry E.",
-    surname: "Ramsey",
-    moniker: "harry_ramsey",
+    dtag: "harry_ramsey",
+    moniker: "Harry E. Ramsey",
     bio: "Textile machine operator",
     profilePicUri: "shorturl.at/egy49",
     coverPicUri: "shorturl.at/hsxIK",
@@ -59,9 +58,8 @@ void main() {
   test('toUser works properly', () async {
     final expected = User(
       address: account.address,
+      dtag: account.dtag,
       moniker: account.moniker,
-      name: account.name,
-      surname: account.surname,
       bio: account.bio,
       profilePicUri: account.profilePicUri,
       coverPicUri: account.coverPicUri,

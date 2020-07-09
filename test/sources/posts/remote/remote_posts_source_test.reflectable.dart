@@ -5,17 +5,15 @@ import 'dart:core';
 import 'package:alan/models/cosmos-sdk/tx/std_msg.dart' as prefix0;
 import 'package:alan/models/messages/msg_send.dart' as prefix1;
 import 'package:mooncake/sources/chain/models/msgs/msg_add_post_reaction.dart'
-    as prefix7;
+    as prefix6;
 import 'package:mooncake/sources/chain/models/msgs/msg_answer_poll.dart'
-    as prefix4;
+    as prefix3;
 import 'package:mooncake/sources/chain/models/msgs/msg_create_post.dart'
     as prefix2;
-import 'package:mooncake/sources/chain/models/msgs/msg_create_profile.dart'
-    as prefix3;
-import 'package:mooncake/sources/chain/models/msgs/msg_edit_profile.dart'
-    as prefix5;
 import 'package:mooncake/sources/chain/models/msgs/msg_remove_post_reaction.dart'
-    as prefix6;
+    as prefix5;
+import 'package:mooncake/sources/chain/models/msgs/msg_save_profile.dart'
+    as prefix4;
 
 // ignore_for_file: prefer_adjacent_string_concatenation
 // ignore_for_file: prefer_collection_literals
@@ -103,8 +101,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             {}),
         r.NonGenericClassMirrorImpl(
-            r'MsgCreateProfile',
-            r'.MsgCreateProfile',
+            r'MsgAnswerPoll',
+            r'.MsgAnswerPoll',
             7,
             2,
             const prefix0.Reflector(),
@@ -115,18 +113,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (b) => ({moniker, name, surname, bio, pictures, creator}) =>
-                  b
-                      ? prefix3.MsgCreateProfile(
-                          bio: bio,
-                          creator: creator,
-                          moniker: moniker,
-                          name: name,
-                          pictures: pictures,
-                          surname: surname)
-                      : null,
+              r'': (b) => ({postId, answers, user}) => b
+                  ? prefix3.MsgAnswerPoll(
+                      answers: answers, postId: postId, user: user)
+                  : null,
               r'fromJson': (b) =>
-                  (json) => b ? prefix3.MsgCreateProfile.fromJson(json) : null
+                  (json) => b ? prefix3.MsgAnswerPoll.fromJson(json) : null
             },
             -1,
             -1,
@@ -134,8 +126,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             {}),
         r.NonGenericClassMirrorImpl(
-            r'MsgAnswerPoll',
-            r'.MsgAnswerPoll',
+            r'MsgSaveProfile',
+            r'.MsgSaveProfile',
             7,
             3,
             const prefix0.Reflector(),
@@ -146,12 +138,18 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (b) => ({postId, answers, user}) => b
-                  ? prefix4.MsgAnswerPoll(
-                      answers: answers, postId: postId, user: user)
-                  : null,
+              r'': (b) =>
+                  ({dtag, moniker, bio, profilePic, coverPic, creator}) => b
+                      ? prefix4.MsgSaveProfile(
+                          bio: bio,
+                          coverPic: coverPic,
+                          creator: creator,
+                          dtag: dtag,
+                          moniker: moniker,
+                          profilePic: profilePic)
+                      : null,
               r'fromJson': (b) =>
-                  (json) => b ? prefix4.MsgAnswerPoll.fromJson(json) : null
+                  (json) => b ? prefix4.MsgSaveProfile.fromJson(json) : null
             },
             -1,
             -1,
@@ -159,8 +157,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             {}),
         r.NonGenericClassMirrorImpl(
-            r'MsgEditProfile',
-            r'.MsgEditProfile',
+            r'MsgRemovePostReaction',
+            r'.MsgRemovePostReaction',
             7,
             4,
             const prefix0.Reflector(),
@@ -171,26 +169,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (b) => (
-                      {moniker,
-                      name,
-                      surname,
-                      bio,
-                      profilePicture,
-                      coverPicture,
-                      creator}) =>
-                  b
-                      ? prefix5.MsgEditProfile(
-                          bio: bio,
-                          coverPicture: coverPicture,
-                          creator: creator,
-                          moniker: moniker,
-                          name: name,
-                          profilePicture: profilePicture,
-                          surname: surname)
-                      : null,
-              r'fromJson': (b) =>
-                  (json) => b ? prefix5.MsgEditProfile.fromJson(json) : null
+              r'': (b) => ({postId, reaction, user}) => b
+                  ? prefix5.MsgRemovePostReaction(
+                      postId: postId, reaction: reaction, user: user)
+                  : null,
+              r'fromJson': (b) => (json) =>
+                  b ? prefix5.MsgRemovePostReaction.fromJson(json) : null
             },
             -1,
             -1,
@@ -198,8 +182,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             null,
             {}),
         r.NonGenericClassMirrorImpl(
-            r'MsgRemovePostReaction',
-            r'.MsgRemovePostReaction',
+            r'MsgAddPostReaction',
+            r'.MsgAddPostReaction',
             7,
             5,
             const prefix0.Reflector(),
@@ -211,36 +195,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {
               r'': (b) => ({postId, reaction, user}) => b
-                  ? prefix6.MsgRemovePostReaction(
-                      postId: postId, reaction: reaction, user: user)
-                  : null,
-              r'fromJson': (b) => (json) =>
-                  b ? prefix6.MsgRemovePostReaction.fromJson(json) : null
-            },
-            -1,
-            -1,
-            const <int>[-1],
-            null,
-            {}),
-        r.NonGenericClassMirrorImpl(
-            r'MsgAddPostReaction',
-            r'.MsgAddPostReaction',
-            7,
-            6,
-            const prefix0.Reflector(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {},
-            {},
-            {
-              r'': (b) => ({postId, reaction, user}) => b
-                  ? prefix7.MsgAddPostReaction(
+                  ? prefix6.MsgAddPostReaction(
                       postId: postId, reaction: reaction, user: user)
                   : null,
               r'fromJson': (b) =>
-                  (json) => b ? prefix7.MsgAddPostReaction.fromJson(json) : null
+                  (json) => b ? prefix6.MsgAddPostReaction.fromJson(json) : null
             },
             -1,
             -1,
@@ -253,13 +212,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
       <Type>[
         prefix1.MsgSend,
         prefix2.MsgCreatePost,
-        prefix3.MsgCreateProfile,
-        prefix4.MsgAnswerPoll,
-        prefix5.MsgEditProfile,
-        prefix6.MsgRemovePostReaction,
-        prefix7.MsgAddPostReaction
+        prefix3.MsgAnswerPoll,
+        prefix4.MsgSaveProfile,
+        prefix5.MsgRemovePostReaction,
+        prefix6.MsgAddPostReaction
       ],
-      7,
+      6,
       {},
       {},
       null,
@@ -288,25 +246,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
-          const [#moniker, #name, #surname, #bio, #pictures, #creator]
-        ],
-        const [
-          0,
-          0,
           const [#postId, #answers, #user]
         ],
         const [
           0,
           0,
-          const [
-            #moniker,
-            #name,
-            #surname,
-            #bio,
-            #profilePicture,
-            #coverPicture,
-            #creator
-          ]
+          const [#dtag, #moniker, #bio, #profilePic, #coverPic, #creator]
         ],
         const [
           0,

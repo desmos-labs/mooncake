@@ -34,8 +34,7 @@ void initCodec() {
   Codec.registerMsgType("desmos/MsgAnswerPoll", MsgAnswerPoll);
 
   // Account messages
-  Codec.registerMsgType("desmos/MsgCreateProfile", MsgCreateProfile);
-  Codec.registerMsgType("desmos/MsgEditProfile", MsgEditProfile);
+  Codec.registerMsgType("desmos/MsgSaveProfile", MsgSaveProfile);
 }
 
 /// Allows to easily perform chain-related actions such as querying the

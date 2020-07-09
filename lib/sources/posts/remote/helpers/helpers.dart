@@ -1,1 +1,1 @@
-export 'gql_helper.dart';
+export 'gql_posts_helper.dart';
