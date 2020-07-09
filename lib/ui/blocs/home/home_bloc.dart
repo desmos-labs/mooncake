@@ -75,6 +75,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       _watchSettingUseCase
           .watch(key: SettingKeys.TX_AMOUNT)
           .listen((value) async {
+        print('home bloc value: $value');
         final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
         final checkPopupPermission = await _getSettingUseCase.get(
                 key: SettingKeys.BACKUP_POPUP_PERMISSION) ??
@@ -86,11 +87,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       });
     }
-
-    // wingman testing
-    await _saveSettingUseCase.save(
-        key: SettingKeys.BACKUP_POPUP_PERMISSION, value: true);
-    await _saveSettingUseCase.save(key: SettingKeys.TX_AMOUNT, value: 5);
   }
 
   /// handles SignOut [event]
