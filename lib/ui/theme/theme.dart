@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'fonts.dart';
 
-export 'colors.dart';
-export 'decorations.dart';
-export 'spaces.dart';
-
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
   static ThemeData from({
