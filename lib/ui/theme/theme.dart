@@ -1,10 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-export 'colors.dart';
-export 'decorations.dart';
-export 'spaces.dart';
-
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
   static ThemeData from({
@@ -55,9 +51,10 @@ class PostsTheme {
         ? Typography.blackCupertino
         : Typography.blackMountainView;
     return from(
-        colorScheme: scheme,
-        iconTheme: iconTheme,
-        mergeTextTheme: mergeTextTheme);
+      colorScheme: scheme,
+      iconTheme: iconTheme,
+      mergeTextTheme: mergeTextTheme,
+    );
   }
 
   static ThemeData get darkTheme {
@@ -80,8 +77,9 @@ class PostsTheme {
         ? Typography.whiteCupertino
         : Typography.whiteMountainView;
     return from(
-        colorScheme: scheme,
-        iconTheme: iconTheme,
-        mergeTextTheme: mergeTextTheme);
+      colorScheme: scheme,
+      iconTheme: iconTheme,
+      mergeTextTheme: mergeTextTheme,
+    );
   }
 }
