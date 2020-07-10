@@ -9,10 +9,7 @@
 - Implemented users jazz icons instead of old identicons
 - Implemented the ability of exporting and importing the mnemonic as an encrypted object safely
 - Removed the ability to manually set the app theme. Now it is the same set system-wide.
-- Added mnemonic phrase backup popup reminder if user has:
-  - **5** transactions
-  - transactions in increments of **10, 20, 30, etc...**
-- Updated body textTheme to use englishLike2018
+- Added mnemonic phrase backup popup reminder
 
 ## Improvements
 - Improved the themes colors
