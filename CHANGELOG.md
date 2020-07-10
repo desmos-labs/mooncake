@@ -12,7 +12,6 @@
 - Added mnemonic phrase backup popup reminder if user has:
   - **5** transactions
   - transactions in increments of **10, 20, 30, etc...**
-- Updated body textTheme to use englishLike2018
 
 ## Improvements
 - Improved the themes colors
