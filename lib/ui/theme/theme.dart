@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 export 'colors.dart';
@@ -9,6 +10,7 @@ class PostsTheme {
   static ThemeData from({
     @required ColorScheme colorScheme,
     @required IconThemeData iconTheme,
+    @required TextTheme mergeTextTheme,
   }) {
     return ThemeData.from(colorScheme: colorScheme).copyWith(
       appBarTheme: AppBarTheme(
@@ -29,6 +31,7 @@ class PostsTheme {
         focusColor: colorScheme.primary,
       ),
       buttonColor: colorScheme.primary,
+      textTheme: Typography.englishLike2018.copyWith().merge(mergeTextTheme),
     );
   }
 
@@ -48,7 +51,13 @@ class PostsTheme {
       onBackground: Color(0xFF646464),
     );
     final iconTheme = IconThemeData(color: Color(0xFF646464));
-    return from(colorScheme: scheme, iconTheme: iconTheme);
+    final mergeTextTheme = defaultTargetPlatform == TargetPlatform.iOS
+        ? Typography.blackCupertino
+        : Typography.blackMountainView;
+    return from(
+        colorScheme: scheme,
+        iconTheme: iconTheme,
+        mergeTextTheme: mergeTextTheme);
   }
 
   static ThemeData get darkTheme {
@@ -67,6 +76,12 @@ class PostsTheme {
       onBackground: Color(0xFFFFFFFF).withOpacity(0.6),
     );
     final iconTheme = IconThemeData(color: Color(0xFFFFFFFF).withOpacity(0.6));
-    return from(colorScheme: scheme, iconTheme: iconTheme);
+    final mergeTextTheme = defaultTargetPlatform == TargetPlatform.iOS
+        ? Typography.whiteCupertino
+        : Typography.whiteMountainView;
+    return from(
+        colorScheme: scheme,
+        iconTheme: iconTheme,
+        mergeTextTheme: mergeTextTheme);
   }
 }
