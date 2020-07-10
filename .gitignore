@@ -28,6 +28,7 @@ selection.json
 .pub/
 build/
 coverage/
+ios/Podfile
 
 # Android releated
 *.apk
