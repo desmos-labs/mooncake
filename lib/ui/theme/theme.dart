@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 export 'colors.dart';
@@ -50,7 +51,9 @@ class PostsTheme {
       onBackground: Color(0xFF646464),
     );
     final iconTheme = IconThemeData(color: Color(0xFF646464));
-    final mergeTextTheme = Typography.blackCupertino;
+    final mergeTextTheme = defaultTargetPlatform == TargetPlatform.iOS
+        ? Typography.blackCupertino
+        : Typography.blackMountainView;
     return from(
         colorScheme: scheme,
         iconTheme: iconTheme,
@@ -73,7 +76,9 @@ class PostsTheme {
       onBackground: Color(0xFFFFFFFF).withOpacity(0.6),
     );
     final iconTheme = IconThemeData(color: Color(0xFFFFFFFF).withOpacity(0.6));
-    final mergeTextTheme = Typography.whiteCupertino;
+    final mergeTextTheme = defaultTargetPlatform == TargetPlatform.iOS
+        ? Typography.whiteCupertino
+        : Typography.whiteMountainView;
     return from(
         colorScheme: scheme,
         iconTheme: iconTheme,
