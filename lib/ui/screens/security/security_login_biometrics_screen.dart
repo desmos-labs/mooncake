@@ -49,14 +49,14 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                             Text(
                               PostsLocalizations.of(context)
                                   .securityLoginWarning
-                                  .replaceAll("\n", ""),
+                                  .replaceAll("\n", " "),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               PostsLocalizations.of(context)
                                   .securityLoginBiometrics
-                                  .replaceAll("\n", ""),
+                                  .replaceAll("\n", " "),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
