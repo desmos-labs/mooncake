@@ -1,4 +1,5 @@
-name:  Flutter
+name:  Test
+
 on:
   push:
     branches:
@@ -7,7 +8,7 @@ on:
 
 jobs:
 
-  analyze:
+  Analyze:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -25,7 +26,7 @@ jobs:
           flutter analyze
           flutter format --dry-run .
 
-  unit-tests:
+  Unit-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️

@@ -108,6 +108,7 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
   Stream<MnemonicState> _mapCloseExportPopupEventToState() async* {
     yield MnemonicState(
       mnemonic: state.mnemonic,
+      hasCheckedBox: state.hasCheckedBox,
       showMnemonic: state.showMnemonic,
     );
   }
