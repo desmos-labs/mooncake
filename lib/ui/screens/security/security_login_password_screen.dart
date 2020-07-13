@@ -87,7 +87,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                                 onChanged: (_) => _checkBoxChanged(context),
                               ),
                               const SizedBox(height: 16),
-                              _passwordInput(context),
+                              _passwordInput(state, context),
                             ],
                           ),
                   ),
@@ -104,7 +104,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
     BlocProvider.of<MnemonicBloc>(context).add(ToggleCheckBox());
   }
 
-  Widget _passwordInput(BuildContext context) {
+  Widget _passwordInput(MnemonicState state, BuildContext context) {
     return Column(
       children: [
         TextField(
@@ -121,7 +121,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
         const SizedBox(height: 16),
         PrimaryButton(
           onPressed: () => _viewMnemonic(context),
-          enabled: enableButton,
+          enabled: state.hasCheckedBox && enableButton,
           child: Text(PostsLocalizations.of(context).viewMnemonic),
         ),
       ],
