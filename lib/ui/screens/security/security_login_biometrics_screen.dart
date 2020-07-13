@@ -42,7 +42,7 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                             Text(
                               PostsLocalizations.of(context)
                                   .securityLoginText
-                                  .replaceAll("\n", ""),
+                                  .replaceAll("\n", " "),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),

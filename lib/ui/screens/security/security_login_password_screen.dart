@@ -58,7 +58,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                               Text(
                                 PostsLocalizations.of(context)
                                     .securityLoginText
-                                    .replaceAll("\n", ""),
+                                    .replaceAll("\n", " "),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),

@@ -93,7 +93,7 @@ your mnemonic from scratch in the case of a future recovery.
   // Security login screen
   String get viewMnemonic => "View mnemonic";
   String get securityLoginText => """
-In order to prevent aby unwanted access to your mnemonic phrase, you are
+In order to prevent any unwanted access to your mnemonic phrase, you are
 required to log in using the authentication method you have previously set
 during the the first login into the app.
 """;
