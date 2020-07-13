@@ -36,6 +36,9 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: PostsLocalizations.of(context)
                             .restoreBackupFieldHint,
+                        errorText: state.isBackupValid
+                            ? null
+                            : PostsLocalizations.of(context).errorBackupInvalid,
                       ),
                       onChanged: (value) => _onBackupChanged(context, value),
                     ),
@@ -47,6 +50,10 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: PostsLocalizations.of(context)
                           .restorePasswordFieldHint,
+                      errorText: state.isPasswordValid
+                          ? null
+                          : PostsLocalizations.of(context)
+                              .errorBackupPasswordWrong,
                     ),
                     onChanged: (value) => _onPasswordChanged(context, value),
                   ),
@@ -55,7 +62,9 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                     PrimaryButton(
                       onPressed: () => _restoreBackup(context),
                       child: Text(
-                          PostsLocalizations.of(context).restoreButtonText),
+                        PostsLocalizations.of(context).restoreButtonText,
+                      ),
+                      enabled: state.isBackupValid,
                     ),
                   if (state.restoring) LoadingIndicator(),
                 ],

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -6,6 +8,14 @@ class RestoreBackupState extends Equatable {
   final String backup;
   final String password;
 
+  bool get isBackupValid {
+    try {
+      base64Decode(backup);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
   final bool isPasswordValid;
 
   final bool restoring;
@@ -21,7 +31,7 @@ class RestoreBackupState extends Equatable {
     return RestoreBackupState(
       backup: null,
       password: null,
-      isPasswordValid: false,
+      isPasswordValid: true,
       restoring: false,
     );
   }

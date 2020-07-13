@@ -47,7 +47,9 @@ you used to encrypt it. Then press the below button to proceed.
 """;
   String get restoreBackupFieldHint =>
       "Your backup here (it should end with an =)";
+  String get errorBackupInvalid => "Invalid backup text";
   String get restorePasswordFieldHint => "Your encryption password";
+  String get errorBackupPasswordWrong => "Wrong backup password";
   String get restoreButtonText => "Restore backup";
 
   // Mnemonic recover screen
