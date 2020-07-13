@@ -8,7 +8,13 @@ import 'package:mooncake/ui/ui.dart';
 AppBar postsAppBar(BuildContext context) {
   return AppBar(
     centerTitle: true,
-    title: Text(PostsLocalizations.of(context).appName),
+    title: Text(
+      PostsLocalizations.of(context).appName,
+      style: Theme.of(context).textTheme.headline6.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+            fontFamily: 'Montserrat',
+          ),
+    ),
     backgroundColor: Colors.transparent,
     actions: [
       if (kDebugMode)
