@@ -104,13 +104,15 @@ see your mnemonic will most surely end in them stealing your account and all
 your funds so proceed with caution.
 """;
   String get securityLoginBiometrics => """
-If you understand the risks of viewing your mnemonic, please tap below to
-start the authentication process.
+If you understand the risks of viewing your mnemonic, please check the below
+checkbox and tap below to start the authentication process.
 """;
   String get securityLoginPassword => """
-If you understand the risks of viewing your mnemonic, please insert below
-your password and press the button to view it
+If you understand the risks of viewing your mnemonic, please check the below
+checkbox, insert your password and press the button to view it.
 """;
+  String get understoodMnemonicDisclaimer =>
+      "I've understood the consequences of viewing my mnemonic.";
 
   // Mnemonic export
   String get exportMnemonic => "Export mnemonic";

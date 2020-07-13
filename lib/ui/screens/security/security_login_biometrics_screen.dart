@@ -60,9 +60,19 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
+                            CheckBoxButton(
+                              value: state.hasCheckedBox,
+                              child: Expanded(
+                                child: Text(PostsLocalizations.of(context)
+                                    .understoodMnemonicDisclaimer),
+                              ),
+                              onChanged: (_) => _checkBoxChanged(context),
+                            ),
+                            const SizedBox(height: 16),
                             if (!state.showMnemonic)
                               PrimaryButton(
                                 onPressed: () => _enableButtonClicked(context),
+                                enabled: state.hasCheckedBox,
                                 child: Text(PostsLocalizations.of(context)
                                     .viewMnemonic),
                               ),
@@ -78,6 +88,10 @@ class LoginWithBiometricsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _checkBoxChanged(BuildContext context) {
+    BlocProvider.of<MnemonicBloc>(context).add(ToggleCheckBox());
   }
 
   void _enableButtonClicked(BuildContext context) {

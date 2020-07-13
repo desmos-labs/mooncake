@@ -9,6 +9,11 @@ abstract class MnemonicEvent extends Equatable {
   List<Object> get props => [];
 }
 
+/// Tells the Bloc that the user has toggled the check box that
+/// is required to make sure he has read the warnings before
+/// being able to view his mnemonic.
+class ToggleCheckBox extends MnemonicEvent {}
+
 /// Tells the Bloc to load the mnemonic and show it.
 class ShowMnemonic extends MnemonicEvent {}
 
