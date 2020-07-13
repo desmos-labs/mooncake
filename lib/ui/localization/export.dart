@@ -30,7 +30,7 @@ class PostsLocalizations {
   String get accountCreatedPopupBackupButtonText => "Backup mnemonic phrase";
   String get creatingAccountPopupTitle => "Creating account";
   String get creatingAccountText => "This might take a while...";
-  String get termsDisclaimer => "By using this app you agree to ours";
+  String get termsDisclaimer => "By using this app you agree to our";
   String get terms => "Terms";
   String get and => "and";
   String get privacyPolicy => "Privacy Policy";
@@ -76,7 +76,7 @@ can be used to access your account on this application
   String get passwordBody => """
 Due to security reasons, we require you to input a password if you will ever
 want to recover your mnemonic phrase from within the application later on.
-Please note that if you loose this password you will be required to enter
+Please note that if you lose this password you will be required to enter
 your mnemonic from scratch in the case of a future recovery.
 """;
   String get passwordHint => "Password";
@@ -93,7 +93,7 @@ your mnemonic from scratch in the case of a future recovery.
   // Security login screen
   String get viewMnemonic => "View mnemonic";
   String get securityLoginText => """
-In order to prevent aby unwanted access to your mnemonic phrase, you are
+In order to prevent any unwanted access to your mnemonic phrase, you are
 required to log in using the authentication method you have previously set
 during the the first login into the app.
 """;
