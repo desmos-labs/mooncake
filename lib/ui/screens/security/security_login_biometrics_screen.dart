@@ -29,15 +29,15 @@ class LoginWithBiometricsScreen extends StatelessWidget {
           builder: (context, state) {
             return Stack(
               children: [
-                state.showMnemonic
-                    ? MnemonicVisualizer(
-                        mnemonic: state.mnemonic,
-                        allowExport: backupPhrase ? false : true,
-                        backupPhrase: backupPhrase,
-                      )
-                    : Container(
-                        padding: EdgeInsets.all(16),
-                        child: ListView(
+                Container(
+                  padding: EdgeInsets.all(16),
+                  child: state.showMnemonic
+                      ? MnemonicVisualizer(
+                          mnemonic: state.mnemonic,
+                          allowExport: backupPhrase ? false : true,
+                          backupPhrase: backupPhrase,
+                        )
+                      : ListView(
                           children: [
                             Text(
                               PostsLocalizations.of(context)
@@ -78,7 +78,7 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                               ),
                           ],
                         ),
-                      ),
+                ),
 
                 // Exporting popup
                 if (state is ExportingMnemonic) ExportMnemonicPopup(),
