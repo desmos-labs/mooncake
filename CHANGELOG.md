@@ -19,7 +19,6 @@
 ## Bug fixes
 - Fix a UI bug that did not display markdown correctly in post details
 - Created function to filter out non unique likes to fix bug displaying multiple likes by same user in one post.
-- Fix post messages not displaying spacing correctly
 
 # Version 0.3.2
 ## Changes
