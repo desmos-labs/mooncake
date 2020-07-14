@@ -55,9 +55,10 @@ class PostsTheme {
         ? Typography.blackCupertino
         : Typography.blackMountainView;
     return from(
-        colorScheme: scheme,
-        iconTheme: iconTheme,
-        mergeTextTheme: mergeTextTheme);
+      colorScheme: scheme,
+      iconTheme: iconTheme,
+      mergeTextTheme: mergeTextTheme,
+    );
   }
 
   static ThemeData get darkTheme {
@@ -80,8 +81,9 @@ class PostsTheme {
         ? Typography.whiteCupertino
         : Typography.whiteMountainView;
     return from(
-        colorScheme: scheme,
-        iconTheme: iconTheme,
-        mergeTextTheme: mergeTextTheme);
+      colorScheme: scheme,
+      iconTheme: iconTheme,
+      mergeTextTheme: mergeTextTheme,
+    );
   }
 }
