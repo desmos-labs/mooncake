@@ -5,7 +5,9 @@
 - Improved the account edit UX to make sure it's easier to change any information
 
 ## Bug fixes
-- Fixed the visualization of the posts to make sure newlines are shown properly. 
+- Fixed the visualization of the posts' messages to make sure newlines are shown properly 
+- Fixed the visualization of the posts' times based on the devices location
+- Fixed the font visualization on iOS devices
 
 # Version 0.4.0
 ## Changes
