@@ -29,7 +29,13 @@ class PostsTheme {
         focusColor: colorScheme.primary,
       ),
       buttonColor: colorScheme.primary,
-      textTheme: Typography.englishLike2018.copyWith().merge(textTheme),
+      textTheme: Typography.englishLike2018
+          .copyWith(
+            bodyText2: Typography.englishLike2018.bodyText2.copyWith(
+              fontSize: 16,
+            ),
+          )
+          .merge(textTheme),
     );
   }
 
