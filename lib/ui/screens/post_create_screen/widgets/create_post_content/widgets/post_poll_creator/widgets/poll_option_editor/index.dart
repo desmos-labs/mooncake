@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
 
-import 'common.dart';
+import '../../utils/export.dart';
 
 /// Allows to edit the text of a poll option, edit the associated image (or
 /// add a new one) or delete the option entirely.

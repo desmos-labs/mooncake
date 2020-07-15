@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
 
 /// Represents the popup that is showed to the user once he saves the post.
 class PostSavingPopupContent extends StatelessWidget {

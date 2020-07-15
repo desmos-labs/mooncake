@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/localization/export.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'poll_end_date_editor.dart';
-import 'poll_option_editor.dart';
-import 'poll_question_editor.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
+import 'widgets/export.dart';
 
 /// Represents the serie of widgets that allow to create a poll for a post.
 class PostPollCreator extends StatelessWidget {

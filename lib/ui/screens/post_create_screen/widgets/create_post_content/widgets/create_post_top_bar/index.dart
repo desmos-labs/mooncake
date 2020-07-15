@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
 
 /// Represents the top bar that is displayed to the user inside the
 /// screen used to create a new post. It contains all the actions that

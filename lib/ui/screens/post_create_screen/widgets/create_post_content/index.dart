@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'create_post_top_bar.dart';
-import 'images/export.dart';
-import 'poll/export.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
+import 'widgets/export.dart';
 
 /// Contains the main content of the post creation screen.
 /// Such content includes a top bar and the [TextFormField] inside which

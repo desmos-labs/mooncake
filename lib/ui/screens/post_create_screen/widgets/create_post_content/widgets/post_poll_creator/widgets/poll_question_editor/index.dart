@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
 
-import 'common.dart';
+import '../../utils/export.dart';
 
 /// Represents the editor that should be used when changing the
 /// question associated to a poll.

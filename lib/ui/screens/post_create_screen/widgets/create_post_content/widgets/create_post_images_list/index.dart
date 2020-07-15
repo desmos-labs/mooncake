@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/ui/ui.dart';
-
-import 'create_post_image_item.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
+import 'widgets/export.dart';
 
 /// Contains the list of images associated to a post.
 class CreatePostImagesList extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'common.dart';
+import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
+import '../../utils/export.dart';
 
 /// Represents the editor that allows to change the poll end date.
 class PollEndDateEditor extends StatelessWidget {
