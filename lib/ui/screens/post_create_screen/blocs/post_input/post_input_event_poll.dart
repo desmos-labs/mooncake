@@ -1,4 +1,4 @@
-import 'package:mooncake/ui/ui.dart';
+import './export.dart';
 
 /// Represents a generic event related to the poll of a post.
 abstract class PostInputPollEvent extends PostInputEvent {}

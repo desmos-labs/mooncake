@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
+import './export.dart';
 
 /// Event that is emitted upon the user adds an image to the post.
 class ImageAdded extends PostInputEvent {

@@ -10,6 +10,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
+import 'export.dart';
 
 /// Implementation of [Bloc] that allows to deal with [PostInputEvent]
 /// and [PostInputState] objects.

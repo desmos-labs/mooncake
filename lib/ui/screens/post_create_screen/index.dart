@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import './blocs/export.dart';
 
 /// Screen that is shown to the user in order to allow him to input the
 /// message of a new post.
