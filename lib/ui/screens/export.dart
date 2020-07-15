@@ -1,6 +1,6 @@
 // export 'login/export.dart';
 // export 'security/export.dart';
-export 'user/export.dart';
+// export 'user/export.dart';
 // export 'export_mnemonic_screen.dart';
 // export 'post_create_screen.dart';
 // export 'home_screen.dart';
@@ -19,3 +19,6 @@ export 'security_set_biometrics_screen/export.dart';
 export 'security_backup_mnemonic_confirmation/export.dart';
 export 'security_login_password_screen/export.dart';
 export 'security_login_biometrics_screen/export.dart';
+export 'user_wallet_screen/export.dart';
+export 'user_details_screen/export.dart';
+export 'user_account_edit_screen/export.dart';
