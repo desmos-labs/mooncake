@@ -18,6 +18,7 @@ class CheckBoxButton extends StatelessWidget {
       child: InkWell(
         onTap: () => onChanged(!value),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Checkbox(
               value: value,

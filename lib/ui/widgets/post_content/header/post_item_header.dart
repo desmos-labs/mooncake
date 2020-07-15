@@ -52,7 +52,10 @@ class PostItemHeader extends StatelessWidget {
                               ),
                         ),
                         Text(
-                          timeago.format(post.dateTime.toLocal()),
+                          timeago.format(
+                            post.dateTime.add(DateTime.now().timeZoneOffset),
+                            clock: DateTime.now(),
+                          ),
                           style: Theme.of(context).textTheme.caption,
                         )
                       ],

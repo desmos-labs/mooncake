@@ -1,3 +1,14 @@
+# Version 0.4.1
+## Changes
+- Added the proper error visualization inside the mnemonic recovery screen
+- Added a check to make sure users read the disclaimer before viewing their mnemonic
+- Improved the account edit UX to make sure it's easier to change any information
+
+## Bug fixes
+- Fixed the visualization of the posts' messages to make sure newlines are shown properly 
+- Fixed the visualization of the posts' times based on the devices location
+- Fixed the font visualization on iOS devices
+
 # Version 0.4.0
 ## Changes
 - Implemented the profiles.

@@ -1,4 +1,4 @@
-name: Publish release
+name: Release
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build-and-release:
+  Build-and-Publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️

@@ -47,7 +47,9 @@ you used to encrypt it. Then press the below button to proceed.
 """;
   String get restoreBackupFieldHint =>
       "Your backup here (it should end with an =)";
+  String get errorBackupInvalid => "Invalid backup text";
   String get restorePasswordFieldHint => "Your encryption password";
+  String get errorBackupPasswordWrong => "Wrong backup password";
   String get restoreButtonText => "Restore backup";
 
   // Mnemonic recover screen
@@ -104,13 +106,15 @@ see your mnemonic will most surely end in them stealing your account and all
 your funds so proceed with caution.
 """;
   String get securityLoginBiometrics => """
-If you understand the risks of viewing your mnemonic, please tap below to
-start the authentication process.
+If you understand the risks of viewing your mnemonic, please select the
+checkbox below and tap the button to start the authentication process.
 """;
   String get securityLoginPassword => """
-If you understand the risks of viewing your mnemonic, please insert below
-your password and press the button to view it
+If you understand the risks of viewing your mnemonic, please select the
+checkbox below, insert your password and press the button to view it.
 """;
+  String get understoodMnemonicDisclaimer =>
+      "I understand the consequences of viewing my mnemonic.";
 
   // Mnemonic export
   String get exportMnemonic => "Export mnemonic";

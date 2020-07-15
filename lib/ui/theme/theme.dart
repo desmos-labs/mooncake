@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'fonts.dart';
+
 export 'colors.dart';
 export 'decorations.dart';
 export 'spaces.dart';
@@ -10,7 +12,7 @@ class PostsTheme {
   static ThemeData from({
     @required ColorScheme colorScheme,
     @required IconThemeData iconTheme,
-    @required TextTheme mergeTextTheme,
+    @required TextTheme textTheme,
   }) {
     return ThemeData.from(colorScheme: colorScheme).copyWith(
       appBarTheme: AppBarTheme(
@@ -31,7 +33,7 @@ class PostsTheme {
         focusColor: colorScheme.primary,
       ),
       buttonColor: colorScheme.primary,
-      textTheme: Typography.englishLike2018.copyWith().merge(mergeTextTheme),
+      textTheme: Typography.englishLike2018.copyWith().merge(textTheme),
     );
   }
 
@@ -40,7 +42,7 @@ class PostsTheme {
       primary: Color(0xFF6D4DDB),
       primaryVariant: Color(0xFF904FFF),
       secondary: Color(0xFF147AFC),
-      secondaryVariant: Color(0xFF5277FF), // <---
+      secondaryVariant: Color(0xFF5277FF),
       surface: Color(0xFFFFFFFF),
       background: Color(0xFFF4F4FC),
       error: Color(0xFFE84444),
@@ -51,13 +53,13 @@ class PostsTheme {
       onBackground: Color(0xFF646464),
     );
     final iconTheme = IconThemeData(color: Color(0xFF646464));
-    final mergeTextTheme = defaultTargetPlatform == TargetPlatform.iOS
-        ? Typography.blackCupertino
-        : Typography.blackMountainView;
     return from(
-        colorScheme: scheme,
-        iconTheme: iconTheme,
-        mergeTextTheme: mergeTextTheme);
+      colorScheme: scheme,
+      iconTheme: iconTheme,
+      textTheme: defaultTargetPlatform == TargetPlatform.iOS
+          ? Typography.blackCupertino.merge(ThemeFonts.iOSTextTheme)
+          : Typography.blackMountainView,
+    );
   }
 
   static ThemeData get darkTheme {
@@ -76,12 +78,12 @@ class PostsTheme {
       onBackground: Color(0xFFFFFFFF).withOpacity(0.6),
     );
     final iconTheme = IconThemeData(color: Color(0xFFFFFFFF).withOpacity(0.6));
-    final mergeTextTheme = defaultTargetPlatform == TargetPlatform.iOS
-        ? Typography.whiteCupertino
-        : Typography.whiteMountainView;
     return from(
-        colorScheme: scheme,
-        iconTheme: iconTheme,
-        mergeTextTheme: mergeTextTheme);
+      colorScheme: scheme,
+      iconTheme: iconTheme,
+      textTheme: defaultTargetPlatform == TargetPlatform.iOS
+          ? Typography.whiteCupertino.merge(ThemeFonts.iOSTextTheme)
+          : Typography.whiteMountainView,
+    );
   }
 }

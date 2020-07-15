@@ -29,15 +29,15 @@ class LoginWithBiometricsScreen extends StatelessWidget {
           builder: (context, state) {
             return Stack(
               children: [
-                state.showMnemonic
-                    ? MnemonicVisualizer(
-                        mnemonic: state.mnemonic,
-                        allowExport: backupPhrase ? false : true,
-                        backupPhrase: backupPhrase,
-                      )
-                    : Container(
-                        padding: EdgeInsets.all(16),
-                        child: ListView(
+                Container(
+                  padding: EdgeInsets.all(16),
+                  child: state.showMnemonic
+                      ? MnemonicVisualizer(
+                          mnemonic: state.mnemonic,
+                          allowExport: backupPhrase ? false : true,
+                          backupPhrase: backupPhrase,
+                        )
+                      : ListView(
                           children: [
                             Text(
                               PostsLocalizations.of(context)
@@ -60,15 +60,25 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
+                            CheckBoxButton(
+                              value: state.hasCheckedBox,
+                              child: Expanded(
+                                child: Text(PostsLocalizations.of(context)
+                                    .understoodMnemonicDisclaimer),
+                              ),
+                              onChanged: (_) => _checkBoxChanged(context),
+                            ),
+                            const SizedBox(height: 16),
                             if (!state.showMnemonic)
                               PrimaryButton(
                                 onPressed: () => _enableButtonClicked(context),
+                                enabled: state.hasCheckedBox,
                                 child: Text(PostsLocalizations.of(context)
                                     .viewMnemonic),
                               ),
                           ],
                         ),
-                      ),
+                ),
 
                 // Exporting popup
                 if (state is ExportingMnemonic) ExportMnemonicPopup(),
@@ -78,6 +88,10 @@ class LoginWithBiometricsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _checkBoxChanged(BuildContext context) {
+    BlocProvider.of<MnemonicBloc>(context).add(ToggleCheckBox());
   }
 
   void _enableButtonClicked(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
+
 import './bloc.dart';
 
 /// Represents the Bloc that is used when wanting to display the mnemonic
@@ -50,7 +52,9 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
 
   @override
   Stream<MnemonicState> mapEventToState(MnemonicEvent event) async* {
-    if (event is ShowMnemonic) {
+    if (event is ToggleCheckBox) {
+      yield* _mapToggleCheckBoxToState();
+    } else if (event is ShowMnemonic) {
       yield* _mapShowMnemonicEventToState();
     } else if (event is ShowExportPopup) {
       yield ExportingMnemonic.fromMnemonicState(state);
@@ -61,6 +65,10 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     } else if (event is ExportMnemonic) {
       yield* _mapExportMnemonicEventToState();
     }
+  }
+
+  Stream<MnemonicState> _mapToggleCheckBoxToState() async* {
+    yield state.copyWith(hasCheckedBox: !state.hasCheckedBox);
   }
 
   Stream<MnemonicState> _mapShowMnemonicEventToState() async* {
@@ -100,6 +108,7 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
   Stream<MnemonicState> _mapCloseExportPopupEventToState() async* {
     yield MnemonicState(
       mnemonic: state.mnemonic,
+      hasCheckedBox: state.hasCheckedBox,
       showMnemonic: state.showMnemonic,
     );
   }

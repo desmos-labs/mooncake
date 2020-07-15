@@ -1,6 +1,6 @@
 name: mooncake
 description: A decentralized microblogging application based on Desmos
-version: 0.4.0+04018
+version: 0.4.0+04101
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -81,3 +81,51 @@ flutter:
           weight: 400
         - asset: assets/fonts/montserrat/Montserrat-Medium.ttf
           weight: 500
+    - family: SF-Pro
+      fonts:
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Thin.otf
+          weight: 100
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-ThinItalic.otf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Ultralight.otf
+          weight: 200
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-UltralightItalic.otf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Light.otf
+          weight: 300
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-LightItalic.otf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Regular.otf
+          weight: 400
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-RegularItalic.otf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Medium.otf
+          weight: 500
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-MediumItalic.otf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Semibold.otf
+          weight: 600
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-SemiboldItalic.otf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Bold.otf
+          weight: 700
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-BoldItalic.otf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Heavy.otf
+          weight: 800
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-HeavyItalic.otf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-Black.otf
+          weight: 900
+        - asset: assets/fonts/sf-pro/SF-Pro-Display-BlackItalic.otf
+          weight: 900
+          style: italic
+

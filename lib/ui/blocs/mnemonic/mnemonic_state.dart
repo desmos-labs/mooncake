@@ -7,27 +7,36 @@ import 'package:password_strength/password_strength.dart';
 /// his own mnemonic.
 @immutable
 class MnemonicState extends Equatable {
+  /// Tells whether the user has checked the box required to
+  /// make sure he has read the warning.
+  final bool hasCheckedBox;
+
   final bool showMnemonic;
   final List<String> mnemonic;
 
   MnemonicState({
+    @required this.hasCheckedBox,
     @required this.showMnemonic,
     @required this.mnemonic,
-  })  : assert(showMnemonic != null),
+  })  : assert(hasCheckedBox != null),
+        assert(showMnemonic != null),
         assert(mnemonic != null);
 
   factory MnemonicState.initial() {
     return MnemonicState(
+      hasCheckedBox: false,
       showMnemonic: false,
       mnemonic: [],
     );
   }
 
   MnemonicState copyWith({
+    bool hasCheckedBox,
     bool showMnemonic,
     List<String> mnemonic,
   }) {
     return MnemonicState(
+      hasCheckedBox: hasCheckedBox ?? this.hasCheckedBox,
       showMnemonic: showMnemonic ?? this.showMnemonic,
       mnemonic: mnemonic ?? this.mnemonic,
     );
@@ -35,12 +44,14 @@ class MnemonicState extends Equatable {
 
   @override
   String toString() => 'MnemonicState { '
+      'hasCheckedBox: $hasCheckedBox, '
       'showMnemonic: $showMnemonic '
       ' }';
 
   @override
   List<Object> get props {
     return [
+      hasCheckedBox,
       showMnemonic,
       mnemonic,
     ];
@@ -82,15 +93,21 @@ class ExportingMnemonic extends MnemonicState {
   ExportingMnemonic({
     @required this.encryptPassword,
     @required this.exportingMnemonic,
+    @required bool hasCheckedBox,
     @required bool showMnemonic,
     @required List<String> mnemonic,
   })  : assert(exportingMnemonic != null),
-        super(mnemonic: mnemonic, showMnemonic: showMnemonic);
+        super(
+          hasCheckedBox: hasCheckedBox,
+          mnemonic: mnemonic,
+          showMnemonic: showMnemonic,
+        );
 
   factory ExportingMnemonic.fromMnemonicState(MnemonicState state) {
     return ExportingMnemonic(
       encryptPassword: null,
       exportingMnemonic: false,
+      hasCheckedBox: state.hasCheckedBox,
       showMnemonic: state.showMnemonic,
       mnemonic: state.mnemonic,
     );
@@ -98,12 +115,14 @@ class ExportingMnemonic extends MnemonicState {
 
   @override
   ExportingMnemonic copyWith({
+    bool hasCheckedBox,
     bool showMnemonic,
     List<String> mnemonic,
     String encryptPassword,
     bool exportingMnemonic,
   }) {
     return ExportingMnemonic(
+      hasCheckedBox: hasCheckedBox ?? this.hasCheckedBox,
       showMnemonic: showMnemonic ?? this.showMnemonic,
       mnemonic: mnemonic ?? this.mnemonic,
       encryptPassword: encryptPassword ?? this.encryptPassword,

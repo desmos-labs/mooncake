@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:crypto/crypto.dart';
 
 /// Allows the user to view his mnemonic phrase after inputting the same
 /// password that he had chosen while setting up the account.
@@ -76,7 +76,18 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
-                              _passwordInput(context),
+                              CheckBoxButton(
+                                value: state.hasCheckedBox,
+                                child: Expanded(
+                                  child: Text(
+                                    PostsLocalizations.of(context)
+                                        .understoodMnemonicDisclaimer,
+                                  ),
+                                ),
+                                onChanged: (_) => _checkBoxChanged(context),
+                              ),
+                              const SizedBox(height: 16),
+                              _passwordInput(state, context),
                             ],
                           ),
                   ),
@@ -89,7 +100,11 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
         ));
   }
 
-  Widget _passwordInput(BuildContext context) {
+  void _checkBoxChanged(BuildContext context) {
+    BlocProvider.of<MnemonicBloc>(context).add(ToggleCheckBox());
+  }
+
+  Widget _passwordInput(MnemonicState state, BuildContext context) {
     return Column(
       children: [
         TextField(
@@ -106,7 +121,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
         const SizedBox(height: 16),
         PrimaryButton(
           onPressed: () => _viewMnemonic(context),
-          enabled: enableButton,
+          enabled: state.hasCheckedBox && enableButton,
           child: Text(PostsLocalizations.of(context).viewMnemonic),
         ),
       ],

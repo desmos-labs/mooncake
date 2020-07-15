@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
-
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/account/view/account_options_button.dart';
 
@@ -84,12 +83,8 @@ class AccountAppBar extends StatelessWidget {
                             borderRadius: 60,
                             expanded: false,
                             onPressed: () {
-                              if (isMyProfile) {
-                                BlocProvider.of<NavigatorBloc>(context)
-                                    .add(NavigateToWallet());
-                              } else {
-                                // TODO: Implement follower
-                              }
+                              BlocProvider.of<NavigatorBloc>(context)
+                                  .add(NavigateToWallet());
                             },
                             child: Text(
                               PostsLocalizations.of(context)
