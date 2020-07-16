@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/account/view/account_name_row.dart';
+// import 'package:mooncake/ui/ui.dart';
+// import 'package:mooncake/ui/widgets/account/view/account_name_row.dart';
 
 /// Represents the screen that allows to display the details of a given [user].
 class UserDetailsScreen extends StatelessWidget {
