@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/widgets/export.dart';
+import 'package:mooncake/ui/localization/export.dart';
 
 /// Represents the screen that is shown to the user while the post is loading.
 class PostDetailsLoading extends StatelessWidget {

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'post_comments_list/export.dart';
-import 'post_details_bottom_bar/export.dart';
-import 'post_reactions_list/export.dart';
+import 'widgets/export.dart';
+// import 'post_comments_list/export.dart';
+// import 'post_details_bottom_bar/export.dart';
+// import 'post_reactions_list/export.dart';
 
 /// Represents the main content of the post details screen.
 class PostDetailsMainContent extends StatelessWidget {

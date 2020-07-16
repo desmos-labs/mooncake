@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/post_details_screen/widgets/export.dart';
 
 /// Represents the screen that is shown to the user when he wants
 /// to visualize the details of a specific [postId].
