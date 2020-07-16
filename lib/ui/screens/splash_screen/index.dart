@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
         if (state is LoggedOut) {
           return LoginScreen();
         } else if (state is LoggedIn) {
-          return _homeScreen();
+          return HomeScreen();
         }
 
         return SafeArea(
@@ -39,13 +39,6 @@ class SplashScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _homeScreen() {
-    return BlocProvider(
-      create: (context) => HomeBloc.create(context),
-      child: HomeScreen(),
     );
   }
 }

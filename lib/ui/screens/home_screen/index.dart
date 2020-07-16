@@ -9,42 +9,45 @@ import 'package:mooncake/ui/ui.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        Widget body = Container();
-        if (state.activeTab == AppTab.home) {
+    return BlocProvider(
+      create: (context) => HomeBloc.create(context),
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          Widget body = Container();
+          if (state.activeTab == AppTab.home) {
+            return Scaffold(
+              body: Stack(
+                children: [
+                  Column(
+                    children: [
+                      postsAppBar(context),
+                      Expanded(child: PostsList()),
+                    ],
+                  ),
+                  if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
+                ],
+              ),
+              bottomNavigationBar: SafeArea(child: TabSelector()),
+            );
+          } else if (state.activeTab == AppTab.notifications) {
+            body = NotificationsMainContent();
+          } else if (state.activeTab == AppTab.account) {
+            final state = BlocProvider.of<AccountBloc>(context).state;
+            return UserDetailsScreen(
+              isMyProfile: true,
+              user: (state as LoggedIn).user,
+            );
+          }
+
           return Scaffold(
-            body: Stack(
-              children: [
-                Column(
-                  children: [
-                    postsAppBar(context),
-                    Expanded(child: PostsList()),
-                  ],
-                ),
-                if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
-              ],
-            ),
+            appBar: state.activeTab == AppTab.home
+                ? postsAppBar(context)
+                : accountAppBar(context),
+            body: body,
             bottomNavigationBar: SafeArea(child: TabSelector()),
           );
-        } else if (state.activeTab == AppTab.notifications) {
-          body = NotificationsMainContent();
-        } else if (state.activeTab == AppTab.account) {
-          final state = BlocProvider.of<AccountBloc>(context).state;
-          return UserDetailsScreen(
-            isMyProfile: true,
-            user: (state as LoggedIn).user,
-          );
-        }
-
-        return Scaffold(
-          appBar: state.activeTab == AppTab.home
-              ? postsAppBar(context)
-              : accountAppBar(context),
-          body: body,
-          bottomNavigationBar: SafeArea(child: TabSelector()),
-        );
-      },
+        },
+      ),
     );
   }
 }
