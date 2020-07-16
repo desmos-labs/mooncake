@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:password_strength/password_strength.dart';
-
-enum PasswordSecurity { UNKNOWN, LOW, MEDIUM, HIGH }
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents the state of the screen that allows the user to set a custom
 /// password to protect his account.

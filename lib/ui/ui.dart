@@ -6,3 +6,5 @@ export 'screens/export.dart';
 export 'theme/export.dart';
 export 'widgets/export.dart';
 export 'utils/export.dart';
+// wingman
+export 'models/export.dart';
