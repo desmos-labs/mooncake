@@ -14,7 +14,6 @@ export 'posts_list/export.dart';
 export 'posts_list_item/export.dart';
 export 'recover_account/export.dart';
 export 'top_bar/export.dart';
-export 'wallet/export.dart';
 // wingman
 export 'password_strength_indicator/export.dart';
 export 'account_cover_image_viewer/export.dart';
