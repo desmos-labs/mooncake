@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mooncake/entities/posts/post.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'post_comment_item.dart';
+import 'widgets/export.dart';
 
 /// Represents the list of comments that are associated to a specific post.
 class PostCommentsList extends StatelessWidget {

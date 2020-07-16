@@ -10,7 +10,6 @@ export 'pickers/export.dart';
 export 'popup/export.dart';
 export 'post_actions/export.dart';
 export 'post_content/export.dart';
-export 'post_details/export.dart';
 export 'posts_list/export.dart';
 export 'posts_list_item/export.dart';
 export 'recover_account/export.dart';

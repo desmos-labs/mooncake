@@ -10,7 +10,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import './bloc.dart';
+import 'export.dart';
 
 /// Represents the Bloc that handles the event for the mnemonic backup restore.
 class RestoreBackupBloc extends Bloc<RestoreBackupEvent, RestoreBackupState> {
