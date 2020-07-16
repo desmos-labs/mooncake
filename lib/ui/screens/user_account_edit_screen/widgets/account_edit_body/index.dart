@@ -4,9 +4,6 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/screens/user_account_edit_screen/blocs/export.dart';
 import 'widgets/export.dart';
 
-// import 'account_profile_image_editor.dart';
-// import 'account_edit_error_popup.dart';
-
 class AccountEditorBody extends StatelessWidget {
   static const double COVER_HEIGHT = 160;
   static const double PICTURE_RADIUS = 40;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/user_account_edit_screen/blocs/export.dart';
 
 /// Represents the popup that is displayed to the user when an error during
 /// the editing of the profile is emitted.
