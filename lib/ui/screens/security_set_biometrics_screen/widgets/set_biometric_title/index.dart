@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/security_set_biometrics_screen/blocs/export.dart';
 
 /// Represents the title of the biometric setting screen.
 class SetBiometricTitle extends StatelessWidget {

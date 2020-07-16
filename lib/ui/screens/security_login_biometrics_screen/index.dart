@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/ui/blocs/mnemonic/mnemonic_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the screen that allows the user to view his mnemonic phrase

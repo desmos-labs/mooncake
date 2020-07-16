@@ -13,7 +13,6 @@ export 'post_content/export.dart';
 export 'posts_list/export.dart';
 export 'posts_list_item/export.dart';
 export 'recover_account/export.dart';
-export 'security_set_biometric/export.dart';
 export 'security_set_password/export.dart';
 export 'top_bar/export.dart';
 export 'wallet/export.dart';

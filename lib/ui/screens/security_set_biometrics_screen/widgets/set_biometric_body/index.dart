@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mooncake/dependency_injection/injector.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/screens/security_set_biometrics_screen/blocs/export.dart';
 
 /// Represents the body of the biometric authentication set screen.
 class SetBiometricBody extends StatelessWidget {

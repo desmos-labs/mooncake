@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mooncake/ui/localization/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the content of the

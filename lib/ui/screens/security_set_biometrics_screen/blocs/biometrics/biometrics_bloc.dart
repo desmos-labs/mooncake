@@ -9,7 +9,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import 'bloc.dart';
+import 'export.dart';
 
 /// Represents the Bloc that handles the changes in the biometrics setting
 /// of the user.
