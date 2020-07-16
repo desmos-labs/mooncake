@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/security_set_password/password_strength_indicator.dart';
 
 /// Represents the popup that allows the user to export his mnemonic to an
 /// encrypted field.

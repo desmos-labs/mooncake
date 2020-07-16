@@ -7,7 +7,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import 'bloc.dart';
+import 'export.dart';
 
 /// Represents the Bloc that is used inside the screen allowing the user
 /// to set a custom password to protect his account.

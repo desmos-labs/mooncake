@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'password_strength_indicator.dart';
-import 'password_input_field.dart';
+import 'package:mooncake/ui/screens/security_set_password_screen/blocs/export.dart';
+import 'widgets/export.dart';
+// import 'password_strength_indicator.dart';
 
 /// Contains the content of the screen that allows the user to set
 /// a custom password to protect its account.

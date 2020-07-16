@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'blocs/export.dart';
+import 'widgets/export.dart';
 
 /// Represents the screen that is shown to the user when he needs to set
 /// the password to protect his account.
