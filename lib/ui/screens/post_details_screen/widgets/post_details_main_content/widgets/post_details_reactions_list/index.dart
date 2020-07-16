@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/screens/post_details_screen/widgets/export.dart';
 import 'widgets/export.dart';
 
 /// Represents the list of all the reactions added to a post.
@@ -10,7 +9,7 @@ class PostReactionsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostDetailsBloc, PostDetailsState>(
       builder: (BuildContext context, PostDetailsState state) {
-        if (state is PostDetailsLoading) {
+        if (state is LoadingPostDetails) {
           return Container();
         }
 
