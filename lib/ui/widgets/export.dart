@@ -19,3 +19,4 @@ export 'wallet/export.dart';
 export 'password_strength_indicator/export.dart';
 export 'account_cover_image_viewer/export.dart';
 export 'account_avatar/export.dart';
+export 'posts_list_empty_container/export.dart';
