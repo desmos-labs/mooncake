@@ -16,7 +16,7 @@ export 'post_create_screen/export.dart';
 export 'post_details_screen/export.dart';
 export 'security_set_password_screen/export.dart';
 export 'security_set_biometrics_screen/export.dart';
-export 'security_backup_mnemonic_confirmation/export.dart';
+export 'security_backup_mnemonic_confirmation_screen/export.dart';
 export 'security_login_password_screen/export.dart';
 export 'security_login_biometrics_screen/export.dart';
 export 'user_wallet_screen/export.dart';
