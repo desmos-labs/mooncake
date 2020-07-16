@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'image_picker.dart';
-
-import '../view/export.dart';
+import 'package:mooncake/ui/screens/user_account_edit_screen/blocs/export.dart';
+import 'widgets/export.dart';
 
 /// Represents the editor that can be used to change the account cover.
 class AccountCoverImageEditor extends StatelessWidget {

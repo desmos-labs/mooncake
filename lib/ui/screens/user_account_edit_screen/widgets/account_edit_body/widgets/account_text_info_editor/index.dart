@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/account/edit/account_text_input.dart';
+import 'package:mooncake/ui/screens/user_account_edit_screen/blocs/export.dart';
+import 'widgets/export.dart';
 
 /// Allows to edit the textual information of the user profile.
 class AccountTextInfoEditor extends StatelessWidget {

@@ -9,7 +9,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import './bloc.dart';
+import 'export.dart';
 
 class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
   final MooncakeAccount _account;
