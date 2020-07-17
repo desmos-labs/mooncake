@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
+// import 'package:mooncake/ui/ui.dart';
+import 'blocs/export.dart';
 
 /// Represents the dialog that is presented to the user when he wants to
 /// report a post.

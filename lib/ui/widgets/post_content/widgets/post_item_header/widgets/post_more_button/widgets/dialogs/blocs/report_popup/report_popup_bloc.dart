@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import './bloc.dart';
+import 'export.dart';
 
 class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
   static const REASONS = {

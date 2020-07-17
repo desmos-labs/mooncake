@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/localization/export.dart';
-import 'package:mooncake/ui/ui.dart';
+// import 'package:mooncake/ui/ui.dart';
 
-import 'popup_report_option.dart';
-import 'popup_report_text_input.dart';
+// import 'popup_report_option.dart';
+// import 'popup_report_text_input.dart';
 
 /// Represents the popup that is shown to the user when he wants to
 /// report a single post.

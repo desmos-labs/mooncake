@@ -4,7 +4,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'post_more_button.dart';
+// import 'post_more_button.dart';
 
 /// Contains the info that are shown on top of a [PostListItem]. The following
 /// data are :
