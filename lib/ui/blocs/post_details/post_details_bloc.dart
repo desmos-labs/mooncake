@@ -9,7 +9,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import './bloc.dart';
+import 'export.dart';
 
 /// Represents the Bloc that should be used inside the screen that allows
 /// to visualize the details of a single post.
