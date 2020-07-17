@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/localization/export.dart';
-
-import 'notifications_list.dart';
+import 'widgets/export.dart';
 
 /// Represents the main content of the notifications screen containing a
 /// tab page that allows to view both all the notifications and the mentions.

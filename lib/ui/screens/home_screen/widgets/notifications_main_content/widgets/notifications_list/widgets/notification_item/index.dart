@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/localization/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents a single notification item inside the list of notifications.

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'notification_item.dart';
+import 'widgets/export.dart';
 
 /// Represents a notifications list that can also be filtered using
 /// the given [filter].
