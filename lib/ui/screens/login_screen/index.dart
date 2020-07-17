@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'widgets/export.dart';
 
 /// Screen that is shown to the user when he needs to log into the application.
 /// From this screen, he can perform two actions in order to log in:

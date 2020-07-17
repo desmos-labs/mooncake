@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'login_terms_conditions.dart';
+import 'widgets/export.dart';
 
 /// Represents the main login content containing the title and the
 /// login and recover account buttons.

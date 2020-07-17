@@ -6,7 +6,6 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 import 'posts_bottom_loader.dart';
-import 'posts_list_empty_container.dart';
 import 'posts_list_loading_container.dart';
 import 'posts_list_syncing_indicator.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/app/app_tab.dart';
 import 'package:mooncake/ui/ui.dart';
 
-import 'bottom_navigation_button.dart';
+import 'widgets/export.dart';
 
 /// Allows the user to select which tab should be visible inside
 /// the [HomeScreen].
