@@ -1,1 +1,1 @@
-export 'bottom_navigation_button/export.dart';
+export 'bottom_navigation_button/index.dart';

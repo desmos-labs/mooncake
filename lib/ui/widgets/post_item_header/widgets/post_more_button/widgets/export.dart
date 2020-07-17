@@ -1,1 +1,1 @@
-export 'dialogs/export.dart';
+export 'dialogs/index.dart';

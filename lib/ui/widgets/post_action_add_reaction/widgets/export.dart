@@ -1,1 +1,1 @@
-export 'emoji_picker/export.dart';
+export 'emoji_picker/index.dart';

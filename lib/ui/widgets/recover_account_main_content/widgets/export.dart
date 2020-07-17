@@ -1,1 +1,1 @@
-export 'mnemonic_input_item/export.dart';
+export 'mnemonic_input_item/index.dart';
