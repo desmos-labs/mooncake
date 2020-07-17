@@ -25,3 +25,4 @@ export 'post_images_previewer/export.dart';
 export 'post_item_header/export.dart';
 export 'post_content_message/export.dart';
 export 'post_reactions_list/export.dart';
+export 'recover_account_words_list/export.dart';

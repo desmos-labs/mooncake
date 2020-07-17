@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'mnemonic_input_item.dart';
+import 'widgets/export.dart';
 
 /// Represents the main content of the recover account screen.
 class RecoverAccountMainContent extends StatelessWidget {
