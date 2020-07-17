@@ -1,14 +1,8 @@
 export 'app/export.dart';
 export 'bottom_navigation_bar/export.dart';
 export 'buttons/export.dart';
-export 'loading_indicator.dart';
-// export 'mnemonic/export.dart';
-// export 'notifications_list/export.dart';
 export 'post_content/export.dart';
 export 'posts_list_item/export.dart';
-export 'recover_account/export.dart';
-// export 'top_bar/export.dart';
-// wingman
 export 'password_strength_indicator/export.dart';
 export 'account_cover_image_viewer/export.dart';
 export 'account_avatar/export.dart';
@@ -26,3 +20,5 @@ export 'post_item_header/export.dart';
 export 'post_content_message/export.dart';
 export 'post_reactions_list/export.dart';
 export 'recover_account_words_list/export.dart';
+export 'loading_indicator/export.dart';
+export 'recover_account_main_content/export.dart';
