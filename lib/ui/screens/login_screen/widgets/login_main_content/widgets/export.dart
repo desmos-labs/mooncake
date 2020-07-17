@@ -1,1 +1,1 @@
-export 'login_terms_conditions/export.dart';
+export 'login_terms_conditions/index.dart';

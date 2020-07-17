@@ -1,1 +1,1 @@
-export 'notification_item/export.dart';
+export 'notification_item/index.dart';

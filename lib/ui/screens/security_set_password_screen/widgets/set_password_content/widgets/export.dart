@@ -1,1 +1,1 @@
-export 'password_input_field/export.dart';
+export 'password_input_field/index.dart';

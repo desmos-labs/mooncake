@@ -1,1 +1,1 @@
-export 'post_details_reactions_list/export.dart';
+export 'post_details_reactions_list/index.dart';

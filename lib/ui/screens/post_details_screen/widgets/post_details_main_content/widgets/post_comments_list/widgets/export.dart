@@ -1,1 +1,1 @@
-export 'post_comment_item/export.dart';
+export 'post_comment_item/index.dart';
