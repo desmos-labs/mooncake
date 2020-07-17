@@ -9,9 +9,11 @@ class PostsTheme {
     @required ColorScheme colorScheme,
     @required IconThemeData iconTheme,
     @required TextTheme textTheme,
+    @required Brightness brightness,
   }) {
     return ThemeData.from(colorScheme: colorScheme).copyWith(
       appBarTheme: AppBarTheme(
+        brightness: brightness,
         elevation: 0,
         color: Colors.transparent,
         textTheme: Typography.englishLike2018.copyWith(
@@ -58,6 +60,7 @@ class PostsTheme {
     return from(
       colorScheme: scheme,
       iconTheme: iconTheme,
+      brightness: Brightness.light,
       textTheme: defaultTargetPlatform == TargetPlatform.iOS
           ? Typography.blackCupertino.merge(ThemeFonts.iOSTextTheme)
           : Typography.blackMountainView,
@@ -83,6 +86,7 @@ class PostsTheme {
     return from(
       colorScheme: scheme,
       iconTheme: iconTheme,
+      brightness: Brightness.dark,
       textTheme: defaultTargetPlatform == TargetPlatform.iOS
           ? Typography.whiteCupertino.merge(ThemeFonts.iOSTextTheme)
           : Typography.whiteMountainView,
