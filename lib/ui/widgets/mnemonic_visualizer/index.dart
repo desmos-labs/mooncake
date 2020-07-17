@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mooncake/ui/ui.dart';
-
-import 'mnemonic_item.dart';
+import 'widgets/export.dart';
 
 /// Allows to visualize the mnemonic that the user has previously either
 /// inserted himself or created from scratch.
