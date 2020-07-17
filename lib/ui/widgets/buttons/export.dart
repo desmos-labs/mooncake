@@ -1,5 +1,5 @@
-export 'check_box_button/export.dart';
-export 'primary_light_button/export.dart';
-export 'primary_button/export.dart';
-export 'secondary_button/export.dart';
-export 'secondary_invert_button/export.dart';
+export 'check_box_button/index.dart';
+export 'primary_light_button/index.dart';
+export 'primary_button/index.dart';
+export 'secondary_button/index.dart';
+export 'secondary_invert_button/index.dart';
