@@ -3,10 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-
-import 'action_bar/export.dart';
-import 'popups/export.dart';
-import 'reactions/post_reactions_list.dart';
+import 'widgets/export.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
 /// It is made of the following components:

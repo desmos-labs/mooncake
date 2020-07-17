@@ -24,3 +24,4 @@ export 'post_action_reaction/export.dart';
 export 'post_images_previewer/export.dart';
 export 'post_item_header/export.dart';
 export 'post_content_message/export.dart';
+export 'post_reactions_list/export.dart';
