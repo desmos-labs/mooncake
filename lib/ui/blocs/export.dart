@@ -1,9 +1,9 @@
-export 'account/export.dart';
-export 'home/bloc.dart';
-export 'mnemonic/bloc.dart';
-export 'navigator/bloc.dart';
-export 'notifications/bloc.dart';
+export 'account_read/export.dart';
+export 'home/export.dart';
+export 'mnemonic/export.dart';
+export 'navigator/export.dart';
+export 'notifications/export.dart';
 export 'posts/export.dart';
-export 'recover_account/bloc.dart';
+export 'recover_account/export.dart';
 export 'simple_bloc_delegate.dart';
 export 'security/export.dart';

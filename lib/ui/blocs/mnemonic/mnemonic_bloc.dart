@@ -10,7 +10,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
-import './bloc.dart';
+import 'export.dart';
 
 /// Represents the Bloc that is used when wanting to display the mnemonic
 /// to the user.
