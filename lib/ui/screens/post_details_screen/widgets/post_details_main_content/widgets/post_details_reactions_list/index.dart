@@ -4,7 +4,7 @@ import 'package:mooncake/ui/ui.dart';
 import 'widgets/export.dart';
 
 /// Represents the list of all the reactions added to a post.
-class PostReactionsList extends StatelessWidget {
+class PostDetailsReactionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostDetailsBloc, PostDetailsState>(
