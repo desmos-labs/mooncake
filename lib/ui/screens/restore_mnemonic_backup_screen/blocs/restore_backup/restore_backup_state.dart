@@ -16,6 +16,7 @@ class RestoreBackupState extends Equatable {
       return false;
     }
   }
+
   final bool isPasswordValid;
 
   final bool restoring;
