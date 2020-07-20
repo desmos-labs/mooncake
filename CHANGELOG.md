@@ -1,3 +1,7 @@
+# Version 0.4.2
+## Bug fixes
+- Fixed a bug that caused the funds to not be asked when needed
+
 # Version 0.4.1
 ## Changes
 - Added the proper error visualization inside the mnemonic recovery screen
