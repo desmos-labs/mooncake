@@ -3,19 +3,17 @@ import 'package:flutter/material.dart';
 
 import 'fonts.dart';
 
-export 'colors.dart';
-export 'decorations.dart';
-export 'spaces.dart';
-
 /// Allows to easily retrieve the data of the application theme
 class PostsTheme {
   static ThemeData from({
     @required ColorScheme colorScheme,
     @required IconThemeData iconTheme,
     @required TextTheme textTheme,
+    @required Brightness brightness,
   }) {
     return ThemeData.from(colorScheme: colorScheme).copyWith(
       appBarTheme: AppBarTheme(
+        brightness: brightness,
         elevation: 0,
         color: Colors.transparent,
         textTheme: Typography.englishLike2018.copyWith(
@@ -33,7 +31,13 @@ class PostsTheme {
         focusColor: colorScheme.primary,
       ),
       buttonColor: colorScheme.primary,
-      textTheme: Typography.englishLike2018.copyWith().merge(textTheme),
+      textTheme: Typography.englishLike2018
+          .copyWith(
+            bodyText2: Typography.englishLike2018.bodyText2.copyWith(
+              fontSize: 16,
+            ),
+          )
+          .merge(textTheme),
     );
   }
 
@@ -56,6 +60,7 @@ class PostsTheme {
     return from(
       colorScheme: scheme,
       iconTheme: iconTheme,
+      brightness: Brightness.light,
       textTheme: defaultTargetPlatform == TargetPlatform.iOS
           ? Typography.blackCupertino.merge(ThemeFonts.iOSTextTheme)
           : Typography.blackMountainView,
@@ -81,6 +86,7 @@ class PostsTheme {
     return from(
       colorScheme: scheme,
       iconTheme: iconTheme,
+      brightness: Brightness.dark,
       textTheme: defaultTargetPlatform == TargetPlatform.iOS
           ? Typography.whiteCupertino.merge(ThemeFonts.iOSTextTheme)
           : Typography.whiteMountainView,
