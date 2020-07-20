@@ -48,7 +48,6 @@ void main() {
       chainHelper: chainHelper,
       graphQLClient: graphQlClient,
       msgConverter: UserMsgConverter(),
-      faucetEndpoint: server.url,
       remoteMediasSource: mediasSource,
       userSource: userSourceMock,
     );

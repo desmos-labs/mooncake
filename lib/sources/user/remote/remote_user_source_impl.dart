@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:alan/alan.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
-import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
@@ -14,7 +12,6 @@ import 'helpers/export.dart';
 
 /// Implementation of [RemoteUserSource]
 class RemoteUserSourceImpl implements RemoteUserSource {
-  final String _faucetEndpoint;
   final GraphQLClient _gqlClient;
   final UserMsgConverter _msgConverter;
 
@@ -23,7 +20,6 @@ class RemoteUserSourceImpl implements RemoteUserSource {
   final RemoteMediasSource _remoteMediasSource;
 
   RemoteUserSourceImpl({
-    @required String faucetEndpoint,
     @required GraphQLClient graphQLClient,
     @required UserMsgConverter msgConverter,
     @required ChainSource chainHelper,
@@ -33,8 +29,6 @@ class RemoteUserSourceImpl implements RemoteUserSource {
         this._chainSource = chainHelper,
         assert(graphQLClient != null),
         _gqlClient = graphQLClient,
-        assert(faucetEndpoint != null),
-        _faucetEndpoint = faucetEndpoint,
         assert(msgConverter != null),
         _msgConverter = msgConverter,
         assert(userSource != null),
@@ -67,11 +61,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
 
   @override
   Future<void> fundAccount(MooncakeAccount user) async {
-    await http.Client().post(
-      _faucetEndpoint,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"address": user.address}),
-    );
+    return _chainSource.fundAccount(user.address);
   }
 
   @override
