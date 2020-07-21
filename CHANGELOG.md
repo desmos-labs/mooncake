@@ -2,6 +2,7 @@
 ## Bug fixes
 - Fixed a bug that caused the funds to not be asked when needed
 - Fixed the visualization of poll results
+- Fixed a bug that causes a wrong visualization of a post details
 
 # Version 0.4.1
 ## Changes
