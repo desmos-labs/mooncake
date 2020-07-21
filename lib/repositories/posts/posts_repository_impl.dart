@@ -59,9 +59,8 @@ class PostsRepositoryImpl extends PostsRepository {
   Future<Post> getPostById(String postId, {bool refresh = false}) async {
     if (refresh) {
       final updated = await _remotePostsSource.getPostById(postId);
-      await _localPostsSource.savePost(updated);
+      if (updated != null) await _localPostsSource.savePost(updated);
     }
-
     return _localPostsSource.getPostById(postId);
   }
 
