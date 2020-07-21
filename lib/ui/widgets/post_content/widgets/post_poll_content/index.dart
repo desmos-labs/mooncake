@@ -32,18 +32,16 @@ class PostPollContent extends StatelessWidget {
                 Text(post.poll.question, textAlign: TextAlign.center),
                 const SizedBox(height: ThemeSpaces.smallGutter),
                 if (!hasVoted)
-                  _buildListView((option) {
+                  _buildListView((option, index) {
                     return PostPollOptionItem(
                       post: post,
                       option: option,
                     );
                   }),
                 if (hasVoted)
-                  _buildListView((option) {
+                  _buildListView((option, index) {
                     return PostPollResultItem(
-                      poll: post.poll,
-                      option: option,
-                    );
+                        poll: post.poll, option: option, index: index);
                   }),
                 if (hasVoted) _votesAndEnding(context)
               ],
@@ -80,12 +78,12 @@ class PostPollContent extends StatelessWidget {
     );
   }
 
-  Widget _buildListView(Widget Function(PollOption option) builder) {
+  Widget _buildListView(Widget Function(PollOption option, int index) builder) {
     return ListView.separated(
       itemCount: post.poll.options.length,
       itemBuilder: (context, index) {
         final option = post.poll.options[index];
-        return builder(option);
+        return builder(option, index);
       },
       separatorBuilder: (context, index) {
         return const SizedBox(height: ThemeSpaces.smallGutter);
