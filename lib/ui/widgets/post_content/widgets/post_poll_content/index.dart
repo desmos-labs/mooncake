@@ -83,6 +83,7 @@ class PostPollContent extends StatelessWidget {
 
   Widget _buildListView(Widget Function(PollOption option, int index) builder) {
     return ListView.separated(
+      padding: EdgeInsets.only(top: 15, bottom: 10),
       itemCount: post.poll.options.length,
       itemBuilder: (context, index) {
         final option = post.poll.options[index];
