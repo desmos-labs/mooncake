@@ -11,6 +11,7 @@ class PostPollResultItem extends StatelessWidget {
   /// Represents the percentage of times that this option has
   /// been chosen over all the others.
   final double percentage;
+  BorderRadius borderRadiusResults;
 
   PostPollResultItem({
     Key key,
@@ -20,47 +21,44 @@ class PostPollResultItem extends StatelessWidget {
                 .where((answer) => answer.answer == option.id)
                 .length) /
             poll.userAnswers.length,
-        super(key: key);
+        super(key: key) {
+    borderRadiusResults = percentage >= 0.95
+        ? BorderRadius.circular(8)
+        : BorderRadius.only(
+            topLeft: Radius.circular(8),
+            bottomLeft: Radius.circular(8),
+          );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // print('media thing');
-    // print(MediaQuery.of(context).size.width * percentage);
-    // print('no percentage');
-    // print(MediaQuery.of(context).size.width);
-    print('=================');
-    print(percentage);
     return Container(
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
-          Container(
-            // width: MediaQuery.of(context).size.width * 1,
-            width: double.infinity,
-            height: 30.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(width: 1.0, color: Colors.blue),
-              // color: Theme.of(context).accentColor.withOpacity(0.25),
+          FractionallySizedBox(
+            widthFactor: 1,
+            child: Container(
+              height: 35.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(width: 1.0, color: Colors.blue),
+              ),
             ),
           ),
-          // Positioned.fill(
-          // child:
-          Container(
-            // width: MediaQuery.of(context).size.width * percentage,
-            width: MediaQuery.of(context).size.width * 0.88,
-            height: 30.0,
-            decoration: BoxDecoration(
-              // borderRadius: BorderRadius.only(
-              //   topLeft: Radius.circular(8),
-              //   bottomLeft: Radius.circular(8),
-              // ),
-              borderRadius: BorderRadius.circular(8),
-              // color: Theme.of(context).accentColor.withOpacity(0.25),
-              color: Colors.blue,
+          FractionallySizedBox(
+            widthFactor: percentage,
+            child: Container(
+              // width: MediaQuery.of(context).size.width * percentage,
+              // width: MediaQuery.of(context).size.width * 0.60,
+              height: 35.0,
+              decoration: BoxDecoration(
+                borderRadius: borderRadiusResults,
+                // color: Theme.of(context).accentColor.withOpacity(0.25),
+                color: Colors.blue,
+              ),
             ),
           ),
-          // ),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: ThemeSpaces.smallMargin,
@@ -70,13 +68,18 @@ class PostPollResultItem extends StatelessWidget {
               children: [
                 Text(
                   "${(percentage * 100).toInt()}%",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                 ),
                 const SizedBox(width: 4),
-                Text(option.text),
+                Text(
+                  option.text,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
               ],
             ),
           ),
