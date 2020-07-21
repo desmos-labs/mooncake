@@ -10,18 +10,19 @@ class PostPollResultItem extends StatelessWidget {
 
   /// Represents the percentage of times that this option has
   /// been chosen over all the others.
-  final double percentage;
+  double percentage;
+  int currentPollLength;
   BorderRadius borderRadiusResults;
 
   PostPollResultItem({
     Key key,
     @required this.poll,
     @required this.option,
-  })  : percentage = (poll.userAnswers
-                .where((answer) => answer.answer == option.id)
-                .length) /
-            poll.userAnswers.length,
+  })  : currentPollLength = poll.userAnswers
+            .where((answer) => answer.answer == option.id)
+            .length,
         super(key: key) {
+    percentage = currentPollLength / poll.userAnswers.length;
     borderRadiusResults = percentage >= 0.95
         ? BorderRadius.circular(8)
         : BorderRadius.only(
@@ -61,23 +62,39 @@ class PostPollResultItem extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: ThemeSpaces.smallMargin,
+              horizontal: ThemeSpaces.mediumMargin,
               vertical: ThemeSpaces.smallMargin,
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "${(percentage * 100).toInt()}%",
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                ),
-                const SizedBox(width: 4),
                 Text(
                   option.text,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.blue,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '(${currentPollLength})',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 14.0,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' ${(percentage * 100).toInt()}%',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
