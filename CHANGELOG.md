@@ -1,6 +1,7 @@
 # Version 0.4.2
 ## Bug fixes
 - Fixed a bug that caused the funds to not be asked when needed
+- Fixed the visualization of poll results
 
 # Version 0.4.1
 ## Changes
@@ -12,7 +13,6 @@
 - Fixed the visualization of the posts' messages to make sure newlines are shown properly
 - Fixed the visualization of the posts' times based on the devices location
 - Fixed the font visualization on iOS devices
-- Fixed the visualization of poll results
 
 # Version 0.4.0
 ## Changes
