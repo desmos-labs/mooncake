@@ -9,13 +9,7 @@ class PostPollResultItem extends StatelessWidget {
   final PostPoll poll;
   final PollOption option;
   final int index;
-  final Color selectedColor;
-
-  /// Represents the percentage of times that this option has
-  /// been chosen over all the others.
-  double percentage;
-  int currentPollLength;
-  BorderRadius borderRadiusResults;
+  final int currentPollLength;
 
   PostPollResultItem({
     Key key,
@@ -25,19 +19,19 @@ class PostPollResultItem extends StatelessWidget {
   })  : currentPollLength = poll.userAnswers
             .where((answer) => answer.answer == option.id)
             .length,
-        selectedColor = pollColors[index % pollColors.length],
-        super(key: key) {
-    percentage = currentPollLength / poll.userAnswers.length;
-    borderRadiusResults = percentage >= 0.95
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final double percentage = currentPollLength / poll.userAnswers.length;
+    final BorderRadius borderRadiusResults = percentage >= 0.95
         ? BorderRadius.circular(8)
         : BorderRadius.only(
             topLeft: Radius.circular(8),
             bottomLeft: Radius.circular(8),
           );
-  }
+    final Color selectedColor = pollColors[index % pollColors.length];
 
-  @override
-  Widget build(BuildContext context) {
     return Container(
       child: Stack(
         alignment: Alignment.centerLeft,
