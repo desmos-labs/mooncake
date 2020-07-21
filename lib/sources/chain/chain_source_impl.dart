@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
@@ -40,12 +41,21 @@ void initCodec() {
 /// Allows to easily perform chain-related actions such as querying the
 /// chain state or sending transactions to it.
 class ChainSourceImpl extends ChainSource {
+  final String _faucetEndpoint;
   final String _lcdEndpoint;
+
+  final http.Client _httpClient;
 
   ChainSourceImpl({
     @required String lcdEndpoint,
+    @required String faucetEndpoint,
+    @required http.Client httpClient,
   })  : assert(lcdEndpoint != null && lcdEndpoint.isNotEmpty),
-        _lcdEndpoint = lcdEndpoint {
+        _lcdEndpoint = lcdEndpoint,
+        assert(faucetEndpoint != null && faucetEndpoint.isNotEmpty),
+        _faucetEndpoint = faucetEndpoint,
+        assert(httpClient != null),
+        _httpClient = httpClient {
     // This call is duplicated here due to the fact that [sendTxBackground]
     // will be run on a different isolate and Dart singletons are not
     // cross-threads so this Codec is another instance from the one
@@ -106,11 +116,49 @@ class ChainSourceImpl extends ChainSource {
     Wallet wallet, {
     List<StdCoin> fees,
   }) async {
-    final data = TxData(
-      messages: messages,
-      wallet: wallet,
-      feeAmount: fees ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
-    );
+    if (messages.isEmpty) {
+      return null;
+    }
+
+    // Set the default fees if null
+    fees = fees ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "100000")];
+
+    // Get the account data
+    CosmosAccount account;
+    try {
+      account = await QueryHelper.getAccountData(
+        _lcdEndpoint,
+        wallet.bech32Address,
+      );
+    } on Exception catch (e) {
+      return TransactionResult.fromException(e);
+    }
+
+    // Get the amount of fee tokens the user has
+    final balance = account.coins
+            .firstWhere(
+              (coin) => coin.denom == Constants.FEE_TOKEN,
+              orElse: () => null,
+            )
+            ?.amount ??
+        "0";
+
+    // Get the amount of fee token required to be paid
+    final requiredFee = fees
+            .firstWhere(
+              (coin) => coin.denom == Constants.FEE_TOKEN,
+              orElse: () => null,
+            )
+            ?.amount ??
+        "0";
+
+    if (int.parse(balance) < int.parse(requiredFee)) {
+      // If the amount of tokens the user has is less than the one required
+      // Get some more funds
+      await fundAccount(wallet.bech32Address);
+    }
+
+    final data = TxData(messages: messages, wallet: wallet, feeAmount: fees);
     return compute(sendTxBackground, data);
   }
 
@@ -122,5 +170,14 @@ class ChainSourceImpl extends ChainSource {
       Logger.log(e);
       return null;
     }
+  }
+
+  @override
+  Future<void> fundAccount(String address) async {
+    await _httpClient.post(
+      _faucetEndpoint,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"address": address}),
+    );
   }
 }
