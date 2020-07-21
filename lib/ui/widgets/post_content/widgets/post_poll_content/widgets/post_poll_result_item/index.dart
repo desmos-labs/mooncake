@@ -70,10 +70,15 @@ class PostPollResultItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  option.text,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Text(
+                    option.text,
+                    softWrap: false,
+                    overflow: TextOverflow.fade,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
                 RichText(
