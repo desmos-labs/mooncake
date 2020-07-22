@@ -1,4 +1,3 @@
-// wingman new exports
 export 'splash_screen/index.dart';
 export 'login_screen/index.dart';
 export 'recover_account_screen/index.dart';

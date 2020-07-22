@@ -87,8 +87,6 @@ class PostCreateActions extends StatelessWidget {
   }
 
   void _createPoll(BuildContext context) {
-    // wingman clean up later
-    // BlocProvider.of<PostInputBloc>(context).add(CreatePoll());
     BlocProvider.of<PostInputBloc>(context).add(TogglePollDisplay());
   }
 }
