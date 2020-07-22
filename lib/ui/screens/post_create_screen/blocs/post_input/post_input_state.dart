@@ -75,7 +75,7 @@ class PostInputState extends Equatable {
       allowsComments: allowsComments ?? this.allowsComments,
       saving: saving ?? this.saving,
       medias: medias ?? this.medias,
-      poll: poll ?? this.poll,
+      poll: poll == null ? poll : poll ?? this.poll,
       showPopup: showPopup ?? this.showPopup,
       willShowPopupAgain: willShowPopupAgain ?? this.willShowPopupAgain,
     );

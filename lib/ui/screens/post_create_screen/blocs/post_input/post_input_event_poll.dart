@@ -6,6 +6,9 @@ abstract class PostInputPollEvent extends PostInputEvent {}
 /// Tells the Bloc that a poll needs to be added to the post.
 class CreatePoll extends PostInputPollEvent {}
 
+/// Tells the bloc to toggle the poll display
+class TogglePollDisplay extends PostInputPollEvent {}
+
 /// Tells the Bloc that the poll question needs to be updated.
 class UpdatePollQuestion extends PostInputPollEvent {
   final String question;

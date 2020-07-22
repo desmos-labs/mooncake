@@ -24,6 +24,9 @@ class CreatePostContent extends StatelessWidget {
     final padding = 8.0;
     return BlocBuilder<PostInputBloc, PostInputState>(
       builder: (context, state) {
+        // wingman clean up
+        print('======create post conetnt======');
+        print(state.poll);
         return SafeArea(
           child: Column(
             children: <Widget>[

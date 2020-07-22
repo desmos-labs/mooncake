@@ -20,6 +20,8 @@ class PostCreateActions extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostInputBloc, PostInputState>(
       builder: (context, state) {
+        final Color pollSelectedColor =
+            state.poll != null ? Theme.of(context).colorScheme.primary : null;
         return Container(
           height: height,
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -56,7 +58,10 @@ class PostCreateActions extends StatelessWidget {
                     IconButton(
                       tooltip: PostsLocalizations.of(context)
                           .createPostCreatePollButtonHint,
-                      icon: Icon(MooncakeIcons.poll),
+                      icon: Icon(
+                        MooncakeIcons.poll,
+                        color: pollSelectedColor,
+                      ),
                       onPressed: () => _createPoll(context),
                     )
                   ],
@@ -82,6 +87,8 @@ class PostCreateActions extends StatelessWidget {
   }
 
   void _createPoll(BuildContext context) {
-    BlocProvider.of<PostInputBloc>(context).add(CreatePoll());
+    // wingman clean up later
+    // BlocProvider.of<PostInputBloc>(context).add(CreatePoll());
+    BlocProvider.of<PostInputBloc>(context).add(TogglePollDisplay());
   }
 }
