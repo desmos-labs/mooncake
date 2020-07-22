@@ -29,7 +29,7 @@ class PostListItem extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 0),
+      margin: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
       child: Material(
         color: color,
         borderRadius: BorderRadius.circular(4.0),
