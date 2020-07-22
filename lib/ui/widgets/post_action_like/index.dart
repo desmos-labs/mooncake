@@ -11,12 +11,14 @@ class PostLikeAction extends StatelessWidget {
 
   final bool isLiked;
   final Post post;
+  final Color color;
 
   const PostLikeAction({
     Key key,
     @required this.isLiked,
     @required this.post,
     this.size = 24.0,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -25,8 +27,8 @@ class PostLikeAction extends StatelessWidget {
         ? Icon(MooncakeIcons.heartF, size: size)
         : Icon(MooncakeIcons.heart, size: size);
 
-    final color = isLiked
-        ? Theme.of(context).colorScheme.error
+    final heartColor = isLiked
+        ? color != null ? color : Theme.of(context).colorScheme.error
         : Theme.of(context).iconTheme.color;
 
     return SizedBox(
@@ -37,7 +39,7 @@ class PostLikeAction extends StatelessWidget {
             width: size,
             child: IconButton(
               padding: EdgeInsets.zero,
-              color: color,
+              color: heartColor,
               icon: icon,
               onPressed: () => _onPressed(context),
             ),

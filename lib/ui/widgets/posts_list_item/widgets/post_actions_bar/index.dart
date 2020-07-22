@@ -34,6 +34,7 @@ class PostActionsBar extends StatelessWidget {
                   PostLikeAction(
                     post: post,
                     isLiked: (state as LoggedIn).user.hasLiked(post),
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(width: ICON_SPACING),
                   PostAddReactionAction(post: post),
