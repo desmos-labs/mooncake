@@ -106,9 +106,16 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
     // Set the state as saving
     yield state.copyWith(saving: true);
 
+    // trim spaces
+    MooncakeAccount formattedAccount = state.account.copyWith(
+      dtag: state.account.dtag.trim(),
+      moniker: state.account.moniker.trim(),
+      bio: state.account.bio?.trim() ?? "",
+    );
+
     // Save the account
     final result = await _saveAccountUseCase.save(
-      state.account,
+      formattedAccount,
       syncRemote: true,
     );
 
