@@ -10,18 +10,21 @@ import 'widgets/export.dart';
 /// reaction to a post.
 class PostAddReactionAction extends StatelessWidget {
   final double size;
-
   final Post post;
+  final Color color;
 
   const PostAddReactionAction({
     Key key,
     @required this.post,
     this.size = 24.0,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final reactions = post.reactions.where((e) => !e.isLike).toList();
+    final countColor =
+        color != null ? color : Theme.of(context).iconTheme.color;
     return SizedBox(
       height: size,
       child: Row(
@@ -30,24 +33,26 @@ class PostAddReactionAction extends StatelessWidget {
             width: size,
             child: IconButton(
               padding: EdgeInsets.zero,
-              icon: Icon(MooncakeIcons.reaction, size: size),
+              icon: Icon(MooncakeIcons.reaction, size: size, color: color),
               onPressed: () => _onTap(context),
             ),
           ),
-          if (reactions.isNotEmpty) _reactionsCount(context, reactions)
+          if (reactions.isNotEmpty)
+            _reactionsCount(context, reactions, countColor)
         ],
       ),
     );
   }
 
-  Widget _reactionsCount(BuildContext context, List<Reaction> reactions) {
+  Widget _reactionsCount(
+      BuildContext context, List<Reaction> reactions, Color color) {
     return Row(
       children: [
         SizedBox(width: size / 4),
         Text(
           NumberFormat.compact().format(reactions.length),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: Theme.of(context).iconTheme.color,
+                color: color,
               ),
         ),
       ],

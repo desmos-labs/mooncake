@@ -37,7 +37,10 @@ class PostActionsBar extends StatelessWidget {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(width: ICON_SPACING),
-                  PostAddReactionAction(post: post),
+                  PostAddReactionAction(
+                    post: post,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ],
               ),
             ),
