@@ -133,7 +133,11 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     if (event is CreatePoll) {
       yield state.copyWith(poll: state.poll ?? PostPoll.empty());
     } else if (event is TogglePollDisplay) {
-      yield state.copyWith(poll: state.poll == null ? PostPoll.empty() : null);
+      if (state.poll == null) {
+        yield state.copyWith(poll: PostPoll.empty());
+      } else {
+        yield state.removePoll();
+      }
     } else if (event is UpdatePollQuestion) {
       final poll = state.poll.copyWith(question: event.question);
       yield state.copyWith(poll: poll);
