@@ -62,15 +62,21 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   void _configureFcm() {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
+      print(message);
         final fcmMessage = FcmMessage.fromJson(message);
+        print(fcmMessage);
         _foregroundNotificationStream.add(fcmMessage);
       },
       onLaunch: (Map<String, dynamic> message) async {
+      print(message);
         final fcmMessage = FcmMessage.fromJson(message);
+        print(fcmMessage);
         _backgroundNotificationStream.add(fcmMessage);
       },
       onResume: (Map<String, dynamic> message) async {
+      print(message);
         final fcmMessage = FcmMessage.fromJson(message);
+        print(fcmMessage);
         _backgroundNotificationStream.add(fcmMessage);
       },
     );
