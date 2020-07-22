@@ -1,4 +1,7 @@
 # Version 0.4.2
+## Changes
+- Add option to remove poll during post creation
+
 ## Bug fixes
 - Fixed a bug that caused the funds to not be asked when needed
 - Fixed the visualization of poll results
