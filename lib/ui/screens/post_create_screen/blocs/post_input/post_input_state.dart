@@ -59,6 +59,20 @@ class PostInputState extends Equatable {
     );
   }
 
+  // Removes poll state
+  PostInputState removePoll() {
+    return PostInputState(
+      parentPost: parentPost,
+      message: message,
+      allowsComments: allowsComments,
+      medias: medias,
+      poll: null,
+      saving: saving,
+      showPopup: showPopup,
+      willShowPopupAgain: willShowPopupAgain,
+    );
+  }
+
   /// Updates this state setting the specified values properly.
   PostInputState copyWith({
     String message,
