@@ -1,8 +1,12 @@
 # Version 0.4.2
+## Changes
+- Add option to remove poll during post creation
+
 ## Bug fixes
 - Fixed a bug that caused the funds to not be asked when needed
 - Fixed the visualization of poll results
 - Fixed a bug that caused a wrong visualization of a post details
+- Fixed user account edits to trim trailing white spaces on save
 
 # Version 0.4.1
 ## Changes
