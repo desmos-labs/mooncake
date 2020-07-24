@@ -28,14 +28,14 @@ class PostPollCreator extends StatelessWidget {
                 return SizedBox(height: 8);
               },
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 10),
             if (optionsLength < 5)
               FlatButton(
                 textColor: Theme.of(context).colorScheme.primary,
                 child: Text(PostsLocalizations.of(context).pollAddOptionButton),
                 onPressed: () => _addOption(context),
               ),
-            const SizedBox(height: 4),
+            SizedBox(height: optionsLength < 5 ? 10 : 20),
             PollEndDateEditor(),
           ],
         );
