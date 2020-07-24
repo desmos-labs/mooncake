@@ -41,13 +41,19 @@ class PostMoreButton extends StatelessWidget {
 
     return PopupMenuButton<PosOptions>(
       onSelected: (value) => _onSelected(context, value),
-      child: Icon(MooncakeIcons.more, size: size),
+      child: Icon(
+        MooncakeIcons.more,
+        size: size,
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.50),
+      ),
       itemBuilder: (context) {
         return PosOptions.values.map((value) {
           return PopupMenuItem<PosOptions>(
             value: value,
             child: ListTile(
-              leading: Icon(icons[value]),
+              leading: Icon(
+                icons[value],
+              ),
               title: Text(titles[value]),
             ),
           );

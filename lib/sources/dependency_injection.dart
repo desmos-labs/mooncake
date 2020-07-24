@@ -2,6 +2,7 @@ import 'package:dependencies/dependencies.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql/client.dart';
+import 'package:http/http.dart' as http;
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/sources/sources.dart';
@@ -54,6 +55,8 @@ class SourcesModule implements Module {
       // Chain sources
       ..bindLazySingleton<ChainSource>((injector, params) => ChainSourceImpl(
             lcdEndpoint: _lcdUrl,
+            faucetEndpoint: "https://faucet.desmos.network/airdrop",
+            httpClient: http.Client(),
           ))
       // User sources
       ..bindLazySingleton<LocalUserSource>(
@@ -65,7 +68,6 @@ class SourcesModule implements Module {
       ..bindLazySingleton<RemoteUserSource>(
           (injector, params) => RemoteUserSourceImpl(
                 graphQLClient: _gqlClient,
-                faucetEndpoint: "https://faucet.desmos.network/airdrop",
                 chainHelper: injector.get(),
                 msgConverter: UserMsgConverter(),
                 userSource: injector.get(),

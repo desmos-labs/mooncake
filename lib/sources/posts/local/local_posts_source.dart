@@ -190,9 +190,13 @@ class LocalPostsSourceImpl implements LocalPostsSource {
 
   @override
   Future<void> savePost(Post post) async {
-    final value = await PostsConverter.serializePost(post);
     await _database.transaction((txn) async {
-      await _store.record(getPostKey(post)).put(txn, value);
+      final existingPost = await _store.record(getPostKey(post)).get(txn);
+      Post existingPostValue =
+          await PostsConverter.deserializePost(existingPost);
+      final mergedPost = mergePost(existingPostValue, post);
+      final mergedValue = await PostsConverter.serializePost(mergedPost);
+      await _store.record(getPostKey(post)).put(txn, mergedValue);
     });
   }
 
@@ -212,33 +216,37 @@ class LocalPostsSourceImpl implements LocalPostsSource {
     for (int index = 0; index < merged.length; index++) {
       final existing = existingPosts[index];
       final updated = merged[index];
-
-      Set<Reaction> reactions = updated.reactions.toSet();
-      if (existing?.reactions != null) {
-        reactions.addAll(existing.reactions);
-      }
-
-      Set<String> commentIds = updated.commentsIds.toSet();
-      if (existing?.commentsIds != null) {
-        commentIds.addAll(existing.commentsIds);
-      }
-
-      PostPoll postPoll = updated.poll;
-      if (existing?.poll != null && updated.poll != null) {
-        Set<PollAnswer> answers = (updated.poll.userAnswers ?? []).toSet();
-        answers.addAll(existing.poll.userAnswers ?? []);
-        postPoll = postPoll.copyWith(userAnswers: answers.toList());
-      }
-
-      merged[index] = updated.copyWith(
-        status: existing?.status,
-        reactions: reactions.toList(),
-        commentsIds: commentIds.toList(),
-        poll: postPoll,
-      );
+      merged[index] = mergePost(existing, updated);
     }
 
     return merged;
+  }
+
+  @visibleForTesting
+  Post mergePost(Post existing, Post updated) {
+    Set<Reaction> reactions = updated.reactions.toSet();
+    if (existing?.reactions != null) {
+      reactions.addAll(existing.reactions);
+    }
+
+    Set<String> commentIds = updated.commentsIds.toSet();
+    if (existing?.commentsIds != null) {
+      commentIds.addAll(existing.commentsIds);
+    }
+
+    PostPoll postPoll = updated.poll;
+    if (existing?.poll != null && updated.poll != null) {
+      Set<PollAnswer> answers = (updated.poll.userAnswers ?? []).toSet();
+      answers.addAll(existing.poll.userAnswers ?? []);
+      postPoll = postPoll.copyWith(userAnswers: answers.toList());
+    }
+
+    return updated.copyWith(
+      status: existing?.status,
+      reactions: reactions.toList(),
+      commentsIds: commentIds.toList(),
+      poll: postPoll,
+    );
   }
 
   @override

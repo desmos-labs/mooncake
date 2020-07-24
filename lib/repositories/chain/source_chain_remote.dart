@@ -29,4 +29,7 @@ abstract class ChainSource {
   /// Returns the list of transactions that are stored inside the block
   /// having the given [height].
   Future<List<Transaction>> getTxsByHeight(String height);
+
+  /// Allows to sends funds from the faucet to the specified [address].
+  Future<void> fundAccount(String address);
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -13,27 +14,42 @@ class MockTxSigner extends Mock implements TxSigner {}
 
 class MockTxSender extends Mock implements TxSender {}
 
+class MockHttpClient extends Mock implements http.Client {}
+
 void main() {
   final fee = [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")];
 
-  MockWebServer server;
+  MockWebServer lcdServer;
+  MockWebServer faucetServer;
+  MockHttpClient httpClient;
+
   ChainSourceImpl chainHelper;
 
   setUpAll(() {
-    server = MockWebServer();
-    server.start();
+    lcdServer = MockWebServer();
+    lcdServer.start();
+
+    faucetServer = MockWebServer();
+    faucetServer.start();
   });
 
   setUp(() {
     // Clean the dispatcher to avoid cross-testing conflicts
-    server.dispatcher = null;
+    lcdServer.dispatcher = null;
+    faucetServer.dispatcher = null;
 
-    chainHelper = ChainSourceImpl(lcdEndpoint: server.url);
+    httpClient = MockHttpClient();
+
+    chainHelper = ChainSourceImpl(
+      lcdEndpoint: lcdServer.url,
+      faucetEndpoint: faucetServer.url,
+      httpClient: httpClient,
+    );
   });
 
   group('queryChainRaw', () {
     test('returns null when exception is thrown', () async {
-      server.enqueue(body: null, httpCode: 500);
+      lcdServer.enqueue(body: null, httpCode: 500);
 
       final result = await chainHelper.queryChainRaw("/my-endpoint");
       expect(result, isNull);
@@ -41,7 +57,7 @@ void main() {
 
     test('returns correct value when no exception is thrown', () async {
       final data = {"key": "value", "other-value": "other-key"};
-      server.enqueue(httpCode: 200, body: jsonEncode(data));
+      lcdServer.enqueue(httpCode: 200, body: jsonEncode(data));
 
       final result = await chainHelper.queryChainRaw("/endpoint");
       expect(result, data);
@@ -50,7 +66,7 @@ void main() {
 
   group('queryChain', () {
     test('returns null when exception is thrown', () async {
-      server.enqueue(body: null, httpCode: 500);
+      lcdServer.enqueue(body: null, httpCode: 500);
 
       final result = await chainHelper.queryChain("/my-endpoint");
       expect(result, isNull);
@@ -58,7 +74,7 @@ void main() {
 
     test('returns null when wrong body is returned', () async {
       final data = {"height": "0"};
-      server.enqueue(body: jsonEncode(data), httpCode: 200);
+      lcdServer.enqueue(body: jsonEncode(data), httpCode: 200);
 
       final result = await chainHelper.queryChain("/my-endpoint");
       expect(result, isNull);
@@ -67,7 +83,7 @@ void main() {
     test('returns correct value when no exception is thrown', () async {
       final file = File("test_resources/chain/chain_response.json");
       final contents = file.readAsStringSync();
-      server.enqueue(httpCode: 200, body: contents);
+      lcdServer.enqueue(httpCode: 200, body: contents);
 
       final result = await chainHelper.queryChain("/endpoint");
 
@@ -94,7 +110,10 @@ void main() {
     Wallet wallet;
 
     setUpAll(() {
-      final networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: server.url);
+      final networkInfo = NetworkInfo(
+        bech32Hrp: "desmos",
+        lcdUrl: lcdServer.url,
+      );
       final mnemonic = [
         "music",
         "swap",
@@ -130,7 +149,7 @@ void main() {
 
     test('returns null with empty list of messages', () async {
       // Enqueue an exception cause it shouldn't be called
-      server.enqueue(httpCode: 500, body: null);
+      lcdServer.enqueue(httpCode: 500, body: null);
 
       final txData = TxData(messages: [], wallet: wallet, feeAmount: fee);
       final result = await ChainSourceImpl.sendTxBackground(txData);
@@ -138,7 +157,7 @@ void main() {
     });
 
     test('returns correct result with exception', () async {
-      server.enqueue(httpCode: 500, body: null);
+      lcdServer.enqueue(httpCode: 500, body: null);
 
       final msgs = [
         MsgCreatePost(
@@ -169,7 +188,7 @@ void main() {
       final nodeInfoContents = nodeInfoFile.readAsStringSync();
 
       // ignore: missing_return
-      server.dispatcher = (HttpRequest request) async {
+      lcdServer.dispatcher = (HttpRequest request) async {
         final url = request.uri.toString();
         if (url.contains("/auth/account")) {
           return MockResponse()
@@ -209,7 +228,8 @@ void main() {
     Wallet wallet;
 
     setUpAll(() {
-      final networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: server.url);
+      final networkInfo =
+          NetworkInfo(bech32Hrp: "desmos", lcdUrl: lcdServer.url);
       final mnemonic = [
         "music",
         "swap",
@@ -245,14 +265,14 @@ void main() {
 
     test('does nothing with empty list of messages', () async {
       // Enqueue an exception cause it shouldn't be called
-      server.enqueue(httpCode: 500, body: null);
+      lcdServer.enqueue(httpCode: 500, body: null);
 
       final result = await chainHelper.sendTx([], wallet);
       expect(result, isNull);
     });
 
     test('returns correct result when exception is thrown', () async {
-      server.enqueue(httpCode: 500, body: null);
+      lcdServer.enqueue(httpCode: 500, body: null);
 
       final msgs = [
         MsgCreatePost(
@@ -271,9 +291,17 @@ void main() {
       expect(result.success, isFalse);
     });
 
-    test('returns correct result when exception is thrown', () async {
-      final accountFile = File("test_resources/account/account_response.json");
-      final accountContents = accountFile.readAsStringSync();
+    test('returns correct result when funding is not required', () async {
+      final account = CosmosAccount.offline(wallet.bech32Address).copyWith(
+        coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "1000000")],
+      );
+      final accountResponse = LcdResponse(
+        height: "217386",
+        result: AccountResponse(
+          type: "cosmos-sdk/Account",
+          accountData: account,
+        ).toJson(),
+      );
 
       final txsFile = File("test_resources/chain/txs_response_success.json");
       final txsContents = txsFile.readAsStringSync();
@@ -282,12 +310,12 @@ void main() {
       final nodeInfoContents = nodeInfoFile.readAsStringSync();
 
       // ignore: missing_return
-      server.dispatcher = (HttpRequest request) async {
+      lcdServer.dispatcher = (HttpRequest request) async {
         final url = request.uri.toString();
         if (url.contains("/auth/accounts")) {
           return MockResponse()
             ..httpCode = 200
-            ..body = accountContents;
+            ..body = jsonEncode(accountResponse.toJson());
         } else if (url.contains("/txs")) {
           return MockResponse()
             ..httpCode = 200
@@ -312,8 +340,69 @@ void main() {
           poll: null,
         ),
       ];
+
       final result = await chainHelper.sendTx(msgs, wallet);
-      expect(result.success, isFalse);
+      expect(result.success, isTrue);
+      verifyNever(httpClient.post(any));
+    });
+
+    test('returns correct result when funding is required', () async {
+      final account = CosmosAccount.offline(wallet.bech32Address).copyWith(
+        coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "0")],
+      );
+      final accountResponse = LcdResponse(
+        height: "217386",
+        result: AccountResponse(
+          type: "cosmos-sdk/Account",
+          accountData: account,
+        ).toJson(),
+      );
+
+      final txsFile = File("test_resources/chain/txs_response_success.json");
+      final txsContents = txsFile.readAsStringSync();
+
+      final nodeInfoFile = File("test_resources/chain/node_info_response.json");
+      final nodeInfoContents = nodeInfoFile.readAsStringSync();
+
+      // ignore: missing_return
+      lcdServer.dispatcher = (HttpRequest request) async {
+        final url = request.uri.toString();
+        if (url.contains("/auth/accounts")) {
+          return MockResponse()
+            ..httpCode = 200
+            ..body = jsonEncode(accountResponse.toJson());
+        } else if (url.contains("/txs")) {
+          return MockResponse()
+            ..httpCode = 200
+            ..body = txsContents;
+        } else if (url.contains("/node_info")) {
+          return MockResponse()
+            ..httpCode = 200
+            ..body = nodeInfoContents;
+        }
+      };
+
+      final msgs = [
+        MsgCreatePost(
+          parentId: "0",
+          message: "message",
+          allowsComments: false,
+          subspace: "desmos",
+          optionalData: {},
+          creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
+          creationDate: "2020-01-01T15:00:00.000Z",
+          medias: null,
+          poll: null,
+        ),
+      ];
+
+      final result = await chainHelper.sendTx(msgs, wallet);
+      expect(result.success, isTrue);
+      verify(httpClient.post(
+        faucetServer.url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"address": wallet.bech32Address}),
+      ));
     });
   });
 }
