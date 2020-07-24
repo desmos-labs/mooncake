@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import './utils/preview_helper.dart';
 
 class LinkPreview extends StatefulWidget {
   final String url;
+  // wingman clean up
   const LinkPreview(
       {this.url =
           'https://nealschaffer.com/tweet-link-preview-image-twitter/'});
@@ -31,7 +33,7 @@ class _LinkPreviewState extends State<LinkPreview> {
     }
     return GestureDetector(
       onTap: () {
-        print("Container clicked");
+        _openUrl();
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10),
@@ -87,5 +89,12 @@ class _LinkPreviewState extends State<LinkPreview> {
         ),
       ),
     );
+  }
+
+  void _openUrl() async {
+    final url = widget.url;
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
   }
 }

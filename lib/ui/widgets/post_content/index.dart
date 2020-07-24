@@ -15,6 +15,8 @@ class PostContent extends StatelessWidget {
   // wingman to do validate is any of them are a string
   @override
   Widget build(BuildContext context) {
+    String shouldShowLinkPreview = _isLinkInContent();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -26,7 +28,8 @@ class PostContent extends StatelessWidget {
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
         ),
-        LinkPreview(),
+        if (shouldShowLinkPreview.isNotEmpty)
+          LinkPreview(url: shouldShowLinkPreview),
       ],
     );
   }
@@ -39,5 +42,15 @@ class PostContent extends StatelessWidget {
         const SizedBox(height: ThemeSpaces.smallGutter),
       ],
     );
+  }
+
+  String _isLinkInContent() {
+    List<String> wordList = post.message
+        .replaceAll("\n", "  \n")
+        .split(" ")
+        .where((String x) => isURL(x))
+        .toList();
+    ;
+    return wordList.isNotEmpty ? wordList[wordList.length - 1] : "";
   }
 }
