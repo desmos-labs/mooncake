@@ -46,6 +46,11 @@
 	<string>Used to select images for posting gallery pictures</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>No</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

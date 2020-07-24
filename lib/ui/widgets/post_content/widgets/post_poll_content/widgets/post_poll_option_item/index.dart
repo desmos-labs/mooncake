@@ -20,6 +20,7 @@ class PostPollOptionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
+      padding: EdgeInsets.all(10),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       color: pollColors[index % pollColors.length],
       shape: RoundedRectangleBorder(

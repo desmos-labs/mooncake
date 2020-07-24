@@ -29,14 +29,21 @@ class PostActionsBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
+                  PostCommentAction(
+                    post: post,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: ICON_SPACING),
                   PostLikeAction(
                     post: post,
                     isLiked: (state as LoggedIn).user.hasLiked(post),
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(width: ICON_SPACING),
-                  PostCommentAction(post: post),
-                  const SizedBox(width: ICON_SPACING),
-                  PostAddReactionAction(post: post),
+                  PostAddReactionAction(
+                    post: post,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ],
               ),
             ),
