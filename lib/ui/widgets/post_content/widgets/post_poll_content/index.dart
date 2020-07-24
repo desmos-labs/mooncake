@@ -28,8 +28,7 @@ class PostPollContent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (post.poll.question != null)
-                  Text(post.poll.question, textAlign: TextAlign.center),
+                if (post.poll.question.isNotEmpty) Text(post.poll.question),
                 if (!hasVoted)
                   _buildListView((option, index) {
                     return PostPollOptionItem(
