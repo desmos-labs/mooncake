@@ -6,12 +6,9 @@ class PostsKeys {
   // --- Login ---
   static final loginScreenLogo = const Key('__loginScreenLogo__');
 
-  static final addPost = const Key('__addPost__');
   static final tabs = const Key('__tabs__');
   static final allPostsTab = const Key('__allPostsTab__');
-  static final likedPostsTab = const Key('__likedPostsTab__');
-  static final notificationsTab = const Key('__notificationsTab__');
-  static final yourPostsTab = const Key('__yourPostsTab__');
+  static final accountTab = const Key('__accountTab__');
 
   static final postsList = const Key('__postsList__');
   static final postsLoading = const Key('__postsLoading__');
