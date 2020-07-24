@@ -55,10 +55,10 @@ class _PollOptionEditorState extends State<PollOptionEditor> {
                           ),
                         ),
                         // TODO: Implement the association of an image to a poll option
-                        IconButton(
-                          icon: const Icon(MooncakeIcons.picture),
-                          onPressed: () {},
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(MooncakeIcons.picture),
+                        //   onPressed: () {},
+                        // ),
                       ],
                     ),
                   ),
