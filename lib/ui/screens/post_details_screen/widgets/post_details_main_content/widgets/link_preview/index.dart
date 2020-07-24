@@ -8,7 +8,7 @@ class LinkPreview extends StatefulWidget {
 
 class _LinkPreviewState extends State<LinkPreview> {
   String url;
-  Object data;
+  Map<String, String> data;
 
   @override
   Widget build(BuildContext context) {

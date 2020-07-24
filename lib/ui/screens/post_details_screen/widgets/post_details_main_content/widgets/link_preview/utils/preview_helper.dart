@@ -2,7 +2,7 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart';
 
 class FetchPreview {
-  Future fetch(String url) async {
+  Future<Map<String, String>> fetch(String url) async {
     final client = Client();
     final response = await client.get(_validateUrl(url));
     final document = parse(response.body);
