@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:validators/validators.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/widgets/post_content/widgets/link_preview/index.dart';
 import 'widgets/export.dart';
 
 /// Contains the main content of a post. Such content is made of
@@ -10,7 +12,7 @@ import 'widgets/export.dart';
 class PostContent extends StatelessWidget {
   final Post post;
   const PostContent({Key key, @required this.post}) : super(key: key);
-
+  // wingman to do validate is any of them are a string
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,6 +26,7 @@ class PostContent extends StatelessWidget {
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
         ),
+        LinkPreview(),
       ],
     );
   }
