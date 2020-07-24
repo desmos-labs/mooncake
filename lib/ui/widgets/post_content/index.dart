@@ -12,7 +12,6 @@ import 'widgets/export.dart';
 class PostContent extends StatelessWidget {
   final Post post;
   const PostContent({Key key, @required this.post}) : super(key: key);
-  // wingman to do validate is any of them are a string
   @override
   Widget build(BuildContext context) {
     String shouldShowLinkPreview = _isLinkInContent();
@@ -45,6 +44,11 @@ class PostContent extends StatelessWidget {
   }
 
   String _isLinkInContent() {
+    // do not show link preview if there is a poll or image
+    if (post.poll != null || post.images.isNotEmpty) {
+      return "";
+    }
+
     List<String> wordList = post.message
         .replaceAll("\n", "  \n")
         .split(" ")

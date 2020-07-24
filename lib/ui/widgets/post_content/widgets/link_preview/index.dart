@@ -4,10 +4,7 @@ import './utils/preview_helper.dart';
 
 class LinkPreview extends StatefulWidget {
   final String url;
-  // wingman clean up
-  const LinkPreview(
-      {this.url =
-          'https://nealschaffer.com/tweet-link-preview-image-twitter/'});
+  const LinkPreview({@required this.url});
 
   @override
   _LinkPreviewState createState() => _LinkPreviewState();
