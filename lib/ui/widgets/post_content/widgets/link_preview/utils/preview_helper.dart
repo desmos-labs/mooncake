@@ -11,13 +11,17 @@ Future<Map<String, String>> fetchPreview(String url) async {
   final linkElements = document.getElementsByTagName('link');
 
   elements.forEach((tmp) {
-    if (tmp.attributes['property'] == 'og:title') {
+    if (tmp.attributes['property'] == 'og:title' ||
+        tmp.attributes['property'] == 'og:site_name') {
       //fetch seo title
       title = tmp.attributes['content'];
     }
     //if seo title is empty then fetch normal title
     if (title == null || title.isEmpty) {
-      title = document.getElementsByTagName('title')[0].text;
+      List fetchTitle = document.getElementsByTagName('title');
+      if (fetchTitle.isNotEmpty) {
+        title = document.getElementsByTagName('title')[0].text;
+      }
     }
 
     //fetch seo description
