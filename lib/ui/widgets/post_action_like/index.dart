@@ -11,12 +11,14 @@ class PostLikeAction extends StatelessWidget {
 
   final bool isLiked;
   final Post post;
+  final Color color;
 
   const PostLikeAction({
     Key key,
     @required this.isLiked,
     @required this.post,
     this.size = 24.0,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -25,9 +27,14 @@ class PostLikeAction extends StatelessWidget {
         ? Icon(MooncakeIcons.heartF, size: size)
         : Icon(MooncakeIcons.heart, size: size);
 
-    final color = isLiked
-        ? Theme.of(context).colorScheme.error
-        : Theme.of(context).iconTheme.color;
+    final heartColor = color != null
+        ? color
+        : isLiked
+            ? Theme.of(context).colorScheme.error
+            : Theme.of(context).iconTheme.color;
+
+    final countColor =
+        color != null ? color : Theme.of(context).iconTheme.color;
 
     return SizedBox(
       height: size,
@@ -37,25 +44,26 @@ class PostLikeAction extends StatelessWidget {
             width: size,
             child: IconButton(
               padding: EdgeInsets.zero,
-              color: color,
+              color: heartColor,
               icon: icon,
               onPressed: () => _onPressed(context),
             ),
           ),
-          if (post.likes.isNotEmpty) _likesCount(context, post.likes)
+          if (post.likes.isNotEmpty)
+            _likesCount(context, post.likes, countColor)
         ],
       ),
     );
   }
 
-  Widget _likesCount(BuildContext context, List<Reaction> likes) {
+  Widget _likesCount(BuildContext context, List<Reaction> likes, Color color) {
     return Row(
       children: [
         SizedBox(width: size / 4),
         Text(
           NumberFormat.compact().format(likes.length),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: Theme.of(context).iconTheme.color,
+                color: color,
               ),
         ),
       ],

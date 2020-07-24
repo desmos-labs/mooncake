@@ -8,16 +8,21 @@ import 'package:mooncake/ui/ui.dart';
 class PostCommentAction extends StatelessWidget {
   final Post post;
   final double size;
+  final Color color;
 
   const PostCommentAction({
     Key key,
     @required this.post,
     this.size = 24.0,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final comments = post.commentsIds ?? [];
+    final countColor =
+        color != null ? color : Theme.of(context).iconTheme.color;
+
     return SizedBox(
       height: size,
       child: Row(
@@ -26,24 +31,25 @@ class PostCommentAction extends StatelessWidget {
             width: size,
             child: IconButton(
               padding: EdgeInsets.zero,
-              icon: FaIcon(MooncakeIcons.comment, size: size),
+              icon: FaIcon(MooncakeIcons.comment, size: size, color: color),
               onPressed: () => _onTap(context),
             ),
           ),
-          if (comments.isNotEmpty) _commentsCount(context, comments)
+          if (comments.isNotEmpty) _commentsCount(context, comments, countColor)
         ],
       ),
     );
   }
 
-  Widget _commentsCount(BuildContext context, List<String> comments) {
+  Widget _commentsCount(
+      BuildContext context, List<String> comments, Color color) {
     return Row(
       children: [
         SizedBox(width: size / 4),
         Text(
           NumberFormat.compact().format(comments.length),
           style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: Theme.of(context).iconTheme.color,
+                color: color,
               ),
         ),
       ],

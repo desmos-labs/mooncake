@@ -54,7 +54,9 @@ class PostItemHeader extends StatelessWidget {
                             post.dateTime.add(DateTime.now().timeZoneOffset),
                             clock: DateTime.now(),
                           ),
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.caption.copyWith(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.onSecondary),
                         )
                       ],
                     ),
