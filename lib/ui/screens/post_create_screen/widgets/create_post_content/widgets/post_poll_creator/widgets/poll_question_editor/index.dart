@@ -20,6 +20,7 @@ class PollQuestionEditor extends StatelessWidget {
           children: [
             TextField(
               textCapitalization: TextCapitalization.sentences,
+              maxLines: null,
               decoration: getInputDecoration(
                 context,
                 PostsLocalizations.of(context).pollQuestionHint,

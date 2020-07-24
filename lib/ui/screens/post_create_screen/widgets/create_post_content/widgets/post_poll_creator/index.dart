@@ -15,7 +15,8 @@ class PostPollCreator extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PollQuestionEditor(),
+            // wingman clean up
+            // PollQuestionEditor(),
             const SizedBox(height: 8),
             ListView.separated(
               shrinkWrap: true,
