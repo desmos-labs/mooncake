@@ -92,33 +92,29 @@ class PostPollResultItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                        children: <TextSpan>[
-                          if (votedOption)
-                            TextSpan(
-                              text: '(${currentPollLength})',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 14.0,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            ),
-                          TextSpan(
-                            text: ' ${(percentage * 100).toInt()}%',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
-                  ],
+                    children: <TextSpan>[
+                      if (votedOption)
+                        TextSpan(
+                          text: '(${currentPollLength})',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14.0,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      TextSpan(
+                        text: ' ${(percentage * 100).toInt()}%',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
