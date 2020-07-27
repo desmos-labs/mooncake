@@ -67,26 +67,33 @@ class PostPollResultItem extends StatelessWidget {
               children: [
                 Flexible(
                   fit: FlexFit.loose,
-                  child: Text(
-                    option.text,
-                    softWrap: false,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Text(
+                          option.text,
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                      if (votedOption)
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          child: Icon(
+                            MooncakeIcons.success,
+                            size: 14,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 Row(
                   children: [
-                    if (votedOption)
-                      Container(
-                        margin: EdgeInsets.only(right: 10),
-                        child: Icon(
-                          MooncakeIcons.success,
-                          size: 16,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
                     RichText(
                       text: TextSpan(
                         style: TextStyle(
