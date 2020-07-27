@@ -19,7 +19,7 @@ class PostPollContent extends StatelessWidget {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
         final account = (state as LoggedIn).user;
-        final hasVoted = account.hasVoted(post.poll);
+        final hasVoted = _hasVoted(post.poll, account.address);
 
         return Container(
           width: double.infinity,
@@ -95,5 +95,14 @@ class PostPollContent extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
     );
+  }
+
+  /// Tells whether this [MooncakeAccount] has voted on the given [poll] or not.
+  int _hasVoted(PostPoll poll, String address) {
+    List<PollAnswer> option = poll.userAnswers
+        .where((answer) => answer.user.address == address)
+        .toList();
+
+    return option.isNotEmpty ? option[0].answer : null;
   }
 }
