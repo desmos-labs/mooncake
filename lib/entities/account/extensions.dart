@@ -16,13 +16,6 @@ extension AccountExtensions on MooncakeAccount {
     return option.isNotEmpty ? option[0].answer : null;
   }
 
-  PollAnswer selectedPollOption(PostPoll poll) {
-    List<PollAnswer> option = poll.userAnswers
-        .where((answer) => answer.user.address == this.address)
-        .toList();
-    return option.isNotEmpty ? option[0] : null;
-  }
-
   /// Transforms this instance of [MooncakeAccount] into a [User] instance.
   User toUser() {
     return User(
