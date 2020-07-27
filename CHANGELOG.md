@@ -2,6 +2,7 @@
 ## Changes
 - Add option to remove poll during post creation
 - Add link previews
+- Improved poll visualization during post creation
 
 ## Bug fixes
 - Fixed a bug that caused the funds to not be asked when needed

@@ -14,8 +14,8 @@ class PostPollCreator extends StatelessWidget {
         final optionsLength = state.poll?.options?.length ?? 0;
         return Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PollQuestionEditor(),
             const SizedBox(height: 8),
             ListView.separated(
               shrinkWrap: true,
@@ -28,14 +28,14 @@ class PostPollCreator extends StatelessWidget {
                 return SizedBox(height: 8);
               },
             ),
-            const SizedBox(height: 4),
             if (optionsLength < 5)
               FlatButton(
+                padding: EdgeInsets.only(top: 5, bottom: 10),
                 textColor: Theme.of(context).colorScheme.primary,
                 child: Text(PostsLocalizations.of(context).pollAddOptionButton),
                 onPressed: () => _addOption(context),
               ),
-            const SizedBox(height: 4),
+            SizedBox(height: optionsLength < 5 ? 10 : 30),
             PollEndDateEditor(),
           ],
         );
