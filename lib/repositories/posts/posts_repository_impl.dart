@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:mooncake/utils/logger.dart';
 
 /// Implementation of [PostsRepository] that listens for remote
 /// changes, persists them locally and then emits the locally-stored
@@ -154,11 +153,6 @@ class PostsRepositoryImpl extends PostsRepository {
           await _localSettingsSource.get(SettingKeys.TX_AMOUNT) ?? 0;
       await _localSettingsSource.save(
           SettingKeys.TX_AMOUNT, currentTxAmount + updatedPosts.length);
-    }
-
-    // logs to sentry
-    if (status.value == PostStatusValue.ERRORED) {
-      Logger.log(status.data);
     }
   }
 
