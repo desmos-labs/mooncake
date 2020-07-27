@@ -59,7 +59,7 @@ Future<RichLinkPreview> fetchSinglePreview(String url) async {
       favIcon = tmp.attributes['href'];
     }
   });
-  // wingman edit later
+
   if (title == null || description == null || image == null) return null;
 
   return RichLinkPreview(
