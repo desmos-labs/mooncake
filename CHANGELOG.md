@@ -1,6 +1,7 @@
 # Version 0.4.2
 ## Changes
 - Add option to remove poll during post creation
+- Add link previews
 - Improved poll visualization during post creation
 
 ## Bug fixes
