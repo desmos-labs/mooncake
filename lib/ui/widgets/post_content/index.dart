@@ -27,7 +27,7 @@ class PostContent extends StatelessWidget {
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
         ),
-        if (shouldShowLinkPreview.isNotEmpty)
+        if (shouldShowLinkPreview != null)
           LinkPreview(urls: shouldShowLinkPreview),
       ],
     );

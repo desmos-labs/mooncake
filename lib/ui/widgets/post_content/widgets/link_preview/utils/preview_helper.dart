@@ -60,7 +60,7 @@ Future<RichLinkPreview> fetchSinglePreview(String url) async {
     }
   });
   // wingman edit later
-  if (title.isEmpty || description.isEmpty || image.isEmpty) return null;
+  if (title == null || description == null || image == null) return null;
 
   return RichLinkPreview(
     title: title,
