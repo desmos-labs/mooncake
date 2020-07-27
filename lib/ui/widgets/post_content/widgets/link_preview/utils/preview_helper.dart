@@ -2,15 +2,19 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart';
 import 'package:mooncake/ui/models/export.dart';
 
+/// Takes in a `List<String>` of `urls` and tries to fetch
+/// an url with enough meta data for a preview. Will return `null` if none is found.
 Future<RichLinkPreview> fetchPreview(List<String> urls) async {
   for (var i = urls.length - 1; i >= 0; i--) {
-    RichLinkPreview data = await fetchSinglePreview(urls[i]);
+    RichLinkPreview data = await _fetchSinglePreview(urls[i]);
     if (data != null) return data;
   }
   return null;
 }
 
-Future<RichLinkPreview> fetchSinglePreview(String url) async {
+/// Takes in a single url and tries to fetch enough meta data for a
+/// preview. Will return null if there isn't enough.
+Future<RichLinkPreview> _fetchSinglePreview(String url) async {
   final client = Client();
   final response = await client.get(_validateUrl(url));
   final document = parse(response.body);

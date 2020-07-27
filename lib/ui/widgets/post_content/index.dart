@@ -14,7 +14,7 @@ class PostContent extends StatelessWidget {
   const PostContent({Key key, @required this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    List<String> shouldShowLinkPreview = _isLinkInContent();
+    List<String> previewUris = _getUrisToPreview();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -27,8 +27,7 @@ class PostContent extends StatelessWidget {
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
         ),
-        if (shouldShowLinkPreview != null)
-          LinkPreview(urls: shouldShowLinkPreview),
+        if (previewUris != null) LinkPreview(urls: previewUris),
       ],
     );
   }
@@ -43,7 +42,7 @@ class PostContent extends StatelessWidget {
     );
   }
 
-  List<String> _isLinkInContent() {
+  List<String> _getUrisToPreview() {
     // do not show link preview if there is a poll or image
     if (post.poll != null || post.images.isNotEmpty) {
       return null;

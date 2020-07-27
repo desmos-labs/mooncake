@@ -3,6 +3,10 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './utils/preview_helper.dart';
 
+/// Takes in an `List<String>` of `urls` and tries to find one
+/// url with enough meta to generate a preview starting
+/// with the last item in the List. If there is not enough meta,
+/// an empty container will be rendered instead.
 class LinkPreview extends StatefulWidget {
   final List<String> urls;
   const LinkPreview({@required this.urls});
