@@ -29,7 +29,7 @@ class PostPollContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (post.poll.question.isNotEmpty) Text(post.poll.question),
-                if (!hasVoted)
+                if (hasVoted == null)
                   _buildListView((option, index) {
                     return PostPollOptionItem(
                       post: post,
@@ -37,15 +37,16 @@ class PostPollContent extends StatelessWidget {
                       index: index,
                     );
                   }),
-                if (hasVoted)
+                if (hasVoted != null)
                   _buildListView((option, index) {
                     return PostPollResultItem(
                       poll: post.poll,
                       option: option,
                       index: index,
+                      votedOption: hasVoted == index,
                     );
                   }),
-                if (hasVoted) _votesAndEnding(context)
+                if (hasVoted != null) _votesAndEnding(context)
               ],
             ),
           ),

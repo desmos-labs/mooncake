@@ -8,9 +8,19 @@ extension AccountExtensions on MooncakeAccount {
   }
 
   /// Tells whether this [MooncakeAccount] has voted on the given [poll] or not.
-  bool hasVoted(PostPoll poll) {
-    return poll.userAnswers
-        .any((answer) => answer.user.address == this.address);
+  int hasVoted(PostPoll poll) {
+    List<PollAnswer> option = poll.userAnswers
+        .where((answer) => answer.user.address == this.address)
+        .toList();
+
+    return option.isNotEmpty ? option[0].answer : null;
+  }
+
+  PollAnswer selectedPollOption(PostPoll poll) {
+    List<PollAnswer> option = poll.userAnswers
+        .where((answer) => answer.user.address == this.address)
+        .toList();
+    return option.isNotEmpty ? option[0] : null;
   }
 
   /// Transforms this instance of [MooncakeAccount] into a [User] instance.
