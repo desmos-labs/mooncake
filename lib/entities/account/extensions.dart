@@ -7,15 +7,6 @@ extension AccountExtensions on MooncakeAccount {
     return post.reactions.containsFrom(this, Constants.LIKE_REACTION);
   }
 
-  /// Tells whether this [MooncakeAccount] has voted on the given [poll] or not.
-  int hasVoted(PostPoll poll) {
-    List<PollAnswer> option = poll.userAnswers
-        .where((answer) => answer.user.address == this.address)
-        .toList();
-
-    return option.isNotEmpty ? option[0].answer : null;
-  }
-
   /// Transforms this instance of [MooncakeAccount] into a [User] instance.
   User toUser() {
     return User(

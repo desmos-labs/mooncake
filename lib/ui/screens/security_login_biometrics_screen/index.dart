@@ -80,8 +80,7 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                 ),
 
                 // Exporting popup
-                if (state is ExportingMnemonic)
-                  ExportMnemonicPopup(),
+                if (state is ExportingMnemonic) ExportMnemonicPopup(),
               ],
             );
           },

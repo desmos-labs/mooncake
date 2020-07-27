@@ -35,26 +35,6 @@ void main() {
     expect(account.hasLiked(likedPost), isTrue);
   });
 
-  test('hasVoted works properly', () {
-    final poll = PostPoll(
-      question: "Do you like Mooncake?",
-      endDate: "2020-05-01T21:00:00.000Z",
-      options: [
-        PollOption(id: 1, text: "Yes"),
-        PollOption(id: 2, text: "No"),
-      ],
-      isOpen: false,
-      allowsMultipleAnswers: false,
-      allowsAnswerEdits: false,
-    );
-    expect(account.hasVoted(poll), isFalse);
-
-    final pollWithAnswer = poll.copyWith(
-      userAnswers: [PollAnswer(user: account.toUser(), answer: 1)],
-    );
-    expect(account.hasVoted(pollWithAnswer), isTrue);
-  });
-
   test('toUser works properly', () async {
     final expected = User(
       address: account.address,
