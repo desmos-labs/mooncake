@@ -51,7 +51,7 @@ packages:
       name: basic_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.6"
+    version: "2.5.7"
   bech32:
     dependency: transitive
     description:

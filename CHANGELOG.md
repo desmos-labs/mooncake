@@ -9,6 +9,7 @@
 - Fixed the visualization of poll results
 - Fixed a bug that caused a wrong visualization of a post details
 - Fixed user account edits to trim trailing white spaces on save
+- Fixed Post sync details on long tap not displaying
 
 # Version 0.4.1
 ## Changes

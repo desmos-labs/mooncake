@@ -159,7 +159,12 @@ class ChainSourceImpl extends ChainSource {
     }
 
     final data = TxData(messages: messages, wallet: wallet, feeAmount: fees);
-    return compute(sendTxBackground, data);
+
+    TransactionResult txResults = await compute(sendTxBackground, data);
+    if (!txResults.success) {
+      Logger.log("Error while sending transaction to the chain: ${txResults.error.errorMessage}");
+    }
+    return txResults;
   }
 
   @override
