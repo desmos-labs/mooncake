@@ -92,8 +92,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                           ),
                   ),
                   // Exporting popup
-                  if (state is ExportingMnemonic)
-                    ExportMnemonicPopup(),
+                  if (state is ExportingMnemonic) ExportMnemonicPopup(),
                 ],
               );
             },
