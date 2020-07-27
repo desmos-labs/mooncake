@@ -1,7 +1,16 @@
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
+import 'package:mooncake/ui/models/export.dart';
 
-Future<Map<String, String>> fetchPreview(String url) async {
+Future<RichLinkPreview> fetchPreview(List<String> urls) async {
+  for (var i = urls.length - 1; i >= 0; i--) {
+    RichLinkPreview data = await fetchSinglePreview(urls[i]);
+    if (data != null) return data;
+  }
+  return null;
+}
+
+Future<RichLinkPreview> fetchSinglePreview(String url) async {
   final client = Client();
   final response = await client.get(_validateUrl(url));
   final document = parse(response.body);
@@ -50,14 +59,17 @@ Future<Map<String, String>> fetchPreview(String url) async {
       favIcon = tmp.attributes['href'];
     }
   });
+  // wingman edit later
+  if (title.isEmpty || description.isEmpty || image.isEmpty) return null;
 
-  return {
-    'title': title ?? '',
-    'description': description ?? '',
-    'image': image ?? 'https://via.placeholder.com/100',
-    'appleIcon': appleIcon ?? '',
-    'favIcon': favIcon ?? ''
-  };
+  return RichLinkPreview(
+    title: title,
+    description: description,
+    image: image,
+    appleIcon: appleIcon,
+    favIcon: favIcon,
+    url: url,
+  );
 }
 
 String _validateUrl(String url) {

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:mooncake/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './utils/preview_helper.dart';
 
 class LinkPreview extends StatefulWidget {
-  final String url;
-  const LinkPreview({@required this.url});
+  final List<String> urls;
+  const LinkPreview({@required this.urls});
 
   @override
   _LinkPreviewState createState() => _LinkPreviewState();
 }
 
 class _LinkPreviewState extends State<LinkPreview> {
-  Map<String, String> data;
+  RichLinkPreview data;
 
   @override
   void initState() {
     super.initState();
-    fetchPreview(widget.url).then((Map<String, String> res) {
+    fetchPreview(widget.urls).then((RichLinkPreview res) {
       setState(() {
         data = res;
       });
@@ -42,7 +43,7 @@ class _LinkPreviewState extends State<LinkPreview> {
         ),
         child: Row(
           children: [
-            Image.network(data['image'],
+            Image.network(data.image,
                 width: 100, height: 100, fit: BoxFit.cover),
             Expanded(
               child: Padding(
@@ -51,7 +52,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data['title'],
+                      data.title,
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       softWrap: false,
@@ -61,7 +62,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                           .copyWith(fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      data['description'],
+                      data.description,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style: Theme.of(context)
@@ -70,7 +71,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                           .copyWith(fontSize: 14),
                     ),
                     Text(
-                      widget.url,
+                      data.url,
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       style: Theme.of(context)
@@ -89,9 +90,8 @@ class _LinkPreviewState extends State<LinkPreview> {
   }
 
   void _openUrl() async {
-    final url = widget.url;
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunch(data.url)) {
+      await launch(data.url);
     }
   }
 }

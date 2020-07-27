@@ -14,7 +14,7 @@ class PostContent extends StatelessWidget {
   const PostContent({Key key, @required this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    String shouldShowLinkPreview = _isLinkInContent();
+    List<String> shouldShowLinkPreview = _isLinkInContent();
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -28,7 +28,7 @@ class PostContent extends StatelessWidget {
           post: post,
         ),
         if (shouldShowLinkPreview.isNotEmpty)
-          LinkPreview(url: shouldShowLinkPreview),
+          LinkPreview(urls: shouldShowLinkPreview),
       ],
     );
   }
@@ -43,10 +43,10 @@ class PostContent extends StatelessWidget {
     );
   }
 
-  String _isLinkInContent() {
+  List<String> _isLinkInContent() {
     // do not show link preview if there is a poll or image
     if (post.poll != null || post.images.isNotEmpty) {
-      return "";
+      return null;
     }
 
     List<String> wordList = post.message
@@ -55,6 +55,6 @@ class PostContent extends StatelessWidget {
         .where((String x) => isURL(x))
         .toList();
     ;
-    return wordList.isNotEmpty ? wordList[wordList.length - 1] : "";
+    return wordList.isNotEmpty ? wordList : null;
   }
 }
