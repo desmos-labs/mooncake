@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/theme/spaces.dart';
+import 'package:mooncake/ui/ui.dart';
 import '../../utils.dart' show pollColors;
 
 /// Represents a single row showing the percentage of voting that the
@@ -10,12 +10,14 @@ class PostPollResultItem extends StatelessWidget {
   final PollOption option;
   final int index;
   final int currentPollLength;
+  final bool votedOption;
 
   PostPollResultItem({
     Key key,
     @required this.poll,
     @required this.option,
     @required this.index,
+    @required this.votedOption,
   })  : currentPollLength = poll.userAnswers
             .where((answer) => answer.answer == option.id)
             .length,
@@ -31,7 +33,6 @@ class PostPollResultItem extends StatelessWidget {
             bottomLeft: Radius.circular(8),
           );
     final Color selectedColor = pollColors[index % pollColors.length];
-
     return Container(
       child: Stack(
         alignment: Alignment.centerLeft,
@@ -66,13 +67,29 @@ class PostPollResultItem extends StatelessWidget {
               children: [
                 Flexible(
                   fit: FlexFit.loose,
-                  child: Text(
-                    option.text,
-                    softWrap: false,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Text(
+                          option.text,
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                      if (votedOption)
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          child: Icon(
+                            MooncakeIcons.success,
+                            size: 14,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 RichText(
@@ -81,14 +98,15 @@ class PostPollResultItem extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     children: <TextSpan>[
-                      TextSpan(
-                        text: '(${currentPollLength})',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 14.0,
-                          color: Theme.of(context).colorScheme.onPrimary,
+                      if (votedOption)
+                        TextSpan(
+                          text: '(${currentPollLength})',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 14.0,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
                         ),
-                      ),
                       TextSpan(
                         text: ' ${(percentage * 100).toInt()}%',
                         style: TextStyle(

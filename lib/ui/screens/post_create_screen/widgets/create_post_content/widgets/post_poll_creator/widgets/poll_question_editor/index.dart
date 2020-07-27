@@ -20,7 +20,9 @@ class PollQuestionEditor extends StatelessWidget {
           children: [
             TextField(
               textCapitalization: TextCapitalization.sentences,
+              maxLines: null,
               decoration: getInputDecoration(
+                context,
                 PostsLocalizations.of(context).pollQuestionHint,
               ),
               onChanged: (value) => _onChanged(context, value),

@@ -32,32 +32,53 @@ class _PollOptionEditorState extends State<PollOptionEditor> {
       color: Colors.transparent,
       child: Container(
         decoration: getInputOutline(context),
-        padding: EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _textEditingController,
-                    keyboardType: TextInputType.text,
-                    decoration: getInputDecoration(hintText),
-                    textCapitalization: TextCapitalization.sentences,
-                    onChanged: (value) => _onTextChanged(context, value),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 5,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _textEditingController,
+                            keyboardType: TextInputType.text,
+                            decoration: getInputDecoration(context, hintText),
+                            textCapitalization: TextCapitalization.sentences,
+                            onChanged: (value) =>
+                                _onTextChanged(context, value),
+                          ),
+                        ),
+                        // TODO: Implement the association of an image to a poll option
+                        // IconButton(
+                        //   icon: const Icon(MooncakeIcons.picture),
+                        //   onPressed: () {},
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
-// TODO: Implement the association of an image to a poll option
-//                IconButton(
-//                  icon: Icon(MooncakeIcons.picture),
-//                  onPressed: () {},
-//                ),
                 if (widget.option.id > 1)
-                  IconButton(
-                    icon: Icon(MooncakeIcons.delete),
-                    tooltip:
-                        PostsLocalizations.of(context).pollDeleteOptionHint,
-                    onPressed: () => _deleteOption(context),
+                  Container(
+                    child: IconButton(
+                      icon: const Icon(MooncakeIcons.delete),
+                      tooltip:
+                          PostsLocalizations.of(context).pollDeleteOptionHint,
+                      onPressed: () => _deleteOption(context),
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          width: 0.5,
+                          color: Theme.of(context).colorScheme.onError,
+                        ),
+                      ),
+                    ),
                   )
               ],
             )

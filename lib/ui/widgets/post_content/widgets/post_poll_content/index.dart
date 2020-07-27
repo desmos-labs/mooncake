@@ -23,14 +23,13 @@ class PostPollContent extends StatelessWidget {
 
         return Container(
           width: double.infinity,
-          padding: EdgeInsets.all(8),
           child: Material(
             color: Colors.transparent,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(post.poll.question, textAlign: TextAlign.center),
-                if (!hasVoted)
+                if (post.poll.question.isNotEmpty) Text(post.poll.question),
+                if (hasVoted == null)
                   _buildListView((option, index) {
                     return PostPollOptionItem(
                       post: post,
@@ -38,15 +37,16 @@ class PostPollContent extends StatelessWidget {
                       index: index,
                     );
                   }),
-                if (hasVoted)
+                if (hasVoted != null)
                   _buildListView((option, index) {
                     return PostPollResultItem(
                       poll: post.poll,
                       option: option,
                       index: index,
+                      votedOption: hasVoted == index,
                     );
                   }),
-                if (hasVoted) _votesAndEnding(context)
+                if (hasVoted != null) _votesAndEnding(context)
               ],
             ),
           ),
