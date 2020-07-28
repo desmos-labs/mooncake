@@ -19,18 +19,17 @@ class PostPollContent extends StatelessWidget {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
         final account = (state as LoggedIn).user;
-        final hasVoted = account.hasVoted(post.poll);
+        final hasVoted = _hasVoted(post.poll, account.address);
 
         return Container(
           width: double.infinity,
-          padding: EdgeInsets.all(8),
           child: Material(
             color: Colors.transparent,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(post.poll.question, textAlign: TextAlign.center),
-                if (!hasVoted)
+                if (post.poll.question.isNotEmpty) Text(post.poll.question),
+                if (hasVoted == null)
                   _buildListView((option, index) {
                     return PostPollOptionItem(
                       post: post,
@@ -38,15 +37,16 @@ class PostPollContent extends StatelessWidget {
                       index: index,
                     );
                   }),
-                if (hasVoted)
+                if (hasVoted != null)
                   _buildListView((option, index) {
                     return PostPollResultItem(
                       poll: post.poll,
                       option: option,
                       index: index,
+                      votedOption: hasVoted == index,
                     );
                   }),
-                if (hasVoted) _votesAndEnding(context)
+                if (hasVoted != null) _votesAndEnding(context)
               ],
             ),
           ),
@@ -95,5 +95,14 @@ class PostPollContent extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
     );
+  }
+
+  /// Tells whether this [MooncakeAccount] has voted on the given [poll] or not.
+  int _hasVoted(PostPoll poll, String address) {
+    List<PollAnswer> option = poll.userAnswers
+        .where((answer) => answer.user.address == address)
+        .toList();
+
+    return option.isNotEmpty ? option[0].answer : null;
   }
 }

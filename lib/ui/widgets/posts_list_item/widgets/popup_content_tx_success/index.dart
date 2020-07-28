@@ -20,7 +20,7 @@ class PostSuccessPopupContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
-          PostsLocalizations.of(context).syncErrorTitle,
+          PostsLocalizations.of(context).syncSuccessTitle,
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16),

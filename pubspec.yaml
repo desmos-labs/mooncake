@@ -53,6 +53,8 @@ dependencies:
   shared_preferences:
   timeago:
   url_launcher:
+  validators: ^2.0.1
+  html: ^0.14.0+3
 
 dev_dependencies:
   bloc_test:

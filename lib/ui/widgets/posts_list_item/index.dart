@@ -59,18 +59,17 @@ class PostListItem extends StatelessWidget {
     BlocProvider.of<NavigatorBloc>(context).add(NavigateToPostDetails(post.id));
   }
 
-  Function _handleLongClick(BuildContext context) {
+  void _handleLongClick(BuildContext context) {
     if (post.status.hasError) {
-      return () => showPostItemPopup(
-            context: context,
-            content: PostErrorPopupContent(error: post.status.data),
-          );
+      showPostItemPopup(
+        context: context,
+        content: PostErrorPopupContent(error: post.status.data),
+      );
     } else if (post.status.hasTxHash) {
-      return () => showPostItemPopup(
-            context: context,
-            content: PostSuccessPopupContent(txHash: post.status.data),
-          );
+      showPostItemPopup(
+        context: context,
+        content: PostSuccessPopupContent(txHash: post.status.data),
+      );
     }
-    return null;
   }
 }

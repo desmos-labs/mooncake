@@ -7,12 +7,6 @@ extension AccountExtensions on MooncakeAccount {
     return post.reactions.containsFrom(this, Constants.LIKE_REACTION);
   }
 
-  /// Tells whether this [MooncakeAccount] has voted on the given [poll] or not.
-  bool hasVoted(PostPoll poll) {
-    return poll.userAnswers
-        .any((answer) => answer.user.address == this.address);
-  }
-
   /// Transforms this instance of [MooncakeAccount] into a [User] instance.
   User toUser() {
     return User(

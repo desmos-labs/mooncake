@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -11,6 +9,9 @@ part 'fcm_message_data.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class FcmMessage extends Equatable {
+  static const NOTIFICATION_KEY = "notification";
+  static const DATA_KEY = "data";
+
   /// Contains the data of the notification.
   @JsonKey(name: "notification", nullable: true)
   final FcmNotification notification;
@@ -33,11 +34,14 @@ class FcmMessage extends Equatable {
   List<Object> get props => [notification, data];
 
   factory FcmMessage.fromJson(Map<String, dynamic> json) {
-    final newJson = json.map((key, value) => MapEntry(
-          key,
-          (value is LinkedHashMap) ? Map<String, dynamic>.from(value) : value,
-        ));
-    return _$FcmMessageFromJson(newJson);
+    if (json[DATA_KEY] == null) {
+      final entries = json.entries
+          .where((e) => e.key != NOTIFICATION_KEY && e.key != DATA_KEY)
+          .toList();
+      json[DATA_KEY] = Map.fromEntries(entries);
+    }
+
+    return _$FcmMessageFromJson(json);
   }
 
   Map<String, dynamic> toJson() => _$FcmMessageToJson(this);
