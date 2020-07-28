@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import './utils/preview_helper.dart';
 
 /// Takes in an `List<String>` of `urls` and tries to find one
@@ -22,9 +23,9 @@ class _LinkPreviewState extends State<LinkPreview> {
   void initState() {
     super.initState();
     fetchPreview(widget.urls).then((RichLinkPreview res) {
-      setState(() {
-        data = res;
-      });
+      if (mounted) {
+        setState(() => data = res);
+      }
     });
   }
 

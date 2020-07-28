@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -189,14 +190,16 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<void> savePost(Post post) async {
+  Future<void> savePost(Post post, {bool merge = false}) async {
     await _database.transaction((txn) async {
-      final existingPost = await _store.record(getPostKey(post)).get(txn);
-      Post existingPostValue =
-          await PostsConverter.deserializePost(existingPost);
-      final mergedPost = mergePost(existingPostValue, post);
-      final mergedValue = await PostsConverter.serializePost(mergedPost);
-      await _store.record(getPostKey(post)).put(txn, mergedValue);
+      if (merge) {
+        final existingJson = await _store.record(getPostKey(post)).get(txn);
+        final existing = await PostsConverter.deserializePost(existingJson);
+        post = mergePost(existing, post);
+      }
+
+      final value = await PostsConverter.serializePost(post);
+      await _store.record(getPostKey(post)).put(txn, value);
     });
   }
 
@@ -211,19 +214,26 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   /// then the associated post can be null.
   @visibleForTesting
   List<Post> mergePosts(List<Post> existingPosts, List<Post> newPosts) {
-    final merged = List<Post>()..addAll(newPosts);
-
+    final merged = List<Post>(newPosts.length);
     for (int index = 0; index < merged.length; index++) {
-      final existing = existingPosts[index];
-      final updated = merged[index];
-      merged[index] = mergePost(existing, updated);
+      merged[index] = mergePost(existingPosts[index], newPosts[index]);
     }
-
     return merged;
   }
 
   @visibleForTesting
   Post mergePost(Post existing, Post updated) {
+    final eq = ListEquality().equals;
+    final contentsEquals = eq(existing?.reactions, updated.reactions) &&
+        eq(existing?.commentsIds, updated.commentsIds) &&
+        existing?.poll == updated.poll;
+
+    if (contentsEquals) {
+      return updated.status.value == PostStatusValue.TX_SUCCESSFULL
+          ? updated
+          : existing;
+    }
+
     Set<Reaction> reactions = updated.reactions.toSet();
     if (existing?.reactions != null) {
       reactions.addAll(existing.reactions);

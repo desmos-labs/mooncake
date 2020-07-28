@@ -35,7 +35,10 @@ abstract class LocalPostsSource {
   Future<List<Post>> getPostsToSync();
 
   /// Saves the given [post] inside the source.
-  Future<void> savePost(Post post);
+  /// If [merge] is set to `true`, the contents of the existing post and the
+  /// given [post] will be merged. Otherwise, the new contents will replace
+  /// the existing ones.
+  Future<void> savePost(Post post, {bool merge = false});
 
   /// Saves the given [posts] inside the source.
   /// Upon having stored them properly, it emits the new set of posts

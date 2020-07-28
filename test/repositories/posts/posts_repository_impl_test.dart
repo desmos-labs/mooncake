@@ -129,7 +129,7 @@ void main() {
 
       verifyInOrder([
         remoteSource.getPostById(postId),
-        localSource.savePost(remotePost),
+        localSource.savePost(remotePost, merge: true),
         localSource.getPostById(postId),
       ]);
     });
