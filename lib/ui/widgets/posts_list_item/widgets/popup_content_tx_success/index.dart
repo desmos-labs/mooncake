@@ -24,7 +24,8 @@ class PostSuccessPopupContent extends StatelessWidget {
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16),
-        Text(PostsLocalizations.of(context).syncSuccessBody(txHash)),
+        Text(
+            "${PostsLocalizations.of(context).translate("syncSuccessBodyOne")} ${txHash} ${PostsLocalizations.of(context).translate("syncSuccessBodyTwo")}"),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

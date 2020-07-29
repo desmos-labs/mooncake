@@ -50,12 +50,12 @@ class PostDetailsMainContent extends StatelessWidget {
                           indicatorColor: Theme.of(context).colorScheme.primary,
                           tabs: <Widget>[
                             Tab(
-                              text: PostsLocalizations.of(context)
-                                  .commentsTabLabel(state.commentsCount),
+                              text:
+                                  "${PostsLocalizations.of(context).translate("commentsTabLabel")} ${state.commentsCount}",
                             ),
                             Tab(
-                              text: PostsLocalizations.of(context)
-                                  .reactionsTabLabel(state.reactionsCount),
+                              text:
+                                  "${PostsLocalizations.of(context).translate("reactionsTabLabel")} ${state.reactionsCount}",
                             ),
                           ],
                         ),

@@ -33,8 +33,7 @@ class BlocUserDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(PostsLocalizations.of(context).translate("blockDialogTitle")),
       content: Text(
-        PostsLocalizations.of(context).blockDialogText(user.address),
-      ),
+          "${PostsLocalizations.of(context).translate("blockDialogTextOne")} ${user.address} ${PostsLocalizations.of(context).translate("blockDialogTextTwo")}"),
       actions: [
         FlatButton(
           child: Text(PostsLocalizations.of(context)

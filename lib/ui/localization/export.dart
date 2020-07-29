@@ -63,27 +63,3 @@ class _AppLocalizationsDelegate
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
-
-// class PostsLocalizationss {
-
-//   // Post item
-//   String likesCount(int count) => "$count likes";
-
-//   // Block user popup
-//   String blockDialogText(String screenName) =>
-//       "By blocking $screenName you will no longer see his posts. "
-//       "Would you like to continue?";
-
-//   // Syncing
-//   String syncSuccessBody(String txHash) =>
-//       "A transaction with hash $txHash has been sent to the chain";
-
-//   String votes(int count) => "$count votes";
-
-//   String pollEndOn(String date) => "Poll will end on $date";
-
-//   String commentsTabLabel(int comments) => "Comments $comments";
-
-//   String reactionsTabLabel(int reactions) => "Reactions $reactions";
-
-// }
