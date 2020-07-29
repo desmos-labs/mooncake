@@ -37,13 +37,14 @@ class _PostsAppState extends State<PostsApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: PostsKeys.navigatorKey,
-        title: PostsLocalizations().appName,
+        title:
+            'Mooncake', // wingman said: i dont think mooncake will change names in different languages so let me know.
         themeMode: ThemeMode.system,
         theme: PostsTheme.lightTheme,
         darkTheme: PostsTheme.darkTheme,
         home: SplashScreen(),
         localizationsDelegates: [
-          // FlutterBlocLocalizationsDelegate(),
+          PostsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
