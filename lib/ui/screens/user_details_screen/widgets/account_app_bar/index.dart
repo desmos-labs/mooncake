@@ -88,7 +88,7 @@ class AccountAppBar extends StatelessWidget {
                             },
                             child: Text(
                               PostsLocalizations.of(context)
-                                  .walletButtonTooltip,
+                                  .translate("walletButtonTooltip"),
                             ),
                           ),
                       ],
