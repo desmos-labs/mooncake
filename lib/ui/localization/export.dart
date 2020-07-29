@@ -322,8 +322,10 @@ One of the most important steps you can take to secure your account is to backup
 class FlutterBlocLocalizationsDelegate
     extends LocalizationsDelegate<PostsLocalizations> {
   @override
-  Future<PostsLocalizations> load(Locale locale) =>
-      Future(() => PostsLocalizations());
+  Future<PostsLocalizations> load(Locale locale) {
+    return Future(() => PostsLocalizations());
+  }
+
   @override
   bool shouldReload(FlutterBlocLocalizationsDelegate old) => false;
 
