@@ -17,8 +17,11 @@ class PostsLocalizations {
   Future<bool> load() async {
     // Load JSON file from the "language" folder
     String jsonString = await rootBundle
-        .loadString('resources/language/${appLocale.languageCode}.json');
-    Map<String, dynamic> jsonLanguageMap = json.decode(jsonString);
+        .loadString('ui/localization/language/${appLocale.languageCode}.json');
+    //ignore: invalid_assignment
+    Map<String, String> jsonLanguageMap =
+        json.decode(jsonString) as Map<String, String>;
+
     _localizedStrings = jsonLanguageMap.map((key, value) {
       return MapEntry(key, value.toString());
     });

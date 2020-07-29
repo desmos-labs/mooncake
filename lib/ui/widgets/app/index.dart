@@ -51,6 +51,14 @@ class _PostsAppState extends State<PostsApp> {
         supportedLocales: [
           const Locale('en', ''), // English, no country code
         ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocaleLanguage in supportedLocales) {
+            if (supportedLocaleLanguage.languageCode == locale.languageCode) {
+              return supportedLocaleLanguage;
+            }
+          }
+          return supportedLocales.first;
+        },
         navigatorObservers: [
           FirebaseAnalyticsObserver(analytics: Injector.get()),
         ],
