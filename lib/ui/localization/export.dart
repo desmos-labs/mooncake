@@ -22,8 +22,8 @@ class PostsLocalizations {
 
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
-    String jsonString = await rootBundle
-        .loadString('lib/ui/localization/lang/${locale.languageCode}.json');
+    String jsonString = await rootBundle.loadString(
+        'lib/ui/localization/languages/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap =
         json.decode(jsonString) as Map<String, dynamic>;
 
@@ -36,7 +36,11 @@ class PostsLocalizations {
 
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
-    return _localizedStrings[key];
+    print('=====here=====');
+    print(key);
+    print(_localizedStrings[key]);
+    String value = _localizedStrings[key];
+    return value ?? "";
   }
 }
 
