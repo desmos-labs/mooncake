@@ -18,13 +18,14 @@ class BackupMnemonicButton extends StatelessWidget {
             children: [
               PrimaryButton(
                 child: Text(PostsLocalizations.of(context)
-                    .mnemonicBackupWrittenConfirm),
+                    .translate("mnemonicBackupWrittenConfirm")),
                 onPressed: () => onConfirmationClick(context),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
-                  PostsLocalizations.of(context).mnemonicWrittenConfirmation,
+                  PostsLocalizations.of(context)
+                      .translate("mnemonicWrittenConfirmation"),
                   style: TextStyle(
                     fontSize: 12,
                   ),

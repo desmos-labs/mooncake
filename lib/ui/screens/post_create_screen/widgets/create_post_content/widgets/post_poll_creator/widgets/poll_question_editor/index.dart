@@ -23,7 +23,7 @@ class PollQuestionEditor extends StatelessWidget {
               maxLines: null,
               decoration: getInputDecoration(
                 context,
-                PostsLocalizations.of(context).pollQuestionHint,
+                PostsLocalizations.of(context).translate("pollQuestionHint"),
               ),
               onChanged: (value) => _onChanged(context, value),
             )

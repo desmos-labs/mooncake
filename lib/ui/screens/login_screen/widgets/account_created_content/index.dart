@@ -13,7 +13,7 @@ class AccountCreatedPopupContent extends StatelessWidget {
       children: <Widget>[
         Text(
           PostsLocalizations.of(context)
-              .accountCreatedPopupTitleFirstRow
+              .translate("accountCreatedPopupTitleFirstRow")
               .toUpperCase(),
           style: Theme.of(context).textTheme.headline6.copyWith(
                 color: Theme.of(context).colorScheme.primary,
@@ -21,14 +21,15 @@ class AccountCreatedPopupContent extends StatelessWidget {
         ),
         Text(
           PostsLocalizations.of(context)
-              .accountCreatedPopupTitleSecondRow
+              .translate("accountCreatedPopupTitleSecondRow")
               .toUpperCase(),
           style: Theme.of(context).textTheme.headline6.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),
         ),
         SizedBox(height: 10),
-        Text(PostsLocalizations.of(context).accountCreatedPopupText),
+        Text(PostsLocalizations.of(context)
+            .translate("accountCreatedPopupText")),
         SizedBox(height: 25),
         Row(
           children: <Widget>[
@@ -36,7 +37,7 @@ class AccountCreatedPopupContent extends StatelessWidget {
               child: PrimaryButton(
                 onPressed: () => _goToMooncake(context),
                 child: Text(PostsLocalizations.of(context)
-                    .accountCreatedPopupMainButtonText),
+                    .translate("accountCreatedPopupMainButtonText")),
               ),
             ),
           ],

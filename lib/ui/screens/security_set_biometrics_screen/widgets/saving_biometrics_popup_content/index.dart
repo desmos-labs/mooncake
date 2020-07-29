@@ -8,11 +8,11 @@ class SavingBiometricsPopupContent extends StatelessWidget {
     return Column(
       children: <Widget>[
         Text(
-          PostsLocalizations.of(context).savingBiometricsTitle,
+          PostsLocalizations.of(context).translate("savingBiometricsTitle"),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 10),
-        Text(PostsLocalizations.of(context).savingBiometricsBody),
+        Text(PostsLocalizations.of(context).translate("savingBiometricsBody")),
         const SizedBox(height: 20),
         Row(
           mainAxisSize: MainAxisSize.min,

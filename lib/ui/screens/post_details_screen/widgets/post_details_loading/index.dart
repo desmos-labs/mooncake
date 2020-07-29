@@ -13,7 +13,7 @@ class PostDetailsLoading extends StatelessWidget {
         children: <Widget>[
           LoadingIndicator(),
           SizedBox(height: 16),
-          Text(PostsLocalizations.of(context).loadingPost),
+          Text(PostsLocalizations.of(context).translate("loadingPost")),
         ],
       ),
     );

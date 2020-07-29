@@ -38,7 +38,7 @@ class NotificationsList extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  PostsLocalizations.of(context).noNotifications,
+                  PostsLocalizations.of(context).translate("noNotifications"),
                   style: Theme.of(context).accentTextTheme.bodyText2,
                 )
               ],

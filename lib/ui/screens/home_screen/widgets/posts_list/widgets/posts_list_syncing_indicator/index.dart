@@ -11,7 +11,7 @@ class PostsListSyncingIndicator extends StatelessWidget {
         SizedBox(height: 3, child: LinearProgressIndicator()),
         const SizedBox(height: 4),
         Text(
-          PostsLocalizations.of(context).syncingActivities,
+          PostsLocalizations.of(context).translate("syncingActivities"),
           style: Theme.of(context).textTheme.caption.copyWith(
                 color: Theme.of(context).accentColor,
               ),

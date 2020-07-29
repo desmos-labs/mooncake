@@ -76,7 +76,7 @@ class CreatePostContent extends StatelessWidget {
       autofocus: true,
       onChanged: (value) => _messageChanged(context, value),
       decoration: InputDecoration(
-        hintText: PostsLocalizations.of(context).createPostHint,
+        hintText: PostsLocalizations.of(context).translate("createPostHint"),
         border: border,
         focusedBorder: border,
         enabledBorder: border,

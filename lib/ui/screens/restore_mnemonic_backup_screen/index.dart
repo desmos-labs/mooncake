@@ -10,7 +10,8 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          PostsLocalizations.of(context).restoreMnemonicBackupScreenTitle,
+          PostsLocalizations.of(context)
+              .translate("restoreMnemonicBackupScreenTitle"),
         ),
         centerTitle: true,
       ),
@@ -24,7 +25,7 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                 children: [
                   Text(
                     PostsLocalizations.of(context)
-                        .restoreMnemonicInstructions
+                        .translate("restoreMnemonicInstructions")
                         .replaceAll("\n", " "),
                     textAlign: TextAlign.center,
                   ),
@@ -36,10 +37,11 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                       maxLines: null,
                       decoration: InputDecoration(
                         hintText: PostsLocalizations.of(context)
-                            .restoreBackupFieldHint,
+                            .translate("restoreBackupFieldHint"),
                         errorText: state.isBackupValid
                             ? null
-                            : PostsLocalizations.of(context).errorBackupInvalid,
+                            : PostsLocalizations.of(context)
+                                .translate("errorBackupInvalid"),
                       ),
                       onChanged: (value) => _onBackupChanged(context, value),
                     ),
@@ -50,11 +52,11 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                     keyboardType: TextInputType.visiblePassword,
                     decoration: InputDecoration(
                       hintText: PostsLocalizations.of(context)
-                          .restorePasswordFieldHint,
+                          .translate("restorePasswordFieldHint"),
                       errorText: state.isPasswordValid
                           ? null
                           : PostsLocalizations.of(context)
-                              .errorBackupPasswordWrong,
+                              .translate("errorBackupPasswordWrong"),
                     ),
                     onChanged: (value) => _onPasswordChanged(context, value),
                   ),
@@ -63,7 +65,8 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                     PrimaryButton(
                       onPressed: () => _restoreBackup(context),
                       child: Text(
-                        PostsLocalizations.of(context).restoreButtonText,
+                        PostsLocalizations.of(context)
+                            .translate("restoreButtonText"),
                       ),
                       enabled: state.isBackupValid,
                     ),

@@ -24,7 +24,8 @@ class PollEndDateEditor extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      PostsLocalizations.of(context).pollEndDateText,
+                      PostsLocalizations.of(context)
+                          .translate("pollEndDateText"),
                       style: Theme.of(context).inputDecorationTheme.hintStyle,
                     ),
                   ),

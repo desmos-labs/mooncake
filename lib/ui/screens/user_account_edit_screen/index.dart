@@ -11,7 +11,8 @@ class EditAccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(PostsLocalizations.of(context).editAccountScreenTitle),
+        title: Text(
+            PostsLocalizations.of(context).translate("editAccountScreenTitle")),
         centerTitle: true,
       ),
       body: BlocProvider<EditAccountBloc>(

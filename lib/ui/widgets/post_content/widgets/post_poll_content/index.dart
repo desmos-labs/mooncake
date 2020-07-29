@@ -74,7 +74,7 @@ class PostPollContent extends StatelessWidget {
             if (post.poll.isOpen)
               Text(PostsLocalizations.of(context).pollEndOn(date)),
             if (!post.poll.isOpen)
-              Text(PostsLocalizations.of(context).finalResults),
+              Text(PostsLocalizations.of(context).translate("finalResults")),
           ],
         ),
       ],

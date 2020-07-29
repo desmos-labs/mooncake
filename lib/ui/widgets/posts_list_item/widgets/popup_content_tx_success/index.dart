@@ -20,7 +20,7 @@ class PostSuccessPopupContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
-          PostsLocalizations.of(context).syncSuccessTitle,
+          PostsLocalizations.of(context).translate("syncSuccessTitle"),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16),
@@ -31,7 +31,8 @@ class PostSuccessPopupContent extends StatelessWidget {
           children: <Widget>[
             FlatButton(
               child: Text(
-                PostsLocalizations.of(context).syncSuccessBrowseButton,
+                PostsLocalizations.of(context)
+                    .translate("syncSuccessBrowseButton"),
               ),
               onPressed: () => _browseTx(),
             )

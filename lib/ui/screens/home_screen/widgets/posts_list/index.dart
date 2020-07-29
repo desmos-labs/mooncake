@@ -89,7 +89,8 @@ class _PostsListState extends State<PostsList> {
                       _indicator.currentState.show();
                     },
                     child: Text(
-                      PostsLocalizations.of(context).refreshButtonText,
+                      PostsLocalizations.of(context)
+                          .translate("refreshButtonText"),
                     ),
                   ),
                 ),

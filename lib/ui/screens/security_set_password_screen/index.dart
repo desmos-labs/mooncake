@@ -12,7 +12,7 @@ class SetPasswordScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(PostsLocalizations.of(context).passwordTitle),
+        title: Text(PostsLocalizations.of(context).translate("passwordTitle")),
       ),
       body: BlocProvider<SetPasswordBloc>(
         create: (context) => SetPasswordBloc.create(context),

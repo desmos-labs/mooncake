@@ -15,7 +15,7 @@ class PostsListEmptyContainer extends StatelessWidget {
         children: <Widget>[
           Expanded(child: Image.asset("assets/images/sad.png", width: 150)),
           Text(
-            PostsLocalizations.of(context).noPostsYet,
+            PostsLocalizations.of(context).translate("noPostsYet"),
             textAlign: TextAlign.center,
           )
         ],

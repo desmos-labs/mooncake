@@ -11,11 +11,16 @@ class BackupMnemonicDetails extends StatelessWidget {
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
           children: <TextSpan>[
-            TextSpan(text: PostsLocalizations.of(context).mnemonicViewBody1),
             TextSpan(
-                text: PostsLocalizations.of(context).mnemonicViewBody2,
+                text: PostsLocalizations.of(context)
+                    .translate("mnemonicViewBody1")),
+            TextSpan(
+                text: PostsLocalizations.of(context)
+                    .translate("mnemonicViewBody2"),
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            TextSpan(text: PostsLocalizations.of(context).mnemonicViewBody3),
+            TextSpan(
+                text: PostsLocalizations.of(context)
+                    .translate("mnemonicViewBody3")),
           ],
         ),
       ),

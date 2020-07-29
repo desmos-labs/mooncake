@@ -18,7 +18,7 @@ class SyncSnackBar extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           Text(
-            PostsLocalizations.of(context).syncingActivities,
+            PostsLocalizations.of(context).translate("syncingActivities"),
             style: TextStyle(color: Colors.white),
           ),
         ],

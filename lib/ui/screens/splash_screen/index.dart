@@ -28,7 +28,7 @@ class SplashScreen extends StatelessWidget {
                   width: 125,
                 ),
                 Text(
-                  PostsLocalizations.of(context).appName,
+                  PostsLocalizations.of(context).translate("appName"),
                   style: Theme.of(context).textTheme.headline6.copyWith(
                         color: Colors.white,
                         fontFamily: 'Montserrat',

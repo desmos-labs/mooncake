@@ -19,7 +19,8 @@ class PopupReportTextInput extends StatelessWidget {
                   .add(ChangeOtherText(value));
             },
             decoration: InputDecoration(
-              hintText: PostsLocalizations.of(context).reportPopupEditBotHint,
+              hintText: PostsLocalizations.of(context)
+                  .translate("reportPopupEditBotHint"),
               border: OutlineInputBorder(),
             ),
           ),

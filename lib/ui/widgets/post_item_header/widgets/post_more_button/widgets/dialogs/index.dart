@@ -31,17 +31,19 @@ class BlocUserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(PostsLocalizations.of(context).blockDialogTitle),
+      title: Text(PostsLocalizations.of(context).translate("blockDialogTitle")),
       content: Text(
         PostsLocalizations.of(context).blockDialogText(user.address),
       ),
       actions: [
         FlatButton(
-          child: Text(PostsLocalizations.of(context).blockDialogCancelButton),
+          child: Text(PostsLocalizations.of(context)
+              .translate("blockDialogCancelButton")),
           onPressed: () => Navigator.pop(context),
         ),
         FlatButton(
-          child: Text(PostsLocalizations.of(context).blockDialogBlockButton),
+          child: Text(PostsLocalizations.of(context)
+              .translate("blockDialogBlockButton")),
           onPressed: () {
             Navigator.pop(context);
             BlocProvider.of<PostsListBloc>(context).add(BlockUser(user));

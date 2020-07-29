@@ -9,13 +9,13 @@ class CreatingAccountPopupContent extends StatelessWidget {
       children: <Widget>[
         Text(
           PostsLocalizations.of(context)
-              .creatingAccountPopupTitle
+              .translate("creatingAccountPopupTitle")
               .toUpperCase(),
           style: Theme.of(context).accentTextTheme.headline6,
         ),
         SizedBox(height: 10),
         Text(
-          PostsLocalizations.of(context).creatingAccountText,
+          PostsLocalizations.of(context).translate("creatingAccountText"),
           style: Theme.of(context).accentTextTheme.headline6,
         ),
         SizedBox(height: 30),

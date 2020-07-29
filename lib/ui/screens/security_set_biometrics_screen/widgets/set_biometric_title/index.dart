@@ -31,7 +31,7 @@ class SetBiometricTitle extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              PostsLocalizations.of(context).biometricsTitle,
+              PostsLocalizations.of(context).translate("biometricsTitle"),
               style: Theme.of(context)
                   .textTheme
                   .headline6
