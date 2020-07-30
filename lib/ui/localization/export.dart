@@ -55,6 +55,7 @@ class _AppLocalizationsDelegate
 
   @override
   Future<PostsLocalizations> load(Locale locale) async {
+    print("======i am called========");
     // AppLocalizations class is where the JSON loading actually runs
     PostsLocalizations localizations = PostsLocalizations(locale);
     await localizations.load();

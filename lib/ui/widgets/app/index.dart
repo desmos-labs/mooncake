@@ -49,7 +49,7 @@ class _PostsAppState extends State<PostsApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: [
-          const Locale('en'),
+          const Locale('en'), // English, no country code
         ],
         localeResolutionCallback: (locale, supportedLocales) {
           for (var supportedLocaleLanguage in supportedLocales) {
