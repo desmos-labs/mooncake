@@ -1,242 +1,256 @@
 import 'package:flutter/widgets.dart';
 
 class Messages {
-  String get appName => "appName";
+  static String get appName => "appName";
 
   // Loading screen
-  String get splashLoadingData => "splashLoadingData";
+  static String get splashLoadingData => "splashLoadingData";
 
   // Generic
-  String get dismiss => "dismiss";
+  static String get dismiss => "dismiss";
 
   // Login
-  String get createAccountButtonText => "createAccountButtonText";
-  String get alreadyHaveMnemonicButtonText => "alreadyHaveMnemonicButtonText";
-  String get useMnemonicBackup => "useMnemonicBackup";
-  String get accountCreatedPopupTitleFirstRow =>
+  static String get createAccountButtonText => "createAccountButtonText";
+  static String get alreadyHaveMnemonicButtonText =>
+      "alreadyHaveMnemonicButtonText";
+  static String get useMnemonicBackup => "useMnemonicBackup";
+  static String get accountCreatedPopupTitleFirstRow =>
       "accountCreatedPopupTitleFirstRow";
-  String get accountCreatedPopupTitleSecondRow =>
+  static String get accountCreatedPopupTitleSecondRow =>
       "accountCreatedPopupTitleSecondRow";
-  String get accountCreatedPopupText => "accountCreatedPopupText";
-  String get accountCreatedPopupMainButtonText =>
+  static String get accountCreatedPopupText => "accountCreatedPopupText";
+  static String get accountCreatedPopupMainButtonText =>
       "accountCreatedPopupMainButtonText";
-  String get accountCreatedPopupBackupButtonText =>
+  static String get accountCreatedPopupBackupButtonText =>
       "accountCreatedPopupBackupButtonText";
-  String get creatingAccountPopupTitle => "creatingAccountPopupTitle";
-  String get creatingAccountText => "creatingAccountText";
-  String get termsDisclaimer => "termsDisclaimer";
-  String get terms => "terms";
-  String get and => "and";
-  String get privacyPolicy => "privacyPolicy";
+  static String get creatingAccountPopupTitle => "creatingAccountPopupTitle";
+  static String get creatingAccountText => "creatingAccountText";
+  static String get termsDisclaimer => "termsDisclaimer";
+  static String get terms => "terms";
+  static String get and => "and";
+  static String get privacyPolicy => "privacyPolicy";
 
   // Recover screen
-  String get recoverScreenTitle => "recoverScreenTitle";
+  static String get recoverScreenTitle => "recoverScreenTitle";
 
   // Recover mnemonic backup
-  String get restoreMnemonicBackupScreenTitle =>
+  static String get restoreMnemonicBackupScreenTitle =>
       "restoreMnemonicBackupScreenTitle";
-  String get restoreMnemonicInstructions => "restoreMnemonicInstructions";
-  String get restoreBackupFieldHint => "restoreBackupFieldHint";
-  String get errorBackupInvalid => "errorBackupInvalid";
-  String get restorePasswordFieldHint => "restorePasswordFieldHint";
-  String get errorBackupPasswordWrong => "errorBackupPasswordWrong";
-  String get restoreButtonText => "restoreButtonText";
+  static String get restoreMnemonicInstructions =>
+      "restoreMnemonicInstructions";
+  static String get restoreBackupFieldHint => "restoreBackupFieldHint";
+  static String get errorBackupInvalid => "errorBackupInvalid";
+  static String get restorePasswordFieldHint => "restorePasswordFieldHint";
+  static String get errorBackupPasswordWrong => "errorBackupPasswordWrong";
+  static String get restoreButtonText => "restoreButtonText";
 
   // Mnemonic recover screen
-  String get recoverAccountInstructions => "recoverAccountInstructions";
-  String get recoverAccount => "recoverAccount";
-  String get recoverAccountContinueButton => "recoverAccountContinueButton";
-  String get recoverAccountInvalidMnemonic => "recoverAccountInvalidMnemonic";
+  static String get recoverAccountInstructions => "recoverAccountInstructions";
+  static String get recoverAccount => "recoverAccount";
+  static String get recoverAccountContinueButton =>
+      "recoverAccountContinueButton";
+  static String get recoverAccountInvalidMnemonic =>
+      "recoverAccountInvalidMnemonic";
 
   // Biometrics screen
-  String get biometricsTitle => "biometricsTitle";
-  String get biometricsBody => "biometricsBody";
-  String get savingBiometricsTitle => "savingBiometricsTitle";
-  String get savingBiometricsBody => "savingBiometricsBody";
-  String get biometricsEnableButton => "biometricsEnableButton";
-  String get biometricsUsePasswordButton => "biometricsUsePasswordButton";
-  String get biometricsReason => "biometricsReason";
+  static String get biometricsTitle => "biometricsTitle";
+  static String get biometricsBody => "biometricsBody";
+  static String get savingBiometricsTitle => "savingBiometricsTitle";
+  static String get savingBiometricsBody => "savingBiometricsBody";
+  static String get biometricsEnableButton => "biometricsEnableButton";
+  static String get biometricsUsePasswordButton =>
+      "biometricsUsePasswordButton";
+  static String get biometricsReason => "biometricsReason";
 
   // Password screen
-  String get passwordTitle => "passwordTitle";
-  String get passwordBody => "passwordBody";
-  String get passwordHint => "passwordHint";
-  String get passwordCaption => "passwordCaption";
-  String get passwordSaveButton => "passwordSaveButton";
-  String get passwordSecurityLow => "passwordSecurityLow";
-  String get passwordSecurityMedium => "passwordSecurityMedium";
-  String get passwordSecurityHigh => "passwordSecurityHigh";
-  String get passwordShowPasswordButton => "passwordShowPasswordButton";
-  String get passwordHidePasswordButton => "passwordHidePasswordButton";
-  String get savingPasswordTitle => "savingPasswordTitle";
-  String get savingPasswordBody => "savingPasswordBody";
+  static String get passwordTitle => "passwordTitle";
+  static String get passwordBody => "passwordBody";
+  static String get passwordHint => "passwordHint";
+  static String get passwordCaption => "passwordCaption";
+  static String get passwordSaveButton => "passwordSaveButton";
+  static String get passwordSecurityLow => "passwordSecurityLow";
+  static String get passwordSecurityMedium => "passwordSecurityMedium";
+  static String get passwordSecurityHigh => "passwordSecurityHigh";
+  static String get passwordShowPasswordButton => "passwordShowPasswordButton";
+  static String get passwordHidePasswordButton => "passwordHidePasswordButton";
+  static String get savingPasswordTitle => "savingPasswordTitle";
+  static String get savingPasswordBody => "savingPasswordBody";
 
   // Security login screen
-  String get viewMnemonic => "viewMnemonic";
-  String get securityLoginText => "securityLoginText";
-  String get securityLoginWarning => "securityLoginWarning";
-  String get securityLoginBiometrics => "securityLoginBiometrics";
-  String get securityLoginPassword => "securityLoginPassword";
-  String get understoodMnemonicDisclaimer => "understoodMnemonicDisclaimer";
+  static String get viewMnemonic => "viewMnemonic";
+  static String get securityLoginText => "securityLoginText";
+  static String get securityLoginWarning => "securityLoginWarning";
+  static String get securityLoginBiometrics => "securityLoginBiometrics";
+  static String get securityLoginPassword => "securityLoginPassword";
+  static String get understoodMnemonicDisclaimer =>
+      "understoodMnemonicDisclaimer";
 
   // Mnemonic export
-  String get exportMnemonic => "exportMnemonic";
-  String get exportMnemonicDialogTitle => "exportMnemonicDialogTitle";
-  String get exportMnemonicDialogText => "exportMnemonicDialogText";
-  String get exportMnemonicDialogPasswordHint =>
+  static String get exportMnemonic => "exportMnemonic";
+  static String get exportMnemonicDialogTitle => "exportMnemonicDialogTitle";
+  static String get exportMnemonicDialogText => "exportMnemonicDialogText";
+  static String get exportMnemonicDialogPasswordHint =>
       "exportMnemonicDialogPasswordHint";
-  String get exportMnemonicDialogCancelButton =>
+  static String get exportMnemonicDialogCancelButton =>
       "exportMnemonicDialogCancelButton";
-  String get exportMnemonicDialogExportButton =>
+  static String get exportMnemonicDialogExportButton =>
       "exportMnemonicDialogExportButton";
-  String get mnemonicExportScreenText => "mnemonicExportScreenText";
-  String get mnemonicExportShareButton => "mnemonicExportShareButton";
-  String get mnemonicExportShareText => "mnemonicExportShareText";
+  static String get mnemonicExportScreenText => "mnemonicExportScreenText";
+  static String get mnemonicExportShareButton => "mnemonicExportShareButton";
+  static String get mnemonicExportShareText => "mnemonicExportShareText";
 
   // Main screen
-  String get refreshButtonText => "refreshButtonText";
-  String get allPostsTabTitle => "allPostsTabTitle";
-  String get likedPostsTabTitle => "likedPostsTabTitle";
-  String get notificationsTabTitle => "notificationsTabTitle";
-  String get yourAccountTabTitle => "yourAccountTabTitle";
-  String get signOut => "signOut";
-  String get floatingButtonTip => "floatingButtonTip";
-  String get loadingPosts => "loadingPosts";
-  String get noPostsYet => "noPostsYet";
-  String get postActionsButtonCaption => "postActionsButtonCaption";
+  static String get refreshButtonText => "refreshButtonText";
+  static String get allPostsTabTitle => "allPostsTabTitle";
+  static String get likedPostsTabTitle => "likedPostsTabTitle";
+  static String get notificationsTabTitle => "notificationsTabTitle";
+  static String get yourAccountTabTitle => "yourAccountTabTitle";
+  static String get signOut => "signOut";
+  static String get floatingButtonTip => "floatingButtonTip";
+  static String get loadingPosts => "loadingPosts";
+  static String get noPostsYet => "noPostsYet";
+  static String get postActionsButtonCaption => "postActionsButtonCaption";
 
   // Action bar
-  String get brightnessButtonTooltip => "brightnessButtonTooltip";
-  String get walletButtonTooltip => "walletButtonTooltip";
-  String get editAccountOption => "editAccountOption";
-  String get viewMnemonicOption => "viewMnemonicOption";
-  String get logoutOption => "logoutOption";
+  static String get brightnessButtonTooltip => "brightnessButtonTooltip";
+  static String get walletButtonTooltip => "walletButtonTooltip";
+  static String get editAccountOption => "editAccountOption";
+  static String get viewMnemonicOption => "viewMnemonicOption";
+  static String get logoutOption => "logoutOption";
 
   // Post actions popup
-  String get postActionsPopupTitle => "postActionsPopupTitle";
-  String get postActionReportPost => "postActionReportPost";
-  String get postActionHide => "postActionHide";
-  String get postActionBlockUser => "postActionBlockUser";
+  static String get postActionsPopupTitle => "postActionsPopupTitle";
+  static String get postActionReportPost => "postActionReportPost";
+  static String get postActionHide => "postActionHide";
+  static String get postActionBlockUser => "postActionBlockUser";
 
   // Report popup
-  String get reportPopupTitle => "reportPopupTitle";
-  String get reportPopupSpam => "reportPopupSpam";
-  String get reportPopupSexuallyInappropriate =>
+  static String get reportPopupTitle => "reportPopupTitle";
+  static String get reportPopupSpam => "reportPopupSpam";
+  static String get reportPopupSexuallyInappropriate =>
       "reportPopupSexuallyInappropriate";
-  String get reportPopupScamMisleading => "reportPopupScamMisleading";
-  String get reportPopupViolentProhibited => "reportPopupViolentProhibited";
-  String get reportPopupOther => "reportPopupOther";
-  String get reportPopupEditBotHint => "reportPopupEditBotHint";
-  String get reportPopupBlockUser => "reportPopupBlockUser";
-  String get reportPopupSubmit => "reportPopupSubmit";
+  static String get reportPopupScamMisleading => "reportPopupScamMisleading";
+  static String get reportPopupViolentProhibited =>
+      "reportPopupViolentProhibited";
+  static String get reportPopupOther => "reportPopupOther";
+  static String get reportPopupEditBotHint => "reportPopupEditBotHint";
+  static String get reportPopupBlockUser => "reportPopupBlockUser";
+  static String get reportPopupSubmit => "reportPopupSubmit";
 
   // Block user popup
-  String get blockDialogTitle => "blockDialogTitle";
-  String get blockDialogTextOne => "blockDialogTextOne";
-  String get blockDialogTextTwo => "blockDialogTextTwo";
-  String get blockDialogCancelButton => "blockDialogCancelButton";
-  String get blockDialogBlockButton => "blockDialogBlockButton";
+  static String get blockDialogTitle => "blockDialogTitle";
+  static String get blockDialogTextOne => "blockDialogTextOne";
+  static String get blockDialogTextTwo => "blockDialogTextTwo";
+  static String get blockDialogCancelButton => "blockDialogCancelButton";
+  static String get blockDialogBlockButton => "blockDialogBlockButton";
 
   // Syncing
-  String get syncingActivities => "syncingActivities";
-  String get syncErrorTitle => "syncErrorTitle";
-  String get syncErrorDesc => "syncErrorDesc";
-  String get syncErrorCopyButton => "syncErrorCopyButton";
-  String get syncErrorCopied => "syncErrorCopied";
-  String get syncSuccessTitle => "syncSuccessTitle";
-  String get syncSuccessBodyOne => "syncSuccessBodyOne";
-  String get syncSuccessBodyTwo => "syncSuccessBodyTwo";
-  String get syncSuccessBrowseButton => "syncSuccessBrowseButton";
+  static String get syncingActivities => "syncingActivities";
+  static String get syncErrorTitle => "syncErrorTitle";
+  static String get syncErrorDesc => "syncErrorDesc";
+  static String get syncErrorCopyButton => "syncErrorCopyButton";
+  static String get syncErrorCopied => "syncErrorCopied";
+  static String get syncSuccessTitle => "syncSuccessTitle";
+  static String get syncSuccessBodyOne => "syncSuccessBodyOne";
+  static String get syncSuccessBodyTwo => "syncSuccessBodyTwo";
+  static String get syncSuccessBrowseButton => "syncSuccessBrowseButton";
 
   // Create post screen
-  String get newPostHint => "newPostHint";
-  String get createPostEnableCommentsButtonHint =>
+  static String get newPostHint => "newPostHint";
+  static String get createPostEnableCommentsButtonHint =>
       "createPostEnableCommentsButtonHint";
-  String get createPostDisableCommentsButtonHint =>
+  static String get createPostDisableCommentsButtonHint =>
       "createPostDisableCommentsButtonHint";
-  String get createPostCreatePollButtonHint => "createPostCreatePollButtonHint";
-  String get createPostCancelButton => "createPostCancelButton";
-  String get createPostCreateButton => "createPostCreateButton";
-  String get createPostHint => "createPostHint";
-  String get cameraTip => "cameraTip";
-  String get galleryTip => "galleryTip";
-  String get savingPostPopupBody => "savingPostPopupBody";
-  String get savingPostPopupDontShow => "savingPostPopupDontShow";
-  String get savingPostPopupOkButton => "savingPostPopupOkButton";
+  static String get createPostCreatePollButtonHint =>
+      "createPostCreatePollButtonHint";
+  static String get createPostCancelButton => "createPostCancelButton";
+  static String get createPostCreateButton => "createPostCreateButton";
+  static String get createPostHint => "createPostHint";
+  static String get cameraTip => "cameraTip";
+  static String get galleryTip => "galleryTip";
+  static String get savingPostPopupBody => "savingPostPopupBody";
+  static String get savingPostPopupDontShow => "savingPostPopupDontShow";
+  static String get savingPostPopupOkButton => "savingPostPopupOkButton";
 
   // Poll creation
-  String get pollQuestionHint => "pollQuestionHint";
-  String get pollOptionHint => "pollOptionHint";
-  String get pollAddOptionButton => "pollAddOptionButton";
-  String get pollEndDateText => "pollEndDateText";
-  String get pollDeleteOptionHint => "pollDeleteOptionHint";
+  static String get pollQuestionHint => "pollQuestionHint";
+  static String get pollOptionHint => "pollOptionHint";
+  static String get pollAddOptionButton => "pollAddOptionButton";
+  static String get pollEndDateText => "pollEndDateText";
+  static String get pollDeleteOptionHint => "pollDeleteOptionHint";
 
   // Poll visualization
-  String get votes => "votes";
-  String get pollEndOn => "pollEndOn";
-  String get finalResults => "finalResults";
+  static String get votes => "votes";
+  static String get pollEndOn => "pollEndOn";
+  static String get finalResults => "finalResults";
 
   // Notifications screen
-  String get allNotificationsTabTitle => "allNotificationsTabTitle";
-  String get mentionsNotificationsTabTitle => "mentionsNotificationsTabTitle";
-  String get notificationHasCommentedText => "notificationHasCommentedText";
-  String get notificationAddedReaction => "notificationAddedReaction";
-  String get notificationLikedYourPost => "notificationLikedYourPost";
-  String get notificationTaggedYou => "notificationTaggedYou";
-  String get notificationMentionedYou => "notificationMentionedYou";
-  String get noNotifications => "noNotifications";
+  static String get allNotificationsTabTitle => "allNotificationsTabTitle";
+  static String get mentionsNotificationsTabTitle =>
+      "mentionsNotificationsTabTitle";
+  static String get notificationHasCommentedText =>
+      "notificationHasCommentedText";
+  static String get notificationAddedReaction => "notificationAddedReaction";
+  static String get notificationLikedYourPost => "notificationLikedYourPost";
+  static String get notificationTaggedYou => "notificationTaggedYou";
+  static String get notificationMentionedYou => "notificationMentionedYou";
+  static String get noNotifications => "noNotifications";
 
   // Account screen
-  String get accountScreenTitle => "accountScreenTitle";
-  String get accountPageTitle => "accountPageTitle";
-  String get accountPageText => "accountPageText";
-  String get editAccountButton => "editAccountButton";
-  String get saveAccountButton => "saveAccountButton";
-  String get saveAccountErrorPopupTitle => "saveAccountErrorPopupTitle";
-  String get saveAccountErrorPopupBody => "saveAccountErrorPopupBody";
+  static String get accountScreenTitle => "accountScreenTitle";
+  static String get accountPageTitle => "accountPageTitle";
+  static String get accountPageText => "accountPageText";
+  static String get editAccountButton => "editAccountButton";
+  static String get saveAccountButton => "saveAccountButton";
+  static String get saveAccountErrorPopupTitle => "saveAccountErrorPopupTitle";
+  static String get saveAccountErrorPopupBody => "saveAccountErrorPopupBody";
 
-  String get chooseImageSourceTitle => "chooseImageSourceTitle";
-  String get chooseGalleryOption => "chooseGalleryOption";
-  String get chooseCameraOption => "chooseCameraOption";
+  static String get chooseImageSourceTitle => "chooseImageSourceTitle";
+  static String get chooseGalleryOption => "chooseGalleryOption";
+  static String get chooseCameraOption => "chooseCameraOption";
 
   // Edit account
-  String get editAccountScreenTitle => "editAccountScreenTitle";
-  String get dtagLabel => "dtagLabel";
-  String get monikerLabel => "monikerLabel";
-  String get bioLabel => "bioLabel";
-  String get errorDTagInvalid => "errorDTagInvalid";
-  String get errorMonikerInvalid => "errorMonikerInvalid";
+  static String get editAccountScreenTitle => "editAccountScreenTitle";
+  static String get dtagLabel => "dtagLabel";
+  static String get monikerLabel => "monikerLabel";
+  static String get bioLabel => "bioLabel";
+  static String get errorDTagInvalid => "errorDTagInvalid";
+  static String get errorMonikerInvalid => "errorMonikerInvalid";
 
   // Wallet screen
-  String get walletScreenName => "walletScreenName";
-  String get walletTitle => "walletTitle";
-  String get walletBodyText => "walletBodyText";
-  String get emptyWalletTitle => "emptyWalletTitle";
-  String get emptyWalletBody => "emptyWalletBody";
+  static String get walletScreenName => "walletScreenName";
+  static String get walletTitle => "walletTitle";
+  static String get walletBodyText => "walletBodyText";
+  static String get emptyWalletTitle => "emptyWalletTitle";
+  static String get emptyWalletBody => "emptyWalletBody";
 
   // Post details
-  String get postDetailsTitle => "postDetailsTitle";
-  String get loadingPost => "loadingPost";
-  String get post => "post";
-  String get commentHint => "commentHint";
-  String get newComment => "newComment";
-  String get commentsDisabled => "commentsDisabled";
-  String get noCommentsYet => "noCommentsYet";
-  String get commentsTabLabel => "commentsTabLabel";
-  String get noReactionsYet => "noReactionsYet";
-  String get reactionsTabLabel => "reactionsTabLabel";
+  static String get postDetailsTitle => "postDetailsTitle";
+  static String get loadingPost => "loadingPost";
+  static String get post => "post";
+  static String get commentHint => "commentHint";
+  static String get newComment => "newComment";
+  static String get commentsDisabled => "commentsDisabled";
+  static String get noCommentsYet => "noCommentsYet";
+  static String get commentsTabLabel => "commentsTabLabel";
+  static String get noReactionsYet => "noReactionsYet";
+  static String get reactionsTabLabel => "reactionsTabLabel";
 
   // mnemonic backup phrase
-  String get mnemonicBackupBody1 => "mnemonicBackupBody1";
-  String get mnemonicBackupBody2 => "mnemonicBackupBody2";
-  String get mnemonicBackupButton => "mnemonicBackupButton";
-  String get mnemonicRemindMeLaterButton => "mnemonicRemindMeLaterButton";
-  String get mnemonicDoNotShowAgainButton => "mnemonicDoNotShowAgainButton";
-  String get mnemonicViewBody1 => "mnemonicViewBody1";
-  String get mnemonicViewBody2 => "mnemonicViewBody2";
-  String get mnemonicViewBody3 => "mnemonicViewBody3";
-  String get mnemonicBackupWrittenConfirm => "mnemonicBackupWrittenConfirm";
-  String get mnemonicWrittenConfirmation => "mnemonicWrittenConfirmation";
-  String get mnemonicCopy => "mnemonicCopy";
-  String get mnemonicConfirmPhrase => "mnemonicConfirmPhrase";
+  static String get mnemonicBackupBody1 => "mnemonicBackupBody1";
+  static String get mnemonicBackupBody2 => "mnemonicBackupBody2";
+  static String get mnemonicBackupButton => "mnemonicBackupButton";
+  static String get mnemonicRemindMeLaterButton =>
+      "mnemonicRemindMeLaterButton";
+  static String get mnemonicDoNotShowAgainButton =>
+      "mnemonicDoNotShowAgainButton";
+  static String get mnemonicViewBody1 => "mnemonicViewBody1";
+  static String get mnemonicViewBody2 => "mnemonicViewBody2";
+  static String get mnemonicViewBody3 => "mnemonicViewBody3";
+  static String get mnemonicBackupWrittenConfirm =>
+      "mnemonicBackupWrittenConfirm";
+  static String get mnemonicWrittenConfirmation =>
+      "mnemonicWrittenConfirmation";
+  static String get mnemonicCopy => "mnemonicCopy";
+  static String get mnemonicConfirmPhrase => "mnemonicConfirmPhrase";
 }
