@@ -15,13 +15,13 @@ class ExportMnemonicPopup extends StatelessWidget {
             children: [
               Text(
                 PostsLocalizations.of(context)
-                    .translate("exportMnemonicDialogTitle"),
+                    .translate(Messages.exportMnemonicDialogTitle),
                 style: Theme.of(context).textTheme.headline6,
               ),
               const SizedBox(height: 16),
               Text(
                 PostsLocalizations.of(context)
-                    .translate("exportMnemonicDialogText")
+                    .translate(Messages.exportMnemonicDialogText)
                     .replaceAll("\n", " "),
                 textAlign: TextAlign.center,
               ),
@@ -31,7 +31,7 @@ class ExportMnemonicPopup extends StatelessWidget {
                 keyboardType: TextInputType.visiblePassword,
                 decoration: InputDecoration(
                   hintText: PostsLocalizations.of(context)
-                      .translate("exportMnemonicDialogPasswordHint"),
+                      .translate(Messages.exportMnemonicDialogPasswordHint),
                 ),
                 onChanged: (value) => _changeEncryptPassword(context, value),
               ),
@@ -44,7 +44,7 @@ class ExportMnemonicPopup extends StatelessWidget {
                     onPressed: () => _closePopup(context),
                     child: Text(
                       PostsLocalizations.of(context)
-                          .translate("exportMnemonicDialogCancelButton"),
+                          .translate(Messages.exportMnemonicDialogCancelButton),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -54,7 +54,7 @@ class ExportMnemonicPopup extends StatelessWidget {
                         : null,
                     child: Text(
                       PostsLocalizations.of(context)
-                          .translate("exportMnemonicDialogExportButton"),
+                          .translate(Messages.exportMnemonicDialogExportButton),
                     ),
                   ),
                 ],

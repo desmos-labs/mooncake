@@ -24,7 +24,8 @@ class ExportMnemonicScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(PostsLocalizations.of(context).translate("exportMnemonic")),
+        title: Text(
+            PostsLocalizations.of(context).translate(Messages.exportMnemonic)),
         centerTitle: true,
       ),
       body: Container(
@@ -33,7 +34,7 @@ class ExportMnemonicScreen extends StatelessWidget {
           children: [
             Text(
               PostsLocalizations.of(context)
-                  .translate("mnemonicExportScreenText")
+                  .translate(Messages.mnemonicExportScreenText)
                   .replaceAll("\n", " "),
               textAlign: TextAlign.center,
             ),
@@ -43,7 +44,7 @@ class ExportMnemonicScreen extends StatelessWidget {
             PrimaryButton(
               onPressed: () => _shareData(context),
               child: Text(PostsLocalizations.of(context)
-                  .translate("mnemonicExportShareButton")),
+                  .translate(Messages.mnemonicExportShareButton)),
             )
           ],
         ),
@@ -52,8 +53,8 @@ class ExportMnemonicScreen extends StatelessWidget {
   }
 
   void _shareData(BuildContext context) async {
-    final text =
-        PostsLocalizations.of(context).translate("mnemonicExportShareText");
+    final text = PostsLocalizations.of(context)
+        .translate(Messages.mnemonicExportShareText);
     await Share.share("$text\n\n$mnemonicText");
   }
 }

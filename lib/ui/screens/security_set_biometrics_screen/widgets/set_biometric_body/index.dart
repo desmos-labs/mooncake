@@ -18,7 +18,7 @@ class SetBiometricBody extends StatelessWidget {
         children: <Widget>[
           Text(
             PostsLocalizations.of(context)
-                .translate("biometricsBody")
+                .translate(Messages.biometricsBody)
                 .replaceAll("\n", " "),
             style: Theme.of(context)
                 .textTheme
@@ -33,7 +33,7 @@ class SetBiometricBody extends StatelessWidget {
                 child: PrimaryLightButton(
                   child: Text(
                     PostsLocalizations.of(context)
-                        .translate("biometricsEnableButton"),
+                        .translate(Messages.biometricsEnableButton),
                   ),
                   onPressed: () => _enableButtonClicked(context),
                 ),
@@ -46,7 +46,7 @@ class SetBiometricBody extends StatelessWidget {
                 child: SecondaryLightRoundedButton(
                   child: Text(
                     PostsLocalizations.of(context)
-                        .translate("biometricsUsePasswordButton"),
+                        .translate(Messages.biometricsUsePasswordButton),
                   ),
                   onPressed: () => _cancelButtonClicked(context),
                 ),
@@ -59,7 +59,8 @@ class SetBiometricBody extends StatelessWidget {
   }
 
   void _enableButtonClicked(BuildContext context) {
-    final reason = PostsLocalizations.of(context).translate("biometricsReason");
+    final reason =
+        PostsLocalizations.of(context).translate(Messages.biometricsReason);
     localAuth.authenticateWithBiometrics(localizedReason: reason).then((value) {
       if (value) {
         BlocProvider.of<BiometricsBloc>(context)

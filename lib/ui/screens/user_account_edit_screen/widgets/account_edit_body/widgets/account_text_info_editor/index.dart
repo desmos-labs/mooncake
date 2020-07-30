@@ -28,31 +28,34 @@ class AccountTextInfoEditor extends StatelessWidget {
             children: [
               AccountTextInput(
                 maxLength: 20,
-                label: PostsLocalizations.of(context).translate("dtagLabel"),
+                label: PostsLocalizations.of(context)
+                    .translate(Messages.dtagLabel),
                 value: state.account.dtag,
                 enabled: state.canEditDTag,
                 onChanged: (value) => bloc.add(DTagChanged(value)),
                 error: state.isDTagValid
                     ? null
                     : PostsLocalizations.of(context)
-                        .translate("errorDTagInvalid"),
+                        .translate(Messages.errorDTagInvalid),
               ),
               const SizedBox(height: 16),
               AccountTextInput(
                 maxLength: 20,
-                label: PostsLocalizations.of(context).translate("monikerLabel"),
+                label: PostsLocalizations.of(context)
+                    .translate(Messages.monikerLabel),
                 value: state.account.moniker,
                 onChanged: (value) => bloc.add(MonikerChanged(value)),
                 error: state.isMonikerValid
                     ? null
                     : PostsLocalizations.of(context)
-                        .translate("errorMonikerInvalid"),
+                        .translate(Messages.errorMonikerInvalid),
               ),
               const SizedBox(height: 16),
               AccountTextInput(
                 maxLength: 200,
                 value: state.account.bio,
-                label: PostsLocalizations.of(context).translate("bioLabel"),
+                label:
+                    PostsLocalizations.of(context).translate(Messages.bioLabel),
                 onChanged: (value) => bloc.add(BioChanged(value)),
               ),
             ],

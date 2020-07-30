@@ -13,7 +13,7 @@ class PostsLoadingEmptyContainer extends StatelessWidget {
         children: <Widget>[
           LoadingIndicator(),
           SizedBox(height: 16),
-          Text(PostsLocalizations.of(context).translate("loadingPosts"))
+          Text(PostsLocalizations.of(context).translate(Messages.loadingPosts))
         ],
       ),
     );

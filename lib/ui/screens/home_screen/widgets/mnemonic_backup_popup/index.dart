@@ -34,18 +34,19 @@ class MnemonicBackupPopup extends StatelessWidget {
                 width: double.infinity,
                 child: Text(
                   PostsLocalizations.of(context)
-                      .translate("mnemonicBackupBody1"),
+                      .translate(Messages.mnemonicBackupBody1),
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
               SizedBox(height: 10),
               Text(
-                PostsLocalizations.of(context).translate("mnemonicBackupBody2"),
+                PostsLocalizations.of(context)
+                    .translate(Messages.mnemonicBackupBody2),
               ),
               PrimaryButton(
                 child: Text(
                   PostsLocalizations.of(context)
-                      .translate("mnemonicBackupButton"),
+                      .translate(Messages.mnemonicBackupButton),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.button.copyWith(
                         color: Colors.white,
@@ -56,7 +57,7 @@ class MnemonicBackupPopup extends StatelessWidget {
               SecondaryLightInvertRoundedButton(
                 child: Text(
                   PostsLocalizations.of(context)
-                      .translate("mnemonicRemindMeLaterButton"),
+                      .translate(Messages.mnemonicRemindMeLaterButton),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.button.copyWith(
                         color: Theme.of(context).colorScheme.primary,
@@ -70,7 +71,7 @@ class MnemonicBackupPopup extends StatelessWidget {
                   onTap: () => _turnOffPopupPermission(context),
                   child: Text(
                     PostsLocalizations.of(context)
-                        .translate("mnemonicDoNotShowAgainButton"),
+                        .translate(Messages.mnemonicDoNotShowAgainButton),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.button.copyWith(
                           fontSize: 12,

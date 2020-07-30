@@ -33,7 +33,8 @@ class LoginScreen extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          PostsLocalizations.of(context).translate("appName"),
+                          PostsLocalizations.of(context)
+                              .translate(Messages.appName),
                           style: Theme.of(context).textTheme.headline6.copyWith(
                                 color: Colors.white,
                                 fontFamily: 'Montserrat',

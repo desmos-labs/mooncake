@@ -13,8 +13,8 @@ class RecoverAccountScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
-                PostsLocalizations.of(context).translate("recoverScreenTitle")),
+            title: Text(PostsLocalizations.of(context)
+                .translate(Messages.recoverScreenTitle)),
           ),
           body: SafeArea(
             child: Stack(

@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 class Messages {
   static String get appName => "appName";
 

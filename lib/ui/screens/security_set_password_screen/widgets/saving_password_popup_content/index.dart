@@ -10,12 +10,13 @@ class SavingPasswordPopupContent extends StatelessWidget {
     return Column(
       children: <Widget>[
         Text(
-          PostsLocalizations.of(context).translate("savingPasswordTitle"),
+          PostsLocalizations.of(context)
+              .translate(Messages.savingPasswordTitle),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 10),
         Text(
-          PostsLocalizations.of(context).translate("savingPasswordBody"),
+          PostsLocalizations.of(context).translate(Messages.savingPasswordBody),
         ),
         const SizedBox(height: 20),
         Row(

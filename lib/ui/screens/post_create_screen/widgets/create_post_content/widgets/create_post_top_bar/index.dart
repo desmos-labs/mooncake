@@ -18,7 +18,7 @@ class CreatePostTopBar extends StatelessWidget {
               padding: EdgeInsets.zero,
               child: Text(
                 PostsLocalizations.of(context)
-                    .translate("createPostCancelButton"),
+                    .translate(Messages.createPostCancelButton),
                 style: Theme.of(context).textTheme.bodyText2.copyWith(
                       color: Theme.of(context).appBarTheme.iconTheme.color,
                     ),
@@ -32,7 +32,7 @@ class CreatePostTopBar extends StatelessWidget {
                   enabled: state.isValid,
                   child: Text(
                     PostsLocalizations.of(context)
-                        .translate("createPostCreateButton"),
+                        .translate(Messages.createPostCreateButton),
                   ),
                   borderRadius: 25,
                   onPressed: () {

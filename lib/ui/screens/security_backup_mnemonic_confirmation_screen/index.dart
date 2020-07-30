@@ -13,7 +13,7 @@ class BackupMnemonicConfirmationScreen extends StatelessWidget {
           appBar: AppBar(
             centerTitle: true,
             title: Text(PostsLocalizations.of(context)
-                .translate("mnemonicConfirmPhrase")),
+                .translate(Messages.mnemonicConfirmPhrase)),
           ),
           body: SafeArea(
             child: Stack(

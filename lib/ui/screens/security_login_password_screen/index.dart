@@ -37,7 +37,8 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(PostsLocalizations.of(context).translate("viewMnemonic")),
+          title: Text(
+              PostsLocalizations.of(context).translate(Messages.viewMnemonic)),
         ),
         body: BlocProvider(
           create: (context) => MnemonicBloc.create(context),
@@ -57,21 +58,21 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                             children: [
                               Text(
                                 PostsLocalizations.of(context)
-                                    .translate("securityLoginText")
+                                    .translate(Messages.securityLoginText)
                                     .replaceAll("\n", " "),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
                               Text(
                                 PostsLocalizations.of(context)
-                                    .translate("securityLoginWarning")
+                                    .translate(Messages.securityLoginWarning)
                                     .replaceAll("\n", " "),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
                               Text(
                                 PostsLocalizations.of(context)
-                                    .translate("securityLoginPassword")
+                                    .translate(Messages.securityLoginPassword)
                                     .replaceAll("\n", " "),
                                 textAlign: TextAlign.center,
                               ),
@@ -81,7 +82,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                                 child: Expanded(
                                   child: Text(
                                     PostsLocalizations.of(context).translate(
-                                        "understoodMnemonicDisclaimer"),
+                                        Messages.understoodMnemonicDisclaimer),
                                   ),
                                 ),
                                 onChanged: (_) => _checkBoxChanged(context),
@@ -115,14 +116,16 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
             enableButton = _isPasswordCorrect(value);
           }),
           decoration: InputDecoration(
-            hintText: PostsLocalizations.of(context).translate("passwordHint"),
+            hintText:
+                PostsLocalizations.of(context).translate(Messages.passwordHint),
           ),
         ),
         const SizedBox(height: 16),
         PrimaryButton(
           onPressed: () => _viewMnemonic(context),
           enabled: state.hasCheckedBox && enableButton,
-          child: Text(PostsLocalizations.of(context).translate("viewMnemonic")),
+          child: Text(
+              PostsLocalizations.of(context).translate(Messages.viewMnemonic)),
         ),
       ],
     );

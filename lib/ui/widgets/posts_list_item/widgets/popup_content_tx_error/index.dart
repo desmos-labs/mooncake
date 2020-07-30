@@ -20,11 +20,11 @@ class PostErrorPopupContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
-          PostsLocalizations.of(context).translate("syncErrorTitle"),
+          PostsLocalizations.of(context).translate(Messages.syncErrorTitle),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16),
-        Text(PostsLocalizations.of(context).translate("syncErrorDesc")),
+        Text(PostsLocalizations.of(context).translate(Messages.syncErrorDesc)),
         const SizedBox(height: 16),
         Text(error),
         const SizedBox(height: 16),
@@ -33,7 +33,7 @@ class PostErrorPopupContent extends StatelessWidget {
           children: <Widget>[
             FlatButton(
               child: Text(PostsLocalizations.of(context)
-                  .translate("syncErrorCopyButton")),
+                  .translate(Messages.syncErrorCopyButton)),
               onPressed: () => _copyError(context),
             )
           ],

@@ -6,9 +6,9 @@ import 'package:mooncake/ui/ui.dart';
 /// the account screen.
 AppBar accountAppBar(BuildContext context) {
   final actions = [
-    PostsLocalizations.of(context).translate("editAccountOption"),
-    PostsLocalizations.of(context).translate("viewMnemonicOption"),
-    PostsLocalizations.of(context).translate("logoutOption"),
+    PostsLocalizations.of(context).translate(Messages.editAccountOption),
+    PostsLocalizations.of(context).translate(Messages.viewMnemonicOption),
+    PostsLocalizations.of(context).translate(Messages.logoutOption),
   ];
 
   void _onSelected(BuildContext context, String option) {
@@ -28,14 +28,14 @@ AppBar accountAppBar(BuildContext context) {
   return AppBar(
     centerTitle: true,
     title: Text(
-      PostsLocalizations.of(context).translate("accountScreenTitle"),
+      PostsLocalizations.of(context).translate(Messages.accountScreenTitle),
     ),
     backgroundColor: Colors.transparent,
     actions: [
       IconButton(
         icon: Icon(MooncakeIcons.wallet),
-        tooltip:
-            PostsLocalizations.of(context).translate("walletButtonTooltip"),
+        tooltip: PostsLocalizations.of(context)
+            .translate(Messages.walletButtonTooltip),
         onPressed: () {
           BlocProvider.of<NavigatorBloc>(context).add(NavigateToWallet());
         },

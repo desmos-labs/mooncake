@@ -9,7 +9,7 @@ AppBar postsAppBar(BuildContext context) {
   return AppBar(
     centerTitle: true,
     title: Text(
-      PostsLocalizations.of(context).translate("appName"),
+      PostsLocalizations.of(context).translate(Messages.appName),
       style: Theme.of(context).textTheme.headline6.copyWith(
             color: Theme.of(context).colorScheme.primary,
             fontFamily: 'Montserrat',

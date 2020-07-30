@@ -51,11 +51,11 @@ class PostDetailsMainContent extends StatelessWidget {
                           tabs: <Widget>[
                             Tab(
                               text:
-                                  "${PostsLocalizations.of(context).translate("commentsTabLabel")} ${state.commentsCount}",
+                                  "${PostsLocalizations.of(context).translate(Messages.commentsTabLabel)} ${state.commentsCount}",
                             ),
                             Tab(
                               text:
-                                  "${PostsLocalizations.of(context).translate("reactionsTabLabel")} ${state.reactionsCount}",
+                                  "${PostsLocalizations.of(context).translate(Messages.reactionsTabLabel)} ${state.reactionsCount}",
                             ),
                           ],
                         ),

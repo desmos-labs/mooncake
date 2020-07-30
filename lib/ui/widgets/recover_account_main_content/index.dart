@@ -31,7 +31,7 @@ class RecoverAccountMainContent extends StatelessWidget {
             // Instructions
             Text(
               PostsLocalizations.of(context)
-                  .translate("recoverAccountInstructions"),
+                  .translate(Messages.recoverAccountInstructions),
               style: Theme.of(context).textTheme.bodyText2,
               textAlign: TextAlign.center,
             ),
@@ -55,7 +55,7 @@ class RecoverAccountMainContent extends StatelessWidget {
             if (state.isMnemonicComplete && !state.isMnemonicValid)
               Text(
                 PostsLocalizations.of(context)
-                    .translate("recoverAccountInvalidMnemonic"),
+                    .translate(Messages.recoverAccountInvalidMnemonic),
                 style: Theme.of(context)
                     .textTheme
                     .caption
@@ -70,7 +70,7 @@ class RecoverAccountMainContent extends StatelessWidget {
                   Expanded(
                     child: FlatButton(
                       child: Text(PostsLocalizations.of(context)
-                          .translate("recoverAccountContinueButton")),
+                          .translate(Messages.recoverAccountContinueButton)),
                       onPressed: () => _debugMnemonic(context),
                     ),
                   ),
@@ -82,7 +82,7 @@ class RecoverAccountMainContent extends StatelessWidget {
               width: double.infinity,
               child: PrimaryButton(
                 child: Text(PostsLocalizations.of(context)
-                    .translate("recoverAccountContinueButton")),
+                    .translate(Messages.recoverAccountContinueButton)),
                 onPressed: () => _continueClicked(context),
                 enabled: state.isMnemonicValid,
               ),

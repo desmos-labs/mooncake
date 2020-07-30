@@ -90,7 +90,7 @@ class _PostsListState extends State<PostsList> {
                     },
                     child: Text(
                       PostsLocalizations.of(context)
-                          .translate("refreshButtonText"),
+                          .translate(Messages.refreshButtonText),
                     ),
                   ),
                 ),

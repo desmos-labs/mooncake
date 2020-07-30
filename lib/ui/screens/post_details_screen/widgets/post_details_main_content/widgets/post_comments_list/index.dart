@@ -38,7 +38,8 @@ class PostCommentsList extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                PostsLocalizations.of(context).translate("noCommentsYet"),
+                PostsLocalizations.of(context)
+                    .translate(Messages.noCommentsYet),
                 textAlign: TextAlign.center,
               ),
             ),

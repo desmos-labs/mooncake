@@ -42,7 +42,8 @@ class PostDetailsReactionsList extends StatelessWidget {
           Expanded(
             child: Center(
               child: Text(
-                PostsLocalizations.of(context).translate("noReactionsYet"),
+                PostsLocalizations.of(context)
+                    .translate(Messages.noReactionsYet),
                 textAlign: TextAlign.center,
               ),
             ),

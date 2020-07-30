@@ -20,7 +20,7 @@ class PopupReportTextInput extends StatelessWidget {
             },
             decoration: InputDecoration(
               hintText: PostsLocalizations.of(context)
-                  .translate("reportPopupEditBotHint"),
+                  .translate(Messages.reportPopupEditBotHint),
               border: OutlineInputBorder(),
             ),
           ),

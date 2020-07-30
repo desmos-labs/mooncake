@@ -20,7 +20,8 @@ class LoginWithBiometricsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(PostsLocalizations.of(context).translate("viewMnemonic")),
+        title: Text(
+            PostsLocalizations.of(context).translate(Messages.viewMnemonic)),
       ),
       body: BlocProvider<MnemonicBloc>(
         create: (context) => MnemonicBloc.create(context),
@@ -40,21 +41,21 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                           children: [
                             Text(
                               PostsLocalizations.of(context)
-                                  .translate("securityLoginText")
+                                  .translate(Messages.securityLoginText)
                                   .replaceAll("\n", " "),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               PostsLocalizations.of(context)
-                                  .translate("securityLoginWarning")
+                                  .translate(Messages.securityLoginWarning)
                                   .replaceAll("\n", " "),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               PostsLocalizations.of(context)
-                                  .translate("securityLoginBiometrics")
+                                  .translate(Messages.securityLoginBiometrics)
                                   .replaceAll("\n", " "),
                               textAlign: TextAlign.center,
                             ),
@@ -63,7 +64,8 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                               value: state.hasCheckedBox,
                               child: Expanded(
                                 child: Text(PostsLocalizations.of(context)
-                                    .translate("understoodMnemonicDisclaimer")),
+                                    .translate(
+                                        Messages.understoodMnemonicDisclaimer)),
                               ),
                               onChanged: (_) => _checkBoxChanged(context),
                             ),
@@ -73,7 +75,7 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                                 onPressed: () => _enableButtonClicked(context),
                                 enabled: state.hasCheckedBox,
                                 child: Text(PostsLocalizations.of(context)
-                                    .translate("viewMnemonic")),
+                                    .translate(Messages.viewMnemonic)),
                               ),
                           ],
                         ),
@@ -94,7 +96,8 @@ class LoginWithBiometricsScreen extends StatelessWidget {
   }
 
   void _enableButtonClicked(BuildContext context) {
-    final reason = PostsLocalizations.of(context).translate("biometricsReason");
+    final reason =
+        PostsLocalizations.of(context).translate(Messages.biometricsReason);
     localAuth.authenticateWithBiometrics(localizedReason: reason).then((value) {
       if (value) {
         BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());

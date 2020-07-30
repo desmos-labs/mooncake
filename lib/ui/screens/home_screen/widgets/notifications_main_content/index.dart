@@ -11,10 +11,10 @@ class NotificationsMainContent extends StatelessWidget {
     final tabs = [
       Tab(
           text: PostsLocalizations.of(context)
-              .translate("allNotificationsTabTitle")),
+              .translate(Messages.allNotificationsTabTitle)),
       Tab(
           text: PostsLocalizations.of(context)
-              .translate("mentionsNotificationsTabTitle")),
+              .translate(Messages.mentionsNotificationsTabTitle)),
     ];
 
     return DefaultTabController(

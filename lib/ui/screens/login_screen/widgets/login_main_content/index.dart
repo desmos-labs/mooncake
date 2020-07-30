@@ -29,7 +29,7 @@ class LoginMainContent extends StatelessWidget {
             child: PrimaryLightButton(
               child: Text(
                 PostsLocalizations.of(context)
-                    .translate("createAccountButtonText"),
+                    .translate(Messages.createAccountButtonText),
               ),
               onPressed: () => _onCreateAccountClicked(context),
             ),
@@ -41,7 +41,7 @@ class LoginMainContent extends StatelessWidget {
               child: SecondaryLightRoundedButton(
                 child: Text(
                   PostsLocalizations.of(context)
-                      .translate("alreadyHaveMnemonicButtonText"),
+                      .translate(Messages.alreadyHaveMnemonicButtonText),
                   textAlign: TextAlign.center,
                 ),
                 onPressed: () => _onRecoverAccount(context),
@@ -52,7 +52,8 @@ class LoginMainContent extends StatelessWidget {
             width: double.infinity,
             child: SecondaryLightRoundedButton(
               child: Text(
-                PostsLocalizations.of(context).translate("useMnemonicBackup"),
+                PostsLocalizations.of(context)
+                    .translate(Messages.useMnemonicBackup),
                 textAlign: TextAlign.center,
               ),
               onPressed: () => _onRecoverBackup(context),

@@ -13,14 +13,14 @@ class BackupMnemonicDetails extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
                 text: PostsLocalizations.of(context)
-                    .translate("mnemonicViewBody1")),
+                    .translate(Messages.mnemonicViewBody1)),
             TextSpan(
                 text: PostsLocalizations.of(context)
-                    .translate("mnemonicViewBody2"),
+                    .translate(Messages.mnemonicViewBody2),
                 style: TextStyle(fontWeight: FontWeight.bold)),
             TextSpan(
                 text: PostsLocalizations.of(context)
-                    .translate("mnemonicViewBody3")),
+                    .translate(Messages.mnemonicViewBody3)),
           ],
         ),
       ),

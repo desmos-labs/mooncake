@@ -34,12 +34,12 @@ class PostMoreButton extends StatelessWidget {
     };
 
     final Map<PosOptions, String> titles = {
-      PosOptions.Report:
-          PostsLocalizations.of(context).translate("postActionReportPost"),
+      PosOptions.Report: PostsLocalizations.of(context)
+          .translate(Messages.postActionReportPost),
       PosOptions.Hide:
-          PostsLocalizations.of(context).translate("postActionHide"),
-      PosOptions.BlockUser:
-          PostsLocalizations.of(context).translate("postActionBlockUser"),
+          PostsLocalizations.of(context).translate(Messages.postActionHide),
+      PosOptions.BlockUser: PostsLocalizations.of(context)
+          .translate(Messages.postActionBlockUser),
     };
 
     return PopupMenuButton<PosOptions>(

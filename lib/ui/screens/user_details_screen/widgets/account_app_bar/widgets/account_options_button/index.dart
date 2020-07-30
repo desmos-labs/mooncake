@@ -18,11 +18,11 @@ class AccountOptionsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<AccountOptions, String> titles = {
       AccountOptions.EditAccount:
-          PostsLocalizations.of(context).translate("editAccountOption"),
+          PostsLocalizations.of(context).translate(Messages.editAccountOption),
       AccountOptions.ViewMnemonic:
-          PostsLocalizations.of(context).translate("viewMnemonicOption"),
+          PostsLocalizations.of(context).translate(Messages.viewMnemonicOption),
       AccountOptions.Logout:
-          PostsLocalizations.of(context).translate("logoutOption"),
+          PostsLocalizations.of(context).translate(Messages.logoutOption),
     };
 
     return PopupMenuButton<AccountOptions>(

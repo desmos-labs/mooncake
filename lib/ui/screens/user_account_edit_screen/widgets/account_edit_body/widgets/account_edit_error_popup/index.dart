@@ -14,11 +14,12 @@ class AccountEditErrorPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(PostsLocalizations.of(context)
-          .translate("saveAccountErrorPopupTitle")),
+          .translate(Messages.saveAccountErrorPopupTitle)),
       actions: [
         FlatButton(
           onPressed: () => _hidePopup(context),
-          child: Text(PostsLocalizations.of(context).translate("dismiss")),
+          child:
+              Text(PostsLocalizations.of(context).translate(Messages.dismiss)),
         )
       ],
       content: Column(
@@ -27,7 +28,7 @@ class AccountEditErrorPopup extends StatelessWidget {
           const SizedBox(height: ThemeSpaces.smallMargin),
           Text(
             PostsLocalizations.of(context)
-                .translate("saveAccountErrorPopupBody")
+                .translate(Messages.saveAccountErrorPopupBody)
                 .replaceAll("\n", " "),
           ),
           const SizedBox(height: ThemeSpaces.smallMargin),

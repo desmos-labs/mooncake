@@ -19,14 +19,14 @@ class WalletActionsList extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Text(
-            PostsLocalizations.of(context).translate("walletTitle"),
+            PostsLocalizations.of(context).translate(Messages.walletTitle),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6,
           ),
           Image.asset("assets/images/tongue.png", width: 150),
           Text(
             PostsLocalizations.of(context)
-                .translate("walletBodyText")
+                .translate(Messages.walletBodyText)
                 .replaceAll("\n", " "),
             textAlign: TextAlign.center,
           )
