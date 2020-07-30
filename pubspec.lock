@@ -13,7 +13,7 @@ packages:
     description:
       path: "."
       ref: "cosmos-v0.38.x"
-      resolved-ref: "77e1e52040b62724281fcd927a28f32467a31ff5"
+      resolved-ref: "9c6a20e6b5ffb9889cff7bdabe4229cd21f6b6ef"
       url: "git://github.com/alan-sdk/alan.dart.git"
     source: git
     version: "0.0.1"
@@ -1051,21 +1051,21 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.14.4"
+    version: "1.14.7"
   test_api:
     dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.15"
+    version: "0.2.16"
   test_core:
     dependency: transitive
     description:
       name: test_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.4"
+    version: "0.3.7"
   timeago:
     dependency: "direct main"
     description:

@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/usecases/usecases.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/usecases/usecases.dart';
 
 import '../export.dart';
 
@@ -72,17 +72,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _startSubscription() async {
     if (_watchSettingSubscription == null) {
-      _watchSettingUseCase
+      _watchSettingSubscription = _watchSettingUseCase
           .watch(key: SettingKeys.TX_AMOUNT)
           .listen((value) async {
         final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
         final checkPopupPermission = await _getSettingUseCase.get(
-                key: SettingKeys.BACKUP_POPUP_PERMISSION) ??
-            true;
-        if (checkTxAmount && checkPopupPermission == true) {
-          this.add(ShowBackupMnemonicPhrasePopup());
+          key: SettingKeys.BACKUP_POPUP_PERMISSION,
+        );
+
+        if (checkTxAmount && checkPopupPermission != false) {
+          add(ShowBackupMnemonicPhrasePopup());
         } else {
-          this.add(HideBackupMnemonicPhrasePopup());
+          add(HideBackupMnemonicPhrasePopup());
         }
       });
     }
@@ -94,7 +95,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await _logoutUseCase.logout();
   }
 
-  /// Stops all valid subscriptons
+  /// Stops all valid subscriptions
   void _stopSubscription() {
     _watchSettingSubscription?.cancel();
     _watchSettingSubscription = null;
@@ -114,6 +115,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _mapTurnOffBackupMnemonicPopupPermissionToState() async* {
     await _saveSettingUseCase.save(
         key: SettingKeys.BACKUP_POPUP_PERMISSION, value: false);
-    this.add(HideBackupMnemonicPhrasePopup());
+    add(HideBackupMnemonicPhrasePopup());
   }
 }

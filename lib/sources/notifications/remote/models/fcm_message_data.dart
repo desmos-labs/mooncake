@@ -9,15 +9,18 @@ part 'fcm_message_data.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class FcmMessage extends Equatable {
+  /// Represents the key that is used in order to contain the notification data.
   static const NOTIFICATION_KEY = "notification";
+
+  /// Represents the key that is used in order to contain custom data.
   static const DATA_KEY = "data";
 
   /// Contains the data of the notification.
-  @JsonKey(name: "notification", nullable: true)
+  @JsonKey(name: NOTIFICATION_KEY, nullable: true)
   final FcmNotification notification;
 
   /// Contains the data associated to the notification.
-  @JsonKey(name: "data", nullable: false)
+  @JsonKey(name: DATA_KEY, nullable: false)
   final Map<String, dynamic> data;
 
   /// Returns the associated action.
@@ -33,6 +36,19 @@ class FcmMessage extends Equatable {
   @override
   List<Object> get props => [notification, data];
 
+  /// Takes a `Map<dynamic, dynamic>` and converts it to a
+  /// `Map<string, dynamic>`. All its values which represent a [Map] are
+  /// also converted to make sure they are all of type `Map<String, dynamic>`.
+  static Map<String, dynamic> _convertMap(Map<dynamic, dynamic> map) {
+    return map.map((key, value) {
+      if (value is Map<dynamic, dynamic>) {
+        value = _convertMap(value as Map<dynamic, dynamic>);
+      }
+
+      return MapEntry(key as String, value);
+    });
+  }
+
   factory FcmMessage.fromJson(Map<String, dynamic> json) {
     if (json[DATA_KEY] == null) {
       final entries = json.entries
@@ -41,10 +57,12 @@ class FcmMessage extends Equatable {
       json[DATA_KEY] = Map.fromEntries(entries);
     }
 
-    return _$FcmMessageFromJson(json);
+    return _$FcmMessageFromJson(_convertMap(json));
   }
 
-  Map<String, dynamic> toJson() => _$FcmMessageToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$FcmMessageToJson(this);
+  }
 }
 
 /// Contains the notification data present inside an [FcmMessage].
@@ -69,8 +87,11 @@ class FcmNotification extends Equatable {
   @override
   List<Object> get props => [title, body, imageUrl];
 
-  factory FcmNotification.fromJson(Map<String, dynamic> json) =>
-      _$FcmNotificationFromJson(Map.from(json));
+  factory FcmNotification.fromJson(Map<String, dynamic> json) {
+    return _$FcmNotificationFromJson(Map.from(json));
+  }
 
-  Map<String, dynamic> toJson() => _$FcmNotificationToJson(this);
+  Map<String, dynamic> toJson() {
+    return _$FcmNotificationToJson(this);
+  }
 }

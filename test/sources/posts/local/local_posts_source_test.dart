@@ -254,6 +254,39 @@ void main() {
     expect(stored, equals(post));
   });
 
+  group('mergePost', () {
+    test('with post from remote equals to local one', () async {
+      final existing = _createPost("1").copyWith(
+        status: PostStatus(value: PostStatusValue.TX_SENT),
+      );
+      final updated = existing.copyWith(
+        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
+      );
+
+      final merged = source.mergePost(existing, updated);
+      expect(merged, equals(updated));
+    });
+
+    test('with post stored locally', () {
+      final existing = _createPost("1").copyWith(
+        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
+        reactions: [Reaction.fromValue("😉", User.fromAddress("address"))],
+      );
+      final updated = existing.copyWith(
+        status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+        reactions: [Reaction.fromValue("😀", User.fromAddress("address"))],
+      );
+
+      final merged = source.mergePost(existing, updated);
+      final expected = existing.copyWith(
+        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
+        reactions: [Reaction.fromValue("😀", User.fromAddress("address"))] +
+            existing.reactions,
+      );
+      expect(merged, equals(expected));
+    });
+  });
+
   test('mergePosts works properly', () {
     final existingPosts = [
       _createPost("1").copyWith(
