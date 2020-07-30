@@ -37,8 +37,7 @@ class _PostsAppState extends State<PostsApp> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: PostsKeys.navigatorKey,
-        title:
-            'Mooncake', // wingman said: i dont think mooncake will change names in different languages so let me know.
+        title: 'Mooncake',
         themeMode: ThemeMode.system,
         theme: PostsTheme.lightTheme,
         darkTheme: PostsTheme.darkTheme,
@@ -50,7 +49,7 @@ class _PostsAppState extends State<PostsApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: [
-          const Locale('en', ''), // English, no country code
+          const Locale('en'),
         ],
         localeResolutionCallback: (locale, supportedLocales) {
           for (var supportedLocaleLanguage in supportedLocales) {

@@ -36,9 +36,6 @@ class PostsLocalizations {
 
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
-    print('=====here=====');
-    print(key);
-    print(_localizedStrings[key]);
     String value = _localizedStrings[key];
     return value ?? "";
   }
