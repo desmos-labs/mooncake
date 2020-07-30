@@ -163,106 +163,80 @@ class Messages {
   String get savingPostPopupBody => "savingPostPopupBody";
   String get savingPostPopupDontShow => "savingPostPopupDontShow";
   String get savingPostPopupOkButton => "savingPostPopupOkButton";
-  // WINGMAN
+
   // Poll creation
-  String get pollQuestionHint => "What do you want to ask?";
-  String get pollOptionHint => "Choice";
-  String get pollAddOptionButton => "Add option";
-  String get pollEndDateText => "This poll will end on";
-  String get pollDeleteOptionHint => "Delete option";
+  String get pollQuestionHint => "pollQuestionHint";
+  String get pollOptionHint => "pollOptionHint";
+  String get pollAddOptionButton => "pollAddOptionButton";
+  String get pollEndDateText => "pollEndDateText";
+  String get pollDeleteOptionHint => "pollDeleteOptionHint";
 
   // Poll visualization
-  String votes(int count) => "$count votes";
-  String pollEndOn(String date) => "Poll will end on $date";
-  String get finalResults => "Final results";
+  String get votes => "votes";
+  String get pollEndOn => "pollEndOn";
+  String get finalResults => "finalResults";
 
   // Notifications screen
-  String get allNotificationsTabTitle => "All";
-  String get mentionsNotificationsTabTitle => "Mentions";
-  String get notificationHasCommentedText => "commented:";
-  String get notificationAddedReaction => "added a reaction:";
-  String get notificationLikedYourPost => "liked your post";
-  String get notificationTaggedYou => "tagged you in a post";
-  String get notificationMentionedYou => "mentioned you in a post:";
-  String get noNotifications => "No notifications here, you're all done! 🎉";
+  String get allNotificationsTabTitle => "allNotificationsTabTitle";
+  String get mentionsNotificationsTabTitle => "mentionsNotificationsTabTitle";
+  String get notificationHasCommentedText => "notificationHasCommentedText";
+  String get notificationAddedReaction => "notificationAddedReaction";
+  String get notificationLikedYourPost => "notificationLikedYourPost";
+  String get notificationTaggedYou => "notificationTaggedYou";
+  String get notificationMentionedYou => "notificationMentionedYou";
+  String get noNotifications => "noNotifications";
 
   // Account screen
-  String get accountScreenTitle => "Account";
-  String get accountPageTitle => "Welcome to your future account page";
-  String get accountPageText => """
-We do not support accounts yet, but you can always click on the wallet option
-inside the app bar to visualize your wallet
-""";
-  String get editAccountButton => "Edit your account";
-  String get saveAccountButton => "Save";
-  String get saveAccountErrorPopupTitle => "Account saving error";
-  String get saveAccountErrorPopupBody => """
-An error has verified while saving your account.
-Please try later.
-""";
+  String get accountScreenTitle => "accountScreenTitle";
+  String get accountPageTitle => "accountPageTitle";
+  String get accountPageText => "accountPageText";
+  String get editAccountButton => "editAccountButton";
+  String get saveAccountButton => "saveAccountButton";
+  String get saveAccountErrorPopupTitle => "saveAccountErrorPopupTitle";
+  String get saveAccountErrorPopupBody => "saveAccountErrorPopupBody";
 
-  String get chooseImageSourceTitle => "Choose where to pick the image from";
-  String get chooseGalleryOption => "Gallery";
-  String get chooseCameraOption => "Camera";
+  String get chooseImageSourceTitle => "chooseImageSourceTitle";
+  String get chooseGalleryOption => "chooseGalleryOption";
+  String get chooseCameraOption => "chooseCameraOption";
 
   // Edit account
-  String get editAccountScreenTitle => "Edit account";
-  String get dtagLabel => "DTag";
-  String get monikerLabel => "Moniker";
-  String get bioLabel => "Bio";
-  String get errorDTagInvalid => """
-DTag must be 3 - 20 characters lsong and contain only [a-z 0-9 _]
-""";
-  String get errorMonikerInvalid => """
-Moniker must be 3 - 20 characters long.
-""";
+  String get editAccountScreenTitle => "editAccountScreenTitle";
+  String get dtagLabel => "dtagLabel";
+  String get monikerLabel => "monikerLabel";
+  String get bioLabel => "bioLabel";
+  String get errorDTagInvalid => "errorDTagInvalid";
+  String get errorMonikerInvalid => "errorMonikerInvalid";
 
   // Wallet screen
-  String get walletScreenName => "Wallet";
-  String get walletTitle => "Welcome to your wallet";
-  String get walletBodyText => """
-We do not support transactions history yet, but you can always see the current
-amount of tokens you own on the top of the page
-""";
-  String get emptyWalletTitle => "No tokens available";
-  String get emptyWalletBody => """
-You don't have any token yet. Ask someone to send you some, or request them
-using our faucet to see them here.
-""";
+  String get walletScreenName => "walletScreenName";
+  String get walletTitle => "walletTitle";
+  String get walletBodyText => "walletBodyText";
+  String get emptyWalletTitle => "emptyWalletTitle";
+  String get emptyWalletBody => "emptyWalletBody";
 
   // Post details
-  String get postDetailsTitle => "Post details";
-  String get loadingPost => "Loading post";
-  String get post => "Post";
-  String get commentHint => "Comment";
-  String get newComment => "New comment";
-  String get commentsDisabled => "Comments disabled by the post owner";
-  String get noCommentsYet => """
-Currently there are no comments to this post yet.
-Be the first to add one!
-""";
-  String commentsTabLabel(int comments) => "Comments $comments";
-  String get noReactionsYet => """
-Currently there are no reactions to this post yet.
-Be the first to add one!
-""";
-  String reactionsTabLabel(int reactions) => "Reactions $reactions";
+  String get postDetailsTitle => "postDetailsTitle";
+  String get loadingPost => "loadingPost";
+  String get post => "post";
+  String get commentHint => "commentHint";
+  String get newComment => "newComment";
+  String get commentsDisabled => "commentsDisabled";
+  String get noCommentsYet => "noCommentsYet";
+  String get commentsTabLabel => "commentsTabLabel";
+  String get noReactionsYet => "noReactionsYet";
+  String get reactionsTabLabel => "reactionsTabLabel";
 
   // mnemonic backup phrase
-  String get mnemonicBackupBody1 => 'Hi,';
-  String get mnemonicBackupBody2 => """
-Glad to see you here,
-One of the most important steps you can take to secure your account is to backup your Mnemonic Phrase.
-  """;
-  String get mnemonicBackupButton => "Backup phrase";
-  String get mnemonicRemindMeLaterButton => "Remind me later";
-  String get mnemonicDoNotShowAgainButton => "Do not show this popup again";
-  String get mnemonicViewBody1 =>
-      "Please write down and save your mnemonic phrase, It's the ";
-  String get mnemonicViewBody2 => "ONLY WAY";
-  String get mnemonicViewBody3 => " to restore your account";
-  String get mnemonicBackupWrittenConfirm => "I have written them down";
-  String get mnemonicWrittenConfirmation => "We'll confirm on the next screen";
-  String get mnemonicCopy => "copy";
-  String get mnemonicConfirmPhrase => "Confirm Phrase";
+  String get mnemonicBackupBody1 => "mnemonicBackupBody1";
+  String get mnemonicBackupBody2 => "mnemonicBackupBody2";
+  String get mnemonicBackupButton => "mnemonicBackupButton";
+  String get mnemonicRemindMeLaterButton => "mnemonicRemindMeLaterButton";
+  String get mnemonicDoNotShowAgainButton => "mnemonicDoNotShowAgainButton";
+  String get mnemonicViewBody1 => "mnemonicViewBody1";
+  String get mnemonicViewBody2 => "mnemonicViewBody2";
+  String get mnemonicViewBody3 => "mnemonicViewBody3";
+  String get mnemonicBackupWrittenConfirm => "mnemonicBackupWrittenConfirm";
+  String get mnemonicWrittenConfirmation => "mnemonicWrittenConfirmation";
+  String get mnemonicCopy => "mnemonicCopy";
+  String get mnemonicConfirmPhrase => "mnemonicConfirmPhrase";
 }
