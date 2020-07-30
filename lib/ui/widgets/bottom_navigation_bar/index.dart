@@ -42,10 +42,10 @@ class TabSelector extends StatelessWidget {
               child: Icon(MooncakeIcons.plus),
             ),
           ),
-          // BottomNavigationButton(
-          //   key: PostsKeys.accountTab,
-          //   tab: AppTab.account,
-          // ),
+          BottomNavigationButton(
+            key: PostsKeys.accountTab,
+            tab: AppTab.account,
+          ),
         ],
       ),
     );

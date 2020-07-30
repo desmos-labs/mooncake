@@ -20,23 +20,20 @@ void main() {
     when(mockHomeBloc.state).thenReturn(HomeState.initial());
 
     await tester.pumpWidget(
-      BlocProvider<MockHomeBloc>(
-        create: (BuildContext context) => mockHomeBloc,
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<NavigatorBloc>(
-              create: (_) => mockNavigatorBloc,
-            ),
-            BlocProvider<HomeBloc>(
-              create: (_) => mockHomeBloc,
-            ),
-          ],
-          child: makeTestableWidget(
-            child: Material(
-              child: BottomNavigationButton(
-                key: PostsKeys.allPostsTab,
-                tab: AppTab.home,
-              ),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<NavigatorBloc>(
+            create: (_) => mockNavigatorBloc,
+          ),
+          BlocProvider<HomeBloc>(
+            create: (_) => mockHomeBloc,
+          ),
+        ],
+        child: makeTestableWidget(
+          child: Material(
+            child: BottomNavigationButton(
+              key: PostsKeys.allPostsTab,
+              tab: AppTab.home,
             ),
           ),
         ),
