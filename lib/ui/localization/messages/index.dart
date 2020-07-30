@@ -2,209 +2,168 @@ import 'package:flutter/widgets.dart';
 
 class Messages {
   String get appName => "appName";
+
   // Loading screen
   String get splashLoadingData => "splashLoadingData";
 
   // Generic
-  String get dismiss => "Dismiss";
+  String get dismiss => "dismiss";
 
   // Login
-  String get createAccountButtonText => "Create Account";
-  String get alreadyHaveMnemonicButtonText => "I Have A Written Mnemonic";
-  String get useMnemonicBackup => "Use Mnemonic Backup";
-  String get accountCreatedPopupTitleFirstRow => "The account";
-  String get accountCreatedPopupTitleSecondRow => "Has been created";
-  String get accountCreatedPopupText => "You can backup your phrase later";
-  String get accountCreatedPopupMainButtonText => "Go to Mooncake";
-  String get accountCreatedPopupBackupButtonText => "Backup mnemonic phrase";
-  String get creatingAccountPopupTitle => "Creating account";
-  String get creatingAccountText => "This might take a while...";
-  String get termsDisclaimer => "By using this app you agree to our";
-  String get terms => "Terms";
+  String get createAccountButtonText => "createAccountButtonText";
+  String get alreadyHaveMnemonicButtonText => "alreadyHaveMnemonicButtonText";
+  String get useMnemonicBackup => "useMnemonicBackup";
+  String get accountCreatedPopupTitleFirstRow =>
+      "accountCreatedPopupTitleFirstRow";
+  String get accountCreatedPopupTitleSecondRow =>
+      "accountCreatedPopupTitleSecondRow";
+  String get accountCreatedPopupText => "accountCreatedPopupText";
+  String get accountCreatedPopupMainButtonText =>
+      "accountCreatedPopupMainButtonText";
+  String get accountCreatedPopupBackupButtonText =>
+      "accountCreatedPopupBackupButtonText";
+  String get creatingAccountPopupTitle => "creatingAccountPopupTitle";
+  String get creatingAccountText => "creatingAccountText";
+  String get termsDisclaimer => "termsDisclaimer";
+  String get terms => "terms";
   String get and => "and";
-  String get privacyPolicy => "Privacy Policy";
+  String get privacyPolicy => "privacyPolicy";
 
   // Recover screen
-  String get recoverScreenTitle => "Recover mnemonic";
+  String get recoverScreenTitle => "recoverScreenTitle";
 
   // Recover mnemonic backup
-  String get restoreMnemonicBackupScreenTitle => "Restore mnemonic backup";
-  String get restoreMnemonicInstructions => """
-This page allows you to restore a previously exported mnemonic backup.
-In order to do so, please insert below your mnenonic backup text and the password
-you used to encrypt it. Then press the below button to proceed.
-""";
-  String get restoreBackupFieldHint =>
-      "Your backup here (it should end with an =)";
-  String get errorBackupInvalid => "Invalid backup text";
-  String get restorePasswordFieldHint => "Your encryption password";
-  String get errorBackupPasswordWrong => "Wrong backup password";
-  String get restoreButtonText => "Restore backup";
+  String get restoreMnemonicBackupScreenTitle =>
+      "restoreMnemonicBackupScreenTitle";
+  String get restoreMnemonicInstructions => "restoreMnemonicInstructions";
+  String get restoreBackupFieldHint => "restoreBackupFieldHint";
+  String get errorBackupInvalid => "errorBackupInvalid";
+  String get restorePasswordFieldHint => "restorePasswordFieldHint";
+  String get errorBackupPasswordWrong => "errorBackupPasswordWrong";
+  String get restoreButtonText => "restoreButtonText";
 
   // Mnemonic recover screen
-  String get recoverAccountInstructions => "Please enter your mnemonic phrase"
-      " in order and make sure your mnemonic is written correctly";
-  String get recoverAccount => "Recover account";
-  String get recoverAccountContinueButton => "Continue";
-  String get recoverAccountInvalidMnemonic => "This mnemonic does not seem "
-      "valid. Please check it again.";
+  String get recoverAccountInstructions => "recoverAccountInstructions";
+  String get recoverAccount => "recoverAccount";
+  String get recoverAccountContinueButton => "recoverAccountContinueButton";
+  String get recoverAccountInvalidMnemonic => "recoverAccountInvalidMnemonic";
 
   // Biometrics screen
-  String get biometricsTitle => "Biometric authentication";
-  String get biometricsBody => """
-Please note that the biometric authentication will be paired only to this\
-device and any fingerprint or face that has been set to unlock your device\
-can be used to access your account on this application
-  """;
-  String get savingBiometricsTitle => "Saving biomentrics";
-  String get savingBiometricsBody => "This might take a while";
-  String get biometricsEnableButton => "Enable";
-  String get biometricsUsePasswordButton => "Use text password instead";
-  String get biometricsReason => "Authenticate into Mooncake";
+  String get biometricsTitle => "biometricsTitle";
+  String get biometricsBody => "biometricsBody";
+  String get savingBiometricsTitle => "savingBiometricsTitle";
+  String get savingBiometricsBody => "savingBiometricsBody";
+  String get biometricsEnableButton => "biometricsEnableButton";
+  String get biometricsUsePasswordButton => "biometricsUsePasswordButton";
+  String get biometricsReason => "biometricsReason";
 
   // Password screen
-  String get passwordTitle => "Set password";
-  String get passwordBody => """
-Due to security reasons, we require you to input a password if you will ever
-want to recover your mnemonic phrase from within the application later on.
-Please note that if you lose this password you will be required to enter
-your mnemonic from scratch in the case of a future recovery.
-""";
-  String get passwordHint => "Password";
-  String get passwordCaption => "* at least 6 characters in length";
-  String get passwordSaveButton => "Save";
-  String get passwordSecurityLow => "Low";
-  String get passwordSecurityMedium => "Medium";
-  String get passwordSecurityHigh => "High";
-  String get passwordShowPasswordButton => "Show password";
-  String get passwordHidePasswordButton => "Hide password";
-  String get savingPasswordTitle => "Saving password";
-  String get savingPasswordBody => "This might take a while";
+  String get passwordTitle => "passwordTitle";
+  String get passwordBody => "passwordBody";
+  String get passwordHint => "passwordHint";
+  String get passwordCaption => "passwordCaption";
+  String get passwordSaveButton => "passwordSaveButton";
+  String get passwordSecurityLow => "passwordSecurityLow";
+  String get passwordSecurityMedium => "passwordSecurityMedium";
+  String get passwordSecurityHigh => "passwordSecurityHigh";
+  String get passwordShowPasswordButton => "passwordShowPasswordButton";
+  String get passwordHidePasswordButton => "passwordHidePasswordButton";
+  String get savingPasswordTitle => "savingPasswordTitle";
+  String get savingPasswordBody => "savingPasswordBody";
 
   // Security login screen
-  String get viewMnemonic => "View mnemonic";
-  String get securityLoginText => """
-In order to prevent any unwanted access to your mnemonic phrase, you are
-required to log in using the authentication method you have previously set
-during the the first login into the app.
-""";
-  String get securityLoginWarning => """
-Please note that your mnemonic should never be shown to anyone, and you should
-see it only once when backing it up on a piece of paper. Allowing anyone to
-see your mnemonic will most surely end in them stealing your account and all
-your funds so proceed with caution.
-""";
-  String get securityLoginBiometrics => """
-If you understand the risks of viewing your mnemonic, please select the
-checkbox below and tap the button to start the authentication process.
-""";
-  String get securityLoginPassword => """
-If you understand the risks of viewing your mnemonic, please select the
-checkbox below, insert your password and press the button to view it.
-""";
-  String get understoodMnemonicDisclaimer =>
-      "I understand the consequences of viewing my mnemonic.";
+  String get viewMnemonic => "viewMnemonic";
+  String get securityLoginText => "securityLoginText";
+  String get securityLoginWarning => "securityLoginWarning";
+  String get securityLoginBiometrics => "securityLoginBiometrics";
+  String get securityLoginPassword => "securityLoginPassword";
+  String get understoodMnemonicDisclaimer => "understoodMnemonicDisclaimer";
 
   // Mnemonic export
-  String get exportMnemonic => "Export mnemonic";
-  String get exportMnemonicDialogTitle => "Exporting mnemonic";
-  String get exportMnemonicDialogText => """
-In order to export your mnemonic properly, we need a password with which it
-will be encrypted for security reasons. Please insert below such passwords
-that you will also be required later when importing it.
-""";
-  String get exportMnemonicDialogPasswordHint => "Encryption password";
-  String get exportMnemonicDialogCancelButton => "Cancel";
-  String get exportMnemonicDialogExportButton => "Export";
-  String get mnemonicExportScreenText => """
-Following is your mnemonic encrypted data. You can export this data whenever
-you want, even sending it to a friend of yours for backup, if you have used
-a strong enough password. If you would like to share it somewhere, click on the
-Share button below""";
-  String get mnemonicExportShareButton => "Share";
-  String get mnemonicExportShareText =>
-      "Hey, here is my encrypted mnemonic for Mooncake! Please keep it safe!";
+  String get exportMnemonic => "exportMnemonic";
+  String get exportMnemonicDialogTitle => "exportMnemonicDialogTitle";
+  String get exportMnemonicDialogText => "exportMnemonicDialogText";
+  String get exportMnemonicDialogPasswordHint =>
+      "exportMnemonicDialogPasswordHint";
+  String get exportMnemonicDialogCancelButton =>
+      "exportMnemonicDialogCancelButton";
+  String get exportMnemonicDialogExportButton =>
+      "exportMnemonicDialogExportButton";
+  String get mnemonicExportScreenText => "mnemonicExportScreenText";
+  String get mnemonicExportShareButton => "mnemonicExportShareButton";
+  String get mnemonicExportShareText => "mnemonicExportShareText";
 
   // Main screen
-  String get refreshButtonText => "New posts available. Tap to refresh";
-  String get allPostsTabTitle => "Posts";
-  String get likedPostsTabTitle => "Liked posts";
-  String get notificationsTabTitle => "Notifications";
-  String get yourAccountTabTitle => "Your account";
-  String get signOut => "Sign out";
-  String get floatingButtonTip => "Create post";
-  String get loadingPosts => "Loading posts";
-  String get noPostsYet => """
-Looks a little empty here.
-What about adding some content?
-""";
-  String get postActionsButtonCaption => "See post actions";
+  String get refreshButtonText => "refreshButtonText";
+  String get allPostsTabTitle => "allPostsTabTitle";
+  String get likedPostsTabTitle => "likedPostsTabTitle";
+  String get notificationsTabTitle => "notificationsTabTitle";
+  String get yourAccountTabTitle => "yourAccountTabTitle";
+  String get signOut => "signOut";
+  String get floatingButtonTip => "floatingButtonTip";
+  String get loadingPosts => "loadingPosts";
+  String get noPostsYet => "noPostsYet";
+  String get postActionsButtonCaption => "postActionsButtonCaption";
 
   // Action bar
-  String get brightnessButtonTooltip => "Brightness";
-  String get walletButtonTooltip => "Wallet";
-  String get editAccountOption => "Edit account";
-  String get viewMnemonicOption => "View mnemonic";
-  String get logoutOption => "Logout";
-
-  // Post item
-  String likesCount(int count) => "$count likes";
+  String get brightnessButtonTooltip => "brightnessButtonTooltip";
+  String get walletButtonTooltip => "walletButtonTooltip";
+  String get editAccountOption => "editAccountOption";
+  String get viewMnemonicOption => "viewMnemonicOption";
+  String get logoutOption => "logoutOption";
 
   // Post actions popup
-  String get postActionsPopupTitle => "Post actions";
-  String get postActionReportPost => "Report post";
-  String get postActionHide => "Hide post";
-  String get postActionBlockUser => "Block user";
+  String get postActionsPopupTitle => "postActionsPopupTitle";
+  String get postActionReportPost => "postActionReportPost";
+  String get postActionHide => "postActionHide";
+  String get postActionBlockUser => "postActionBlockUser";
 
   // Report popup
-  String get reportPopupTitle => "What's wrong with this post?";
-  String get reportPopupSpam => "It's spam";
-  String get reportPopupSexuallyInappropriate => "It's sexually inappropriate";
-  String get reportPopupScamMisleading => "It's scam or misleading";
-  String get reportPopupViolentProhibited =>
-      "It's violent or prohibited content";
-  String get reportPopupOther => "Other";
-  String get reportPopupEditBotHint => "Write something (optional)";
-  String get reportPopupBlockUser => "Also block the user";
-  String get reportPopupSubmit => "Submit";
+  String get reportPopupTitle => "reportPopupTitle";
+  String get reportPopupSpam => "reportPopupSpam";
+  String get reportPopupSexuallyInappropriate =>
+      "reportPopupSexuallyInappropriate";
+  String get reportPopupScamMisleading => "reportPopupScamMisleading";
+  String get reportPopupViolentProhibited => "reportPopupViolentProhibited";
+  String get reportPopupOther => "reportPopupOther";
+  String get reportPopupEditBotHint => "reportPopupEditBotHint";
+  String get reportPopupBlockUser => "reportPopupBlockUser";
+  String get reportPopupSubmit => "reportPopupSubmit";
 
   // Block user popup
-  String get blockDialogTitle => "Block user?";
-  String blockDialogText(String screenName) =>
-      "By blocking $screenName you will no longer see his posts. "
-      "Would you like to continue?";
-  String get blockDialogCancelButton => "Cancel";
-  String get blockDialogBlockButton => "Block";
+  String get blockDialogTitle => "blockDialogTitle";
+  String get blockDialogTextOne => "blockDialogTextOne";
+  String get blockDialogTextTwo => "blockDialogTextTwo";
+  String get blockDialogCancelButton => "blockDialogCancelButton";
+  String get blockDialogBlockButton => "blockDialogBlockButton";
 
   // Syncing
-  String get syncingActivities => "Syncing activities to the chain";
-  String get syncErrorTitle => "Syncing error";
-  String get syncErrorDesc =>
-      "An error has verified when syncing the posts to the chain:";
-  String get syncErrorCopyButton => "Copy error";
-  String get syncErrorCopied => "Sync error copied to clipboard";
-  String get syncSuccessTitle => "Transaction sent";
-  String syncSuccessBody(String txHash) =>
-      "A transaction with hash $txHash has been sent to the chain";
-  String get syncSuccessBrowseButton => "Browse transaction";
+  String get syncingActivities => "syncingActivities";
+  String get syncErrorTitle => "syncErrorTitle";
+  String get syncErrorDesc => "syncErrorDesc";
+  String get syncErrorCopyButton => "syncErrorCopyButton";
+  String get syncErrorCopied => "syncErrorCopied";
+  String get syncSuccessTitle => "syncSuccessTitle";
+  String get syncSuccessBodyOne => "syncSuccessBodyOne";
+  String get syncSuccessBodyTwo => "syncSuccessBodyTwo";
+  String get syncSuccessBrowseButton => "syncSuccessBrowseButton";
 
   // Create post screen
-  String get newPostHint => "What's going on?";
+  String get newPostHint => "newPostHint";
   String get createPostEnableCommentsButtonHint =>
-      "Comments to this post will be disabled. Tap to enable them";
+      "createPostEnableCommentsButtonHint";
   String get createPostDisableCommentsButtonHint =>
-      "Comments to this post will be enabled. Tap to disable them";
-  String get createPostCreatePollButtonHint => "Add poll";
-  String get createPostCancelButton => "Cancel";
-  String get createPostCreateButton => "Post";
-  String get createPostHint => "What's on your mind?";
-  String get cameraTip => "Take a picture using the camera";
-  String get galleryTip => "Select an image from the gallery";
-  String get savingPostPopupBody =>
-      "The post will now be synced to the chain. This might take a while";
-  String get savingPostPopupDontShow => "Don't show again";
-  String get savingPostPopupOkButton => "OK";
-
+      "createPostDisableCommentsButtonHint";
+  String get createPostCreatePollButtonHint => "createPostCreatePollButtonHint";
+  String get createPostCancelButton => "createPostCancelButton";
+  String get createPostCreateButton => "createPostCreateButton";
+  String get createPostHint => "createPostHint";
+  String get cameraTip => "cameraTip";
+  String get galleryTip => "galleryTip";
+  String get savingPostPopupBody => "savingPostPopupBody";
+  String get savingPostPopupDontShow => "savingPostPopupDontShow";
+  String get savingPostPopupOkButton => "savingPostPopupOkButton";
+  // WINGMAN
   // Poll creation
   String get pollQuestionHint => "What do you want to ask?";
   String get pollOptionHint => "Choice";
