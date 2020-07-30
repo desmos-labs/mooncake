@@ -7,7 +7,7 @@ Widget makeTestableWidget({Widget child}) {
     data: MediaQueryData(),
     child: MaterialApp(
       localizationsDelegates: [
-        PostsLocalizations.delegate,
+        PostsLocalizations.delegateTest,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

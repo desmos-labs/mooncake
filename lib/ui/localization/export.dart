@@ -21,7 +21,7 @@ class PostsLocalizations {
     return Localizations.of<PostsLocalizations>(context, PostsLocalizations);
   }
 
-  Map<String, String> _localizedStrings;
+  Map<String, String> _localizedStrings = {};
 
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
