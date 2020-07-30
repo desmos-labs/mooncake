@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic state that is associated with the screen that
 /// shows the details of a post.
@@ -30,10 +31,10 @@ class PostDetailsLoaded extends PostDetailsState {
 
   /// Represents the details of the post currently loaded.
   /// This can be `null` if the post has not been loaded yet.
-  final Post post;
+  final UiPost post;
 
   /// Represents the list of comments currently loaded.
-  final List<Post> comments;
+  final List<UiPost> comments;
 
   /// Represents the currently selected tab inside the view.
   final PostDetailsTab selectedTab;
@@ -66,8 +67,8 @@ class PostDetailsLoaded extends PostDetailsState {
 
   factory PostDetailsLoaded.first({
     @required MooncakeAccount user,
-    @required Post post,
-    @required List<Post> comments,
+    @required UiPost post,
+    @required List<UiPost> comments,
   }) {
     return PostDetailsLoaded(
       user: user,
@@ -80,8 +81,8 @@ class PostDetailsLoaded extends PostDetailsState {
 
   PostDetailsLoaded copyWith({
     MooncakeAccount user,
-    Post post,
-    List<Post> comments,
+    UiPost post,
+    List<UiPost> comments,
     PostDetailsTab selectedTab,
     bool refreshing,
   }) {

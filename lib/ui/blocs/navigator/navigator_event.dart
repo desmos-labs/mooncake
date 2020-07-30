@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/entities/posts/post.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic event that is emitted when the user wants to
 /// navigate from a screen to another one.
@@ -45,7 +45,7 @@ class NavigateToSetPassword extends NavigatorEvent {}
 /// Tells the Bloc to navigate to the screen that allows the user
 /// to create a new post.
 class NavigateToCreatePost extends NavigatorEvent {
-  final Post parentPost;
+  final UiPost parentPost;
 
   NavigateToCreatePost([this.parentPost]);
 
