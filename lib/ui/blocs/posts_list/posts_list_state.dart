@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic posts list state.
 abstract class PostsListState extends Equatable {
@@ -18,7 +19,7 @@ class PostsLoading extends PostsListState {}
 /// visible to the user.
 class PostsLoaded extends PostsListState {
   /// Lists of posts that should be shown to the user.
-  final List<Post> posts;
+  final List<UiPost> posts;
 
   /// Tells if a refresh should be done or not.
   final bool shouldRefresh;
@@ -40,7 +41,7 @@ class PostsLoaded extends PostsListState {
     @required this.hasReachedMax,
   });
 
-  factory PostsLoaded.first({List<Post> posts}) {
+  factory PostsLoaded.first({List<UiPost> posts}) {
     return PostsLoaded(
       posts: posts ?? [],
       shouldRefresh: false,
@@ -52,7 +53,7 @@ class PostsLoaded extends PostsListState {
 
   PostsLoaded copyWith({
     MooncakeAccount user,
-    List<Post> posts,
+    List<UiPost> posts,
     bool shouldRefresh,
     bool refreshing,
     bool syncingPosts,

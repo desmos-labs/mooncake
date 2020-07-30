@@ -2,38 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import './utils/preview_helper.dart';
+/// Takes in a `RichLinkPreview` and displays such link preview.
+class LinkPreview extends StatelessWidget {
+  final RichLinkPreview preview;
 
-/// Takes in an `List<String>` of `urls` and tries to find one
-/// url with enough meta to generate a preview starting
-/// with the last item in the List. If there is not enough meta,
-/// an empty container will be rendered instead.
-class LinkPreview extends StatefulWidget {
-  final List<String> urls;
-  const LinkPreview({@required this.urls});
-
-  @override
-  _LinkPreviewState createState() => _LinkPreviewState();
-}
-
-class _LinkPreviewState extends State<LinkPreview> {
-  RichLinkPreview data;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchPreview(widget.urls).then((RichLinkPreview res) {
-      if (mounted) {
-        setState(() => data = res);
-      }
-    });
-  }
+  const LinkPreview({@required this.preview});
 
   @override
   Widget build(BuildContext context) {
-    if (data == null) {
-      return Container();
-    }
     return GestureDetector(
       onTap: () {
         _openUrl();
@@ -48,7 +24,7 @@ class _LinkPreviewState extends State<LinkPreview> {
         ),
         child: Row(
           children: [
-            Image.network(data.image,
+            Image.network(preview.image,
                 width: 100, height: 100, fit: BoxFit.cover),
             Expanded(
               child: Padding(
@@ -57,7 +33,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data.title,
+                      preview.title,
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       softWrap: false,
@@ -67,7 +43,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                           .copyWith(fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      data.description,
+                      preview.description,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style: Theme.of(context)
@@ -76,7 +52,7 @@ class _LinkPreviewState extends State<LinkPreview> {
                           .copyWith(fontSize: 14),
                     ),
                     Text(
-                      data.url,
+                      preview.url,
                       overflow: TextOverflow.fade,
                       maxLines: 1,
                       style: Theme.of(context)
@@ -95,8 +71,8 @@ class _LinkPreviewState extends State<LinkPreview> {
   }
 
   void _openUrl() async {
-    if (await canLaunch(data.url)) {
-      await launch(data.url);
+    if (await canLaunch(preview.url)) {
+      await launch(preview.url);
     }
   }
 }

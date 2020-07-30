@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+
 import 'widgets/export.dart';
 
 /// Represents a single entry inside a list of [Post] objects.
@@ -14,7 +15,7 @@ import 'widgets/export.dart';
 /// - a [PostActionBar] containing all the actions that can be performed
 ///    for such post
 class PostListItem extends StatelessWidget {
-  final Post post;
+  final UiPost post;
   PostListItem({Key key, @required this.post}) : super(key: key);
 
   @override
