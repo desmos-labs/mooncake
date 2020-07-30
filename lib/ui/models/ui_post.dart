@@ -7,7 +7,7 @@ import 'link_preview.dart';
 /// the UI properly.
 class UiPost extends Post {
   final RichLinkPreview linkPreview;
-  
+
   bool get hasLinkPreview => linkPreview != null;
 
   UiPost({
