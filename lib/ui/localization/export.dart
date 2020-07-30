@@ -12,7 +12,8 @@ class PostsLocalizations {
   static const LocalizationsDelegate<PostsLocalizations> delegate =
       _AppLocalizationsDelegate();
 
-  static var delegateTest = PostsLocalizations(Locale('en'));
+  static const LocalizationsDelegate<PostsLocalizations> delegateTest =
+      _AppLocalizationsDelegate(test: true);
 
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
@@ -36,6 +37,10 @@ class PostsLocalizations {
     return true;
   }
 
+  Future<PostsLocalizations> loadTest(Locale locale) async {
+    return PostsLocalizations(locale);
+  }
+
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
     String value = _localizedStrings[key];
@@ -45,9 +50,9 @@ class PostsLocalizations {
 
 class _AppLocalizationsDelegate
     extends LocalizationsDelegate<PostsLocalizations> {
-  // This delegate instance will never change (it doesn't even have fields!)
-  // It can provide a constant constructor.
-  const _AppLocalizationsDelegate();
+  final bool test;
+
+  const _AppLocalizationsDelegate({this.test = false});
 
   @override
   bool isSupported(Locale locale) {
@@ -59,7 +64,7 @@ class _AppLocalizationsDelegate
   Future<PostsLocalizations> load(Locale locale) async {
     // AppLocalizations class is where the JSON loading actually runs
     PostsLocalizations localizations = PostsLocalizations(locale);
-    await localizations.load();
+    test ? await localizations.loadTest(locale) : await localizations.load();
     return localizations;
   }
 
