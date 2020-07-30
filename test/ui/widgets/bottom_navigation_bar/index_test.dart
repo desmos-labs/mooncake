@@ -1,35 +1,38 @@
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:flutter/material.dart';
-// import 'package:mooncake/ui/ui.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
-// import 'package:mooncake/ui/widgets/bottom_navigation_bar/widgets/export.dart';
-// import '../helper.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:mockito/mockito.dart';
+import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/widgets/bottom_navigation_bar/widgets/export.dart';
+import '../helper.dart';
 
 void main() {
-  // testWidgets('Displays correctly', (WidgetTester tester) async {
-  // await tester.pumpWidget(makeTestableWidget(
-  // child: TabSelector(),
-  // ));
-  // await tester.pumpAndSettle();
-  // MaterialApp(
-  //   localizationsDelegates: [
-  //     PostsLocalizations.delegate,
-  //     GlobalMaterialLocalizations.delegate,
-  //     GlobalWidgetsLocalizations.delegate,
-  //     GlobalCupertinoLocalizations.delegate,
-  //   ],
-  //   supportedLocales: [
-  //     const Locale('en'), // English, no country code
-  //   ],
-  //   home: TabSelector(),
-  // ),
-  // debugDumpRenderTree();
-  // expect(find.byKey(PostsKeys.allPostsTab), findsOneWidget);
-  // expect(find.byIcon(MooncakeIcons.plus), findsOneWidget);
-  // expect(find.byKey(PostsKeys.accountTab), findsOneWidget);
+  testWidgets('Displays correctly', (WidgetTester tester) async {
+    MockHomeBloc mockHomeBloc = MockHomeBloc();
+    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
+    when(mockHomeBloc.state).thenReturn(HomeState.initial());
 
-  // print(tester.element(find.byType(Row)));
-  // expect(find.byType(Text), findsOneWidget);
-  // expect(BottomNavigationButton, findsOneWidget);
-  // });
+    await tester.pumpWidget(
+      makeTestableWidget(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<NavigatorBloc>(
+              create: (_) => mockNavigatorBloc,
+            ),
+            BlocProvider<HomeBloc>(
+              create: (_) => mockHomeBloc,
+            ),
+          ],
+          child: makeTestableWidget(
+            child: TabSelector(),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byIcon(MooncakeIcons.plus), findsOneWidget);
+    expect(find.byType(Row), findsOneWidget);
+    expect(find.byType(MaterialButton), findsOneWidget);
+    expect(find.byType(BottomNavigationButton), findsNWidgets(2));
+  });
 }
