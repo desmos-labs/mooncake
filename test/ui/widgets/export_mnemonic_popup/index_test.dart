@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,8 +19,10 @@ void main() {
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
-    ], locale: Locale('en'), child: TabSelector()));
+    ], locale: Locale('en'), child: ExportMnemonicPopup()));
     await tester.pumpAndSettle();
+
+    debugDumpRenderTree();
     // MaterialApp(
     //   localizationsDelegates: [
     //     PostsLocalizations.delegate,
@@ -32,10 +35,9 @@ void main() {
     //   ],
     //   home: TabSelector(),
     // ),
-    // debugDumpRenderTree();
     // expect(find.byKey(PostsKeys.allPostsTab), findsOneWidget);
     // expect(find.byIcon(MooncakeIcons.plus), findsOneWidget);
-    expect(find.byKey(PostsKeys.accountTab), findsOneWidget);
+    // expect(find.byKey(PostsKeys.accountTab), findsOneWidget);
 
     // print(tester.element(find.byType(Row)));
     // expect(find.byType(Text), findsOneWidget);

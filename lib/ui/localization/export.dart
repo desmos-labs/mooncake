@@ -12,6 +12,8 @@ class PostsLocalizations {
   static const LocalizationsDelegate<PostsLocalizations> delegate =
       _AppLocalizationsDelegate();
 
+  static var delegateTest = PostsLocalizations(Locale('en'));
+
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
   static PostsLocalizations of(BuildContext context) {
@@ -55,7 +57,6 @@ class _AppLocalizationsDelegate
 
   @override
   Future<PostsLocalizations> load(Locale locale) async {
-    print("======i am called========");
     // AppLocalizations class is where the JSON loading actually runs
     PostsLocalizations localizations = PostsLocalizations(locale);
     await localizations.load();
