@@ -178,21 +178,48 @@ void main() {
       );
 
       blocTest(
-        'UserRefreshed: to not refresh',
+        'UserRefreshed: to work properly',
         build: () async {
           when(mockGetAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
-          accountBloc.add(LogIn());
           return accountBloc;
         },
         act: (bloc) async {
-          // bloc.add(LogIn());
-          bloc.add(UserRefreshed(userAccount));
+          bloc.add(LogIn());
           bloc.add(UserRefreshed(userAccount));
         },
-        // expect: [LoggedIn(user: userAccount, refreshing: false)],
+        expect: [LoggedIn(user: userAccount, refreshing: false)],
+      );
+
+      blocTest(
+        'RefreshAccount: expect no stream',
+        build: () async {
+          return accountBloc;
+        },
+        act: (bloc) async {
+          bloc.add(RefreshAccount());
+        },
         expect: [],
+      );
+
+      blocTest(
+        'RefreshAccount: to work properly',
+        build: () async {
+          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+            return Future.value(userAccount);
+          });
+          return accountBloc;
+        },
+        act: (bloc) async {
+          bloc.add(LogIn());
+          bloc.add(RefreshAccount());
+        },
+        expect: [
+          LoggedIn(user: userAccount, refreshing: false),
+          LoggedIn(user: userAccount, refreshing: true),
+          LoggedIn(user: userAccount, refreshing: false),
+        ],
       );
     },
   );
