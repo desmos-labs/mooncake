@@ -10,7 +10,8 @@ class PostDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(PostsLocalizations.of(context).postDetailsTitle),
+        title: Text(PostsLocalizations.of(context)
+            .translate(Messages.postDetailsTitle)),
         centerTitle: true,
         backgroundColor: Theme.of(context).cardColor,
       ),

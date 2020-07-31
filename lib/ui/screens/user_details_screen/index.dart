@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+
 import 'widgets/export.dart';
 
 /// Represents the screen that allows to display the details of a given [user].
@@ -20,7 +21,7 @@ class UserDetailsScreen extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<PostsListBloc, PostsListState>(
         builder: (context, postsState) {
-          List<Post> posts = [];
+          List<UiPost> posts = [];
           if (postsState is PostsLoading) {
             posts = [];
           } else if (postsState is PostsLoaded) {

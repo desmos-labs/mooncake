@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -10,10 +9,9 @@ import 'widgets/export.dart';
 /// Such content includes a top bar and the [TextFormField] inside which
 /// the post message is inserted.
 class CreatePostContent extends StatelessWidget {
-  final maxTextLength = 500;
-
-  final Post parentPost;
+  final UiPost parentPost;
   final double bottomPadding;
+
   const CreatePostContent({
     Key key,
     this.parentPost,
@@ -69,7 +67,7 @@ class CreatePostContent extends StatelessWidget {
     final isValid = state.isValid;
 
     return TextFormField(
-      maxLength: maxTextLength,
+      maxLength: 500,
       textInputAction: TextInputAction.newline,
       minLines: null,
       maxLines: null,
@@ -78,7 +76,8 @@ class CreatePostContent extends StatelessWidget {
       autofocus: true,
       onChanged: (value) => _messageChanged(context, value),
       decoration: InputDecoration(
-        hintText: PostsLocalizations.of(context).createPostHint,
+        hintText:
+            PostsLocalizations.of(context).translate(Messages.createPostHint),
         border: border,
         focusedBorder: border,
         enabledBorder: border,

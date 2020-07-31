@@ -22,13 +22,14 @@ class PasswordInputField extends StatelessWidget {
                       color: Theme.of(context).accentColor,
                     ),
                 decoration: InputDecoration(
-                  hintText: PostsLocalizations.of(context).passwordHint,
+                  hintText: PostsLocalizations.of(context)
+                      .translate(Messages.passwordHint),
                   suffix: IconButton(
                     tooltip: state.showPassword
                         ? PostsLocalizations.of(context)
-                            .passwordHidePasswordButton
+                            .translate(Messages.passwordHidePasswordButton)
                         : PostsLocalizations.of(context)
-                            .passwordShowPasswordButton,
+                            .translate(Messages.passwordShowPasswordButton),
                     icon: Icon(
                       state.showPassword
                           ? MooncakeIcons.eyeClose

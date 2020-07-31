@@ -43,7 +43,7 @@ class TabSelector extends StatelessWidget {
             ),
           ),
           BottomNavigationButton(
-            key: PostsKeys.notificationsTab,
+            key: PostsKeys.accountTab,
             tab: AppTab.account,
           ),
         ],

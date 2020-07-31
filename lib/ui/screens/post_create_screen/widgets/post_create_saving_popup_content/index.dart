@@ -18,7 +18,8 @@ class PostSavingPopupContent extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            PostsLocalizations.of(context).savingPostPopupBody,
+            PostsLocalizations.of(context)
+                .translate(Messages.savingPostPopupBody),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
@@ -31,7 +32,8 @@ class PostSavingPopupContent extends StatelessWidget {
                       .add(ChangeWillShowPopup());
                 },
               ),
-              Text(PostsLocalizations.of(context).savingPostPopupDontShow)
+              Text(PostsLocalizations.of(context)
+                  .translate(Messages.savingPostPopupDontShow))
             ],
           ),
           Row(
@@ -42,7 +44,8 @@ class PostSavingPopupContent extends StatelessWidget {
                     BlocProvider.of<PostInputBloc>(context).add(CreatePost());
                   },
                   child: Text(
-                    PostsLocalizations.of(context).savingPostPopupOkButton,
+                    PostsLocalizations.of(context)
+                        .translate(Messages.savingPostPopupOkButton),
                   ),
                 ),
               ),

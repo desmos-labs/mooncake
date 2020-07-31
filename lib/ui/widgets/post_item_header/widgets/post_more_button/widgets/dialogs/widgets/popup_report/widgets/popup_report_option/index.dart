@@ -15,14 +15,16 @@ class PopupReportOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Map<ReportType, String> options = {
-      ReportType.Spam: PostsLocalizations.of(context).reportPopupSpam,
-      ReportType.SexuallyInappropriate:
-          PostsLocalizations.of(context).reportPopupSexuallyInappropriate,
-      ReportType.ScamOrMisleading:
-          PostsLocalizations.of(context).reportPopupScamMisleading,
-      ReportType.ViolentOrProhibited:
-          PostsLocalizations.of(context).reportPopupViolentProhibited,
-      ReportType.Other: PostsLocalizations.of(context).reportPopupOther,
+      ReportType.Spam:
+          PostsLocalizations.of(context).translate(Messages.reportPopupSpam),
+      ReportType.SexuallyInappropriate: PostsLocalizations.of(context)
+          .translate(Messages.reportPopupSexuallyInappropriate),
+      ReportType.ScamOrMisleading: PostsLocalizations.of(context)
+          .translate(Messages.reportPopupScamMisleading),
+      ReportType.ViolentOrProhibited: PostsLocalizations.of(context)
+          .translate(Messages.reportPopupViolentProhibited),
+      ReportType.Other:
+          PostsLocalizations.of(context).translate(Messages.reportPopupOther),
     };
 
     final text = options.values.toList()[index];

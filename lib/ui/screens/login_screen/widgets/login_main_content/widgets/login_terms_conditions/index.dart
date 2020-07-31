@@ -21,7 +21,8 @@ class LoginTermsAndConditions extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: PostsLocalizations.of(context).termsDisclaimer,
+            text: PostsLocalizations.of(context)
+                .translate(Messages.termsDisclaimer),
             style: textStyle,
           ),
           WidgetSpan(child: const SizedBox(width: 4)),
@@ -29,12 +30,12 @@ class LoginTermsAndConditions extends StatelessWidget {
             style: textStyle.copyWith(
               decoration: TextDecoration.underline,
             ),
-            text: PostsLocalizations.of(context).terms,
+            text: PostsLocalizations.of(context).translate(Messages.terms),
             recognizer: TapGestureRecognizer()..onTap = _openTerms,
           ),
           WidgetSpan(child: const SizedBox(width: 4)),
           TextSpan(
-            text: PostsLocalizations.of(context).and,
+            text: PostsLocalizations.of(context).translate(Messages.and),
             style: textStyle,
           ),
           WidgetSpan(child: const SizedBox(width: 4)),
@@ -42,7 +43,8 @@ class LoginTermsAndConditions extends StatelessWidget {
             style: textStyle.copyWith(
               decoration: TextDecoration.underline,
             ),
-            text: PostsLocalizations.of(context).privacyPolicy,
+            text: PostsLocalizations.of(context)
+                .translate(Messages.privacyPolicy),
             recognizer: TapGestureRecognizer()..onTap = _openPrivacy,
           ),
         ],

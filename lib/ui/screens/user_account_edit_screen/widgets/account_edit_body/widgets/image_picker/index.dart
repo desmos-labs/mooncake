@@ -16,17 +16,20 @@ void showImagePicker({
     context: context,
     builder: (context) {
       return SimpleDialog(
-        title: Text(PostsLocalizations.of(context).chooseImageSourceTitle),
+        title: Text(PostsLocalizations.of(context)
+            .translate(Messages.chooseImageSourceTitle)),
         children: [
           _option(
             context,
-            PostsLocalizations.of(context).chooseGalleryOption,
+            PostsLocalizations.of(context)
+                .translate(Messages.chooseGalleryOption),
             ImageSource.gallery,
             onImageChosen,
           ),
           _option(
             context,
-            PostsLocalizations.of(context).chooseCameraOption,
+            PostsLocalizations.of(context)
+                .translate(Messages.chooseCameraOption),
             ImageSource.camera,
             onImageChosen,
           ),
