@@ -4,7 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/usecases/usecases.dart';
-import 'package:mooncake/entities/account/export.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 class MockGenerateMnemonicUseCase extends Mock
@@ -45,25 +45,43 @@ void main() {
     mockFirebaseAnalytics = MockFirebaseAnalytics();
   });
 
-  group('AccountBloc', () {
-    AccountBloc accountBloc;
-
-    setUp(() {
-      final controller = StreamController<MooncakeAccount>();
-      when(mockGetAccountUseCase.stream()).thenAnswer((_) => controller.stream);
-      accountBloc = AccountBloc(
-        generateMnemonicUseCase: mockGenerateMnemonicUseCase,
-        logoutUseCase: mockLogoutUseCase,
-        getUserUseCase: mockGetAccountUseCase,
-        refreshAccountUseCase: mockRefreshAccountUseCase,
-        getSettingUseCase: mockGetSettingUseCase,
-        saveSettingUseCase: mockSaveSettingUseCase,
-        navigatorBloc: mockNavigatorBloc,
-        analytics: mockFirebaseAnalytics,
+  group(
+    'AccountBloc',
+    () {
+      AccountBloc accountBloc;
+      MooncakeAccount userAccount = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar.png",
+        moniker: "john-doe",
+        cosmosAccount: CosmosAccount(
+          accountNumber: 153,
+          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
+          coins: [
+            StdCoin(amount: "10000", denom: "udaric"),
+          ],
+          sequence: 45,
+        ),
       );
-    });
 
-    blocTest('Expect check status event to return loggedout state',
+      setUp(
+        () {
+          final controller = StreamController<MooncakeAccount>();
+          when(mockGetAccountUseCase.stream())
+              .thenAnswer((_) => controller.stream);
+          accountBloc = AccountBloc(
+            generateMnemonicUseCase: mockGenerateMnemonicUseCase,
+            logoutUseCase: mockLogoutUseCase,
+            getUserUseCase: mockGetAccountUseCase,
+            refreshAccountUseCase: mockRefreshAccountUseCase,
+            getSettingUseCase: mockGetSettingUseCase,
+            saveSettingUseCase: mockSaveSettingUseCase,
+            navigatorBloc: mockNavigatorBloc,
+            analytics: mockFirebaseAnalytics,
+          );
+        },
+      );
+
+      blocTest(
+        'Expect check status event to return loggedout state',
         build: () async {
           when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
             return Future.value(null);
@@ -78,6 +96,24 @@ void main() {
         verify: (_) async {
           verify(mockGetAccountUseCase.single()).called(1);
           verify(mockGetSettingUseCase.get(key: anyNamed("key"))).called(1);
-        });
-  });
+        },
+      );
+
+      blocTest(
+        'Expect check status event to return loggedIn state',
+        build: () async {
+          when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
+            return Future.value(null);
+          });
+          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+            return Future.value(userAccount);
+          });
+
+          return accountBloc;
+        },
+        act: (bloc) async => bloc.add(CheckStatus()),
+        expect: [LoggedIn.initial(userAccount)],
+      );
+    },
+  );
 }
