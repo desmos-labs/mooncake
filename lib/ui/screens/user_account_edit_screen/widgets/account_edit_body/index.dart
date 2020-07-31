@@ -41,7 +41,7 @@ class AccountEditorBody extends StatelessWidget {
                                   enabled: state.canSave,
                                   child: Text(
                                     PostsLocalizations.of(context)
-                                        .saveAccountButton,
+                                        .translate(Messages.saveAccountButton),
                                   ),
                                   onPressed: () => _onSaveAccount(context),
                                 ),

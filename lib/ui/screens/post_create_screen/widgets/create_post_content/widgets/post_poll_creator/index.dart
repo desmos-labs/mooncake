@@ -32,7 +32,8 @@ class PostPollCreator extends StatelessWidget {
               FlatButton(
                 padding: EdgeInsets.only(top: 5, bottom: 10),
                 textColor: Theme.of(context).colorScheme.primary,
-                child: Text(PostsLocalizations.of(context).pollAddOptionButton),
+                child: Text(PostsLocalizations.of(context)
+                    .translate(Messages.pollAddOptionButton)),
                 onPressed: () => _addOption(context),
               ),
             SizedBox(height: optionsLength < 5 ? 10 : 30),

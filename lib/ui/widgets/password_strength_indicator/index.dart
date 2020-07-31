@@ -17,13 +17,16 @@ class PasswordStrengthIndicator extends StatelessWidget {
     String text = "";
     Color textColor = Colors.transparent;
     if (security == PasswordSecurity.LOW) {
-      text = PostsLocalizations.of(context).passwordSecurityLow;
+      text = PostsLocalizations.of(context)
+          .translate(Messages.passwordSecurityLow);
       textColor = Colors.red;
     } else if (security == PasswordSecurity.MEDIUM) {
-      text = PostsLocalizations.of(context).passwordSecurityMedium;
+      text = PostsLocalizations.of(context)
+          .translate(Messages.passwordSecurityMedium);
       textColor = Colors.orange;
     } else if (security == PasswordSecurity.HIGH) {
-      text = PostsLocalizations.of(context).passwordSecurityHigh;
+      text = PostsLocalizations.of(context)
+          .translate(Messages.passwordSecurityHigh);
       textColor = Colors.green;
     }
 

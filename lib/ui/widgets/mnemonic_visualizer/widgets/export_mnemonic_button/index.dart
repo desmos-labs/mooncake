@@ -15,7 +15,8 @@ class ExportMnemonicButton extends StatelessWidget {
         child: Container(
           margin: EdgeInsets.only(bottom: 15),
           child: PrimaryButton(
-            child: Text(PostsLocalizations.of(context).exportMnemonic),
+            child: Text(PostsLocalizations.of(context)
+                .translate(Messages.exportMnemonic)),
             onPressed: () => _openExportPopup(context),
           ),
         ),

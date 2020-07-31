@@ -12,13 +12,13 @@ class EmptyWallet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Text(
-            PostsLocalizations.of(context).emptyWalletTitle,
+            PostsLocalizations.of(context).translate(Messages.emptyWalletTitle),
             style: Theme.of(context).textTheme.headline6,
           ),
           Image.asset("assets/images/frowned.png", height: 150),
           Text(
             PostsLocalizations.of(context)
-                .emptyWalletBody
+                .translate(Messages.emptyWalletBody)
                 .replaceAll("\n", " "),
             textAlign: TextAlign.center,
           ),

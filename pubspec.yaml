@@ -55,6 +55,8 @@ dependencies:
   url_launcher:
   validators: ^2.0.1
   html: ^0.14.0+3
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   bloc_test:
@@ -72,6 +74,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - lib/ui/localization/languages/en.json
   fonts:
     - family: Mooncake
       fonts:

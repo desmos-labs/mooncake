@@ -9,8 +9,12 @@ class NotificationsMainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      Tab(text: PostsLocalizations.of(context).allNotificationsTabTitle),
-      Tab(text: PostsLocalizations.of(context).mentionsNotificationsTabTitle),
+      Tab(
+          text: PostsLocalizations.of(context)
+              .translate(Messages.allNotificationsTabTitle)),
+      Tab(
+          text: PostsLocalizations.of(context)
+              .translate(Messages.mentionsNotificationsTabTitle)),
     ];
 
     return DefaultTabController(
