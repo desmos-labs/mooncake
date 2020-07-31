@@ -63,36 +63,21 @@ void main() {
       );
     });
 
-    test(
-      'Expect initial state to be loading',
-      () {
-        expect(accountBloc.state.toString(), 'Loading');
-      },
-    );
-
-    test(
-      'Expect check status event to return loggedout state',
-      () async {
-        when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
-          return Future.value(null);
+    blocTest('Expect check status event to return loggedout state',
+        build: () async {
+          when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
+            return Future.value(null);
+          });
+          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+            return Future.value(null);
+          });
+          return accountBloc;
+        },
+        act: (bloc) async => bloc.add(CheckStatus()),
+        expect: [LoggedOut()],
+        verify: (_) async {
+          verify(mockGetAccountUseCase.single()).called(1);
+          verify(mockGetSettingUseCase.get(key: anyNamed("key"))).called(1);
         });
-        when(mockGetAccountUseCase.single()).thenAnswer((_) {
-          return Future.value(null);
-        });
-
-        accountBloc.add(CheckStatus());
-        await emitsExactly(accountBloc, [LoggedOut()]);
-        verify(mockGetAccountUseCase.single()).called(1);
-        verify(mockGetSettingUseCase.get(key: anyNamed("key"))).called(1);
-      },
-    );
-
-    // blocTest(
-    //   'Expect check status event to return loggedout state',
-    //   // ignore: return_of_invalid_type_from_closure
-    //   build: () => accountBloc,
-    //   act: (bloc) => bloc.add(CheckStatus()),
-    //   expect: [1],
-    // );
   });
 }
