@@ -34,6 +34,10 @@ class PostInputState extends Equatable {
         _isPollValid;
   }
 
+  bool get hasPoll {
+    return poll != null;
+  }
+
   bool get _isPollValid {
     return poll != null &&
         // The question must not be empty

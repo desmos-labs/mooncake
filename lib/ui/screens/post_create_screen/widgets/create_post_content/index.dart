@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
+import 'package:mooncake/ui/ui.dart';
+
 import 'widgets/export.dart';
 
 /// Contains the main content of the post creation screen.
@@ -75,7 +76,9 @@ class CreatePostContent extends StatelessWidget {
       onFieldSubmitted: isValid ? (_) => _onSubmitted(context) : null,
       key: PostsKeys.postMessageField,
       autofocus: true,
-      onChanged: (value) => _messageChanged(context, value),
+      onChanged: (value) => state.hasPoll
+          ? _pollQuestionChanged(context, value)
+          : _messageChanged(context, value),
       decoration: InputDecoration(
         hintText: PostsLocalizations.of(context).createPostHint,
         border: border,
@@ -100,6 +103,10 @@ class CreatePostContent extends StatelessWidget {
 
   void _messageChanged(BuildContext context, String value) {
     BlocProvider.of<PostInputBloc>(context).add(MessageChanged(value));
+  }
+
+  void _pollQuestionChanged(BuildContext context, String value) {
+    BlocProvider.of<PostInputBloc>(context).add(UpdatePollQuestion(value));
   }
 
   void _onSubmitted(BuildContext context) {
