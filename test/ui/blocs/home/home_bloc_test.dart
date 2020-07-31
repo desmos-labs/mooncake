@@ -35,18 +35,6 @@ void main() {
     'HomeBloc',
     () {
       HomeBloc homeBloc;
-      MooncakeAccount userAccount = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
-        cosmosAccount: CosmosAccount(
-          accountNumber: 153,
-          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-          coins: [
-            StdCoin(amount: "10000", denom: "udaric"),
-          ],
-          sequence: 45,
-        ),
-      );
 
       setUp(
         () {
