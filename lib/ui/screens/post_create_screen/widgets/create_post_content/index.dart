@@ -76,9 +76,7 @@ class CreatePostContent extends StatelessWidget {
       onFieldSubmitted: isValid ? (_) => _onSubmitted(context) : null,
       key: PostsKeys.postMessageField,
       autofocus: true,
-      onChanged: (value) => state.hasPoll
-          ? _pollQuestionChanged(context, value)
-          : _messageChanged(context, value),
+      onChanged: (value) => _messageChanged(context, value),
       decoration: InputDecoration(
         hintText: PostsLocalizations.of(context).createPostHint,
         border: border,
@@ -103,10 +101,6 @@ class CreatePostContent extends StatelessWidget {
 
   void _messageChanged(BuildContext context, String value) {
     BlocProvider.of<PostInputBloc>(context).add(MessageChanged(value));
-  }
-
-  void _pollQuestionChanged(BuildContext context, String value) {
-    BlocProvider.of<PostInputBloc>(context).add(UpdatePollQuestion(value));
   }
 
   void _onSubmitted(BuildContext context) {
