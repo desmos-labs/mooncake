@@ -1,11 +1,11 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/usecases/usecases.dart';
+import 'package:mooncake/entities/account/export.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc/bloc.dart';
 
 class MockGenerateMnemonicUseCase extends Mock
     implements GenerateMnemonicUseCase {}
@@ -46,9 +46,11 @@ void main() {
   });
 
   group('AccountBloc', () {
-    dynamic accountBloc;
+    AccountBloc accountBloc;
 
     setUp(() {
+      final controller = StreamController<MooncakeAccount>();
+      when(mockGetAccountUseCase.stream()).thenAnswer((_) => controller.stream);
       accountBloc = AccountBloc(
         generateMnemonicUseCase: mockGenerateMnemonicUseCase,
         logoutUseCase: mockLogoutUseCase,
@@ -61,25 +63,36 @@ void main() {
       );
     });
 
-    blocTest(
-      'emits [1] when CounterEvent.increment is added',
-      // ignore: return_of_invalid_type_from_closure
-      build: () => accountBloc,
-      act: (bloc) => bloc.add(AccountEvent.CheckStatus()),
-      expect: [1],
+    test(
+      'Expect initial state to be loading',
+      () {
+        expect(accountBloc.state.toString(), 'Loading');
+      },
     );
-    // test('initial state is 0', () {
-    //   expect(accountBloc.state, 0);
-    // });
-    //   blocTest(
-    //   'emits [WeatherLoading, WeatherLoaded] when successful',
-    //   build: () {
-    //     when(mockWeatherRepository.fetchWeather(any))
-    //         .thenAnswer((_) async => weather);
-    //     return WeatherBloc(mockWeatherRepository);
-    //   },
-    //   act: (bloc) => bloc.add(GetWeather('London')),
-    //   expect: [WeatherInitial(), WeatherLoading(), WeatherLoaded(weather)],
+
+    test(
+      'Expect check status event to return loggedout state',
+      () async {
+        when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
+          return Future.value(null);
+        });
+        when(mockGetAccountUseCase.single()).thenAnswer((_) {
+          return Future.value(null);
+        });
+
+        accountBloc.add(CheckStatus());
+        await emitsExactly(accountBloc, [LoggedOut()]);
+        verify(mockGetAccountUseCase.single()).called(1);
+        verify(mockGetSettingUseCase.get(key: anyNamed("key"))).called(1);
+      },
+    );
+
+    // blocTest(
+    //   'Expect check status event to return loggedout state',
+    //   // ignore: return_of_invalid_type_from_closure
+    //   build: () => accountBloc,
+    //   act: (bloc) => bloc.add(CheckStatus()),
+    //   expect: [1],
     // );
   });
 }
