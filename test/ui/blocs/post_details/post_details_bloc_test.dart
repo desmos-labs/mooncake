@@ -105,6 +105,20 @@ void main() {
           ),
         ],
       );
+
+      // blocTest(
+      //   'LoadPostDetails: work properly',
+      //   build: () async {
+      //     return postDetailsBloc;
+      //   },
+      //   act: (bloc) async {
+      //     bloc.add(LoadPostDetails(testUiPost.id));
+      //   },
+      //   skip: 2,
+      //   expect: [
+
+      //   ],
+      // );
     },
   );
 }
