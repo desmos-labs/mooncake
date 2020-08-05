@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
-import 'link_preview.dart';
+import '../../entities/posts/link_preview.dart';
 
 /// Contains the data that should be used in order to display a post inside
 /// the UI properly.

@@ -98,6 +98,9 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: HIDDEN_FIELD, defaultValue: false)
   final bool hidden;
 
+  /// link preview
+  final RichLinkPreview linkPreview;
+
   Post({
     @required this.id,
     this.parentId = "",
@@ -114,6 +117,7 @@ class Post extends Equatable implements Comparable<Post> {
     List<String> commentsIds = const [],
     this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
     this.hidden = false,
+    this.linkPreview,
   })  : assert(id != null),
         assert(created != null),
         assert(subspace != null),
@@ -173,24 +177,25 @@ class Post extends Equatable implements Comparable<Post> {
     List<Reaction> reactions,
     List<String> commentsIds,
     bool hidden,
+    RichLinkPreview linkPreview,
   }) {
     return Post(
-      status: status ?? this.status,
-      id: this.id,
-      parentId: parentId ?? this.parentId,
-      message: message ?? this.message,
-      created: created ?? this.created,
-      lastEdited: lastEdited ?? this.lastEdited,
-      allowsComments: allowsComments ?? this.allowsComments,
-      subspace: subspace ?? this.subspace,
-      optionalData: optionalData ?? this.optionalData,
-      owner: owner ?? this.owner,
-      medias: medias ?? this.medias,
-      poll: poll ?? this.poll,
-      reactions: reactions ?? this.reactions,
-      commentsIds: commentsIds ?? this.commentsIds,
-      hidden: hidden ?? this.hidden,
-    );
+        status: status ?? this.status,
+        id: this.id,
+        parentId: parentId ?? this.parentId,
+        message: message ?? this.message,
+        created: created ?? this.created,
+        lastEdited: lastEdited ?? this.lastEdited,
+        allowsComments: allowsComments ?? this.allowsComments,
+        subspace: subspace ?? this.subspace,
+        optionalData: optionalData ?? this.optionalData,
+        owner: owner ?? this.owner,
+        medias: medias ?? this.medias,
+        poll: poll ?? this.poll,
+        reactions: reactions ?? this.reactions,
+        commentsIds: commentsIds ?? this.commentsIds,
+        hidden: hidden ?? this.hidden,
+        linkPreview: linkPreview ?? this.linkPreview);
   }
 
   @override
@@ -216,6 +221,7 @@ class Post extends Equatable implements Comparable<Post> {
       this.commentsIds,
       this.status,
       this.hidden,
+      this.linkPreview,
     ];
   }
 
@@ -236,7 +242,8 @@ class Post extends Equatable implements Comparable<Post> {
         'reactions: $reactions, '
         'commentIds: $commentsIds, '
         'status: $status, '
-        'hidden: $hidden '
+        'hidden: $hidden, '
+        'linkPreview: $linkPreview '
         '}';
   }
 
