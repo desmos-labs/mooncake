@@ -9,6 +9,9 @@ class MockHomeBloc extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 class MockNavigatorBloc extends MockBloc<NavigatorEvent, NavigatorState>
     implements NavigatorBloc {}
 
+class MockPostsListBloc extends MockBloc<PostsListEvent, PostsListState>
+    implements PostsListBloc {}
+
 /// widget wrapper to make testable
 Widget makeTestableWidget({Widget child}) {
   return MediaQuery(
