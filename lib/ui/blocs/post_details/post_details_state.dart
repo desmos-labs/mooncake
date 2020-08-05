@@ -31,10 +31,10 @@ class PostDetailsLoaded extends PostDetailsState {
 
   /// Represents the details of the post currently loaded.
   /// This can be `null` if the post has not been loaded yet.
-  final UiPost post;
+  final Post post;
 
   /// Represents the list of comments currently loaded.
-  final List<UiPost> comments;
+  final List<Post> comments;
 
   /// Represents the currently selected tab inside the view.
   final PostDetailsTab selectedTab;
@@ -67,8 +67,8 @@ class PostDetailsLoaded extends PostDetailsState {
 
   factory PostDetailsLoaded.first({
     @required MooncakeAccount user,
-    @required UiPost post,
-    @required List<UiPost> comments,
+    @required Post post,
+    @required List<Post> comments,
   }) {
     return PostDetailsLoaded(
       user: user,
@@ -81,8 +81,8 @@ class PostDetailsLoaded extends PostDetailsState {
 
   PostDetailsLoaded copyWith({
     MooncakeAccount user,
-    UiPost post,
-    List<UiPost> comments,
+    Post post,
+    List<Post> comments,
     PostDetailsTab selectedTab,
     bool refreshing,
   }) {
