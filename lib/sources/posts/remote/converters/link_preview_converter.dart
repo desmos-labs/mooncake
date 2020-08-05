@@ -53,8 +53,6 @@ class LinkPreviewConverter {
   /// an url with enough meta data for a preview. Will return `null` if none is found.
   static Future<RichLinkPreview> fetchPreview(Post post) async {
     List<String> urls = _getUrisToPreview(post);
-    print('=========urls============');
-    print(urls);
     for (var i = urls.length - 1; i >= 0; i--) {
       RichLinkPreview data = await _fetchSinglePreview(urls[i]);
       if (data != null) return data;
