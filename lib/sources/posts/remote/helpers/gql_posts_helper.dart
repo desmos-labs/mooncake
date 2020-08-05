@@ -118,6 +118,8 @@ class GqlPostsHelper {
       Post singlePost = Post.fromJson(_convertFields(
         json as Map<String, dynamic>,
       ));
+      // print('=====single Post');
+      // print(singlePost);
       RichLinkPreview linkPreview =
           await LinkPreviewConverter.fetchPreview(singlePost);
       return singlePost.copyWith(linkPreview: linkPreview);

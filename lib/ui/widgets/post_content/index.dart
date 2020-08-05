@@ -15,6 +15,14 @@ class PostContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // wingman
+    if (post.id ==
+        '7208fcbf8f0eccb409a004ef5df2afba60dcb2f227c3f4cea008d1f0ce21b9ab') {
+      print('======================post link lin==============k');
+      print(post);
+      print(post.linkPreview);
+    }
+    // print(post);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[

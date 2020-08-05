@@ -31,4 +31,15 @@ class RichLinkPreview extends Equatable {
       url,
     ];
   }
+
+  String toString() {
+    return 'RichLinkPreview { '
+        'title: $title, '
+        'description: $description, '
+        'image: $image, '
+        'favIcon: $favIcon, '
+        'url: $url, '
+        'appleIcon: $appleIcon, '
+        '}';
+  }
 }
