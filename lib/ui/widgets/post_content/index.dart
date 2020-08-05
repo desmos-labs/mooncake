@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/post_content/widgets/link_preview/index.dart';
 
@@ -25,7 +26,7 @@ class PostContent extends StatelessWidget {
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
         ),
-        if (post.hasLinkPreview) LinkPreview(preview: post.linkPreview),
+        if (post.linkPreview != null) LinkPreview(preview: post.linkPreview),
       ],
     );
   }
