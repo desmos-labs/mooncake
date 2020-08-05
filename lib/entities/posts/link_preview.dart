@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'link_preview.g.dart';
 
