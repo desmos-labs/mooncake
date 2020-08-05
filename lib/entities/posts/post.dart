@@ -99,13 +99,13 @@ class Post extends Equatable implements Comparable<Post> {
   final bool hidden;
 
   /// link preview
-  @JsonKey(name: "status", fromJson: _linkPreviewFromJson)
+  @JsonKey(name: "link_preview", nullable: true)
   final RichLinkPreview linkPreview;
   // wingman
   /// Static method used to implement a custom deserialization of rich link preview.
-  static _linkPreviewFromJson(Map<String, dynamic> json) {
-    return json == null ? null : RichLinkPreview.fromJson(json);
-  }
+  // static _linkPreviewFromJson(Map<String, dynamic> json) {
+  //   return json == null ? null : RichLinkPreview.fromJson(json);
+  // }
 
   Post({
     @required this.id,
