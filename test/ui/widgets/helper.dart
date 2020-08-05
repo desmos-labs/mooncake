@@ -13,10 +13,13 @@ class MockPostsListBloc extends MockBloc<PostsListEvent, PostsListState>
     implements PostsListBloc {}
 
 /// widget wrapper to make testable
-Widget makeTestableWidget({Widget child}) {
+Widget makeTestableWidget({Widget child, theme = 'light'}) {
   return MediaQuery(
     data: MediaQueryData(),
     child: MaterialApp(
+        themeMode: theme == 'light' ? ThemeMode.light : ThemeMode.dark,
+        theme: PostsTheme.lightTheme,
+        darkTheme: PostsTheme.darkTheme,
         localizationsDelegates: [
           PostsLocalizations.delegateTest,
           GlobalMaterialLocalizations.delegate,
