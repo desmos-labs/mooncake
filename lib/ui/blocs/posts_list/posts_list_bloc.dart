@@ -252,7 +252,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   ) async* {
     final currentState = state;
     if (currentState is PostsLoading) {
-      yield PostsLoaded.first(posts: await _convertPosts(event.posts));
+      yield PostsLoaded.first(posts: event.posts);
     } else if (currentState is PostsLoaded) {
       // Avoid overloading operations
       if (currentState.posts == event.posts) {
@@ -262,7 +262,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield currentState.copyWith(
         posts: event.posts.length < currentState.posts.length
             ? await _mergePosts(currentState.posts, event.posts)
-            : await _convertPosts(event.posts),
+            : event.posts,
         refreshing: false,
         shouldRefresh: false,
       );
@@ -294,7 +294,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       final posts = currentState.posts
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
-      yield currentState.copyWith(posts: await _convertPosts(posts));
+      yield currentState.copyWith(posts: posts);
     }
   }
 
@@ -306,7 +306,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       final newPosts = currentState.posts
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
-      yield currentState.copyWith(posts: await _convertPosts(newPosts));
+      yield currentState.copyWith(posts: newPosts);
     }
   }
 
@@ -320,7 +320,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       final newPosts = currentState.posts
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
-      yield currentState.copyWith(posts: await _convertPosts(newPosts));
+      yield currentState.copyWith(posts: newPosts);
     }
   }
 
@@ -343,7 +343,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         start: 0,
         limit: _HOME_LIMIT,
       );
-      yield PostsLoaded.first(posts: await _convertPosts(posts));
+      yield PostsLoaded.first(posts: posts);
     } else if (currentState is PostsLoaded) {
       final posts = await _getHomePostsUseCase.get(
         start: currentState.posts.length,
@@ -352,7 +352,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield posts.isEmpty
           ? currentState.copyWith(hasReachedMax: true)
           : currentState.copyWith(
-              posts: currentState.posts + await _convertPosts(posts),
+              posts: currentState.posts + posts,
               hasReachedMax: false,
             );
 
@@ -386,11 +386,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(
         refreshing: false,
-        posts: await _convertPosts(posts),
+        posts: posts,
         shouldRefresh: false,
       );
     } else if (currentState is PostsLoading) {
-      yield PostsLoaded.first(posts: await _convertPosts(posts));
+      yield PostsLoaded.first(posts: posts);
     }
   }
 

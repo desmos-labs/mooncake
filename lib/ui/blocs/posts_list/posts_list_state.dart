@@ -19,7 +19,7 @@ class PostsLoading extends PostsListState {}
 /// visible to the user.
 class PostsLoaded extends PostsListState {
   /// Lists of posts that should be shown to the user.
-  final List<UiPost> posts;
+  final List<Post> posts;
 
   /// Tells if a refresh should be done or not.
   final bool shouldRefresh;
@@ -41,7 +41,7 @@ class PostsLoaded extends PostsListState {
     @required this.hasReachedMax,
   });
 
-  factory PostsLoaded.first({List<UiPost> posts}) {
+  factory PostsLoaded.first({List<Post> posts}) {
     return PostsLoaded(
       posts: posts ?? [],
       shouldRefresh: false,
@@ -53,7 +53,7 @@ class PostsLoaded extends PostsListState {
 
   PostsLoaded copyWith({
     MooncakeAccount user,
-    List<UiPost> posts,
+    List<Post> posts,
     bool shouldRefresh,
     bool refreshing,
     bool syncingPosts,
