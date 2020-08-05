@@ -9,16 +9,6 @@ class CreatePoll extends PostInputPollEvent {}
 /// Tells the bloc to toggle the poll display
 class TogglePollDisplay extends PostInputPollEvent {}
 
-/// Tells the Bloc that the poll question needs to be updated.
-class UpdatePollQuestion extends PostInputPollEvent {
-  final String question;
-
-  UpdatePollQuestion(this.question);
-
-  @override
-  List<Object> get props => [question];
-}
-
 /// Tells the Bloc that the question at the given index should be updated.
 class UpdatePollOption extends PostInputPollEvent {
   final int index;
