@@ -10,7 +10,7 @@ import 'package:mooncake/ui/ui.dart';
 /// represents the method that must be called upon the click on the save button
 /// inside the editor itself.
 class CreatePostScreen extends StatelessWidget {
-  final UiPost parentPost;
+  final Post parentPost;
   final bottomBarHeight = 50.0;
 
   const CreatePostScreen({Key key, this.parentPost}) : super(key: key);

@@ -45,7 +45,7 @@ class NavigateToSetPassword extends NavigatorEvent {}
 /// Tells the Bloc to navigate to the screen that allows the user
 /// to create a new post.
 class NavigateToCreatePost extends NavigatorEvent {
-  final UiPost parentPost;
+  final Post parentPost;
 
   NavigateToCreatePost([this.parentPost]);
 

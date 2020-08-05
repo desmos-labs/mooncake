@@ -9,7 +9,7 @@ import 'widgets/export.dart';
 /// - The main message of the post
 /// - The image(s) associated to the post
 class PostContent extends StatelessWidget {
-  final UiPost post;
+  final Post post;
   const PostContent({Key key, @required this.post}) : super(key: key);
 
   @override

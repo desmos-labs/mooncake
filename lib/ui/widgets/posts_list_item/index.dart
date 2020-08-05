@@ -15,7 +15,7 @@ import 'widgets/export.dart';
 /// - a [PostActionBar] containing all the actions that can be performed
 ///    for such post
 class PostListItem extends StatelessWidget {
-  final UiPost post;
+  final Post post;
   PostListItem({Key key, @required this.post}) : super(key: key);
 
   @override

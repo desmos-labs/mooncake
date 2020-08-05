@@ -5,7 +5,7 @@ import 'package:mooncake/ui/ui.dart';
 /// Allows to display the list of posts that have been created by the
 /// given [user].
 class AccountPostsViewer extends StatelessWidget {
-  final List<UiPost> posts;
+  final List<Post> posts;
 
   const AccountPostsViewer({
     Key key,
