@@ -12,6 +12,9 @@ class MockNavigatorBloc extends MockBloc<NavigatorEvent, NavigatorState>
 class MockPostsListBloc extends MockBloc<PostsListEvent, PostsListState>
     implements PostsListBloc {}
 
+class MockMnemonicBloc extends MockBloc<MnemonicEvent, MnemonicState>
+    implements MnemonicBloc {}
+
 /// widget wrapper to make testable
 Widget makeTestableWidget({Widget child, theme = 'light'}) {
   return MediaQuery(
