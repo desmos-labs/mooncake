@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/ui/ui.dart';
-import '../../../helper.dart';
+import '../helper.dart';
 import 'package:mooncake/ui/widgets/recover_account_main_content/widgets/export.dart';
 
 void main() {
-  testWidgets('MnemonicInputItem: Displays export correctly',
+  testWidgets('RecoverAccountMainContent: Displays export correctly',
       (WidgetTester tester) async {
     MockRecoverAccountBloc mockRecoverAccountBloc = MockRecoverAccountBloc();
     when(mockRecoverAccountBloc.state)
         .thenReturn(RecoverAccountState.initial());
 
+    bool backupPhrase = false;
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
@@ -20,14 +20,16 @@ void main() {
             BlocProvider<RecoverAccountBloc>(
                 create: (_) => mockRecoverAccountBloc),
           ],
-          child: MnemonicInputItem(index: 1),
+          child: RecoverAccountMainContent(
+            bottomPadding: 10.0,
+            backupPhrase: backupPhrase,
+          ),
         ),
       ),
     );
 
     await tester.pumpAndSettle();
-
-    expect(find.byType(TextFormField), findsOneWidget);
-    expect(tester.widget<SizedBox>(find.byType(SizedBox).first).width, 10);
+    expect(find.text('recoverAccountContinueButton'), findsNWidgets(2));
+    expect(find.byType(MnemonicInputItem), findsWidgets);
   });
 }
