@@ -13,7 +13,7 @@ void main() {
       makeTestableWidget(
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<MockMnemonicBloc>(
+            BlocProvider<MnemonicBloc>(
               create: (_) => mockMnemonicBloc,
             ),
           ],
