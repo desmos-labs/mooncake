@@ -37,7 +37,6 @@ class PostsRepositoryImpl extends PostsRepository {
     return _remotePostsSource.homeEventsStream;
   }
 
-  // wingman remove later
   @override
   Future<List<Post>> getHomePosts({
     @required int start,

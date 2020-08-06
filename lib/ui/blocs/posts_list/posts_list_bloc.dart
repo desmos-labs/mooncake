@@ -224,14 +224,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
-  // wingman
-  // /// Takes a list of `Post` and converts it to a list of `UiPost`.
-  // Future<List<Post>> _convertPosts(List<Post> posts) async {
-  //   return Future.wait(posts.map((post) {
-  //     return _postConverter.convertPost(post);
-  //   }).toList());
-  // }
-
   /// Merges the [current] posts list with the [newList].
   /// INVARIANT: `current.length > newList.length`
   List<Post> _mergePosts(List<Post> current, List<Post> newList) {
