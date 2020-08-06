@@ -4,8 +4,7 @@ import 'package:mooncake/ui/widgets/mnemonic_visualizer/widgets/export.dart';
 import '../../../helper.dart';
 
 void main() {
-  testWidgets('BackupMnemonicDetails: Displays correctly',
-      (WidgetTester tester) async {
+  testWidgets('MnemonicItem: Displays correctly', (WidgetTester tester) async {
     await tester.pumpWidget(
       makeTestableWidget(
         child: MnemonicItem(index: 0, word: 'apples'),
