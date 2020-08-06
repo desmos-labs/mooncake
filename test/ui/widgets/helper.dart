@@ -18,6 +18,10 @@ class MockMnemonicBloc extends MockBloc<MnemonicEvent, MnemonicState>
 class MockAccountBloc extends MockBloc<AccountEvent, AccountState>
     implements AccountBloc {}
 
+class MockRecoverAccountBloc
+    extends MockBloc<RecoverAccountEvent, RecoverAccountState>
+    implements RecoverAccountBloc {}
+
 /// widget wrapper to make testable
 Widget makeTestableWidget({Widget child, theme = 'light'}) {
   return MediaQuery(
