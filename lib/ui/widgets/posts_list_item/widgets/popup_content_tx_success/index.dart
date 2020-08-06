@@ -20,18 +20,20 @@ class PostSuccessPopupContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
-          PostsLocalizations.of(context).syncSuccessTitle,
+          PostsLocalizations.of(context).translate(Messages.syncSuccessTitle),
           style: Theme.of(context).textTheme.headline6,
         ),
         const SizedBox(height: 16),
-        Text(PostsLocalizations.of(context).syncSuccessBody(txHash)),
+        Text(
+            "${PostsLocalizations.of(context).translate(Messages.syncSuccessBodyOne)} ${txHash} ${PostsLocalizations.of(context).translate(Messages.syncSuccessBodyTwo)}"),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             FlatButton(
               child: Text(
-                PostsLocalizations.of(context).syncSuccessBrowseButton,
+                PostsLocalizations.of(context)
+                    .translate(Messages.syncSuccessBrowseButton),
               ),
               onPressed: () => _browseTx(),
             )

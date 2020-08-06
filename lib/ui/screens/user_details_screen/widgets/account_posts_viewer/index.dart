@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/blocs/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Allows to display the list of posts that have been created by the
 /// given [user].
 class AccountPostsViewer extends StatelessWidget {
-  final List<Post> posts;
+  final List<UiPost> posts;
 
   const AccountPostsViewer({
     Key key,

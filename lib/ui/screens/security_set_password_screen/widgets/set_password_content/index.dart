@@ -16,7 +16,9 @@ class SetPasswordContent extends StatelessWidget {
           padding: EdgeInsets.all(16),
           children: <Widget>[
             Text(
-              PostsLocalizations.of(context).passwordBody.replaceAll("\n", " "),
+              PostsLocalizations.of(context)
+                  .translate(Messages.passwordBody)
+                  .replaceAll("\n", " "),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 50),
@@ -30,7 +32,8 @@ class SetPasswordContent extends StatelessWidget {
                   PasswordStrengthIndicator(security: state.passwordSecurity),
                 const SizedBox(height: 8),
                 Text(
-                  PostsLocalizations.of(context).passwordCaption,
+                  PostsLocalizations.of(context)
+                      .translate(Messages.passwordCaption),
                   style: Theme.of(context).textTheme.caption,
                 ),
               ],
@@ -38,7 +41,8 @@ class SetPasswordContent extends StatelessWidget {
             const SizedBox(height: 50),
             PrimaryButton(
               enabled: state.isPasswordValid,
-              child: Text(PostsLocalizations.of(context).passwordSaveButton),
+              child: Text(PostsLocalizations.of(context)
+                  .translate(Messages.passwordSaveButton)),
               onPressed: () => _onSavePassword(context),
             )
           ],

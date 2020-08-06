@@ -35,21 +35,23 @@ class PostCreateActions extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     IconButton(
-                      tooltip: PostsLocalizations.of(context).galleryTip,
+                      tooltip: PostsLocalizations.of(context)
+                          .translate(Messages.galleryTip),
                       icon: Icon(MooncakeIcons.picture),
                       onPressed: () => _pickImage(context, ImageSource.gallery),
                     ),
                     IconButton(
-                      tooltip: PostsLocalizations.of(context).cameraTip,
+                      tooltip: PostsLocalizations.of(context)
+                          .translate(Messages.cameraTip),
                       icon: Icon(MooncakeIcons.camera),
                       onPressed: () => _pickImage(context, ImageSource.camera),
                     ),
                     IconButton(
                       tooltip: state.allowsComments
-                          ? PostsLocalizations.of(context)
-                              .createPostDisableCommentsButtonHint
-                          : PostsLocalizations.of(context)
-                              .createPostEnableCommentsButtonHint,
+                          ? PostsLocalizations.of(context).translate(
+                              Messages.createPostDisableCommentsButtonHint)
+                          : PostsLocalizations.of(context).translate(
+                              Messages.createPostEnableCommentsButtonHint),
                       icon: Icon(state.allowsComments
                           ? MooncakeIcons.comment
                           : MooncakeIcons.comment),
@@ -57,7 +59,7 @@ class PostCreateActions extends StatelessWidget {
                     ),
                     IconButton(
                       tooltip: PostsLocalizations.of(context)
-                          .createPostCreatePollButtonHint,
+                          .translate(Messages.createPostCreatePollButtonHint),
                       icon: Icon(
                         MooncakeIcons.poll,
                         color: pollSelectedColor,

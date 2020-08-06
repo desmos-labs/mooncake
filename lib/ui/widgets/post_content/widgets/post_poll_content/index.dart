@@ -65,16 +65,18 @@ class PostPollContent extends StatelessWidget {
         Row(
           children: [
             Text(
-              PostsLocalizations.of(context)
-                  .votes(post.poll.userAnswers.length),
+              "${post.poll.userAnswers.length} ${PostsLocalizations.of(context).translate(Messages.votes)}",
             ),
             const SizedBox(width: 4),
             const Text("•"),
             const SizedBox(width: 4),
             if (post.poll.isOpen)
-              Text(PostsLocalizations.of(context).pollEndOn(date)),
+              Text(
+                "${PostsLocalizations.of(context).translate(Messages.pollEndOn)} ${date}",
+              ),
             if (!post.poll.isOpen)
-              Text(PostsLocalizations.of(context).finalResults),
+              Text(PostsLocalizations.of(context)
+                  .translate(Messages.finalResults)),
           ],
         ),
       ],

@@ -79,7 +79,7 @@ class ReportPostPopup extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 24),
       child: Text(
-        PostsLocalizations.of(context).reportPopupTitle,
+        PostsLocalizations.of(context).translate(Messages.reportPopupTitle),
         style: Theme.of(context).textTheme.headline6,
         textAlign: TextAlign.center,
       ),
@@ -97,7 +97,8 @@ class ReportPostPopup extends StatelessWidget {
   Widget _blockUserOption(BuildContext context, ReportPopupState state) {
     return CheckBoxButton(
       value: state.blockUser,
-      child: Text(PostsLocalizations.of(context).reportPopupBlockUser),
+      child: Text(PostsLocalizations.of(context)
+          .translate(Messages.reportPopupBlockUser)),
       onChanged: (value) {
         BlocProvider.of<ReportPopupBloc>(context).add(ToggleBlockUser(value));
       },
@@ -107,7 +108,8 @@ class ReportPostPopup extends StatelessWidget {
   Widget _submitButton(BuildContext context) {
     return PrimaryButton(
       onPressed: () => _sendReport(context),
-      child: Text(PostsLocalizations.of(context).reportPopupSubmit),
+      child: Text(
+          PostsLocalizations.of(context).translate(Messages.reportPopupSubmit)),
     );
   }
 

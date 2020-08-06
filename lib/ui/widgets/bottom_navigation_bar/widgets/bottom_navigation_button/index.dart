@@ -14,11 +14,14 @@ class BottomNavigationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titles = {
-      AppTab.home: PostsLocalizations.of(context).allPostsTabTitle,
-      AppTab.likedPosts: PostsLocalizations.of(context).likedPostsTabTitle,
-      AppTab.notifications:
-          PostsLocalizations.of(context).notificationsTabTitle,
-      AppTab.account: PostsLocalizations.of(context).yourAccountTabTitle,
+      AppTab.home:
+          PostsLocalizations.of(context).translate(Messages.allPostsTabTitle),
+      AppTab.likedPosts:
+          PostsLocalizations.of(context).translate(Messages.likedPostsTabTitle),
+      AppTab.notifications: PostsLocalizations.of(context)
+          .translate(Messages.notificationsTabTitle),
+      AppTab.account: PostsLocalizations.of(context)
+          .translate(Messages.yourAccountTabTitle),
     };
 
     final icons = {

@@ -22,7 +22,7 @@ class _PollOptionEditorState extends State<PollOptionEditor> {
   @override
   Widget build(BuildContext context) {
     final hintText =
-        "${PostsLocalizations.of(context).pollOptionHint} ${widget.option.id + 1}";
+        "${PostsLocalizations.of(context).translate(Messages.pollOptionHint)} ${widget.option.id + 1}";
 
     if (widget.option.text != _textEditingController.text) {
       _textEditingController.text = widget.option.text;
@@ -67,8 +67,8 @@ class _PollOptionEditorState extends State<PollOptionEditor> {
                   Container(
                     child: IconButton(
                       icon: const Icon(MooncakeIcons.delete),
-                      tooltip:
-                          PostsLocalizations.of(context).pollDeleteOptionHint,
+                      tooltip: PostsLocalizations.of(context)
+                          .translate(Messages.pollDeleteOptionHint),
                       onPressed: () => _deleteOption(context),
                     ),
                     decoration: BoxDecoration(

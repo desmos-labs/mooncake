@@ -18,16 +18,16 @@ class NotificationItem extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.bodyText2;
 
     final notificationsText = {
-      NotificationTypes.COMMENT:
-          PostsLocalizations.of(context).notificationHasCommentedText,
-      NotificationTypes.LIKE:
-          PostsLocalizations.of(context).notificationLikedYourPost,
-      NotificationTypes.REACTION:
-          PostsLocalizations.of(context).notificationAddedReaction,
-      NotificationTypes.MENTION:
-          PostsLocalizations.of(context).notificationMentionedYou,
-      NotificationTypes.TAG:
-          PostsLocalizations.of(context).notificationTaggedYou,
+      NotificationTypes.COMMENT: PostsLocalizations.of(context)
+          .translate(Messages.notificationHasCommentedText),
+      NotificationTypes.LIKE: PostsLocalizations.of(context)
+          .translate(Messages.notificationLikedYourPost),
+      NotificationTypes.REACTION: PostsLocalizations.of(context)
+          .translate(Messages.notificationAddedReaction),
+      NotificationTypes.MENTION: PostsLocalizations.of(context)
+          .translate(Messages.notificationMentionedYou),
+      NotificationTypes.TAG: PostsLocalizations.of(context)
+          .translate(Messages.notificationTaggedYou),
     };
 
     final notificationText = notificationsText[notification.type];

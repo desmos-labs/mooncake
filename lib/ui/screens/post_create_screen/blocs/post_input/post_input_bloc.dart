@@ -10,6 +10,7 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
+
 import 'export.dart';
 
 /// Implementation of [Bloc] that allows to deal with [PostInputEvent]
@@ -138,9 +139,6 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       } else {
         yield state.removePoll();
       }
-    } else if (event is UpdatePollQuestion) {
-      final poll = state.poll.copyWith(question: event.question);
-      yield state.copyWith(poll: poll);
     } else if (event is UpdatePollOption) {
       // Update the option
       final options = state.poll.options.map((option) {
@@ -193,11 +191,14 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     yield state.copyWith(saving: true, showPopup: false);
 
     final post = await _createPostUseCase.create(
-      message: state.message,
+      // If the post has a poll, the entered message should
+      // be the poll question instead
+      message: state.hasPoll ? null : state.message,
       allowsComments: state.allowsComments,
       parentId: state.parentPost?.id,
       medias: state.medias,
-      poll: state.poll,
+      // If the post has a poll, copy the message as the question
+      poll: state.hasPoll ? state.poll.copyWith(question: state.message) : null,
     );
     await _savePostUseCase.save(post);
     _navigatorBloc.add(GoBack());
