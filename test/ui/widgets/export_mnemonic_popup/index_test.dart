@@ -23,9 +23,7 @@ void main() {
               create: (_) => mockMnemonicBloc,
             ),
           ],
-          child: makeTestableWidget(
-            child: ExportMnemonicPopup(),
-          ),
+          child: ExportMnemonicPopup(),
         ),
       ),
     );

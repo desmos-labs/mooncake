@@ -23,9 +23,7 @@ void main() {
               create: (_) => mockHomeBloc,
             ),
           ],
-          child: makeTestableWidget(
-            child: TabSelector(),
-          ),
+          child: TabSelector(),
         ),
       ),
     );
