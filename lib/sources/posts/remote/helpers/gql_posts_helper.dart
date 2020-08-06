@@ -100,41 +100,16 @@ class GqlPostsHelper {
   /// server into a list of posts.
   /// If no data is present, returns an empty list instead.
   static Future<List<Post>> _convertPostsGqlResponse(dynamic posts) async {
-    // (posts as List<dynamic>)
-    //  Future<List<Post>> postsConverted = posts.map((json) {
-    // Post singlePost = Post.fromJson(_convertFields(
-    //     json as Map<String, dynamic>,
-    //   ));
+    final postsList = posts as List<dynamic>;
+    return Future.wait(postsList.map((json) async {
+      // Convert the JSON to a Post instance
+      final postJson = json as Map<String, dynamic>;
+      final post = Post.fromJson(_convertFields(postJson));
 
-    //  RichLinkPreview linkPreview = await LinkPreviewConverter.fetchPreview(singlePost);
-
-    //       return singlePost.copyWith(linkPreview: linkPreview);
-    //     })
-    //     .toList();
-    // return postsConverted;
-    //wingman
-    List<Post> formattedPosts =
-        await Future.wait((posts as List<dynamic>).map((json) async {
-      Post singlePost = Post.fromJson(_convertFields(
-        json as Map<String, dynamic>,
-      ));
-      // print('=====single Post');
-      // print(singlePost);
-      RichLinkPreview linkPreview =
-          await LinkPreviewConverter.fetchPreview(singlePost);
-      return singlePost.copyWith(linkPreview: linkPreview);
+      // Get the post preview
+      final linkPreview = await LinkPreviewConverter.fetchPreview(post);
+      return post.copyWith(linkPreview: linkPreview);
     }));
-
-    return formattedPosts;
-    //wingman
-    // for (var i = 0; i < posts.length; i++) {
-    //   Post singlePost = Post.fromJson(_convertFields(
-    //     posts[i] as Map<String, dynamic>
-    //   ));
-
-    //   RichLinkPreview linkPreview = await LinkPreviewConverter.fetchPreview(singlePost);
-
-    // }
   }
 
   /// Returns the list of posts that should be displayed in the home

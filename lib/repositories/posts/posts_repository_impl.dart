@@ -47,16 +47,6 @@ class PostsRepositoryImpl extends PostsRepository {
       start: start,
       limit: limit,
     );
-    print("========here=========");
-    // print(remotes[10]);
-    // 1bcaaf3b375b38d883994c55549fc6dd524d49d982e69c75fed7bbae45455c44
-    remotes.forEach((x) {
-      if (x.linkPreview != null) {
-        print(x.id);
-        print(x.linkPreview.toString());
-      }
-    });
-    print("====end====");
     await _localPostsSource.savePosts(remotes, merge: true);
     return _localPostsSource.getHomePosts(start: start, limit: limit);
   }

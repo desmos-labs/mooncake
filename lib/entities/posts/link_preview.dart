@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 
 part 'link_preview.g.dart';
 
@@ -11,14 +11,19 @@ part 'link_preview.g.dart';
 class RichLinkPreview extends Equatable {
   @JsonKey(name: "title")
   final String title;
+
   @JsonKey(name: "description")
   final String description;
+
   @JsonKey(name: "image")
   final String image;
+
   @JsonKey(name: "appleIcon")
   final String appleIcon;
+
   @JsonKey(name: "favIcon")
   final String favIcon;
+
   @JsonKey(name: "url")
   final String url;
 

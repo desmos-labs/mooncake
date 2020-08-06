@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Takes in a `RichLinkPreview` and displays such link preview.
