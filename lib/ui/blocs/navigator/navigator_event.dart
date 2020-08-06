@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
 
 /// Represents a generic event that is emitted when the user wants to
 /// navigate from a screen to another one.
