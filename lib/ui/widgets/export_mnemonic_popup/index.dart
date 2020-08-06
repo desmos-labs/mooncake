@@ -40,11 +40,13 @@ class ExportMnemonicPopup extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SecondaryLightRoundedButton(
-                    onPressed: () => _closePopup(context),
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.exportMnemonicDialogCancelButton),
+                  Flexible(
+                    child: SecondaryLightRoundedButton(
+                      onPressed: () => _closePopup(context),
+                      child: Text(
+                        PostsLocalizations.of(context).translate(
+                            Messages.exportMnemonicDialogCancelButton),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),

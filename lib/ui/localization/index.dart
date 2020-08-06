@@ -44,7 +44,7 @@ class PostsLocalizations {
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
     String value = _localizedStrings[key];
-    return value ?? "";
+    return value ?? key;
   }
 }
 

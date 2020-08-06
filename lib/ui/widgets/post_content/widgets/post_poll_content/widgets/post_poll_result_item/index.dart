@@ -48,7 +48,7 @@ class PostPollResultItem extends StatelessWidget {
             ),
           ),
           FractionallySizedBox(
-            widthFactor: percentage,
+            widthFactor: percentage <= 0.0 ? null : percentage,
             child: Container(
               height: 35.0,
               decoration: BoxDecoration(

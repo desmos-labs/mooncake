@@ -114,7 +114,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   /// handles TurnOffBackupMnemonicPopupPermission [event]
   Stream<HomeState> _mapTurnOffBackupMnemonicPopupPermissionToState() async* {
     await _saveSettingUseCase.save(
-        key: SettingKeys.BACKUP_POPUP_PERMISSION, value: false);
-    add(HideBackupMnemonicPhrasePopup());
+      key: SettingKeys.BACKUP_POPUP_PERMISSION,
+      value: false,
+    );
+    yield state.copyWith(showBackupPhrasePopup: false);
   }
 }
