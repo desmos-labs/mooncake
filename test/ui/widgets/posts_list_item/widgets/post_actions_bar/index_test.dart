@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:flutter/material.dart';
+import 'package:mockito/mockito.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:mooncake/ui/widgets/post_item_header/widgets/export.dart';
-import '../helper.dart';
-import '../../../mocks/posts.dart';
+import 'package:mooncake/ui/widgets/posts_list_item/widgets/export.dart';
+import 'package:mooncake/ui/widgets/posts_list_item/widgets/post_actions_bar/widgets/export.dart';
+import '../../../helper.dart';
+import '../../../../../mocks/posts.dart';
 
 void main() {
-  testWidgets('PostItemHeader: Displays correctly',
+  testWidgets('PostActionsBar: Displays export correctly',
       (WidgetTester tester) async {
     MockAccountBloc mockAccountBloc = MockAccountBloc();
     MooncakeAccount userAccount = MooncakeAccount(
@@ -34,14 +34,16 @@ void main() {
               create: (_) => mockAccountBloc,
             ),
           ],
-          child: PostItemHeader(post: testPost),
+          child: PostActionsBar(post: testUiPost),
         ),
       ),
     );
+
     await tester.pumpAndSettle();
 
-    expect(find.byType(InkWell), findsWidgets);
-    expect(find.text('desmos1y35...4x93h'), findsOneWidget);
-    expect(find.byType(PostMoreButton), findsOneWidget);
+    expect(find.byType(PostCommentAction), findsOneWidget);
+    expect(find.byType(PostAddReactionAction), findsOneWidget);
+    expect(find.byType(PostLikesCounter), findsNothing);
+    expect(find.byType(AccountAvatar), findsNothing);
   });
 }
