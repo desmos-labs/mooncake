@@ -30,6 +30,7 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        const SizedBox(height: 15),
         _imagesCarousel(),
         if (widget.post.images.length > 1) _imagesIndicator(),
       ],
