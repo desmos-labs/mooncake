@@ -10,6 +10,7 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/utils/utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast_io.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   // Init widget bindings
@@ -40,6 +41,10 @@ void main() async {
       Zone.current.handleUncaughtError(details.exception, details.stack);
     }
   };
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
 
   // Run the app
   // ignore: missing_return

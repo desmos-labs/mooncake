@@ -31,7 +31,7 @@ class LinkPreview extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace stackTrace) {
-                return Text('😢');
+                return Container(width: 100, height: 100);
               },
             ),
             Expanded(
