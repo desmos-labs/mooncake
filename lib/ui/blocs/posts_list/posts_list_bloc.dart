@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/models/converters/export.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
@@ -35,31 +34,27 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final DeletePostsUseCase _deletePostsUseCase;
   final BlockUserUseCase _blockUserUseCase;
 
-  // Converters
-  PostConverter _postConverter;
-
   // Subscriptions
   StreamSubscription _eventsSubscription;
   StreamSubscription _postsSubscription;
   StreamSubscription _txSubscription;
   StreamSubscription _logoutSubscription;
 
-  PostsListBloc(
-      {@required int syncPeriod,
-      @required AccountBloc accountBloc,
-      @required FirebaseAnalytics analytics,
-      @required GetHomePostsUseCase getHomePostsUseCase,
-      @required GetHomeEventsUseCase getHomeEventsUseCase,
-      @required SyncPostsUseCase syncPostsUseCase,
-      @required GetNotificationsUseCase getNotificationsUseCase,
-      @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
-      @required ManagePostReactionsUseCase managePostReactionsUseCase,
-      @required HidePostUseCase hidePostUseCase,
-      @required VotePollUseCase votePollUseCase,
-      @required DeletePostsUseCase deletePostsUseCase,
-      @required BlockUserUseCase blockUserUseCase,
-      @required PostConverter postConverter})
-      : _syncPeriod = syncPeriod,
+  PostsListBloc({
+    @required int syncPeriod,
+    @required AccountBloc accountBloc,
+    @required FirebaseAnalytics analytics,
+    @required GetHomePostsUseCase getHomePostsUseCase,
+    @required GetHomeEventsUseCase getHomeEventsUseCase,
+    @required SyncPostsUseCase syncPostsUseCase,
+    @required GetNotificationsUseCase getNotificationsUseCase,
+    @required UpdatePostsStatusUseCase updatePostsStatusUseCase,
+    @required ManagePostReactionsUseCase managePostReactionsUseCase,
+    @required HidePostUseCase hidePostUseCase,
+    @required VotePollUseCase votePollUseCase,
+    @required DeletePostsUseCase deletePostsUseCase,
+    @required BlockUserUseCase blockUserUseCase,
+  })  : _syncPeriod = syncPeriod,
         assert(getNotificationsUseCase != null),
         _getNotifications = getNotificationsUseCase,
         assert(getHomePostsUseCase != null),
@@ -79,9 +74,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(deletePostsUseCase != null),
         _deletePostsUseCase = deletePostsUseCase,
         assert(blockUserUseCase != null),
-        _blockUserUseCase = blockUserUseCase,
-        assert(postConverter != null),
-        _postConverter = postConverter {
+        _blockUserUseCase = blockUserUseCase {
     // Subscribe to account state changes in order to perform setup
     // operations upon login and cleanup ones upong loggin out
     _logoutSubscription = accountBloc.listen((state) async {
@@ -111,7 +104,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       votePollUseCase: Injector.get(),
       deletePostsUseCase: Injector.get(),
       blockUserUseCase: Injector.get(),
-      postConverter: Injector.get(),
     );
   }
 
@@ -232,16 +224,9 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
-  /// Takes a list of `Post` and converts it to a list of `UiPost`.
-  Future<List<UiPost>> _convertPosts(List<Post> posts) async {
-    return Future.wait(posts.map((post) {
-      return _postConverter.convertPost(post);
-    }).toList());
-  }
-
   /// Merges the [current] posts list with the [newList].
   /// INVARIANT: `current.length > newList.length`
-  Future<List<UiPost>> _mergePosts(List<Post> current, List<Post> newList) {
+  List<Post> _mergePosts(List<Post> current, List<Post> newList) {
     final posts = current.map((post) {
       final newPost = newList.firstWhere(
         (p) => p.id == post.id,
@@ -250,7 +235,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       return newPost != null ? newPost : post;
     }).toList();
 
-    return _convertPosts(posts);
+    return posts;
   }
 
   /// Handles the event emitted when a new list of posts has been emitted.
@@ -259,7 +244,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   ) async* {
     final currentState = state;
     if (currentState is PostsLoading) {
-      yield PostsLoaded.first(posts: await _convertPosts(event.posts));
+      yield PostsLoaded.first(posts: event.posts);
     } else if (currentState is PostsLoaded) {
       // Avoid overloading operations
       if (currentState.posts == event.posts) {
@@ -269,7 +254,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield currentState.copyWith(
         posts: event.posts.length < currentState.posts.length
             ? await _mergePosts(currentState.posts, event.posts)
-            : await _convertPosts(event.posts),
+            : event.posts,
         refreshing: false,
         shouldRefresh: false,
       );
@@ -301,7 +286,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       final posts = currentState.posts
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
-      yield currentState.copyWith(posts: await _convertPosts(posts));
+      yield currentState.copyWith(posts: posts);
     }
   }
 
@@ -313,7 +298,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       final newPosts = currentState.posts
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
-      yield currentState.copyWith(posts: await _convertPosts(newPosts));
+      yield currentState.copyWith(posts: newPosts);
     }
   }
 
@@ -327,7 +312,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       final newPosts = currentState.posts
           .map((post) => post.id == newPost.id ? newPost : post)
           .toList();
-      yield currentState.copyWith(posts: await _convertPosts(newPosts));
+      yield currentState.copyWith(posts: newPosts);
     }
   }
 
@@ -350,7 +335,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         start: 0,
         limit: _HOME_LIMIT,
       );
-      yield PostsLoaded.first(posts: await _convertPosts(posts));
+      yield PostsLoaded.first(posts: posts);
     } else if (currentState is PostsLoaded) {
       final posts = await _getHomePostsUseCase.get(
         start: currentState.posts.length,
@@ -359,7 +344,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield posts.isEmpty
           ? currentState.copyWith(hasReachedMax: true)
           : currentState.copyWith(
-              posts: currentState.posts + await _convertPosts(posts),
+              posts: currentState.posts + posts,
               hasReachedMax: false,
             );
 
@@ -393,11 +378,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     if (currentState is PostsLoaded) {
       yield currentState.copyWith(
         refreshing: false,
-        posts: await _convertPosts(posts),
+        posts: posts,
         shouldRefresh: false,
       );
     } else if (currentState is PostsLoading) {
-      yield PostsLoaded.first(posts: await _convertPosts(posts));
+      yield PostsLoaded.first(posts: posts);
     }
   }
 

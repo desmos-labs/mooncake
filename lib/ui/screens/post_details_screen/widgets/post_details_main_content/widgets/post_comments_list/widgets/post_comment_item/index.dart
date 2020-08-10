@@ -7,7 +7,7 @@ import 'package:mooncake/ui/ui.dart';
 class PostCommentItem extends StatelessWidget {
   static const ICON_SIZE = 20.0;
 
-  final UiPost comment;
+  final Post comment;
   PostCommentItem({Key key, @required this.comment}) : super(key: key);
 
   @override

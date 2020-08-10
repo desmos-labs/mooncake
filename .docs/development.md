@@ -4,9 +4,9 @@ In order for you to locally run Mooncake, you will need to satisfy the following
 
 1. Having [Flutter](https://flutter.dev) installed.
    For the installation guide please reference the [official website](https://flutter.dev/docs/get-started/install).
-   The Flutter version used during the development is `1.19.0-1.0.pre`. You can get it by running:
+   The Flutter version used during the development is `1.20.0`. You can get it by running:
    ```shell
-   $ flutter version 1.19.0-1.0.pre
+   $ flutter version 1.20.0
    $ flutter upgrade
    ```
 

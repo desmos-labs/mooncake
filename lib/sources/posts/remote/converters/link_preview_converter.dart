@@ -1,41 +1,27 @@
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/models/export.dart';
 import 'package:validators/validators.dart';
 
 /// Allows to convert a [Post] to a [UiPost] instance fetching the
 /// appropriate link preview (if any).
-class PostConverter {
-  /// Converts the given [post] to a [UiPost] instance, fetching the
-  /// appropriate link preview (if any).
-  Future<UiPost> convertPost(Post post) async {
-    final urls = _getUrisToPreview(post);
-    return UiPost(
-      linkPreview: urls.isEmpty ? null : await _fetchPreview(urls),
-      id: post.id,
-      parentId: post.parentId,
-      message: post.message,
-      created: post.created,
-      lastEdited: post.lastEdited,
-      allowsComments: post.allowsComments,
-      subspace: post.subspace,
-      optionalData: post.optionalData,
-      owner: post.owner,
-      medias: post.medias,
-      poll: post.poll,
-      reactions: post.reactions,
-      commentsIds: post.commentsIds,
-      status: post.status,
-      hidden: post.hidden,
-    );
+class LinkPreviewConverter {
+  /// Takes in a `List<String>` of `urls` and tries to fetch
+  /// an url with enough meta data for a preview. Will return `null` if none is found.
+  static Future<RichLinkPreview> fetchPreview(Post post) async {
+    List<String> urls = _getUrisToPreview(post);
+    for (var i = urls.length - 1; i >= 0; i--) {
+      RichLinkPreview data = await _fetchSinglePreview(urls[i]);
+      if (data != null) return data;
+    }
+    return null;
   }
 
   /// Returns the list of links that should be used when trying
   /// to get a proper preview.
   /// If the post contains a poll or one or images, an empty
   /// list will be returned.
-  List<String> _getUrisToPreview(Post post) {
+  static List<String> _getUrisToPreview(Post post) {
     // do not show link preview if there is a poll or image
     if (post.poll != null || post.images.isNotEmpty) {
       return [];
@@ -48,19 +34,9 @@ class PostConverter {
         .toList();
   }
 
-  /// Takes in a `List<String>` of `urls` and tries to fetch
-  /// an url with enough meta data for a preview. Will return `null` if none is found.
-  Future<RichLinkPreview> _fetchPreview(List<String> urls) async {
-    for (var i = urls.length - 1; i >= 0; i--) {
-      RichLinkPreview data = await _fetchSinglePreview(urls[i]);
-      if (data != null) return data;
-    }
-    return null;
-  }
-
   /// Takes in a single url and tries to fetch enough meta data for a
   /// preview. Will return null if there isn't enough.
-  Future<RichLinkPreview> _fetchSinglePreview(String url) async {
+  static Future<RichLinkPreview> _fetchSinglePreview(String url) async {
     final client = Client();
     final response = await client.get(_validateUrl(url));
     final document = parse(response.body);
@@ -124,7 +100,7 @@ class PostConverter {
     );
   }
 
-  String _validateUrl(String url) {
+  static String _validateUrl(String url) {
     if (url?.startsWith('http://') == true ||
         url?.startsWith('https://') == true) {
       return url;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/post_content/widgets/link_preview/index.dart';
 
@@ -9,7 +10,7 @@ import 'widgets/export.dart';
 /// - The main message of the post
 /// - The image(s) associated to the post
 class PostContent extends StatelessWidget {
-  final UiPost post;
+  final Post post;
   const PostContent({Key key, @required this.post}) : super(key: key);
 
   @override
@@ -24,7 +25,7 @@ class PostContent extends StatelessWidget {
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
         ),
-        if (post.hasLinkPreview) LinkPreview(preview: post.linkPreview),
+        if (post.linkPreview != null) LinkPreview(preview: post.linkPreview),
       ],
     );
   }

@@ -10,7 +10,7 @@ import 'widgets/export.dart';
 class PostActionsBar extends StatelessWidget {
   static const ICON_SPACING = 20.0;
 
-  final UiPost post;
+  final Post post;
 
   const PostActionsBar({Key key, @required this.post}) : super(key: key);
 

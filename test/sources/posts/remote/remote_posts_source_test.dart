@@ -170,5 +170,43 @@ void main() {
       final posts = await source.getHomePosts(start: 200, limit: 10);
       expect(posts, equals(expected));
     });
+
+    test('data with url is fetched with preview', () async {
+      final data = r'''
+      {
+        "data": {
+          "posts": [
+            {
+              "id": "64d6a0562f599a1ebf799748f2ba3c2b27e9b340f59a4d9bbd765940402e00bd",
+              "subspace": "2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88",
+              "allows_comments": false,
+              "created": "2020-04-30T08:05:46.992",
+              "last_edited": "0001-01-01T00:00:00",
+              "message": "A good read from one of the best italian's physicist, \"The order of time\" explain in a visceral way what really the time is, making your normal time conception fall off like a house of cards https://www.github.com",
+              "optional_data": null,
+              "parent_id": null,
+              "reactions": [
+                {
+                  "user": {
+                    "address": "desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u"
+                  },
+                  "value": "❤"
+                }
+              ],
+              "user": {
+                "address": "desmos14dm0zdemeymhayucp7gchuus3k5m344f3v8nln",
+                "moniker": null,
+                "pictures": []
+              },
+              "comments": []
+            }
+          ]
+        }
+      }
+      ''';
+      server.enqueue(body: data);
+      final posts = await source.getHomePosts(start: 200, limit: 10);
+      expect(posts[0].linkPreview, isNot(null));
+    });
   });
 }

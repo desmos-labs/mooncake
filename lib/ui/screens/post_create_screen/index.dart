@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
 import 'package:mooncake/ui/screens/post_create_screen/widgets/export.dart';
 import 'package:mooncake/ui/ui.dart';
@@ -10,7 +11,7 @@ import 'package:mooncake/ui/ui.dart';
 /// represents the method that must be called upon the click on the save button
 /// inside the editor itself.
 class CreatePostScreen extends StatelessWidget {
-  final UiPost parentPost;
+  final Post parentPost;
   final bottomBarHeight = 50.0;
 
   const CreatePostScreen({Key key, this.parentPost}) : super(key: key);

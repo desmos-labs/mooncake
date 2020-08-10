@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/models/converters/export.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
@@ -21,9 +20,6 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   final GetPostDetailsUseCase _getPostDetailsUseCase;
   final GetCommentsUseCase _getCommentsUseCase;
 
-  // Converters
-  final PostConverter _postConverter;
-
   // Subscriptions
   StreamSubscription _postSubscription;
   StreamSubscription _commentsSubscription;
@@ -31,14 +27,11 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
   PostDetailsBloc({
     @required MooncakeAccount user,
     @required String postId,
-    @required PostConverter postConverter,
     @required GetPostDetailsUseCase getPostDetailsUseCase,
     @required GetCommentsUseCase getCommentsUseCase,
   })  : assert(postId != null),
         assert(user != null),
         _user = user,
-        assert(postConverter != null),
-        this._postConverter = postConverter,
         assert(getPostDetailsUseCase != null),
         _getPostDetailsUseCase = getPostDetailsUseCase,
         assert(getCommentsUseCase != null),
@@ -60,7 +53,6 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
       user: (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user,
       getPostDetailsUseCase: Injector.get(),
       getCommentsUseCase: Injector.get(),
-      postConverter: Injector.get(),
     );
   }
 
@@ -94,10 +86,8 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
     final comments = await _getCommentsUseCase.fromRemote(event.postId);
     yield PostDetailsLoaded.first(
       user: _user,
-      post: await _postConverter.convertPost(post),
-      comments: await Future.wait(comments.map((comment) {
-        return _postConverter.convertPost(comment);
-      }).toList()),
+      post: post,
+      comments: comments,
     );
   }
 
@@ -107,7 +97,7 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
     final currentState = state;
     if (currentState is PostDetailsLoaded) {
       yield currentState.copyWith(
-        post: await _postConverter.convertPost(event.post),
+        post: event.post,
         refreshing: false,
       );
     }
@@ -119,9 +109,7 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
     final currentState = state;
     if (currentState is PostDetailsLoaded) {
       yield currentState.copyWith(
-        comments: await Future.wait(event.comments.map((e) {
-          return _postConverter.convertPost(e);
-        }).toList()),
+        comments: event.comments,
       );
     }
   }
