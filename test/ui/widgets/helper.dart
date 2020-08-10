@@ -9,11 +9,27 @@ class MockHomeBloc extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
 class MockNavigatorBloc extends MockBloc<NavigatorEvent, NavigatorState>
     implements NavigatorBloc {}
 
+class MockPostsListBloc extends MockBloc<PostsListEvent, PostsListState>
+    implements PostsListBloc {}
+
+class MockMnemonicBloc extends MockBloc<MnemonicEvent, MnemonicState>
+    implements MnemonicBloc {}
+
+class MockAccountBloc extends MockBloc<AccountEvent, AccountState>
+    implements AccountBloc {}
+
+class MockRecoverAccountBloc
+    extends MockBloc<RecoverAccountEvent, RecoverAccountState>
+    implements RecoverAccountBloc {}
+
 /// widget wrapper to make testable
-Widget makeTestableWidget({Widget child}) {
+Widget makeTestableWidget({Widget child, theme = 'light'}) {
   return MediaQuery(
     data: MediaQueryData(),
     child: MaterialApp(
+        themeMode: theme == 'light' ? ThemeMode.light : ThemeMode.dark,
+        theme: PostsTheme.lightTheme,
+        darkTheme: PostsTheme.darkTheme,
         localizationsDelegates: [
           PostsLocalizations.delegateTest,
           GlobalMaterialLocalizations.delegate,

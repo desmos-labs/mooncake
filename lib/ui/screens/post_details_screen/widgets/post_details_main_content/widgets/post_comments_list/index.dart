@@ -38,10 +38,16 @@ class PostCommentsList extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-              child: Text(
-                PostsLocalizations.of(context)
-                    .translate(Messages.noCommentsYet),
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  PostsLocalizations.of(context)
+                      .translate(Messages.noCommentsYet),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
               ),
             ),
           )

@@ -19,9 +19,8 @@ class PostContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         PostItemHeader(key: PostsKeys.postItemHeader(post.id), post: post),
-        const SizedBox(height: ThemeSpaces.smallGutter),
         if (post.message?.isNotEmpty == true) _messagePreview(),
-        if (post.poll != null) PostPollContent(post: post),
+        if (post.poll != null) _pollPreview(),
         PostImagesPreviewer(
           key: PostsKeys.postItemImagePreviewer(post.id),
           post: post,
@@ -35,9 +34,16 @@ class PostContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SizedBox(height: 15),
         PostMessage(key: PostsKeys.postItemMessage(post.id), post: post),
-        const SizedBox(height: ThemeSpaces.smallGutter),
       ],
+    );
+  }
+
+  Widget _pollPreview() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [const SizedBox(height: 15), PostPollContent(post: post)],
     );
   }
 }

@@ -1,4 +1,24 @@
 import 'package:mooncake/entities/entities.dart';
+import 'package:mooncake/ui/ui.dart';
+
+final UiPost testUiPost = UiPost(
+  linkPreview: null,
+  id: "1",
+  parentId: "0",
+  message: "Hello dreamers! ✨",
+  created: "2020-01-21T13:16:10.123Z",
+  lastEdited: "",
+  allowsComments: true,
+  subspace: "desmos",
+  optionalData: {},
+  owner: User.fromAddress("desmos1y35fex9005709966jxkcqcz2vdvmtfyaj4x93h"),
+  medias: null,
+  poll: null,
+  reactions: [],
+  commentsIds: [],
+  status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
+  hidden: null,
+);
 
 final Post testPost = Post(
   id: "1",
