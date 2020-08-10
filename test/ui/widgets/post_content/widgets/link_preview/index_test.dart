@@ -24,6 +24,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(GestureDetector), findsOneWidget);
-    expect(find.text('😢'), findsOneWidget);
+    expect(find.text('😢'), findsNothing);
   });
 }
