@@ -22,6 +22,10 @@ class MockRecoverAccountBloc
     extends MockBloc<RecoverAccountEvent, RecoverAccountState>
     implements RecoverAccountBloc {}
 
+class MockNotificationsBloc
+    extends MockBloc<NotificationsEvent, NotificationsState>
+    implements NotificationsBloc {}
+
 /// widget wrapper to make testable
 Widget makeTestableWidget({Widget child, theme = 'light'}) {
   return MediaQuery(

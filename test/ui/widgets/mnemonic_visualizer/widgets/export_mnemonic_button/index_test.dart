@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/mnemonic_visualizer/widgets/export.dart';
-import '../../../helper.dart';
+import '../../../../helper.dart';
 
 void main() {
   MockMnemonicBloc mockMnemonicBloc = MockMnemonicBloc();

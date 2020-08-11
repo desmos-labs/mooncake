@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import '../../../mocks/posts.dart';
-import '../helper.dart';
+import '../../helper.dart';
 
 void main() {
   testWidgets('PostReactionAction: Displays export correctly',

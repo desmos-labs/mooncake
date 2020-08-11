@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:mooncake/ui/ui.dart';
-import '../../helper.dart';
+import '../../../helper.dart';
 
 void main() {
   testWidgets('Displays correctly in light mode', (WidgetTester tester) async {

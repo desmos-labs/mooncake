@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/posts_list_item/widgets/export.dart';
 import 'package:mooncake/ui/widgets/posts_list_item/widgets/post_actions_bar/widgets/export.dart';
-import '../../../helper.dart';
+import '../../../../helper.dart';
 import '../../../../../mocks/posts.dart';
 
 void main() {
@@ -34,7 +34,7 @@ void main() {
               create: (_) => mockAccountBloc,
             ),
           ],
-          child: PostActionsBar(post: testUiPost),
+          child: PostActionsBar(post: testPost),
         ),
       ),
     );

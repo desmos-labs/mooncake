@@ -6,7 +6,7 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/widgets/post_content/widgets/export.dart';
 import '../../../mocks/posts.dart';
-import '../helper.dart';
+import '../../helper.dart';
 
 void main() {
   testWidgets('PostContent: Displays export correctly',
@@ -35,7 +35,7 @@ void main() {
             ),
           ],
           child: Container(
-            child: PostContent(post: testUiPost),
+            child: PostContent(post: testPost),
           ),
         ),
       ),

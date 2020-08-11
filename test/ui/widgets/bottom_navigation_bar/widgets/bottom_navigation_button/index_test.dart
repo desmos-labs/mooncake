@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/entities/app/app_tab.dart';
 import 'package:mooncake/ui/widgets/bottom_navigation_bar/widgets/export.dart';
-import '../../../helper.dart';
+import '../../../../helper.dart';
 
 void main() {
   testWidgets('Displays correctly', (WidgetTester tester) async {

@@ -110,4 +110,17 @@ class PostInputState extends Equatable {
         showPopup,
         willShowPopupAgain,
       ];
+
+  String toString() {
+    return 'PostInputState { '
+        'parentPost: $parentPost, '
+        'message: $message, '
+        'allowsComments: $allowsComments, '
+        'medias: $medias, '
+        'poll: $poll, '
+        'saving: $saving, '
+        'showPopup: $showPopup, '
+        'willShowPopupAgain: $willShowPopupAgain, '
+        '}';
+  }
 }

@@ -5,7 +5,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/post_item_header/widgets/export.dart';
-import '../helper.dart';
+import '../../helper.dart';
 import '../../../mocks/posts.dart';
 
 void main() {

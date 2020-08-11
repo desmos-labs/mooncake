@@ -35,6 +35,12 @@ class NotificationsList extends StatelessWidget {
                 Image(
                   image: AssetImage("assets/images/airplane.png"),
                   width: MediaQuery.of(context).size.width * 0.33,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace stackTrace) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width * 0.33,
+                    );
+                  },
                 ),
                 SizedBox(height: 10),
                 Text(

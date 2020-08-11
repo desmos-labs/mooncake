@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       LoadingIndicator(),
     );
-
+    await tester.pump(const Duration(seconds: 3));
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(
       tester

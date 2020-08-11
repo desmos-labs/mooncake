@@ -118,6 +118,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   Stream<PostInputState> _mapImageAddedToState(ImageAdded event) async* {
     final media = _convert(event.file);
     final images = _removeFileIfPresent(state.medias, media);
+
     yield state.copyWith(medias: images + [media]);
   }
 
@@ -180,10 +181,11 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
   Stream<PostInputState> _mapSavePostEventToState() async* {
     final showPopup =
         await _getSettingUseCase.get(key: _SHOW_POPUP_KEY) as bool;
+
     yield state.copyWith(saving: true, showPopup: showPopup ?? true);
 
     if (!(showPopup ?? true)) {
-      add(CreatePost());
+      yield* _mapCreatePostEventToState();
     }
   }
 
