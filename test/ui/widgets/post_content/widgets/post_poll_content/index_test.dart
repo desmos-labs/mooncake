@@ -3,7 +3,7 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/ui/ui.dart';
-import '../../../helper.dart';
+import '../../../../helper.dart';
 import '../../../../../mocks/posts.dart';
 import 'package:mooncake/ui/widgets/post_content/widgets/export.dart';
 import 'package:mooncake/ui/widgets/post_content/widgets/post_poll_content/widgets/export.dart';

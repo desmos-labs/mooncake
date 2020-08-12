@@ -5,21 +5,16 @@ import 'package:mockito/mockito.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/models/converters/export.dart';
 import '../../../mocks/mocks.dart';
-
-class MockPostConverter extends Mock implements PostConverter {}
 
 class MockGetPostDetailsUseCase extends Mock implements GetPostDetailsUseCase {}
 
 class MockGetCommentsUseCase extends Mock implements GetCommentsUseCase {}
 
 void main() {
-  MockPostConverter mockPostConverter;
   MockGetPostDetailsUseCase mockGetPostDetailsUseCase;
   MockGetCommentsUseCase mockGetCommentsUseCase;
   setUp(() {
-    mockPostConverter = MockPostConverter();
     mockGetPostDetailsUseCase = MockGetPostDetailsUseCase();
     mockGetCommentsUseCase = MockGetCommentsUseCase();
   });
@@ -53,13 +48,10 @@ void main() {
               .thenAnswer((_) => Future.value(testPost));
           when(mockGetCommentsUseCase.fromRemote(any))
               .thenAnswer((_) => Future.value(testPosts));
-          when(mockPostConverter.convertPost(any))
-              .thenAnswer((_) => Future.value(testUiPost));
 
           postDetailsBloc = PostDetailsBloc(
             user: userAccount,
             postId: postId,
-            postConverter: mockPostConverter,
             getPostDetailsUseCase: mockGetPostDetailsUseCase,
             getCommentsUseCase: mockGetCommentsUseCase,
           );
@@ -75,50 +67,28 @@ void main() {
           bloc.add(ShowTab(PostDetailsTab.REACTIONS));
           bloc.add(ShowTab(PostDetailsTab.COMMENTS));
         },
-        skip: 2,
         expect: [
+          PostDetailsLoaded.first(
+            user: userAccount,
+            post: testPost,
+            comments: testPosts,
+          ),
           PostDetailsLoaded(
             refreshing: false,
             user: userAccount,
-            post: testUiPost,
-            comments: [
-              testUiPost,
-              testUiPost,
-              testUiPost,
-              testUiPost,
-              testUiPost,
-            ],
+            post: testPost,
+            comments: testPosts,
             selectedTab: PostDetailsTab.REACTIONS,
           ),
           PostDetailsLoaded(
             refreshing: false,
             user: userAccount,
-            post: testUiPost,
-            comments: [
-              testUiPost,
-              testUiPost,
-              testUiPost,
-              testUiPost,
-              testUiPost,
-            ],
+            post: testPost,
+            comments: testPosts,
             selectedTab: PostDetailsTab.COMMENTS,
           ),
         ],
       );
-
-      // blocTest(
-      //   'LoadPostDetails: work properly',
-      //   build: () async {
-      //     return postDetailsBloc;
-      //   },
-      //   act: (bloc) async {
-      //     bloc.add(LoadPostDetails(testUiPost.id));
-      //   },
-      //   skip: 2,
-      //   expect: [
-
-      //   ],
-      // );
     },
   );
 }

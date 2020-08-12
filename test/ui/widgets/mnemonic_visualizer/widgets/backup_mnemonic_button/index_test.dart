@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/mnemonic_visualizer/widgets/export.dart';
-import '../../../helper.dart';
+import '../../../../helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mooncake/ui/widgets/posts_list_item/widgets/export.dart';
-import '../../../helper.dart';
+import '../../../../helper.dart';
 
 void main() {
   testWidgets('PostErrorPopupContent: Displays export correctly',

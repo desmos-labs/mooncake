@@ -136,7 +136,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     } else if (event is SyncPosts) {
       yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
-      yield* _mapSyncPostsCompletedEventToState();
+      yield _mapSyncPostsCompletedEventToState();
     } else if (event is ShouldRefreshPosts) {
       yield* _mapShouldRefreshPostsEventToState();
     } else if (event is RefreshPosts) {
@@ -243,6 +243,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     PostsUpdated event,
   ) async* {
     final currentState = state;
+
     if (currentState is PostsLoading) {
       yield PostsLoaded.first(posts: event.posts);
     } else if (currentState is PostsLoaded) {
@@ -395,22 +396,23 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       yield currentState.copyWith(syncingPosts: true);
 
       // Wait for the sync
-      await _syncPostsUseCase.sync().catchError((error) {
+      yield await _syncPostsUseCase.sync().catchError((error) {
         print("Sync error: $error");
-        add(SyncPostsCompleted());
+        return _mapSyncPostsCompletedEventToState();
       }).then((syncedPosts) {
-        add(SyncPostsCompleted());
+        return _mapSyncPostsCompletedEventToState();
       });
     }
   }
 
   /// Handles the event that tells the bloc the synchronization has completed
-  Stream<PostsListState> _mapSyncPostsCompletedEventToState() async* {
+  PostsListState _mapSyncPostsCompletedEventToState() {
     // Once the sync has been completed, hide the bar and load the new posts
     final currentState = state;
     if (currentState is PostsLoaded) {
-      yield currentState.copyWith(syncingPosts: false);
+      return currentState.copyWith(syncingPosts: false);
     }
+    return currentState;
   }
 
   /// Handles the event that tells the Bloc that a transaction has

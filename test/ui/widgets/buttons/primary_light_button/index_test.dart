@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/ui/ui.dart';
-import '../../helper.dart';
+import '../../../helper.dart';
 
 void main() {
   testWidgets('PrimaryLightButton: Displays correctly',
