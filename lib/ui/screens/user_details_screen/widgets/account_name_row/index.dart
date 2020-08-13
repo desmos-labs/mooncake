@@ -41,7 +41,7 @@ class AccountNameRow extends StatelessWidget {
               SizedBox(width: 3),
 //              user.isVerified
 //                  ? customIcon(context,
-//                      icon: AppIcon.blueTick,
+              //  icon: AppIcon.blueTick,
 //                      istwitterIcon: true,
 //                      iconColor: AppColor.primary,
 //                      size: 13,
