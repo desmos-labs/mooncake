@@ -26,6 +26,9 @@ class MockNotificationsBloc
     extends MockBloc<NotificationsEvent, NotificationsState>
     implements NotificationsBloc {}
 
+class MockPostDetailsBloc extends MockBloc<PostDetailsEvent, PostDetailsState>
+    implements PostDetailsBloc {}
+
 /// widget wrapper to make testable
 Widget makeTestableWidget({Widget child, theme = 'light'}) {
   return MediaQuery(
