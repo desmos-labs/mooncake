@@ -72,26 +72,7 @@ class _PostsListState extends State<PostsList> {
                         if (erroredPosts.isNotEmpty)
                           SliverList(
                             delegate: SliverChildListDelegate(
-                              [
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    left: 10,
-                                    right: 10,
-                                    top: 15,
-                                    bottom: 0,
-                                  ),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryVariant,
-                                  child: Text(
-                                    PostsLocalizations.of(context)
-                                        .translate(Messages.postUploadError),
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 13, color: Colors.white),
-                                  ),
-                                ),
-                              ],
+                              [ErrorPostMessage()],
                             ),
                           ),
                         if (erroredPosts.isNotEmpty)
