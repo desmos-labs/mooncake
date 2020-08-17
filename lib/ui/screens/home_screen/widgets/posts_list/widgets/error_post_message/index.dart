@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mooncake/entities/entities.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
 
 class ErrorPostMessage extends StatelessWidget {
