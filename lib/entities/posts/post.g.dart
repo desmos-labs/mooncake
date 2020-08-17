@@ -40,6 +40,10 @@ Post _$PostFromJson(Map<String, dynamic> json) {
         (json['children'] as List)?.map((e) => e as String)?.toList() ?? [],
     status: Post._postStatusFromJson(json['status'] as Map<String, dynamic>),
     hidden: json['hidden'] as bool ?? false,
+    linkPreview: json['link_preview'] == null
+        ? null
+        : RichLinkPreview.fromJson(
+            json['link_preview'] as Map<String, dynamic>),
   );
 }
 
@@ -59,4 +63,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'children': instance.commentsIds,
       'status': instance.status?.toJson(),
       'hidden': instance.hidden,
+      'link_preview': instance.linkPreview?.toJson(),
     };

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Takes in a `RichLinkPreview` and displays such link preview.
@@ -24,8 +24,16 @@ class LinkPreview extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.network(preview.image,
-                width: 100, height: 100, fit: BoxFit.cover),
+            Image.network(
+              preview.image,
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace stackTrace) {
+                return Container(width: 100, height: 100);
+              },
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),

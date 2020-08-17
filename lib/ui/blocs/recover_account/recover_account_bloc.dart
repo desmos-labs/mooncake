@@ -49,7 +49,6 @@ class RecoverAccountBloc
     // Update the words list
     final wordsList = List<String>()..addAll(state.wordsList);
     wordsList[state.currentWordIndex] = event.word;
-
     // Find the next index
     int nextIndex = wordsList.indexWhere((element) => element == null);
     if (nextIndex == -1) {
