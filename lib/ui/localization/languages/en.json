@@ -177,5 +177,6 @@
   "mnemonicWrittenConfirmation": "We'll confirm on the next screen",
   "mnemonicCopy": "copy",
   "mnemonicConfirmPhrase": "Confirm Phrase",
-  "postUploadError": "The following post(s) below could not be uploaded. Please try again later."
+  "postUploadError": "The following post(s) below could not be uploaded. Please try again later.",
+  "poll": "Poll"
 }

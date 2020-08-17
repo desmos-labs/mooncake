@@ -58,6 +58,8 @@ class _PostsListState extends State<PostsList> {
             return PostsListEmptyContainer();
           }
 
+          List<Post> erroredPosts = state.getErroredPosts;
+
           return Stack(
             children: <Widget>[
               Column(
@@ -67,34 +69,40 @@ class _PostsListState extends State<PostsList> {
                     child: CustomScrollView(
                       controller: _scrollController,
                       slivers: [
-                        // Text("hello"),
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                            [
-                              Container(
-                                padding: EdgeInsets.only(
-                                  left: 10,
-                                  right: 10,
-                                  top: 15,
-                                  bottom: 0,
+                        if (erroredPosts.isNotEmpty)
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                Container(
+                                  padding: EdgeInsets.only(
+                                    left: 10,
+                                    right: 10,
+                                    top: 15,
+                                    bottom: 0,
+                                  ),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryVariant,
+                                  child: Text(
+                                    PostsLocalizations.of(context)
+                                        .translate(Messages.postUploadError),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.white),
+                                  ),
                                 ),
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryVariant,
-                                child: Text(
-                                  PostsLocalizations.of(context)
-                                      .translate(Messages.postUploadError),
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.white),
-                                ),
-                              ),
-                              ErrorPost(post: state.posts[0]),
-                              ErrorPost(post: state.posts[6]),
-                              ErrorPost(post: state.posts[0]),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                        if (erroredPosts.isNotEmpty)
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return ErrorPost(post: erroredPosts[index]);
+                              },
+                              childCount: state.getErroredPosts.length,
+                            ),
+                          ),
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {

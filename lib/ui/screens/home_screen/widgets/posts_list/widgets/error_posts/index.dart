@@ -16,15 +16,33 @@ class ErrorPost extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Flexible(
-            child: Text(
-              post.message,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.white,
+          if (post.images.isNotEmpty)
+            Container(
+                margin: EdgeInsets.only(right: 10),
+                width: 40,
+                height: 40,
+                child: PostContentImage(media: post.images[0])),
+          if (post.message.isNotEmpty)
+            Flexible(
+              child: Text(
+                post.message,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
+          if (post.message.isEmpty && post.poll != null)
+            Flexible(
+              child: Text(
+                post.poll.question ??
+                    PostsLocalizations.of(context).translate(Messages.poll),
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
           Row(
             children: [
               IconButton(

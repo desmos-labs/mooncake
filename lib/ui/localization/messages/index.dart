@@ -255,4 +255,5 @@ class Messages {
 
   // post upload error
   static String get postUploadError => "postUploadError";
+  static String get poll => "poll";
 }
