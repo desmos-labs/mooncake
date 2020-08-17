@@ -54,7 +54,6 @@ class ErrorPost extends StatelessWidget {
                 ),
                 onPressed: () {
                   _handleRetryPost(context);
-                  // BlocProvider.of<PostsListBloc>(context).add(DeletePosts());
                 },
               ),
               IconButton(
@@ -63,7 +62,6 @@ class ErrorPost extends StatelessWidget {
                 color: Colors.white,
                 onPressed: () {
                   _handleDeletePost(context);
-                  // BlocProvider.of<PostsListBloc>(context).add(DeletePosts());
                 },
               ),
             ],
@@ -78,6 +76,6 @@ class ErrorPost extends StatelessWidget {
   }
 
   _handleDeletePost(BuildContext context) {
-    BlocProvider.of<PostsListBloc>(context).add(RetryPostUpload(post));
+    BlocProvider.of<PostsListBloc>(context).add(DeletePost(post));
   }
 }
