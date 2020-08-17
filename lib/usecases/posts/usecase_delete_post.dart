@@ -11,8 +11,15 @@ class DeletePostUseCase {
   })  : assert(postsRepository != null),
         _postsRepository = postsRepository;
 
-  /// Deletes the locally stored post.
-  Future<void> delete(Post post) {
-    return _postsRepository.deletePost(post);
+  /// Deletes the locally stored post if it hasn't been posted.
+  Future<void> delete(Post post) async {
+    List<PostStatusValue> canDeleteStatus = [
+      PostStatusValue.STORED_LOCALLY,
+      PostStatusValue.ERRORED
+    ];
+
+    if (canDeleteStatus.contains(post.status.value)) {
+      return _postsRepository.deletePost(post);
+    }
   }
 }
