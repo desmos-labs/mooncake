@@ -177,11 +177,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         Filter.equals(
           Post.STATUS_VALUE_FIELD,
           PostStatusValue.STORED_LOCALLY.value,
-        ),
-        Filter.equals(
-          Post.STATUS_VALUE_FIELD,
-          PostStatusValue.ERRORED.value,
-        ),
+        )
       ]),
     );
 
@@ -285,5 +281,10 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   @override
   Future<void> deletePosts() async {
     await _store.delete(_database);
+  }
+
+  @override
+  Future<void> deletePost(Post post) async {
+    await _store.record(getPostKey(post)).delete(_database);
   }
 }

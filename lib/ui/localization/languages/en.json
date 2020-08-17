@@ -89,6 +89,8 @@
   "reportPopupOther": "Other",
   "reportPopupEditBotHint": "Write something (optional)",
   "reportPopupBlockUser": "Also block the user",
+  "reportAndBlock": "Report And Block",
+  "reportPopupSubmit": "Report",
   "syncSuccessBody": "Submit",
   "blockDialogTitle": "Block user?",
   "blockDialogTextOne": "By blocking",
@@ -174,5 +176,6 @@
   "mnemonicBackupWrittenConfirm": "I have written them down",
   "mnemonicWrittenConfirmation": "We'll confirm on the next screen",
   "mnemonicCopy": "copy",
-  "mnemonicConfirmPhrase": "Confirm Phrase"
+  "mnemonicConfirmPhrase": "Confirm Phrase",
+  "postUploadError": "The following post(s) below could not be uploaded. Please try again later."
 }

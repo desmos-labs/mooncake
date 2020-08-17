@@ -150,3 +150,23 @@ class TxFailed extends PostsListEvent {
 /// Event that tells the Bloc to download all the posts stored locally.
 /// WARNING: Use it ONLY during debug.
 class DeletePosts extends PostsListEvent {}
+
+/// Event that is emmited when a post is trying to upload again after a failed attempt
+class RetryPostUpload extends PostsListEvent {
+  final Post post;
+
+  const RetryPostUpload(this.post);
+
+  @override
+  List<Object> get props => [post];
+}
+
+/// Event that tells the Bloc to delete a single post that is only stored locally
+class DeletePost extends PostsListEvent {
+  final Post post;
+
+  const DeletePost(this.post);
+
+  @override
+  List<Object> get props => [post];
+}

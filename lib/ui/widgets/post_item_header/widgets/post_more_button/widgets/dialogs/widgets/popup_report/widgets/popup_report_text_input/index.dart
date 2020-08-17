@@ -11,8 +11,9 @@ class PopupReportTextInput extends StatelessWidget {
     return BlocBuilder<ReportPopupBloc, ReportPopupState>(
       builder: (context, state) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 24),
           child: TextFormField(
+            maxLines: 2,
             autofocus: false,
             onChanged: (value) {
               BlocProvider.of<ReportPopupBloc>(context)

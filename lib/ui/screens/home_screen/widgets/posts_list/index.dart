@@ -48,6 +48,7 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
+
           if (!state.refreshing) {
             _refreshCompleter?.complete();
             _refreshCompleter = Completer();
@@ -63,18 +64,50 @@ class _PostsListState extends State<PostsList> {
                 children: <Widget>[
                   if (state.syncingPosts) PostsListSyncingIndicator(),
                   Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      key: PostsKeys.postsList,
-                      itemCount: state.hasReachedMax
-                          ? state.posts.length
-                          : state.posts.length + 1,
-                      itemBuilder: (context, index) {
-                        return index >= state.posts.length
-                            ? BottomLoader()
-                            : PostListItem(post: state.posts[index]);
-                      },
+                    child: CustomScrollView(
                       controller: _scrollController,
+                      slivers: [
+                        // Text("hello"),
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              Container(
+                                padding: EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                  top: 15,
+                                  bottom: 0,
+                                ),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryVariant,
+                                child: Text(
+                                  PostsLocalizations.of(context)
+                                      .translate(Messages.postUploadError),
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.white),
+                                ),
+                              ),
+                              ErrorPost(post: state.posts[0]),
+                              ErrorPost(post: state.posts[6]),
+                              ErrorPost(post: state.posts[0]),
+                            ],
+                          ),
+                        ),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              return index >= state.posts.length
+                                  ? BottomLoader()
+                                  : PostListItem(post: state.posts[index]);
+                            },
+                            childCount: state.hasReachedMax
+                                ? state.posts.length
+                                : state.posts.length + 1,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

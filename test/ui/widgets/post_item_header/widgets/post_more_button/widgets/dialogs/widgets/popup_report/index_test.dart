@@ -41,7 +41,7 @@ void main() {
     expect(find.byType(TextFormField), findsWidgets);
     expect(find.byType(CheckBoxButton), findsWidgets);
     expect(find.byType(PopupReportOption), findsWidgets);
-    expect(find.text('reportPopupTitle'), findsOneWidget);
+    expect(find.text('reportPopupTitle'), findsNothing);
     expect(find.text('reportPopupBlockUser'), findsOneWidget);
     expect(find.text('reportPopupSubmit'), findsOneWidget);
     expect(find.text('reportPopupSpam'), findsOneWidget);
