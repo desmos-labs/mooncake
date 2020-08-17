@@ -21,7 +21,7 @@ class UserDetailsScreen extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<PostsListBloc, PostsListState>(
         builder: (context, postsState) {
-          List<UiPost> posts = [];
+          List<Post> posts = [];
           if (postsState is PostsLoading) {
             posts = [];
           } else if (postsState is PostsLoaded) {

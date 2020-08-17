@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/screens/post_create_screen/blocs/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
@@ -9,7 +10,7 @@ import 'widgets/export.dart';
 /// Such content includes a top bar and the [TextFormField] inside which
 /// the post message is inserted.
 class CreatePostContent extends StatelessWidget {
-  final UiPost parentPost;
+  final Post parentPost;
   final double bottomPadding;
 
   const CreatePostContent({

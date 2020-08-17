@@ -35,7 +35,7 @@ class PostItemHeader extends StatelessWidget {
                   ),
 
                   // Spacer
-                  const SizedBox(width: ThemeSpaces.smallGutter),
+                  const SizedBox(width: ThemeSpaces.largeGutter),
 
                   // Username and time ago
                   Expanded(

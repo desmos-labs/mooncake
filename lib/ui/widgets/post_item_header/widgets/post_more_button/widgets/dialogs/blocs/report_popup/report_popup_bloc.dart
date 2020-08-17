@@ -19,20 +19,23 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
   final Post _post;
 
   final BlockUserUseCase _blockUserUseCase;
-
+  final ReportPostUseCase _reportPostUseCase;
   ReportPopupBloc({
     @required Post post,
     @required BlockUserUseCase blockUserUseCase,
+    @required ReportPostUseCase reportPostUseCase,
   })  : assert(post != null),
         _post = post,
         assert(blockUserUseCase != null),
-        _blockUserUseCase = blockUserUseCase;
+        _blockUserUseCase = blockUserUseCase,
+        assert(reportPostUseCase != null),
+        _reportPostUseCase = reportPostUseCase;
 
   factory ReportPopupBloc.create(Post post) {
     return ReportPopupBloc(
-      post: post,
-      blockUserUseCase: Injector.get(),
-    );
+        post: post,
+        blockUserUseCase: Injector.get(),
+        reportPostUseCase: Injector.get());
   }
 
   @override
@@ -93,6 +96,6 @@ Additional notes: ${currentState.otherText}
     );
 
     // Send the report email
-    await FlutterEmailSender.send(email);
+    await _reportPostUseCase.send(email);
   }
 }

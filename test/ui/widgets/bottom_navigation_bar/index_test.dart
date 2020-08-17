@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/widgets/bottom_navigation_bar/widgets/export.dart';
-import '../helper.dart';
+import '../../helper.dart';
 
 void main() {
   testWidgets('Displays correctly', (WidgetTester tester) async {
@@ -23,9 +23,7 @@ void main() {
               create: (_) => mockHomeBloc,
             ),
           ],
-          child: makeTestableWidget(
-            child: TabSelector(),
-          ),
+          child: TabSelector(),
         ),
       ),
     );

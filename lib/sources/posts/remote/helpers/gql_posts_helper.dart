@@ -99,12 +99,17 @@ class GqlPostsHelper {
   /// Converts the given [gqlData] retrieved from the remote GraphQL
   /// server into a list of posts.
   /// If no data is present, returns an empty list instead.
-  static List<Post> _convertPostsGqlResponse(dynamic posts) {
-    return (posts as List<dynamic>)
-        .map((json) => Post.fromJson(_convertFields(
-              json as Map<String, dynamic>,
-            )))
-        .toList();
+  static Future<List<Post>> _convertPostsGqlResponse(dynamic posts) async {
+    final postsList = posts as List<dynamic>;
+    return Future.wait(postsList.map((json) async {
+      // Convert the JSON to a Post instance
+      final postJson = json as Map<String, dynamic>;
+      final post = Post.fromJson(_convertFields(postJson));
+
+      // Get the post preview
+      final linkPreview = await LinkPreviewConverter.fetchPreview(post);
+      return post.copyWith(linkPreview: linkPreview);
+    }));
   }
 
   /// Returns the list of posts that should be displayed in the home
@@ -116,14 +121,14 @@ class GqlPostsHelper {
     final query = """
     query HomePosts {
       posts: post(
-        where: { 
-          parent_id: {_is_null: true}, 
-          subspace: {_eq: "${queryData.subspace}"} 
+        where: {
+          parent_id: {_is_null: true},
+          subspace: {_eq: "${queryData.subspace}"}
         }
         order_by: { created: desc },
         offset: ${queryData.start},
         limit: ${queryData.start + queryData.limit},
-      ) { 
+      ) {
         $_postContents
       }
     }
@@ -136,7 +141,7 @@ class GqlPostsHelper {
     }, name: "Query posts");
 
     return await measureExecTime(() async {
-      return compute(_convertPostsGqlResponse, data.data["posts"]);
+      return await compute(_convertPostsGqlResponse, data.data["posts"]);
     }, name: "Convert posts");
   }
 
@@ -149,10 +154,10 @@ class GqlPostsHelper {
     final query = """
     query PostById {
       post: post(
-        where: { 
-          id: {_eq: "${queryData.id}"}, 
+        where: {
+          id: {_eq: "${queryData.id}"},
           subspace: {_eq: "${queryData.subspace}"}
-        }, 
+        },
       ) {
         $_postContents
       }
@@ -162,7 +167,7 @@ class GqlPostsHelper {
       document: gql(query),
       fetchPolicy: FetchPolicy.noCache,
     ));
-    final posts = _convertPostsGqlResponse(data.data["post"]);
+    final posts = await _convertPostsGqlResponse(data.data["post"]);
     return posts.isEmpty ? null : posts[0];
   }
 
@@ -175,12 +180,12 @@ class GqlPostsHelper {
     final query = """
     query PostComments {
       comments: post(
-        where: { 
-          parent_id: {_eq: "${queryData.id}"}, 
-          subspace: {_eq: "${queryData.subspace}"} 
+        where: {
+          parent_id: {_eq: "${queryData.id}"},
+          subspace: {_eq: "${queryData.subspace}"}
         },
         order_by: { created: desc },
-      ) { 
+      ) {
         $_postContents
       }
     }
@@ -189,6 +194,6 @@ class GqlPostsHelper {
       document: gql(query),
       fetchPolicy: FetchPolicy.noCache,
     ));
-    return _convertPostsGqlResponse(data.data["comments"]);
+    return await _convertPostsGqlResponse(data.data["comments"]);
   }
 }

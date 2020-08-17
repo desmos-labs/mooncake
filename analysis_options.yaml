@@ -12,8 +12,8 @@ analyzer:
   strong-mode:
     implicit-casts: false
 
-  enable-experiment:
-    - non-nullable
+  # enable-experiment:
+  #  - non-nullable
 
 linter:
   rules:
