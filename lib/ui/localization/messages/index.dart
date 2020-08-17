@@ -134,6 +134,7 @@ class Messages {
   static String get reportPopupEditBotHint => "reportPopupEditBotHint";
   static String get reportPopupBlockUser => "reportPopupBlockUser";
   static String get reportPopupSubmit => "reportPopupSubmit";
+  static String get reportAndBlock => "reportAndBlock";
 
   // Block user popup
   static String get blockDialogTitle => "blockDialogTitle";
@@ -251,4 +252,8 @@ class Messages {
       "mnemonicWrittenConfirmation";
   static String get mnemonicCopy => "mnemonicCopy";
   static String get mnemonicConfirmPhrase => "mnemonicConfirmPhrase";
+
+  // post upload error
+  static String get postUploadError => "postUploadError";
+  static String get poll => "poll";
 }

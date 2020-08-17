@@ -39,6 +39,10 @@ class MockDeletePostsUseCase extends Mock implements DeletePostsUseCase {}
 
 class MockBlockUserUseCase extends Mock implements BlockUserUseCase {}
 
+class MockUpdatePostUseCase extends Mock implements UpdatePostUseCase {}
+
+class MockDeletePostUseCase extends Mock implements DeletePostUseCase {}
+
 void main() {
   MockAccountBloc mockAccountBloc;
   MockFirebaseAnalytics mockFirebaseAnalytics;
@@ -52,6 +56,8 @@ void main() {
   MockVotePollUseCase mockVotePollUseCase;
   MockDeletePostsUseCase mockDeletePostsUseCase;
   MockBlockUserUseCase mockBlockUserUseCase;
+  MockUpdatePostUseCase mockUpdatePostUseCase;
+  MockDeletePostUseCase mockDeletePostUseCase;
 
   setUp(() {
     mockAccountBloc = MockAccountBloc();
@@ -66,6 +72,8 @@ void main() {
     mockVotePollUseCase = MockVotePollUseCase();
     mockDeletePostsUseCase = MockDeletePostsUseCase();
     mockBlockUserUseCase = MockBlockUserUseCase();
+    mockUpdatePostUseCase = MockUpdatePostUseCase();
+    mockDeletePostUseCase = MockDeletePostUseCase();
   });
 
   group(
@@ -107,6 +115,8 @@ void main() {
             votePollUseCase: mockVotePollUseCase,
             deletePostsUseCase: mockDeletePostsUseCase,
             blockUserUseCase: mockBlockUserUseCase,
+            updatePostUseCase: mockUpdatePostUseCase,
+            deletePostUseCase: mockDeletePostUseCase,
           );
         },
       );
@@ -428,6 +438,69 @@ void main() {
             syncingPosts: false,
             hasReachedMax: false,
           ),
+        ],
+      );
+
+      List<Post> expectedUpdatePosts = [
+        testPost.copyWith(
+          status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+        )
+      ];
+      blocTest(
+        'RetryPostUpload: work properly',
+        build: () async {
+          return postsListBloc;
+        },
+        act: (bloc) async {
+          when(mockUpdatePostUseCase.update(any))
+              .thenAnswer((_) => Future.value(null));
+          bloc.add(PostsUpdated([testPost]));
+          bloc.add(RetryPostUpload(testPost));
+        },
+        expect: [
+          PostsLoaded(
+            posts: [testPost],
+            shouldRefresh: false,
+            refreshing: false,
+            syncingPosts: false,
+            hasReachedMax: false,
+          ),
+          PostsLoaded(
+            posts: expectedUpdatePosts,
+            shouldRefresh: false,
+            refreshing: false,
+            syncingPosts: false,
+            hasReachedMax: false,
+          )
+        ],
+      );
+
+      blocTest(
+        'DeletePost: work properly',
+        build: () async {
+          return postsListBloc;
+        },
+        act: (bloc) async {
+          when(mockDeletePostUseCase.delete(any))
+              .thenAnswer((_) => Future.value(null));
+          bloc.add(PostsUpdated([testPost]));
+          bloc.add(DeletePost(testPost));
+        },
+        expect: [
+          PostsLoaded(
+            posts: [testPost],
+            shouldRefresh: false,
+            refreshing: false,
+            syncingPosts: false,
+            hasReachedMax: false,
+          ),
+          PostsLoaded(
+            posts: [],
+            shouldRefresh: false,
+            refreshing: false,
+            syncingPosts: false,
+            hasReachedMax: false,
+          )
         ],
       );
     },

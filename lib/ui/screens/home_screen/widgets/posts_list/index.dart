@@ -48,6 +48,7 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
+
           if (!state.refreshing) {
             _refreshCompleter?.complete();
             _refreshCompleter = Completer();
@@ -57,24 +58,48 @@ class _PostsListState extends State<PostsList> {
             return PostsListEmptyContainer();
           }
 
+          List<Post> erroredPosts = state.getErroredPosts;
+
           return Stack(
             children: <Widget>[
               Column(
                 children: <Widget>[
                   if (state.syncingPosts) PostsListSyncingIndicator(),
                   Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      key: PostsKeys.postsList,
-                      itemCount: state.hasReachedMax
-                          ? state.posts.length
-                          : state.posts.length + 1,
-                      itemBuilder: (context, index) {
-                        return index >= state.posts.length
-                            ? BottomLoader()
-                            : PostListItem(post: state.posts[index]);
-                      },
+                    child: CustomScrollView(
                       controller: _scrollController,
+                      slivers: [
+                        if (erroredPosts.isNotEmpty)
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [ErrorPostMessage()],
+                            ),
+                          ),
+                        if (erroredPosts.isNotEmpty)
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return ErrorPost(
+                                    post: erroredPosts[index],
+                                    lastChild:
+                                        index + 1 == erroredPosts.length);
+                              },
+                              childCount: erroredPosts.length,
+                            ),
+                          ),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              return index >= state.posts.length
+                                  ? BottomLoader()
+                                  : PostListItem(post: state.posts[index]);
+                            },
+                            childCount: state.hasReachedMax
+                                ? state.posts.length
+                                : state.posts.length + 1,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

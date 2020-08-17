@@ -1,3 +1,8 @@
+# Version 0.5.0
+## Changes
+- Improved how failed-to-sync posts are displayed
+- Added the possibility of retry the sync or deleting failed-to-sync posts 
+
 # Version 0.4.2
 ## Changes
 - Added the option to remove a poll during the post creation

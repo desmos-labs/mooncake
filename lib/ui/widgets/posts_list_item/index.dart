@@ -21,6 +21,7 @@ class PostListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).cardColor;
+
     if (post.status.value != PostStatusValue.TX_SUCCESSFULL) {
       color = color.withOpacity(0.5);
     }

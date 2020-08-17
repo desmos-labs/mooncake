@@ -361,4 +361,12 @@ void main() {
 
     verify(localSource.deletePosts()).called(1);
   });
+
+  test('deletePost performs correct calls', () async {
+    when(localSource.deletePost(any)).thenAnswer((_) => Future.value(null));
+
+    await repository.deletePost(testPost);
+
+    verify(localSource.deletePost(any)).called(1);
+  });
 }
