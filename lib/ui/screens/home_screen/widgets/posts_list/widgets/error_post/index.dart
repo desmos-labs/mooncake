@@ -5,12 +5,13 @@ import 'package:mooncake/ui/ui.dart';
 
 class ErrorPost extends StatelessWidget {
   final Post post;
-
-  ErrorPost({@required this.post});
+  final bool lastChild;
+  ErrorPost({@required this.post, this.lastChild = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: lastChild ? EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
       color: Theme.of(context).colorScheme.secondaryVariant,
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(

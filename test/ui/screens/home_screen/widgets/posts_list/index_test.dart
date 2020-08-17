@@ -88,6 +88,8 @@ void main() {
     expect(find.byType(ErrorPost), findsOneWidget);
     expect(find.byIcon(MooncakeIcons.syncing), findsOneWidget);
     expect(find.byIcon(MooncakeIcons.delete), findsOneWidget);
+    expect(
+        tester.widget<ErrorPost>(find.byType(ErrorPost).last).lastChild, true);
 
     await tester.tap(find.byIcon(MooncakeIcons.syncing));
     await tester.pumpAndSettle();

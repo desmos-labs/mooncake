@@ -79,9 +79,12 @@ class _PostsListState extends State<PostsList> {
                           SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
-                                return ErrorPost(post: erroredPosts[index]);
+                                return ErrorPost(
+                                    post: erroredPosts[index],
+                                    lastChild:
+                                        index + 1 == erroredPosts.length);
                               },
-                              childCount: state.getErroredPosts.length,
+                              childCount: erroredPosts.length,
                             ),
                           ),
                         SliverList(
