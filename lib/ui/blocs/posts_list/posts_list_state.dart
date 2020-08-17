@@ -67,7 +67,6 @@ class PostsLoaded extends PostsListState {
     );
   }
 
-// wingman
   /// gets all errored post
   List<Post> get getErroredPosts => posts
       .where((post) => post.status.value == PostStatusValue.ERRORED)
