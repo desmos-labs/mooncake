@@ -470,10 +470,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
   }
 
+  /// Handles the event that is emitted when the user wants to delete a failed post
   Stream<PostsListState> _mapDeletePostToState(DeletePost event) async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
-      // await _updatePostUseCase.update(updatePost);
       await _deletePostUseCase.delete(event.post);
       yield currentState.copyWith(
           posts: currentState.posts

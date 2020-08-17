@@ -21,7 +21,7 @@ class SecondaryLightInvertRoundedButton extends StatelessWidget {
     return SizedBox(
       width: width,
       child: FlatButton(
-        padding: EdgeInsets.all(0),
+        padding: padding,
         onPressed: onPressed,
         child: child,
         shape: RoundedRectangleBorder(
