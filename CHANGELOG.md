@@ -5,8 +5,8 @@
 
 # Version 0.4.3
 ## Bug fixes
-- Fixed mnemonic backup pop from displaying if user logged in using their mnemonic
-- Fixed Register flow that would allow user to return back to login
+- Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup
+- Fixed the registration flow to allow the user to return back to the login page
 
 # Version 0.4.2
 ## Changes
