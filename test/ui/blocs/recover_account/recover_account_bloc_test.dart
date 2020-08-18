@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mooncake/ui/ui.dart';
 
+import '../home/home_bloc_test.dart';
+
 void main() {
   setUp(() {});
 
@@ -9,10 +11,12 @@ void main() {
     'RecoverAccountBloc',
     () {
       RecoverAccountBloc recoverAccountBloc;
-
+      MockSaveSettingUseCase mockSaveSettingUseCase = MockSaveSettingUseCase();
       setUp(
         () {
-          recoverAccountBloc = RecoverAccountBloc();
+          recoverAccountBloc = RecoverAccountBloc(
+            saveSettingUseCase: mockSaveSettingUseCase,
+          );
         },
       );
 

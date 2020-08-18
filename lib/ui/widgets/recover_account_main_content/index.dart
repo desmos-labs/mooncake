@@ -127,6 +127,7 @@ class RecoverAccountMainContent extends StatelessWidget {
     if (backupPhrase) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
     } else {
+      BlocProvider.of<RecoverAccountBloc>(context).add(TurnOffBackupPopup());
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToProtectAccount());
     }
   }
