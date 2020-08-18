@@ -1,18 +1,27 @@
 import 'dart:async';
-
+import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/usecases/settings/usecase_save_setting.dart';
+import 'package:mooncake/dependency_injection/dependency_injection.dart';
 
 /// Bloc that allows to properly handle the recovering account events
 /// and emits the correct states.
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
-  RecoverAccountBloc();
+  final SaveSettingUseCase _saveSettingUseCase;
+  RecoverAccountBloc({
+    @required SaveSettingUseCase saveSettingUseCase,
+  })  : assert(saveSettingUseCase != null),
+        _saveSettingUseCase = saveSettingUseCase;
 
   factory RecoverAccountBloc.create() {
-    return RecoverAccountBloc();
+    return RecoverAccountBloc(
+      saveSettingUseCase: Injector.get(),
+    );
   }
 
   @override
@@ -30,6 +39,8 @@ class RecoverAccountBloc
       yield* _mapWordSelectedEventToState(event);
     } else if (event is ChangeFocus) {
       yield* _mapChangeFocusEventToState(event);
+    } else if (event is TurnOffBackupPopup) {
+      await _turnOffBackUpPopup();
     }
   }
 
@@ -67,5 +78,12 @@ class RecoverAccountBloc
     ChangeFocus event,
   ) async* {
     yield state.copyWith(currentWordIndex: event.focusedField);
+  }
+
+  Future<void> _turnOffBackUpPopup() async {
+    await _saveSettingUseCase.save(
+      key: SettingKeys.BACKUP_POPUP_PERMISSION,
+      value: false,
+    );
   }
 }
