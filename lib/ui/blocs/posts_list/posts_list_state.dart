@@ -67,9 +67,14 @@ class PostsLoaded extends PostsListState {
     );
   }
 
-  /// gets all errored post
-  List<Post> get getErroredPosts => posts
+  /// gets all errored posts
+  List<Post> get erroredPosts => posts
       .where((post) => post.status.value == PostStatusValue.ERRORED)
+      .toList();
+
+  /// gets non errored posts
+  List<Post> get nonErroredPosts => posts
+      .where((post) => post.status.value != PostStatusValue.ERRORED)
       .toList();
 
   @override

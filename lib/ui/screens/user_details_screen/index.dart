@@ -25,7 +25,7 @@ class UserDetailsScreen extends StatelessWidget {
           if (postsState is PostsLoading) {
             posts = [];
           } else if (postsState is PostsLoaded) {
-            posts = postsState.posts
+            posts = postsState.nonErroredPosts
                 .where((post) => post.owner.address == user.address)
                 .toList();
           }
