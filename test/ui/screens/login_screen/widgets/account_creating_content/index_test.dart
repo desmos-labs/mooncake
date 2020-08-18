@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
 import 'package:mooncake/ui/ui.dart';
 import '../../../../helper.dart';
 import 'package:mooncake/ui/screens/login_screen/widgets/export.dart';
@@ -15,6 +16,7 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
 
     expect(find.byType(LoadingIndicator), findsOneWidget);
+    expect(find.byType(SizedBox), findsWidgets);
     expect(
       find.text(
         'creatingAccountPopupTitle'.toUpperCase(),

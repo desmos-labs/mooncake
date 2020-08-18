@@ -11,16 +11,21 @@ class CreatingAccountPopupContent extends StatelessWidget {
           PostsLocalizations.of(context)
               .translate(Messages.creatingAccountPopupTitle)
               .toUpperCase(),
-          style: Theme.of(context).accentTextTheme.headline6,
+          style: Theme.of(context)
+              .textTheme
+              .headline6
+              .copyWith(color: Theme.of(context).colorScheme.primary),
         ),
         SizedBox(height: 10),
         Text(
           PostsLocalizations.of(context)
               .translate(Messages.creatingAccountText),
-          style: Theme.of(context).accentTextTheme.headline6,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         SizedBox(height: 30),
-        LoadingIndicator(),
+        LoadingIndicator(color: Theme.of(context).colorScheme.secondaryVariant),
       ],
     );
   }
