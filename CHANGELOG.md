@@ -2,10 +2,12 @@
 ## Changes
 - Improved how failed-to-sync posts are displayed
 - Added the possibility of retry the sync or deleting failed-to-sync posts
+- Improve the account creation flow to allow the user to go back to the login page
 
 # Version 0.4.3
 ## Bug fixes
-- Create account flow improvements with option to cancel and go back to login
+- Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup
+- Fixed the registration flow to allow the user to return back to the login page
 
 # Version 0.4.2
 ## Changes

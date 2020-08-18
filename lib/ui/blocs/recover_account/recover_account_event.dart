@@ -51,3 +51,7 @@ class ChangeFocus extends RecoverAccountEvent {
   @override
   List<Object> get props => [focusedField, currentText];
 }
+
+/// Tells the Bloc that the focus has changed to the word having the given
+/// index.
+class TurnOffBackupPopup extends RecoverAccountEvent {}
