@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Represents an indicator that tells the user that data is being loaded.
 class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({Key key}) : super(key: key);
+  final Color color;
+  const LoadingIndicator({Key key, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class LoadingIndicator extends StatelessWidget {
       child: CircularProgressIndicator(
         strokeWidth: 2,
         valueColor: AlwaysStoppedAnimation<Color>(
-          Theme.of(context).colorScheme.primary,
+          color ?? Theme.of(context).colorScheme.primary,
         ),
       ),
     );

@@ -2,6 +2,7 @@
 ## Changes
 - Improved how failed-to-sync posts are displayed
 - Added the possibility of retry the sync or deleting failed-to-sync posts
+- Improve the account creation flow to allow the user to go back to the login page
 
 # Version 0.4.3
 ## Bug fixes

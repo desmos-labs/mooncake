@@ -27,6 +27,7 @@ class Messages {
   static String get terms => "terms";
   static String get and => "and";
   static String get privacyPolicy => "privacyPolicy";
+  static String get cancel => "cancel";
 
   // Recover screen
   static String get recoverScreenTitle => "recoverScreenTitle";

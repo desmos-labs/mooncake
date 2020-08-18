@@ -28,8 +28,13 @@ class AccountCreatedPopupContent extends StatelessWidget {
               ),
         ),
         SizedBox(height: 10),
-        Text(PostsLocalizations.of(context)
-            .translate(Messages.accountCreatedPopupText)),
+        Text(
+          PostsLocalizations.of(context)
+              .translate(Messages.accountCreatedPopupText),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
         SizedBox(height: 25),
         Row(
           children: <Widget>[

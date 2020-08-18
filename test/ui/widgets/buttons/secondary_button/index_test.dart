@@ -20,6 +20,6 @@ void main() {
     expect(find.byType(Text), findsOneWidget);
     expect(find.text('pineapples'), findsOneWidget);
     expect(tester.widget<FlatButton>(find.byType(FlatButton)).color,
-        Colors.transparent);
+        Color(0xFF6D4DDB));
   });
 }

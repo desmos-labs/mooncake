@@ -2,6 +2,7 @@
   "appName": "Mooncake",
   "splashLoadingData": "Loading data...",
   "dismiss": "Dismiss",
+  "cancel": "Cancel",
   "createAccountButtonText": "Create Account",
   "alreadyHaveMnemonicButtonText": "I Have A Written Mnemonic",
   "useMnemonicBackup": "Use Mnemonic Backup",
