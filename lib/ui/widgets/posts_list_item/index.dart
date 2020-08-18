@@ -16,11 +16,9 @@ import 'widgets/export.dart';
 ///    for such post
 class PostListItem extends StatelessWidget {
   final Post post;
-  final bool displayErrorPost;
   PostListItem({
     Key key,
     @required this.post,
-    this.displayErrorPost = false,
   }) : super(key: key);
 
   @override
@@ -28,14 +26,6 @@ class PostListItem extends StatelessWidget {
     Color color = Theme.of(context).cardColor;
     if (post.status.value != PostStatusValue.TX_SUCCESSFULL) {
       color = color.withOpacity(0.5);
-    }
-
-    if (post.status.value == PostStatusValue.ERRORED) {
-      if (displayErrorPost) {
-        color = Theme.of(context).errorColor.withOpacity(0.75);
-      } else {
-        return Container();
-      }
     }
 
     return Container(

@@ -48,8 +48,8 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
-          List<Post> erroredPosts = state.getErroredPosts;
-          List<Post> posts = state.getPosts;
+          List<Post> erroredPosts = state.erroredPosts;
+          List<Post> posts = state.nonErroredPosts;
 
           if (!state.refreshing) {
             _refreshCompleter?.complete();
