@@ -26,10 +26,6 @@ class PostListItem extends StatelessWidget {
       color = color.withOpacity(0.5);
     }
 
-    if (post.status.value == PostStatusValue.ERRORED) {
-      color = Theme.of(context).errorColor.withOpacity(0.75);
-    }
-
     return Container(
       margin: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
       child: Material(

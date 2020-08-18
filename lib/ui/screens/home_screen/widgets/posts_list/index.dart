@@ -48,17 +48,17 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
+          List<Post> erroredPosts = state.getErroredPosts;
+          List<Post> posts = state.getPosts;
 
           if (!state.refreshing) {
             _refreshCompleter?.complete();
             _refreshCompleter = Completer();
           }
 
-          if (state.posts.isEmpty) {
+          if (posts.isEmpty) {
             return PostsListEmptyContainer();
           }
-
-          List<Post> erroredPosts = state.getErroredPosts;
 
           return Stack(
             children: <Widget>[
@@ -90,13 +90,13 @@ class _PostsListState extends State<PostsList> {
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
-                              return index >= state.posts.length
+                              return index >= posts.length
                                   ? BottomLoader()
-                                  : PostListItem(post: state.posts[index]);
+                                  : PostListItem(post: posts[index]);
                             },
                             childCount: state.hasReachedMax
-                                ? state.posts.length
-                                : state.posts.length + 1,
+                                ? posts.length
+                                : posts.length + 1,
                           ),
                         ),
                       ],
