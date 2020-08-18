@@ -117,7 +117,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapGenerateAccountEventToState() async* {
     yield CreatingAccount();
     final mnemonic = await _generateMnemonicUseCase.generate();
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
     yield AccountCreated(mnemonic);
   }
 
