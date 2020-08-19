@@ -8,7 +8,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       makeTestableWidget(
-        child: SecondaryLightRoundedButton(
+        child: SecondaryLightButton(
           child: Text("pineapples"),
           onPressed: () {},
         ),

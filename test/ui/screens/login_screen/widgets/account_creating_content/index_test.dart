@@ -26,7 +26,7 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
 
     expect(find.byType(LoadingIndicator), findsOneWidget);
-    expect(find.byType(SecondaryLightInvertRoundedButton), findsOneWidget);
+    expect(find.byType(SecondaryDarkButton), findsOneWidget);
     expect(find.byType(SizedBox), findsWidgets);
     expect(
       find.text(
@@ -39,7 +39,7 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.byType(SecondaryLightInvertRoundedButton));
+    await tester.tap(find.byType(SecondaryDarkButton));
     await tester.pump(const Duration(seconds: 3));
     expect(verify(mockAccountBloc.add(LogOut())).callCount, 1);
   });

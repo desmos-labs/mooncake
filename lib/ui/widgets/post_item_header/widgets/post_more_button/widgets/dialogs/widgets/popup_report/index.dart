@@ -98,7 +98,7 @@ class ReportPostPopup extends StatelessWidget {
   }
 
   Widget _blockUserAndReport(BuildContext context, ReportPopupState state) {
-    return SecondaryLightInvertRoundedButton(
+    return SecondaryDarkButton(
       onPressed: () {
         BlocProvider.of<ReportPopupBloc>(context).add(ToggleBlockUser(true));
         _sendReport(context);

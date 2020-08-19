@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SecondaryLightRoundedButton extends StatelessWidget {
+class SecondaryLightButton extends StatelessWidget {
   final void Function() onPressed;
   final Widget child;
 
-  const SecondaryLightRoundedButton({
+  const SecondaryLightButton({
     Key key,
     @required this.onPressed,
     @required this.child,

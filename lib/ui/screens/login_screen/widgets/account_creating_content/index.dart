@@ -30,7 +30,7 @@ class CreatingAccountPopupContent extends StatelessWidget {
         SizedBox(height: 30),
         SizedBox(
           width: double.infinity,
-          child: SecondaryLightInvertRoundedButton(
+          child: SecondaryDarkButton(
             child: Text(
               PostsLocalizations.of(context).translate(Messages.cancel),
               textAlign: TextAlign.center,

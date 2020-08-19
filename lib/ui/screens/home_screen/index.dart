@@ -16,13 +16,17 @@ class HomeScreen extends StatelessWidget {
         builder: (context, state) {
           Widget body = Container();
           if (state.activeTab == AppTab.home) {
+            final accountState = BlocProvider.of<AccountBloc>(context).state;
             return Scaffold(
               body: Stack(
                 children: [
                   Column(
                     children: [
                       postsAppBar(context),
-                      Expanded(child: PostsList()),
+                      Expanded(
+                          child: PostsList(
+                        user: (accountState as LoggedIn).user,
+                      )),
                     ],
                   ),
                   if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
