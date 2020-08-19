@@ -35,7 +35,9 @@ void main() {
             BlocProvider<PostsListBloc>(create: (_) => mockPostsListBloc),
             BlocProvider<AccountBloc>(create: (_) => mockAccountBloc),
           ],
-          child: PostsList(),
+          child: PostsList(
+            user: userAccount,
+          ),
         ),
       ),
     );
@@ -64,8 +66,12 @@ void main() {
       ),
     );
 
-    Post testErrorPost =
-        testPost.copyWith(status: PostStatus(value: PostStatusValue.ERRORED));
+    Post testErrorPost = testPost.copyWith(
+      status: PostStatus(
+        value: PostStatusValue.ERRORED,
+      ),
+      owner: User.fromAddress("desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725"),
+    );
 
     when(mockPostsListBloc.state)
         .thenReturn(PostsLoaded.first(posts: [testErrorPost, ...testPosts]));
@@ -78,7 +84,9 @@ void main() {
             BlocProvider<PostsListBloc>(create: (_) => mockPostsListBloc),
             BlocProvider<AccountBloc>(create: (_) => mockAccountBloc),
           ],
-          child: PostsList(),
+          child: PostsList(
+            user: userAccount,
+          ),
         ),
       ),
     );

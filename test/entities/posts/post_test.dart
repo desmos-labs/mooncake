@@ -42,7 +42,7 @@ void main() {
     expect(post.images, equals(images));
   });
 
-  test('s', () {
-    expect(stdPost.s.length, 1);
+  test('likes', () {
+    expect(stdPost.likes.length, 1);
   });
 }

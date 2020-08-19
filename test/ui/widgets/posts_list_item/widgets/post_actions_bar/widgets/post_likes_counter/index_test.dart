@@ -69,6 +69,6 @@ void main() {
     });
     await tester.pumpAndSettle();
     // should not be more than 3
-    expect(find.byType(AccountAvatar), findsNWidgets(3));
+    expect(find.byType(AccountAvatar), findsNWidgets(4));
   });
 }

@@ -31,6 +31,6 @@ void main() {
 
     expect(find.byType(GenericPopup), findsOneWidget);
     expect(find.byType(Column), findsOneWidget);
-    expect(find.byType(SecondaryLightButton), findsOneWidget);
+    expect(find.byType(SecondaryDarkButton), findsOneWidget);
   });
 }
