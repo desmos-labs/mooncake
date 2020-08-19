@@ -55,7 +55,6 @@ class _PostsListState extends State<PostsList> {
           List<Post> erroredPosts = state.erroredPosts
               .where((post) => post.owner.address == widget.user.address)
               .toList();
-          ;
           List<Post> posts = state.nonErroredPosts;
 
           if (!state.refreshing) {
