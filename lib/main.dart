@@ -64,28 +64,32 @@ Future _setupDependencyInjection() async {
   await path.create(recursive: true);
   final factory = createDatabaseFactoryIo(rootPath: path.path);
   Injector.init(
-    accountDatabase: await factory.openDatabase("account.db", version: 3,
-        onVersionChanged: (db, oldVersion, newVersion) async {
-      // From Cosmos v0.38 to v0.39 the serialization of the account has
-      // changed and the account_number and sequence are now string.
-      // We need to convert any previous int values here
-      final store = StoreRef.main();
-      final record = await store.record("user_data").get(db);
-      if (record == null) return;
+    accountDatabase: await factory.openDatabase(
+      "account.db",
+      version: 4,
+      onVersionChanged: (db, oldVersion, newVersion) async {
+        // From Cosmos v0.38 to v0.39 the serialization of the account has
+        // changed and the account_number and sequence are now string.
+        // We need to convert any previous int values here
+        final store = StoreRef.main();
+        final record = await store.record("user_data").get(db);
+        if (record == null) return;
 
-      final cosmos = Map.from(record["cosmos_account"] as Map<String, dynamic>);
+        final cosmos =
+            Map.from(record["cosmos_account"] as Map<String, dynamic>);
 
-      final accNumber = cosmos["account_number"];
-      if (accNumber is int) {
-        cosmos.update("account_number", (value) => accNumber.toString());
-      }
+        final accNumber = cosmos["account_number"];
+        if (accNumber is int) {
+          cosmos.update("account_number", (value) => accNumber.toString());
+        }
 
-      final sequence = cosmos["sequence"];
-      if (sequence is int) {
-        cosmos.update("sequence", (value) => sequence.toString());
-      }
-      await store.record("user_data").update(db, record);
-    }),
+        final sequence = cosmos["sequence"];
+        if (sequence is int) {
+          cosmos.update("sequence", (value) => sequence.toString());
+        }
+        await store.record("user_data").update(db, record);
+      },
+    ),
     postsDatabase: await factory.openDatabase("posts.db"),
     notificationDatabase: await factory.openDatabase("user.db"),
     blockedUsersDatabase: await factory.openDatabase("blocked_users.db"),
