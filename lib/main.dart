@@ -66,7 +66,7 @@ Future _setupDependencyInjection() async {
   Injector.init(
     accountDatabase: await factory.openDatabase(
       "account.db",
-      version: 4,
+      version: 5,
       onVersionChanged: (db, oldVersion, newVersion) async {
         // From Cosmos v0.38 to v0.39 the serialization of the account has
         // changed and the account_number and sequence are now string.
@@ -75,8 +75,8 @@ Future _setupDependencyInjection() async {
         final record = await store.record("user_data").get(db);
         if (record == null) return;
 
-        final cosmos =
-            Map.from(record["cosmos_account"] as Map<String, dynamic>);
+        final json = Map.from(record as Map<String, dynamic>);
+        final cosmos = Map.from(json["cosmos_account"] as Map<String, dynamic>);
 
         final accNumber = cosmos["account_number"];
         if (accNumber is int) {
@@ -87,7 +87,9 @@ Future _setupDependencyInjection() async {
         if (sequence is int) {
           cosmos.update("sequence", (value) => sequence.toString());
         }
-        await store.record("user_data").update(db, record);
+
+        json.update("cosmos_account", (value) => cosmos);
+        await store.record("user_data").update(db, json);
       },
     ),
     postsDatabase: await factory.openDatabase("posts.db"),
