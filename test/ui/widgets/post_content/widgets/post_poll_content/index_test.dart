@@ -42,7 +42,7 @@ void main() {
 
     MockAccountBloc mockAccountBloc = MockAccountBloc();
     when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(

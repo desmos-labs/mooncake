@@ -22,11 +22,6 @@ class PostAddReactionAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // wingman
-    // final reactions = post.reactions.where((e) => !e.isLike).toList();
-    final reactions = post.reactions;
-    final countColor =
-        color != null ? color : Theme.of(context).iconTheme.color;
     return SizedBox(
       height: size,
       child: Row(
@@ -40,9 +35,6 @@ class PostAddReactionAction extends StatelessWidget {
               onPressed: () => _onTap(context),
             ),
           ),
-          // wingman
-          // if (reactions.isNotEmpty)
-          //   _reactionsCount(context, reactions, countColor)
         ],
       ),
     );

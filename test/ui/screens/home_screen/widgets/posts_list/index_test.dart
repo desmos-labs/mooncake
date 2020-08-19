@@ -41,8 +41,9 @@ void main() {
         ),
       ),
     );
-
-    await tester.pumpAndSettle();
+    // wingman
+    await tester.pump(const Duration(seconds: 3));
+    // await tester.pumpAndSettle();
     expect(find.byType(PostsLoadingEmptyContainer), findsNothing);
     expect(find.byType(PostListItem), findsWidgets);
     expect(find.byType(CustomScrollView), findsOneWidget);
@@ -91,7 +92,9 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle();
+    // await tester.pumpAndSettle();
+    // wingman
+    await tester.pump(const Duration(seconds: 3));
     expect(find.byType(ErrorPostMessage), findsOneWidget);
     expect(find.byType(ErrorPost), findsOneWidget);
     expect(find.byIcon(MooncakeIcons.syncing), findsOneWidget);

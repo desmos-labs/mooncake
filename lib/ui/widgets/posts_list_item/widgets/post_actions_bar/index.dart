@@ -20,12 +20,6 @@ class PostActionsBar extends StatelessWidget {
       builder: (BuildContext context, AccountState state) {
         return Row(
           children: <Widget>[
-            // wingman
-            // Expanded(
-            //   child: post.likes.isNotEmpty
-            //       ? PostLikesCounter(post: post)
-            //       : Container(),
-            // ),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
