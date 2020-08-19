@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'widgets/export.dart';
+import 'package:mooncake/ui/ui.dart';
 
 /// Allows to properly visualize the image(s) associated with a post.
 /// If only a single image is present, it will be shown full-width.

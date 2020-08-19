@@ -93,6 +93,12 @@ class UseCaseModule implements Module {
             postsRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => ReportPostUseCase())
+      ..bindFactory((injector, params) => UpdatePostUseCase(
+            postsRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => DeletePostUseCase(
+            postsRepository: injector.get(),
+          ))
 
       // Settings use cases
       ..bindFactory((injector, params) => SaveSettingUseCase(

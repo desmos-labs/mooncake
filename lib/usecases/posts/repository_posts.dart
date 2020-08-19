@@ -52,4 +52,7 @@ abstract class PostsRepository {
 
   /// Deletes the locally stored posts.
   Future<void> deletePosts();
+
+  /// Deletes the locally stored post.
+  Future<void> deletePost(Post post);
 }

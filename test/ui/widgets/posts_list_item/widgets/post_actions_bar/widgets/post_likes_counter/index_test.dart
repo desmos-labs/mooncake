@@ -57,13 +57,29 @@ void main() {
     expect(find.byType(AccountAvatar), findsNWidgets(3));
 
     setStateController(() {
-      reactionTest.add(
-        Reaction(
-            user: userAccount, value: Constants.LIKE_REACTION, code: "123"),
-      );
+      reactionTest.add(Reaction(
+        user: userAccount,
+        value: Constants.LIKE_REACTION,
+        code: "123",
+      ));
+      reactionTest.add(Reaction(
+        user: userAccount,
+        value: Constants.LIKE_REACTION,
+        code: "123",
+      ));
+      reactionTest.add(Reaction(
+        user: userAccount,
+        value: Constants.LIKE_REACTION,
+        code: "123",
+      ));
+      reactionTest.add(Reaction(
+        user: userAccount,
+        value: Constants.LIKE_REACTION,
+        code: "123",
+      ));
     });
     await tester.pumpAndSettle();
-    // should not be more than 3
-    expect(find.byType(AccountAvatar), findsNWidgets(3));
+    expect(find.byType(AccountAvatar), findsNWidgets(6));
+    expect(find.text('...'), findsOneWidget);
   });
 }

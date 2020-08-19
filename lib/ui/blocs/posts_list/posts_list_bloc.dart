@@ -33,6 +33,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final HidePostUseCase _hidePostUseCase;
   final DeletePostsUseCase _deletePostsUseCase;
   final BlockUserUseCase _blockUserUseCase;
+  final UpdatePostUseCase _updatePostUseCase;
+  final DeletePostUseCase _deletePostUseCase;
 
   // Subscriptions
   StreamSubscription _eventsSubscription;
@@ -54,6 +56,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required VotePollUseCase votePollUseCase,
     @required DeletePostsUseCase deletePostsUseCase,
     @required BlockUserUseCase blockUserUseCase,
+    @required UpdatePostUseCase updatePostUseCase,
+    @required DeletePostUseCase deletePostUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getNotificationsUseCase != null),
         _getNotifications = getNotificationsUseCase,
@@ -74,7 +78,11 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(deletePostsUseCase != null),
         _deletePostsUseCase = deletePostsUseCase,
         assert(blockUserUseCase != null),
-        _blockUserUseCase = blockUserUseCase {
+        _blockUserUseCase = blockUserUseCase,
+        assert(updatePostUseCase != null),
+        _updatePostUseCase = updatePostUseCase,
+        assert(deletePostUseCase != null),
+        _deletePostUseCase = deletePostUseCase {
     // Subscribe to account state changes in order to perform setup
     // operations upon login and cleanup ones upong loggin out
     _logoutSubscription = accountBloc.listen((state) async {
@@ -104,6 +112,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       votePollUseCase: Injector.get(),
       deletePostsUseCase: Injector.get(),
       blockUserUseCase: Injector.get(),
+      updatePostUseCase: Injector.get(),
+      deletePostUseCase: Injector.get(),
     );
   }
 
@@ -149,6 +159,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       _handleTxFailedEvent(event);
     } else if (event is DeletePosts) {
       _handleDeletePosts();
+    } else if (event is RetryPostUpload) {
+      yield* _mapRetryPostUploadEventToState(event);
+    } else if (event is DeletePost) {
+      yield* _mapDeletePostToState(event);
     }
   }
 
@@ -438,6 +452,34 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   void _handleDeletePosts() async {
     await _deletePostsUseCase.delete();
     add(RefreshPosts());
+  }
+
+  /// Handles the event that is emitted when the user tries to repost
+  /// a failed post attempt
+  Stream<PostsListState> _mapRetryPostUploadEventToState(
+      RetryPostUpload event) async* {
+    final currentState = state;
+    final Post updatePost = event.post.copyWith(
+      status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+    );
+    if (currentState is PostsLoaded) {
+      await _updatePostUseCase.update(updatePost);
+
+      yield currentState.copyWith(
+          posts: _mergePosts(currentState.posts, [updatePost]));
+    }
+  }
+
+  /// Handles the event that is emitted when the user wants to delete a failed post
+  Stream<PostsListState> _mapDeletePostToState(DeletePost event) async* {
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      await _deletePostUseCase.delete(event.post);
+      yield currentState.copyWith(
+          posts: currentState.posts
+              .where((post) => post.id != event.post.id)
+              .toList());
+    }
   }
 
   @override

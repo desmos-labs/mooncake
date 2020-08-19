@@ -7,16 +7,25 @@ import 'package:mooncake/ui/ui.dart';
 class AccountCreatedPopupContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Color textColor = Theme.of(context).brightness == Brightness.light
+        ? Theme.of(context).colorScheme.primary
+        : Colors.white;
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Icon(
+          MooncakeIcons.success,
+          size: 40,
+          color: textColor,
+        ),
+        SizedBox(height: 15),
         Text(
           PostsLocalizations.of(context)
               .translate(Messages.accountCreatedPopupTitleFirstRow)
               .toUpperCase(),
           style: Theme.of(context).textTheme.headline6.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+                color: textColor,
               ),
         ),
         Text(
@@ -24,13 +33,18 @@ class AccountCreatedPopupContent extends StatelessWidget {
               .translate(Messages.accountCreatedPopupTitleSecondRow)
               .toUpperCase(),
           style: Theme.of(context).textTheme.headline6.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+                color: textColor,
               ),
         ),
         SizedBox(height: 10),
-        Text(PostsLocalizations.of(context)
-            .translate(Messages.accountCreatedPopupText)),
-        SizedBox(height: 25),
+        Text(
+          PostsLocalizations.of(context)
+              .translate(Messages.accountCreatedPopupText),
+          style: TextStyle(
+            color: textColor,
+          ),
+        ),
+        SizedBox(height: 15),
         Row(
           children: <Widget>[
             Expanded(

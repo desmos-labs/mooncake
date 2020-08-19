@@ -1,9 +1,20 @@
+# Version 0.5.0
+## Changes
+- Improved how failed-to-sync posts are displayed
+- Added the possibility of retry the sync or deleting failed-to-sync posts
+- Improve the account creation flow to allow the user to go back to the login page
+
+# Version 0.4.3
+## Bug fixes
+- Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup
+- Fixed the registration flow to allow the user to return back to the login page
+
 # Version 0.4.2
 ## Changes
 - Added the option to remove a poll during the post creation
 - Improved the poll visualization during the post creation
 - Added link previews to posts
-- Added a popup to tell you the causes of synchronization errors 
+- Added a popup to tell you the causes of synchronization errors
 - UX and UI improvements
 
 ## Bug fixes
