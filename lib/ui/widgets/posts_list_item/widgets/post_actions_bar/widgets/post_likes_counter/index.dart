@@ -57,7 +57,6 @@ class PostLikesCounter extends StatelessWidget {
         Expanded(
           child: Stack(children: [
             Container(
-              // width: iconsWidth,
               height: iconSize,
               child: Stack(
                 children: <Widget>[
