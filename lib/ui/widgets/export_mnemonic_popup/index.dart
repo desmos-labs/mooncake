@@ -36,31 +36,23 @@ class ExportMnemonicPopup extends StatelessWidget {
                 onChanged: (value) => _changeEncryptPassword(context, value),
               ),
               PasswordStrengthIndicator(security: state.passwordSecurity),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: SecondaryLightButton(
-                      onPressed: () => _closePopup(context),
-                      child: Text(
-                        PostsLocalizations.of(context).translate(
-                            Messages.exportMnemonicDialogCancelButton),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  PrimaryLightButton(
-                    onPressed: state.enableExport
-                        ? () => _exportMnemonic(context)
-                        : null,
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.exportMnemonicDialogExportButton),
-                    ),
-                  ),
-                ],
-              )
+              const SizedBox(width: 16),
+              PrimaryButton(
+                enabled: state.enableExport,
+                onPressed:
+                    state.enableExport ? () => _exportMnemonic(context) : null,
+                child: Text(
+                  PostsLocalizations.of(context)
+                      .translate(Messages.exportMnemonicDialogExportButton),
+                ),
+              ),
+              SecondaryDarkButton(
+                onPressed: () => _closePopup(context),
+                child: Text(
+                  PostsLocalizations.of(context)
+                      .translate(Messages.exportMnemonicDialogCancelButton),
+                ),
+              ),
             ],
           ),
         );
