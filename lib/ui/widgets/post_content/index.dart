@@ -19,6 +19,8 @@ class PostContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         PostItemHeader(key: PostsKeys.postItemHeader(post.id), post: post),
+        // wingman
+        // if (post.reactions.isNotEmpty) _reactionPreview(),
         if (post.message?.isNotEmpty == true) _messagePreview(),
         if (post.poll != null) _pollPreview(),
         PostImagesPreviewer(
@@ -46,4 +48,12 @@ class PostContent extends StatelessWidget {
       children: [const SizedBox(height: 15), PostPollContent(post: post)],
     );
   }
+
+  // wingman
+  // Widget _reactionPreview() {
+  //   return Column(
+  //     mainAxisSize: MainAxisSize.min,
+  //     children: [const SizedBox(height: 10), PostReactionsList(post: post)],
+  //   );
+  // }
 }

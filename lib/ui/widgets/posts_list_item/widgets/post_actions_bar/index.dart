@@ -28,7 +28,7 @@ class PostActionsBar extends StatelessWidget {
             // ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   PostCommentAction(
                     post: post,
