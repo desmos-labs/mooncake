@@ -47,4 +47,7 @@ abstract class LocalPostsSource {
 
   /// Deletes the locally stored posts.
   Future<void> deletePosts();
+
+  /// Deletes a locally stored post.
+  Future<void> deletePost(Post post);
 }

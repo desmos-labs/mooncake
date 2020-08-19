@@ -42,13 +42,13 @@ void main() {
     expect(find.byType(CheckBoxButton), findsWidgets);
     expect(find.byType(PopupReportOption), findsWidgets);
     expect(find.text('reportPopupTitle'), findsOneWidget);
-    expect(find.text('reportPopupBlockUser'), findsOneWidget);
     expect(find.text('reportPopupSubmit'), findsOneWidget);
     expect(find.text('reportPopupSpam'), findsOneWidget);
     expect(find.text('reportPopupSexuallyInappropriate'), findsOneWidget);
     expect(find.text('reportPopupScamMisleading'), findsOneWidget);
     expect(find.text('reportPopupViolentProhibited'), findsOneWidget);
     expect(find.text('reportPopupOther'), findsOneWidget);
+    expect(find.text('reportAndBlock'), findsOneWidget);
 
     await tester.tap(find.byType(PrimaryButton));
     await tester.pumpAndSettle();

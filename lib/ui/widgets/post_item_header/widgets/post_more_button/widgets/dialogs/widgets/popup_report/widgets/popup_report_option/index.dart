@@ -33,7 +33,7 @@ class PopupReportOption extends StatelessWidget {
     return BlocBuilder<ReportPopupBloc, ReportPopupState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: CheckBoxButton(
             value: state.selectedValues[type],
             child: Text(text),

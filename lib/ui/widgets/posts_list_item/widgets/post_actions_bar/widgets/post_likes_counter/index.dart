@@ -15,59 +15,56 @@ class PostLikesCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final likes = post.reactions.where((react) => react.isLike).toList();
-    final likesCount = likes.length;
+    final int likesCount = likes.length;
 
-    final double afterIconSize = iconSize * 0.75;
-    double iconsWidth = 0.0;
-    if (likesCount > 0) {
-      iconsWidth += iconSize;
-    }
+    List<Widget> _generateIcons() {
+      List<Widget> finalResults = [];
+      final margin = 15.0;
+      final int count = likesCount > 6 ? 6 : likesCount;
 
-    if (likesCount > 1) {
-      iconsWidth += afterIconSize;
-    }
+      for (var i = 0; i < count; i++) {
+        finalResults.add(
+          Positioned(
+            left: margin * i,
+            child: AccountAvatar(
+              size: iconSize - 2,
+              border: 1,
+              user: likes[i].user,
+            ),
+          ),
+        );
+      }
 
-    if (likesCount > 2) {
-      iconsWidth += afterIconSize;
+      if (likesCount > 6) {
+        finalResults.add(
+          Positioned(
+            left: margin * 6.6,
+            bottom: 0,
+            child: Text(
+              '...',
+              style: TextStyle(fontSize: 13),
+            ),
+          ),
+        );
+      }
+
+      return finalResults;
     }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Container(
-          width: iconsWidth,
-          height: iconSize,
-          child: Stack(
-            children: <Widget>[
-              if (likesCount > 2)
-                Positioned(
-                  right: afterIconSize * 2,
-                  child: AccountAvatar(
-                    border: 1,
-                    size: iconSize - 2,
-                    user: likes[2].user,
-                  ),
-                ),
-              if (likesCount > 1)
-                Positioned(
-                  right: afterIconSize,
-                  child: AccountAvatar(
-                    border: 1,
-                    size: iconSize - 2,
-                    user: likes[1].user,
-                  ),
-                ),
-              if (likesCount > 0)
-                Positioned(
-                  right: 0,
-                  child: AccountAvatar(
-                    size: iconSize - 2,
-                    border: 1,
-                    user: likes[0].user,
-                  ),
-                ),
-            ],
-          ),
+        Expanded(
+          child: Stack(children: [
+            Container(
+              height: iconSize,
+              child: Stack(
+                children: <Widget>[
+                  ..._generateIcons(),
+                ],
+              ),
+            ),
+          ]),
         ),
       ],
     );

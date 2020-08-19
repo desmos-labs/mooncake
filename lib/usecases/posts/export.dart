@@ -12,3 +12,5 @@ export 'usecase_sync.dart';
 export 'usecase_update_posts_status.dart';
 export 'usecase_vote_poll.dart';
 export 'usecase_report_post.dart';
+export 'usecase_update_post.dart';
+export 'usecase_delete_post.dart';

@@ -236,7 +236,7 @@ void main() {
     await _storePosts(posts);
 
     final toSync = await source.getPostsToSync();
-    expect(toSync, [posts[0], posts[4]]);
+    expect(toSync, [posts[0]]);
   });
 
   test('savePost stores the post properly', () async {

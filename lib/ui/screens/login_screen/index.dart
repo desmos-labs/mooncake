@@ -40,7 +40,9 @@ class LoginScreen extends StatelessWidget {
                                 fontFamily: 'Montserrat',
                               ),
                         ),
-                        if (!(state is AccountCreated)) LoginMainContent(),
+                        if (!(state is AccountCreated ||
+                            state is CreatingAccount))
+                          LoginMainContent(),
                       ],
                     ),
                   ),

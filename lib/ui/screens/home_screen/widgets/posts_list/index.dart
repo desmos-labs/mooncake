@@ -10,6 +10,10 @@ import 'widgets/export.dart';
 /// It simply builds a list using the [ListView.separated] builder
 /// and the [PostListItem] class as the object representing each post.
 class PostsList extends StatefulWidget {
+  final User user;
+
+  const PostsList({Key key, @required this.user}) : super(key: key);
+
   @override
   _PostsListState createState() => _PostsListState();
 }
@@ -48,12 +52,17 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
+          List<Post> erroredPosts = state.erroredPosts
+              .where((post) => post.owner.address == widget.user.address)
+              .toList();
+          List<Post> posts = state.nonErroredPosts;
+
           if (!state.refreshing) {
             _refreshCompleter?.complete();
             _refreshCompleter = Completer();
           }
 
-          if (state.posts.isEmpty) {
+          if (posts.isEmpty) {
             return PostsListEmptyContainer();
           }
 
@@ -63,18 +72,40 @@ class _PostsListState extends State<PostsList> {
                 children: <Widget>[
                   if (state.syncingPosts) PostsListSyncingIndicator(),
                   Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      key: PostsKeys.postsList,
-                      itemCount: state.hasReachedMax
-                          ? state.posts.length
-                          : state.posts.length + 1,
-                      itemBuilder: (context, index) {
-                        return index >= state.posts.length
-                            ? BottomLoader()
-                            : PostListItem(post: state.posts[index]);
-                      },
+                    child: CustomScrollView(
                       controller: _scrollController,
+                      slivers: [
+                        if (erroredPosts.isNotEmpty)
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [ErrorPostMessage()],
+                            ),
+                          ),
+                        if (erroredPosts.isNotEmpty)
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return ErrorPost(
+                                    post: erroredPosts[index],
+                                    lastChild:
+                                        index + 1 == erroredPosts.length);
+                              },
+                              childCount: erroredPosts.length,
+                            ),
+                          ),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              return index >= posts.length
+                                  ? BottomLoader()
+                                  : PostListItem(post: posts[index]);
+                            },
+                            childCount: state.hasReachedMax
+                                ? posts.length
+                                : posts.length + 1,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

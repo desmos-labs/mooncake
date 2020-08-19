@@ -22,3 +22,4 @@ export 'post_reactions_list/index.dart';
 export 'recover_account_words_list/index.dart';
 export 'loading_indicator/index.dart';
 export 'recover_account_main_content/index.dart';
+export 'post_content_image_item/index.dart';

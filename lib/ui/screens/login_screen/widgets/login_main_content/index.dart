@@ -38,7 +38,7 @@ class LoginMainContent extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 4),
             child: SizedBox(
               width: double.infinity,
-              child: SecondaryLightRoundedButton(
+              child: SecondaryLightButton(
                 child: Text(
                   PostsLocalizations.of(context)
                       .translate(Messages.alreadyHaveMnemonicButtonText),
@@ -50,7 +50,7 @@ class LoginMainContent extends StatelessWidget {
           ),
           SizedBox(
             width: double.infinity,
-            child: SecondaryLightRoundedButton(
+            child: SecondaryLightButton(
               child: Text(
                 PostsLocalizations.of(context)
                     .translate(Messages.useMnemonicBackup),

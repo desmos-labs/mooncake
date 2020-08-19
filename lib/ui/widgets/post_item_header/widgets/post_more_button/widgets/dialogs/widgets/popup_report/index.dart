@@ -39,30 +39,34 @@ class ReportPostPopup extends StatelessWidget {
                     shrinkWrap: true,
                     children: <Widget>[
                       _title(context),
-                      _separator(),
+                      _separator(context),
                       ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: ReportType.values.length,
                         separatorBuilder: (_, index) {
-                          return _separator();
+                          return _separator(context);
                         },
                         itemBuilder: (_, index) {
                           return PopupReportOption(index: index);
                         },
                       ),
+                      PopupReportTextInput(),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: PopupReportTextInput(),
-                      ),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 24),
+                        padding: EdgeInsets.only(
+                          left: 24,
+                          right: 24,
+                          top: 10,
+                        ),
                         child: _submitButton(context),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: _blockUserOption(context, state),
+                        padding: EdgeInsets.only(
+                          left: 24,
+                          right: 24,
+                          bottom: 40,
+                        ),
+                        child: _blockUserAndReport(context, state),
                       ),
                     ],
                   ),
@@ -86,22 +90,21 @@ class ReportPostPopup extends StatelessWidget {
     );
   }
 
-  Widget _separator() {
-    return Container(
-      width: double.infinity,
-      height: 0.5,
-      color: Color(0xFFECECEC),
+  Widget _separator(BuildContext context) {
+    return Divider(
+      height: 1,
+      color: Theme.of(context).colorScheme.onError,
     );
   }
 
-  Widget _blockUserOption(BuildContext context, ReportPopupState state) {
-    return CheckBoxButton(
-      value: state.blockUser,
-      child: Text(PostsLocalizations.of(context)
-          .translate(Messages.reportPopupBlockUser)),
-      onChanged: (value) {
-        BlocProvider.of<ReportPopupBloc>(context).add(ToggleBlockUser(value));
+  Widget _blockUserAndReport(BuildContext context, ReportPopupState state) {
+    return SecondaryDarkButton(
+      onPressed: () {
+        BlocProvider.of<ReportPopupBloc>(context).add(ToggleBlockUser(true));
+        _sendReport(context);
       },
+      child: Text(
+          PostsLocalizations.of(context).translate(Messages.reportAndBlock)),
     );
   }
 
