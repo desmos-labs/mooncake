@@ -30,16 +30,16 @@ class PostCommentsList extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Expanded(child: Center()),
+          SizedBox(height: 10),
           Expanded(
             child: Center(
-              child: Image.asset("assets/images/smile.png"),
+              child: Image.asset("assets/images/smile.png", width: 150),
             ),
           ),
           Expanded(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
                   PostsLocalizations.of(context)
                       .translate(Messages.noCommentsYet),
@@ -50,7 +50,8 @@ class PostCommentsList extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
+          SizedBox(height: 10),
         ],
       ),
     );
