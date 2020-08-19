@@ -81,8 +81,8 @@ void main() {
     expect(account, isNotNull);
     expect(account.cosmosAccount.address,
         "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");
-    expect(account.cosmosAccount.sequence, 39);
-    expect(account.cosmosAccount.accountNumber, 54);
+    expect(account.cosmosAccount.sequence, "39");
+    expect(account.cosmosAccount.accountNumber, "54");
     expect(account.cosmosAccount.coins,
         [StdCoin(amount: "10000000", denom: "udaric")]);
   });

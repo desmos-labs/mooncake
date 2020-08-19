@@ -4,10 +4,10 @@ import 'package:mooncake/entities/entities.dart';
 void main() {
   final account = MooncakeAccount(
     cosmosAccount: CosmosAccount(
-      sequence: 1,
+      sequence: "1",
       coins: [StdCoin(denom: "desmos", amount: "10000")],
       address: "desmos1y447pj22mtx5h8tu9m67qer28t7dvzrxc7mxwe",
-      accountNumber: 10,
+      accountNumber: "10",
     ),
     dtag: "harry_ramsey",
     moniker: "Harry E. Ramsey",
