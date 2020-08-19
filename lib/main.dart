@@ -66,7 +66,7 @@ Future _setupDependencyInjection() async {
   Injector.init(
     accountDatabase: await factory.openDatabase(
       "account.db",
-      version: 5,
+      version: 2,
       onVersionChanged: (db, oldVersion, newVersion) async {
         // From Cosmos v0.38 to v0.39 the serialization of the account has
         // changed and the account_number and sequence are now string.
