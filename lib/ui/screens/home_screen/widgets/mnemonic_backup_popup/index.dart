@@ -54,7 +54,7 @@ class MnemonicBackupPopup extends StatelessWidget {
                 ),
                 onPressed: () => _NavigateToShowMnemonicAuthAuth(context),
               ),
-              SecondaryLightInvertRoundedButton(
+              SecondaryDarkButton(
                 padding: EdgeInsets.all(13),
                 child: Text(
                   PostsLocalizations.of(context)

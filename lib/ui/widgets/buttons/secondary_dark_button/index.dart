@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class SecondaryLightInvertRoundedButton extends StatelessWidget {
+class SecondaryDarkButton extends StatelessWidget {
   final void Function() onPressed;
   final Widget child;
   final double width;
   final EdgeInsets padding;
 
-  const SecondaryLightInvertRoundedButton({
+  const SecondaryDarkButton({
     Key key,
     @required this.onPressed,
     @required this.child,

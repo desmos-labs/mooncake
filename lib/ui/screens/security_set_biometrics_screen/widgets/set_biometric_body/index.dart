@@ -43,7 +43,7 @@ class SetBiometricBody extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                child: SecondaryLightRoundedButton(
+                child: SecondaryLightButton(
                   child: Text(
                     PostsLocalizations.of(context)
                         .translate(Messages.biometricsUsePasswordButton),

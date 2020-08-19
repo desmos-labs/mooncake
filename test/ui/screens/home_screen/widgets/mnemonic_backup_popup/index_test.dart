@@ -26,7 +26,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(GenericPopup), findsOneWidget);
     expect(find.byType(PrimaryButton), findsOneWidget);
-    expect(find.byType(SecondaryLightInvertRoundedButton), findsOneWidget);
+    expect(find.byType(SecondaryDarkButton), findsOneWidget);
     expect(find.byType(GestureDetector), findsWidgets);
     expect(find.text("mnemonicDoNotShowAgainButton"), findsOneWidget);
   });

@@ -41,7 +41,7 @@ class ExportMnemonicPopup extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
-                    child: SecondaryLightRoundedButton(
+                    child: SecondaryLightButton(
                       onPressed: () => _closePopup(context),
                       child: Text(
                         PostsLocalizations.of(context).translate(

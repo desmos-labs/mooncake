@@ -4,11 +4,11 @@ import 'package:mooncake/ui/ui.dart';
 import '../../../helper.dart';
 
 void main() {
-  testWidgets('SecondaryLightInvertRoundedButton: Displays correctly',
+  testWidgets('SecondaryDarkButton: Displays correctly',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       makeTestableWidget(
-        child: SecondaryLightInvertRoundedButton(
+        child: SecondaryDarkButton(
           child: Text('melons'),
           onPressed: () {},
         ),
@@ -25,12 +25,12 @@ void main() {
     );
   });
 
-  testWidgets('SecondaryLightInvertRoundedButton: Displays correctly Dark',
+  testWidgets('SecondaryDarkButton: Displays correctly Dark',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       makeTestableWidget(
         theme: 'dark',
-        child: SecondaryLightInvertRoundedButton(
+        child: SecondaryDarkButton(
           child: Text('melons'),
           onPressed: () {},
         ),
