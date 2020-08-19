@@ -10,6 +10,10 @@ import 'widgets/export.dart';
 /// It simply builds a list using the [ListView.separated] builder
 /// and the [PostListItem] class as the object representing each post.
 class PostsList extends StatefulWidget {
+  final User user;
+
+  const PostsList({Key key, this.user}) : super(key: key);
+
   @override
   _PostsListState createState() => _PostsListState();
 }
@@ -48,7 +52,9 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
-          List<Post> erroredPosts = state.erroredPosts;
+          List<Post> erroredPosts = state.nonErroredPosts
+              .where((post) => post.owner.address == widget.user.address)
+              .toList();
           List<Post> posts = state.nonErroredPosts;
 
           if (!state.refreshing) {
