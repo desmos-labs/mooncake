@@ -30,7 +30,7 @@ class _PostReactionsListState extends State<PostReactionsList> {
       if (actionBarExpanded) {
         count = reactsCount;
       } else {
-        count = reactsCount > 4 ? 4 : reactsCount;
+        count = reactsCount > 5 ? 5 : reactsCount;
       }
 
       List<Widget> results = [];
@@ -46,7 +46,7 @@ class _PostReactionsListState extends State<PostReactionsList> {
         );
       }
 
-      if (reactsCount > 4) {
+      if (reactsCount > 5) {
         results.add(
           IconButton(
             icon: Icon(MooncakeIcons.more, size: 13),
