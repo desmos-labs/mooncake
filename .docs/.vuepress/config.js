@@ -51,10 +51,20 @@ module.exports = {
             {text: "Leaderbord", link: "http://leaderboard.mooncake.space", target: "_blank"},
             {text: "Desmos", link: "https://desmos.network", target: "_blank"},
         ],
-        sidebarDepth: 2,
+        sidebarDepth: 1,
         sidebar: [
             ["download", "Download"],
-            ["development", "Development"],
+            {
+                title: 'Development',
+                path: '/development/overview',
+                children: [
+                    ["development/getting-started", "Getting started"],
+                    ["development/architecture", "Code architecture"],
+                    ["development/utilities", "Development utilities"],
+                    ["development/code-quality", "Code quality"],
+                    ["development/testing", "Testing"],
+                ]
+            },
             ["tos", "Terms"],
             ["privacy", "Privacy"],
         ],
