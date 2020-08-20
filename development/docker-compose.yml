@@ -1,0 +1,77 @@
+# This Docker compose file allows to instantiate all the necessary Docker containers that are needed in order
+# to develop Mooncake without connecting to the public chain.
+# Here is what it's created by this file:
+#
+# 1. A local single-node Desmos chain.
+#    This is going to be the blockchain inside which the data are going to be stored.
+#
+# 2. A PostgreSQL database.
+#    This is going to act as the data source where blockchain data are going to be persisted so that they can be easily
+#    accessed by a GraphQL instance.
+#
+# 3. A DJuno instance.
+#    This will read all the data that are inserted inside the local blockchain, and put them inside the PostgreSQL
+#    database.
+#
+# 4. A local Hasura instance.
+#    This is going to expose the GraphQL APIs on top of which Mooncake relies in order to get the data reactively.
+
+version: '3.6'
+services:
+
+  #######################
+  ## The local PostgreSQL database inside which all the data are going to be stored
+  #######################
+  postgres:
+    image: postgres:12
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: djuno
+    volumes:
+      - ./schema:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/postgresql/data
+
+  #######################
+  ## The local DJuno instance that will parse the chain data and store them inside the PostgreSQL database.
+  #######################
+  djuno:
+    image: desmoslabs/djuno:v0.10.0
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - ./config:/home
+    entrypoint: [
+      "djuno",
+      "parse",
+      "config.toml",
+      "firebase-config.json",
+      "--db-host=postgres",
+      "--db-port=5432",
+      "--db-user=user",
+      "--db-password=password",
+      "--db-name=djuno"
+    ]
+
+  #######################
+  ## The GraphQL client so that Mooncake can read data from it reactively.
+  #######################
+  hasura:
+    image: hasura/graphql-engine:v1.1.0
+    ports:
+      - 8080:8080
+    depends_on:
+      - djuno
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: "postgres://user:password@postgres:5432/djuno"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+    volumes:
+      - ./schema/hasura:/hasura-metadata
+
+volumes:
+  db_data:

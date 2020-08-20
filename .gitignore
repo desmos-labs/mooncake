@@ -44,3 +44,7 @@ node_modules/
 # Secret data
 **/google-services.json
 **/GoogleService-Info.plist
+
+# Local development
+development/schema/
+development/config/
