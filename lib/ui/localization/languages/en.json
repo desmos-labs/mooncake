@@ -179,5 +179,6 @@
   "mnemonicCopy": "copy",
   "mnemonicConfirmPhrase": "Confirm Phrase",
   "postUploadError": "The following post(s) below could not be uploaded. Please try again later.",
-  "poll": "Poll"
+  "poll": "Poll",
+  "all": "All"
 }

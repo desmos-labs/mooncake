@@ -44,7 +44,7 @@ class PostDetailsLoaded extends PostDetailsState {
   /// Returns the list of reactions associated to the post.
   List<Reaction> get reactions => post.reactions;
 
-  /// Returns the number of reactions (excluding the likes) that the
+  /// Returns the number of reactions that the
   /// current post has.
   int get reactionsCount => reactions.length;
 
