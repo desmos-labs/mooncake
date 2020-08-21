@@ -1,11 +1,14 @@
 import 'dart:async';
-import 'package:flutter_test/flutter_test.dart';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mooncake/usecases/usecases.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/usecases/usecases.dart';
+
+import '../../../mocks/mocks.dart';
 
 class MockGenerateMnemonicUseCase extends Mock
     implements GenerateMnemonicUseCase {}
@@ -52,14 +55,7 @@ void main() {
       MooncakeAccount userAccount = MooncakeAccount(
         profilePicUri: "https://example.com/avatar.png",
         moniker: "john-doe",
-        cosmosAccount: CosmosAccount(
-          accountNumber: 153,
-          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-          coins: [
-            StdCoin(amount: "10000", denom: "udaric"),
-          ],
-          sequence: 45,
-        ),
+        cosmosAccount: cosmosAccount,
       );
       const List<String> mnemonic = [
         'frown',

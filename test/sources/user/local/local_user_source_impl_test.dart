@@ -118,8 +118,8 @@ void main() {
         profilePicUri: null,
         cosmosAccount: CosmosAccount(
           address: "address",
-          accountNumber: 1,
-          sequence: 1,
+          accountNumber: "1",
+          sequence: "1",
           coins: [],
         ),
       );
@@ -142,12 +142,12 @@ void main() {
         profilePicUri: "https://example.com/avatar.png",
         moniker: "john-doe",
         cosmosAccount: CosmosAccount(
-          accountNumber: 153,
+          accountNumber: "153",
+          sequence: "45",
           address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
           coins: [
             StdCoin(amount: "10000", denom: "udaric"),
           ],
-          sequence: 45,
         ),
       );
 
@@ -235,8 +235,8 @@ void main() {
         moniker: "account",
         cosmosAccount: CosmosAccount(
           address: "address",
-          accountNumber: 1,
-          sequence: 1,
+          accountNumber: "1",
+          sequence: "1",
           coins: [],
         ),
       );

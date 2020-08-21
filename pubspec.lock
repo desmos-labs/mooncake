@@ -12,8 +12,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "cosmos-v0.38.x"
-      resolved-ref: "9c6a20e6b5ffb9889cff7bdabe4229cd21f6b6ef"
+      ref: "cosmos-v0.39.x"
+      resolved-ref: "0bd5a617b55e3b8ec5f4cf13b52b630139904c91"
       url: "git://github.com/alan-sdk/alan.dart.git"
     source: git
     version: "0.0.1"
