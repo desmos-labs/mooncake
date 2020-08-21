@@ -1,1 +1,5 @@
-• Fixed poll creation
+• Improved how failed-to-sync posts are displayed
+• Added the possibility of retry the sync or deleting failed-to-sync posts
+• Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup
+• UI and UX improvements
+• Bug fixes and performance improvements
