@@ -8,6 +8,7 @@
 ## Bug fixes
 - Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup
 - Fixed the registration flow to allow the user to return back to the login page
+- Fixed wallet button not showing up in dark mode in user details
 
 # Version 0.4.2
 ## Changes
