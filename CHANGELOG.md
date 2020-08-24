@@ -3,6 +3,8 @@
 - Improved how failed-to-sync posts are displayed
 - Added the possibility of retry the sync or deleting failed-to-sync posts
 - Improve the account creation flow to allow the user to go back to the login page
+- Merged likes and reactions in to one entity
+- Added a reaction filter list in post details
 
 # Version 0.4.3
 ## Bug fixes

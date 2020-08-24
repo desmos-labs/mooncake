@@ -71,7 +71,7 @@
   "signOut": "Sign out",
   "floatingButtonTip": "Create post",
   "loadingPosts": "Loading posts",
-  "noPostsYet": "Looks a little empty here. What about adding some content?",
+  "noPostsYet": "Looks a little empty here. How about adding some content?",
   "postActionsButtonCaption": "See post actions",
   "brightnessButtonTooltip": "Brightness",
   "walletButtonTooltip": "Wallet",
@@ -179,5 +179,6 @@
   "mnemonicCopy": "copy",
   "mnemonicConfirmPhrase": "Confirm Phrase",
   "postUploadError": "The following post(s) below could not be uploaded. Please try again later.",
-  "poll": "Poll"
+  "poll": "Poll",
+  "all": "All"
 }
