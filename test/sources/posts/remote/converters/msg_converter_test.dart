@@ -60,7 +60,6 @@ void main() {
         allowsComments: testPosts[0].allowsComments,
         subspace: testPosts[0].subspace,
         creator: wallet.bech32Address,
-        creationDate: testPosts[0].created,
         optionalData: null, // Optional data should be null if empty
         medias: null, // Medias should be null if empty
         poll: null, // Poll should be null

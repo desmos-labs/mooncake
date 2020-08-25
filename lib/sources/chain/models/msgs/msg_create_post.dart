@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 import 'chain_poll_data.dart';
+
 export 'chain_poll_data.dart';
 export 'chain_poll_option.dart';
 
@@ -32,10 +33,7 @@ class MsgCreatePost extends StdMsg {
   @JsonKey(name: "creator")
   final String creator;
 
-  @JsonKey(name: "creation_date")
-  final String creationDate;
-
-  @JsonKey(name: "medias", includeIfNull: false)
+  @JsonKey(name: "attachments", includeIfNull: false)
   final List<PostMedia> medias;
 
   @JsonKey(name: "poll_data", includeIfNull: false)
@@ -48,14 +46,12 @@ class MsgCreatePost extends StdMsg {
     @required this.subspace,
     @required this.optionalData,
     @required this.creator,
-    @required this.creationDate,
     @required this.medias,
     @required this.poll,
   })  : assert(parentId != null),
         assert(allowsComments != null),
         assert(subspace != null),
-        assert(creator != null),
-        assert(creationDate != null);
+        assert(creator != null);
 
   @override
   List<Object> get props {
@@ -66,7 +62,6 @@ class MsgCreatePost extends StdMsg {
       subspace,
       optionalData,
       creator,
-      creationDate,
       medias,
       poll,
     ];
@@ -95,10 +90,6 @@ class MsgCreatePost extends StdMsg {
       return Exception("Creator cannot be empty");
     }
 
-    if (creationDate.isEmpty) {
-      return Exception("Creation date cannot be empty");
-    }
-
     return null;
   }
 
@@ -111,7 +102,6 @@ class MsgCreatePost extends StdMsg {
         'subspace: $subspace, '
         'optionalData: $optionalData, '
         'creator: $creator, '
-        'creationDate: $creationDate, '
         'medias: $medias,'
         'poll: $poll '
         '}';
