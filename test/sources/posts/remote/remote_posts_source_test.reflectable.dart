@@ -77,13 +77,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
                       subspace,
                       optionalData,
                       creator,
-                      creationDate,
                       medias,
                       poll}) =>
                   b
                       ? prefix2.MsgCreatePost(
                           allowsComments: allowsComments,
-                          creationDate: creationDate,
                           creator: creator,
                           medias: medias,
                           message: message,
@@ -238,7 +236,6 @@ final _data = <r.Reflectable, r.ReflectorData>{
             #subspace,
             #optionalData,
             #creator,
-            #creationDate,
             #medias,
             #poll
           ]

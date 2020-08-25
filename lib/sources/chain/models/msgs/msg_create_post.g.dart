@@ -16,8 +16,7 @@ MsgCreatePost _$MsgCreatePostFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(k, e as String),
     ),
     creator: json['creator'] as String,
-    creationDate: json['creation_date'] as String,
-    medias: (json['medias'] as List)
+    medias: (json['attachments'] as List)
         ?.map((e) =>
             e == null ? null : PostMedia.fromJson(e as Map<String, dynamic>))
         ?.toList(),
@@ -43,8 +42,8 @@ Map<String, dynamic> _$MsgCreatePostToJson(MsgCreatePost instance) {
 
   writeNotNull('optional_data', instance.optionalData);
   val['creator'] = instance.creator;
-  val['creation_date'] = instance.creationDate;
-  writeNotNull('medias', instance.medias?.map((e) => e?.toJson())?.toList());
+  writeNotNull(
+      'attachments', instance.medias?.map((e) => e?.toJson())?.toList());
   writeNotNull('poll_data', instance.poll?.toJson());
   return val;
 }

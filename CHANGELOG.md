@@ -1,6 +1,6 @@
-# Version 0.5.0
-## Changes
-- Improved the reactions UX and UI
+# Version 0.4.4
+## Bug fixes
+- Fixed some synchronization bugs
 
 # Version 0.4.3
 ## Changes
