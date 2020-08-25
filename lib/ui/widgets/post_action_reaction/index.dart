@@ -43,7 +43,12 @@ class PostReactionAction extends StatelessWidget {
             children: <Widget>[
               Text(reactionValue),
               SizedBox(width: 8),
-              Text(reactionCount.toString(), style: textStyle)
+              Text(
+                reactionCount.toString(),
+                style: textStyle.copyWith(
+                  fontSize: 10,
+                ),
+              )
             ],
           ),
           onPressed: () {

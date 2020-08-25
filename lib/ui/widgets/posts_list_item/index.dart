@@ -42,11 +42,11 @@ class PostListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 PostContent(post: post),
-                const SizedBox(height: ThemeSpaces.mediumMargin),
-                PostActionsBar(post: post),
                 if (post.reactions.isNotEmpty)
                   const SizedBox(height: ThemeSpaces.smallMargin),
                 if (post.reactions.isNotEmpty) PostReactionsList(post: post),
+                const SizedBox(height: ThemeSpaces.smallMargin),
+                PostActionsBar(post: post),
               ],
             ),
           ),
