@@ -23,45 +23,48 @@ class _PostReactionsListState extends State<PostReactionsList> {
 
   @override
   Widget build(BuildContext context) {
-    final reactsCount = widget.post.reactionsCount.length;
+    final int reactsCount = widget.post.reactionsCount.length;
 
-    // Tells then the "More" button should be visible
-    final showMore = reactsCount > 4;
+    List<Widget> _listReactions() {
+      int count = 0;
+      if (actionBarExpanded) {
+        count = reactsCount;
+      } else {
+        count = reactsCount > 5 ? 5 : reactsCount;
+      }
 
-    int itemCount = reactsCount;
-    if (showMore && !actionBarExpanded) {
-      // There should be the max number of items per row, as the last one
-      // will be the "More" button
-      itemCount = 4;
-    } else if (showMore && actionBarExpanded) {
-      // There should be all the items visible, plus the "More" button
-      itemCount = reactsCount + 1;
+      List<Widget> results = [];
+      for (var i = 0; i < count; i++) {
+        final entry = widget.post.reactionsCount.entries.toList()[i];
+        results.add(
+          PostReactionAction(
+            post: widget.post,
+            reactionCode: entry.key.code,
+            reactionValue: entry.key.value,
+            reactionCount: entry.value,
+          ),
+        );
+      }
+
+      if (reactsCount > 5) {
+        results.add(
+          IconButton(
+            icon: Icon(MooncakeIcons.more, size: 13),
+            onPressed: () => _triggerExpansion(context),
+          ),
+        );
+      }
+
+      return results;
     }
 
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Expanded(
-          child: Wrap(
-            spacing: 6.0,
-            alignment: WrapAlignment.start,
-            children: List.generate(itemCount, (index) {
-              if (showMore && index == itemCount - 1) {
-                return IconButton(
-                  icon: Icon(MooncakeIcons.more, size: 16),
-                  onPressed: () => _triggerExpansion(context),
-                );
-              }
-
-              final entry = widget.post.reactionsCount.entries.toList()[index];
-              return PostReactionAction(
-                post: widget.post,
-                reactionCode: entry.key.code,
-                reactionValue: entry.key.value,
-                reactionCount: entry.value,
-              );
-            }).toList(),
-          ),
+          child: Wrap(spacing: 4.0, alignment: WrapAlignment.start, children: [
+            ..._listReactions(),
+          ]),
         ),
       ],
     );

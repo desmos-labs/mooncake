@@ -17,7 +17,11 @@ class PostsListEmptyContainer extends StatelessWidget {
           Text(
             PostsLocalizations.of(context).translate(Messages.noPostsYet),
             textAlign: TextAlign.center,
-          )
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          SizedBox(height: 20)
         ],
       ),
     );

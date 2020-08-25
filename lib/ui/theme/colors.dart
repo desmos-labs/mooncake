@@ -18,6 +18,25 @@ class ThemeColors {
     end: Alignment(1, 1),
   );
 
+  static LinearGradient primaryButtonFlat(BuildContext context) =>
+      LinearGradient(
+        colors: [
+          Theme.of(context).colorScheme.primary,
+          Theme.of(context).colorScheme.primary,
+        ],
+        begin: Alignment(-0.44, -0.89),
+        end: Alignment(1, 1),
+      );
+
+  static const LinearGradient primaryButtonFlatDisabled = LinearGradient(
+    colors: [
+      Color.fromRGBO(169, 144, 255, 0.6),
+      Color.fromRGBO(169, 144, 255, 0.6),
+    ],
+    begin: Alignment(-0.44, -0.89),
+    end: Alignment(1, 1),
+  );
+
   static LinearGradient get gradient => LinearGradient(
         colors: [Color(0xFF904FFF), Color(0xFF5277FF)],
         begin: Alignment.topCenter,

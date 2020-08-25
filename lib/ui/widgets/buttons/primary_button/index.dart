@@ -11,7 +11,7 @@ class PrimaryButton extends StatelessWidget {
   final double borderRadius;
   final bool expanded;
 
-  const PrimaryButton({
+  PrimaryButton({
     Key key,
     @required this.onPressed,
     @required this.child,
@@ -22,49 +22,32 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLight = Theme.of(context).brightness == Brightness.light;
+    LinearGradient disabledGradient = isLight
+        ? ThemeColors.primaryButtonBackgroundGradientDiabled
+        : ThemeColors.primaryButtonFlatDisabled;
+    LinearGradient gradient = isLight
+        ? ThemeColors.primaryButtonBackgroundGradient
+        : ThemeColors.primaryButtonFlat(context);
     return Wrap(
       children: [
-        Theme.of(context).brightness == Brightness.light
-            ? _gradientButton(context)
-            : _flatButton(context)
-      ],
-    );
-  }
-
-  Widget _gradientButton(BuildContext context) {
-    return GradientButton(
-      disabledGradient: ThemeColors.primaryButtonBackgroundGradientDiabled,
-      isEnabled: enabled,
-      increaseWidthBy: expanded ? double.infinity : 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      callback: onPressed,
-      gradient: ThemeColors.primaryButtonBackgroundGradient,
-      shadowColor: Colors.transparent,
-      elevation: 0,
-      textStyle: Theme.of(context).textTheme.bodyText2.copyWith(
-            color: Colors.white,
+        GradientButton(
+          disabledGradient: disabledGradient,
+          isEnabled: enabled,
+          increaseWidthBy: expanded ? double.infinity : 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
           ),
-      child: child,
-    );
-  }
-
-  Widget _flatButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: FlatButton(
-        padding: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
+          callback: onPressed,
+          gradient: gradient,
+          shadowColor: Colors.transparent,
+          elevation: 0,
+          textStyle: Theme.of(context).textTheme.bodyText2.copyWith(
+                color: Colors.white,
+              ),
+          child: child,
         ),
-        onPressed: enabled ? onPressed : null,
-        color: Theme.of(context).colorScheme.primary,
-        child: child,
-        textColor: Colors.white,
-        disabledColor: Color.fromRGBO(169, 144, 255, 0.6),
-        disabledTextColor: Colors.white,
-      ),
+      ],
     );
   }
 }

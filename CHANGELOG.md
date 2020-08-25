@@ -1,7 +1,11 @@
+# Version 0.5.0
+## Changes
+- Improved the reactions UX and UI
+
 # Version 0.4.3
 ## Changes
 - Improved how failed-to-sync posts are displayed
-- Added the possibility of retry the sync or deleting failed-to-sync posts
+- Added the possibility of retrying the sync or deleting failed-to-sync posts
 
 ## Bug fixes
 - Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup

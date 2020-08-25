@@ -1,7 +1,6 @@
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'widgets/export.dart';
@@ -22,12 +21,10 @@ class PostAddReactionAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reactions = post.reactions.where((e) => !e.isLike).toList();
-    final countColor =
-        color != null ? color : Theme.of(context).iconTheme.color;
     return SizedBox(
       height: size,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
             width: size,
@@ -37,25 +34,8 @@ class PostAddReactionAction extends StatelessWidget {
               onPressed: () => _onTap(context),
             ),
           ),
-          if (reactions.isNotEmpty)
-            _reactionsCount(context, reactions, countColor)
         ],
       ),
-    );
-  }
-
-  Widget _reactionsCount(
-      BuildContext context, List<Reaction> reactions, Color color) {
-    return Row(
-      children: [
-        SizedBox(width: size / 4),
-        Text(
-          NumberFormat.compact().format(reactions.length),
-          style: Theme.of(context).textTheme.bodyText2.copyWith(
-                color: color,
-              ),
-        ),
-      ],
     );
   }
 
