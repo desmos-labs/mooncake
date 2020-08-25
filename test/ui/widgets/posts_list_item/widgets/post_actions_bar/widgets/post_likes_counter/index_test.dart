@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:flutter/material.dart';
 import 'package:mooncake/ui/widgets/posts_list_item/widgets/post_actions_bar/widgets/export.dart';
-import '../../../../../../helper.dart';
+
+import '../../../../../../../mocks/mocks.dart';
 import '../../../../../../../mocks/posts.dart';
+import '../../../../../../helper.dart';
 
 void main() {
   testWidgets('PostLikesCounter: Displays export correctly',
@@ -12,14 +14,7 @@ void main() {
     MooncakeAccount userAccount = MooncakeAccount(
       profilePicUri: "https://example.com/avatar.png",
       moniker: "john-doe",
-      cosmosAccount: CosmosAccount(
-        accountNumber: 153,
-        address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-        coins: [
-          StdCoin(amount: "10000", denom: "udaric"),
-        ],
-        sequence: 45,
-      ),
+      cosmosAccount: cosmosAccount,
     );
     List<Reaction> reactionTest = [
       Reaction(user: userAccount, value: Constants.LIKE_REACTION, code: "123"),

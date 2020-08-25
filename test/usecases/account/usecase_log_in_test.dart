@@ -18,8 +18,8 @@ void main() {
     test('when no funding is necessary', () async {
       final account = MooncakeAccount.local("address").copyWith(
         cosmosAccount: CosmosAccount(
-          sequence: 0,
-          accountNumber: 0,
+          sequence: "0",
+          accountNumber: "0",
           address: "address",
           coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
         ),

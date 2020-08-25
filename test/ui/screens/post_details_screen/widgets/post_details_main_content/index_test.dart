@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mooncake/ui/ui.dart';
-import '../../../../helper.dart';
-import 'package:mooncake/ui/screens/post_details_screen/widgets/export.dart';
-import '../../../../../mocks/mocks.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/widgets/post_content/widgets/export.dart';
+import 'package:mooncake/ui/screens/post_details_screen/widgets/export.dart';
 import 'package:mooncake/ui/screens/post_details_screen/widgets/post_details_main_content/widgets/export.dart';
 import 'package:mooncake/ui/screens/post_details_screen/widgets/post_details_main_content/widgets/post_comments_list/widgets/export.dart';
 import 'package:mooncake/ui/screens/post_details_screen/widgets/post_details_main_content/widgets/post_details_reactions_list/widgets/reactions_list/widgets/export.dart';
 import 'package:mooncake/ui/screens/post_details_screen/widgets/post_details_main_content/widgets/post_details_reactions_list/widgets/export.dart';
+import 'package:mooncake/ui/ui.dart';
+import 'package:mooncake/ui/widgets/post_content/widgets/export.dart';
+
+import '../../../../../mocks/mocks.dart';
+import '../../../../helper.dart';
 
 void main() {
   MockPostDetailsBloc mockPostDetailsBloc = MockPostDetailsBloc();
@@ -20,14 +21,7 @@ void main() {
   MooncakeAccount userAccount = MooncakeAccount(
     profilePicUri: "https://example.com/avatar.png",
     moniker: "john-doe",
-    cosmosAccount: CosmosAccount(
-      accountNumber: 153,
-      address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-      coins: [
-        StdCoin(amount: "10000", denom: "udaric"),
-      ],
-      sequence: 45,
-    ),
+    cosmosAccount: cosmosAccount,
   );
   testWidgets('PostDetailsMainContent: Displays correctly',
       (WidgetTester tester) async {
