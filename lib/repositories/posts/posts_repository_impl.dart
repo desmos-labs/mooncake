@@ -127,9 +127,9 @@ class PostsRepositoryImpl extends PostsRepository {
   }
 
   @override
-  Future<void> syncPosts() async {
+  Future<void> syncPosts(String address) async {
     // Get the posts
-    final posts = await _localPostsSource.getPostsToSync();
+    final posts = await _localPostsSource.getPostsToSync(address);
     if (posts.isEmpty) {
       // We do not have any post to be synced, so return.
       return;

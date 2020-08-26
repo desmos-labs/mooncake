@@ -55,7 +55,7 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     if (event is ToggleCheckBox) {
       yield* _mapToggleCheckBoxToState();
     } else if (event is ShowMnemonic) {
-      yield* _mapShowMnemonicEventToState();
+      yield* _mapShowMnemonicEventToState(event);
     } else if (event is ShowExportPopup) {
       yield ExportingMnemonic.fromMnemonicState(state);
     } else if (event is ChangeEncryptPassword) {
@@ -71,8 +71,9 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
     yield state.copyWith(hasCheckedBox: !state.hasCheckedBox);
   }
 
-  Stream<MnemonicState> _mapShowMnemonicEventToState() async* {
-    final mnemonic = await _getMnemonicUseCase.get();
+  Stream<MnemonicState> _mapShowMnemonicEventToState(
+      ShowMnemonic event) async* {
+    final mnemonic = await _getMnemonicUseCase.get(event.address);
     yield state.copyWith(showMnemonic: true, mnemonic: mnemonic);
   }
 

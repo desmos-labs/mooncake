@@ -29,6 +29,9 @@ class LocalUserSourceImpl extends LocalUserSource {
   @visibleForTesting
   static const USER_DATA_KEY = "user_data";
 
+  @visibleForTesting
+  static const ACTIVE = "active";
+
   final Database database;
   final NetworkInfo _networkInfo;
   final FlutterSecureStorage _storage;
@@ -106,6 +109,16 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
+  Future<MooncakeAccount> getActiveAccount() async {
+    final record =
+        await store.record('${USER_DATA_KEY}.${ACTIVE}').get(database);
+    if (record != null) {
+      return MooncakeAccount.fromJson(record as Map<String, dynamic>);
+    }
+    return null;
+  }
+
+  @override
   Future<MooncakeAccount> getAccount() async {
     // Try getting the user from the database
     final record = await store.record(USER_DATA_KEY).get(database);
@@ -114,7 +127,7 @@ class LocalUserSourceImpl extends LocalUserSource {
     }
 
     // If the database does not have the user, build it from the address
-    // wingman
+    // wingman update later
     final wallet = await getWallet("wingman");
     final address = wallet?.bech32Address;
 

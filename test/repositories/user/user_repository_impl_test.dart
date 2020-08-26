@@ -168,6 +168,28 @@ void main() {
     });
   });
 
+  group('getActiveAccount works properly', () {
+    test('when account does not exist locally', () async {
+      when(localUserSource.getAccount()).thenAnswer((_) => Future.value(null));
+
+      final result = await repository.getActiveAccount();
+      expect(result, isNull);
+
+      verify(localUserSource.getActiveAccount()).called(1);
+    });
+
+    test('when account exists locally', () async {
+      final account = MooncakeAccount.local("address");
+      when(localUserSource.getActiveAccount())
+          .thenAnswer((_) => Future.value(account));
+
+      final result = await repository.getActiveAccount();
+      expect(result, equals(account));
+
+      verify(localUserSource.getActiveAccount()).called(1);
+    });
+  });
+
   group('refreshAccount works properly', () {
     test('when account does not exist locally', () async {
       when(localUserSource.getAccount()).thenAnswer((_) => Future.value(null));

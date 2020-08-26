@@ -76,13 +76,13 @@ void main() {
       blocTest(
         'ShowMnemonic: correctly updates tab',
         build: () async {
-          when(mockGetMnemonicUseCase.get()).thenAnswer((_) {
+          when(mockGetMnemonicUseCase.get("address")).thenAnswer((_) {
             return Future.value(mnemonic);
           });
           return mnemonicBloc;
         },
         act: (bloc) async {
-          bloc.add(ShowMnemonic());
+          bloc.add(ShowMnemonic("address"));
         },
         expect: [
           MnemonicState(

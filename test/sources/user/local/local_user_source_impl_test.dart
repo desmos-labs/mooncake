@@ -167,6 +167,36 @@ void main() {
     test('getAccount returns null when no data is saved', () async {
       expect(await source.getAccount(), isNull);
     });
+
+    test('getActiveAccount returns null when no data is saved', () async {
+      expect(await source.getActiveAccount(), isNull);
+    });
+
+    test('getActiveAccount returns with account', () async {
+      final account = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar.png",
+        moniker: "john-doe",
+        cosmosAccount: CosmosAccount(
+          accountNumber: "153",
+          sequence: "45",
+          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
+          coins: [
+            StdCoin(amount: "10000", denom: "udaric"),
+          ],
+        ),
+      );
+
+      final store = StoreRef.main();
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
+          .put(
+            database,
+            account.toJson(),
+          );
+
+      expect(await source.getActiveAccount(), account);
+    });
   });
 
   group('Authentication method', () {

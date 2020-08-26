@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents the source that should be used when wanting to get
@@ -22,6 +21,10 @@ abstract class LocalUserSource {
   /// Returns the [User] containing the data of the current app user.
   /// If no [User] or [Wallet] have been saved yet, returns `null`.
   Future<MooncakeAccount> getAccount();
+
+  /// Returns the [User] that is currently selected.
+  /// If no [User] it will return `null`.
+  Future<MooncakeAccount> getActiveAccount();
 
   /// Returns the [Stream] that emits all the new [User]
   /// once they have been saved.

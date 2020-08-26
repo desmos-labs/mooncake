@@ -12,7 +12,7 @@ class SyncPostsUseCase {
         _postsRepository = postsRepository;
 
   /// Syncs the locally stored data to the chain.
-  Future<void> sync() async {
-    return _postsRepository.syncPosts();
+  Future<void> sync(String address) async {
+    return _postsRepository.syncPosts(address);
   }
 }

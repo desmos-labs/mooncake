@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Represents the screen that allows the user to view his mnemonic phrase
@@ -100,7 +101,9 @@ class LoginWithBiometricsScreen extends StatelessWidget {
         PostsLocalizations.of(context).translate(Messages.biometricsReason);
     localAuth.authenticateWithBiometrics(localizedReason: reason).then((value) {
       if (value) {
-        BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
+        final MooncakeAccount user =
+            (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user;
+        BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic(user.address));
       }
     }).catchError((error) => print(error));
   }

@@ -171,12 +171,16 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   }
 
   @override
-  Future<List<Post>> getPostsToSync() async {
+  Future<List<Post>> getPostsToSync(String address) async {
     final finder = Finder(
-      filter: Filter.or([
+      filter: Filter.and([
         Filter.equals(
           Post.STATUS_VALUE_FIELD,
           PostStatusValue.STORED_LOCALLY.value,
+        ),
+        Filter.equals(
+          'user.address',
+          address,
         )
       ]),
     );
