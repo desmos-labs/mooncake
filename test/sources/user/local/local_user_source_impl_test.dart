@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/account/export.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -65,9 +66,9 @@ void main() {
         "blur",
         "pool",
       ].join(" ");
-      await source.saveWallet(mnemonic);
+      Wallet wallet = await source.saveWallet(mnemonic);
       verify(secureStorage.write(
-        key: LocalUserSourceImpl.MNEMONIC_KEY,
+        key: wallet.bech32Address,
         value: mnemonic,
       ));
     });

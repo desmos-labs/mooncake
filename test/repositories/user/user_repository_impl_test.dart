@@ -6,6 +6,8 @@ import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/repositories/repositories.dart';
 import 'package:mooncake/repositories/user/user_repository_impl.dart';
 
+import '../../mocks/mocks.dart';
+
 // ignore: must_be_immutable
 class WalletMock extends Mock implements Wallet {}
 
@@ -30,8 +32,9 @@ void main() {
   group('saveWallet performs correct calls', () {
     test('when the account does not exist remotely', () async {
       final user = MooncakeAccount.local("address");
+      final mockWallet = MockWallet();
       when(localUserSource.saveWallet(any))
-          .thenAnswer((_) => Future.value(null));
+          .thenAnswer((_) => Future.value(mockWallet));
       when(localUserSource.getAccount()).thenAnswer((_) => Future.value(user));
 
       when(remoteUserSource.getAccount(any))
@@ -50,8 +53,9 @@ void main() {
 
     test('when the account exists remotely', () async {
       final user = MooncakeAccount.local("address");
+      final mockWallet = MockWallet();
       when(localUserSource.saveWallet(any))
-          .thenAnswer((_) => Future.value(null));
+          .thenAnswer((_) => Future.value(mockWallet));
       when(localUserSource.getAccount()).thenAnswer((_) => Future.value(user));
 
       final remoteAccount = MooncakeAccount(

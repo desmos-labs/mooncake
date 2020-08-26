@@ -5,7 +5,7 @@ import 'package:mooncake/entities/entities.dart';
 abstract class UserRepository {
   /// Saves the given mnemonic inside the secure storage of the device
   /// allowing it to be retrieved later.
-  Future<void> saveWallet(String mnemonic);
+  Future<Wallet> saveWallet(String mnemonic);
 
   /// Returns the mnemonic that is associated to the current application user.
   /// If no mnemonic has been saved yet, returns `null`.

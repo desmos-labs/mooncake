@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to properly log in a user.
@@ -13,7 +14,7 @@ class LoginUseCase {
   /// device as the user wallet.
   Future<void> login(String mnemonic) async {
     // Save the wallet
-    await _userRepository.saveWallet(mnemonic);
+    Wallet wallet = await _userRepository.saveWallet(mnemonic);
 
     // Get the account data
     final user = await _userRepository.refreshAccount();

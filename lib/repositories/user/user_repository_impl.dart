@@ -32,10 +32,11 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> saveWallet(String mnemonic) async {
-    return _localUserSource
-        .saveWallet(mnemonic)
-        .then((_) => updateAndStoreAccountData());
+  Future<Wallet> saveWallet(String mnemonic) async {
+    return _localUserSource.saveWallet(mnemonic).then((Wallet wallet) async {
+      await updateAndStoreAccountData();
+      return wallet;
+    });
   }
 
   @override

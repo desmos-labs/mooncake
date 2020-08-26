@@ -60,15 +60,27 @@ class LocalUserSourceImpl extends LocalUserSource {
     );
   }
 
+  Future<Wallet> _generateWalletHelper(List<String> mnemonic) {
+    final walletInfo = _WalletInfo(
+      mnemonic,
+      _networkInfo,
+      _WALLET_DERIVATION_PATH,
+    );
+    return compute(_deriveWallet, walletInfo);
+  }
+
   @override
-  Future<void> saveWallet(String mnemonic) async {
+  Future<Wallet> saveWallet(String mnemonic) async {
     // Make sure the mnemonic is valid
     if (!bip39.validateMnemonic(mnemonic)) {
       throw Exception("Error while saving wallet: invalid mnemonic.");
     }
-
+    // generate wallet with given mnemonic
+    Wallet wallet = await _generateWalletHelper(mnemonic.split(" "));
     // Save it safely
-    await _storage.write(key: MNEMONIC_KEY, value: mnemonic.trim());
+    await _storage.write(key: wallet.bech32Address, value: mnemonic.trim());
+    // return a wallet
+    return wallet;
   }
 
   @override
@@ -85,13 +97,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   Future<Wallet> getWallet() async {
     final mnemonic = await getMnemonic();
     if (mnemonic == null) return null;
-
-    final walletInfo = _WalletInfo(
-      mnemonic,
-      _networkInfo,
-      _WALLET_DERIVATION_PATH,
-    );
-    return compute(_deriveWallet, walletInfo);
+    return _generateWalletHelper(mnemonic);
   }
 
   @override
