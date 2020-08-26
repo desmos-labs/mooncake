@@ -22,6 +22,11 @@ abstract class UserRepository {
   /// and the account data cannot be retrieved, returns `null` instead.
   Future<MooncakeAccount> getAccount();
 
+  /// Returns the [AccountData] object containing the info of the current user.
+  /// If no [MooncakeAccount] or [Wallet] have been saved using [saveWallet]
+  /// and the account data cannot be retrieved, returns `null` instead.
+  Future<MooncakeAccount> getActiveAccount();
+
   /// Refreshes the user account downloading the data from the remote source.
   /// Returns the updated [MooncakeAccount] value.
   Future<MooncakeAccount> refreshAccount();

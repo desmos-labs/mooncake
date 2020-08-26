@@ -14,6 +14,11 @@ class GetAccountUseCase {
     return _userRepository.getAccount();
   }
 
+  /// Returns the current user of the application.
+  Future<MooncakeAccount> getActiveAccount() {
+    return _userRepository.getActiveAccount();
+  }
+
   /// Returns the [Stream] that emits all the [MooncakeAccount] objects
   /// as soon as they are stored.
   Stream<MooncakeAccount> stream() {
