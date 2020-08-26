@@ -66,7 +66,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
 
   @override
   Future<AccountSaveResult> saveAccount(MooncakeAccount account) async {
-    final wallet = await _userSource.getWallet();
+    final wallet = await _userSource.getWallet(account.address);
 
     // Upload the images to IPFS if they need to be uploaded
     final profilePicFile = File(account.profilePicUri ?? "");

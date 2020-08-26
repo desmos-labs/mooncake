@@ -79,24 +79,24 @@ void main() {
 
   test('getMnemonic works properly', () async {
     final mnemonic = ["mnemonic"];
-    when(localUserSource.getMnemonic())
+    when(localUserSource.getMnemonic("address"))
         .thenAnswer((_) => Future.value(mnemonic));
 
-    final result = await repository.getMnemonic();
+    final result = await repository.getMnemonic("address");
     expect(result, equals(mnemonic));
 
-    verify(localUserSource.getMnemonic()).called(1);
+    verify(localUserSource.getMnemonic("address")).called(1);
   });
 
   test('getWallet works properly', () async {
     final wallet = WalletMock();
-    when(localUserSource.getWallet())
+    when(localUserSource.getWallet("address"))
         .thenAnswer((realInvocation) => Future.value(wallet));
 
-    final result = await repository.getWallet();
+    final result = await repository.getWallet("address");
     expect(result, equals(wallet));
 
-    verify(localUserSource.getWallet()).called(1);
+    verify(localUserSource.getWallet("address")).called(1);
   });
 
   group('saveAccount works properly', () {

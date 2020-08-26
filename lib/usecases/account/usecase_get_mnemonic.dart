@@ -14,7 +14,7 @@ class GetMnemonicUseCase {
         _userRepository = userRepository;
 
   /// Returns the mnemonic phrase of the current user.
-  Future<List<String>> get() {
-    return _userRepository.getMnemonic();
+  Future<List<String>> get(String address) {
+    return _userRepository.getMnemonic(address);
   }
 }

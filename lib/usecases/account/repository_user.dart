@@ -9,11 +9,7 @@ abstract class UserRepository {
 
   /// Returns the mnemonic that is associated to the current application user.
   /// If no mnemonic has been saved yet, returns `null`.
-  Future<List<String>> getMnemonic();
-
-  /// Returns the [Wallet] instance of the current application user.
-  /// If no [Wallet] instance has been saved yet, returns `null`.
-  Future<Wallet> getWallet();
+  Future<List<String>> getMnemonic(String address);
 
   /// Saves the given [account] as the current user object.
   Future<AccountSaveResult> saveAccount(

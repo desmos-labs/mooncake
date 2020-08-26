@@ -101,10 +101,12 @@ void main() {
         "pool",
       ].join(" ");
 
-      when(secureStorage.read(key: LocalUserSourceImpl.MNEMONIC_KEY))
+      when(secureStorage.read(
+              key: "desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv"))
           .thenAnswer((_) => Future.value(mnemonic));
 
-      final wallet = await source.getWallet();
+      final wallet = await source
+          .getWallet("desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv");
       expect(
         wallet?.bech32Address,
         "desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv",

@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 
 /// Represents the source that should be used when wanting to get
@@ -7,13 +8,13 @@ abstract class LocalUserSource {
   /// allowing it to be retrieved later.
   Future<Wallet> saveWallet(String mnemonic);
 
-  /// Returns the mnemonic that is associated to the current application user.
+  /// Returns the mnemonic that is associated to the given address
   /// If no mnemonic has been saved yet, returns `null`.
-  Future<List<String>> getMnemonic();
+  Future<List<String>> getMnemonic(String address);
 
-  /// Returns the [Wallet] instance of the current application user.
+  /// Returns the [Wallet] instance of the given address.
   /// If no [Wallet] instance has been saved yet, returns `null`.
-  Future<Wallet> getWallet();
+  Future<Wallet> getWallet(String address);
 
   /// Saves the given [data] as the current local user data.
   Future<MooncakeAccount> saveAccount(MooncakeAccount data);

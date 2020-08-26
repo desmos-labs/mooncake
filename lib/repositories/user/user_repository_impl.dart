@@ -40,13 +40,12 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<List<String>> getMnemonic() {
-    return _localUserSource.getMnemonic();
+  Future<List<String>> getMnemonic(String address) {
+    return _localUserSource.getMnemonic(address);
   }
 
-  @override
-  Future<Wallet> getWallet() {
-    return _localUserSource.getWallet();
+  Future<Wallet> getWallet(String address) {
+    return _localUserSource.getWallet(address);
   }
 
   @override

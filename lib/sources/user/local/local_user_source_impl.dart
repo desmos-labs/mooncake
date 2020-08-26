@@ -29,9 +29,6 @@ class LocalUserSourceImpl extends LocalUserSource {
   @visibleForTesting
   static const USER_DATA_KEY = "user_data";
 
-  @visibleForTesting
-  static const MNEMONIC_KEY = "mnemonic";
-
   final Database database;
   final NetworkInfo _networkInfo;
   final FlutterSecureStorage _storage;
@@ -84,8 +81,8 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<List<String>> getMnemonic() async {
-    final mnemonic = await _storage.read(key: MNEMONIC_KEY);
+  Future<List<String>> getMnemonic(String address) async {
+    final mnemonic = await _storage.read(key: address);
     if (mnemonic == null) {
       // The mnemonic does not exist, no wallet can be created.
       return null;
@@ -94,8 +91,8 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<Wallet> getWallet() async {
-    final mnemonic = await getMnemonic();
+  Future<Wallet> getWallet(String address) async {
+    final mnemonic = await getMnemonic(address);
     if (mnemonic == null) return null;
     return _generateWalletHelper(mnemonic);
   }
@@ -117,7 +114,8 @@ class LocalUserSourceImpl extends LocalUserSource {
     }
 
     // If the database does not have the user, build it from the address
-    final wallet = await getWallet();
+    // wingman
+    final wallet = await getWallet("wingman");
     final address = wallet?.bech32Address;
 
     // If the address is null return null
