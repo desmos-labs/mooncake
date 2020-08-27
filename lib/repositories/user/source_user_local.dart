@@ -38,7 +38,8 @@ abstract class LocalUserSource {
   Stream<MooncakeAccount> get accountStream;
 
   /// Saves the given [method] as the local user authentication method.
-  Future<void> saveAuthenticationMethod(AuthenticationMethod method);
+  Future<void> saveAuthenticationMethod(
+      String address, AuthenticationMethod method);
 
   /// Returns the currently set authentication method.
   /// If no method has been set yet, returns `null` instead.

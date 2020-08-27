@@ -99,11 +99,11 @@ void main() {
           when(mockRecoverAccountBloc.state)
               .thenAnswer((_) => RecoverAccountState.initial());
           when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
-          when(mockSetAuthenticationMethodUseCase.password(any))
+          when(mockSetAuthenticationMethodUseCase.password("address", any))
               .thenAnswer((_) => Future.value(null));
           when(mockLoginUseCase.login(any))
               .thenAnswer((_) => Future.value(null));
-          bloc.add(SavePassword());
+          bloc.add(SavePassword("address"));
         },
         expect: [
           SetPasswordState(

@@ -51,13 +51,15 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
     } else if (event is TriggerPasswordVisibility) {
       yield state.copyWith(showPassword: !state.showPassword);
     } else if (event is SavePassword) {
-      yield* _mapSavePasswordEventToState();
+      yield* _mapSavePasswordEventToState(event);
     }
   }
 
-  Stream<SetPasswordState> _mapSavePasswordEventToState() async* {
+  Stream<SetPasswordState> _mapSavePasswordEventToState(
+      SavePassword event) async* {
     // Store authentication method
-    await _setAuthenticationMethodUseCase.password(state.inputPassword);
+    await _setAuthenticationMethodUseCase.password(
+        event.address, state.inputPassword);
     yield state.copyWith(savingPassword: true);
 
     // Log In

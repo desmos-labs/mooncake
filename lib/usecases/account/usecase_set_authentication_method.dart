@@ -15,17 +15,20 @@ class SetAuthenticationMethodUseCase {
         _userRepository = userRepository;
 
   /// Sets the current authentication method to be biometric.
-  Future<void> biometrics() {
-    return _userRepository.saveAuthenticationMethod(BiometricAuthentication());
+  Future<void> biometrics(String address) {
+    return _userRepository.saveAuthenticationMethod(
+        address, BiometricAuthentication());
   }
 
   /// Sets the current authentication method to be password-based.
   /// Before storing it locally, the given [clearTextPassword] is hashed
   /// for security purpose.
-  Future<void> password(String clearTextPassword) {
+  Future<void> password(String address, String clearTextPassword) {
     final bytes = utf8.encode(clearTextPassword);
-    return _userRepository.saveAuthenticationMethod(PasswordAuthentication(
-      hashedPassword: sha256.convert(bytes).toString(),
-    ));
+    return _userRepository.saveAuthenticationMethod(
+        address,
+        PasswordAuthentication(
+          hashedPassword: sha256.convert(bytes).toString(),
+        ));
   }
 }

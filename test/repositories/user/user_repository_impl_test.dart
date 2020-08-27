@@ -313,12 +313,13 @@ void main() {
 
   test('saveAuthenticationMethod performs correct calls', () async {
     final method = PasswordAuthentication(hashedPassword: "password");
-    when(localUserSource.saveAuthenticationMethod(any))
+    when(localUserSource.saveAuthenticationMethod("address", any))
         .thenAnswer((_) => Future.value(null));
 
-    await repository.saveAuthenticationMethod(method);
+    await repository.saveAuthenticationMethod("address", method);
 
-    verify(localUserSource.saveAuthenticationMethod(method)).called(1);
+    verify(localUserSource.saveAuthenticationMethod("address", method))
+        .called(1);
   });
 
   test('getAuthenticationMethod performs correct calls', () async {

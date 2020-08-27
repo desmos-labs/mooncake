@@ -412,10 +412,10 @@ void main() {
         value: anyNamed("value"),
       )).thenAnswer((_) => null);
 
-      await source.saveAuthenticationMethod(auth);
+      await source.saveAuthenticationMethod("address", auth);
 
       verify(secureStorage.write(
-        key: LocalUserSourceImpl.AUTHENTICATION_KEY,
+        key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
         value: jsonEncode(auth.toJson()),
       ));
     });
@@ -429,10 +429,10 @@ void main() {
         value: anyNamed("value"),
       )).thenAnswer((_) => null);
 
-      await source.saveAuthenticationMethod(auth);
+      await source.saveAuthenticationMethod("address", auth);
 
       verify(secureStorage.write(
-        key: LocalUserSourceImpl.AUTHENTICATION_KEY,
+        key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
         value: jsonEncode(auth.toJson()),
       ));
     });

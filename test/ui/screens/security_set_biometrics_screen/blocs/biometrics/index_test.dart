@@ -63,14 +63,14 @@ void main() {
             moniker: "john-doe",
             cosmosAccount: cosmosAccount,
           );
-          when(mockSetAuthenticationMethodUseCase.biometrics())
+          when(mockSetAuthenticationMethodUseCase.biometrics("address"))
               .thenAnswer((_) => Future.value(null));
           when(mockRecoverAccountBloc.state)
               .thenAnswer((_) => RecoverAccountState.initial());
           when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
           when(mockLoginUseCase.login(any))
               .thenAnswer((_) => Future.value(null));
-          bloc.add(AuthenticateWithBiometrics());
+          bloc.add(AuthenticateWithBiometrics("address"));
         },
         expect: [
           BiometricsState(

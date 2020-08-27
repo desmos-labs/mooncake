@@ -99,8 +99,9 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> saveAuthenticationMethod(AuthenticationMethod method) {
-    return _localUserSource.saveAuthenticationMethod(method);
+  Future<void> saveAuthenticationMethod(
+      String address, AuthenticationMethod method) {
+    return _localUserSource.saveAuthenticationMethod(address, method);
   }
 
   @override

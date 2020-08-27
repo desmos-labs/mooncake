@@ -45,7 +45,8 @@ abstract class UserRepository {
   Future<void> fundAccount(MooncakeAccount user);
 
   /// Saves the given [method] as the local user authentication method.
-  Future<void> saveAuthenticationMethod(AuthenticationMethod method);
+  Future<void> saveAuthenticationMethod(
+      String address, AuthenticationMethod method);
 
   /// Returns the currently set authentication method.
   Future<AuthenticationMethod> getAuthenticationMethod(String address);

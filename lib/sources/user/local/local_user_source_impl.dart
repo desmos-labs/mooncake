@@ -219,9 +219,11 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<void> saveAuthenticationMethod(AuthenticationMethod method) async {
+  Future<void> saveAuthenticationMethod(
+      String address, AuthenticationMethod method) async {
     final methodString = jsonEncode(method.toJson());
-    await _storage.write(key: AUTHENTICATION_KEY, value: methodString);
+    await _storage.write(
+        key: '${address}.${AUTHENTICATION_KEY}', value: methodString);
   }
 
   @override

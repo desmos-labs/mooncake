@@ -10,8 +10,6 @@ import 'package:mooncake/usecases/usecases.dart';
 
 import '../../../../../mocks/mocks.dart';
 
-
-
 class MockAccountBloc extends Mock implements AccountBloc {}
 
 class MockNavigatorBloc extends Mock implements NavigatorBloc {}
