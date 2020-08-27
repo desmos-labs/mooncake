@@ -106,7 +106,18 @@ class LocalUserSourceImpl extends LocalUserSource {
   @override
   Future<MooncakeAccount> saveAccount(MooncakeAccount data) async {
     await database.transaction((txn) async {
-      await store.record(USER_DATA_KEY).put(txn, data?.toJson());
+      final accounts =
+          await store.record('${USER_DATA_KEY}.${ACCOUNTS}').get(txn) as List ??
+              [];
+      List accountsCopy = [...accounts];
+      accountsCopy = accountsCopy
+          .where((account) =>
+              MooncakeAccount.fromJson(account as Map<String, dynamic>)
+                  .address !=
+              data.address)
+          .toList();
+      accountsCopy.add(data?.toJson());
+      await store.record('${USER_DATA_KEY}.${ACCOUNTS}').put(txn, accountsCopy);
     });
     return data;
   }
