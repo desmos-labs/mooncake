@@ -154,17 +154,33 @@ void main() {
         ),
       );
 
+      final accountTwo = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar.png",
+        moniker: "john-doe",
+        cosmosAccount: CosmosAccount(
+          accountNumber: "153",
+          sequence: "45",
+          address: "address",
+          coins: [
+            StdCoin(amount: "10000", denom: "udaric"),
+          ],
+        ),
+      );
+
       final store = StoreRef.main();
       await store
           .record(
               '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
           .put(
         database,
-        [account.toJson()],
+        [account.toJson(), accountTwo.toJson()],
       );
 
       final stored = await source.getAccount(account.address);
       expect(stored, equals(account));
+
+      final storedTwo = await source.getAccount("noAddress");
+      expect(storedTwo, equals(null));
     });
 
     test('getAccount returns null when no data is saved', () async {
