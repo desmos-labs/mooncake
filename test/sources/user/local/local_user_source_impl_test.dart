@@ -185,6 +185,54 @@ void main() {
       expect(stored.cosmosAccount.accountNumber, equals("2"));
     });
 
+    test('saveAccount works properly on update with active', () async {
+      final accountBeforeUpdate = MooncakeAccount(
+        moniker: null,
+        profilePicUri: null,
+        cosmosAccount: CosmosAccount(
+          address: "address",
+          accountNumber: "2",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      final store = StoreRef.main();
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
+          .put(
+            database,
+            accountBeforeUpdate.toJson(),
+          );
+
+      final account = MooncakeAccount(
+        moniker: null,
+        profilePicUri: null,
+        cosmosAccount: CosmosAccount(
+          address: "address",
+          accountNumber: "1",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      await source.saveAccount(account);
+
+      final record = await store.findFirst(
+        database,
+        finder: Finder(
+            filter: Filter.byKey(
+                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
+      );
+
+      expect(
+          MooncakeAccount.fromJson(
+            record.value as Map<String, dynamic>,
+          ),
+          equals(account));
+    });
+
     test('getAccount returns the correctly stored data', () async {
       final account = MooncakeAccount(
         profilePicUri: "https://example.com/avatar.png",
@@ -280,16 +328,79 @@ void main() {
         ),
       );
 
+      final accountTwo = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar.png",
+        moniker: "john-doe",
+        cosmosAccount: CosmosAccount(
+          accountNumber: "153",
+          sequence: "45",
+          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725s",
+          coins: [
+            StdCoin(amount: "10000", denom: "udaric"),
+          ],
+        ),
+      );
+
       final store = StoreRef.main();
       await store
           .record(
               '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
           .put(
         database,
-        [account.toJson()],
+        [account.toJson(), accountTwo.toJson()],
       );
 
-      expect(await source.getAccounts(), [account]);
+      expect(await source.getAccounts(), [account, accountTwo]);
+    });
+
+    test('setActiveAccount works properly', () async {
+      final account = MooncakeAccount(
+        moniker: null,
+        profilePicUri: null,
+        cosmosAccount: CosmosAccount(
+          address: "address",
+          accountNumber: "1",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      await source.setActiveAccount(account);
+
+      final store = StoreRef.main();
+      final record = await store.findFirst(
+        database,
+        finder: Finder(
+            filter: Filter.byKey(
+                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
+      );
+      final stored = MooncakeAccount.fromJson(
+        record.value as Map<String, dynamic>,
+      );
+      expect(stored, equals(account));
+
+      final accountTwo = MooncakeAccount(
+        moniker: null,
+        profilePicUri: null,
+        cosmosAccount: CosmosAccount(
+          address: "1address",
+          accountNumber: "2",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      await source.setActiveAccount(accountTwo);
+      final recordTwo = await store.findFirst(
+        database,
+        finder: Finder(
+            filter: Filter.byKey(
+                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
+      );
+      final storedTwo = MooncakeAccount.fromJson(
+        recordTwo.value as Map<String, dynamic>,
+      );
+      expect(storedTwo, equals(accountTwo));
     });
   });
 

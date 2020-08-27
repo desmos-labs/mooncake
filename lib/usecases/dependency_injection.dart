@@ -39,6 +39,9 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => SetAuthenticationMethodUseCase(
             userRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => SetAccountActiveUsecase(
+            userRepository: injector.get(),
+          ))
 
       // Biometrics use cases
       ..bindFactory((injector, params) => CanUseBiometricsUseCase(

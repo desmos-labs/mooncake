@@ -17,6 +17,9 @@ abstract class UserRepository {
     bool syncRemote = false,
   });
 
+  /// Takes in a User and sets the account as the current active one.
+  Future<void> setActiveAccount(MooncakeAccount account);
+
   /// Returns the [AccountData] object containing the info of the current user.
   /// If no [MooncakeAccount] or [Wallet] have been saved using [saveWallet]
   /// and the account data cannot be retrieved, returns `null` instead.

@@ -106,18 +106,37 @@ class LocalUserSourceImpl extends LocalUserSource {
   @override
   Future<MooncakeAccount> saveAccount(MooncakeAccount data) async {
     await database.transaction((txn) async {
-      final accounts =
-          await store.record('${USER_DATA_KEY}.${ACCOUNTS}').get(txn) as List ??
-              [];
-      List accountsCopy = [...accounts];
-      accountsCopy = accountsCopy
-          .where((account) =>
-              MooncakeAccount.fromJson(account as Map<String, dynamic>)
-                  .address !=
-              data.address)
-          .toList();
-      accountsCopy.add(data?.toJson());
-      await store.record('${USER_DATA_KEY}.${ACCOUNTS}').put(txn, accountsCopy);
+      Future<void> _updateActiveAccountHelper() async {
+        final active =
+            await store.record('${USER_DATA_KEY}.${ACTIVE}').get(txn);
+        if (active != null &&
+            MooncakeAccount.fromJson(active as Map<String, dynamic>).address ==
+                data.address) {
+          await store
+              .record('${USER_DATA_KEY}.${ACTIVE}')
+              .put(txn, data.toJson());
+        }
+      }
+
+      Future<void> _updateAccountsList() async {
+        final accounts = await store
+                .record('${USER_DATA_KEY}.${ACCOUNTS}')
+                .get(txn) as List ??
+            [];
+        List accountsCopy = [...accounts];
+        accountsCopy = accountsCopy
+            .where((account) =>
+                MooncakeAccount.fromJson(account as Map<String, dynamic>)
+                    .address !=
+                data.address)
+            .toList();
+        accountsCopy.add(data?.toJson());
+        await store
+            .record('${USER_DATA_KEY}.${ACCOUNTS}')
+            .put(txn, accountsCopy);
+      }
+
+      await Future.wait([_updateAccountsList(), _updateActiveAccountHelper()]);
     });
     return data;
   }
@@ -177,6 +196,14 @@ class LocalUserSourceImpl extends LocalUserSource {
     });
 
     return accountsFormatted;
+  }
+
+  @override
+  Future<void> setActiveAccount(MooncakeAccount account) async {
+    await store.record('${USER_DATA_KEY}.${ACTIVE}').put(
+          database,
+          account?.toJson(),
+        );
   }
 
   @override

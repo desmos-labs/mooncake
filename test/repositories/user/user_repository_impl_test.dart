@@ -268,6 +268,18 @@ void main() {
     });
   });
 
+  group('setAccountActive works properly', () {
+    test('works properly', () async {
+      final account = MooncakeAccount.local("address");
+      when(localUserSource.setActiveAccount(account))
+          .thenAnswer((_) => Future.value(null));
+
+      await repository.setActiveAccount(account);
+
+      verify(localUserSource.setActiveAccount(account)).called(1);
+    });
+  });
+
   test('accountStream emits correct events', () {
     final account = MooncakeAccount.local("address");
     final controller = StreamController<MooncakeAccount>();

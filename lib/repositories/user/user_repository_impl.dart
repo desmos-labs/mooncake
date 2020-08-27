@@ -75,6 +75,11 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
+  Future<void> setActiveAccount(MooncakeAccount account) {
+    return _localUserSource.setActiveAccount(account);
+  }
+
+  @override
   Future<MooncakeAccount> refreshAccount(String address) {
     return updateAndStoreAccountData(address);
   }

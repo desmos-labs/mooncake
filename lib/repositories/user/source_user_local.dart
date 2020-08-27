@@ -29,6 +29,10 @@ abstract class LocalUserSource {
   /// If no [User] it will return `null`.
   Future<MooncakeAccount> getActiveAccount();
 
+  /// Returns the [User] that is currently selected.
+  /// If no [User] it will return `null`.
+  Future<void> setActiveAccount(MooncakeAccount account);
+
   /// Returns the [Stream] that emits all the new [User]
   /// once they have been saved.
   Stream<MooncakeAccount> get accountStream;
