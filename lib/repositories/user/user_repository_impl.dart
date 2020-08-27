@@ -20,7 +20,6 @@ class UserRepositoryImpl extends UserRepository {
 
   @visibleForTesting
   Future<MooncakeAccount> updateAndStoreAccountData(String address) async {
-    // wingman update later
     final user = await _localUserSource.getAccount(address);
     if (user == null) {
       // No User stored locally, nothing to update
@@ -68,6 +67,11 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<MooncakeAccount> getAccount(String address) {
     return _localUserSource.getAccount(address);
+  }
+
+  @override
+  Future<List<MooncakeAccount>> getAccounts() {
+    return _localUserSource.getAccounts();
   }
 
   @override

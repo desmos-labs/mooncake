@@ -261,6 +261,36 @@ void main() {
 
       expect(await source.getActiveAccount(), account);
     });
+
+    test('getAccounts returns empty list when no data is saved', () async {
+      expect(await source.getAccounts(), []);
+    });
+
+    test('getAccounts returns list when data is present', () async {
+      final account = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar.png",
+        moniker: "john-doe",
+        cosmosAccount: CosmosAccount(
+          accountNumber: "153",
+          sequence: "45",
+          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
+          coins: [
+            StdCoin(amount: "10000", denom: "udaric"),
+          ],
+        ),
+      );
+
+      final store = StoreRef.main();
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
+          .put(
+        database,
+        [account.toJson()],
+      );
+
+      expect(await source.getAccounts(), [account]);
+    });
   });
 
   group('Authentication method', () {

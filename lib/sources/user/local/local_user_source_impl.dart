@@ -165,6 +165,21 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
+  Future<List<MooncakeAccount>> getAccounts() async {
+    var accounts = await store
+            .record('${USER_DATA_KEY}.${ACCOUNTS}')
+            .get(database) as List ??
+        [];
+    List<MooncakeAccount> accountsFormatted = [];
+    accounts.forEach((account) {
+      accountsFormatted
+          .add(MooncakeAccount.fromJson(account as Map<String, dynamic>));
+    });
+
+    return accountsFormatted;
+  }
+
+  @override
   Stream<MooncakeAccount> get accountStream {
     return store
         .query(finder: Finder(filter: Filter.byKey(USER_DATA_KEY)))

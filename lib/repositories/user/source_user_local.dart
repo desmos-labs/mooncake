@@ -22,6 +22,9 @@ abstract class LocalUserSource {
   /// If no [User] or [Wallet] have been saved yet, returns `null`.
   Future<MooncakeAccount> getAccount(String address);
 
+  /// Returns a `List` of Users localled stored on the device.
+  Future<List<MooncakeAccount>> getAccounts();
+
   /// Returns the [User] that is currently selected.
   /// If no [User] it will return `null`.
   Future<MooncakeAccount> getActiveAccount();

@@ -14,6 +14,11 @@ class GetAccountUseCase {
     return _userRepository.getAccount(address);
   }
 
+  /// Returns all locally stored users
+  Future<List<MooncakeAccount>> all() {
+    return _userRepository.getAccounts();
+  }
+
   /// Returns the current user of the application.
   Future<MooncakeAccount> getActiveAccount() {
     return _userRepository.getActiveAccount();

@@ -47,4 +47,25 @@ void main() {
 
     verify(repository.accountStream).called(1);
   });
+
+  test('getActiveAccount performs correct calls', () async {
+    final account = MooncakeAccount.local("address");
+    when(repository.getActiveAccount())
+        .thenAnswer((_) => Future.value(account));
+
+    final result = await getAccountUseCase.getActiveAccount();
+    expect(result, equals(account));
+
+    verify(repository.getActiveAccount()).called(1);
+  });
+
+  test('all performs correct calls', () async {
+    final account = MooncakeAccount.local("address");
+    when(repository.getAccounts()).thenAnswer((_) => Future.value([account]));
+
+    final result = await getAccountUseCase.all();
+    expect(result, equals([account]));
+
+    verify(repository.getAccounts()).called(1);
+  });
 }
