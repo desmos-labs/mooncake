@@ -438,30 +438,32 @@ void main() {
     });
 
     test('getAuthenticationMethod returns null whe non existing', () async {
-      final authMethod = await source.getAuthenticationMethod();
+      final authMethod = await source.getAuthenticationMethod("address");
       expect(authMethod, isNull);
     });
 
     test('getAuthenticationMethod returns valid biometric data', () async {
       final authMethod = BiometricAuthentication();
-      when(secureStorage.read(key: LocalUserSourceImpl.AUTHENTICATION_KEY))
+      when(secureStorage.read(
+              key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
           .thenAnswer((realInvocation) async {
         return jsonEncode(authMethod.toJson());
       });
 
-      final stored = await source.getAuthenticationMethod();
+      final stored = await source.getAuthenticationMethod("address");
       expect(stored, equals(authMethod));
     });
 
     test('getAuthenticationMethod returns valid biometric data', () async {
       final authMethod = PasswordAuthentication(
           hashedPassword: "202cb962ac59075b964b07152d234b70");
-      when(secureStorage.read(key: LocalUserSourceImpl.AUTHENTICATION_KEY))
+      when(secureStorage.read(
+              key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
           .thenAnswer((realInvocation) async {
         return jsonEncode(authMethod.toJson());
       });
 
-      final stored = await source.getAuthenticationMethod();
+      final stored = await source.getAuthenticationMethod("address");
       expect(stored, equals(authMethod));
     });
   });
@@ -496,7 +498,6 @@ void main() {
     });
 
     test('logout non existing user', () async {
-      print("===here===");
       final account = MooncakeAccount(
         profilePicUri: "https://example.com/avatar",
         moniker: "account",

@@ -104,8 +104,8 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<AuthenticationMethod> getAuthenticationMethod() {
-    return _localUserSource.getAuthenticationMethod();
+  Future<AuthenticationMethod> getAuthenticationMethod(String address) {
+    return _localUserSource.getAuthenticationMethod(address);
   }
 
   @override

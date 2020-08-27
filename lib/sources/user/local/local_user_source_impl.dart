@@ -225,8 +225,9 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<AuthenticationMethod> getAuthenticationMethod() async {
-    final methodString = await _storage.read(key: AUTHENTICATION_KEY);
+  Future<AuthenticationMethod> getAuthenticationMethod(String address) async {
+    final methodString =
+        await _storage.read(key: '${address}.${AUTHENTICATION_KEY}');
     if (methodString == null) {
       return null;
     }

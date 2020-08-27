@@ -48,7 +48,7 @@ abstract class UserRepository {
   Future<void> saveAuthenticationMethod(AuthenticationMethod method);
 
   /// Returns the currently set authentication method.
-  Future<AuthenticationMethod> getAuthenticationMethod();
+  Future<AuthenticationMethod> getAuthenticationMethod(String address);
 
   /// Deletes entirely the currently stored account data.
   Future<void> deleteData();

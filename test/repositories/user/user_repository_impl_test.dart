@@ -323,13 +323,13 @@ void main() {
 
   test('getAuthenticationMethod performs correct calls', () async {
     final method = PasswordAuthentication(hashedPassword: "password");
-    when(localUserSource.getAuthenticationMethod())
+    when(localUserSource.getAuthenticationMethod("address"))
         .thenAnswer((_) => Future.value(method));
 
-    final result = await repository.getAuthenticationMethod();
+    final result = await repository.getAuthenticationMethod("address");
     expect(result, equals(method));
 
-    verify(localUserSource.getAuthenticationMethod()).called(1);
+    verify(localUserSource.getAuthenticationMethod("address")).called(1);
   });
 
   test('deleteData performs correct calls', () async {

@@ -42,7 +42,7 @@ abstract class LocalUserSource {
 
   /// Returns the currently set authentication method.
   /// If no method has been set yet, returns `null` instead.
-  Future<AuthenticationMethod> getAuthenticationMethod();
+  Future<AuthenticationMethod> getAuthenticationMethod(String address);
 
   /// Completely wipes the currently stored wallet for the user.
   Future<void> wipeData();

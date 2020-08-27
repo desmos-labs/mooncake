@@ -21,7 +21,7 @@ class UpdateTab extends HomeEvent {
 }
 
 class SignOut extends HomeEvent {
-  String address;
+  final String address;
   SignOut(this.address);
   @override
   String toString() => 'SignOut';
