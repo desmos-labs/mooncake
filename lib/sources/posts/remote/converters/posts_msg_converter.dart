@@ -46,7 +46,6 @@ class PostsMsgConverter {
           post.optionalData?.isNotEmpty == true ? post.optionalData : null,
       subspace: post.subspace,
       creator: creator,
-      creationDate: post.created,
       medias: post.medias?.isNotEmpty == true ? post.medias : null,
       poll: post.poll == null ? null : _toChainPollData(post.poll),
     );

@@ -6,6 +6,7 @@ class Messages {
 
   // Generic
   static String get dismiss => "dismiss";
+  static String get all => "all";
 
   // Login
   static String get createAccountButtonText => "createAccountButtonText";

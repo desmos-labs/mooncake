@@ -61,11 +61,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(GradientButton), findsNothing);
-    expect(find.byType(FlatButton), findsOneWidget);
-
-    await tester.tap(find.byType(FlatButton));
-    await tester.pumpAndSettle();
-    expect(tester.widget<FlatButton>(find.byType(FlatButton)).onPressed, null);
+    expect(find.byType(GradientButton), findsOneWidget);
+    expect(find.byType(FlatButton), findsNothing);
   });
 }

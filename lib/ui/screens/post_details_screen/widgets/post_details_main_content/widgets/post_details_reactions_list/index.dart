@@ -15,60 +15,14 @@ class PostDetailsReactionsList extends StatelessWidget {
 
         final currentState = state as PostDetailsLoaded;
         return Container(
-          padding: EdgeInsets.only(
-            top: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
-                .layoutExtent,
-          ),
-          child: currentState.reactionsCount == 0
-              ? _emptyReactionsContainer(context)
-              : _reactionsList(context, currentState),
-        );
+            padding: EdgeInsets.only(
+              top: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
+                  .layoutExtent,
+            ),
+            child: currentState.reactionsCount == 0
+                ? EmptyReactions()
+                : ReactionsList(post: currentState.post));
       },
-    );
-  }
-
-  Widget _emptyReactionsContainer(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Expanded(child: Center()),
-          Expanded(
-            child: Center(
-              child: Image.asset("assets/images/smile.png"),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                PostsLocalizations.of(context)
-                    .translate(Messages.noReactionsYet),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _reactionsList(BuildContext context, PostDetailsLoaded state) {
-    return CustomScrollView(
-      shrinkWrap: true,
-      key: PageStorageKey<String>("reactions"),
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return PostReactionItem(
-                reaction: state.reactions[index],
-              );
-            },
-            childCount: state.reactions.length,
-          ),
-        )
-      ],
     );
   }
 }

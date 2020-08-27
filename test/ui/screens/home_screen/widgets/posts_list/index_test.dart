@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mockito/mockito.dart';
-import 'package:mooncake/ui/ui.dart';
-import '../../../../../mocks/posts.dart';
-import '../../../../helper.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/screens/home_screen/widgets/export.dart';
 import 'package:mooncake/ui/screens/home_screen/widgets/posts_list/widgets/export.dart';
+import 'package:mooncake/ui/ui.dart';
+
+import '../../../../../mocks/mocks.dart';
+import '../../../../helper.dart';
 
 void main() {
   testWidgets('PostsList: Displays correctly', (WidgetTester tester) async {
@@ -16,14 +17,7 @@ void main() {
     MooncakeAccount userAccount = MooncakeAccount(
       profilePicUri: "https://example.com/avatar.png",
       moniker: "john-doe",
-      cosmosAccount: CosmosAccount(
-        accountNumber: 153,
-        address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-        coins: [
-          StdCoin(amount: "10000", denom: "udaric"),
-        ],
-        sequence: 45,
-      ),
+      cosmosAccount: cosmosAccount,
     );
     when(mockPostsListBloc.state)
         .thenReturn(PostsLoaded.first(posts: testPosts));
@@ -42,7 +36,8 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 3));
+
     expect(find.byType(PostsLoadingEmptyContainer), findsNothing);
     expect(find.byType(PostListItem), findsWidgets);
     expect(find.byType(CustomScrollView), findsOneWidget);
@@ -56,14 +51,7 @@ void main() {
     MooncakeAccount userAccount = MooncakeAccount(
       profilePicUri: "https://example.com/avatar.png",
       moniker: "john-doe",
-      cosmosAccount: CosmosAccount(
-        accountNumber: 153,
-        address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-        coins: [
-          StdCoin(amount: "10000", denom: "udaric"),
-        ],
-        sequence: 45,
-      ),
+      cosmosAccount: cosmosAccount,
     );
 
     Post testErrorPost = testPost.copyWith(
@@ -91,7 +79,7 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 3));
     expect(find.byType(ErrorPostMessage), findsOneWidget);
     expect(find.byType(ErrorPost), findsOneWidget);
     expect(find.byIcon(MooncakeIcons.syncing), findsOneWidget);

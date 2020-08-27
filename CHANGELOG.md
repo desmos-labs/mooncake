@@ -1,10 +1,12 @@
-# Version 0.5.0
-## Changes
-- Improved how failed-to-sync posts are displayed
-- Added the possibility of retry the sync or deleting failed-to-sync posts
-- Improve the account creation flow to allow the user to go back to the login page
+# Version 0.4.4
+## Bug fixes
+- Fixed some synchronization bugs
 
 # Version 0.4.3
+## Changes
+- Improved how failed-to-sync posts are displayed
+- Added the possibility of retrying the sync or deleting failed-to-sync posts
+
 ## Bug fixes
 - Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup
 - Fixed the registration flow to allow the user to return back to the login page

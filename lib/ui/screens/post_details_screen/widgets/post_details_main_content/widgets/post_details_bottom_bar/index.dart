@@ -27,7 +27,6 @@ class PostDetailsBottomBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 PostCommentAction(post: state.post),
-                PostLikeAction(post: state.post, isLiked: state.isLiked),
                 PostAddReactionAction(post: state.post),
               ],
             ),
