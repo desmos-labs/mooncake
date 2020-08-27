@@ -112,4 +112,9 @@ class UserRepositoryImpl extends UserRepository {
   Future<void> deleteData() {
     return _localUserSource.wipeData();
   }
+
+  @override
+  Future<void> logout(String account) {
+    return _localUserSource.logout(account);
+  }
 }

@@ -52,4 +52,7 @@ abstract class UserRepository {
 
   /// Deletes entirely the currently stored account data.
   Future<void> deleteData();
+
+  /// Deletes entirely the currently stored account data.
+  Future<void> logout(String address);
 }

@@ -14,10 +14,10 @@ void main() {
   });
 
   test('logout performs correct calls', () async {
-    when(repository.deleteData()).thenAnswer((_) => Future.value(null));
+    when(repository.logout("address")).thenAnswer((_) => Future.value(null));
 
-    await logoutUseCase.logout();
+    await logoutUseCase.logout("address");
 
-    verify(repository.deleteData()).called(1);
+    verify(repository.logout("address")).called(1);
   });
 }

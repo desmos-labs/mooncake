@@ -241,4 +241,40 @@ class LocalUserSourceImpl extends LocalUserSource {
     await _storage.deleteAll();
     await store.delete(database);
   }
+
+  @override
+  Future<void> logout(String address) async {
+    // remove from list of accounts
+    final accounts = await store
+            .record('${USER_DATA_KEY}.${ACCOUNTS}')
+            .get(database) as List ??
+        [];
+    final updatedAccountsList = accounts
+        .where((account) =>
+            MooncakeAccount.fromJson(account as Map<String, dynamic>).address !=
+            address)
+        .toList();
+    if (updatedAccountsList.isEmpty) {
+      return wipeData();
+    }
+    await store
+        .record('${USER_DATA_KEY}.${ACCOUNTS}')
+        .put(database, updatedAccountsList);
+
+    // remove wallet
+    await _storage.delete(key: address);
+
+    // switch active account if necessary
+    final active =
+        await store.record('${USER_DATA_KEY}.${ACTIVE}').get(database);
+    if (active != null &&
+        MooncakeAccount.fromJson(active as Map<String, dynamic>).address ==
+            address) {
+      // switch to a new active
+      await setActiveAccount(
+        MooncakeAccount.fromJson(
+            updatedAccountsList[0] as Map<String, dynamic>),
+      );
+    }
+  }
 }

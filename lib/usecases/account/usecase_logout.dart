@@ -10,7 +10,9 @@ class LogoutUseCase {
         _userRepository = userRepository;
 
   /// Log outs the user from the application.
-  Future<void> logout() {
-    return _userRepository.deleteData();
+  Future<void> logout(String address) {
+    // wingman
+    // return _userRepository.deleteData(address);
+    return _userRepository.logout(address);
   }
 }

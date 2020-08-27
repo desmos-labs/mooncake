@@ -466,7 +466,7 @@ void main() {
     });
   });
 
-  group('Data wiping', () {
+  group('Data wiping and logout', () {
     test('correctly deletes data', () async {
       final account = MooncakeAccount(
         profilePicUri: "https://example.com/avatar",
@@ -493,6 +493,102 @@ void main() {
       final count = await store.count(database);
       expect(count, isZero);
       verify(secureStorage.deleteAll());
+    });
+
+    test('logout correctly deletes one user', () async {
+      final account = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar",
+        moniker: "account",
+        cosmosAccount: CosmosAccount(
+          address: "address",
+          accountNumber: "1",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      final store = StoreRef.main();
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
+          .put(
+        database,
+        [account.toJson()],
+      );
+
+      when(secureStorage.deleteAll())
+          .thenAnswer((realInvocation) => Future.value(null));
+
+      await source.logout(account.address);
+
+      final count = await store.count(database);
+      expect(count, isZero);
+      verify(secureStorage.deleteAll()).called(1);
+    });
+
+    test('logout correctly deletes one user if multi account exist', () async {
+      final account = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar",
+        moniker: "account",
+        cosmosAccount: CosmosAccount(
+          address: "address",
+          accountNumber: "1",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      final accountTwo = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar",
+        moniker: "account",
+        cosmosAccount: CosmosAccount(
+          address: "address2",
+          accountNumber: "12",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      final store = StoreRef.main();
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
+          .put(
+            database,
+            account.toJson(),
+          );
+
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
+          .put(
+        database,
+        [account.toJson(), accountTwo.toJson()],
+      );
+
+      await source.logout(account.address);
+
+      verifyNever(secureStorage.deleteAll());
+      final recordTwo = await store.findFirst(
+        database,
+        finder: Finder(
+            filter: Filter.byKey(
+                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
+      );
+      final storedTwo = MooncakeAccount.fromJson(
+        recordTwo.value as Map<String, dynamic>,
+      );
+      expect(storedTwo, equals(accountTwo));
+
+      final allAccounts = await store.findFirst(
+        database,
+        finder: Finder(
+            filter: Filter.byKey(
+                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')),
+      );
+
+      final allAccountsValues = allAccounts.value as List;
+      expect(allAccountsValues.length, equals(1));
     });
   });
 }

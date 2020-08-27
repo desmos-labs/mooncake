@@ -339,4 +339,13 @@ void main() {
 
     verify(localUserSource.wipeData()).called(1);
   });
+
+  test('logout performs correct calls', () async {
+    when(localUserSource.logout("account"))
+        .thenAnswer((_) => Future.value(null));
+
+    await repository.logout("account");
+
+    verify(localUserSource.logout("account")).called(1);
+  });
 }

@@ -46,4 +46,7 @@ abstract class LocalUserSource {
 
   /// Completely wipes the currently stored wallet for the user.
   Future<void> wipeData();
+
+  /// Completely wipes the currently stored wallet for the selected user.
+  Future<void> logout(String address);
 }
