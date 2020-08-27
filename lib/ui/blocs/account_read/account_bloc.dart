@@ -101,7 +101,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       await _saveSettingUseCase.save(key: SETTING_FIRST_START, value: false);
     }
 
-    final account = await _getUserUseCase.single();
+    final account = await _getUserUseCase.getActiveAccount();
     if (account != null) {
       await _analytics.setUserId(account.address);
       await _analytics.logLogin();
@@ -124,7 +124,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well
   /// as sending the user to the Home screen.
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
-    final account = await _getUserUseCase.single();
+    final account = await _getUserUseCase.getActiveAccount();
     yield LoggedIn.initial(account);
     _navigatorBloc.add(NavigateToHome());
   }

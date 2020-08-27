@@ -20,7 +20,7 @@ class VotePollUseCase {
   /// The option will have the address of the current user, and the value
   /// that is given inside the provided [option].
   Future<Post> vote(Post post, PollOption option) async {
-    final account = await _userRepository.getAccount();
+    final account = await _userRepository.getActiveAccount();
 
     final pollAnswers = List<PollAnswer>()..addAll(post.poll.userAnswers);
     final userAnswer = pollAnswers.firstWhere(

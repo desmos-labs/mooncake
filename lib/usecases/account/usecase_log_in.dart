@@ -19,7 +19,8 @@ class LoginUseCase {
     // Get the account data
     final user = await _userRepository.refreshAccount();
     assert(user != null);
-
+    // wingman
+    // on login we want to set this as the active account
     // If needed, send the funds to the user
     if (user.needsFunding) {
       await _userRepository.fundAccount(user);

@@ -415,7 +415,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       final MooncakeAccount user = await _getAccountUseCase.getActiveAccount();
       // Show the snackbar
       yield currentState.copyWith(syncingPosts: true);
-      // wingman make a usecase
       // Wait for the sync
       yield await _syncPostsUseCase.sync(user.address).catchError((error) {
         print("Sync error: $error");

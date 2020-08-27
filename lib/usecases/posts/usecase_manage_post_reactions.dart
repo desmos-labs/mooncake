@@ -27,7 +27,7 @@ class ManagePostReactionsUseCase {
       return post;
     }
 
-    final account = await _userRepository.getAccount();
+    final account = await _userRepository.getActiveAccount();
     final newReactions = post.reactions.removeOrAdd(account, reaction);
     post = post.copyWith(
       reactions: newReactions,

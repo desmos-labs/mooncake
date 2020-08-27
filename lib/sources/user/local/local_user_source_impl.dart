@@ -30,6 +30,9 @@ class LocalUserSourceImpl extends LocalUserSource {
   static const USER_DATA_KEY = "user_data";
 
   @visibleForTesting
+  static const ACCOUNTS = "accounts";
+
+  @visibleForTesting
   static const ACTIVE = "active";
 
   final Database database;
@@ -119,24 +122,31 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Future<MooncakeAccount> getAccount() async {
+  Future<MooncakeAccount> getAccount(String address) async {
     // Try getting the user from the database
-    final record = await store.record(USER_DATA_KEY).get(database);
+    final accounts = await store
+            .record('${USER_DATA_KEY}.${ACCOUNTS}')
+            .get(database) as List ??
+        [];
+    final record = accounts.firstWhere(
+      (account) =>
+          MooncakeAccount.fromJson(account as Map<String, dynamic>).address ==
+          address,
+      orElse: () => null,
+    );
     if (record != null) {
       return MooncakeAccount.fromJson(record as Map<String, dynamic>);
     }
 
-    // If the database does not have the user, build it from the address
-    // wingman update later
-    final wallet = await getWallet("wingman");
-    final address = wallet?.bech32Address;
+    // If the database does not have the user, see if wallet exist
+    final wallet = await getWallet(address);
 
     // If the address is null return null
-    if (address == null) {
+    if (wallet == null) {
       return null;
     }
 
-    // Build the user from the address and save it
+    // Build the user if wallet exists
     final user = MooncakeAccount.local(address);
     await saveAccount(user);
 

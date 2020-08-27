@@ -20,7 +20,7 @@ abstract class UserRepository {
   /// Returns the [AccountData] object containing the info of the current user.
   /// If no [MooncakeAccount] or [Wallet] have been saved using [saveWallet]
   /// and the account data cannot be retrieved, returns `null` instead.
-  Future<MooncakeAccount> getAccount();
+  Future<MooncakeAccount> getAccount(String address);
 
   /// Returns the [AccountData] object containing the info of the current user.
   /// If no [MooncakeAccount] or [Wallet] have been saved using [saveWallet]

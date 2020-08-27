@@ -35,7 +35,8 @@ void main() {
       final mockWallet = MockWallet();
       when(localUserSource.saveWallet(any))
           .thenAnswer((_) => Future.value(mockWallet));
-      when(localUserSource.getAccount()).thenAnswer((_) => Future.value(user));
+      when(localUserSource.getAccount(user.address))
+          .thenAnswer((_) => Future.value(user));
 
       when(remoteUserSource.getAccount(any))
           .thenAnswer((realInvocation) => Future.value(null));
@@ -45,7 +46,7 @@ void main() {
 
       verifyInOrder([
         localUserSource.saveWallet(wallet),
-        localUserSource.getAccount(),
+        localUserSource.getAccount(user.address),
         remoteUserSource.getAccount(user.address),
       ]);
       verifyNever(localUserSource.saveAccount(any));
@@ -56,7 +57,8 @@ void main() {
       final mockWallet = MockWallet();
       when(localUserSource.saveWallet(any))
           .thenAnswer((_) => Future.value(mockWallet));
-      when(localUserSource.getAccount()).thenAnswer((_) => Future.value(user));
+      when(localUserSource.getAccount(user.address))
+          .thenAnswer((_) => Future.value(user));
 
       final remoteAccount = MooncakeAccount(
         cosmosAccount: CosmosAccount.offline("address"),
@@ -70,7 +72,7 @@ void main() {
 
       verifyInOrder([
         localUserSource.saveWallet(wallet),
-        localUserSource.getAccount(),
+        localUserSource.getAccount(user.address),
         remoteUserSource.getAccount(user.address),
         localUserSource.saveAccount(remoteAccount)
       ]);
@@ -148,29 +150,31 @@ void main() {
 
   group('getAccount works properly', () {
     test('when account does not exist locally', () async {
-      when(localUserSource.getAccount()).thenAnswer((_) => Future.value(null));
+      when(localUserSource.getAccount("address"))
+          .thenAnswer((_) => Future.value(null));
 
-      final result = await repository.getAccount();
+      final result = await repository.getAccount("address");
       expect(result, isNull);
 
-      verify(localUserSource.getAccount()).called(1);
+      verify(localUserSource.getAccount("address")).called(1);
     });
 
     test('when account exists locally', () async {
       final account = MooncakeAccount.local("address");
-      when(localUserSource.getAccount())
+      when(localUserSource.getAccount(account.address))
           .thenAnswer((_) => Future.value(account));
 
-      final result = await repository.getAccount();
+      final result = await repository.getAccount(account.address);
       expect(result, equals(account));
 
-      verify(localUserSource.getAccount()).called(1);
+      verify(localUserSource.getAccount(account.address)).called(1);
     });
   });
 
   group('getActiveAccount works properly', () {
     test('when account does not exist locally', () async {
-      when(localUserSource.getAccount()).thenAnswer((_) => Future.value(null));
+      when(localUserSource.getActiveAccount())
+          .thenAnswer((_) => Future.value(null));
 
       final result = await repository.getActiveAccount();
       expect(result, isNull);
@@ -192,18 +196,19 @@ void main() {
 
   group('refreshAccount works properly', () {
     test('when account does not exist locally', () async {
-      when(localUserSource.getAccount()).thenAnswer((_) => Future.value(null));
+      when(localUserSource.getAccount("address"))
+          .thenAnswer((_) => Future.value(null));
 
       final stored = await repository.refreshAccount();
       expect(stored, isNull);
 
-      verify(localUserSource.getAccount()).called(1);
+      verify(localUserSource.getAccount("address")).called(1);
       verifyNever(remoteUserSource.getAccount(any));
     });
 
     test('when the account existing locally but not on chain', () async {
       final account = MooncakeAccount.local("address");
-      when(localUserSource.getAccount())
+      when(localUserSource.getAccount(account.address))
           .thenAnswer((_) => Future.value(account));
       when(remoteUserSource.getAccount(any))
           .thenAnswer((_) => Future.value(null));
@@ -212,7 +217,7 @@ void main() {
       expect(stored, equals(account));
 
       verifyInOrder([
-        localUserSource.getAccount(),
+        localUserSource.getAccount(account.address),
         remoteUserSource.getAccount(account.address),
       ]);
 
@@ -221,7 +226,7 @@ void main() {
 
     test('when account existing locally and on-chain', () async {
       final account = MooncakeAccount.local("address");
-      when(localUserSource.getAccount())
+      when(localUserSource.getAccount(account.address))
           .thenAnswer((_) => Future.value(account));
 
       final remoteAccount = account.copyWith(moniker: "test-moniker");
@@ -234,7 +239,7 @@ void main() {
       expect(stored, equals(remoteAccount));
 
       verifyInOrder([
-        localUserSource.getAccount(),
+        localUserSource.getAccount(account.address),
         remoteUserSource.getAccount(account.address),
         localUserSource.saveAccount(remoteAccount),
       ]);

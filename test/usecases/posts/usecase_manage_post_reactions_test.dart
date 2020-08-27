@@ -25,7 +25,8 @@ void main() {
 
   test('addOrRemove adds correctly a missing reaction', () async {
     final account = MooncakeAccount.local("address");
-    when(userRepository.getAccount()).thenAnswer((_) => Future.value(account));
+    when(userRepository.getActiveAccount())
+        .thenAnswer((_) => Future.value(account));
     when(postsRepository.savePost(any)).thenAnswer((_) => Future.value(null));
 
     final post = testPost.copyWith(reactions: []);
@@ -40,7 +41,7 @@ void main() {
     expect(result, equals(savedPost));
 
     verifyInOrder([
-      userRepository.getAccount(),
+      userRepository.getActiveAccount(),
       postsRepository.savePost(savedPost),
     ]);
   });

@@ -18,12 +18,13 @@ void main() {
 
   test('single performs correct calls', () async {
     final account = MooncakeAccount.local("address");
-    when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+    when(repository.getAccount(account.address))
+        .thenAnswer((_) => Future.value(account));
 
-    final result = await getAccountUseCase.single();
+    final result = await getAccountUseCase.single(account.address);
     expect(result, equals(account));
 
-    verify(repository.getAccount()).called(1);
+    verify(repository.getAccount(account.address)).called(1);
   });
 
   test('stream performs correct calls', () {

@@ -10,8 +10,8 @@ class GetAccountUseCase {
       : this._userRepository = userRepository;
 
   /// Returns the current user of the application.
-  Future<MooncakeAccount> single() {
-    return _userRepository.getAccount();
+  Future<MooncakeAccount> single(String address) {
+    return _userRepository.getAccount(address);
   }
 
   /// Returns the current user of the application.

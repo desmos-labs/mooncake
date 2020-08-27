@@ -20,7 +20,7 @@ class CreatePostUseCase {
     List<PostMedia> medias,
     PostPoll poll,
   }) async {
-    final account = await _userRepository.getAccount();
+    final account = await _userRepository.getActiveAccount();
     final date = Post.getDateStringNow();
     return Post(
       id: date,

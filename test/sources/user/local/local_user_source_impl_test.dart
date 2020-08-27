@@ -155,17 +155,20 @@ void main() {
       );
 
       final store = StoreRef.main();
-      await store.record(LocalUserSourceImpl.USER_DATA_KEY).put(
-            database,
-            account.toJson(),
-          );
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
+          .put(
+        database,
+        [account.toJson()],
+      );
 
-      final stored = await source.getAccount();
+      final stored = await source.getAccount(account.address);
       expect(stored, equals(account));
     });
 
     test('getAccount returns null when no data is saved', () async {
-      expect(await source.getAccount(), isNull);
+      expect(await source.getAccount("account"), isNull);
     });
 
     test('getActiveAccount returns null when no data is saved', () async {
