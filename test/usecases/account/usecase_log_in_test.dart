@@ -27,7 +27,7 @@ void main() {
         ),
       );
       when(repository.saveWallet(any)).thenAnswer((_) => Future.value(wallet));
-      when(repository.refreshAccount())
+      when(repository.refreshAccount(account.address))
           .thenAnswer((_) => Future.value(account));
 
       final mnemonic = "mnemonic";
@@ -35,7 +35,7 @@ void main() {
 
       verifyInOrder([
         repository.saveWallet(mnemonic),
-        repository.refreshAccount(),
+        repository.refreshAccount(account.address),
       ]);
       verifyNever(repository.fundAccount(any));
     });
@@ -44,7 +44,7 @@ void main() {
       final wallet = MockWallet();
       final account = MooncakeAccount.local("address");
       when(repository.saveWallet(any)).thenAnswer((_) => Future.value(wallet));
-      when(repository.refreshAccount())
+      when(repository.refreshAccount(account.address))
           .thenAnswer((_) => Future.value(account));
       when(repository.fundAccount(any)).thenAnswer((_) => Future.value(null));
 
@@ -53,7 +53,7 @@ void main() {
 
       verifyInOrder([
         repository.saveWallet(mnemonic),
-        repository.refreshAccount(),
+        repository.refreshAccount(account.address),
         repository.fundAccount(account),
       ]);
     });

@@ -17,7 +17,7 @@ class LoginUseCase {
     Wallet wallet = await _userRepository.saveWallet(mnemonic);
 
     // Get the account data
-    final user = await _userRepository.refreshAccount();
+    final user = await _userRepository.refreshAccount(wallet.bech32Address);
     assert(user != null);
     // wingman
     // on login we want to set this as the active account

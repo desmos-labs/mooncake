@@ -29,7 +29,7 @@ abstract class UserRepository {
 
   /// Refreshes the user account downloading the data from the remote source.
   /// Returns the updated [MooncakeAccount] value.
-  Future<MooncakeAccount> refreshAccount();
+  Future<MooncakeAccount> refreshAccount(String address);
 
   /// Returns a stream that emits all the user changes.
   Stream<MooncakeAccount> get accountStream;

@@ -143,7 +143,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final currentState = state;
     if (currentState is LoggedIn) {
       yield currentState.copyWith(refreshing: true);
-      await _refreshAccountUseCase.refresh();
+      await _refreshAccountUseCase.refresh(currentState.user.address);
       yield currentState.copyWith(refreshing: false);
     }
   }

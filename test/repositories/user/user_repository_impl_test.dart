@@ -199,7 +199,7 @@ void main() {
       when(localUserSource.getAccount("address"))
           .thenAnswer((_) => Future.value(null));
 
-      final stored = await repository.refreshAccount();
+      final stored = await repository.refreshAccount("address");
       expect(stored, isNull);
 
       verify(localUserSource.getAccount("address")).called(1);
@@ -213,7 +213,7 @@ void main() {
       when(remoteUserSource.getAccount(any))
           .thenAnswer((_) => Future.value(null));
 
-      final stored = await repository.refreshAccount();
+      final stored = await repository.refreshAccount(account.address);
       expect(stored, equals(account));
 
       verifyInOrder([
@@ -235,7 +235,7 @@ void main() {
       when(localUserSource.saveAccount(any))
           .thenAnswer((_) => Future.value(remoteAccount));
 
-      final stored = await repository.refreshAccount();
+      final stored = await repository.refreshAccount(account.address);
       expect(stored, equals(remoteAccount));
 
       verifyInOrder([

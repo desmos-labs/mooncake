@@ -19,9 +19,9 @@ class UserRepositoryImpl extends UserRepository {
         this._remoteUserSource = remoteUserSource;
 
   @visibleForTesting
-  Future<MooncakeAccount> updateAndStoreAccountData() async {
+  Future<MooncakeAccount> updateAndStoreAccountData(String address) async {
     // wingman update later
-    final user = await _localUserSource.getAccount("address");
+    final user = await _localUserSource.getAccount(address);
     if (user == null) {
       // No User stored locally, nothing to update
       return null;
@@ -35,7 +35,7 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<Wallet> saveWallet(String mnemonic) async {
     return _localUserSource.saveWallet(mnemonic).then((Wallet wallet) async {
-      await updateAndStoreAccountData();
+      await updateAndStoreAccountData(wallet.bech32Address);
       return wallet;
     });
   }
@@ -71,8 +71,8 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<MooncakeAccount> refreshAccount() {
-    return updateAndStoreAccountData();
+  Future<MooncakeAccount> refreshAccount(String address) {
+    return updateAndStoreAccountData(address);
   }
 
   Future<MooncakeAccount> getActiveAccount() {

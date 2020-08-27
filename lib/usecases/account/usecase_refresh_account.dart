@@ -11,7 +11,7 @@ class RefreshAccountUseCase {
         _userRepository = userRepository;
 
   /// Refreshes the account an emits any new change using the proper stream.
-  Future<void> refresh() {
-    return _userRepository.refreshAccount();
+  Future<void> refresh(String address) {
+    return _userRepository.refreshAccount(address);
   }
 }
