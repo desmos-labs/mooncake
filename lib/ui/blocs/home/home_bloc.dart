@@ -13,7 +13,6 @@ import '../export.dart';
 /// Represents the Bloc associated with the home screen.
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AccountBloc _loginBloc;
-  final LogoutUseCase _logoutUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
   final WatchSettingUseCase _watchSettingUseCase;
   final GetSettingUseCase _getSettingUseCase;
@@ -22,14 +21,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({
     @required AccountBloc loginBloc,
-    @required LogoutUseCase logoutUseCase,
     @required SaveSettingUseCase saveSettingUseCase,
     @required WatchSettingUseCase watchSettingUseCase,
     @required GetSettingUseCase getSettingUseCase,
   })  : assert(loginBloc != null),
         _loginBloc = loginBloc,
-        assert(logoutUseCase != null),
-        _logoutUseCase = logoutUseCase,
         assert(saveSettingUseCase != null),
         _saveSettingUseCase = saveSettingUseCase,
         assert(watchSettingUseCase != null),
@@ -42,7 +38,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   factory HomeBloc.create(BuildContext context) {
     return HomeBloc(
       loginBloc: BlocProvider.of(context),
-      logoutUseCase: Injector.get(),
       saveSettingUseCase: Injector.get(),
       watchSettingUseCase: Injector.get(),
       getSettingUseCase: Injector.get(),
@@ -59,8 +54,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is UpdateTab) {
       yield state.copyWith(activeTab: event.tab);
     } else if (event is SignOut) {
-      _mapSignOutToState();
-      _loginBloc.add(LogOut());
+      _mapSignOutToState(event);
     } else if (event is ShowBackupMnemonicPhrasePopup) {
       yield* _mapShowBackupMnemonicPhrasePopupToState();
     } else if (event is HideBackupMnemonicPhrasePopup) {
@@ -90,9 +84,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   /// handles SignOut [event]
-  void _mapSignOutToState() async {
+  void _mapSignOutToState(SignOut event) {
     this._stopSubscription();
-    await _logoutUseCase.logout();
+    _loginBloc.add(LogOut(event.address));
   }
 
   /// Stops all valid subscriptions

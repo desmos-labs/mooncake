@@ -9,10 +9,13 @@ class LogoutUseCase {
       : assert(userRepository != null),
         _userRepository = userRepository;
 
-  /// Log outs the user from the application.
+  /// Log outs the user from the application based on the address.
   Future<void> logout(String address) {
-    // wingman
-    // return _userRepository.deleteData(address);
     return _userRepository.logout(address);
+  }
+
+  /// Log outs all the user from the application.
+  Future<void> logoutAll() {
+    return _userRepository.deleteData();
   }
 }

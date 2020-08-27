@@ -20,7 +20,10 @@ AppBar accountAppBar(BuildContext context) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonicAuth());
     } else if (option == actions[2]) {
       // Logout
-      BlocProvider.of<AccountBloc>(context).add(LogOut());
+      BlocProvider.of<AccountBloc>(context).add(LogOut(
+          (BlocProvider.of<AccountBloc>(context).state as LoggedIn)
+              .user
+              .address));
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
     }
   }

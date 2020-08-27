@@ -49,6 +49,17 @@ class UserRefreshed extends AccountEvent {
 
 /// Tells the Bloc to log out the user from the application.
 class LogOut extends AccountEvent {
+  final String address;
+  LogOut(this.address);
   @override
   String toString() => 'LogOut';
+
+  @override
+  List<Object> get props => [address];
+}
+
+/// Tells the Bloc to log out all user from the application.
+class LogOutAll extends AccountEvent {
+  @override
+  String toString() => 'LogOutAll';
 }

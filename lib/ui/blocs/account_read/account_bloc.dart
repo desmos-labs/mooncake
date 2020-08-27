@@ -83,11 +83,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     } else if (event is LogIn) {
       yield* _mapLogInEventToState(event);
     } else if (event is LogOut) {
-      yield* _mapLogOutEventToState();
+      yield* _mapLogOutEventToState(event);
     } else if (event is UserRefreshed) {
       yield* _mapRefreshEventToState(event);
     } else if (event is RefreshAccount) {
       yield* _mapRefreshAccountEventToState();
+    } else if (event is LogOutAll) {
+      yield* _mapLogOutAllEventToState();
     }
   }
 
@@ -97,7 +99,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     // Remove any info if it's the first start
     final firstStart = await _getSettingUseCase.get(key: SETTING_FIRST_START);
     if (firstStart as bool ?? true) {
-      await _logoutUseCase.logout();
+      await _logoutUseCase.logoutAll();
       await _saveSettingUseCase.save(key: SETTING_FIRST_START, value: false);
     }
 
@@ -131,9 +133,17 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   /// Handles the [LogOut] event emitting the [LoggedOut] state after
   /// effectively logging out the user.
-  Stream<AccountState> _mapLogOutEventToState() async* {
+  Stream<AccountState> _mapLogOutEventToState(LogOut event) async* {
     await _analytics.logEvent(name: Constants.EVENT_LOGOUT);
-    await _logoutUseCase.logout();
+    await _logoutUseCase.logout(event.address);
+    yield LoggedOut();
+  }
+
+  /// Handles the [LogOutAll] event emitting the [LoggedOut] state after
+  /// effectively logging out all user.
+  Stream<AccountState> _mapLogOutAllEventToState() async* {
+    await _analytics.logEvent(name: Constants.EVENT_LOGOUT);
+    await _logoutUseCase.logoutAll();
     yield LoggedOut();
   }
 

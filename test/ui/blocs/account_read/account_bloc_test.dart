@@ -164,12 +164,21 @@ void main() {
       blocTest(
         'LogOut: to work properly',
         build: () async {
+          return accountBloc;
+        },
+        act: (bloc) async => bloc.add(LogOut("address")),
+        expect: [LoggedOut()],
+      );
+
+      blocTest(
+        'LogOutAll: to work properly',
+        build: () async {
           when(mockGetAccountUseCase.getActiveAccount()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;
         },
-        act: (bloc) async => bloc.add(LogOut()),
+        act: (bloc) async => bloc.add(LogOutAll()),
         expect: [LoggedOut()],
       );
 

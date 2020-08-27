@@ -254,6 +254,7 @@ class LocalUserSourceImpl extends LocalUserSource {
             MooncakeAccount.fromJson(account as Map<String, dynamic>).address !=
             address)
         .toList();
+
     if (updatedAccountsList.isEmpty) {
       return wipeData();
     }

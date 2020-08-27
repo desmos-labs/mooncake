@@ -41,6 +41,6 @@ void main() {
 
     await tester.tap(find.byType(SecondaryDarkButton));
     await tester.pump(const Duration(seconds: 3));
-    expect(verify(mockAccountBloc.add(LogOut())).callCount, 1);
+    expect(verify(mockAccountBloc.add(LogOutAll())).callCount, 1);
   });
 }

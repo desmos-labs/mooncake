@@ -495,6 +495,52 @@ void main() {
       verify(secureStorage.deleteAll());
     });
 
+    test('logout non existing user', () async {
+      print("===here===");
+      final account = MooncakeAccount(
+        profilePicUri: "https://example.com/avatar",
+        moniker: "account",
+        cosmosAccount: CosmosAccount(
+          address: "address",
+          accountNumber: "1",
+          sequence: "1",
+          coins: [],
+        ),
+      );
+
+      final store = StoreRef.main();
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
+          .put(
+        database,
+        [account.toJson()],
+      );
+
+      await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
+          .put(
+            database,
+            account.toJson(),
+          );
+
+      await source.logout("impossibleAddress");
+
+      verifyNever(secureStorage.deleteAll());
+
+      final active = await store
+          .record(
+              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
+          .get(database);
+      expect(
+        MooncakeAccount.fromJson(
+          active as Map<String, dynamic>,
+        ),
+        equals(account),
+      );
+    });
+
     test('logout correctly deletes one user', () async {
       final account = MooncakeAccount(
         profilePicUri: "https://example.com/avatar",
