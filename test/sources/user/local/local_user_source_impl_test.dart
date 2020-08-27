@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/account/export.dart';
@@ -115,527 +116,350 @@ void main() {
   });
 
   group('Account', () {
-    test('saveAccount works properly', () async {
-      final account = MooncakeAccount(
-        moniker: null,
-        profilePicUri: null,
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
+    group('saveAccount', () {
+      final account = MooncakeAccount.local("address");
 
-      await source.saveAccount(account);
+      test('stores the account with no existing ones', () async {
+        await source.saveAccount(account);
 
-      final store = StoreRef.main();
-      final record = await store.findFirst(
-        database,
-        finder: Finder(
-            filter: Filter.byKey(
-                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')),
-      );
-      final stored = MooncakeAccount.fromJson(
-        record.value[0] as Map<String, dynamic>,
-      );
-      expect(stored, equals(account));
-    });
-
-    test('saveAccount updates and replaces existing account', () async {
-      final account = MooncakeAccount(
-        moniker: null,
-        profilePicUri: null,
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
-
-      final accountUpdate = MooncakeAccount(
-        moniker: null,
-        profilePicUri: null,
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "2",
-          sequence: "1",
-          coins: [],
-        ),
-      );
-
-      await source.saveAccount(account);
-      await source.saveAccount(accountUpdate);
-
-      final store = StoreRef.main();
-
-      final record = await store.findFirst(
-        database,
-        finder: Finder(
-            filter: Filter.byKey(
-                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')),
-      );
-      final stored = MooncakeAccount.fromJson(
-        record.value[0] as Map<String, dynamic>,
-      );
-
-      final len = record.value as List;
-      expect(len.length, equals(1));
-      expect(stored.cosmosAccount.accountNumber, equals("2"));
-    });
-
-    test('saveAccount works properly on update with active', () async {
-      final accountBeforeUpdate = MooncakeAccount(
-        moniker: null,
-        profilePicUri: null,
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "2",
-          sequence: "1",
-          coins: [],
-        ),
-      );
-
-      final store = StoreRef.main();
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
-          .put(
-            database,
-            accountBeforeUpdate.toJson(),
-          );
-
-      final account = MooncakeAccount(
-        moniker: null,
-        profilePicUri: null,
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
-
-      await source.saveAccount(account);
-
-      final record = await store.findFirst(
-        database,
-        finder: Finder(
-            filter: Filter.byKey(
-                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
-      );
-
-      expect(
-          MooncakeAccount.fromJson(
-            record.value as Map<String, dynamic>,
+        final store = StoreRef.main();
+        final record = await store.findFirst(
+          database,
+          finder: Finder(
+            filter: Filter.byKey(LocalUserSourceImpl.ACCOUNTS_LIST_KEY),
           ),
-          equals(account));
+        );
+
+        final stored = MooncakeAccount.fromJson(
+          record.value[0] as Map<String, dynamic>,
+        );
+        expect(stored, equals(account));
+      });
+
+      test('replaces existing account with same address', () async {
+        final updatedAccount = account.copyWith(
+          cosmosAccount: account.cosmosAccount.copyWith(
+            accountNumber: "20",
+          ),
+        );
+
+        await source.saveAccount(account);
+        await source.saveAccount(updatedAccount);
+
+        final store = StoreRef.main();
+        final record = await store.findFirst(
+          database,
+          finder: Finder(
+            filter: Filter.byKey(LocalUserSourceImpl.ACCOUNTS_LIST_KEY),
+          ),
+        );
+
+        final value = record.value as List;
+        expect(value.length, equals(1));
+
+        final stored =
+            MooncakeAccount.fromJson(value[0] as Map<String, dynamic>);
+        expect(
+          stored.cosmosAccount.accountNumber,
+          equals(updatedAccount.cosmosAccount.accountNumber),
+        );
+      });
+
+      test('updates correctly the active account', () async {
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
+            .put(database, account.toJson());
+
+        final updatedAccount = account.copyWith(bio: "Updated bio");
+        await source.saveAccount(updatedAccount);
+
+        final record = await store.findFirst(
+          database,
+          finder: Finder(
+            filter: Filter.byKey(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY),
+          ),
+        );
+
+        final storedActiveAccount = MooncakeAccount.fromJson(
+          record.value as Map<String, dynamic>,
+        );
+        expect(storedActiveAccount, equals(updatedAccount));
+      });
     });
 
-    test('getAccount returns the correctly stored data', () async {
-      final account = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
-        cosmosAccount: CosmosAccount(
-          accountNumber: "153",
-          sequence: "45",
-          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-          coins: [
-            StdCoin(amount: "10000", denom: "udaric"),
-          ],
-        ),
-      );
+    group('setActiveAccount', () {
+      final account = MooncakeAccount.local("address");
 
-      final accountTwo = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
-        cosmosAccount: CosmosAccount(
-          accountNumber: "153",
-          sequence: "45",
-          address: "address",
-          coins: [
-            StdCoin(amount: "10000", denom: "udaric"),
-          ],
-        ),
-      );
+      test('works properly with no prior account stored', () async {
+        await source.setActiveAccount(account);
 
-      final store = StoreRef.main();
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
-          .put(
-        database,
-        [account.toJson(), accountTwo.toJson()],
-      );
+        final store = StoreRef.main();
+        final record = await store.findFirst(
+          database,
+          finder: Finder(
+            filter: Filter.byKey(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY),
+          ),
+        );
 
-      final stored = await source.getAccount(account.address);
-      expect(stored, equals(account));
+        final stored = MooncakeAccount.fromJson(
+          record.value as Map<String, dynamic>,
+        );
+        expect(stored, equals(account));
+      });
 
-      final storedTwo = await source.getAccount("noAddress");
-      expect(storedTwo, equals(null));
+      test('replaces existing account properly', () async {
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
+            .update(database, account.toJson());
+
+        final updatedAccount = account.copyWith(bio: "Updated bio");
+        await source.setActiveAccount(updatedAccount);
+
+        final record = await store.findFirst(
+          database,
+          finder: Finder(
+            filter: Filter.byKey(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY),
+          ),
+        );
+
+        final stored = MooncakeAccount.fromJson(
+          record.value as Map<String, dynamic>,
+        );
+        expect(stored, equals(updatedAccount));
+      });
     });
 
-    test('getAccount returns null when no data is saved', () async {
-      expect(await source.getAccount("account"), isNull);
+    group('getActiveAccount', () {
+      test('returns null when no data is saved', () async {
+        expect(await source.getActiveAccount(), isNull);
+      });
+
+      test('returns with account', () async {
+        final account = MooncakeAccount.local("test-address");
+
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
+            .put(database, account.toJson());
+
+        expect(await source.getActiveAccount(), account);
+      });
     });
 
-    test('getActiveAccount returns null when no data is saved', () async {
-      expect(await source.getActiveAccount(), isNull);
+    group('getAccount', () {
+      test('getAccount returns null when no data is saved', () async {
+        expect(await source.getAccount("account"), isNull);
+      });
+
+      test('getAccount returns the correctly stored data', () async {
+        final firstAccount = MooncakeAccount.local("test-address");
+        final secondAccount = MooncakeAccount.local("second-address");
+
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACCOUNTS_LIST_KEY)
+            .put(database, [firstAccount.toJson(), secondAccount.toJson()]);
+
+        final stored = await source.getAccount(firstAccount.address);
+        expect(stored, equals(firstAccount));
+
+        final storedTwo = await source.getAccount(secondAccount.address);
+        expect(storedTwo, equals(secondAccount));
+      });
     });
 
-    test('getActiveAccount returns with account', () async {
-      final account = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
-        cosmosAccount: CosmosAccount(
-          accountNumber: "153",
-          sequence: "45",
-          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-          coins: [
-            StdCoin(amount: "10000", denom: "udaric"),
-          ],
-        ),
-      );
+    group('getAccounts', () {
+      test('getAccounts returns empty list when no data is saved', () async {
+        expect(await source.getAccounts(), isEmpty);
+      });
 
-      final store = StoreRef.main();
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
-          .put(
-            database,
-            account.toJson(),
-          );
+      test('getAccounts returns list when data is present', () async {
+        final account = MooncakeAccount.local("first-address");
+        final accountTwo = MooncakeAccount.local("second-accounts");
 
-      expect(await source.getActiveAccount(), account);
-    });
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACCOUNTS_LIST_KEY)
+            .put(database, [account.toJson(), accountTwo.toJson()]);
 
-    test('getAccounts returns empty list when no data is saved', () async {
-      expect(await source.getAccounts(), []);
-    });
-
-    test('getAccounts returns list when data is present', () async {
-      final account = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
-        cosmosAccount: CosmosAccount(
-          accountNumber: "153",
-          sequence: "45",
-          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725",
-          coins: [
-            StdCoin(amount: "10000", denom: "udaric"),
-          ],
-        ),
-      );
-
-      final accountTwo = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
-        cosmosAccount: CosmosAccount(
-          accountNumber: "153",
-          sequence: "45",
-          address: "desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725s",
-          coins: [
-            StdCoin(amount: "10000", denom: "udaric"),
-          ],
-        ),
-      );
-
-      final store = StoreRef.main();
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
-          .put(
-        database,
-        [account.toJson(), accountTwo.toJson()],
-      );
-
-      expect(await source.getAccounts(), [account, accountTwo]);
-    });
-
-    test('setActiveAccount works properly', () async {
-      final account = MooncakeAccount(
-        moniker: null,
-        profilePicUri: null,
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
-
-      await source.setActiveAccount(account);
-
-      final store = StoreRef.main();
-      final record = await store.findFirst(
-        database,
-        finder: Finder(
-            filter: Filter.byKey(
-                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
-      );
-      final stored = MooncakeAccount.fromJson(
-        record.value as Map<String, dynamic>,
-      );
-      expect(stored, equals(account));
-
-      final accountTwo = MooncakeAccount(
-        moniker: null,
-        profilePicUri: null,
-        cosmosAccount: CosmosAccount(
-          address: "1address",
-          accountNumber: "2",
-          sequence: "1",
-          coins: [],
-        ),
-      );
-
-      await source.setActiveAccount(accountTwo);
-      final recordTwo = await store.findFirst(
-        database,
-        finder: Finder(
-            filter: Filter.byKey(
-                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
-      );
-      final storedTwo = MooncakeAccount.fromJson(
-        recordTwo.value as Map<String, dynamic>,
-      );
-      expect(storedTwo, equals(accountTwo));
+        expect(await source.getAccounts(), equals([account, accountTwo]));
+      });
     });
   });
 
   group('Authentication method', () {
-    test('saveAuthenticationMethod works with biometric auth', () async {
-      final auth = BiometricAuthentication();
-      when(secureStorage.write(
-        key: anyNamed("key"),
-        value: anyNamed("value"),
-      )).thenAnswer((_) => null);
+    group('saveAuthenticationMethod', () {
+      test('works with biometric auth', () async {
+        final auth = BiometricAuthentication();
+        when(secureStorage.write(
+          key: anyNamed("key"),
+          value: anyNamed("value"),
+        )).thenAnswer((_) => null);
 
-      await source.saveAuthenticationMethod("address", auth);
+        await source.saveAuthenticationMethod("address", auth);
 
-      verify(secureStorage.write(
-        key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
-        value: jsonEncode(auth.toJson()),
-      ));
-    });
-
-    test('saveAuthenticationMethod works with password auth', () async {
-      final auth = PasswordAuthentication(
-        hashedPassword: "5f4dcc3b5aa765d61d8327deb882cf99",
-      );
-      when(secureStorage.write(
-        key: anyNamed("key"),
-        value: anyNamed("value"),
-      )).thenAnswer((_) => null);
-
-      await source.saveAuthenticationMethod("address", auth);
-
-      verify(secureStorage.write(
-        key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
-        value: jsonEncode(auth.toJson()),
-      ));
-    });
-
-    test('getAuthenticationMethod returns null whe non existing', () async {
-      final authMethod = await source.getAuthenticationMethod("address");
-      expect(authMethod, isNull);
-    });
-
-    test('getAuthenticationMethod returns valid biometric data', () async {
-      final authMethod = BiometricAuthentication();
-      when(secureStorage.read(
-              key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
-          .thenAnswer((realInvocation) async {
-        return jsonEncode(authMethod.toJson());
+        verify(secureStorage.write(
+          key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}",
+          value: jsonEncode(auth.toJson()),
+        ));
       });
 
-      final stored = await source.getAuthenticationMethod("address");
-      expect(stored, equals(authMethod));
+      test('works with password auth', () async {
+        final auth = PasswordAuthentication(
+          hashedPassword: "5f4dcc3b5aa765d61d8327deb882cf99",
+        );
+        when(secureStorage.write(
+          key: anyNamed("key"),
+          value: anyNamed("value"),
+        )).thenAnswer((_) => null);
+
+        await source.saveAuthenticationMethod("address", auth);
+
+        verify(secureStorage.write(
+          key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}",
+          value: jsonEncode(auth.toJson()),
+        ));
+      });
     });
 
-    test('getAuthenticationMethod returns valid biometric data', () async {
-      final authMethod = PasswordAuthentication(
-          hashedPassword: "202cb962ac59075b964b07152d234b70");
-      when(secureStorage.read(
-              key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
-          .thenAnswer((realInvocation) async {
-        return jsonEncode(authMethod.toJson());
+    group('getAuthenticationMethod', () {
+      test('returns null whe non existing', () async {
+        final authMethod = await source.getAuthenticationMethod("address");
+        expect(authMethod, isNull);
       });
 
-      final stored = await source.getAuthenticationMethod("address");
-      expect(stored, equals(authMethod));
+      test('returns valid biometric data', () async {
+        final authMethod = BiometricAuthentication();
+        when(secureStorage.read(
+                key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}"))
+            .thenAnswer((realInvocation) async {
+          return jsonEncode(authMethod.toJson());
+        });
+
+        final stored = await source.getAuthenticationMethod("address");
+        expect(stored, equals(authMethod));
+      });
+
+      test('returns valid biometric data', () async {
+        final authMethod = PasswordAuthentication(
+            hashedPassword: "202cb962ac59075b964b07152d234b70");
+        when(secureStorage.read(
+                key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}"))
+            .thenAnswer((realInvocation) async {
+          return jsonEncode(authMethod.toJson());
+        });
+
+        final stored = await source.getAuthenticationMethod("address");
+        expect(stored, equals(authMethod));
+      });
     });
   });
 
   group('Data wiping and logout', () {
-    test('correctly deletes data', () async {
-      final account = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar",
-        moniker: "account",
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
+    final account = MooncakeAccount.local("test-address");
 
-      final store = StoreRef.main();
-      await store.record(LocalUserSourceImpl.USER_DATA_KEY).put(
-            database,
-            account.toJson(),
-          );
+    group('wipeData', () {
+      test('correctly deletes data', () async {
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
+            .put(database, account.toJson());
 
-      when(secureStorage.deleteAll())
-          .thenAnswer((realInvocation) => Future.value(null));
+        when(secureStorage.deleteAll())
+            .thenAnswer((realInvocation) => Future.value(null));
 
-      await source.wipeData();
+        await source.wipeData();
 
-      final count = await store.count(database);
-      expect(count, isZero);
-      verify(secureStorage.deleteAll());
+        final count = await store.count(database);
+        expect(count, isZero);
+        verify(secureStorage.deleteAll());
+      });
     });
 
-    test('logout non existing user', () async {
-      final account = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar",
-        moniker: "account",
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
+    group('logout', () {
+      test('does nothing with non existing user', () async {
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACCOUNTS_LIST_KEY)
+            .put(database, [account.toJson()]);
 
-      final store = StoreRef.main();
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
-          .put(
-        database,
-        [account.toJson()],
-      );
+        await store
+            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
+            .put(database, account.toJson());
 
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
-          .put(
-            database,
-            account.toJson(),
-          );
+        await source.logout("impossibleAddress");
+        verifyNever(secureStorage.deleteAll());
 
-      await source.logout("impossibleAddress");
+        final active = await store
+            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
+            .get(database);
 
-      verifyNever(secureStorage.deleteAll());
+        expect(
+          MooncakeAccount.fromJson(active as Map<String, dynamic>),
+          equals(account),
+        );
+      });
 
-      final active = await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
-          .get(database);
-      expect(
-        MooncakeAccount.fromJson(
-          active as Map<String, dynamic>,
-        ),
-        equals(account),
-      );
-    });
+      test('correctly deletes one user', () async {
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACCOUNTS_LIST_KEY)
+            .put(database, [account.toJson()]);
 
-    test('logout correctly deletes one user', () async {
-      final account = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar",
-        moniker: "account",
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
+        when(secureStorage.deleteAll())
+            .thenAnswer((realInvocation) => Future.value(null));
 
-      final store = StoreRef.main();
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
-          .put(
-        database,
-        [account.toJson()],
-      );
+        await source.logout(account.address);
 
-      when(secureStorage.deleteAll())
-          .thenAnswer((realInvocation) => Future.value(null));
+        final count = await store.count(database);
+        expect(count, isZero);
+        verify(secureStorage.deleteAll()).called(1);
+      });
 
-      await source.logout(account.address);
+      test('correctly deletes one user if multiple accounts exist', () async {
+        final secondAccount = account.copyWith(
+          cosmosAccount: account.cosmosAccount.copyWith(
+            address: "second-address",
+          ),
+        );
 
-      final count = await store.count(database);
-      expect(count, isZero);
-      verify(secureStorage.deleteAll()).called(1);
-    });
+        final store = StoreRef.main();
+        await store
+            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
+            .put(database, account.toJson());
 
-    test('logout correctly deletes one user if multi account exist', () async {
-      final account = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar",
-        moniker: "account",
-        cosmosAccount: CosmosAccount(
-          address: "address",
-          accountNumber: "1",
-          sequence: "1",
-          coins: [],
-        ),
-      );
+        await store
+            .record(LocalUserSourceImpl.ACCOUNTS_LIST_KEY)
+            .put(database, [account.toJson(), secondAccount.toJson()]);
 
-      final accountTwo = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar",
-        moniker: "account",
-        cosmosAccount: CosmosAccount(
-          address: "address2",
-          accountNumber: "12",
-          sequence: "1",
-          coins: [],
-        ),
-      );
+        await source.logout(account.address);
 
-      final store = StoreRef.main();
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')
-          .put(
-            database,
-            account.toJson(),
-          );
+        verifyNever(secureStorage.deleteAll());
 
-      await store
-          .record(
-              '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')
-          .put(
-        database,
-        [account.toJson(), accountTwo.toJson()],
-      );
+        final allAccounts = await store.findFirst(
+          database,
+          finder: Finder(
+            filter: Filter.byKey(LocalUserSourceImpl.ACCOUNTS_LIST_KEY),
+          ),
+        );
 
-      await source.logout(account.address);
+        final allAccountsValues = allAccounts.value as List;
+        expect(allAccountsValues.length, equals(1));
 
-      verifyNever(secureStorage.deleteAll());
-      final recordTwo = await store.findFirst(
-        database,
-        finder: Finder(
-            filter: Filter.byKey(
-                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACTIVE}')),
-      );
-      final storedTwo = MooncakeAccount.fromJson(
-        recordTwo.value as Map<String, dynamic>,
-      );
-      expect(storedTwo, equals(accountTwo));
+        final remainingRecord = await store.findFirst(
+          database,
+          finder: Finder(
+            filter: Filter.byKey(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY),
+          ),
+        );
 
-      final allAccounts = await store.findFirst(
-        database,
-        finder: Finder(
-            filter: Filter.byKey(
-                '${LocalUserSourceImpl.USER_DATA_KEY}.${LocalUserSourceImpl.ACCOUNTS}')),
-      );
-
-      final allAccountsValues = allAccounts.value as List;
-      expect(allAccountsValues.length, equals(1));
+        final remainingStored = MooncakeAccount.fromJson(
+          remainingRecord.value as Map<String, dynamic>,
+        );
+        expect(remainingStored, equals(secondAccount));
+      });
     });
   });
 }
