@@ -6,8 +6,9 @@ import 'package:mooncake/usecases/usecases.dart';
 class CheckLoginUseCase {
   final UserRepository _userRepository;
 
-  CheckLoginUseCase({@required UserRepository userRepository})
-      : assert(userRepository != null),
+  CheckLoginUseCase({
+    @required UserRepository userRepository,
+  })  : assert(userRepository != null),
         _userRepository = userRepository;
 
   /// Returns `true` iff the user has logged in, `false` otherwise.
