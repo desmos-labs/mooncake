@@ -103,7 +103,7 @@ void main() {
               .thenAnswer((_) => Future.value(null));
           when(mockLoginUseCase.login(any))
               .thenAnswer((_) => Future.value(null));
-          bloc.add(SavePassword("address"));
+          bloc.add(SavePassword());
         },
         expect: [
           SetPasswordState(
