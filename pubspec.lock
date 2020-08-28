@@ -12,11 +12,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: master
-      resolved-ref: ac2a2cbe888df5f3f16e384c1d1fc4e60394624d
+      ref: "cosmos-v0.39.x"
+      resolved-ref: "0bd5a617b55e3b8ec5f4cf13b52b630139904c91"
       url: "git://github.com/alan-sdk/alan.dart.git"
     source: git
-    version: "0.39.0"
+    version: "0.0.1"
   analyzer:
     dependency: transitive
     description:
