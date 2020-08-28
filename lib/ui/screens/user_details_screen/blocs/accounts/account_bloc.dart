@@ -6,27 +6,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 import './export.dart';
 
 class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
-  final AccountBloc _loginBloc;
   final GetAccountsUseCase _getAccountsUseCase;
 
   AccountsBloc({
-    @required AccountBloc loginBloc,
     @required GetAccountsUseCase getAccountsUseCase,
-  })  : assert(loginBloc != null),
-        _loginBloc = loginBloc,
-        assert(getAccountsUseCase != null),
+  })  : assert(getAccountsUseCase != null),
         _getAccountsUseCase = getAccountsUseCase {
     add(GetAccounts());
   }
 
   factory AccountsBloc.create(BuildContext context) {
     return AccountsBloc(
-      loginBloc: BlocProvider.of(context),
       getAccountsUseCase: Injector.get(),
     );
   }
