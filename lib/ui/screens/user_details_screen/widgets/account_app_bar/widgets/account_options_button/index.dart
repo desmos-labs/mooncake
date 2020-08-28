@@ -16,7 +16,6 @@ enum AccountOptions {
 class AccountOptionsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("im in here");
     final Map<AccountOptions, String> titles = {
       AccountOptions.EditAccount:
           PostsLocalizations.of(context).translate(Messages.editAccountOption),
@@ -33,18 +32,14 @@ class AccountOptionsButton extends StatelessWidget {
         child: Material(
           shape: CircleBorder(),
           color: Colors.grey[500].withOpacity(0.6), // button color
-          child: InkWell(
-            child: SizedBox(
-                width: 35,
-                height: 35,
-                child: Icon(
-                  MooncakeIcons.settings,
-                  color: Colors.white,
-                  size: 15,
-                )),
-            onTap: () {
-              Scaffold.of(context).openDrawer();
-            },
+          child: SizedBox(
+            width: 35,
+            height: 35,
+            child: Icon(
+              MooncakeIcons.settings,
+              color: Colors.white,
+              size: 15,
+            ),
           ),
         ),
       ),
