@@ -19,6 +19,7 @@ class AccountAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Widget leadingIcon = isMyProfile ? MenuButton() : null;
     return SliverAppBar(
       forceElevated: false,
       expandedHeight: 200,
@@ -26,15 +27,7 @@ class AccountAppBar extends StatelessWidget {
       stretch: true,
       pinned: true,
       backgroundColor: Theme.of(context).colorScheme.background,
-      leading: GestureDetector(
-        onTap: () {
-          Scaffold.of(context).openDrawer();
-        },
-        child: Icon(
-          MooncakeIcons.menu,
-          size: 22,
-        ),
-      ),
+      leading: leadingIcon,
       actions: <Widget>[
         if (isMyProfile) AccountOptionsButton(),
       ],
@@ -54,7 +47,6 @@ class AccountAppBar extends StatelessWidget {
               ),
             ),
             // Container(height: 50, color: Colors.black),
-
             /// Cover image
             Container(
               height: 170,
