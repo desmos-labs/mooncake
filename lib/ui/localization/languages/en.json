@@ -181,5 +181,7 @@
   "postUploadError": "The following post(s) below could not be uploaded. Please try again later.",
   "poll": "Poll",
   "all": "All",
-  "hello": "Hello"
+  "hello": "Hello",
+  "createAnotherAccount": "Create Another Account",
+  "importMnemonic": "Import Mnemonic"
 }

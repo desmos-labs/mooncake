@@ -30,6 +30,8 @@ class Messages {
   static String get and => "and";
   static String get privacyPolicy => "privacyPolicy";
   static String get cancel => "cancel";
+  static String get createAnotherAccount => "createAnotherAccount";
+  static String get importMnemonic => "importMnemonic";
 
   // Recover screen
   static String get recoverScreenTitle => "recoverScreenTitle";

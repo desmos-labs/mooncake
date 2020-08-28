@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/screens/user_details_screen/widgets/export.dart';
 import 'package:mooncake/ui/ui.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -13,7 +11,7 @@ class MenuDrawer extends StatelessWidget {
     @required this.accounts,
   });
 
-  List<Widget> _listAccounts() {
+  List<Widget> _listAccounts(BuildContext context) {
     final List<Widget> results = [];
     accounts.forEach(
       (user) {
@@ -24,6 +22,7 @@ class MenuDrawer extends StatelessWidget {
             onTap: () {
               // wingman
               print("ive been called");
+              Navigator.of(context).pop();
             },
           ),
         );
@@ -33,10 +32,16 @@ class MenuDrawer extends StatelessWidget {
     return results;
   }
 
+  _handleCreateNewAccount() {
+    print("clicked new account");
+  }
+
+  _handleImportMnemonic() {
+    print("click import");
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("accounts");
-    print(accounts);
     return Drawer(
       child: Container(
         color: Colors.white,
@@ -71,11 +76,34 @@ class MenuDrawer extends StatelessWidget {
                   ),
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                 ),
               ),
             ),
-            ..._listAccounts(),
+            ..._listAccounts(context),
+            GestureDetector(
+              onTap: _handleImportMnemonic,
+              child: Text(
+                PostsLocalizations.of(context)
+                    .translate(Messages.importMnemonic),
+                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: ThemeSpaces.mediumGutter),
+            GestureDetector(
+              onTap: _handleCreateNewAccount,
+              child: Text(
+                PostsLocalizations.of(context)
+                    .translate(Messages.createAnotherAccount),
+                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),
