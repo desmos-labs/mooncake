@@ -16,14 +16,27 @@ class MenuDrawer extends StatelessWidget {
     accounts.forEach(
       (user) {
         results.add(
-          ListTile(
-            leading: AccountAvatar(user: user, size: 40),
-            title: Text(user.screenName, textAlign: TextAlign.end),
-            onTap: () {
-              // wingman
-              print("ive been called");
-              Navigator.of(context).pop();
-            },
+          Container(
+            child: Material(
+              child: InkWell(
+                  onTap: () {
+                    // wingman
+                    print("ive been called");
+                    // Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    child: Row(
+                      children: [
+                        AccountAvatar(user: user, size: 40),
+                        SizedBox(width: 20),
+                        Text(user.screenName, textAlign: TextAlign.end),
+                      ],
+                    ),
+                  )),
+              color: Colors.transparent,
+            ),
           ),
         );
       },
@@ -48,39 +61,33 @@ class MenuDrawer extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            Container(
-              height: 120,
-              child: DrawerHeader(
-                child: Container(
-                  child: Row(
-                    children: [
-                      AccountAvatar(user: user, size: 50),
-                      SizedBox(width: 10),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              '${PostsLocalizations.of(context).translate(Messages.hello)},',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  .copyWith(
-                                    fontSize: 16,
-                                  )),
-                          Text(user.screenName,
-                              style: Theme.of(context).textTheme.headline6),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+            SafeArea(
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+                child: Row(
+                  children: [
+                    AccountAvatar(user: user, size: 50),
+                    SizedBox(width: 10),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            '${PostsLocalizations.of(context).translate(Messages.hello)},',
+                            style:
+                                Theme.of(context).textTheme.headline6.copyWith(
+                                      fontSize: 16,
+                                    )),
+                        Text(user.screenName,
+                            style: Theme.of(context).textTheme.headline6),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
             ..._listAccounts(context),
+            SizedBox(height: ThemeSpaces.mediumGutter),
             GestureDetector(
               onTap: _handleImportMnemonic,
               child: Text(
