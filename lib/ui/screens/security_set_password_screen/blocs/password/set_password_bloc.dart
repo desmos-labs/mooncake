@@ -17,18 +17,21 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
 
   final LoginUseCase _loginUseCase;
   final SetAuthenticationMethodUseCase _setAuthenticationMethodUseCase;
-
+  final SaveWalletUseCase _saveWalletUseCase;
   SetPasswordBloc({
     @required RecoverAccountBloc recoverAccountBloc,
     @required AccountBloc accountBloc,
     @required LoginUseCase loginUseCase,
     @required SetAuthenticationMethodUseCase setAuthenticationMethodUseCase,
+    @required SaveWalletUseCase saveWalletUseCase,
   })  : assert(recoverAccountBloc != null),
         _recoverAccountBloc = recoverAccountBloc,
         assert(accountBloc != null),
         _accountBloc = accountBloc,
         assert(loginUseCase != null),
         _loginUseCase = loginUseCase,
+        assert(saveWalletUseCase != null),
+        _saveWalletUseCase = saveWalletUseCase,
         assert(setAuthenticationMethodUseCase != null),
         _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase;
 
@@ -38,6 +41,7 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
       accountBloc: BlocProvider.of(context),
       loginUseCase: Injector.get(),
       setAuthenticationMethodUseCase: Injector.get(),
+      saveWalletUseCase: Injector.get(),
     );
   }
 
@@ -51,20 +55,22 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
     } else if (event is TriggerPasswordVisibility) {
       yield state.copyWith(showPassword: !state.showPassword);
     } else if (event is SavePassword) {
-      yield* _mapSavePasswordEventToState(event);
+      yield* _mapSavePasswordEventToState();
     }
   }
 
-  Stream<SetPasswordState> _mapSavePasswordEventToState(
-      SavePassword event) async* {
+  Stream<SetPasswordState> _mapSavePasswordEventToState() async* {
+    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
+    // Save wallet and get unique address
+    final wallet = await _saveWalletUseCase.saveWallet(mnemonic);
+
     // Store authentication method
     await _setAuthenticationMethodUseCase.password(
-        event.address, state.inputPassword);
+        wallet.bech32Address, state.inputPassword);
     yield state.copyWith(savingPassword: true);
 
     // Log In
-    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
-    await _loginUseCase.login(mnemonic);
+    await _loginUseCase.login(wallet);
 
     _recoverAccountBloc.add(ResetRecoverAccountState());
     _accountBloc.add(LogIn());

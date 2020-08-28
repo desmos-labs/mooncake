@@ -52,8 +52,6 @@ class SetPasswordContent extends StatelessWidget {
   }
 
   void _onSavePassword(BuildContext context) {
-    String userAddress =
-        (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user.address;
-    BlocProvider.of<SetPasswordBloc>(context).add(SavePassword(userAddress));
+    BlocProvider.of<SetPasswordBloc>(context).add(SavePassword());
   }
 }

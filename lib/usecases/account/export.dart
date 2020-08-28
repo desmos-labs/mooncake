@@ -12,3 +12,4 @@ export 'usecase_refresh_account.dart';
 export 'usecase_save_account.dart';
 export 'usecase_set_authentication_method.dart';
 export 'usecase_set_account_active.dart';
+export 'usecase_save_wallet.dart';

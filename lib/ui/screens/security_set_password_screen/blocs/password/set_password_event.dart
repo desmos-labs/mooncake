@@ -29,10 +29,6 @@ class TriggerPasswordVisibility extends SetPasswordEvent {
 
 /// Tells the Bloc that the user wants to use the currently input password.
 class SavePassword extends SetPasswordEvent {
-  final String address;
-  SavePassword(this.address);
   @override
   String toString() => 'SavePassword';
-  @override
-  List<Object> get props => [address];
 }

@@ -12,10 +12,7 @@ class LoginUseCase {
 
   /// Saves the given [mnemonic] into the encrypted storage of the
   /// device as the user wallet.
-  Future<void> login(String mnemonic) async {
-    // Save the wallet
-    Wallet wallet = await _userRepository.saveWallet(mnemonic);
-
+  Future<void> login(Wallet wallet) async {
     // Get the account data
     final user = await _userRepository.refreshAccount(wallet.bech32Address);
     assert(user != null);

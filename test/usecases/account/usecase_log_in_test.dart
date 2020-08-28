@@ -26,15 +26,12 @@ void main() {
           coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
         ),
       );
-      when(repository.saveWallet(any)).thenAnswer((_) => Future.value(wallet));
       when(repository.refreshAccount(account.address))
           .thenAnswer((_) => Future.value(account));
 
-      final mnemonic = "mnemonic";
-      await loginUseCase.login(mnemonic);
+      await loginUseCase.login(wallet);
 
       verifyInOrder([
-        repository.saveWallet(mnemonic),
         repository.refreshAccount(account.address),
       ]);
       verifyNever(repository.fundAccount(any));
@@ -48,11 +45,9 @@ void main() {
           .thenAnswer((_) => Future.value(account));
       when(repository.fundAccount(any)).thenAnswer((_) => Future.value(null));
 
-      final mnemonic = "mnemonic";
-      await loginUseCase.login(mnemonic);
+      await loginUseCase.login(wallet);
 
       verifyInOrder([
-        repository.saveWallet(mnemonic),
         repository.refreshAccount(account.address),
         repository.fundAccount(account),
       ]);
