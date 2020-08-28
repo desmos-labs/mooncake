@@ -11,7 +11,7 @@ class SetAccountActiveUsecase {
   })  : assert(userRepository != null),
         _userRepository = userRepository;
 
-  /// Saves the given [account] as the current user account.
+  /// Sets the given [account] as the current user account.
   Future<void> setActive(MooncakeAccount account) {
     return _userRepository.setActiveAccount(account);
   }

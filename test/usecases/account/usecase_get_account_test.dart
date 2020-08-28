@@ -31,7 +31,7 @@ void main() {
     final account = MooncakeAccount.local("address");
 
     final controller = StreamController<MooncakeAccount>();
-    when(repository.accountStream).thenAnswer((_) => controller.stream);
+    when(repository.activeAccountStream).thenAnswer((_) => controller.stream);
 
     final stream = getAccountUseCase.stream();
     expectLater(
@@ -45,7 +45,7 @@ void main() {
     controller.add(account.copyWith(moniker: "test"));
     controller.close();
 
-    verify(repository.accountStream).called(1);
+    verify(repository.activeAccountStream).called(1);
   });
 
   test('getActiveAccount performs correct calls', () async {

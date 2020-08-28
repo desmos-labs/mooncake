@@ -13,7 +13,8 @@ class GetMnemonicUseCase {
   })  : assert(userRepository != null),
         _userRepository = userRepository;
 
-  /// Returns the mnemonic phrase of the current user.
+  /// Returns the mnemonic phrase associated to the account having the
+  /// given [address].
   Future<List<String>> get(String address) {
     return _userRepository.getMnemonic(address);
   }

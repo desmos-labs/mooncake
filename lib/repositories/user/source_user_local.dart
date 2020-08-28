@@ -7,47 +7,51 @@ abstract class LocalUserSource {
   /// allowing it to be retrieved later.
   Future<Wallet> saveWallet(String mnemonic);
 
-  /// Returns the mnemonic that is associated to the given address
+  /// Returns the mnemonic that is associated to the given [address]
   /// If no mnemonic has been saved yet, returns `null`.
   Future<List<String>> getMnemonic(String address);
 
-  /// Returns the [Wallet] instance of the given address.
+  /// Returns the [Wallet] instance of the given [address].
   /// If no [Wallet] instance has been saved yet, returns `null`.
   Future<Wallet> getWallet(String address);
 
-  /// Saves the given [data] as the current local user data.
+  /// Saves the given [data] inside the local device storage.
   Future<MooncakeAccount> saveAccount(MooncakeAccount data);
 
-  /// Returns the [User] containing the data of the of the given address.
-  /// If no [User] or [Wallet] have been saved yet, returns `null`.
+  /// Returns the [MooncakeAccount] associated to the given [address].
+  /// If no [MooncakeAccount] for such [address] exists, returns `null` instead.
   Future<MooncakeAccount> getAccount(String address);
 
-  /// Returns a `List` of Users localled stored on the device.
+  /// Returns the list of all the locally stored [MooncakeAccount]s.
   Future<List<MooncakeAccount>> getAccounts();
 
-  /// Returns the [User] that is currently selected.
-  /// If no [User] it will return `null`.
+  /// Returns the currently active [MooncakeAccount].
+  /// If there is no active account, returns `null` instead.
   Future<MooncakeAccount> getActiveAccount();
 
-  /// Returns the [User] that is currently selected.
-  /// If no [User] it will return `null`.
+  /// Sets the given [account] as the currently active one.
   Future<void> setActiveAccount(MooncakeAccount account);
 
-  /// Returns the [Stream] that emits all the new [User]
-  /// once they have been saved.
-  Stream<MooncakeAccount> get accountStream;
+  /// Returns the [Stream] that emits the latest active account that is
+  /// selected by the user.
+  Stream<MooncakeAccount> get activeAccountStream;
 
-  /// Saves the given [method] as the local user authentication method.
+  /// Saves the given [method] as the authentication method for the
+  /// account having the given [address].
   Future<void> saveAuthenticationMethod(
-      String address, AuthenticationMethod method);
+    String address,
+    AuthenticationMethod method,
+  );
 
-  /// Returns the currently set authentication method.
-  /// If no method has been set yet, returns `null` instead.
+  /// Returns the authentication method for the account having the given
+  /// [address]. If not authentication method was set, returns `null` instead.
   Future<AuthenticationMethod> getAuthenticationMethod(String address);
 
-  /// Completely wipes the currently stored wallet for the user.
-  Future<void> wipeData();
-
-  /// Completely wipes the currently stored wallet for the selected user.
+  /// Performs the logout of the account having the given [address].
+  /// After logging out, the acount and wallet information will be deleted
+  /// from the local storage.
   Future<void> logout(String address);
+
+  /// Wipes all the locally stored data about all the users and wallets.
+  Future<void> wipeData();
 }

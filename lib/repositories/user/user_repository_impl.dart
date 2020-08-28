@@ -89,8 +89,8 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Stream<MooncakeAccount> get accountStream {
-    return _localUserSource.accountStream;
+  Stream<MooncakeAccount> get activeAccountStream {
+    return _localUserSource.activeAccountStream;
   }
 
   @override

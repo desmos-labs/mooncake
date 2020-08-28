@@ -11,7 +11,9 @@ class SaveAccountUseCase {
   })  : assert(userRepository != null),
         _userRepository = userRepository;
 
-  /// Saves the given [account] as the current user account.
+  /// Saves the given [account] inside the local storage.
+  /// If [syncRemote] is true, the account will also saved into the remote
+  /// source as well.
   Future<AccountSaveResult> save(
     MooncakeAccount account, {
     bool syncRemote = false,
