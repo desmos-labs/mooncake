@@ -25,13 +25,13 @@ class LocalUserSourceImpl extends LocalUserSource {
   static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
 
   @visibleForTesting
-  static const AUTHENTICATIONS_KEY = "authentications";
+  static const AUTHENTICATION_KEY = "authentication";
 
   @visibleForTesting
   static const ACCOUNTS_LIST_KEY = "accounts";
 
   @visibleForTesting
-  static const ACTIVE_ACCOUNT_KEY = "active";
+  static const ACTIVE_ACCOUNT_KEY = "active_account";
 
   final Database database;
   final NetworkInfo _networkInfo;
@@ -213,7 +213,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   ) async {
     final methodString = jsonEncode(method.toJson());
     await _storage.write(
-      key: '${address}.${AUTHENTICATIONS_KEY}',
+      key: '${address}.${AUTHENTICATION_KEY}',
       value: methodString,
     );
   }
@@ -221,7 +221,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   @override
   Future<AuthenticationMethod> getAuthenticationMethod(String address) async {
     final methodString = await _storage.read(
-      key: '${address}.${AUTHENTICATIONS_KEY}',
+      key: '${address}.${AUTHENTICATION_KEY}',
     );
     if (methodString == null) {
       return null;
