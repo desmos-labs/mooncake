@@ -15,7 +15,8 @@ class MockGenerateMnemonicUseCase extends Mock
 
 class MockLogoutUseCase extends Mock implements LogoutUseCase {}
 
-class MockGetAccountUseCase extends Mock implements GetAccountUseCase {}
+class MockGetActiveAccountUseCase extends Mock
+    implements GetActiveAccountUseCase {}
 
 class MockRefreshAccountUseCase extends Mock implements RefreshAccountUseCase {}
 
@@ -30,7 +31,7 @@ class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 void main() {
   MockGenerateMnemonicUseCase mockGenerateMnemonicUseCase;
   MockLogoutUseCase mockLogoutUseCase;
-  MockGetAccountUseCase mockGetAccountUseCase;
+  MockGetActiveAccountUseCase mockGetActiveAccountUseCase;
   MockRefreshAccountUseCase mockRefreshAccountUseCase;
   MockGetSettingUseCase mockGetSettingUseCase;
   MockSaveSettingUseCase mockSaveSettingUseCase;
@@ -40,7 +41,7 @@ void main() {
   setUp(() {
     mockGenerateMnemonicUseCase = MockGenerateMnemonicUseCase();
     mockLogoutUseCase = MockLogoutUseCase();
-    mockGetAccountUseCase = MockGetAccountUseCase();
+    mockGetActiveAccountUseCase = MockGetActiveAccountUseCase();
     mockRefreshAccountUseCase = MockRefreshAccountUseCase();
     mockGetSettingUseCase = MockGetSettingUseCase();
     mockSaveSettingUseCase = MockSaveSettingUseCase();
@@ -87,12 +88,12 @@ void main() {
       setUp(
         () {
           final controller = StreamController<MooncakeAccount>();
-          when(mockGetAccountUseCase.stream())
+          when(mockGetActiveAccountUseCase.stream())
               .thenAnswer((_) => controller.stream);
           accountBloc = AccountBloc(
             generateMnemonicUseCase: mockGenerateMnemonicUseCase,
             logoutUseCase: mockLogoutUseCase,
-            getUserUseCase: mockGetAccountUseCase,
+            getActiveAccountUseCase: mockGetActiveAccountUseCase,
             refreshAccountUseCase: mockRefreshAccountUseCase,
             getSettingUseCase: mockGetSettingUseCase,
             saveSettingUseCase: mockSaveSettingUseCase,
@@ -108,7 +109,7 @@ void main() {
           when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
             return Future.value(null);
           });
-          when(mockGetAccountUseCase.getActiveAccount()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(null);
           });
           return accountBloc;
@@ -116,7 +117,7 @@ void main() {
         act: (bloc) async => bloc.add(CheckStatus()),
         expect: [LoggedOut()],
         verify: (_) async {
-          verify(mockGetAccountUseCase.getActiveAccount()).called(1);
+          verify(mockGetActiveAccountUseCase.single()).called(1);
           verify(mockGetSettingUseCase.get(key: anyNamed("key"))).called(1);
         },
       );
@@ -127,7 +128,7 @@ void main() {
           when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
             return Future.value(null);
           });
-          when(mockGetAccountUseCase.getActiveAccount()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
 
@@ -152,7 +153,7 @@ void main() {
       blocTest(
         'LogIn: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.getActiveAccount()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;
@@ -173,7 +174,7 @@ void main() {
       blocTest(
         'LogOutAll: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.getActiveAccount()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;
@@ -185,7 +186,7 @@ void main() {
       blocTest(
         'UserRefreshed: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.getActiveAccount()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;
@@ -211,7 +212,7 @@ void main() {
       blocTest(
         'RefreshAccount: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.getActiveAccount()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;

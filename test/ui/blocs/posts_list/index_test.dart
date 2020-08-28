@@ -24,7 +24,8 @@ class MockGetHomeEventsUseCase extends Mock implements GetHomeEventsUseCase {}
 
 class MockSyncPostsUseCase extends Mock implements SyncPostsUseCase {}
 
-class MockGetAccountUseCase extends Mock implements GetAccountUseCase {}
+class MockGetActiveAccountUseCase extends Mock
+    implements GetActiveAccountUseCase {}
 
 class MockGetNotificationsUseCase extends Mock
     implements GetNotificationsUseCase {}
@@ -62,7 +63,7 @@ void main() {
   MockBlockUserUseCase mockBlockUserUseCase;
   MockUpdatePostUseCase mockUpdatePostUseCase;
   MockDeletePostUseCase mockDeletePostUseCase;
-  MockGetAccountUseCase mockGetAccountUseCase;
+  MockGetActiveAccountUseCase mockGetActiveAccountUseCase;
 
   setUp(() {
     mockAccountBloc = MockAccountBloc();
@@ -79,7 +80,7 @@ void main() {
     mockBlockUserUseCase = MockBlockUserUseCase();
     mockUpdatePostUseCase = MockUpdatePostUseCase();
     mockDeletePostUseCase = MockDeletePostUseCase();
-    mockGetAccountUseCase = MockGetAccountUseCase();
+    mockGetActiveAccountUseCase = MockGetActiveAccountUseCase();
   });
 
   group(
@@ -116,7 +117,7 @@ void main() {
             blockUserUseCase: mockBlockUserUseCase,
             updatePostUseCase: mockUpdatePostUseCase,
             deletePostUseCase: mockDeletePostUseCase,
-            getActiveAccountUseCase: mockGetAccountUseCase,
+            getActiveAccountUseCase: mockGetActiveAccountUseCase,
           );
         },
       );
@@ -346,7 +347,7 @@ void main() {
             cosmosAccount: cosmosAccount.copyWith(address: "address"),
           );
 
-          when(mockGetAccountUseCase.getActiveAccount())
+          when(mockGetActiveAccountUseCase.single())
               .thenAnswer((_) => Future.value(userAccount));
 
           return postsListBloc;

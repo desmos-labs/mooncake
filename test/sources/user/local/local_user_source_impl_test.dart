@@ -277,7 +277,7 @@ void main() {
         await source.saveAuthenticationMethod("address", auth);
 
         verify(secureStorage.write(
-          key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}",
+          key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
           value: jsonEncode(auth.toJson()),
         ));
       });
@@ -294,7 +294,7 @@ void main() {
         await source.saveAuthenticationMethod("address", auth);
 
         verify(secureStorage.write(
-          key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}",
+          key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
           value: jsonEncode(auth.toJson()),
         ));
       });
@@ -309,7 +309,7 @@ void main() {
       test('returns valid biometric data', () async {
         final authMethod = BiometricAuthentication();
         when(secureStorage.read(
-                key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}"))
+                key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
             .thenAnswer((realInvocation) async {
           return jsonEncode(authMethod.toJson());
         });
@@ -322,7 +322,7 @@ void main() {
         final authMethod = PasswordAuthentication(
             hashedPassword: "202cb962ac59075b964b07152d234b70");
         when(secureStorage.read(
-                key: "address.${LocalUserSourceImpl.AUTHENTICATIONS_KEY}"))
+                key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
             .thenAnswer((realInvocation) async {
           return jsonEncode(authMethod.toJson());
         });
