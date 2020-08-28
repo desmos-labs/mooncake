@@ -21,19 +21,23 @@ class MockGetAvailableBiometricsUseCase extends Mock
 class MockSetAuthenticationMethodUseCase extends Mock
     implements SetAuthenticationMethodUseCase {}
 
+class MockSaveWalletUseCase extends Mock implements SaveWalletUseCase {}
+
 void main() {
   MockAccountBloc mockAccountBloc;
   MockRecoverAccountBloc mockRecoverAccountBloc;
   MockLoginUseCase mockLoginUseCase;
   MockGetAvailableBiometricsUseCase mockGetAvailableBiometricsUseCase;
   MockSetAuthenticationMethodUseCase mockSetAuthenticationMethodUseCase;
-
+  MockSaveWalletUseCase mockSaveWalletUseCase;
+  final mockWallet = MockWallet();
   setUp(() {
     mockAccountBloc = MockAccountBloc();
     mockRecoverAccountBloc = MockRecoverAccountBloc();
     mockLoginUseCase = MockLoginUseCase();
     mockGetAvailableBiometricsUseCase = MockGetAvailableBiometricsUseCase();
     mockSetAuthenticationMethodUseCase = MockSetAuthenticationMethodUseCase();
+    mockSaveWalletUseCase = MockSaveWalletUseCase();
   });
 
   group(
@@ -48,6 +52,7 @@ void main() {
             loginUseCase: mockLoginUseCase,
             getAvailableBiometricsUseCase: mockGetAvailableBiometricsUseCase,
             setAuthenticationMethodUseCase: mockSetAuthenticationMethodUseCase,
+            saveWalletUseCase: mockSaveWalletUseCase,
           );
         },
       );
@@ -70,6 +75,8 @@ void main() {
           when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
           when(mockLoginUseCase.login(any))
               .thenAnswer((_) => Future.value(null));
+          when(mockSaveWalletUseCase.saveWallet(any))
+              .thenAnswer((_) => Future.value(mockWallet));
           bloc.add(AuthenticateWithBiometrics("address"));
         },
         expect: [
