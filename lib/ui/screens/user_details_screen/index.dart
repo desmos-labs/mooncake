@@ -18,11 +18,14 @@ class UserDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget drawer = isMyProfile ? MenuDrawer() : null;
     return BlocProvider<AccountsBloc>(
       create: (context) => AccountsBloc.create(context),
       child: BlocBuilder<AccountsBloc, AccountsState>(
         builder: (context, state) {
+          final Widget drawer = isMyProfile
+              ? MenuDrawer(user: user, accounts: state.accounts)
+              : null;
+
           return Scaffold(
             body: BlocBuilder<PostsListBloc, PostsListState>(
               builder: (context, postsState) {
