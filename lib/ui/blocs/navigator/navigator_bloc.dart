@@ -16,7 +16,6 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   final CheckLoginUseCase _checkLoginUseCase;
   final CanUseBiometricsUseCase _canUseBiometricsUseCase;
   final GetAuthenticationMethodUseCase _getAuthenticationMethodUseCase;
-
   NavigatorBloc({
     @required CheckLoginUseCase checkLoginUseCase,
     @required CanUseBiometricsUseCase canUseBiometricsUseCase,

@@ -97,7 +97,7 @@ class AccountAppBar extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
