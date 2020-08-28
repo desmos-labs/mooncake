@@ -20,7 +20,9 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   })  : assert(loginBloc != null),
         _loginBloc = loginBloc,
         assert(getAccountsUseCase != null),
-        _getAccountsUseCase = getAccountsUseCase;
+        _getAccountsUseCase = getAccountsUseCase {
+    add(GetAccounts());
+  }
 
   factory AccountsBloc.create(BuildContext context) {
     return AccountsBloc(
