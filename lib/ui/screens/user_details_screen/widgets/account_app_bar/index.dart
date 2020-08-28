@@ -26,6 +26,10 @@ class AccountAppBar extends StatelessWidget {
       stretch: true,
       pinned: true,
       backgroundColor: Theme.of(context).colorScheme.background,
+      leading: GestureDetector(
+        onTap: () {/* Write listener code here */},
+        child: Icon(MooncakeIcons.menu),
+      ),
       actions: <Widget>[
         if (isMyProfile) AccountOptionsButton(),
       ],

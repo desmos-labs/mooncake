@@ -27,7 +27,7 @@ class AccountOptionsButton extends StatelessWidget {
 
     return PopupMenuButton<AccountOptions>(
       onSelected: (option) => _onSelected(context, option),
-      icon: Icon(MooncakeIcons.more),
+      icon: Icon(MooncakeIcons.settings),
       itemBuilder: (context) {
         return AccountOptions.values.map((value) {
           return PopupMenuItem<AccountOptions>(
