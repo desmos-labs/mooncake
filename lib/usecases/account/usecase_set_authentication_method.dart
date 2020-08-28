@@ -14,13 +14,15 @@ class SetAuthenticationMethodUseCase {
   })  : assert(userRepository != null),
         _userRepository = userRepository;
 
-  /// Sets the current authentication method to be biometric.
+  /// Sets the authentication method of the account having
+  /// the given [address] to be biometric.
   Future<void> biometrics(String address) {
     return _userRepository.saveAuthenticationMethod(
         address, BiometricAuthentication());
   }
 
-  /// Sets the current authentication method to be password-based.
+  /// Sets the authentication method of the account having the
+  /// given [address] to be password-based.
   /// Before storing it locally, the given [clearTextPassword] is hashed
   /// for security purpose.
   Future<void> password(String address, String clearTextPassword) {

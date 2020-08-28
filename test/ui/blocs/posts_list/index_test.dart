@@ -116,7 +116,7 @@ void main() {
             blockUserUseCase: mockBlockUserUseCase,
             updatePostUseCase: mockUpdatePostUseCase,
             deletePostUseCase: mockDeletePostUseCase,
-            getAccountUseCase: mockGetAccountUseCase,
+            getActiveAccountUseCase: mockGetAccountUseCase,
           );
         },
       );

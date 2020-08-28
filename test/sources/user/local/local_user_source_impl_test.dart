@@ -162,28 +162,6 @@ void main() {
           equals(updatedAccount.cosmosAccount.accountNumber),
         );
       });
-
-      test('updates correctly the active account', () async {
-        final store = StoreRef.main();
-        await store
-            .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
-            .put(database, account.toJson());
-
-        final updatedAccount = account.copyWith(bio: "Updated bio");
-        await source.saveAccount(updatedAccount);
-
-        final record = await store.findFirst(
-          database,
-          finder: Finder(
-            filter: Filter.byKey(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY),
-          ),
-        );
-
-        final storedActiveAccount = MooncakeAccount.fromJson(
-          record.value as Map<String, dynamic>,
-        );
-        expect(storedActiveAccount, equals(updatedAccount));
-      });
     });
 
     group('setActiveAccount', () {

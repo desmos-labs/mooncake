@@ -142,8 +142,6 @@ class LocalUserSourceImpl extends LocalUserSource {
   @override
   Future<MooncakeAccount> saveAccount(MooncakeAccount data) async {
     await database.transaction((txn) async {
-      await store.record(ACTIVE_ACCOUNT_KEY).put(txn, data.toJson());
-
       // Get the stored accounts
       final accounts = (await _getAccounts(txn)).where((acc) {
         // Remove the account with the same address as the new one
@@ -162,7 +160,7 @@ class LocalUserSourceImpl extends LocalUserSource {
   }
 
   @override
-  Stream<MooncakeAccount> get accountStream {
+  Stream<MooncakeAccount> get activeAccountStream {
     return store
         .query(finder: Finder(filter: Filter.byKey(ACTIVE_ACCOUNT_KEY)))
         .onSnapshots(database)

@@ -44,7 +44,7 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   /// that has the value of the user address so that notification directed
   /// to him will be received in the future.
   void _subscribeToAddressTopic() {
-    _localUserSource.accountStream.listen((MooncakeAccount account) {
+    _localUserSource.activeAccountStream.listen((MooncakeAccount account) {
       if (_lastAddressSubscribedTopic != null) {
         _fcm.unsubscribeFromTopic(_lastAddressSubscribedTopic);
       }

@@ -284,9 +284,9 @@ void main() {
     final account = MooncakeAccount.local("address");
     final controller = StreamController<MooncakeAccount>();
 
-    when(localUserSource.accountStream).thenAnswer((_) => controller.stream);
+    when(localUserSource.activeAccountStream).thenAnswer((_) => controller.stream);
 
-    final stream = repository.accountStream;
+    final stream = repository.activeAccountStream;
     expectLater(
         stream,
         emitsInOrder([

@@ -35,7 +35,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final BlockUserUseCase _blockUserUseCase;
   final UpdatePostUseCase _updatePostUseCase;
   final DeletePostUseCase _deletePostUseCase;
-  final GetAccountUseCase _getAccountUseCase;
+  final GetActiveAccountUseCase _getActiveAccountUseCase;
 
   // Subscriptions
   StreamSubscription _eventsSubscription;
@@ -59,7 +59,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required BlockUserUseCase blockUserUseCase,
     @required UpdatePostUseCase updatePostUseCase,
     @required DeletePostUseCase deletePostUseCase,
-    @required GetAccountUseCase getAccountUseCase,
+    @required GetActiveAccountUseCase getActiveAccountUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getNotificationsUseCase != null),
         _getNotifications = getNotificationsUseCase,
@@ -85,10 +85,10 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         _updatePostUseCase = updatePostUseCase,
         assert(deletePostUseCase != null),
         _deletePostUseCase = deletePostUseCase,
-        assert(getAccountUseCase != null),
-        _getAccountUseCase = getAccountUseCase {
+        assert(getActiveAccountUseCase != null),
+        _getActiveAccountUseCase = getActiveAccountUseCase {
     // Subscribe to account state changes in order to perform setup
-    // operations upon login and cleanup ones upong loggin out
+    // operations upon login and cleanup ones upon logging out
     _logoutSubscription = accountBloc.listen((state) async {
       if (state is LoggedOut) {
         print("User logged out, stopping sync and deleting posts");
@@ -118,7 +118,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       blockUserUseCase: Injector.get(),
       updatePostUseCase: Injector.get(),
       deletePostUseCase: Injector.get(),
-      getAccountUseCase: Injector.get(),
+      getActiveAccountUseCase: Injector.get(),
     );
   }
 
@@ -411,10 +411,12 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Stream<PostsListState> _mapSyncPostsListEventToState(SyncPosts event) async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
-      // get the current user
-      final MooncakeAccount user = await _getAccountUseCase.getActiveAccount();
+      // Fet the current user
+      final user = await _getActiveAccountUseCase.single();
+
       // Show the snackbar
       yield currentState.copyWith(syncingPosts: true);
+
       // Wait for the sync
       yield await _syncPostsUseCase.sync(user.address).catchError((error) {
         print("Sync error: $error");

@@ -18,7 +18,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
   final LogoutUseCase _logoutUseCase;
-  final GetAccountUseCase _getUserUseCase;
+  final GetActiveAccountUseCase _getActiveAccountUseCase;
   final RefreshAccountUseCase _refreshAccountUseCase;
   final GetSettingUseCase _getSettingUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
@@ -30,7 +30,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   AccountBloc({
     @required GenerateMnemonicUseCase generateMnemonicUseCase,
     @required LogoutUseCase logoutUseCase,
-    @required GetAccountUseCase getUserUseCase,
+    @required GetActiveAccountUseCase getActiveAccountUseCase,
     @required RefreshAccountUseCase refreshAccountUseCase,
     @required GetSettingUseCase getSettingUseCase,
     @required SaveSettingUseCase saveSettingUseCase,
@@ -40,8 +40,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         _generateMnemonicUseCase = generateMnemonicUseCase,
         assert(logoutUseCase != null),
         _logoutUseCase = logoutUseCase,
-        assert(getUserUseCase != null),
-        _getUserUseCase = getUserUseCase,
+        assert(getActiveAccountUseCase != null),
+        _getActiveAccountUseCase = getActiveAccountUseCase,
         assert(refreshAccountUseCase != null),
         _refreshAccountUseCase = refreshAccountUseCase,
         assert(getSettingUseCase != null),
@@ -53,7 +53,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         assert(analytics != null),
         _analytics = analytics {
     // Listen for account changes so that we know when to refresh
-    _accountSubscription = _getUserUseCase.stream().listen((account) {
+    _accountSubscription = _getActiveAccountUseCase.stream().listen((account) {
       add(UserRefreshed(account));
     });
   }
@@ -62,7 +62,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     return AccountBloc(
       generateMnemonicUseCase: Injector.get(),
       logoutUseCase: Injector.get(),
-      getUserUseCase: Injector.get(),
+      getActiveAccountUseCase: Injector.get(),
       refreshAccountUseCase: Injector.get(),
       getSettingUseCase: Injector.get(),
       saveSettingUseCase: Injector.get(),
@@ -103,7 +103,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       await _saveSettingUseCase.save(key: SETTING_FIRST_START, value: false);
     }
 
-    final account = await _getUserUseCase.getActiveAccount();
+    final account = await _getActiveAccountUseCase.single();
     if (account != null) {
       await _analytics.setUserId(account.address);
       await _analytics.logLogin();
@@ -126,7 +126,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well
   /// as sending the user to the Home screen.
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
-    final account = await _getUserUseCase.getActiveAccount();
+    final account = await _getActiveAccountUseCase.single();
     yield LoggedIn.initial(account);
     _navigatorBloc.add(NavigateToHome());
   }
