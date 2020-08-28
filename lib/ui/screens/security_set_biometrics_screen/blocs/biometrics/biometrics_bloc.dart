@@ -68,12 +68,12 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
 
   Stream<BiometricsState> _mapAuthenticateEventToState(
       AuthenticateWithBiometrics event) async* {
+    yield state.copyWith(saving: true);
     final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
     // Save wallet and get unique address
     final Wallet wallet = await _saveWalletUseCase.saveWallet(mnemonic);
 
     // Set the authentication method
-    yield state.copyWith(saving: true);
     await _setAuthenticationMethodUseCase.biometrics(wallet.bech32Address);
 
     // Log In

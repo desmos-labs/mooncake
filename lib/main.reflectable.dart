@@ -2,7 +2,7 @@
 // https://github.com/dart-lang/reflectable.
 
 import 'dart:core';
-import 'package:alan/models/cosmos-sdk/tx/std_msg.dart' as prefix0;
+import 'package:alan/models/cosmos_sdk/tx/std_msg.dart' as prefix0;
 import 'package:alan/models/messages/msg_send.dart' as prefix1;
 import 'package:mooncake/sources/chain/models/msgs/msg_add_post_reaction.dart'
     as prefix6;

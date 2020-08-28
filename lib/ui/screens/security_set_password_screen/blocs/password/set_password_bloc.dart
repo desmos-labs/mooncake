@@ -60,6 +60,7 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
   }
 
   Stream<SetPasswordState> _mapSavePasswordEventToState() async* {
+    yield state.copyWith(savingPassword: true);
     final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
     // Save wallet and get unique address
     final wallet = await _saveWalletUseCase.saveWallet(mnemonic);
@@ -67,7 +68,6 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
     // Store authentication method
     await _setAuthenticationMethodUseCase.password(
         wallet.bech32Address, state.inputPassword);
-    yield state.copyWith(savingPassword: true);
 
     // Log In
     await _loginUseCase.login(wallet);
