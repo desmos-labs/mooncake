@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
@@ -172,15 +173,31 @@ void main() {
       blocTest(
         'GenerateAccountWhileLoggedIn: to work properly',
         build: () async {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
+            return Future.value(userAccount);
+          });
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount]);
+          });
           when(mockGenerateMnemonicUseCase.generate()).thenAnswer((_) {
             return Future.value(mnemonic);
           });
           return accountBloc;
         },
-        act: (bloc) async => bloc.add(GenerateAccountWhileLoggedIn()),
+        act: (bloc) async {
+          bloc.add(LogIn());
+          bloc.add(GenerateAccountWhileLoggedIn());
+        },
+        skip: 2,
         expect: [
-          CreatingAccountWhileLoggedIn(),
-          AccountCreatedWhileLoggedIn(mnemonic)
+          CreatingAccountWhileLoggedIn(
+              user: userAccount, accounts: [userAccount], refreshing: false),
+          AccountCreatedWhileLoggedIn(
+            mnemonic,
+            accounts: [userAccount],
+            user: userAccount,
+            refreshing: false,
+          ),
         ],
       );
 

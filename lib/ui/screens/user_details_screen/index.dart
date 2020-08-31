@@ -22,7 +22,6 @@ class UserDetailsScreen extends StatelessWidget {
         final Widget drawer = isMyProfile
             ? MenuDrawer(user: user, accounts: (state as LoggedIn).accounts)
             : null;
-
         return Scaffold(
           body: BlocBuilder<PostsListBloc, PostsListState>(
             builder: (context, postsState) {

@@ -84,13 +84,36 @@ class LoggedIn extends AccountState {
       accounts.where((x) => x.address != user.address).toList();
 
   @override
-  String toString() => 'LoggedIn { user: $user, refreshing: $refreshing }';
+  String toString() =>
+      'LoggedIn { user: $user, refreshing: $refreshing, accounts: $accounts }';
 }
 
 /// Represents the state during which the account is being generated while loggedin.
 class CreatingAccountWhileLoggedIn extends LoggedIn {
+  /// Represents the currently used account.
+  final MooncakeAccount user;
+
+  /// Indicates whether the account is being refreshed or not.
+  final bool refreshing;
+
+  final List<MooncakeAccount> accounts;
+
+  CreatingAccountWhileLoggedIn({
+    this.user,
+    this.accounts,
+    this.refreshing,
+  }) : super(
+          user: user,
+          accounts: accounts,
+          refreshing: refreshing,
+        );
+
   @override
-  String toString() => 'CreatingAccountWhileLoggedIn';
+  List<Object> get props => [user, accounts, refreshing];
+
+  @override
+  String toString() =>
+      'CreatingAccountWhileLoggedIn { user: $user, refreshing: $refreshing, accounts: $accounts }';
 }
 
 // wingman
@@ -108,9 +131,9 @@ class AccountCreatedWhileLoggedIn extends LoggedIn {
 
   AccountCreatedWhileLoggedIn(
     this.mnemonic, {
-    @required this.user,
-    @required this.accounts,
-    @required this.refreshing,
+    this.user,
+    this.accounts,
+    this.refreshing,
   }) : super(
           user: user,
           accounts: accounts,
@@ -118,8 +141,9 @@ class AccountCreatedWhileLoggedIn extends LoggedIn {
         );
 
   @override
-  List<Object> get props => [mnemonic];
+  List<Object> get props => [mnemonic, user, accounts, refreshing];
 
   @override
-  String toString() => 'AccountCreatedWhileLoggedIn';
+  String toString() =>
+      'AccountCreatedWhileLoggedIn { user: $user, refreshing: $refreshing, accounts: $accounts, mnemonic: $mnemonic }';
 }

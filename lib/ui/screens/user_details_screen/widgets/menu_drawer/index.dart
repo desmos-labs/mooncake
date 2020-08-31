@@ -59,9 +59,6 @@ class MenuDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
-        // wingman
-        print("---here----");
-        print(state);
         return Drawer(
           child: Container(
             color: Colors.white,
