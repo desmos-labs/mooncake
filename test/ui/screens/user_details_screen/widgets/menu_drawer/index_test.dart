@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
-import 'package:mooncake/ui/screens/user_details_screen/widgets/account_app_bar/widgets/export.dart';
 import 'package:mooncake/ui/screens/user_details_screen/widgets/export.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/screens/user_details_screen/widgets/menu_drawer/widgets/export.dart';
