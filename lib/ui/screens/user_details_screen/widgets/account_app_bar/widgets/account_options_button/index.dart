@@ -26,19 +26,25 @@ class AccountOptionsButton extends StatelessWidget {
     };
 
     return PopupMenuButton<AccountOptions>(
+      offset: Offset(0, 100.0),
       onSelected: (option) => _onSelected(context, option),
       child: Container(
-        margin: EdgeInsets.all(7),
+        margin: EdgeInsets.only(
+          top: 7,
+          left: 7,
+          bottom: 7,
+          right: 10,
+        ),
         child: Material(
           shape: CircleBorder(),
-          color: Colors.grey[500].withOpacity(0.6), // button color
+          color: Colors.grey[700].withOpacity(0.5), // button color
           child: SizedBox(
             width: 35,
             height: 35,
             child: Icon(
               MooncakeIcons.settings,
               color: Colors.white,
-              size: 15,
+              size: 20,
             ),
           ),
         ),
@@ -65,11 +71,11 @@ class AccountOptionsButton extends StatelessWidget {
       BlocProvider.of<NavigatorBloc>(context)
           .add(NavigateToShowMnemonicAuth(userAddress));
     } else if (option == AccountOptions.Logout) {
-      BlocProvider.of<AccountBloc>(context).add(LogOut(
-          (BlocProvider.of<AccountBloc>(context).state as LoggedIn)
-              .user
-              .address));
-      // BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
+      BlocProvider.of<AccountBloc>(context).add(
+        LogOut((BlocProvider.of<AccountBloc>(context).state as LoggedIn)
+            .user
+            .address),
+      );
     }
   }
 }

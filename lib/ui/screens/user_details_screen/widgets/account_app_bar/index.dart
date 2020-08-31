@@ -29,6 +29,8 @@ class AccountAppBar extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       leading: leadingIcon,
       actions: <Widget>[
+        // future mile stone with draft posts feature
+        // if (isMyProfile) DraftButton(),
         if (isMyProfile) AccountOptionsButton(),
       ],
       flexibleSpace: FlexibleSpaceBar(
