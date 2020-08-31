@@ -69,7 +69,7 @@ class AccountOptionsButton extends StatelessWidget {
           (BlocProvider.of<AccountBloc>(context).state as LoggedIn)
               .user
               .address));
-      BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
+      // BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
     }
   }
 }

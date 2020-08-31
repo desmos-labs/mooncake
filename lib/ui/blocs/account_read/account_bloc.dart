@@ -175,7 +175,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapLogOutEventToState(LogOut event) async* {
     await _analytics.logEvent(name: Constants.EVENT_LOGOUT);
     await _logoutUseCase.logout(event.address);
-    yield LoggedOut();
+    final account = await _getActiveAccountUseCase.single();
+    if (account == null) {
+      yield LoggedOut();
+    } else {
+      yield* _mapGetAllAccountsEventToState();
+    }
   }
 
   /// Handles the [LogOutAll] event emitting the [LoggedOut] state after

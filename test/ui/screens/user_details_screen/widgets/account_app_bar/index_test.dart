@@ -70,4 +70,55 @@ void main() {
     await tester.pumpAndSettle();
     expect(verify(mockNavigatorBloc.add(NavigateToEditAccount())).callCount, 1);
   });
+
+  testWidgets('AccountAppBar: Hits logout properly',
+      (WidgetTester tester) async {
+    MooncakeAccount userAccount = MooncakeAccount(
+      profilePicUri: "https://example.com/avatar.png",
+      moniker: "john-doe",
+      cosmosAccount: cosmosAccount.copyWith(address: "address"),
+    );
+
+    when(mockAccountBloc.state).thenAnswer((_) {
+      return LoggedIn.initial(userAccount, [userAccount]);
+    });
+    await tester.pumpWidget(
+      makeTestableWidget(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<AccountBloc>(
+              create: (_) => mockAccountBloc,
+            ),
+            BlocProvider<NavigatorBloc>(
+              create: (_) => mockNavigatorBloc,
+            ),
+          ],
+          child: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool isBoxedScrolled) {
+              return [
+                AccountAppBar(
+                  user: userAccount,
+                  isMyProfile: true,
+                  isFollower: false,
+                ),
+              ];
+            },
+            body: Container(),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(MooncakeIcons.settings));
+    await tester.pumpAndSettle();
+    expect(find.text("logoutOption"), findsWidgets);
+    expect(find.text("editAccountOption"), findsWidgets);
+    expect(find.text("viewMnemonicOption"), findsWidgets);
+
+    await tester.tap(find.text("logoutOption"));
+    await tester.pumpAndSettle();
+    expect(verify(mockAccountBloc.add(LogOut("address"))).callCount, 1);
+  });
 }
