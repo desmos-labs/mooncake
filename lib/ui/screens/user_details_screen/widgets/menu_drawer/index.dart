@@ -56,7 +56,7 @@ class MenuDrawer extends StatelessWidget {
       builder: (context, state) {
         return Drawer(
           child: Container(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             child: Column(
               children: [
                 Expanded(
@@ -114,7 +114,7 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: ThemeSpaces.largeGutter),
+                SizedBox(height: 10),
                 GestureDetector(
                   onTap: () => _handleImportMnemonicPhrase(context),
                   child: Container(
@@ -131,7 +131,7 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: ThemeSpaces.largeGutter),
+                SizedBox(height: 10),
                 GestureDetector(
                   onTap: () => _handleImportMnemonicBackup(context),
                   child: Container(
@@ -148,7 +148,7 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: ThemeSpaces.largeGutter),
+                SizedBox(height: 10),
                 GestureDetector(
                   onTap: () => _handleLogOutAll(context),
                   child: Container(
