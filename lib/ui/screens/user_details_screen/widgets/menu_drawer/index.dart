@@ -21,6 +21,10 @@ class MenuDrawer extends StatelessWidget {
     BlocProvider.of<NavigatorBloc>(context).add(NavigateToRecoverAccount());
   }
 
+  void _handleImportMnemonicBackup(BuildContext context) {
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToRestoreBackup());
+  }
+
   void _handleSwitchAccount(BuildContext context, MooncakeAccount user) {
     BlocProvider.of<AccountBloc>(context).add(SwitchAccount(user));
     Navigator.of(context).pop();
@@ -92,6 +96,18 @@ class MenuDrawer extends StatelessWidget {
                   child: Text(
                     PostsLocalizations.of(context)
                         .translate(Messages.importMnemonicPhrase),
+                    style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: ThemeSpaces.mediumGutter),
+                GestureDetector(
+                  onTap: () => _handleImportMnemonicBackup(context),
+                  child: Text(
+                    PostsLocalizations.of(context)
+                        .translate(Messages.importMnemonicBackup),
                     style: Theme.of(context).textTheme.subtitle1.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),
