@@ -86,7 +86,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     } else if (event is GenerateAccount) {
       yield* _mapGenerateAccountEventToState();
     } else if (event is GenerateAccountWhileLoggedIn) {
-      yield* _mapGenerateAccountEventToState(loggedIn: true);
+      yield* _mapGenerateAccountEventToState();
     } else if (event is LogIn) {
       yield* _mapLogInEventToState(event);
     } else if (event is LogOut) {
@@ -125,15 +125,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// Handle the [GenerateAccount] event, which is emitted when the user wants
   /// to create a new account. It creates a new account, stores it locally
   /// and later yield the [LoggedIn] state.
-  Stream<AccountState> _mapGenerateAccountEventToState(
-      {bool loggedIn = false}) async* {
+  Stream<AccountState> _mapGenerateAccountEventToState() async* {
     AccountState loading =
-        loggedIn ? CreatingAccountWhileLoggedIn() : CreatingAccount();
+        state is LoggedIn ? CreatingAccountWhileLoggedIn() : CreatingAccount();
     yield loading;
     final mnemonic = await _generateMnemonicUseCase.generate();
     await Future.delayed(const Duration(seconds: 2));
-    AccountState accountCreated = loggedIn
-        ? AccountCreatedWhileLoggedIn(mnemonic)
+    AccountState accountCreated = state is LoggedIn
+        ? AccountCreatedWhileLoggedIn(
+            mnemonic,
+            accounts: (state as LoggedIn).accounts,
+            refreshing: (state as LoggedIn).refreshing,
+            user: (state as LoggedIn).user,
+          )
         : AccountCreated(mnemonic);
     yield accountCreated;
   }

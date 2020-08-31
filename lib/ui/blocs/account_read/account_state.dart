@@ -98,7 +98,24 @@ class CreatingAccountWhileLoggedIn extends LoggedIn {
 class AccountCreatedWhileLoggedIn extends LoggedIn {
   final List<String> mnemonic;
 
-  AccountCreatedWhileLoggedIn(this.mnemonic);
+  /// Represents the currently used account.
+  final MooncakeAccount user;
+
+  /// Indicates whether the account is being refreshed or not.
+  final bool refreshing;
+
+  final List<MooncakeAccount> accounts;
+
+  AccountCreatedWhileLoggedIn(
+    this.mnemonic, {
+    @required this.user,
+    @required this.accounts,
+    @required this.refreshing,
+  }) : super(
+          user: user,
+          accounts: accounts,
+          refreshing: refreshing,
+        );
 
   @override
   List<Object> get props => [mnemonic];
