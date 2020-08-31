@@ -57,88 +57,114 @@ class MenuDrawer extends StatelessWidget {
         return Drawer(
           child: Container(
             color: Colors.white,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      SafeArea(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 30, horizontal: 10),
+                          child: Row(
+                            children: [
+                              AccountAvatar(user: user, size: 50),
+                              SizedBox(width: 10),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      '${PostsLocalizations.of(context).translate(Messages.hello)},',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          .copyWith(
+                                            fontSize: 16,
+                                          )),
+                                  Text(user.screenName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      ..._listAccounts(context),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () => _handleCreateNewAccount(context),
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-                    child: Row(
-                      children: [
-                        AccountAvatar(user: user, size: 50),
-                        SizedBox(width: 10),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                '${PostsLocalizations.of(context).translate(Messages.hello)},',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(
-                                      fontSize: 16,
-                                    )),
-                            Text(user.screenName,
-                                style: Theme.of(context).textTheme.headline6),
-                          ],
-                        )
-                      ],
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      PostsLocalizations.of(context)
+                          .translate(Messages.createAnotherAccount),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                      // textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                     ),
                   ),
                 ),
-                ..._listAccounts(context),
-                SizedBox(height: ThemeSpaces.mediumGutter),
-                // wingman
-                // to do later
+                SizedBox(height: ThemeSpaces.largeGutter),
                 GestureDetector(
                   onTap: () => _handleImportMnemonicPhrase(context),
-                  child: Text(
-                    PostsLocalizations.of(context)
-                        .translate(Messages.importMnemonicPhrase),
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                    textAlign: TextAlign.center,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      PostsLocalizations.of(context)
+                          .translate(Messages.importMnemonicPhrase),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                      // textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
+                    ),
                   ),
                 ),
-                SizedBox(height: ThemeSpaces.mediumGutter),
+                SizedBox(height: ThemeSpaces.largeGutter),
                 GestureDetector(
                   onTap: () => _handleImportMnemonicBackup(context),
-                  child: Text(
-                    PostsLocalizations.of(context)
-                        .translate(Messages.importMnemonicBackup),
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                    textAlign: TextAlign.center,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      PostsLocalizations.of(context)
+                          .translate(Messages.importMnemonicBackup),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                      // textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
+                    ),
                   ),
                 ),
-                SizedBox(height: ThemeSpaces.mediumGutter),
-                GestureDetector(
-                  onTap: () => _handleCreateNewAccount(context),
-                  child: Text(
-                    PostsLocalizations.of(context)
-                        .translate(Messages.createAnotherAccount),
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                // wingman
-                // to do later
+                SizedBox(height: ThemeSpaces.largeGutter),
                 GestureDetector(
                   onTap: () => _handleLogOutAll(context),
-                  child: Text(
-                    PostsLocalizations.of(context)
-                        .translate(Messages.logoutAll),
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                    textAlign: TextAlign.center,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text(
+                      PostsLocalizations.of(context)
+                          .translate(Messages.logoutAll),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                      textAlign: TextAlign.left,
+                    ),
                   ),
                 ),
+                SizedBox(height: 25),
               ],
             ),
           ),

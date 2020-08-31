@@ -183,7 +183,7 @@
   "all": "All",
   "hello": "Hello",
   "createAnotherAccount": "Create Another Account",
-  "importMnemonicPhrase": "Import using Mnemonic Phrase",
-  "importMnemonicBackup": "Import using Mnemonic Backup",
+  "importMnemonicPhrase": "Import Mnemonic Phrase",
+  "importMnemonicBackup": "Import Mnemonic Backup",
   "logoutAll": "Logout All Accounts"
 }

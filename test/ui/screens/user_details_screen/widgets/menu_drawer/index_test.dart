@@ -102,4 +102,60 @@ void main() {
     await tester.pumpAndSettle();
     expect(verify(mockAccountBloc.add(LogOutAll())).callCount, 1);
   });
+
+  testWidgets('MenuDrawer: import phrase gesture', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      makeTestableWidget(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<AccountBloc>(
+              create: (_) => mockAccountBloc,
+            ),
+            BlocProvider<NavigatorBloc>(
+              create: (_) => mockNavigatorBloc,
+            ),
+          ],
+          child: MenuDrawer(
+            user: userAccount,
+            accounts: [userAccount],
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text("importMnemonicPhrase"));
+    await tester.pumpAndSettle();
+    expect(
+        verify(mockNavigatorBloc.add(NavigateToRecoverAccount())).callCount, 1);
+  });
+
+  testWidgets('MenuDrawer: import backup gesture', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      makeTestableWidget(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<AccountBloc>(
+              create: (_) => mockAccountBloc,
+            ),
+            BlocProvider<NavigatorBloc>(
+              create: (_) => mockNavigatorBloc,
+            ),
+          ],
+          child: MenuDrawer(
+            user: userAccount,
+            accounts: [userAccount],
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text("importMnemonicBackup"));
+    await tester.pumpAndSettle();
+    expect(
+        verify(mockNavigatorBloc.add(NavigateToRestoreBackup())).callCount, 1);
+  });
 }
