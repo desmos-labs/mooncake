@@ -93,17 +93,19 @@ class MenuDrawer extends StatelessWidget {
                 ),
                 ..._listAccounts(context),
                 SizedBox(height: ThemeSpaces.mediumGutter),
-                GestureDetector(
-                  onTap: _handleImportMnemonic,
-                  child: Text(
-                    PostsLocalizations.of(context)
-                        .translate(Messages.importMnemonic),
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+                // wingman
+                // to do later
+                // GestureDetector(
+                //   onTap: _handleImportMnemonic,
+                //   child: Text(
+                //     PostsLocalizations.of(context)
+                //         .translate(Messages.importMnemonic),
+                //     style: Theme.of(context).textTheme.subtitle1.copyWith(
+                //           color: Theme.of(context).colorScheme.primary,
+                //         ),
+                //     textAlign: TextAlign.center,
+                //   ),
+                // ),
                 SizedBox(height: ThemeSpaces.mediumGutter),
                 GestureDetector(
                   onTap: () => _handleCreateNewAccount(context),

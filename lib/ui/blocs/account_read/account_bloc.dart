@@ -23,7 +23,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final GetSettingUseCase _getSettingUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
   final GetAccountsUseCase _getAccountsUseCase;
-
+  final SetAccountActiveUsecase _setAccountActiveUsecase;
   final NavigatorBloc _navigatorBloc;
 
   StreamSubscription _accountSubscription;
@@ -38,6 +38,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
     @required GetAccountsUseCase getAccountsUseCase,
+    @required SetAccountActiveUsecase setAccountActiveUsecase,
   })  : assert(generateMnemonicUseCase != null),
         _generateMnemonicUseCase = generateMnemonicUseCase,
         assert(logoutUseCase != null),
@@ -55,7 +56,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         assert(analytics != null),
         _analytics = analytics,
         assert(getAccountsUseCase != null),
-        _getAccountsUseCase = getAccountsUseCase {
+        _getAccountsUseCase = getAccountsUseCase,
+        assert(setAccountActiveUsecase != null),
+        _setAccountActiveUsecase = setAccountActiveUsecase {
     // Listen for account changes so that we know when to refresh
     _accountSubscription = _getActiveAccountUseCase.stream().listen((account) {
       add(UserRefreshed(account));
@@ -73,6 +76,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       navigatorBloc: BlocProvider.of(context),
       analytics: Injector.get(),
       getAccountsUseCase: Injector.get(),
+      setAccountActiveUsecase: Injector.get(),
     );
   }
 
@@ -97,6 +101,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _mapRefreshAccountEventToState();
     } else if (event is LogOutAll) {
       yield* _mapLogOutAllEventToState();
+    } else if (event is GetAllAccounts) {
+      yield* _mapGetAllAccountsEventToState();
+    } else if (event is SwitchAccount) {
+      yield* _mapSwitchAccountEventToState(event);
     }
   }
 
@@ -195,6 +203,23 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final currentState = state;
     if (currentState is LoggedIn) {
       yield currentState.copyWith(user: event.user, refreshing: false);
+    }
+  }
+
+  /// Refreshes currently list of all stored accounts
+  Stream<AccountState> _mapGetAllAccountsEventToState() async* {
+    if (state is LoggedIn) {
+      final List<MooncakeAccount> storedAccounts =
+          await _getAccountsUseCase.all();
+      yield LoggedIn.initial((state as LoggedIn).user, storedAccounts);
+    }
+  }
+
+  /// Switch accounts
+  Stream<AccountState> _mapSwitchAccountEventToState(
+      SwitchAccount event) async* {
+    if (state is LoggedIn) {
+      await _setAccountActiveUsecase.setActive(event.user);
     }
   }
 

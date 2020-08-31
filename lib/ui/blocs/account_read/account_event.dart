@@ -71,3 +71,23 @@ class GenerateAccountWhileLoggedIn extends AccountEvent {
   @override
   String toString() => 'GenerateAccountWhileLoggedIn';
 }
+
+/// Tells the Bloc that a new account should be generated and properly stored
+/// inside the local device. Once the account has been generated, the
+/// [AccountGeneratedWhileLoggedIn] state should be emitted.
+class GetAllAccounts extends AccountEvent {
+  @override
+  String toString() => 'GetAllAccounts';
+}
+
+/// Tells the Bloc that the user has forced a refresh of the account
+class SwitchAccount extends AccountEvent {
+  final MooncakeAccount user;
+
+  SwitchAccount(this.user);
+
+  @override
+  String toString() => 'SwitchAccount';
+  @override
+  List<Object> get props => [user];
+}

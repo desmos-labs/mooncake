@@ -12,13 +12,16 @@ class LoginUseCase {
 
   /// Saves the given [mnemonic] into the encrypted storage of the
   /// device as the user wallet.
-  Future<void> login(Wallet wallet) async {
+  Future<void> login(Wallet wallet, {bool setActive = true}) async {
     // Get the account data
     final user = await _userRepository.refreshAccount(wallet.bech32Address);
     assert(user != null);
 
-    // Make the user active
-    await _userRepository.setActiveAccount(user);
+    // wingman
+    if (setActive) {
+      // Make the user active
+      await _userRepository.setActiveAccount(user);
+    }
 
     // If needed, send the funds to the user
     if (user.needsFunding) {

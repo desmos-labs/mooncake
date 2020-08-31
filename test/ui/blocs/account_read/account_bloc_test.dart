@@ -31,6 +31,9 @@ class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 
 class MockGetAccountsUseCase extends Mock implements GetAccountsUseCase {}
 
+class MockSetAccountActiveUsecase extends Mock
+    implements SetAccountActiveUsecase {}
+
 void main() {
   MockGenerateMnemonicUseCase mockGenerateMnemonicUseCase;
   MockLogoutUseCase mockLogoutUseCase;
@@ -41,6 +44,7 @@ void main() {
   MockNavigatorBloc mockNavigatorBloc;
   MockFirebaseAnalytics mockFirebaseAnalytics;
   MockGetAccountsUseCase mockGetAccountsUseCase;
+  MockSetAccountActiveUsecase mockSetAccountActiveUsecase;
 
   setUp(() {
     mockGenerateMnemonicUseCase = MockGenerateMnemonicUseCase();
@@ -52,6 +56,7 @@ void main() {
     mockNavigatorBloc = MockNavigatorBloc();
     mockFirebaseAnalytics = MockFirebaseAnalytics();
     mockGetAccountsUseCase = MockGetAccountsUseCase();
+    mockSetAccountActiveUsecase = MockSetAccountActiveUsecase();
   });
 
   group(
@@ -110,6 +115,7 @@ void main() {
             navigatorBloc: mockNavigatorBloc,
             analytics: mockFirebaseAnalytics,
             getAccountsUseCase: mockGetAccountsUseCase,
+            setAccountActiveUsecase: mockSetAccountActiveUsecase,
           );
         },
       );
@@ -309,6 +315,31 @@ void main() {
           LoggedIn(
               user: userAccount, refreshing: false, accounts: [userAccount]),
         ],
+      );
+
+      blocTest(
+        'SwitchAccount: to work properly',
+        build: () async {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
+            return Future.value(userAccount);
+          });
+
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount]);
+          });
+
+          return accountBloc;
+        },
+        act: (bloc) async {
+          bloc.add(LogIn());
+          bloc.add(SwitchAccount(userAccountTwo));
+        },
+        expect: [
+          LoggedIn.initial(userAccount, [userAccount]),
+        ],
+        verify: (_) async {
+          verify(mockGetAccountsUseCase.all()).called(1);
+        },
       );
     },
   );
