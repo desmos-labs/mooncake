@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import './widgets/export.dart';
 
 class MenuDrawer extends StatelessWidget {
   final User user;
@@ -34,25 +35,9 @@ class MenuDrawer extends StatelessWidget {
     accounts.forEach(
       (user) {
         results.add(
-          Container(
-            child: Material(
-              child: InkWell(
-                  onTap: () {
-                    _handleSwitchAccount(context, user);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    child: Row(
-                      children: [
-                        AccountAvatar(user: user, size: 40),
-                        SizedBox(width: 20),
-                        Text(user.screenName, textAlign: TextAlign.end),
-                      ],
-                    ),
-                  )),
-              color: Colors.transparent,
-            ),
+          SingleAccountItem(
+            user: user,
+            onTap: _handleSwitchAccount,
           ),
         );
       },
