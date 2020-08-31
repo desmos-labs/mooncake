@@ -47,7 +47,6 @@ class MenuDrawer extends StatelessWidget {
   }
 
   void _handleCreateNewAccount(BuildContext context) {
-    print("clicked new account");
     BlocProvider.of<AccountBloc>(context).add(GenerateAccountWhileLoggedIn());
   }
 

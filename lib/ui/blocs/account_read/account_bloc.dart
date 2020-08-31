@@ -146,6 +146,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
           )
         : AccountCreated(mnemonic);
     yield accountCreated;
+
+    if (accountCreated is AccountCreatedWhileLoggedIn) {
+      _navigatorBloc.add(NavigateToProtectAccount());
+    }
   }
 
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well

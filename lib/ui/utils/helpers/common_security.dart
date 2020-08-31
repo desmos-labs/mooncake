@@ -11,5 +11,9 @@ String getMnemonic(
     return accountState.mnemonic.join(" ");
   }
 
+  if (accountState is AccountCreatedWhileLoggedIn) {
+    return accountState.mnemonic.join(" ");
+  }
+
   return recoverAccountState.wordsList.join(" ");
 }
