@@ -12,6 +12,19 @@ class MenuDrawer extends StatelessWidget {
     @required this.accounts,
   });
 
+  void _handleCreateNewAccount(BuildContext context) {
+    BlocProvider.of<AccountBloc>(context).add(GenerateAccountWhileLoggedIn());
+  }
+
+  _handleImportMnemonic() {
+    print("click import");
+  }
+
+  void _handleSwitchAccount(BuildContext context, MooncakeAccount user) {
+    BlocProvider.of<AccountBloc>(context).add(SwitchAccount(user));
+    Navigator.of(context).pop();
+  }
+
   List<Widget> _listAccounts(BuildContext context) {
     final List<Widget> results = [];
     accounts.forEach(
@@ -23,7 +36,7 @@ class MenuDrawer extends StatelessWidget {
                   onTap: () {
                     // wingman
                     print("ive been called");
-                    // Navigator.of(context).pop();
+                    _handleSwitchAccount(context, user);
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -44,14 +57,6 @@ class MenuDrawer extends StatelessWidget {
     );
 
     return results;
-  }
-
-  void _handleCreateNewAccount(BuildContext context) {
-    BlocProvider.of<AccountBloc>(context).add(GenerateAccountWhileLoggedIn());
-  }
-
-  _handleImportMnemonic() {
-    print("click import");
   }
 
   @override
