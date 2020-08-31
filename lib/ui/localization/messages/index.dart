@@ -9,6 +9,9 @@ class Messages {
   static String get all => "all";
   static String get hello => "hello";
 
+  // Account related
+  static String get logoutAll => "logoutAll";
+
   // Login
   static String get createAccountButtonText => "createAccountButtonText";
   static String get alreadyHaveMnemonicButtonText =>

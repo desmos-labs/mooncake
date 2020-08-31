@@ -17,7 +17,6 @@ class LoginUseCase {
     final user = await _userRepository.refreshAccount(wallet.bech32Address);
     assert(user != null);
 
-    // wingman
     if (setActive) {
       // Make the user active
       await _userRepository.setActiveAccount(user);

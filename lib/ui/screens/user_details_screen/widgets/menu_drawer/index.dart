@@ -16,13 +16,17 @@ class MenuDrawer extends StatelessWidget {
     BlocProvider.of<AccountBloc>(context).add(GenerateAccountWhileLoggedIn());
   }
 
-  _handleImportMnemonic() {
+  void _handleImportMnemonic() {
     print("click import");
   }
 
   void _handleSwitchAccount(BuildContext context, MooncakeAccount user) {
     BlocProvider.of<AccountBloc>(context).add(SwitchAccount(user));
     Navigator.of(context).pop();
+  }
+
+  void _handleLogOutAll(BuildContext context) {
+    BlocProvider.of<AccountBloc>(context).add(LogOutAll());
   }
 
   List<Widget> _listAccounts(BuildContext context) {
@@ -34,8 +38,6 @@ class MenuDrawer extends StatelessWidget {
             child: Material(
               child: InkWell(
                   onTap: () {
-                    // wingman
-                    print("ive been called");
                     _handleSwitchAccount(context, user);
                   },
                   child: Container(
@@ -117,6 +119,19 @@ class MenuDrawer extends StatelessWidget {
                   child: Text(
                     PostsLocalizations.of(context)
                         .translate(Messages.createAnotherAccount),
+                    style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                // wingman
+                // to do later
+                GestureDetector(
+                  onTap: () => _handleLogOutAll(context),
+                  child: Text(
+                    PostsLocalizations.of(context)
+                        .translate(Messages.logoutAll),
                     style: Theme.of(context).textTheme.subtitle1.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),

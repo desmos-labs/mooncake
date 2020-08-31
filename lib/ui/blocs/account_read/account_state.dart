@@ -116,7 +116,6 @@ class CreatingAccountWhileLoggedIn extends LoggedIn {
       'CreatingAccountWhileLoggedIn { user: $user, refreshing: $refreshing, accounts: $accounts }';
 }
 
-// wingman
 /// Tells the view that a new account has been generated while logged in
 class AccountCreatedWhileLoggedIn extends LoggedIn {
   final List<String> mnemonic;
