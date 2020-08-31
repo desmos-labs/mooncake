@@ -54,13 +54,13 @@ void main() {
     expect(find.byType(AnimatedContainer), findsOneWidget);
     expect(find.byType(AccountAvatar), findsOneWidget);
     expect(find.byType(AccountOptionsButton), findsOneWidget);
-    expect(find.byIcon(MooncakeIcons.more), findsOneWidget);
+    expect(find.byIcon(MooncakeIcons.settings), findsOneWidget);
 
     await tester.tap(find.byType(PrimaryButton));
     await tester.pumpAndSettle();
     expect(verify(mockNavigatorBloc.add(NavigateToWallet())).callCount, 1);
 
-    await tester.tap(find.byIcon(MooncakeIcons.more));
+    await tester.tap(find.byIcon(MooncakeIcons.settings));
     await tester.pumpAndSettle();
     expect(find.text("logoutOption"), findsWidgets);
     expect(find.text("editAccountOption"), findsWidgets);

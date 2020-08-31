@@ -24,7 +24,7 @@ void main() {
       (WidgetTester tester) async {
     when(mockHomeBloc.state).thenAnswer((_) => HomeState.initial());
     when(mockAccountBloc.state)
-        .thenAnswer((_) => LoggedIn.initial(userAccount));
+        .thenAnswer((_) => LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(

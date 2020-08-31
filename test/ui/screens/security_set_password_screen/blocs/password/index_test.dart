@@ -104,7 +104,8 @@ void main() {
         act: (bloc) async {
           when(mockRecoverAccountBloc.state)
               .thenAnswer((_) => RecoverAccountState.initial());
-          when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+          when(mockAccountBloc.state)
+              .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
           when(mockSetAuthenticationMethodUseCase.password("address", any))
               .thenAnswer((_) => Future.value(null));
           when(mockLoginUseCase.login(any))

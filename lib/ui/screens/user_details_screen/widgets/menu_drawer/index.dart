@@ -47,6 +47,7 @@ class MenuDrawer extends StatelessWidget {
 
   _handleCreateNewAccount() {
     print("clicked new account");
+    // if account is created
   }
 
   _handleImportMnemonic() {

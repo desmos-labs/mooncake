@@ -35,7 +35,8 @@ void main() {
     Post formattedTestPoll = testPost.copyWith(poll: poll);
 
     MockAccountBloc mockAccountBloc = MockAccountBloc();
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
 
     await tester.pumpWidget(
       makeTestableWidget(

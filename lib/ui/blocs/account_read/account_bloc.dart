@@ -22,6 +22,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final RefreshAccountUseCase _refreshAccountUseCase;
   final GetSettingUseCase _getSettingUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
+  final GetAccountsUseCase _getAccountsUseCase;
 
   final NavigatorBloc _navigatorBloc;
 
@@ -36,6 +37,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required SaveSettingUseCase saveSettingUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
+    @required GetAccountsUseCase getAccountsUseCase,
   })  : assert(generateMnemonicUseCase != null),
         _generateMnemonicUseCase = generateMnemonicUseCase,
         assert(logoutUseCase != null),
@@ -51,7 +53,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(analytics != null),
-        _analytics = analytics {
+        _analytics = analytics,
+        assert(getAccountsUseCase != null),
+        _getAccountsUseCase = getAccountsUseCase {
     // Listen for account changes so that we know when to refresh
     _accountSubscription = _getActiveAccountUseCase.stream().listen((account) {
       add(UserRefreshed(account));
@@ -68,6 +72,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       saveSettingUseCase: Injector.get(),
       navigatorBloc: BlocProvider.of(context),
       analytics: Injector.get(),
+      getAccountsUseCase: Injector.get(),
     );
   }
 
@@ -80,6 +85,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _mapCheckStatusEventToState();
     } else if (event is GenerateAccount) {
       yield* _mapGenerateAccountEventToState();
+    } else if (event is GenerateAccountWhileLoggedIn) {
+      yield* _mapGenerateAccountEventToState(loggedIn: true);
     } else if (event is LogIn) {
       yield* _mapLogInEventToState(event);
     } else if (event is LogOut) {
@@ -107,7 +114,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     if (account != null) {
       await _analytics.setUserId(account.address);
       await _analytics.logLogin();
-      yield LoggedIn.initial(account);
+      final List<MooncakeAccount> storedAccounts =
+          await _getAccountsUseCase.all();
+      yield LoggedIn.initial(account, storedAccounts);
     } else {
       yield LoggedOut();
     }
@@ -116,18 +125,26 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// Handle the [GenerateAccount] event, which is emitted when the user wants
   /// to create a new account. It creates a new account, stores it locally
   /// and later yield the [LoggedIn] state.
-  Stream<AccountState> _mapGenerateAccountEventToState() async* {
-    yield CreatingAccount();
+  Stream<AccountState> _mapGenerateAccountEventToState(
+      {bool loggedIn = false}) async* {
+    AccountState loading =
+        loggedIn ? CreatingAccountWhileLoggedIn() : CreatingAccount();
+    yield loading;
     final mnemonic = await _generateMnemonicUseCase.generate();
     await Future.delayed(const Duration(seconds: 2));
-    yield AccountCreated(mnemonic);
+    AccountState accountCreated = loggedIn
+        ? AccountCreatedWhileLoggedIn(mnemonic)
+        : AccountCreated(mnemonic);
+    yield accountCreated;
   }
 
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well
   /// as sending the user to the Home screen.
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
     final account = await _getActiveAccountUseCase.single();
-    yield LoggedIn.initial(account);
+    final List<MooncakeAccount> storedAccounts =
+        await _getAccountsUseCase.all();
+    yield LoggedIn.initial(account, storedAccounts);
     _navigatorBloc.add(NavigateToHome());
   }
 

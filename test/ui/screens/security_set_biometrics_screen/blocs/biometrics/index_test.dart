@@ -72,7 +72,8 @@ void main() {
               .thenAnswer((_) => Future.value(null));
           when(mockRecoverAccountBloc.state)
               .thenAnswer((_) => RecoverAccountState.initial());
-          when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+          when(mockAccountBloc.state)
+              .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
           when(mockLoginUseCase.login(any))
               .thenAnswer((_) => Future.value(null));
           when(mockSaveWalletUseCase.saveWallet(any))

@@ -25,7 +25,8 @@ void main() {
       comments: testPosts,
     ));
 
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
 
     await tester.pumpWidget(
       makeTestableWidget(

@@ -63,3 +63,11 @@ class LogOutAll extends AccountEvent {
   @override
   String toString() => 'LogOutAll';
 }
+
+/// Tells the Bloc that a new account should be generated and properly stored
+/// inside the local device. Once the account has been generated, the
+/// [AccountGeneratedWhileLoggedIn] state should be emitted.
+class GenerateAccountWhileLoggedIn extends AccountEvent {
+  @override
+  String toString() => 'GenerateAccountWhileLoggedIn';
+}

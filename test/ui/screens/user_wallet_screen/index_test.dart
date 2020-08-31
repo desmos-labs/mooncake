@@ -20,7 +20,7 @@ void main() {
 
   testWidgets('WalletScreen: Displays correctly', (WidgetTester tester) async {
     when(mockAccountBloc.state)
-        .thenAnswer((_) => LoggedIn.initial(userAccount));
+        .thenAnswer((_) => LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
