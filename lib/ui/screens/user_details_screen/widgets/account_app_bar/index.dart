@@ -83,28 +83,15 @@ class AccountAppBar extends StatelessWidget {
                       children: [
                         if (isMyProfile)
                           PrimaryButton(
-                            expandedValue: 10,
                             borderRadius: 60,
-                            expanded: true,
+                            expanded: false,
                             onPressed: () {
                               BlocProvider.of<NavigatorBloc>(context)
                                   .add(NavigateToWallet());
                             },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  PostsLocalizations.of(context)
-                                      .translate(Messages.walletButtonTooltip),
-                                ),
-                                SizedBox(width: 5),
-                                Icon(
-                                  MooncakeIcons.wallet,
-                                  size: 18,
-                                  color: Colors.white,
-                                ),
-                              ],
+                            child: Text(
+                              PostsLocalizations.of(context)
+                                  .translate(Messages.walletButtonTooltip),
                             ),
                           ),
                       ],
