@@ -29,13 +29,15 @@ void main() {
       options: [option, optionTwo],
       userAnswers: [
         PollAnswer(answer: 0, user: userAccount),
+        PollAnswer(answer: 1, user: userAccount),
       ],
     );
 
     Post formattedTestPoll = testPost.copyWith(poll: poll);
 
     MockAccountBloc mockAccountBloc = MockAccountBloc();
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
 
     await tester.pumpWidget(
       makeTestableWidget(

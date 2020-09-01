@@ -17,6 +17,12 @@ class UseCaseModule implements Module {
       ..bindFactory((injector, params) => GetAccountUseCase(
             userRepository: injector.get(),
           ))
+      ..bindFactory((injector, params) => GetAccountsUseCase(
+            userRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => GetActiveAccountUseCase(
+            userRepository: injector.get(),
+          ))
       ..bindFactory((injector, params) => GetAuthenticationMethodUseCase(
             userRepository: injector.get(),
           ))
@@ -37,6 +43,12 @@ class UseCaseModule implements Module {
             userRepository: injector.get(),
           ))
       ..bindFactory((injector, params) => SetAuthenticationMethodUseCase(
+            userRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => SetAccountActiveUsecase(
+            userRepository: injector.get(),
+          ))
+      ..bindFactory((injector, params) => SaveWalletUseCase(
             userRepository: injector.get(),
           ))
 

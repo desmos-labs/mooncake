@@ -10,8 +10,9 @@ class RefreshAccountUseCase {
   })  : assert(userRepository != null),
         _userRepository = userRepository;
 
-  /// Refreshes the account an emits any new change using the proper stream.
-  Future<void> refresh() {
-    return _userRepository.refreshAccount();
+  /// Refreshes the account having the given [address]
+  /// an emits any new change using the proper stream.
+  Future<void> refresh(String address) {
+    return _userRepository.refreshAccount(address);
   }
 }

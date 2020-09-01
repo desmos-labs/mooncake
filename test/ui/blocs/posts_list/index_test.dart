@@ -24,6 +24,9 @@ class MockGetHomeEventsUseCase extends Mock implements GetHomeEventsUseCase {}
 
 class MockSyncPostsUseCase extends Mock implements SyncPostsUseCase {}
 
+class MockGetActiveAccountUseCase extends Mock
+    implements GetActiveAccountUseCase {}
+
 class MockGetNotificationsUseCase extends Mock
     implements GetNotificationsUseCase {}
 
@@ -60,6 +63,7 @@ void main() {
   MockBlockUserUseCase mockBlockUserUseCase;
   MockUpdatePostUseCase mockUpdatePostUseCase;
   MockDeletePostUseCase mockDeletePostUseCase;
+  MockGetActiveAccountUseCase mockGetActiveAccountUseCase;
 
   setUp(() {
     mockAccountBloc = MockAccountBloc();
@@ -76,6 +80,7 @@ void main() {
     mockBlockUserUseCase = MockBlockUserUseCase();
     mockUpdatePostUseCase = MockUpdatePostUseCase();
     mockDeletePostUseCase = MockDeletePostUseCase();
+    mockGetActiveAccountUseCase = MockGetActiveAccountUseCase();
   });
 
   group(
@@ -93,7 +98,7 @@ void main() {
           final postController = StreamController<List<Post>>();
           when(mockGetHomePostsUseCase.stream(any))
               .thenAnswer((_) => postController.stream);
-          when(mockSyncPostsUseCase.sync())
+          when(mockSyncPostsUseCase.sync("address"))
               .thenAnswer((_) => Future.value(null));
 
           postsListBloc = PostsListBloc(
@@ -112,6 +117,7 @@ void main() {
             blockUserUseCase: mockBlockUserUseCase,
             updatePostUseCase: mockUpdatePostUseCase,
             deletePostUseCase: mockDeletePostUseCase,
+            getActiveAccountUseCase: mockGetActiveAccountUseCase,
           );
         },
       );
@@ -335,10 +341,19 @@ void main() {
       blocTest(
         'SyncPosts: work properly',
         build: () async {
+          MooncakeAccount userAccount = MooncakeAccount(
+            profilePicUri: "https://example.com/avatar.png",
+            moniker: "john-doe",
+            cosmosAccount: cosmosAccount.copyWith(address: "address"),
+          );
+
+          when(mockGetActiveAccountUseCase.single())
+              .thenAnswer((_) => Future.value(userAccount));
+
           return postsListBloc;
         },
         act: (bloc) async {
-          when(mockSyncPostsUseCase.sync())
+          when(mockSyncPostsUseCase.sync("address"))
               .thenAnswer((_) => Future.value(null));
           bloc.add(PostsUpdated([testPost]));
           bloc.add(SyncPosts());

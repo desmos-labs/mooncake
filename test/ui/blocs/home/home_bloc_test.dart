@@ -8,8 +8,6 @@ import 'package:mooncake/ui/ui.dart';
 
 class MockAccountBloc extends Mock implements AccountBloc {}
 
-class MockLogoutUseCase extends Mock implements LogoutUseCase {}
-
 class MockGetSettingUseCase extends Mock implements GetSettingUseCase {}
 
 class MockWatchSettingUseCase extends Mock implements WatchSettingUseCase {}
@@ -18,14 +16,12 @@ class MockSaveSettingUseCase extends Mock implements SaveSettingUseCase {}
 
 void main() {
   MockAccountBloc mockAccountBloc;
-  MockLogoutUseCase mockLogoutUseCase;
   MockGetSettingUseCase mockGetSettingUseCase;
   MockSaveSettingUseCase mockSaveSettingUseCase;
   MockWatchSettingUseCase mockWatchSettingUseCase;
 
   setUp(() {
     mockAccountBloc = MockAccountBloc();
-    mockLogoutUseCase = MockLogoutUseCase();
     mockGetSettingUseCase = MockGetSettingUseCase();
     mockSaveSettingUseCase = MockSaveSettingUseCase();
     mockWatchSettingUseCase = MockWatchSettingUseCase();
@@ -46,7 +42,6 @@ void main() {
             watchSettingUseCase: mockWatchSettingUseCase,
             saveSettingUseCase: mockSaveSettingUseCase,
             loginBloc: mockAccountBloc,
-            logoutUseCase: mockLogoutUseCase,
           );
         },
       );
@@ -83,7 +78,7 @@ void main() {
           return homeBloc;
         },
         act: (bloc) async {
-          bloc.add(SignOut());
+          bloc.add(SignOut("address"));
         },
         expect: [],
       );

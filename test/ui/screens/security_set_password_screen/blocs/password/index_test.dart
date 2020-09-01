@@ -14,6 +14,8 @@ class MockAccountBloc extends Mock implements AccountBloc {}
 
 class MockLoginUseCase extends Mock implements LoginUseCase {}
 
+class MockSaveWalletUseCase extends Mock implements SaveWalletUseCase {}
+
 class MockSetAuthenticationMethodUseCase extends Mock
     implements SetAuthenticationMethodUseCase {}
 
@@ -22,12 +24,15 @@ void main() {
   MockRecoverAccountBloc mockRecoverAccountBloc;
   MockLoginUseCase mockLoginUseCase;
   MockSetAuthenticationMethodUseCase mockSetAuthenticationMethodUseCase;
+  MockSaveWalletUseCase mockSaveWalletUseCase;
+  final mockWallet = MockWallet();
 
   setUp(() {
     mockAccountBloc = MockAccountBloc();
     mockRecoverAccountBloc = MockRecoverAccountBloc();
     mockLoginUseCase = MockLoginUseCase();
     mockSetAuthenticationMethodUseCase = MockSetAuthenticationMethodUseCase();
+    mockSaveWalletUseCase = MockSaveWalletUseCase();
   });
 
   group(
@@ -46,6 +51,7 @@ void main() {
             recoverAccountBloc: mockRecoverAccountBloc,
             loginUseCase: mockLoginUseCase,
             setAuthenticationMethodUseCase: mockSetAuthenticationMethodUseCase,
+            saveWalletUseCase: mockSaveWalletUseCase,
           );
         },
       );
@@ -98,11 +104,14 @@ void main() {
         act: (bloc) async {
           when(mockRecoverAccountBloc.state)
               .thenAnswer((_) => RecoverAccountState.initial());
-          when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
-          when(mockSetAuthenticationMethodUseCase.password(any))
+          when(mockAccountBloc.state)
+              .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
+          when(mockSetAuthenticationMethodUseCase.password("address", any))
               .thenAnswer((_) => Future.value(null));
           when(mockLoginUseCase.login(any))
               .thenAnswer((_) => Future.value(null));
+          when(mockSaveWalletUseCase.saveWallet(any))
+              .thenAnswer((_) => Future.value(mockWallet));
           bloc.add(SavePassword());
         },
         expect: [

@@ -19,8 +19,8 @@ class UserRepositoryImpl extends UserRepository {
         this._remoteUserSource = remoteUserSource;
 
   @visibleForTesting
-  Future<MooncakeAccount> updateAndStoreAccountData() async {
-    final user = await _localUserSource.getAccount();
+  Future<MooncakeAccount> updateAndStoreAccountData(String address) async {
+    final user = await _localUserSource.getAccount(address);
     if (user == null) {
       // No User stored locally, nothing to update
       return null;
@@ -32,20 +32,20 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> saveWallet(String mnemonic) async {
-    return _localUserSource
-        .saveWallet(mnemonic)
-        .then((_) => updateAndStoreAccountData());
+  Future<Wallet> saveWallet(String mnemonic) async {
+    return _localUserSource.saveWallet(mnemonic).then((Wallet wallet) async {
+      await updateAndStoreAccountData(wallet.bech32Address);
+      return wallet;
+    });
   }
 
   @override
-  Future<List<String>> getMnemonic() {
-    return _localUserSource.getMnemonic();
+  Future<List<String>> getMnemonic(String address) {
+    return _localUserSource.getMnemonic(address);
   }
 
-  @override
-  Future<Wallet> getWallet() {
-    return _localUserSource.getWallet();
+  Future<Wallet> getWallet(String address) {
+    return _localUserSource.getWallet(address);
   }
 
   @override
@@ -65,18 +65,32 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<MooncakeAccount> getAccount() {
-    return _localUserSource.getAccount();
+  Future<MooncakeAccount> getAccount(String address) {
+    return _localUserSource.getAccount(address);
   }
 
   @override
-  Future<MooncakeAccount> refreshAccount() {
-    return updateAndStoreAccountData();
+  Future<List<MooncakeAccount>> getAccounts() {
+    return _localUserSource.getAccounts();
   }
 
   @override
-  Stream<MooncakeAccount> get accountStream {
-    return _localUserSource.accountStream;
+  Future<void> setActiveAccount(MooncakeAccount account) {
+    return _localUserSource.setActiveAccount(account);
+  }
+
+  @override
+  Future<MooncakeAccount> refreshAccount(String address) {
+    return updateAndStoreAccountData(address);
+  }
+
+  Future<MooncakeAccount> getActiveAccount() {
+    return _localUserSource.getActiveAccount();
+  }
+
+  @override
+  Stream<MooncakeAccount> get activeAccountStream {
+    return _localUserSource.activeAccountStream;
   }
 
   @override
@@ -85,17 +99,23 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> saveAuthenticationMethod(AuthenticationMethod method) {
-    return _localUserSource.saveAuthenticationMethod(method);
+  Future<void> saveAuthenticationMethod(
+      String address, AuthenticationMethod method) {
+    return _localUserSource.saveAuthenticationMethod(address, method);
   }
 
   @override
-  Future<AuthenticationMethod> getAuthenticationMethod() {
-    return _localUserSource.getAuthenticationMethod();
+  Future<AuthenticationMethod> getAuthenticationMethod(String address) {
+    return _localUserSource.getAuthenticationMethod(address);
   }
 
   @override
   Future<void> deleteData() {
     return _localUserSource.wipeData();
+  }
+
+  @override
+  Future<void> logout(String account) {
+    return _localUserSource.logout(account);
   }
 }

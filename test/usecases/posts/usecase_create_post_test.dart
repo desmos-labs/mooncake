@@ -22,7 +22,8 @@ void main() {
 
     test('with simple post', () async {
       final account = MooncakeAccount.local("address");
-      when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+      when(repository.getActiveAccount())
+          .thenAnswer((_) => Future.value(account));
 
       final post = await createPostUseCase.create(
         message: message,
@@ -42,7 +43,8 @@ void main() {
 
     test('with medias post', () async {
       final account = MooncakeAccount.local("address");
-      when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+      when(repository.getActiveAccount())
+          .thenAnswer((_) => Future.value(account));
 
       final medias = [
         PostMedia(mimeType: "text/plain", uri: "https://example.com/test.txt"),
@@ -65,7 +67,8 @@ void main() {
 
     test('with poll post', () async {
       final account = MooncakeAccount.local("address");
-      when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+      when(repository.getActiveAccount())
+          .thenAnswer((_) => Future.value(account));
 
       final poll = PostPoll(
         question: "This is a question",

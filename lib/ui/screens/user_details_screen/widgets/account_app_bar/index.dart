@@ -19,6 +19,7 @@ class AccountAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Widget leadingIcon = isMyProfile ? MenuButton() : null;
     return SliverAppBar(
       forceElevated: false,
       expandedHeight: 200,
@@ -26,7 +27,10 @@ class AccountAppBar extends StatelessWidget {
       stretch: true,
       pinned: true,
       backgroundColor: Theme.of(context).colorScheme.background,
+      leading: leadingIcon,
       actions: <Widget>[
+        // future mile stone with draft posts feature
+        // if (isMyProfile) DraftButton(),
         if (isMyProfile) AccountOptionsButton(),
       ],
       flexibleSpace: FlexibleSpaceBar(
@@ -45,7 +49,6 @@ class AccountAppBar extends StatelessWidget {
               ),
             ),
             // Container(height: 50, color: Colors.black),
-
             /// Cover image
             Container(
               height: 170,
@@ -96,7 +99,7 @@ class AccountAppBar extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

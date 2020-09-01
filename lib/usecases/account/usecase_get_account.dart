@@ -9,14 +9,8 @@ class GetAccountUseCase {
   GetAccountUseCase({@required UserRepository userRepository})
       : this._userRepository = userRepository;
 
-  /// Returns the current user of the application.
-  Future<MooncakeAccount> single() {
-    return _userRepository.getAccount();
-  }
-
-  /// Returns the [Stream] that emits all the [MooncakeAccount] objects
-  /// as soon as they are stored.
-  Stream<MooncakeAccount> stream() {
-    return _userRepository.accountStream;
+  /// Returns the locally stored [MooncakeAccount] having the given [address].
+  Future<MooncakeAccount> single(String address) {
+    return _userRepository.getAccount(address);
   }
 }

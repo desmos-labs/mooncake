@@ -15,7 +15,12 @@ abstract class MnemonicEvent extends Equatable {
 class ToggleCheckBox extends MnemonicEvent {}
 
 /// Tells the Bloc to load the mnemonic and show it.
-class ShowMnemonic extends MnemonicEvent {}
+class ShowMnemonic extends MnemonicEvent {
+  final String address;
+  ShowMnemonic(this.address);
+  @override
+  List<Object> get props => [address];
+}
 
 /// Tells the Bloc to show the export popup.
 class ShowExportPopup extends MnemonicEvent {}

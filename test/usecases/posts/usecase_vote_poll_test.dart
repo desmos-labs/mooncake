@@ -41,7 +41,7 @@ void main() {
     );
 
     setUp(() {
-      when(userRepository.getAccount())
+      when(userRepository.getActiveAccount())
           .thenAnswer((_) => Future.value(account));
     });
 
@@ -53,7 +53,7 @@ void main() {
       );
       await votePollUseCase.vote(postWithAnswer, post.poll.options[0]);
 
-      verify(userRepository.getAccount());
+      verify(userRepository.getActiveAccount());
       verifyNever(postsRepository.savePost(any));
     });
 
@@ -64,7 +64,7 @@ void main() {
       await votePollUseCase.vote(postWithoutAnswers, post.poll.options[0]);
 
       verifyInOrder([
-        userRepository.getAccount(),
+        userRepository.getActiveAccount(),
         postsRepository.savePost(post.copyWith(
           poll: post.poll.copyWith(userAnswers: [
             PollAnswer(answer: post.poll.options[0].id, user: account)

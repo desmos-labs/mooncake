@@ -13,8 +13,9 @@ class GetAuthenticationMethodUseCase {
         _userRepository = userRepository;
 
   /// Returns the currently set local authentication method the user has
-  /// previously set. If not method is set, `null` is returned instead.
-  Future<AuthenticationMethod> get() {
-    return _userRepository.getAuthenticationMethod();
+  /// previously set for the account having the given [address].
+  /// If no method is set, `null` is returned instead.
+  Future<AuthenticationMethod> get(String address) {
+    return _userRepository.getAuthenticationMethod(address);
   }
 }

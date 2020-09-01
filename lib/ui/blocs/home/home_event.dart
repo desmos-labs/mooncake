@@ -21,8 +21,13 @@ class UpdateTab extends HomeEvent {
 }
 
 class SignOut extends HomeEvent {
+  final String address;
+  SignOut(this.address);
   @override
   String toString() => 'SignOut';
+
+  @override
+  List<Object> get props => [address];
 }
 
 /// Tells a bloc to show mnemonic backup popup

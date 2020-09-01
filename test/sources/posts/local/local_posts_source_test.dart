@@ -232,11 +232,13 @@ void main() {
           .copyWith(status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL)),
       _createPost("5")
           .copyWith(status: PostStatus(value: PostStatusValue.ERRORED)),
+      _createPost("6")
+          .copyWith(status: PostStatus(value: PostStatusValue.STORED_LOCALLY)),
     ];
     await _storePosts(posts);
 
-    final toSync = await source.getPostsToSync();
-    expect(toSync, [posts[0]]);
+    final toSync = await source.getPostsToSync("6");
+    expect(toSync, [posts[5]]);
   });
 
   test('savePost stores the post properly', () async {

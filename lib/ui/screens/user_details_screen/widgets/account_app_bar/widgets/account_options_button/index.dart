@@ -26,8 +26,29 @@ class AccountOptionsButton extends StatelessWidget {
     };
 
     return PopupMenuButton<AccountOptions>(
+      offset: Offset(0, 100.0),
       onSelected: (option) => _onSelected(context, option),
-      icon: Icon(MooncakeIcons.more),
+      child: Container(
+        margin: EdgeInsets.only(
+          top: 7,
+          left: 7,
+          bottom: 7,
+          right: 10,
+        ),
+        child: Material(
+          shape: CircleBorder(),
+          color: Colors.grey[700].withOpacity(0.5), // button color
+          child: SizedBox(
+            width: 35,
+            height: 35,
+            child: Icon(
+              MooncakeIcons.settings,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+        ),
+      ),
       itemBuilder: (context) {
         return AccountOptions.values.map((value) {
           return PopupMenuItem<AccountOptions>(
@@ -43,10 +64,18 @@ class AccountOptionsButton extends StatelessWidget {
     if (option == AccountOptions.EditAccount) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToEditAccount());
     } else if (option == AccountOptions.ViewMnemonic) {
-      BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonicAuth());
+      String userAddress =
+          (BlocProvider.of<AccountBloc>(context).state as LoggedIn)
+              .user
+              .address;
+      BlocProvider.of<NavigatorBloc>(context)
+          .add(NavigateToShowMnemonicAuth(userAddress));
     } else if (option == AccountOptions.Logout) {
-      BlocProvider.of<AccountBloc>(context).add(LogOut());
-      BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
+      BlocProvider.of<AccountBloc>(context).add(
+        LogOut((BlocProvider.of<AccountBloc>(context).state as LoggedIn)
+            .user
+            .address),
+      );
     }
   }
 }

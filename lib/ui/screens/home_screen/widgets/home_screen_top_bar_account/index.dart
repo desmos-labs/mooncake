@@ -12,15 +12,19 @@ AppBar accountAppBar(BuildContext context) {
   ];
 
   void _onSelected(BuildContext context, String option) {
+    String userAddress =
+        (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user.address;
+
     if (option == actions[0]) {
       // Edit account
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToEditAccount());
     } else if (option == actions[1]) {
       // See mnemonic
-      BlocProvider.of<NavigatorBloc>(context).add(NavigateToShowMnemonicAuth());
+      BlocProvider.of<NavigatorBloc>(context)
+          .add(NavigateToShowMnemonicAuth(userAddress));
     } else if (option == actions[2]) {
       // Logout
-      BlocProvider.of<AccountBloc>(context).add(LogOut());
+      BlocProvider.of<AccountBloc>(context).add(LogOut(userAddress));
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToHome());
     }
   }

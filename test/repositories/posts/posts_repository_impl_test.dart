@@ -224,12 +224,12 @@ void main() {
   group('syncPosts', () {
     test('sync with empty list does nothing', () async {
       final syncPosts = List<Post>();
-      when(localSource.getPostsToSync())
+      when(localSource.getPostsToSync("address"))
           .thenAnswer((_) => Future.value(syncPosts));
 
-      await repository.syncPosts();
+      await repository.syncPosts("address");
 
-      verify(localSource.getPostsToSync()).called(1);
+      verify(localSource.getPostsToSync("address")).called(1);
       verifyNever(localSource.savePosts(any));
     });
 
@@ -238,7 +238,7 @@ void main() {
         () async {
       // --- SETUP
       final syncPosts = testPosts.take(2).toList();
-      when(localSource.getPostsToSync())
+      when(localSource.getPostsToSync("address"))
           .thenAnswer((_) => Future.value(syncPosts));
 
       final firstUpdate = syncPosts.map((e) {
@@ -258,7 +258,7 @@ void main() {
       }).toList();
 
       // --- CALL
-      await repository.syncPosts();
+      await repository.syncPosts("address");
 
       // --- VERIFICATION
       verifyInOrder([
@@ -273,7 +273,7 @@ void main() {
     test('failed sync updates correcty the status', () async {
       // --- SETUP
       final syncPosts = testPosts.take(2).toList();
-      when(localSource.getPostsToSync())
+      when(localSource.getPostsToSync("address"))
           .thenAnswer((_) => Future.value(syncPosts));
 
       final firstUpdate = syncPosts.map((e) {
@@ -299,7 +299,7 @@ void main() {
       }).toList();
 
       // --- CALL
-      await repository.syncPosts();
+      await repository.syncPosts("address");
 
       // --- VERIFICATION
       verifyInOrder([

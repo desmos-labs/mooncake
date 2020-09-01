@@ -1,4 +1,5 @@
 import 'package:alan/alan.dart';
+import 'package:mockito/mockito.dart';
 
 final CosmosAccount cosmosAccount = CosmosAccount(
   accountNumber: "153",
@@ -8,3 +9,9 @@ final CosmosAccount cosmosAccount = CosmosAccount(
     StdCoin(amount: "10000", denom: "udaric"),
   ],
 );
+
+// ignore: must_be_immutable
+class MockWallet extends Mock implements Wallet {
+  @override
+  String get bech32Address => "address";
+}

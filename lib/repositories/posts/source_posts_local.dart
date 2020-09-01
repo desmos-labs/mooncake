@@ -32,7 +32,7 @@ abstract class LocalPostsSource {
   Future<List<Post>> getPostComments(String postId);
 
   /// Returns the list of all the posts to be synced.
-  Future<List<Post>> getPostsToSync();
+  Future<List<Post>> getPostsToSync(String address);
 
   /// Saves the given [post] inside the source.
   /// If [merge] is set to `true`, the contents of the existing post and the

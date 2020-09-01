@@ -7,6 +7,10 @@ class Messages {
   // Generic
   static String get dismiss => "dismiss";
   static String get all => "all";
+  static String get hello => "hello";
+
+  // Account related
+  static String get logoutAll => "logoutAll";
 
   // Login
   static String get createAccountButtonText => "createAccountButtonText";
@@ -29,6 +33,9 @@ class Messages {
   static String get and => "and";
   static String get privacyPolicy => "privacyPolicy";
   static String get cancel => "cancel";
+  static String get createAnotherAccount => "createAnotherAccount";
+  static String get importMnemonicPhrase => "importMnemonicPhrase";
+  static String get importMnemonicBackup => "importMnemonicBackup";
 
   // Recover screen
   static String get recoverScreenTitle => "recoverScreenTitle";

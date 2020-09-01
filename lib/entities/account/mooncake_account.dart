@@ -95,7 +95,6 @@ class MooncakeAccount extends User {
   String toString() {
     return 'MooncakeAccount {'
         'cosmosAccount: $cosmosAccount, '
-        'user: ${super.toString()} '
         '}';
   }
 }

@@ -21,7 +21,8 @@ void main() {
     );
     when(mockPostsListBloc.state)
         .thenReturn(PostsLoaded.first(posts: testPosts));
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
@@ -63,7 +64,8 @@ void main() {
 
     when(mockPostsListBloc.state)
         .thenReturn(PostsLoaded.first(posts: [testErrorPost, ...testPosts]));
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
 
     await tester.pumpWidget(
       makeTestableWidget(

@@ -18,11 +18,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   final GenerateMnemonicUseCase _generateMnemonicUseCase;
   final LogoutUseCase _logoutUseCase;
-  final GetAccountUseCase _getUserUseCase;
+  final GetActiveAccountUseCase _getActiveAccountUseCase;
   final RefreshAccountUseCase _refreshAccountUseCase;
   final GetSettingUseCase _getSettingUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
-
+  final GetAccountsUseCase _getAccountsUseCase;
+  final SetAccountActiveUsecase _setAccountActiveUsecase;
   final NavigatorBloc _navigatorBloc;
 
   StreamSubscription _accountSubscription;
@@ -30,18 +31,20 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   AccountBloc({
     @required GenerateMnemonicUseCase generateMnemonicUseCase,
     @required LogoutUseCase logoutUseCase,
-    @required GetAccountUseCase getUserUseCase,
+    @required GetActiveAccountUseCase getActiveAccountUseCase,
     @required RefreshAccountUseCase refreshAccountUseCase,
     @required GetSettingUseCase getSettingUseCase,
     @required SaveSettingUseCase saveSettingUseCase,
     @required NavigatorBloc navigatorBloc,
     @required FirebaseAnalytics analytics,
+    @required GetAccountsUseCase getAccountsUseCase,
+    @required SetAccountActiveUsecase setAccountActiveUsecase,
   })  : assert(generateMnemonicUseCase != null),
         _generateMnemonicUseCase = generateMnemonicUseCase,
         assert(logoutUseCase != null),
         _logoutUseCase = logoutUseCase,
-        assert(getUserUseCase != null),
-        _getUserUseCase = getUserUseCase,
+        assert(getActiveAccountUseCase != null),
+        _getActiveAccountUseCase = getActiveAccountUseCase,
         assert(refreshAccountUseCase != null),
         _refreshAccountUseCase = refreshAccountUseCase,
         assert(getSettingUseCase != null),
@@ -51,9 +54,13 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(analytics != null),
-        _analytics = analytics {
+        _analytics = analytics,
+        assert(getAccountsUseCase != null),
+        _getAccountsUseCase = getAccountsUseCase,
+        assert(setAccountActiveUsecase != null),
+        _setAccountActiveUsecase = setAccountActiveUsecase {
     // Listen for account changes so that we know when to refresh
-    _accountSubscription = _getUserUseCase.stream().listen((account) {
+    _accountSubscription = _getActiveAccountUseCase.stream().listen((account) {
       add(UserRefreshed(account));
     });
   }
@@ -62,12 +69,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     return AccountBloc(
       generateMnemonicUseCase: Injector.get(),
       logoutUseCase: Injector.get(),
-      getUserUseCase: Injector.get(),
+      getActiveAccountUseCase: Injector.get(),
       refreshAccountUseCase: Injector.get(),
       getSettingUseCase: Injector.get(),
       saveSettingUseCase: Injector.get(),
       navigatorBloc: BlocProvider.of(context),
       analytics: Injector.get(),
+      getAccountsUseCase: Injector.get(),
+      setAccountActiveUsecase: Injector.get(),
     );
   }
 
@@ -80,14 +89,22 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _mapCheckStatusEventToState();
     } else if (event is GenerateAccount) {
       yield* _mapGenerateAccountEventToState();
+    } else if (event is GenerateAccountWhileLoggedIn) {
+      yield* _mapGenerateAccountEventToState();
     } else if (event is LogIn) {
       yield* _mapLogInEventToState(event);
     } else if (event is LogOut) {
-      yield* _mapLogOutEventToState();
+      yield* _mapLogOutEventToState(event);
     } else if (event is UserRefreshed) {
       yield* _mapRefreshEventToState(event);
     } else if (event is RefreshAccount) {
       yield* _mapRefreshAccountEventToState();
+    } else if (event is LogOutAll) {
+      yield* _mapLogOutAllEventToState();
+    } else if (event is GetAllAccounts) {
+      yield* _mapGetAllAccountsEventToState();
+    } else if (event is SwitchAccount) {
+      yield* _mapSwitchAccountEventToState(event);
     }
   }
 
@@ -97,15 +114,17 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     // Remove any info if it's the first start
     final firstStart = await _getSettingUseCase.get(key: SETTING_FIRST_START);
     if (firstStart as bool ?? true) {
-      await _logoutUseCase.logout();
+      await _logoutUseCase.logoutAll();
       await _saveSettingUseCase.save(key: SETTING_FIRST_START, value: false);
     }
 
-    final account = await _getUserUseCase.single();
+    final account = await _getActiveAccountUseCase.single();
     if (account != null) {
       await _analytics.setUserId(account.address);
       await _analytics.logLogin();
-      yield LoggedIn.initial(account);
+      final List<MooncakeAccount> storedAccounts =
+          await _getAccountsUseCase.all();
+      yield LoggedIn.initial(account, storedAccounts);
     } else {
       yield LoggedOut();
     }
@@ -115,25 +134,60 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// to create a new account. It creates a new account, stores it locally
   /// and later yield the [LoggedIn] state.
   Stream<AccountState> _mapGenerateAccountEventToState() async* {
-    yield CreatingAccount();
+    AccountState loading = state is LoggedIn
+        ? CreatingAccountWhileLoggedIn(
+            user: (state as LoggedIn).user,
+            accounts: (state as LoggedIn).accounts,
+            refreshing: (state as LoggedIn).refreshing,
+          )
+        : CreatingAccount();
+    yield loading;
+
     final mnemonic = await _generateMnemonicUseCase.generate();
     await Future.delayed(const Duration(seconds: 2));
-    yield AccountCreated(mnemonic);
+    AccountState accountCreated = state is LoggedIn
+        ? AccountCreatedWhileLoggedIn(
+            mnemonic,
+            user: (state as LoggedIn).user,
+            accounts: (state as LoggedIn).accounts,
+            refreshing: (state as LoggedIn).refreshing,
+          )
+        : AccountCreated(mnemonic);
+    yield accountCreated;
+
+    if (accountCreated is AccountCreatedWhileLoggedIn) {
+      _navigatorBloc.add(NavigateToProtectAccount());
+    }
   }
 
   /// Handle the [LogIn] event, emitting the [LoggedIn] state as well
   /// as sending the user to the Home screen.
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
-    final account = await _getUserUseCase.single();
-    yield LoggedIn.initial(account);
+    final account = await _getActiveAccountUseCase.single();
+    final List<MooncakeAccount> storedAccounts =
+        await _getAccountsUseCase.all();
+    yield LoggedIn.initial(account, storedAccounts);
     _navigatorBloc.add(NavigateToHome());
   }
 
   /// Handles the [LogOut] event emitting the [LoggedOut] state after
   /// effectively logging out the user.
-  Stream<AccountState> _mapLogOutEventToState() async* {
+  Stream<AccountState> _mapLogOutEventToState(LogOut event) async* {
     await _analytics.logEvent(name: Constants.EVENT_LOGOUT);
-    await _logoutUseCase.logout();
+    await _logoutUseCase.logout(event.address);
+    final account = await _getActiveAccountUseCase.single();
+    if (account == null) {
+      yield LoggedOut();
+    } else {
+      yield* _mapGetAllAccountsEventToState();
+    }
+  }
+
+  /// Handles the [LogOutAll] event emitting the [LoggedOut] state after
+  /// effectively logging out all user.
+  Stream<AccountState> _mapLogOutAllEventToState() async* {
+    await _analytics.logEvent(name: Constants.EVENT_LOGOUT);
+    await _logoutUseCase.logoutAll();
     yield LoggedOut();
   }
 
@@ -143,7 +197,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final currentState = state;
     if (currentState is LoggedIn) {
       yield currentState.copyWith(refreshing: true);
-      await _refreshAccountUseCase.refresh();
+      await _refreshAccountUseCase.refresh(currentState.user.address);
       yield currentState.copyWith(refreshing: false);
     }
   }
@@ -154,6 +208,23 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final currentState = state;
     if (currentState is LoggedIn) {
       yield currentState.copyWith(user: event.user, refreshing: false);
+    }
+  }
+
+  /// Refreshes currently list of all stored accounts
+  Stream<AccountState> _mapGetAllAccountsEventToState() async* {
+    if (state is LoggedIn) {
+      final List<MooncakeAccount> storedAccounts =
+          await _getAccountsUseCase.all();
+      yield LoggedIn.initial((state as LoggedIn).user, storedAccounts);
+    }
+  }
+
+  /// Switch accounts
+  Stream<AccountState> _mapSwitchAccountEventToState(
+      SwitchAccount event) async* {
+    if (state is LoggedIn) {
+      await _setAccountActiveUsecase.setActive(event.user);
     }
   }
 

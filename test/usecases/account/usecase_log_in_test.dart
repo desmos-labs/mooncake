@@ -3,6 +3,7 @@ import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
+import '../../mocks/mocks.dart';
 import 'common.dart';
 
 void main() {
@@ -16,6 +17,7 @@ void main() {
 
   group('login works properly', () {
     test('when no funding is necessary', () async {
+      final wallet = MockWallet();
       final account = MooncakeAccount.local("address").copyWith(
         cosmosAccount: CosmosAccount(
           sequence: "0",
@@ -24,33 +26,29 @@ void main() {
           coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
         ),
       );
-      when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
-      when(repository.refreshAccount())
+      when(repository.refreshAccount(account.address))
           .thenAnswer((_) => Future.value(account));
 
-      final mnemonic = "mnemonic";
-      await loginUseCase.login(mnemonic);
+      await loginUseCase.login(wallet);
 
       verifyInOrder([
-        repository.saveWallet(mnemonic),
-        repository.refreshAccount(),
+        repository.refreshAccount(account.address),
       ]);
       verifyNever(repository.fundAccount(any));
     });
 
     test('when funding is required', () async {
+      final wallet = MockWallet();
       final account = MooncakeAccount.local("address");
-      when(repository.saveWallet(any)).thenAnswer((_) => Future.value(null));
-      when(repository.refreshAccount())
+      when(repository.saveWallet(any)).thenAnswer((_) => Future.value(wallet));
+      when(repository.refreshAccount(account.address))
           .thenAnswer((_) => Future.value(account));
       when(repository.fundAccount(any)).thenAnswer((_) => Future.value(null));
 
-      final mnemonic = "mnemonic";
-      await loginUseCase.login(mnemonic);
+      await loginUseCase.login(wallet);
 
       verifyInOrder([
-        repository.saveWallet(mnemonic),
-        repository.refreshAccount(),
+        repository.refreshAccount(account.address),
         repository.fundAccount(account),
       ]);
     });

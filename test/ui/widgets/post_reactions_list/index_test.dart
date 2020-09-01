@@ -26,7 +26,8 @@ void main() {
       Reaction(user: userAccount, value: 'laugh', code: "123"),
     ];
     MockAccountBloc mockAccountBloc = MockAccountBloc();
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(makeTestableWidget(
       child: MultiBlocProvider(
         providers: [

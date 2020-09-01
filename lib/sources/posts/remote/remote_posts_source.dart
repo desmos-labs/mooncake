@@ -86,7 +86,8 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   @override
   Future<TransactionResult> savePosts(List<Post> posts) async {
-    final wallet = await _userSource.getWallet();
+    final activeUser = await _userSource.getActiveAccount();
+    final wallet = await _userSource.getWallet(activeUser.address);
 
     // Get the existing posts list
     final List<Post> existingPosts = await Future.wait(posts.map((post) {

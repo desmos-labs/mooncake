@@ -1,14 +1,9 @@
 import 'package:intl/intl.dart';
-import 'package:mockito/mockito.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/sources/sources.dart';
 import 'package:test/test.dart';
 
-// ignore: must_be_immutable
-class MockWallet extends Mock implements Wallet {
-  @override
-  String get bech32Address => "address";
-}
+import '../../../../mocks/mocks.dart';
 
 void main() {
   final converter = PostsMsgConverter();

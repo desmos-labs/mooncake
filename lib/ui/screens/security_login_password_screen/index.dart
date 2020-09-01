@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Allows the user to view his mnemonic phrase after inputting the same
@@ -137,6 +138,8 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
   }
 
   void _viewMnemonic(BuildContext context) {
-    BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
+    final MooncakeAccount user =
+        (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user;
+    BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic(user.address));
   }
 }

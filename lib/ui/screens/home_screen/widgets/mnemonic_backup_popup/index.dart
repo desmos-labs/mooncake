@@ -15,8 +15,11 @@ class MnemonicBackupPopup extends StatelessWidget {
   }
 
   void _NavigateToShowMnemonicAuthAuth(BuildContext context) {
+    String userAddress =
+        (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user.address;
+
     BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigateToShowMnemonicAuth(backupPhrase: true));
+        .add(NavigateToShowMnemonicAuth(userAddress, backupPhrase: true));
   }
 
   @override

@@ -43,6 +43,6 @@ class CreatingAccountPopupContent extends StatelessWidget {
   }
 
   void _handleCancel(BuildContext context) {
-    BlocProvider.of<AccountBloc>(context).add(LogOut());
+    BlocProvider.of<AccountBloc>(context).add(LogOutAll());
   }
 }

@@ -17,6 +17,9 @@ class CheckAuthenticationType extends BiometricsEvent {
 
 /// Tells the Bloc that the user wants to be authenticated.
 class AuthenticateWithBiometrics extends BiometricsEvent {
+  final String address;
+  AuthenticateWithBiometrics(this.address);
   @override
   String toString() => 'Authenticate';
+  List<Object> get props => [address];
 }
