@@ -155,7 +155,14 @@ class LocalUserSourceImpl extends LocalUserSource {
 
       // Store the updated accounts list
       await store.record(ACCOUNTS_LIST_KEY).put(txn, updatedJsonAccounts);
+
+      // Update the current active user if needed
+      final MooncakeAccount currentUser = await getActiveAccount();
+      if (currentUser.address == data.address) {
+        await _saveActiveAccount(txn, data);
+      }
     });
+
     return data;
   }
 
