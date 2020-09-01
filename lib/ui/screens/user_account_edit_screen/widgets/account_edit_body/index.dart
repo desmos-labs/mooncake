@@ -33,7 +33,6 @@ class AccountEditorBody extends StatelessWidget {
                               right: PADDING,
                             ),
                           ),
-                          const SizedBox(height: 16),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: PADDING),
