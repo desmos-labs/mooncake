@@ -54,120 +54,130 @@ class MenuDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
       builder: (context, state) {
-        return Drawer(
-          child: Container(
-            color: Theme.of(context).colorScheme.surface,
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: <Widget>[
-                      SafeArea(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 30, horizontal: 10),
-                          child: Row(
-                            children: [
-                              AccountAvatar(user: user, size: 50),
-                              SizedBox(width: 10),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+        return Stack(
+          children: [
+            Drawer(
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                          SafeArea(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 10),
+                              child: Row(
                                 children: [
-                                  Text(
-                                      '${PostsLocalizations.of(context).translate(Messages.hello)},',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          .copyWith(
-                                            fontSize: 16,
-                                          )),
-                                  Text(user.screenName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline5),
+                                  AccountAvatar(user: user, size: 50),
+                                  SizedBox(width: 10),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          '${PostsLocalizations.of(context).translate(Messages.hello)},',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6
+                                              .copyWith(
+                                                fontSize: 16,
+                                              )),
+                                      Text(user.screenName,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
+                          ..._listAccounts(context),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () => _handleCreateNewAccount(context),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          PostsLocalizations.of(context)
+                              .translate(Messages.createAnotherAccount),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                          // textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
                         ),
                       ),
-                      ..._listAccounts(context),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () => _handleCreateNewAccount(context),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.createAnotherAccount),
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                      // textAlign: TextAlign.center,
-                      textAlign: TextAlign.left,
                     ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () => _handleImportMnemonicPhrase(context),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.importMnemonicPhrase),
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                      // textAlign: TextAlign.center,
-                      textAlign: TextAlign.left,
+                    SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () => _handleImportMnemonicPhrase(context),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          PostsLocalizations.of(context)
+                              .translate(Messages.importMnemonicPhrase),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                          // textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () => _handleImportMnemonicBackup(context),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.importMnemonicBackup),
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                      // textAlign: TextAlign.center,
-                      textAlign: TextAlign.left,
+                    SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () => _handleImportMnemonicBackup(context),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          PostsLocalizations.of(context)
+                              .translate(Messages.importMnemonicBackup),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                          // textAlign: TextAlign.center,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () => _handleLogOutAll(context),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.logoutAll),
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                      textAlign: TextAlign.left,
+                    SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () => _handleLogOutAll(context),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Text(
+                          PostsLocalizations.of(context)
+                              .translate(Messages.logoutAll),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 25),
+                  ],
                 ),
-                SizedBox(height: 25),
-              ],
+              ),
             ),
-          ),
+            if (state is CreatingAccountWhileLoggedIn)
+              Container(
+                child: LoadingIndicator(),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+              ),
+          ],
         );
       },
     );
