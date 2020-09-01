@@ -1,7 +1,3 @@
-# Version 0.5.0
-## Changes
-- Added option to use multiple accounts
-
 # Version 0.4.4
 ## Bug fixes
 - Fixed some synchronization bugs
