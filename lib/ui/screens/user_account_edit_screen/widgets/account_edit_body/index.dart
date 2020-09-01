@@ -13,56 +13,60 @@ class AccountEditorBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EditAccountBloc, EditAccountState>(
       builder: (context, state) {
-        return Stack(
-          children: [
-            ListView(
-              children: [
-                Stack(
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        AccountCoverImageEditor(height: COVER_HEIGHT),
-                        AccountTextInfoEditor(
-                          padding: EdgeInsets.only(
-                            top: PICTURE_RADIUS + 16,
-                            left: PADDING,
-                            bottom: PADDING,
-                            right: PADDING,
+        return Container(
+          color: Theme.of(context).colorScheme.surface,
+          child: Stack(
+            children: [
+              ListView(
+                children: [
+                  Stack(
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          AccountCoverImageEditor(height: COVER_HEIGHT),
+                          AccountTextInfoEditor(
+                            padding: EdgeInsets.only(
+                              top: PICTURE_RADIUS + 16,
+                              left: PADDING,
+                              bottom: PADDING,
+                              right: PADDING,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: PADDING),
-                          child: state.saving
-                              ? LoadingIndicator()
-                              : PrimaryButton(
-                                  enabled: state.canSave,
-                                  child: Text(
-                                    PostsLocalizations.of(context)
-                                        .translate(Messages.saveAccountButton),
+                          const SizedBox(height: 16),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: PADDING),
+                            child: state.saving
+                                ? LoadingIndicator()
+                                : PrimaryButton(
+                                    enabled: state.canSave,
+                                    child: Text(
+                                      PostsLocalizations.of(context).translate(
+                                          Messages.saveAccountButton),
+                                    ),
+                                    onPressed: () => _onSaveAccount(context),
                                   ),
-                                  onPressed: () => _onSaveAccount(context),
-                                ),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      top: COVER_HEIGHT - PICTURE_RADIUS,
-                      left: PADDING,
-                      child: AccountProfileImageEditor(
-                        size: PICTURE_RADIUS * 2,
-                        border: PICTURE_RADIUS / 10,
+                          ),
+                          const SizedBox(height: 30),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            if (state.showErrorPopup)
-              AccountEditErrorPopup(error: state.savingError),
-          ],
+                      Positioned(
+                        top: COVER_HEIGHT - PICTURE_RADIUS,
+                        left: PADDING,
+                        child: AccountProfileImageEditor(
+                          size: PICTURE_RADIUS * 2,
+                          border: PICTURE_RADIUS / 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              if (state.showErrorPopup)
+                AccountEditErrorPopup(error: state.savingError),
+            ],
+          ),
         );
       },
     );

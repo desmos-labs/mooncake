@@ -53,6 +53,7 @@ class AccountTextInfoEditor extends StatelessWidget {
               const SizedBox(height: 16),
               AccountTextInput(
                 maxLength: 200,
+                maxLines: 3,
                 value: state.account.bio,
                 label:
                     PostsLocalizations.of(context).translate(Messages.bioLabel),
