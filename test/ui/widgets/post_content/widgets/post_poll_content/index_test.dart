@@ -29,6 +29,7 @@ void main() {
       options: [option, optionTwo],
       userAnswers: [
         PollAnswer(answer: 0, user: userAccount),
+        PollAnswer(answer: 1, user: userAccount),
       ],
     );
 
