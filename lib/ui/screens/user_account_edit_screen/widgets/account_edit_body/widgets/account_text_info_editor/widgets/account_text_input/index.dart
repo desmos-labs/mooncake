@@ -7,6 +7,7 @@ class AccountTextInput extends StatefulWidget {
   final int maxLength;
   final String error;
   final bool enabled;
+  final int maxLines;
 
   AccountTextInput({
     @required this.label,
@@ -15,6 +16,7 @@ class AccountTextInput extends StatefulWidget {
     this.maxLength = 100,
     this.error,
     this.enabled = true,
+    this.maxLines = 1,
   });
 
   @override
@@ -46,9 +48,14 @@ class _AccountTextInputState extends State<AccountTextInput> {
         TextField(
           enabled: widget.enabled,
           maxLength: widget.maxLength,
+          maxLines: widget.maxLines,
+          minLines: widget.maxLines,
           onChanged: widget.onChanged,
           controller: _controller,
           decoration: InputDecoration(
+            // wingman
+            // isDense: true,
+            // contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
             hintText: widget.value ?? widget.label,
             errorText: widget.error,
           ),

@@ -78,7 +78,7 @@ class AccountAppBar extends StatelessWidget {
 
                   /// Wallet button
                   Container(
-                    margin: EdgeInsets.only(top: 90, right: 10),
+                    margin: EdgeInsets.only(top: 175, right: 10),
                     child: Row(
                       children: [
                         if (isMyProfile)
