@@ -158,7 +158,7 @@ class LocalUserSourceImpl extends LocalUserSource {
 
       // Update the current active user if needed
       final MooncakeAccount currentUser = await getActiveAccount();
-      if (currentUser.address == data.address) {
+      if (currentUser?.address == data.address) {
         await _saveActiveAccount(txn, data);
       }
     });
