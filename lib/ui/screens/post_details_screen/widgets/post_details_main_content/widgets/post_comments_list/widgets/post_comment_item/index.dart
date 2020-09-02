@@ -27,10 +27,25 @@ class PostCommentItem extends StatelessWidget {
             children: <Widget>[
               PostItemHeader(post: comment),
               const SizedBox(height: ThemeSpaces.smallGutter),
-              if (comment.message?.isNotEmpty == true) _textWidget(),
-              PostImagesPreviewer(post: comment),
-              const SizedBox(height: ThemeSpaces.smallGutter),
-              _commentActions(isLiked),
+              Row(
+                children: [
+                  const SizedBox(width: ThemeSpaces.largeGutter + 40),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (comment.message?.isNotEmpty == true)
+                          PostMessage(post: comment),
+                        if (comment.message?.isNotEmpty == true)
+                          const SizedBox(height: ThemeSpaces.smallGutter),
+                        PostImagesPreviewer(post: comment),
+                        const SizedBox(height: ThemeSpaces.smallGutter),
+                        _commentActions(isLiked),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -38,13 +53,11 @@ class PostCommentItem extends StatelessWidget {
     });
   }
 
-  Widget _textWidget() {
-    return Column(
-      children: [
-        PostMessage(post: comment),
-        const SizedBox(height: ThemeSpaces.smallGutter),
-      ],
-    );
+  List<Widget> _textWidget() {
+    return [
+      PostMessage(post: comment),
+      const SizedBox(height: ThemeSpaces.smallGutter),
+    ];
   }
 
   Row _commentActions(bool isLiked) {

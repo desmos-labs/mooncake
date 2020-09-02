@@ -17,10 +17,16 @@ class EmptyReactions extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-              child: Text(
-                PostsLocalizations.of(context)
-                    .translate(Messages.noReactionsYet),
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  PostsLocalizations.of(context)
+                      .translate(Messages.noReactionsYet),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
               ),
             ),
           )

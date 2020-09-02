@@ -30,10 +30,10 @@ class PostCommentsList extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          SizedBox(height: 10),
+          Expanded(child: Center()),
           Expanded(
             child: Center(
-              child: Image.asset("assets/images/smile.png", width: 150),
+              child: Image.asset("assets/images/smile.png"),
             ),
           ),
           Expanded(
