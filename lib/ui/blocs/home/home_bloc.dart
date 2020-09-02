@@ -52,7 +52,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is UpdateTab) {
-      yield state.copyWith(activeTab: event.tab);
+      yield* _mapUpdateTabToState(event);
     } else if (event is SignOut) {
       _mapSignOutToState(event);
     } else if (event is ShowBackupMnemonicPhrasePopup) {
@@ -61,6 +61,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHideBackupMnemonicPhrasePopupToState();
     } else if (event is TurnOffBackupMnemonicPopupPermission) {
       yield* _mapTurnOffBackupMnemonicPopupPermissionToState();
+    } else if (event is SetScrollToTop) {
+      yield state.copyWith(
+        scrollToTop: event.scroll,
+      );
     }
   }
 
@@ -112,5 +116,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       value: false,
     );
     yield state.copyWith(showBackupPhrasePopup: false);
+  }
+
+  /// tells screens whether to scroll to top
+  Stream<HomeState> _mapUpdateTabToState(UpdateTab event) async* {
+    yield state.copyWith(
+      activeTab: event.tab,
+      scrollToTop: state.activeTab == event.tab,
+    );
   }
 }

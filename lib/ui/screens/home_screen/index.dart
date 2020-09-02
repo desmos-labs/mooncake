@@ -14,8 +14,6 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeBloc.create(context),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          AppTab selectedAppTab;
-          bool backToTop = false;
           List<Widget> optimizedTabView;
           List<int> optimizedTabViewIndex;
           int tabIndex = 0;
@@ -75,13 +73,8 @@ class HomeScreen extends StatelessWidget {
             tabIndex = index;
           }
 
+          // load the screen if needed
           _selectedTab(state.activeTab);
-
-          // check if back to top is needed
-          if (selectedAppTab == state.activeTab) {
-            backToTop = true;
-          }
-          ;
 
           return Scaffold(
             // appBar: state.activeTab == AppTab.home

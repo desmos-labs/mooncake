@@ -55,19 +55,28 @@ void main() {
           bloc.add(UpdateTab(AppTab.likedPosts));
           bloc.add(UpdateTab(AppTab.home));
           bloc.add(UpdateTab(AppTab.account));
+          bloc.add(UpdateTab(AppTab.account));
         },
         expect: [
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.likedPosts,
+            scrollToTop: false,
           ),
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.account,
+            scrollToTop: false,
+          ),
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.account,
+            scrollToTop: true,
           ),
         ],
       );
@@ -95,6 +104,7 @@ void main() {
           HomeState(
             showBackupPhrasePopup: true,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
         ],
       );
@@ -113,6 +123,7 @@ void main() {
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
         ],
       );

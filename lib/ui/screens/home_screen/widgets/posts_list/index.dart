@@ -66,67 +66,74 @@ class _PostsListState extends State<PostsList> {
             return PostsListEmptyContainer();
           }
 
-          return Stack(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  if (state.syncingPosts) PostsListSyncingIndicator(),
-                  Expanded(
-                    child: CustomScrollView(
-                      controller: _scrollController,
-                      slivers: [
-                        if (erroredPosts.isNotEmpty)
-                          SliverList(
-                            delegate: SliverChildListDelegate(
-                              [ErrorPostMessage()],
+          return BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, homeState) {
+            if (homeState.activeTab == AppTab.home && homeState.scrollToTop) {
+              BlocProvider.of<HomeBloc>(context).add(SetScrollToTop(false));
+              _backToTop();
+            }
+            return Stack(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    if (state.syncingPosts) PostsListSyncingIndicator(),
+                    Expanded(
+                      child: CustomScrollView(
+                        controller: _scrollController,
+                        slivers: [
+                          if (erroredPosts.isNotEmpty)
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                [ErrorPostMessage()],
+                              ),
                             ),
-                          ),
-                        if (erroredPosts.isNotEmpty)
+                          if (erroredPosts.isNotEmpty)
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  return ErrorPost(
+                                      post: erroredPosts[index],
+                                      lastChild:
+                                          index + 1 == erroredPosts.length);
+                                },
+                                childCount: erroredPosts.length,
+                              ),
+                            ),
                           SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
-                                return ErrorPost(
-                                    post: erroredPosts[index],
-                                    lastChild:
-                                        index + 1 == erroredPosts.length);
+                                return index >= posts.length
+                                    ? BottomLoader()
+                                    : PostListItem(post: posts[index]);
                               },
-                              childCount: erroredPosts.length,
+                              childCount: state.hasReachedMax
+                                  ? posts.length
+                                  : posts.length + 1,
                             ),
                           ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return index >= posts.length
-                                  ? BottomLoader()
-                                  : PostListItem(post: posts[index]);
-                            },
-                            childCount: state.hasReachedMax
-                                ? posts.length
-                                : posts.length + 1,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              if (state.shouldRefresh)
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: FlatButton(
-                    textColor: Colors.white,
-                    color: Theme.of(context).colorScheme.secondary,
-                    onPressed: () {
-                      _indicator.currentState.show();
-                    },
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.refreshButtonText),
-                    ),
-                  ),
+                  ],
                 ),
-            ],
-          );
+                if (state.shouldRefresh)
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: FlatButton(
+                      textColor: Colors.white,
+                      color: Theme.of(context).colorScheme.secondary,
+                      onPressed: () {
+                        _indicator.currentState.show();
+                      },
+                      child: Text(
+                        PostsLocalizations.of(context)
+                            .translate(Messages.refreshButtonText),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          });
         },
       ),
     );
