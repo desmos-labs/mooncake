@@ -144,6 +144,29 @@ void main() {
           )).called(1);
         },
       );
+
+      blocTest(
+        'SetScrollToTop: correctly updates state',
+        build: () async {
+          return homeBloc;
+        },
+        act: (bloc) async {
+          bloc.add(SetScrollToTop(true));
+          bloc.add(SetScrollToTop(false));
+        },
+        expect: [
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.home,
+            scrollToTop: true,
+          ),
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.home,
+            scrollToTop: false,
+          ),
+        ],
+      );
     },
   );
 }
