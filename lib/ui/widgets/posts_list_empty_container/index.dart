@@ -10,15 +10,23 @@ class PostsListEmptyContainer extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Expanded(child: Image.asset("assets/images/sad.png", width: 150)),
-          Text(
-            PostsLocalizations.of(context).translate(Messages.noPostsYet),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
+          Expanded(child: Center()),
+          Expanded(child: Image.asset("assets/images/sad.png")),
+          Expanded(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  PostsLocalizations.of(context).translate(Messages.noPostsYet),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
             ),
           ),
           SizedBox(height: 20)
