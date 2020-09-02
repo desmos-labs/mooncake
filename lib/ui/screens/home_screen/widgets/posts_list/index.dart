@@ -149,4 +149,12 @@ class _PostsListState extends State<PostsList> {
       _postsListBloc.add(FetchPosts());
     }
   }
+
+  void _backToTop() {
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
 }
