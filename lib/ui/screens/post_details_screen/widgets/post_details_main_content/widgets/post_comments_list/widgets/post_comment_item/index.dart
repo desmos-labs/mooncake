@@ -22,51 +22,6 @@ class PostCommentItem extends StatelessWidget {
         onTap: () => _onTap(context),
         child: Container(
           padding: EdgeInsets.all(16.0),
-          // child: Row(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     AccountAvatar(size: 40, user: comment.owner),
-          //     const SizedBox(width: ThemeSpaces.largeGutter),
-          //     Expanded(
-          //       child: Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: [
-          //           Row(
-          //             crossAxisAlignment: CrossAxisAlignment.center,
-          //             children: [
-          //               Text(
-          //                 comment.owner.screenName,
-          //                 overflow: TextOverflow.ellipsis,
-          //                 style:
-          //                     Theme.of(context).textTheme.subtitle1.copyWith(
-          //                           fontWeight: FontWeight.w500,
-          //                         ),
-          //               ),
-          //               const SizedBox(width: ThemeSpaces.largeGutter),
-          //               Text(
-          //                 timeago.format(
-          //                   comment.dateTime
-          //                       .add(DateTime.now().timeZoneOffset),
-          //                   clock: DateTime.now(),
-          //                 ),
-          //                 style: Theme.of(context).textTheme.caption.copyWith(
-          //                     fontSize: 10,
-          //                     color:
-          //                         Theme.of(context).colorScheme.onSecondary),
-          //               )
-          //             ],
-          //           ),
-          //           if (comment.message?.isNotEmpty == true)
-          //             PostMessage(post: comment),
-          //           PostImagesPreviewer(post: comment),
-          //           const SizedBox(height: ThemeSpaces.smallGutter),
-          //           _commentActions(isLiked),
-          //         ],
-          //       ),
-          //     )
-          //   ],
-          // )
-          // wingman
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
