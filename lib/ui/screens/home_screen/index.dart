@@ -14,41 +14,75 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeBloc.create(context),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          Widget body = Container();
-          if (state.activeTab == AppTab.home) {
-            final accountState = BlocProvider.of<AccountBloc>(context).state;
-            return Scaffold(
-              body: Stack(
-                children: [
-                  Column(
-                    children: [
-                      postsAppBar(context),
-                      Expanded(
-                          child: PostsList(
-                        user: (accountState as LoggedIn).user,
-                      )),
-                    ],
-                  ),
-                  if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
-                ],
-              ),
-              bottomNavigationBar: SafeArea(child: TabSelector()),
-            );
-          } else if (state.activeTab == AppTab.notifications) {
-            body = NotificationsMainContent();
-          } else if (state.activeTab == AppTab.account) {
-            final state = BlocProvider.of<AccountBloc>(context).state;
-            return UserDetailsScreen(
+          List<Widget> optimizedTabView;
+          List<int> optimizedTabViewIndex;
+          int tabIndex = 0;
+          Map<AppTab, bool> originalDic = {
+            AppTab.home: true,
+            AppTab.account: false,
+            AppTab.notifications: false,
+          };
+
+          const Map<AppTab, int> originalIndex = {
+            AppTab.home: 0,
+            AppTab.account: 1,
+            AppTab.notifications: 2,
+          };
+
+          final accountState = BlocProvider.of<AccountBloc>(context).state;
+
+          List<Widget> originalTabView = [
+            // home
+            Stack(
+              children: [
+                Column(
+                  children: [
+                    postsAppBar(context),
+                    Expanded(
+                        child: PostsList(
+                      user: (accountState as LoggedIn).user,
+                    )),
+                  ],
+                ),
+                if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
+              ],
+            ),
+            // account
+            UserDetailsScreen(
               isMyProfile: true,
-              user: (state as LoggedIn).user,
-            );
+              user: (accountState as LoggedIn).user,
+            ),
+            // notification
+            NotificationsMainContent(),
+          ];
+
+          optimizedTabView = [originalTabView.first];
+          optimizedTabViewIndex = [0];
+
+          void _selectedTab(AppTab activeTab) {
+            int index = originalIndex[activeTab];
+            if (originalDic[activeTab] == false) {
+              optimizedTabViewIndex.add(index);
+              originalDic[activeTab] = true;
+              optimizedTabViewIndex.sort();
+              optimizedTabView = optimizedTabViewIndex.map((index) {
+                return originalTabView[index];
+              }).toList();
+            }
+
+            tabIndex = index;
           }
 
+          _selectedTab(state.activeTab);
+
           return Scaffold(
-            appBar: state.activeTab == AppTab.home
-                ? postsAppBar(context)
-                : accountAppBar(context),
-            body: body,
+            // appBar: state.activeTab == AppTab.home
+            //     ? postsAppBar(context)
+            //     : accountAppBar(context),
+            // body: body,
+            body: IndexedStack(
+                index: optimizedTabViewIndex.indexOf(tabIndex),
+                children: optimizedTabView),
             bottomNavigationBar: SafeArea(child: TabSelector()),
           );
         },
