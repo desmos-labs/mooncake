@@ -30,9 +30,12 @@ class AccountProfileImageEditor extends StatelessWidget {
                 border: border,
                 size: size,
               ),
-              Icon(
-                MooncakeIcons.camera,
-                color: Theme.of(context).iconTheme.color,
+              Opacity(
+                opacity: 0.5,
+                child: Icon(
+                  MooncakeIcons.camera,
+                  color: Theme.of(context).iconTheme.color,
+                ),
               ),
             ],
           ),

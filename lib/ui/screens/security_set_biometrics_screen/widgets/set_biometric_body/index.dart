@@ -64,12 +64,8 @@ class SetBiometricBody extends StatelessWidget {
     );
     localAuth.authenticateWithBiometrics(localizedReason: reason).then((value) {
       if (value) {
-        String userAddress =
-            (BlocProvider.of<AccountBloc>(context).state as LoggedIn)
-                .user
-                .address;
         BlocProvider.of<BiometricsBloc>(context)
-            .add(AuthenticateWithBiometrics(userAddress));
+            .add(AuthenticateWithBiometrics());
       }
     }).catchError((error) => print(error));
   }

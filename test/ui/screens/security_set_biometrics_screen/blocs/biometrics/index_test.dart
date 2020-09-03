@@ -78,7 +78,7 @@ void main() {
               .thenAnswer((_) => Future.value(null));
           when(mockSaveWalletUseCase.saveWallet(any))
               .thenAnswer((_) => Future.value(mockWallet));
-          bloc.add(AuthenticateWithBiometrics("address"));
+          bloc.add(AuthenticateWithBiometrics());
         },
         expect: [
           BiometricsState(
