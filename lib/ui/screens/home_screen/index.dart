@@ -17,12 +17,14 @@ class HomeScreen extends StatelessWidget {
           List<Widget> optimizedTabView;
           List<int> optimizedTabViewIndex;
           int tabIndex = 0;
+          // map of screens that has been loaded
           Map<AppTab, bool> originalDic = {
             AppTab.home: true,
             AppTab.account: false,
             AppTab.notifications: false,
           };
 
+          // map of screens position
           const Map<AppTab, int> originalIndex = {
             AppTab.home: 0,
             AppTab.account: 1,
@@ -77,10 +79,6 @@ class HomeScreen extends StatelessWidget {
           _selectedTab(state.activeTab);
 
           return Scaffold(
-            // appBar: state.activeTab == AppTab.home
-            //     ? postsAppBar(context)
-            //     : accountAppBar(context),
-            // body: body,
             body: IndexedStack(
                 index: optimizedTabViewIndex.indexOf(tabIndex),
                 children: optimizedTabView),

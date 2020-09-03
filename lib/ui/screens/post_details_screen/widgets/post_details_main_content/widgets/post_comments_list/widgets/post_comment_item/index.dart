@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 /// Represents single item entry inside the list of post comments.
 class PostCommentItem extends StatelessWidget {
@@ -52,13 +51,6 @@ class PostCommentItem extends StatelessWidget {
         ),
       );
     });
-  }
-
-  List<Widget> _textWidget() {
-    return [
-      PostMessage(post: comment),
-      const SizedBox(height: ThemeSpaces.smallGutter),
-    ];
   }
 
   Row _commentActions(bool isLiked) {
