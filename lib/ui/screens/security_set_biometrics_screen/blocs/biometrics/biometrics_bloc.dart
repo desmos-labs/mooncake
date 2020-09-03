@@ -60,14 +60,13 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
   @override
   Stream<BiometricsState> mapEventToState(BiometricsEvent event) async* {
     if (event is AuthenticateWithBiometrics) {
-      yield* _mapAuthenticateEventToState(event);
+      yield* _mapAuthenticateEventToState();
     } else if (event is CheckAuthenticationType) {
       yield* _mapCheckAuthenticationTypeEventToState();
     }
   }
 
-  Stream<BiometricsState> _mapAuthenticateEventToState(
-      AuthenticateWithBiometrics event) async* {
+  Stream<BiometricsState> _mapAuthenticateEventToState() async* {
     yield state.copyWith(saving: true);
     final bool isLoggedIn = _accountBloc.state is LoggedIn;
     final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
