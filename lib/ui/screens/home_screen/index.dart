@@ -35,19 +35,22 @@ class HomeScreen extends StatelessWidget {
 
           var originalTabView = <Widget>[
             // home
-            Stack(
-              children: [
-                Column(
-                  children: [
-                    postsAppBar(context),
-                    Expanded(
-                        child: PostsList(
-                      user: (accountState as LoggedIn).user,
-                    )),
-                  ],
-                ),
-                if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
-              ],
+            Scaffold(
+              body: Stack(
+                children: [
+                  Column(
+                    children: [
+                      postsAppBar(context),
+                      Expanded(
+                          child: PostsList(
+                        user: (accountState as LoggedIn).user,
+                      )),
+                    ],
+                  ),
+                  if (state.showBackupPhrasePopup) MnemonicBackupPopup(),
+                ],
+              ),
+              bottomNavigationBar: SafeArea(child: TabSelector()),
             ),
             // account
             UserDetailsScreen(
@@ -78,11 +81,9 @@ class HomeScreen extends StatelessWidget {
           // load the screen if needed
           _selectedTab(state.activeTab);
 
-          return Scaffold(
-            body: IndexedStack(
-                index: optimizedTabViewIndex.indexOf(tabIndex),
-                children: optimizedTabView),
-            bottomNavigationBar: SafeArea(child: TabSelector()),
+          return IndexedStack(
+            index: optimizedTabViewIndex.indexOf(tabIndex),
+            children: optimizedTabView,
           );
         },
       ),
