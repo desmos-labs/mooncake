@@ -12,7 +12,7 @@ class TabSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color border = Theme.of(context).brightness == Brightness.light
+    final border = Theme.of(context).brightness == Brightness.light
         ? Colors.grey[500]
         : Colors.grey[850];
 

@@ -29,7 +29,7 @@ class AccountEditErrorPopup extends StatelessWidget {
           Text(
             PostsLocalizations.of(context)
                 .translate(Messages.saveAccountErrorPopupBody)
-                .replaceAll("\n", " "),
+                .replaceAll('\n', ' '),
           ),
           const SizedBox(height: ThemeSpaces.smallMargin),
           Text(error),

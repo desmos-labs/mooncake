@@ -18,11 +18,11 @@ class MockPostInputBloc extends MockBloc<PostInputEvent, PostInputState>
 void main() {
   testWidgets('CreatePostContent: Displays correctly',
       (WidgetTester tester) async {
-    MockPostInputBloc mockPostInputBloc = MockPostInputBloc();
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var mockPostInputBloc = MockPostInputBloc();
+    var mockAccountBloc = MockAccountBloc();
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
     when(mockAccountBloc.state)

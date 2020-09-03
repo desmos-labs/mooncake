@@ -45,12 +45,12 @@ class RecoverAccountBloc
   }
 
   Stream<RecoverAccountState> _mapTypeWordEventToState(TypeWord event) async* {
-    final wordsList = List<String>()..addAll(state.wordsList);
+    final wordsList = <String>[...state.wordsList];
     wordsList[event.index] = event.word;
     yield state.copyWith(
       wordsList: wordsList,
       currentWordIndex: event.index,
-      isMnemonicValid: bip39.validateMnemonic(wordsList.join(" ")),
+      isMnemonicValid: bip39.validateMnemonic(wordsList.join(' ')),
     );
   }
 
@@ -58,10 +58,10 @@ class RecoverAccountBloc
     WordSelected event,
   ) async* {
     // Update the words list
-    final wordsList = List<String>()..addAll(state.wordsList);
+    final wordsList = <String>[...state.wordsList];
     wordsList[state.currentWordIndex] = event.word;
     // Find the next index
-    int nextIndex = wordsList.indexWhere((element) => element == null);
+    var nextIndex = wordsList.indexWhere((element) => element == null);
     if (nextIndex == -1) {
       nextIndex += 1;
     }
@@ -70,7 +70,7 @@ class RecoverAccountBloc
     yield state.copyWith(
       wordsList: wordsList,
       currentWordIndex: nextIndex,
-      isMnemonicValid: bip39.validateMnemonic(wordsList.join(" ")),
+      isMnemonicValid: bip39.validateMnemonic(wordsList.join(' ')),
     );
   }
 

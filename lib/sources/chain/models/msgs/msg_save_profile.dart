@@ -10,22 +10,22 @@ part 'msg_save_profile.g.dart';
 @reflector
 @JsonSerializable(explicitToJson: true)
 class MsgSaveProfile extends StdMsg {
-  @JsonKey(name: "dtag")
+  @JsonKey(name: 'dtag')
   final String dtag;
 
-  @JsonKey(name: "moniker")
+  @JsonKey(name: 'moniker')
   final String moniker;
 
-  @JsonKey(name: "bio", includeIfNull: false)
+  @JsonKey(name: 'bio', includeIfNull: false)
   final String bio;
 
-  @JsonKey(name: "profile_picture", includeIfNull: false)
+  @JsonKey(name: 'profile_picture', includeIfNull: false)
   final String profilePic;
 
-  @JsonKey(name: "cover_picture", includeIfNull: false)
+  @JsonKey(name: 'cover_picture', includeIfNull: false)
   final String coverPic;
 
-  @JsonKey(name: "creator")
+  @JsonKey(name: 'creator')
   final String creator;
 
   MsgSaveProfile({
@@ -34,7 +34,7 @@ class MsgSaveProfile extends StdMsg {
     this.bio,
     this.profilePic,
     this.coverPic,
-    this.creator,
+    @required this.creator,
   })  : assert(dtag != null && dtag.trim().isNotEmpty),
         assert(moniker == null || moniker.trim().isNotEmpty),
         assert(bio == null || bio.trim().isNotEmpty),
@@ -66,7 +66,7 @@ class MsgSaveProfile extends StdMsg {
   @override
   Exception validate() {
     if (dtag == null || dtag.trim().isEmpty) {
-      return Exception("dtag cannot be empty");
+      return Exception('dtag cannot be empty');
     }
 
     return null;

@@ -43,10 +43,10 @@ void main() {
 
     final first = TxFailedNotification(
       date: DateTime.now(),
-      error: "",
-      txHash: "",
+      error: '',
+      txHash: '',
     );
-    final second = TxSuccessfulNotification(txHash: "", date: DateTime.now());
+    final second = TxSuccessfulNotification(txHash: '', date: DateTime.now());
     remoteStream.add(first);
     remoteStream.add(second);
 
@@ -59,8 +59,8 @@ void main() {
 
   test('getNotifications returns local notifications', () async {
     final notifications = [
-      TxFailedNotification(date: DateTime.now(), error: "", txHash: ""),
-      TxSuccessfulNotification(txHash: "", date: DateTime.now()),
+      TxFailedNotification(date: DateTime.now(), error: '', txHash: ''),
+      TxSuccessfulNotification(txHash: '', date: DateTime.now()),
     ];
     when(localSource.getNotifications())
         .thenAnswer((realInvocation) => Future.value(notifications));
@@ -74,11 +74,11 @@ void main() {
     when(localSource.liveNotificationsStream).thenAnswer((_) => localStream);
 
     final remoteNotification =
-        TxFailedNotification(date: DateTime.now(), error: "", txHash: "");
+        TxFailedNotification(date: DateTime.now(), error: '', txHash: '');
     remoteStream.add(remoteNotification);
 
     final localNotification =
-        TxSuccessfulNotification(txHash: "", date: DateTime.now());
+        TxSuccessfulNotification(txHash: '', date: DateTime.now());
     localStream.add(localNotification);
 
     final stream = repository.liveNotificationsStream;

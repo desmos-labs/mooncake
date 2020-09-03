@@ -68,7 +68,7 @@ class NotificationItem extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: " $notificationText ",
+                            text: ' $notificationText ',
                             style: textStyle,
                           ),
                           if (data != null)
@@ -81,7 +81,7 @@ class NotificationItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      DateFormat("dd MMM yyyy").format(notification.date),
+                      DateFormat('dd MMM yyyy').format(notification.date),
                       style: Theme.of(context).textTheme.caption,
                     ),
                   ],
@@ -104,7 +104,7 @@ class NotificationItem extends StatelessWidget {
       return TextSpan(text: data, style: textStyle);
     }
 
-    final userTag = "@$username";
+    final userTag = '@$username';
     final before = data.substring(0, data.indexOf(userTag));
     final after = data.substring(data.indexOf(userTag) + userTag.length);
 

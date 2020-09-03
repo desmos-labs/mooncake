@@ -17,7 +17,7 @@ void main() {
   });
 
   test('single performs correct calls', () async {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     when(repository.getActiveAccount())
         .thenAnswer((_) => Future.value(account));
 
@@ -28,7 +28,7 @@ void main() {
   });
 
   test('stream performs correct calls', () {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
 
     final controller = StreamController<MooncakeAccount>();
     when(repository.activeAccountStream).thenAnswer((_) => controller.stream);
@@ -38,11 +38,11 @@ void main() {
         stream,
         emitsInOrder([
           account,
-          account.copyWith(moniker: "test"),
+          account.copyWith(moniker: 'test'),
         ]));
 
     controller.add(account);
-    controller.add(account.copyWith(moniker: "test"));
+    controller.add(account.copyWith(moniker: 'test'));
     controller.close();
 
     verify(repository.activeAccountStream).called(1);

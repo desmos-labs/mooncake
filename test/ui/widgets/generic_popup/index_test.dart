@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       makeTestableWidget(
         child: GenericPopup(
-          content: Text("strawberries"),
+          content: Text('strawberries'),
         ),
       ),
     );

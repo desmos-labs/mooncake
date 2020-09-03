@@ -22,17 +22,17 @@ void main() {
     when(repository.getPostByIdStream(any))
         .thenAnswer((_) => controller.stream);
 
-    final postId = "post-id";
+    final postId = 'post-id';
     final stream = getPostDetailsUseCase.stream(postId);
     expectLater(
         stream,
         emitsInOrder([
           testPost,
-          testPost.copyWith(parentId: "10"),
+          testPost.copyWith(parentId: '10'),
         ]));
 
     controller.add(testPost);
-    controller.add(testPost.copyWith(parentId: "10"));
+    controller.add(testPost.copyWith(parentId: '10'));
     controller.close();
   });
 
@@ -40,17 +40,17 @@ void main() {
     final post = testPost;
     when(repository.getPostById(any)).thenAnswer((_) => Future.value(post));
 
-    final postId = "post-id";
+    final postId = 'post-id';
     final result = await getPostDetailsUseCase.local(postId);
     expect(result, equals(post));
   });
 
   test('fromRemote performs correct calls', () async {
     final post = testPost;
-    when(repository.getPostById(any, refresh: anyNamed("refresh")))
+    when(repository.getPostById(any, refresh: anyNamed('refresh')))
         .thenAnswer((_) => Future.value(post));
 
-    final postId = "post-id";
+    final postId = 'post-id';
     final answer = await getPostDetailsUseCase.fromRemote(postId);
     expect(answer, equals(post));
 

@@ -17,7 +17,7 @@ void main() {
   test('watch correctly returns a stream', () async {
     final controller = StreamController();
     when(repository.watch(any)).thenAnswer((_) => controller.stream);
-    final key = "key";
+    final key = 'key';
     await watchSettingUseCase.watch(key: key);
     verify(repository.watch(key)).called(1);
   });

@@ -13,7 +13,7 @@ class DeletePostUseCase {
 
   /// Deletes the locally stored post if it hasn't been posted.
   Future<void> delete(Post post) async {
-    List<PostStatusValue> canDeleteStatus = [
+    var canDeleteStatus = <PostStatusValue>[
       PostStatusValue.STORED_LOCALLY,
       PostStatusValue.ERRORED
     ];

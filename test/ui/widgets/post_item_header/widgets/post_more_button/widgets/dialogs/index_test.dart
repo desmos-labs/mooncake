@@ -14,17 +14,17 @@ class MockReportPopupBloc extends MockBloc<ReportPopupEvent, ReportPopupState>
     implements ReportPopupBloc {}
 
 MooncakeAccount userAccount = MooncakeAccount(
-  profilePicUri: "https://example.com/avatar.png",
-  moniker: "john-doe",
+  profilePicUri: 'https://example.com/avatar.png',
+  moniker: 'john-doe',
   cosmosAccount: cosmosAccount,
 );
 
 void main() {
   testWidgets('BlocUserDialog: Displays export correctly',
       (WidgetTester tester) async {
-    MockReportPopupBloc mockReportPopupBloc = MockReportPopupBloc();
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
+    var mockReportPopupBloc = MockReportPopupBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
+    var mockPostsListBloc = MockPostsListBloc();
 
     when(mockReportPopupBloc.state).thenReturn(ReportPopupState.initial());
 
@@ -62,9 +62,9 @@ void main() {
 
   testWidgets('BlocUserDialog: Displays cancel correctly',
       (WidgetTester tester) async {
-    MockReportPopupBloc mockReportPopupBloc = MockReportPopupBloc();
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
+    var mockReportPopupBloc = MockReportPopupBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
+    var mockPostsListBloc = MockPostsListBloc();
 
     when(mockReportPopupBloc.state).thenReturn(ReportPopupState.initial());
 

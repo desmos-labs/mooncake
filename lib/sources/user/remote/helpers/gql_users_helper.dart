@@ -3,14 +3,14 @@ import 'package:graphql/client.dart';
 import 'package:mooncake/entities/entities.dart';
 
 class GqlUsersHelper {
-  static const String userContents = """
+  static const String userContents = '''
   address
   dtag
   moniker
   cover_pic
   profile_pic
   bio
-  """;
+  ''';
 
   /// Converts the given [gqlData] retrieved from the remote GraphQL
   /// server into a list of users.
@@ -27,13 +27,13 @@ class GqlUsersHelper {
     GraphQLClient client,
     String address,
   ) async {
-    final query = """
+    final query = '''
     query UserByAddress {
       users: profile (where:{address: {_eq:"$address"}}) {
         ${GqlUsersHelper.userContents}
       }
     }
-    """;
+    ''';
 
     final data = await client.query(
       QueryOptions(
@@ -41,7 +41,7 @@ class GqlUsersHelper {
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
-    final users = await compute(_convertUsersGqlResponse, data.data["users"]);
+    final users = await compute(_convertUsersGqlResponse, data.data['users']);
     return users.isEmpty ? User.fromAddress(address) : users[0];
   }
 }

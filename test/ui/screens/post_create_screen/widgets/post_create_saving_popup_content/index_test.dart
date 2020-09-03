@@ -14,7 +14,7 @@ class MockPostInputBloc extends MockBloc<PostInputEvent, PostInputState>
 void main() {
   testWidgets('PostSavingPopupContent: Displays correctly',
       (WidgetTester tester) async {
-    MockPostInputBloc mockPostInputBloc = MockPostInputBloc();
+    var mockPostInputBloc = MockPostInputBloc();
     when(mockPostInputBloc.state).thenReturn(PostInputState.empty(testPost));
 
     await tester.pumpWidget(
@@ -31,7 +31,7 @@ void main() {
     );
 
     await tester.pumpAndSettle();
-    expect(find.text("savingPostPopupBody"), findsOneWidget);
+    expect(find.text('savingPostPopupBody'), findsOneWidget);
     expect(find.byType(PrimaryButton), findsOneWidget);
   });
 }

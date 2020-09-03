@@ -29,13 +29,13 @@ class TxData extends Equatable {
 
 void initCodec() {
   // Posts messages
-  Codec.registerMsgType("desmos/MsgCreatePost", MsgCreatePost);
-  Codec.registerMsgType("desmos/MsgAddPostReaction", MsgAddPostReaction);
-  Codec.registerMsgType("desmos/MsgRemovePostReaction", MsgRemovePostReaction);
-  Codec.registerMsgType("desmos/MsgAnswerPoll", MsgAnswerPoll);
+  Codec.registerMsgType('desmos/MsgCreatePost', MsgCreatePost);
+  Codec.registerMsgType('desmos/MsgAddPostReaction', MsgAddPostReaction);
+  Codec.registerMsgType('desmos/MsgRemovePostReaction', MsgRemovePostReaction);
+  Codec.registerMsgType('desmos/MsgAnswerPoll', MsgAnswerPoll);
 
   // Account messages
-  Codec.registerMsgType("desmos/MsgSaveProfile", MsgSaveProfile);
+  Codec.registerMsgType('desmos/MsgSaveProfile', MsgSaveProfile);
 }
 
 /// Allows to easily perform chain-related actions such as querying the
@@ -73,7 +73,7 @@ class ChainSourceImpl extends ChainSource {
     return TxHelper.sendTx(
       txData.messages,
       txData.wallet,
-      fee: StdFee(amount: txData.feeAmount, gas: "200000"),
+      fee: StdFee(amount: txData.feeAmount, gas: '200000'),
     );
   }
 
@@ -105,7 +105,7 @@ class ChainSourceImpl extends ChainSource {
       final result = await queryChainRaw(endpoint);
       return result == null ? null : LcdResponse.fromJson(result);
     } catch (e) {
-      print("LcdResponse parsing exception: $e");
+      print('LcdResponse parsing exception: $e');
       return null;
     }
   }
@@ -121,7 +121,7 @@ class ChainSourceImpl extends ChainSource {
     }
 
     // Set the default fees if null
-    fees = fees ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: "100000")];
+    fees = fees ?? [StdCoin(denom: Constants.FEE_TOKEN, amount: '100000')];
 
     // Get the account data
     CosmosAccount account;
@@ -141,7 +141,7 @@ class ChainSourceImpl extends ChainSource {
               orElse: () => null,
             )
             ?.amount ??
-        "0";
+        '0';
 
     // Get the amount of fee token required to be paid
     final requiredFee = fees
@@ -150,7 +150,7 @@ class ChainSourceImpl extends ChainSource {
               orElse: () => null,
             )
             ?.amount ??
-        "0";
+        '0';
 
     if (int.parse(balance) < int.parse(requiredFee)) {
       // If the amount of tokens the user has is less than the one required
@@ -160,10 +160,10 @@ class ChainSourceImpl extends ChainSource {
 
     final data = TxData(messages: messages, wallet: wallet, feeAmount: fees);
 
-    TransactionResult txResults = await compute(sendTxBackground, data);
+    var txResults = await compute(sendTxBackground, data);
     if (!txResults.success) {
-      Logger.log(
-          "Error while sending transaction to the chain: ${txResults.error.errorMessage}");
+      final msg = txResults.error.errorMessage;
+      Logger.log('Error while sending transaction to the chain: ${msg}');
     }
     return txResults;
   }
@@ -182,8 +182,8 @@ class ChainSourceImpl extends ChainSource {
   Future<void> fundAccount(String address) async {
     await _httpClient.post(
       _faucetEndpoint,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"address": address}),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'address': address}),
     );
   }
 }

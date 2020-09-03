@@ -6,7 +6,7 @@ import 'package:mooncake/ui/widgets/mnemonic_visualizer/widgets/export.dart';
 import '../../../../helper.dart';
 
 void main() {
-  MockMnemonicBloc mockMnemonicBloc = MockMnemonicBloc();
+  var mockMnemonicBloc = MockMnemonicBloc();
   testWidgets('BackupMnemonicButton: Displays correctly',
       (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -32,6 +32,6 @@ void main() {
 
     expect(find.byType(Expanded), findsOneWidget);
     expect(find.byType(PrimaryButton), findsOneWidget);
-    expect(find.text("exportMnemonic"), findsOneWidget);
+    expect(find.text('exportMnemonic'), findsOneWidget);
   });
 }

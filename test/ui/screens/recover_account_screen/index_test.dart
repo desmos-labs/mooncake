@@ -6,7 +6,7 @@ import '../../helper.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  MockRecoverAccountBloc mockRecoverAccountBloc = MockRecoverAccountBloc();
+  var mockRecoverAccountBloc = MockRecoverAccountBloc();
   testWidgets('PostDetailsScreen: Displays correctly',
       (WidgetTester tester) async {
     when(mockRecoverAccountBloc.state)
@@ -29,6 +29,6 @@ void main() {
     expect(find.byType(AppBar), findsOneWidget);
     expect(find.byType(RecoverAccountMainContent), findsOneWidget);
     expect(find.byType(RecoverAccountWordsList), findsOneWidget);
-    expect(find.text("recoverScreenTitle"), findsOneWidget);
+    expect(find.text('recoverScreenTitle'), findsOneWidget);
   });
 }

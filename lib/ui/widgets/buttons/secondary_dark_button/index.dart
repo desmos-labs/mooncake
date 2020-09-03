@@ -16,7 +16,7 @@ class SecondaryDarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Theme.of(context).colorScheme.primary;
+    var color = Theme.of(context).colorScheme.primary;
 
     return SizedBox(
       width: width,

@@ -7,7 +7,7 @@ import 'package:mooncake/ui/widgets/post_content/widgets/export.dart';
 void main() {
   testWidgets('PostReactionAction: Displays export correctly',
       (WidgetTester tester) async {
-    RichLinkPreview linkPreview = RichLinkPreview(
+    var linkPreview = RichLinkPreview(
         title: 'null',
         description: 'null',
         image: '',

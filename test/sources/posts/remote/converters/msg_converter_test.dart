@@ -23,16 +23,16 @@ void main() {
     final wallet = MockWallet();
 
     final testPosts = [
-      _createPost("1"),
-      _createPost("2"),
-      _createPost("3"),
+      _createPost('1'),
+      _createPost('2'),
+      _createPost('3'),
     ];
 
     final posts = [
       testPosts[0],
       testPosts[1].copyWith(
         reactions: testPosts[1].reactions +
-            [Reaction.fromValue("🤎", User.fromAddress(wallet.bech32Address))],
+            [Reaction.fromValue('🤎', User.fromAddress(wallet.bech32Address))],
       ),
       testPosts[2],
     ];
@@ -41,7 +41,7 @@ void main() {
       testPosts[1],
       testPosts[2].copyWith(
         reactions: testPosts[2].reactions +
-            [Reaction.fromValue("💗", User.fromAddress(wallet.bech32Address))],
+            [Reaction.fromValue('💗', User.fromAddress(wallet.bech32Address))],
       ),
     ];
 
@@ -62,10 +62,10 @@ void main() {
       MsgAddPostReaction(
         user: wallet.bech32Address,
         postId: testPosts[1].id,
-        reaction: "🤎",
+        reaction: '🤎',
       ),
       MsgRemovePostReaction(
-        reaction: "💗",
+        reaction: '💗',
         user: wallet.bech32Address,
         postId: testPosts[2].id,
       ),

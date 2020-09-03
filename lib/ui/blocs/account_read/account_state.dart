@@ -110,11 +110,14 @@ class LoggedIn extends AccountState {
 /// Represents the state during which the account is being generated while loggedin.
 class CreatingAccountWhileLoggedIn extends LoggedIn {
   /// Represents the currently used account.
+  @override
   final MooncakeAccount user;
 
   /// Indicates whether the account is being refreshed or not.
+  @override
   final bool refreshing;
 
+  @override
   final List<MooncakeAccount> accounts;
 
   CreatingAccountWhileLoggedIn({
@@ -151,11 +154,14 @@ class AccountCreatedWhileLoggedIn extends LoggedIn {
   final List<String> mnemonic;
 
   /// Represents the currently used account.
+  @override
   final MooncakeAccount user;
 
   /// Indicates whether the account is being refreshed or not.
+  @override
   final bool refreshing;
 
+  @override
   final List<MooncakeAccount> accounts;
 
   AccountCreatedWhileLoggedIn(

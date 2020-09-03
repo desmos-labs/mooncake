@@ -9,7 +9,7 @@ part 'mooncake_account.g.dart';
 @JsonSerializable(explicitToJson: true)
 class MooncakeAccount extends User {
   /// Contains the current data of the Desmos account.
-  @JsonKey(name: "cosmos_account")
+  @JsonKey(name: 'cosmos_account')
   final CosmosAccount cosmosAccount;
 
   MooncakeAccount({
@@ -77,7 +77,7 @@ class MooncakeAccount extends User {
       moniker: moniker ?? this.moniker,
       bio: bio ?? this.bio,
       profilePicUri: profilePicUri ?? this.profilePicUri,
-      coverPicUri: coverPicUrl ?? this.coverPicUri,
+      coverPicUri: coverPicUrl ?? coverPicUri,
     );
   }
 

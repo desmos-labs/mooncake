@@ -25,7 +25,7 @@ class PostSuccessPopupContent extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-            "${PostsLocalizations.of(context).translate(Messages.syncSuccessBodyOne)} ${txHash} ${PostsLocalizations.of(context).translate(Messages.syncSuccessBodyTwo)}"),
+            '${PostsLocalizations.of(context).translate(Messages.syncSuccessBodyOne)} ${txHash} ${PostsLocalizations.of(context).translate(Messages.syncSuccessBodyTwo)}'),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -44,7 +44,7 @@ class PostSuccessPopupContent extends StatelessWidget {
   }
 
   void _browseTx() async {
-    final url = "${Constants.EXPLORER}/transactions/$txHash";
+    final url = '${Constants.EXPLORER}/transactions/$txHash';
     if (await canLaunch(url)) {
       await launch(url);
     }

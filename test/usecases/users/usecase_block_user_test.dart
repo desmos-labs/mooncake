@@ -17,7 +17,7 @@ void main() {
   test('block performs correct calls', () async {
     when(repository.blockUser(any)).thenAnswer((_) => Future.value(null));
 
-    final user = User.fromAddress("address");
+    final user = User.fromAddress('address');
     await blockUserUseCase.block(user);
 
     verify(repository.blockUser(user)).called(1);

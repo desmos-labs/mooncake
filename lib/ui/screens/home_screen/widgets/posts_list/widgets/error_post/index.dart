@@ -72,11 +72,11 @@ class ErrorPost extends StatelessWidget {
     );
   }
 
-  _handleRetryPost(BuildContext context) {
+  void _handleRetryPost(BuildContext context) {
     BlocProvider.of<PostsListBloc>(context).add(RetryPostUpload(post));
   }
 
-  _handleDeletePost(BuildContext context) {
+  void _handleDeletePost(BuildContext context) {
     BlocProvider.of<PostsListBloc>(context).add(DeletePost(post));
   }
 }

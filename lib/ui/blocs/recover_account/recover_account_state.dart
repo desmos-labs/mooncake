@@ -7,7 +7,7 @@ class RecoverAccountState extends Equatable {
   final int currentWordIndex;
 
   /// Represents the word that is being typed.
-  String get typedWord => wordsList[currentWordIndex] ?? "";
+  String get typedWord => wordsList[currentWordIndex] ?? '';
 
   /// Represents the list of words that have been selected as composing the
   /// mnemonic.

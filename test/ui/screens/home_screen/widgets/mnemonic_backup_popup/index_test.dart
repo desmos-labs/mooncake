@@ -8,8 +8,8 @@ import 'package:mooncake/ui/screens/home_screen/widgets/export.dart';
 void main() {
   testWidgets('MnemonicBackupPopup: Displays export correctly',
       (WidgetTester tester) async {
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-    MockHomeBloc mockHomeBloc = MockHomeBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
+    var mockHomeBloc = MockHomeBloc();
 
     await tester.pumpWidget(
       makeTestableWidget(
@@ -28,6 +28,6 @@ void main() {
     expect(find.byType(PrimaryButton), findsOneWidget);
     expect(find.byType(SecondaryDarkButton), findsOneWidget);
     expect(find.byType(GestureDetector), findsWidgets);
-    expect(find.text("mnemonicDoNotShowAgainButton"), findsOneWidget);
+    expect(find.text('mnemonicDoNotShowAgainButton'), findsOneWidget);
   });
 }

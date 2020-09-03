@@ -17,7 +17,7 @@ void main() {
   });
 
   test('single performs correct calls', () async {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     when(repository.getAccount(account.address))
         .thenAnswer((_) => Future.value(account));
 

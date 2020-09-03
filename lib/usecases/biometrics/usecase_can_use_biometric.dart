@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 /// Tells whether this device allows for biometrics authentication or not.
 class CanUseBiometricsUseCase {
-  LocalAuthentication _localAuthentication;
+  final LocalAuthentication _localAuthentication;
 
   CanUseBiometricsUseCase({@required LocalAuthentication localAuthentication})
       : assert(localAuthentication != null),

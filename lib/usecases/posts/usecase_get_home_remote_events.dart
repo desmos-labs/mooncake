@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to get all the events that should require the user to refresh
@@ -6,7 +7,7 @@ class GetHomeEventsUseCase {
   final PostsRepository _postsRepository;
 
   GetHomeEventsUseCase({
-    PostsRepository postsRepository,
+    @required PostsRepository postsRepository,
   })  : assert(postsRepository != null),
         _postsRepository = postsRepository;
 

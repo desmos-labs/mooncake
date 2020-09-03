@@ -10,9 +10,9 @@ void main() {
       makeTestableWidget(
         child: ExportMnemonicScreen(
           mnemonicData: MnemonicData(
-            ivBase64: "3H+Sr64FhLS1VLABqZQGnw==",
+            ivBase64: '3H+Sr64FhLS1VLABqZQGnw==',
             encryptedMnemonicBase64:
-                "INEDpERjqL8iu8XpUbr+/1vDOFI00sQmMWHRVCm4jFlhVLINWzoQupPyZr5cgx7Ny6Q1czlxiU6+bGIu3nwyPQ==",
+                'INEDpERjqL8iu8XpUbr+/1vDOFI00sQmMWHRVCm4jFlhVLINWzoQupPyZr5cgx7Ny6Q1czlxiU6+bGIu3nwyPQ==',
           ),
         ),
       ),

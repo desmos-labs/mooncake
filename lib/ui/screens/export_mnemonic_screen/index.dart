@@ -35,7 +35,7 @@ class ExportMnemonicScreen extends StatelessWidget {
             Text(
               PostsLocalizations.of(context)
                   .translate(Messages.mnemonicExportScreenText)
-                  .replaceAll("\n", " "),
+                  .replaceAll('\n', ' '),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -55,6 +55,6 @@ class ExportMnemonicScreen extends StatelessWidget {
   void _shareData(BuildContext context) async {
     final text = PostsLocalizations.of(context)
         .translate(Messages.mnemonicExportShareText);
-    await Share.share("$text\n\n$mnemonicText");
+    await Share.share('$text\n\n$mnemonicText');
   }
 }

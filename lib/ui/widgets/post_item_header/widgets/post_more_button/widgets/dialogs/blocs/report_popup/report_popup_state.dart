@@ -32,7 +32,7 @@ class ReportPopupState extends Equatable {
         ReportType.ViolentOrProhibited: false,
         ReportType.Other: false,
       },
-      otherText: "",
+      otherText: '',
       blockUser: false,
     );
   }

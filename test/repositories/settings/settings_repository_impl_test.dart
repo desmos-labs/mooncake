@@ -8,12 +8,12 @@ import 'package:mockito/mockito.dart';
 class MockLocalSettingsSource extends Mock implements LocalSettingsSource {}
 
 void main() {
-  final MockLocalSettingsSource localSource = MockLocalSettingsSource();
+  final localSource = MockLocalSettingsSource();
   final repository = SettingsRepositoryImpl(localSettingsSource: localSource);
 
   test('watch returns a stream', () {
     final key = 'event';
-    final StreamController controller = StreamController();
+    final controller = StreamController();
     when(localSource.watch(any)).thenAnswer((_) => controller.stream);
     repository.watch(key);
     verify(localSource.watch(key)).called(1);

@@ -26,7 +26,7 @@ class _MnemonicInputItemState extends State<MnemonicInputItem> {
     return BlocBuilder<RecoverAccountBloc, RecoverAccountState>(
       builder: (BuildContext context, RecoverAccountState state) {
         // Get the selected word, if existing
-        final word = state.wordsList[widget.index] ?? "";
+        final word = state.wordsList[widget.index] ?? '';
         if (word != _textEditingController.text) {
           _textEditingController.text = word;
         }

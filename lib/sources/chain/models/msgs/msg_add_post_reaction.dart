@@ -10,13 +10,13 @@ part 'msg_add_post_reaction.g.dart';
 @reflector
 @JsonSerializable(explicitToJson: true)
 class MsgAddPostReaction extends StdMsg {
-  @JsonKey(name: "post_id")
+  @JsonKey(name: 'post_id')
   final String postId;
 
-  @JsonKey(name: "reaction")
+  @JsonKey(name: 'reaction')
   final String reaction;
 
-  @JsonKey(name: "user")
+  @JsonKey(name: 'user')
   final String user;
 
   MsgAddPostReaction({
@@ -39,7 +39,7 @@ class MsgAddPostReaction extends StdMsg {
   @override
   Exception validate() {
     if (postId.isEmpty || reaction.isEmpty || user.isEmpty) {
-      return Exception("Malformed MsgAddPostReaction");
+      return Exception('Malformed MsgAddPostReaction');
     }
 
     return null;

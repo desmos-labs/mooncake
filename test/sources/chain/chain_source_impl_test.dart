@@ -17,7 +17,7 @@ class MockTxSender extends Mock implements TxSender {}
 class MockHttpClient extends Mock implements http.Client {}
 
 void main() {
-  final fee = [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")];
+  final fee = [StdCoin(denom: Constants.FEE_TOKEN, amount: '10000')];
 
   MockWebServer lcdServer;
   MockWebServer faucetServer;
@@ -51,15 +51,15 @@ void main() {
     test('returns null when exception is thrown', () async {
       lcdServer.enqueue(body: null, httpCode: 500);
 
-      final result = await chainHelper.queryChainRaw("/my-endpoint");
+      final result = await chainHelper.queryChainRaw('/my-endpoint');
       expect(result, isNull);
     });
 
     test('returns correct value when no exception is thrown', () async {
-      final data = {"key": "value", "other-value": "other-key"};
+      final data = {'key': 'value', 'other-value': 'other-key'};
       lcdServer.enqueue(httpCode: 200, body: jsonEncode(data));
 
-      final result = await chainHelper.queryChainRaw("/endpoint");
+      final result = await chainHelper.queryChainRaw('/endpoint');
       expect(result, data);
     });
   });
@@ -68,39 +68,39 @@ void main() {
     test('returns null when exception is thrown', () async {
       lcdServer.enqueue(body: null, httpCode: 500);
 
-      final result = await chainHelper.queryChain("/my-endpoint");
+      final result = await chainHelper.queryChain('/my-endpoint');
       expect(result, isNull);
     });
 
     test('returns null when wrong body is returned', () async {
-      final data = {"height": "0"};
+      final data = {'height': '0'};
       lcdServer.enqueue(body: jsonEncode(data), httpCode: 200);
 
-      final result = await chainHelper.queryChain("/my-endpoint");
+      final result = await chainHelper.queryChain('/my-endpoint');
       expect(result, isNull);
     });
 
     test('returns correct value when no exception is thrown', () async {
-      final file = File("test_resources/chain/chain_response.json");
+      final file = File('test_resources/chain/chain_response.json');
       final contents = file.readAsStringSync();
       lcdServer.enqueue(httpCode: 200, body: contents);
 
-      final result = await chainHelper.queryChain("/endpoint");
+      final result = await chainHelper.queryChain('/endpoint');
 
-      final expected = LcdResponse(height: "0", result: {
-        "id": "1",
-        "parent_id": "0",
-        "message": "This is a post",
-        "created": "2019-12-11T07:57:54.03384Z",
-        "last_edited": "0001-01-01T00:00:00Z",
-        "allows_comments": false,
-        "subspace": "",
-        "optional_data": {
-          "external_reference": "dwitter-2019-12-13T08:51:32.262217"
+      final expected = LcdResponse(height: '0', result: {
+        'id': '1',
+        'parent_id': '0',
+        'message': 'This is a post',
+        'created': '2019-12-11T07:57:54.03384Z',
+        'last_edited': '0001-01-01T00:00:00Z',
+        'allows_comments': false,
+        'subspace': '',
+        'optional_data': {
+          'external_reference': 'dwitter-2019-12-13T08:51:32.262217'
         },
-        "creator": "desmos17573axzcrmq6w5jwx27qlf9d90lcgkfmsrjycg",
-        "reactions": [],
-        "children": []
+        'creator': 'desmos17573axzcrmq6w5jwx27qlf9d90lcgkfmsrjycg',
+        'reactions': [],
+        'children': []
       });
       expect(result, expected);
     });
@@ -111,34 +111,34 @@ void main() {
 
     setUpAll(() {
       final networkInfo = NetworkInfo(
-        bech32Hrp: "desmos",
+        bech32Hrp: 'desmos',
         lcdUrl: lcdServer.url,
       );
       final mnemonic = [
-        "music",
-        "swap",
-        "repair",
-        "fiber",
-        "space",
-        "cactus",
-        "fold",
-        "various",
-        "identify",
-        "ice",
-        "grape",
-        "negative",
-        "category",
-        "cupboard",
-        "box",
-        "village",
-        "gallery",
-        "letter",
-        "electric",
-        "vote",
-        "praise",
-        "sustain",
-        "system",
-        "soon",
+        'music',
+        'swap',
+        'repair',
+        'fiber',
+        'space',
+        'cactus',
+        'fold',
+        'various',
+        'identify',
+        'ice',
+        'grape',
+        'negative',
+        'category',
+        'cupboard',
+        'box',
+        'village',
+        'gallery',
+        'letter',
+        'electric',
+        'vote',
+        'praise',
+        'sustain',
+        'system',
+        'soon',
       ];
       wallet = Wallet.derive(
         mnemonic,
@@ -161,12 +161,12 @@ void main() {
 
       final msgs = [
         MsgCreatePost(
-          parentId: "0",
-          message: "message",
+          parentId: '0',
+          message: 'message',
           allowsComments: false,
-          subspace: "desmos",
+          subspace: 'desmos',
           optionalData: {},
-          creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
+          creator: 'desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy',
           medias: null,
           poll: null,
         ),
@@ -177,27 +177,27 @@ void main() {
     });
 
     test('throws exception when tx sending is not successful', () async {
-      final accountFile = File("test_resources/account/account_response.json");
+      final accountFile = File('test_resources/account/account_response.json');
       final accountContents = accountFile.readAsStringSync();
 
-      final txsFile = File("test_resources/chain/txs_response_success.json");
+      final txsFile = File('test_resources/chain/txs_response_success.json');
       final txsContents = txsFile.readAsStringSync();
 
-      final nodeInfoFile = File("test_resources/chain/node_info_response.json");
+      final nodeInfoFile = File('test_resources/chain/node_info_response.json');
       final nodeInfoContents = nodeInfoFile.readAsStringSync();
 
       // ignore: missing_return
       lcdServer.dispatcher = (HttpRequest request) async {
         final url = request.uri.toString();
-        if (url.contains("/auth/account")) {
+        if (url.contains('/auth/account')) {
           return MockResponse()
             ..httpCode = 200
             ..body = accountContents;
-        } else if (url.contains("/txs")) {
+        } else if (url.contains('/txs')) {
           return MockResponse()
             ..httpCode = 200
             ..body = txsContents;
-        } else if (url.contains("/node_info")) {
+        } else if (url.contains('/node_info')) {
           return MockResponse()
             ..httpCode = 200
             ..body = nodeInfoContents;
@@ -206,12 +206,12 @@ void main() {
 
       final msgs = [
         MsgCreatePost(
-          parentId: "0",
-          message: "message",
+          parentId: '0',
+          message: 'message',
           allowsComments: false,
-          subspace: "desmos",
+          subspace: 'desmos',
           optionalData: {},
-          creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
+          creator: 'desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy',
           medias: null,
           poll: null,
         ),
@@ -227,32 +227,32 @@ void main() {
 
     setUpAll(() {
       final networkInfo =
-          NetworkInfo(bech32Hrp: "desmos", lcdUrl: lcdServer.url);
+          NetworkInfo(bech32Hrp: 'desmos', lcdUrl: lcdServer.url);
       final mnemonic = [
-        "music",
-        "swap",
-        "repair",
-        "fiber",
-        "space",
-        "cactus",
-        "fold",
-        "various",
-        "identify",
-        "ice",
-        "grape",
-        "negative",
-        "category",
-        "cupboard",
-        "box",
-        "village",
-        "gallery",
-        "letter",
-        "electric",
-        "vote",
-        "praise",
-        "sustain",
-        "system",
-        "soon",
+        'music',
+        'swap',
+        'repair',
+        'fiber',
+        'space',
+        'cactus',
+        'fold',
+        'various',
+        'identify',
+        'ice',
+        'grape',
+        'negative',
+        'category',
+        'cupboard',
+        'box',
+        'village',
+        'gallery',
+        'letter',
+        'electric',
+        'vote',
+        'praise',
+        'sustain',
+        'system',
+        'soon',
       ];
       wallet = Wallet.derive(
         mnemonic,
@@ -274,12 +274,12 @@ void main() {
 
       final msgs = [
         MsgCreatePost(
-          parentId: "0",
-          message: "message",
+          parentId: '0',
+          message: 'message',
           allowsComments: false,
-          subspace: "desmos",
+          subspace: 'desmos',
           optionalData: {},
-          creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
+          creator: 'desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy',
           medias: null,
           poll: null,
         ),
@@ -290,34 +290,34 @@ void main() {
 
     test('returns correct result when funding is not required', () async {
       final account = CosmosAccount.offline(wallet.bech32Address).copyWith(
-        coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "1000000")],
+        coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: '1000000')],
       );
       final accountResponse = LcdResponse(
-        height: "217386",
+        height: '217386',
         result: AccountResponse(
-          type: "cosmos-sdk/Account",
+          type: 'cosmos-sdk/Account',
           accountData: account,
         ).toJson(),
       );
 
-      final txsFile = File("test_resources/chain/txs_response_success.json");
+      final txsFile = File('test_resources/chain/txs_response_success.json');
       final txsContents = txsFile.readAsStringSync();
 
-      final nodeInfoFile = File("test_resources/chain/node_info_response.json");
+      final nodeInfoFile = File('test_resources/chain/node_info_response.json');
       final nodeInfoContents = nodeInfoFile.readAsStringSync();
 
       // ignore: missing_return
       lcdServer.dispatcher = (HttpRequest request) async {
         final url = request.uri.toString();
-        if (url.contains("/auth/accounts")) {
+        if (url.contains('/auth/accounts')) {
           return MockResponse()
             ..httpCode = 200
             ..body = jsonEncode(accountResponse.toJson());
-        } else if (url.contains("/txs")) {
+        } else if (url.contains('/txs')) {
           return MockResponse()
             ..httpCode = 200
             ..body = txsContents;
-        } else if (url.contains("/node_info")) {
+        } else if (url.contains('/node_info')) {
           return MockResponse()
             ..httpCode = 200
             ..body = nodeInfoContents;
@@ -326,12 +326,12 @@ void main() {
 
       final msgs = [
         MsgCreatePost(
-          parentId: "0",
-          message: "message",
+          parentId: '0',
+          message: 'message',
           allowsComments: false,
-          subspace: "desmos",
+          subspace: 'desmos',
           optionalData: {},
-          creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
+          creator: 'desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy',
           medias: null,
           poll: null,
         ),
@@ -344,34 +344,34 @@ void main() {
 
     test('returns correct result when funding is required', () async {
       final account = CosmosAccount.offline(wallet.bech32Address).copyWith(
-        coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "0")],
+        coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: '0')],
       );
       final accountResponse = LcdResponse(
-        height: "217386",
+        height: '217386',
         result: AccountResponse(
-          type: "cosmos-sdk/Account",
+          type: 'cosmos-sdk/Account',
           accountData: account,
         ).toJson(),
       );
 
-      final txsFile = File("test_resources/chain/txs_response_success.json");
+      final txsFile = File('test_resources/chain/txs_response_success.json');
       final txsContents = txsFile.readAsStringSync();
 
-      final nodeInfoFile = File("test_resources/chain/node_info_response.json");
+      final nodeInfoFile = File('test_resources/chain/node_info_response.json');
       final nodeInfoContents = nodeInfoFile.readAsStringSync();
 
       // ignore: missing_return
       lcdServer.dispatcher = (HttpRequest request) async {
         final url = request.uri.toString();
-        if (url.contains("/auth/accounts")) {
+        if (url.contains('/auth/accounts')) {
           return MockResponse()
             ..httpCode = 200
             ..body = jsonEncode(accountResponse.toJson());
-        } else if (url.contains("/txs")) {
+        } else if (url.contains('/txs')) {
           return MockResponse()
             ..httpCode = 200
             ..body = txsContents;
-        } else if (url.contains("/node_info")) {
+        } else if (url.contains('/node_info')) {
           return MockResponse()
             ..httpCode = 200
             ..body = nodeInfoContents;
@@ -380,12 +380,12 @@ void main() {
 
       final msgs = [
         MsgCreatePost(
-          parentId: "0",
-          message: "message",
+          parentId: '0',
+          message: 'message',
           allowsComments: false,
-          subspace: "desmos",
+          subspace: 'desmos',
           optionalData: {},
-          creator: "desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy",
+          creator: 'desmos1ywphunh6kg5d33xs07ufjr9mxxcza6rjq4wrzy',
           medias: null,
           poll: null,
         ),
@@ -395,8 +395,8 @@ void main() {
       expect(result.success, isTrue);
       verify(httpClient.post(
         faucetServer.url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"address": wallet.bech32Address}),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'address': wallet.bech32Address}),
       ));
     });
   });

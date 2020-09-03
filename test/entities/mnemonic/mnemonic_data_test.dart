@@ -3,8 +3,8 @@ import 'package:mooncake/entities/entities.dart';
 
 void main() {
   final data = MnemonicData(
-    encryptedMnemonicBase64: "encrypted_mnemonic_base64",
-    ivBase64: "iv_base_64",
+    encryptedMnemonicBase64: 'encrypted_mnemonic_base64',
+    ivBase64: 'iv_base_64',
   );
 
   test('toJson and fromJson', () {

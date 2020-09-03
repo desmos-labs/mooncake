@@ -35,7 +35,7 @@ void main() {
       setUp(
         () {
           final controller = StreamController<dynamic>();
-          when(mockWatchSettingUseCase.watch(key: anyNamed("key")))
+          when(mockWatchSettingUseCase.watch(key: anyNamed('key')))
               .thenAnswer((_) => controller.stream);
           homeBloc = HomeBloc(
             getSettingUseCase: mockGetSettingUseCase,
@@ -87,7 +87,7 @@ void main() {
           return homeBloc;
         },
         act: (bloc) async {
-          bloc.add(SignOut("address"));
+          bloc.add(SignOut('address'));
         },
         expect: [],
       );
@@ -139,8 +139,8 @@ void main() {
         expect: [],
         verify: (_) async {
           verify(mockSaveSettingUseCase.save(
-            key: anyNamed("key"),
-            value: anyNamed("value"),
+            key: anyNamed('key'),
+            value: anyNamed('value'),
           )).called(1);
         },
       );

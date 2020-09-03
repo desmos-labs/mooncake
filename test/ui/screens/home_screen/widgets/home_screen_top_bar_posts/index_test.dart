@@ -8,7 +8,7 @@ import 'package:mooncake/ui/screens/home_screen/widgets/export.dart';
 void main() {
   testWidgets('postsAppBar: Displays export correctly',
       (WidgetTester tester) async {
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
 
     await tester.pumpWidget(
       makeTestableWidget(
@@ -28,7 +28,7 @@ void main() {
     );
 
     await tester.pumpAndSettle();
-    expect(find.text("appName"), findsOneWidget);
+    expect(find.text('appName'), findsOneWidget);
     expect(tester.widget<AppBar>(find.byType(AppBar)).centerTitle, true);
   });
 }

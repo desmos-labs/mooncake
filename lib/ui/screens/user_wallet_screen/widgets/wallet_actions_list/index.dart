@@ -23,11 +23,11 @@ class WalletActionsList extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6,
           ),
-          Image.asset("assets/images/tongue.png", width: 150),
+          Image.asset('assets/images/tongue.png', width: 150),
           Text(
             PostsLocalizations.of(context)
                 .translate(Messages.walletBodyText)
-                .replaceAll("\n", " "),
+                .replaceAll('\n', ' '),
             textAlign: TextAlign.center,
           )
         ],

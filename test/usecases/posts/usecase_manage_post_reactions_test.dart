@@ -24,7 +24,7 @@ void main() {
   });
 
   test('addOrRemove adds correctly a missing reaction', () async {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     when(userRepository.getActiveAccount())
         .thenAnswer((_) => Future.value(account));
     when(postsRepository.savePost(any)).thenAnswer((_) => Future.value(null));
@@ -32,11 +32,11 @@ void main() {
     final post = testPost.copyWith(reactions: []);
     final result = await managePostReactionsUseCase.addOrRemove(
       post: post,
-      reaction: "😊",
+      reaction: '😊',
     );
     final savedPost = post.copyWith(
       status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
-      reactions: [Reaction.fromValue("😊", account.toUser())],
+      reactions: [Reaction.fromValue('😊', account.toUser())],
     );
     expect(result, equals(savedPost));
 
