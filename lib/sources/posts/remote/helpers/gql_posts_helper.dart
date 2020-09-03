@@ -81,7 +81,7 @@ class GqlPostsHelper {
   post_aggregate(
     where: {
       parent_id: {_is_null: true},
-      subspace: {_eq: '${Constants.SUBSPACE}'},
+      subspace: {_eq: "${Constants.SUBSPACE}"},
     }
   ) {
     aggregate {
@@ -123,7 +123,7 @@ class GqlPostsHelper {
       posts: post(
         where: {
           parent_id: {_is_null: true},
-          subspace: {_eq: '${queryData.subspace}'}
+          subspace: {_eq: "${queryData.subspace}"}
         }
         order_by: { created: desc },
         offset: ${queryData.start},
@@ -155,8 +155,8 @@ class GqlPostsHelper {
     query PostById {
       post: post(
         where: {
-          id: {_eq: '${queryData.id}'},
-          subspace: {_eq: '${queryData.subspace}'}
+          id: {_eq: "${queryData.id}"},
+          subspace: {_eq: "${queryData.subspace}"}
         },
       ) {
         $_postContents
@@ -181,8 +181,8 @@ class GqlPostsHelper {
     query PostComments {
       comments: post(
         where: {
-          parent_id: {_eq: '${queryData.id}'},
-          subspace: {_eq: '${queryData.subspace}'}
+          parent_id: {_eq: "${queryData.id}"},
+          subspace: {_eq: "${queryData.subspace}"}
         },
         order_by: { created: desc },
       ) {
