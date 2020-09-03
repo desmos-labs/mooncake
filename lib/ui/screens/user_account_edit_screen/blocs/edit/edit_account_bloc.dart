@@ -110,7 +110,7 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
     final formattedAccount = state.account.copyWith(
       dtag: state.account.dtag.trim(),
       moniker: state.account.moniker.trim(),
-      bio: state.account.bio?.trim() ?? '',
+      bio: state.account.bio?.trim(),
     );
 
     // Save the account
