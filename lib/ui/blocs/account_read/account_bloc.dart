@@ -134,28 +134,35 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// to create a new account. It creates a new account, stores it locally
   /// and later yield the [LoggedIn] state.
   Stream<AccountState> _mapGenerateAccountEventToState() async* {
-    AccountState loading = state is LoggedIn
-        ? CreatingAccountWhileLoggedIn(
-            user: (state as LoggedIn).user,
-            accounts: (state as LoggedIn).accounts,
-            refreshing: (state as LoggedIn).refreshing,
-          )
-        : CreatingAccount();
-    yield loading;
+    final currentState = state;
+
+    if (currentState is LoggedIn) {
+      yield CreatingAccountWhileLoggedIn(
+        user: currentState.user,
+        accounts: currentState.accounts,
+        refreshing: currentState.refreshing,
+      );
+    } else {
+      yield CreatingAccount();
+    }
 
     final mnemonic = await _generateMnemonicUseCase.generate();
     await Future.delayed(const Duration(seconds: 2));
-    AccountState accountCreated = state is LoggedIn
-        ? AccountCreatedWhileLoggedIn(
-            mnemonic,
-            user: (state as LoggedIn).user,
-            accounts: (state as LoggedIn).accounts,
-            refreshing: (state as LoggedIn).refreshing,
-          )
-        : AccountCreated(mnemonic);
-    yield accountCreated;
 
-    if (accountCreated is AccountCreatedWhileLoggedIn) {
+    var isAccountCreatedWhileLogginIn = false;
+    if (currentState is LoggedIn) {
+      isAccountCreatedWhileLogginIn = true;
+      yield AccountCreatedWhileLoggedIn(
+        mnemonic,
+        user: currentState.user,
+        accounts: currentState.accounts,
+        refreshing: currentState.refreshing,
+      );
+    } else {
+      yield AccountCreated(mnemonic);
+    }
+
+    if (isAccountCreatedWhileLogginIn) {
       _navigatorBloc.add(NavigateToProtectAccount());
     }
   }
@@ -213,17 +220,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   /// Refreshes currently list of all stored accounts
   Stream<AccountState> _mapGetAllAccountsEventToState() async* {
-    if (state is LoggedIn) {
-      final List<MooncakeAccount> storedAccounts =
-          await _getAccountsUseCase.all();
-      yield LoggedIn.initial((state as LoggedIn).user, storedAccounts);
+    final currentState = state;
+    if (currentState is LoggedIn) {
+      final storedAccounts = await _getAccountsUseCase.all();
+      yield LoggedIn.initial(currentState.user, storedAccounts);
     }
   }
 
   /// Switch accounts
   Stream<AccountState> _mapSwitchAccountEventToState(
-      SwitchAccount event) async* {
-    if (state is LoggedIn) {
+    SwitchAccount event,
+  ) async* {
+    final currentState = state;
+    if (currentState is LoggedIn) {
       await _setAccountActiveUsecase.setActive(event.user);
     }
   }

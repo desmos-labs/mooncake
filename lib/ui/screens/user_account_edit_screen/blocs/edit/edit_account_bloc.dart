@@ -17,11 +17,11 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
 
   final SaveAccountUseCase _saveAccountUseCase;
 
-  EditAccountBloc(
-      {@required MooncakeAccount account,
-      @required NavigatorBloc navigatorBloc,
-      @required SaveAccountUseCase saveAccountUseCase})
-      : assert(account != null),
+  EditAccountBloc({
+    @required MooncakeAccount account,
+    @required NavigatorBloc navigatorBloc,
+    @required SaveAccountUseCase saveAccountUseCase,
+  })  : assert(account != null),
         _account = account,
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,

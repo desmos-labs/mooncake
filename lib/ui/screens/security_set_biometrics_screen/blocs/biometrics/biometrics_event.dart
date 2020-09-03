@@ -12,14 +12,22 @@ abstract class BiometricsEvent extends Equatable {
 /// device supports.
 class CheckAuthenticationType extends BiometricsEvent {
   @override
-  String toString() => 'CheckBiometricAuthenticationType';
+  String toString() => 'CheckAuthenticationType';
 }
 
 /// Tells the Bloc that the user wants to be authenticated.
 class AuthenticateWithBiometrics extends BiometricsEvent {
   final String address;
+
   AuthenticateWithBiometrics(this.address);
+
   @override
-  String toString() => 'Authenticate';
-  List<Object> get props => [address];
+  List<Object> get props {
+    return [address];
+  }
+
+  @override
+  String toString() {
+    return 'AuthenticateWithBiometrics { address: $address }';
+  }
 }

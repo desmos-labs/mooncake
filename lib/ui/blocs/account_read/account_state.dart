@@ -55,14 +55,25 @@ class LoggedIn extends AccountState {
 
   final List<MooncakeAccount> accounts;
 
-  LoggedIn(
-      {@required this.user,
-      @required this.refreshing,
-      @required this.accounts});
+  LoggedIn({
+    @required this.user,
+    @required this.refreshing,
+    @required this.accounts,
+  });
 
   factory LoggedIn.initial(
-      MooncakeAccount user, List<MooncakeAccount> accounts) {
-    return LoggedIn(user: user, refreshing: false, accounts: accounts);
+    MooncakeAccount user,
+    List<MooncakeAccount> accounts,
+  ) {
+    return LoggedIn(
+      user: user,
+      refreshing: false,
+      accounts: accounts,
+    );
+  }
+
+  List<MooncakeAccount> get otherAccounts {
+    return accounts.where((x) => x.address != user.address).toList();
   }
 
   LoggedIn copyWith({
@@ -78,14 +89,22 @@ class LoggedIn extends AccountState {
   }
 
   @override
-  List<Object> get props => [user, refreshing, accounts];
-
-  List<MooncakeAccount> get otherAccounts =>
-      accounts.where((x) => x.address != user.address).toList();
+  List<Object> get props {
+    return [
+      user,
+      refreshing,
+      accounts,
+    ];
+  }
 
   @override
-  String toString() =>
-      'LoggedIn { user: $user, refreshing: $refreshing, accounts: $accounts }';
+  String toString() {
+    return 'LoggedIn { '
+        'user: $user, '
+        'refreshing: $refreshing, '
+        'accounts: $accounts '
+        '}';
+  }
 }
 
 /// Represents the state during which the account is being generated while loggedin.
@@ -109,11 +128,22 @@ class CreatingAccountWhileLoggedIn extends LoggedIn {
         );
 
   @override
-  List<Object> get props => [user, accounts, refreshing];
+  List<Object> get props {
+    return [
+      user,
+      accounts,
+      refreshing,
+    ];
+  }
 
   @override
-  String toString() =>
-      'CreatingAccountWhileLoggedIn { user: $user, refreshing: $refreshing, accounts: $accounts }';
+  String toString() {
+    return 'CreatingAccountWhileLoggedIn { '
+        'user: $user, '
+        'refreshing: $refreshing, '
+        'accounts: $accounts '
+        '}';
+  }
 }
 
 /// Tells the view that a new account has been generated while logged in
@@ -140,9 +170,22 @@ class AccountCreatedWhileLoggedIn extends LoggedIn {
         );
 
   @override
-  List<Object> get props => [mnemonic, user, accounts, refreshing];
+  List<Object> get props {
+    return [
+      mnemonic,
+      user,
+      accounts,
+      refreshing,
+    ];
+  }
 
   @override
-  String toString() =>
-      'AccountCreatedWhileLoggedIn { user: $user, refreshing: $refreshing, accounts: $accounts, mnemonic: $mnemonic }';
+  String toString() {
+    return 'AccountCreatedWhileLoggedIn { '
+        'user: $user, '
+        'refreshing: $refreshing, '
+        'accounts: $accounts, '
+        'mnemonic: $mnemonic '
+        '}';
+  }
 }
