@@ -52,7 +52,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.byType(TabSelector), findsNothing);
+    expect(find.byType(TabSelector), findsOneWidget);
     expect(find.byType(AccountAppBar), findsOneWidget);
     expect(find.byType(AccountPostsViewer), findsOneWidget);
   });

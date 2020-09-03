@@ -167,7 +167,7 @@ void main() {
         await source.setActiveAccount(account);
         final updatedAccount = account.copyWith(
           cosmosAccount: account.cosmosAccount.copyWith(
-            accountNumber: "20",
+            accountNumber: '20',
           ),
         );
         await source.saveAccount(updatedAccount);
