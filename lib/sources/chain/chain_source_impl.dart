@@ -135,8 +135,8 @@ class ChainSourceImpl extends ChainSource {
     }
 
     // Get the amount of fee tokens the user has
-    final balance = account.coins
-            .firstWhere(
+    final balance = account?.coins
+            ?.firstWhere(
               (coin) => coin.denom == Constants.FEE_TOKEN,
               orElse: () => null,
             )
@@ -145,7 +145,7 @@ class ChainSourceImpl extends ChainSource {
 
     // Get the amount of fee token required to be paid
     final requiredFee = fees
-            .firstWhere(
+            ?.firstWhere(
               (coin) => coin.denom == Constants.FEE_TOKEN,
               orElse: () => null,
             )
