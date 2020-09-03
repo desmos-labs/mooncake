@@ -68,10 +68,7 @@ class _PostsListState extends State<PostsList> {
 
           return BlocBuilder<HomeBloc, HomeState>(
               builder: (context, homeState) {
-            if (homeState.activeTab == AppTab.home && homeState.scrollToTop) {
-              BlocProvider.of<HomeBloc>(context).add(SetScrollToTop(false));
-              _backToTop();
-            }
+            _validateBackToTopStatus(homeState);
             return Stack(
               children: <Widget>[
                 Column(
@@ -163,5 +160,20 @@ class _PostsListState extends State<PostsList> {
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 300),
     );
+  }
+
+  void _validateBackToTopStatus(HomeState homeState) {
+    if (!_scrollController.hasClients) {
+      return null;
+    }
+    final bool shouldScroll =
+        homeState.activeTab == AppTab.home && homeState.scrollToTop;
+    // If position is at top refresh posts otherwise scroll to top
+    if (_scrollController.position.pixels == 0.0 && shouldScroll) {
+      _indicator.currentState.show();
+    } else if (shouldScroll) {
+      BlocProvider.of<HomeBloc>(context).add(SetScrollToTop(false));
+      _backToTop();
+    }
   }
 }

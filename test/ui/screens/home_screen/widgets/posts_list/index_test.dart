@@ -14,6 +14,7 @@ void main() {
   testWidgets('PostsList: Displays correctly', (WidgetTester tester) async {
     MockAccountBloc mockAccountBloc = MockAccountBloc();
     MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
+    MockHomeBloc mockHomeBloc = MockHomeBloc();
     MooncakeAccount userAccount = MooncakeAccount(
       profilePicUri: "https://example.com/avatar.png",
       moniker: "john-doe",
@@ -23,12 +24,14 @@ void main() {
         .thenReturn(PostsLoaded.first(posts: testPosts));
     when(mockAccountBloc.state)
         .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
+    when(mockHomeBloc.state).thenReturn(HomeState.initial());
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
           providers: [
             BlocProvider<PostsListBloc>(create: (_) => mockPostsListBloc),
             BlocProvider<AccountBloc>(create: (_) => mockAccountBloc),
+            BlocProvider<HomeBloc>(create: (_) => mockHomeBloc),
           ],
           child: PostsList(
             user: userAccount,
@@ -37,7 +40,7 @@ void main() {
       ),
     );
 
-    await tester.pump(const Duration(seconds: 3));
+    await tester.pump(const Duration(seconds: 5));
 
     expect(find.byType(PostsLoadingEmptyContainer), findsNothing);
     expect(find.byType(PostListItem), findsWidgets);
@@ -49,6 +52,7 @@ void main() {
       (WidgetTester tester) async {
     MockAccountBloc mockAccountBloc = MockAccountBloc();
     MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
+    MockHomeBloc mockHomeBloc = MockHomeBloc();
     MooncakeAccount userAccount = MooncakeAccount(
       profilePicUri: "https://example.com/avatar.png",
       moniker: "john-doe",
@@ -73,6 +77,7 @@ void main() {
           providers: [
             BlocProvider<PostsListBloc>(create: (_) => mockPostsListBloc),
             BlocProvider<AccountBloc>(create: (_) => mockAccountBloc),
+            BlocProvider<HomeBloc>(create: (_) => mockHomeBloc),
           ],
           child: PostsList(
             user: userAccount,

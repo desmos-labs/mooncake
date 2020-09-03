@@ -61,9 +61,6 @@ class UserDetailsScreen extends StatelessWidget {
             },
           ),
           drawer: drawer,
-          // wingman
-          // bottomNavigationBar:
-          //     isMyProfile ? SafeArea(child: TabSelector()) : SizedBox.shrink(),
         );
       },
     );
