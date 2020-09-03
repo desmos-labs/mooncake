@@ -122,8 +122,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     if (account != null) {
       await _analytics.setUserId(account.address);
       await _analytics.logLogin();
-      final List<MooncakeAccount> storedAccounts =
-          await _getAccountsUseCase.all();
+      final storedAccounts = await _getAccountsUseCase.all();
       yield LoggedIn.initial(account, storedAccounts);
     } else {
       yield LoggedOut();
@@ -171,8 +170,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   /// as sending the user to the Home screen.
   Stream<AccountState> _mapLogInEventToState(LogIn event) async* {
     final account = await _getActiveAccountUseCase.single();
-    final List<MooncakeAccount> storedAccounts =
-        await _getAccountsUseCase.all();
+    final storedAccounts = await _getAccountsUseCase.all();
     yield LoggedIn.initial(account, storedAccounts);
     _navigatorBloc.add(NavigateToHome());
   }
