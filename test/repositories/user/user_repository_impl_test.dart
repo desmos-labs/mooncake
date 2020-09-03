@@ -31,7 +31,7 @@ void main() {
 
   group('saveWallet performs correct calls', () {
     test('when the account does not exist remotely', () async {
-      final user = MooncakeAccount.local("address");
+      final user = MooncakeAccount.local('address');
       final mockWallet = MockWallet();
       when(localUserSource.saveWallet(any))
           .thenAnswer((_) => Future.value(mockWallet));
@@ -41,7 +41,7 @@ void main() {
       when(remoteUserSource.getAccount(any))
           .thenAnswer((realInvocation) => Future.value(null));
 
-      final wallet = "wallet";
+      final wallet = 'wallet';
       await repository.saveWallet(wallet);
 
       verifyInOrder([
@@ -53,7 +53,7 @@ void main() {
     });
 
     test('when the account exists remotely', () async {
-      final user = MooncakeAccount.local("address");
+      final user = MooncakeAccount.local('address');
       final mockWallet = MockWallet();
       when(localUserSource.saveWallet(any))
           .thenAnswer((_) => Future.value(mockWallet));
@@ -61,13 +61,13 @@ void main() {
           .thenAnswer((_) => Future.value(user));
 
       final remoteAccount = MooncakeAccount(
-        cosmosAccount: CosmosAccount.offline("address"),
-        moniker: "test",
+        cosmosAccount: CosmosAccount.offline('address'),
+        moniker: 'test',
       );
       when(remoteUserSource.getAccount(any))
           .thenAnswer((realInvocation) => Future.value(remoteAccount));
 
-      final wallet = "wallet";
+      final wallet = 'wallet';
       await repository.saveWallet(wallet);
 
       verifyInOrder([
@@ -80,30 +80,30 @@ void main() {
   });
 
   test('getMnemonic works properly', () async {
-    final mnemonic = ["mnemonic"];
-    when(localUserSource.getMnemonic("address"))
+    final mnemonic = ['mnemonic'];
+    when(localUserSource.getMnemonic('address'))
         .thenAnswer((_) => Future.value(mnemonic));
 
-    final result = await repository.getMnemonic("address");
+    final result = await repository.getMnemonic('address');
     expect(result, equals(mnemonic));
 
-    verify(localUserSource.getMnemonic("address")).called(1);
+    verify(localUserSource.getMnemonic('address')).called(1);
   });
 
   test('getWallet works properly', () async {
     final wallet = WalletMock();
-    when(localUserSource.getWallet("address"))
+    when(localUserSource.getWallet('address'))
         .thenAnswer((realInvocation) => Future.value(wallet));
 
-    final result = await repository.getWallet("address");
+    final result = await repository.getWallet('address');
     expect(result, equals(wallet));
 
-    verify(localUserSource.getWallet("address")).called(1);
+    verify(localUserSource.getWallet('address')).called(1);
   });
 
   group('saveAccount works properly', () {
     test('when syncRemote is false', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(localUserSource.saveAccount(any))
           .thenAnswer((_) => Future.value(null));
 
@@ -116,8 +116,8 @@ void main() {
 
     group('when syncRemote is true', () {
       test('and error is returned', () async {
-        final account = MooncakeAccount.local("address");
-        final expected = AccountSaveResult.error("My error");
+        final account = MooncakeAccount.local('address');
+        final expected = AccountSaveResult.error('My error');
         when(remoteUserSource.saveAccount(any))
             .thenAnswer((_) => Future.value(expected));
 
@@ -129,7 +129,7 @@ void main() {
       });
 
       test('and success is returned', () async {
-        final account = MooncakeAccount.local("address");
+        final account = MooncakeAccount.local('address');
         final expected = AccountSaveResult.success();
 
         when(remoteUserSource.saveAccount(any))
@@ -150,17 +150,17 @@ void main() {
 
   group('getAccount works properly', () {
     test('when account does not exist locally', () async {
-      when(localUserSource.getAccount("address"))
+      when(localUserSource.getAccount('address'))
           .thenAnswer((_) => Future.value(null));
 
-      final result = await repository.getAccount("address");
+      final result = await repository.getAccount('address');
       expect(result, isNull);
 
-      verify(localUserSource.getAccount("address")).called(1);
+      verify(localUserSource.getAccount('address')).called(1);
     });
 
     test('when account exists locally', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(localUserSource.getAccount(account.address))
           .thenAnswer((_) => Future.value(account));
 
@@ -182,7 +182,7 @@ void main() {
     });
 
     test('when accounts exists locally', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(localUserSource.getAccounts())
           .thenAnswer((_) => Future.value([account]));
 
@@ -205,7 +205,7 @@ void main() {
     });
 
     test('when account exists locally', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(localUserSource.getActiveAccount())
           .thenAnswer((_) => Future.value(account));
 
@@ -218,18 +218,18 @@ void main() {
 
   group('refreshAccount works properly', () {
     test('when account does not exist locally', () async {
-      when(localUserSource.getAccount("address"))
+      when(localUserSource.getAccount('address'))
           .thenAnswer((_) => Future.value(null));
 
-      final stored = await repository.refreshAccount("address");
+      final stored = await repository.refreshAccount('address');
       expect(stored, isNull);
 
-      verify(localUserSource.getAccount("address")).called(1);
+      verify(localUserSource.getAccount('address')).called(1);
       verifyNever(remoteUserSource.getAccount(any));
     });
 
     test('when the account existing locally but not on chain', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(localUserSource.getAccount(account.address))
           .thenAnswer((_) => Future.value(account));
       when(remoteUserSource.getAccount(any))
@@ -247,11 +247,11 @@ void main() {
     });
 
     test('when account existing locally and on-chain', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(localUserSource.getAccount(account.address))
           .thenAnswer((_) => Future.value(account));
 
-      final remoteAccount = account.copyWith(moniker: "test-moniker");
+      final remoteAccount = account.copyWith(moniker: 'test-moniker');
       when(remoteUserSource.getAccount(any))
           .thenAnswer((_) => Future.value(remoteAccount));
       when(localUserSource.saveAccount(any))
@@ -270,7 +270,7 @@ void main() {
 
   group('setAccountActive works properly', () {
     test('works properly', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(localUserSource.setActiveAccount(account))
           .thenAnswer((_) => Future.value(null));
 
@@ -281,7 +281,7 @@ void main() {
   });
 
   test('accountStream emits correct events', () {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     final controller = StreamController<MooncakeAccount>();
 
     when(localUserSource.activeAccountStream)
@@ -292,18 +292,18 @@ void main() {
         stream,
         emitsInOrder([
           account,
-          account.copyWith(moniker: "John Doe"),
-          account.copyWith(dtag: "John")
+          account.copyWith(moniker: 'John Doe'),
+          account.copyWith(dtag: 'John')
         ]));
 
     controller.add(account);
-    controller.add(account.copyWith(moniker: "John Doe"));
-    controller.add(account.copyWith(dtag: "John"));
+    controller.add(account.copyWith(moniker: 'John Doe'));
+    controller.add(account.copyWith(dtag: 'John'));
     controller.close();
   });
 
   test('fundAccount performs correct calls', () async {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     when(remoteUserSource.fundAccount(any))
         .thenAnswer((_) => Future.value(null));
 
@@ -313,25 +313,25 @@ void main() {
   });
 
   test('saveAuthenticationMethod performs correct calls', () async {
-    final method = PasswordAuthentication(hashedPassword: "password");
-    when(localUserSource.saveAuthenticationMethod("address", any))
+    final method = PasswordAuthentication(hashedPassword: 'password');
+    when(localUserSource.saveAuthenticationMethod('address', any))
         .thenAnswer((_) => Future.value(null));
 
-    await repository.saveAuthenticationMethod("address", method);
+    await repository.saveAuthenticationMethod('address', method);
 
-    verify(localUserSource.saveAuthenticationMethod("address", method))
+    verify(localUserSource.saveAuthenticationMethod('address', method))
         .called(1);
   });
 
   test('getAuthenticationMethod performs correct calls', () async {
-    final method = PasswordAuthentication(hashedPassword: "password");
-    when(localUserSource.getAuthenticationMethod("address"))
+    final method = PasswordAuthentication(hashedPassword: 'password');
+    when(localUserSource.getAuthenticationMethod('address'))
         .thenAnswer((_) => Future.value(method));
 
-    final result = await repository.getAuthenticationMethod("address");
+    final result = await repository.getAuthenticationMethod('address');
     expect(result, equals(method));
 
-    verify(localUserSource.getAuthenticationMethod("address")).called(1);
+    verify(localUserSource.getAuthenticationMethod('address')).called(1);
   });
 
   test('deleteData performs correct calls', () async {
@@ -343,11 +343,11 @@ void main() {
   });
 
   test('logout performs correct calls', () async {
-    when(localUserSource.logout("account"))
+    when(localUserSource.logout('account'))
         .thenAnswer((_) => Future.value(null));
 
-    await repository.logout("account");
+    await repository.logout('account');
 
-    verify(localUserSource.logout("account")).called(1);
+    verify(localUserSource.logout('account')).called(1);
   });
 }

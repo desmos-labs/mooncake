@@ -17,11 +17,11 @@ void main() {
   });
 
   test('uploadMedia calls proper method', () async {
-    final response = "response";
+    final response = 'response';
     when(remoteMediasSource.uploadMedia(any))
         .thenAnswer((_) => Future.value(response));
 
-    final file = File("/home/user/image.png");
+    final file = File('/home/user/image.png');
     final result = await repository.uploadMedia(file);
     expect(result, equals(response));
 

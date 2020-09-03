@@ -9,22 +9,22 @@ part 'link_preview.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class RichLinkPreview extends Equatable {
-  @JsonKey(name: "title")
+  @JsonKey(name: 'title')
   final String title;
 
-  @JsonKey(name: "description")
+  @JsonKey(name: 'description')
   final String description;
 
-  @JsonKey(name: "image")
+  @JsonKey(name: 'image')
   final String image;
 
-  @JsonKey(name: "appleIcon")
+  @JsonKey(name: 'appleIcon')
   final String appleIcon;
 
-  @JsonKey(name: "favIcon")
+  @JsonKey(name: 'favIcon')
   final String favIcon;
 
-  @JsonKey(name: "url")
+  @JsonKey(name: 'url')
   final String url;
 
   RichLinkPreview({
@@ -56,6 +56,7 @@ class RichLinkPreview extends Equatable {
     ];
   }
 
+  @override
   String toString() {
     return 'RichLinkPreview { '
         'title: $title, '

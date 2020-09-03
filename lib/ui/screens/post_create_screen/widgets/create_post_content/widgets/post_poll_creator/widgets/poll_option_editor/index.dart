@@ -22,7 +22,7 @@ class _PollOptionEditorState extends State<PollOptionEditor> {
   @override
   Widget build(BuildContext context) {
     final hintText =
-        "${PostsLocalizations.of(context).translate(Messages.pollOptionHint)} ${widget.option.id + 1}";
+        '${PostsLocalizations.of(context).translate(Messages.pollOptionHint)} ${widget.option.id + 1}';
 
     if (widget.option.text != _textEditingController.text) {
       _textEditingController.text = widget.option.text;

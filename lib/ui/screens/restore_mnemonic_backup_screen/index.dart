@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mooncake/ui/ui.dart';
-import "blocs/export.dart";
+import 'blocs/export.dart';
 
 /// Screen that allows you to import a previously created mnemonic backup.
 class RestoreMnemonicBackupScreen extends StatelessWidget {
@@ -26,7 +26,7 @@ class RestoreMnemonicBackupScreen extends StatelessWidget {
                   Text(
                     PostsLocalizations.of(context)
                         .translate(Messages.restoreMnemonicInstructions)
-                        .replaceAll("\n", " "),
+                        .replaceAll('\n', ' '),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),

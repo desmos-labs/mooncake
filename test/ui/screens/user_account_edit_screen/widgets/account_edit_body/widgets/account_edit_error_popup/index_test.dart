@@ -13,7 +13,7 @@ class MockEditAccountBloc extends MockBloc<EditAccountEvent, EditAccountState>
 void main() {
   testWidgets('SetBiometricTitle: Displays correctly',
       (WidgetTester tester) async {
-    MockEditAccountBloc mockEditAccountBloc = MockEditAccountBloc();
+    var mockEditAccountBloc = MockEditAccountBloc();
 
     await tester.pumpWidget(
       makeTestableWidget(
@@ -23,15 +23,15 @@ void main() {
               create: (_) => mockEditAccountBloc,
             ),
           ],
-          child: AccountEditErrorPopup(error: "Error"),
+          child: AccountEditErrorPopup(error: 'Error'),
         ),
       ),
     );
 
     await tester.pumpAndSettle();
 
-    expect(find.text("saveAccountErrorPopupBody"), findsOneWidget);
-    expect(find.text("dismiss"), findsOneWidget);
+    expect(find.text('saveAccountErrorPopupBody'), findsOneWidget);
+    expect(find.text('dismiss'), findsOneWidget);
 
     await tester.tap(find.byType(FlatButton));
     await tester.pumpAndSettle();

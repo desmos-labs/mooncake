@@ -27,13 +27,13 @@ class PostMoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<PosOptions, IconData> icons = {
+    final icons = <PosOptions, IconData>{
       PosOptions.Report: MooncakeIcons.report,
       PosOptions.Hide: MooncakeIcons.eyeClose,
       PosOptions.BlockUser: MooncakeIcons.block,
     };
 
-    final Map<PosOptions, String> titles = {
+    final titles = <PosOptions, String>{
       PosOptions.Report: PostsLocalizations.of(context)
           .translate(Messages.postActionReportPost),
       PosOptions.Hide:

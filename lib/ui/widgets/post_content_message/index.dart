@@ -17,7 +17,7 @@ class PostMessage extends StatelessWidget {
         Expanded(
           child: MarkdownBody(
             onTapLink: _onTapLink,
-            data: post.message.replaceAll("\n", "  \n"),
+            data: post.message.replaceAll('\n', '  \n'),
             styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
             extensionSet: md.ExtensionSet.gitHubFlavored,
           ),

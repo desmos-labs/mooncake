@@ -17,7 +17,7 @@ void main() {
   test('save performs correct calls', () async {
     when(repository.saveAccount(any)).thenAnswer((_) => Future.value(null));
 
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     await saveAccountUseCase.save(account);
 
     verify(repository.saveAccount(account)).called(1);

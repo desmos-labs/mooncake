@@ -10,7 +10,7 @@ void main() {
     await tester.pumpWidget(
       makeTestableWidget(
         child: WalletHeader(
-          coin: StdCoin(amount: "10000", denom: "udaric"),
+          coin: StdCoin(amount: '10000', denom: 'udaric'),
         ),
       ),
     );

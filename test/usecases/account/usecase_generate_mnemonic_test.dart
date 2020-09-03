@@ -6,7 +6,7 @@ void main() {
 
   test('a mnemonic is never generated twice', () async {
     final mnemonics = [];
-    for (int i = 0; i < 100; i++) {
+    for (var i = 0; i < 100; i++) {
       mnemonics.add(await generateMnemonicUseCase.generate());
     }
     expect(mnemonics, isNotEmpty);

@@ -12,12 +12,12 @@ import '../../../../helper.dart';
 
 void main() {
   testWidgets('PostsList: Displays correctly', (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
-    MockHomeBloc mockHomeBloc = MockHomeBloc();
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var mockAccountBloc = MockAccountBloc();
+    var mockPostsListBloc = MockPostsListBloc();
+    var mockHomeBloc = MockHomeBloc();
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
     when(mockPostsListBloc.state)
@@ -50,20 +50,20 @@ void main() {
 
   testWidgets('PostsList: Error Displays correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
-    MockHomeBloc mockHomeBloc = MockHomeBloc();
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var mockAccountBloc = MockAccountBloc();
+    var mockPostsListBloc = MockPostsListBloc();
+    var mockHomeBloc = MockHomeBloc();
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
 
-    Post testErrorPost = testPost.copyWith(
+    var testErrorPost = testPost.copyWith(
       status: PostStatus(
         value: PostStatusValue.ERRORED,
       ),
-      owner: User.fromAddress("desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725"),
+      owner: User.fromAddress('desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725'),
     );
 
     when(mockPostsListBloc.state)

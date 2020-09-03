@@ -69,27 +69,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _startSubscription() async {
-    if (_watchSettingSubscription == null) {
-      _watchSettingSubscription = _watchSettingUseCase
-          .watch(key: SettingKeys.TX_AMOUNT)
-          .listen((value) async {
-        final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
-        final checkPopupPermission = await _getSettingUseCase.get(
-          key: SettingKeys.BACKUP_POPUP_PERMISSION,
-        );
+    _watchSettingSubscription ??= _watchSettingUseCase
+        .watch(key: SettingKeys.TX_AMOUNT)
+        .listen((value) async {
+      final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
+      final checkPopupPermission = await _getSettingUseCase.get(
+        key: SettingKeys.BACKUP_POPUP_PERMISSION,
+      );
 
-        if (checkTxAmount && checkPopupPermission != false) {
-          add(ShowBackupMnemonicPhrasePopup());
-        } else {
-          add(HideBackupMnemonicPhrasePopup());
-        }
-      });
-    }
+      if (checkTxAmount && checkPopupPermission != false) {
+        add(ShowBackupMnemonicPhrasePopup());
+      } else {
+        add(HideBackupMnemonicPhrasePopup());
+      }
+    });
   }
 
   /// handles SignOut [event]
   void _mapSignOutToState(SignOut event) {
-    this._stopSubscription();
+    _stopSubscription();
     _loginBloc.add(LogOut(event.address));
   }
 

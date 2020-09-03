@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 
 /// Allows the user to view his mnemonic phrase after inputting the same
@@ -60,21 +59,21 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                               Text(
                                 PostsLocalizations.of(context)
                                     .translate(Messages.securityLoginText)
-                                    .replaceAll("\n", " "),
+                                    .replaceAll('\n', ' '),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
                               Text(
                                 PostsLocalizations.of(context)
                                     .translate(Messages.securityLoginWarning)
-                                    .replaceAll("\n", " "),
+                                    .replaceAll('\n', ' '),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
                               Text(
                                 PostsLocalizations.of(context)
                                     .translate(Messages.securityLoginPassword)
-                                    .replaceAll("\n", " "),
+                                    .replaceAll('\n', ' '),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
@@ -138,7 +137,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
   }
 
   void _viewMnemonic(BuildContext context) {
-    final MooncakeAccount user =
+    final user =
         (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user;
     BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic(user.address));
   }

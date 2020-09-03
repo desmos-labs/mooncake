@@ -14,8 +14,8 @@ class PasswordStrengthIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String text = "";
-    Color textColor = Colors.transparent;
+    var text = '';
+    var textColor = Colors.transparent;
     if (security == PasswordSecurity.LOW) {
       text = PostsLocalizations.of(context)
           .translate(Messages.passwordSecurityLow);

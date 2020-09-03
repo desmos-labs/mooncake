@@ -14,9 +14,9 @@ class AccountNameRow extends StatelessWidget {
 
   String getBio(String bio) {
     if (isMyProfile) {
-      return bio ?? "Edit your profile to add a bio";
+      return bio ?? 'Edit your profile to add a bio';
     } else if (bio == null) {
-      return "No bio available";
+      return 'No bio available';
     } else {
       return bio;
     }

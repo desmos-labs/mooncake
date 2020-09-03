@@ -17,11 +17,11 @@ class ReactionFilterItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isSelected = value == active;
-    final Color color = isSelected
+    final isSelected = value == active;
+    final color = isSelected
         ? Theme.of(context).colorScheme.primaryVariant
         : Colors.grey[100];
-    final Color textColor = isSelected ? Colors.white : Colors.black;
+    final textColor = isSelected ? Colors.white : Colors.black;
     return InkWell(
       onTap: () => onClick(value),
       child: Container(

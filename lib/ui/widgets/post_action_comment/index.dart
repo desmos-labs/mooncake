@@ -21,7 +21,7 @@ class PostCommentAction extends StatelessWidget {
   Widget build(BuildContext context) {
     final comments = post.commentsIds ?? [];
     final countColor =
-        color != null ? color : Theme.of(context).iconTheme.color;
+        color ?? Theme.of(context).iconTheme.color;
 
     return SizedBox(
       height: size,

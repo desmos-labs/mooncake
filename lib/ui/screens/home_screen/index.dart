@@ -16,16 +16,16 @@ class HomeScreen extends StatelessWidget {
         builder: (context, state) {
           List<Widget> optimizedTabView;
           List<int> optimizedTabViewIndex;
-          int tabIndex = 0;
+          var tabIndex = 0;
           // map of screens that has been loaded
-          Map<AppTab, bool> originalDic = {
+          var originalDic = <AppTab, bool>{
             AppTab.home: true,
             AppTab.account: false,
             AppTab.notifications: false,
           };
 
           // map of screens position
-          const Map<AppTab, int> originalIndex = {
+          const originalIndex = <AppTab, int>{
             AppTab.home: 0,
             AppTab.account: 1,
             AppTab.notifications: 2,
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
 
           final accountState = BlocProvider.of<AccountBloc>(context).state;
 
-          List<Widget> originalTabView = [
+          var originalTabView = <Widget>[
             // home
             Stack(
               children: [
@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
           optimizedTabViewIndex = [0];
 
           void _selectedTab(AppTab activeTab) {
-            int index = originalIndex[activeTab];
+            var index = originalIndex[activeTab];
             if (originalDic[activeTab] == false) {
               optimizedTabViewIndex.add(index);
               originalDic[activeTab] = true;

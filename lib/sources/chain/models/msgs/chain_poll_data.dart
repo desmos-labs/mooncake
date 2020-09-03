@@ -10,22 +10,22 @@ part 'chain_poll_data.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class ChainPollData {
-  @JsonKey(name: "question")
+  @JsonKey(name: 'question')
   final String question;
 
-  @JsonKey(name: "end_date")
+  @JsonKey(name: 'end_date')
   final String endDate;
 
-  @JsonKey(name: "is_open")
+  @JsonKey(name: 'is_open')
   final bool isOpen;
 
-  @JsonKey(name: "allows_multiple_answers")
+  @JsonKey(name: 'allows_multiple_answers')
   final bool allowsMultipleAnswers;
 
-  @JsonKey(name: "allows_answer_edits")
+  @JsonKey(name: 'allows_answer_edits')
   final bool allowsAnswerEdits;
 
-  @JsonKey(name: "provided_answers")
+  @JsonKey(name: 'provided_answers')
   final List<ChainPollOption> options;
 
   ChainPollData({

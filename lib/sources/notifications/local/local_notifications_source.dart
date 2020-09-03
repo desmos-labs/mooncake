@@ -17,7 +17,7 @@ class LocalNotificationsSourceImpl extends LocalNotificationsSource {
   LocalNotificationsSourceImpl({
     @required Database database,
   })  : assert(database != null),
-        this._database = database;
+        _database = database;
 
   @override
   Stream<NotificationData> get liveNotificationsStream {

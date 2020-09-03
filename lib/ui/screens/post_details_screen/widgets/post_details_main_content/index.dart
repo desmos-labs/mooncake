@@ -52,12 +52,12 @@ class PostDetailsMainContent extends StatelessWidget {
                             Tab(
                               key: Key('comments'),
                               text:
-                                  "${PostsLocalizations.of(context).translate(Messages.commentsTabLabel)} ${state.commentsCount}",
+                                  '${PostsLocalizations.of(context).translate(Messages.commentsTabLabel)} ${state.commentsCount}',
                             ),
                             Tab(
                               key: Key('reactions'),
                               text:
-                                  "${PostsLocalizations.of(context).translate(Messages.reactionsTabLabel)} ${state.reactionsCount}",
+                                  '${PostsLocalizations.of(context).translate(Messages.reactionsTabLabel)} ${state.reactionsCount}',
                             ),
                           ],
                         ),

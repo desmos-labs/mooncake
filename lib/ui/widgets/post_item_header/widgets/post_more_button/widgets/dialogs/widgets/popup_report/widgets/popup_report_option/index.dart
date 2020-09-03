@@ -14,7 +14,7 @@ class PopupReportOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<ReportType, String> options = {
+    final options = <ReportType, String>{
       ReportType.Spam:
           PostsLocalizations.of(context).translate(Messages.reportPopupSpam),
       ReportType.SexuallyInappropriate: PostsLocalizations.of(context)

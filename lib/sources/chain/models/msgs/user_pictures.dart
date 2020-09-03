@@ -8,10 +8,10 @@ part 'user_pictures.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class UserPictures extends Equatable {
-  @JsonKey(name: "cover")
+  @JsonKey(name: 'cover')
   final String cover;
 
-  @JsonKey(name: "profile")
+  @JsonKey(name: 'profile')
   final String profile;
 
   UserPictures({

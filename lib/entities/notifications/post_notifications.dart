@@ -8,11 +8,11 @@ part 'post_notifications.g.dart';
 @immutable
 abstract class BasePostInteractionNotification extends NotificationData {
   /// Represents the ID of post towards which this notification is directed.
-  @JsonKey(name: "post_id", nullable: false)
+  @JsonKey(name: 'post_id', nullable: false)
   final String postId;
 
   /// Represents the user that has interacted with the post.
-  @JsonKey(name: "user", nullable: false)
+  @JsonKey(name: 'user', nullable: false)
   final User user;
 
   const BasePostInteractionNotification({
@@ -45,7 +45,7 @@ abstract class BasePostInteractionNotification extends NotificationData {
 @JsonSerializable(explicitToJson: true)
 class PostCommentNotification extends BasePostInteractionNotification {
   /// Represents the comment message.
-  @JsonKey(name: "message")
+  @JsonKey(name: 'message')
   final String comment;
 
   const PostCommentNotification({
@@ -75,7 +75,7 @@ class PostCommentNotification extends BasePostInteractionNotification {
     return _$PostCommentNotificationFromJson(json);
   }
 
-  @Deprecated("Use asJson instead")
+  @Deprecated('Use asJson instead')
   @override
   Map<String, dynamic> toJson() {
     return _$PostCommentNotificationToJson(this);
@@ -88,7 +88,7 @@ class PostCommentNotification extends BasePostInteractionNotification {
 @JsonSerializable(explicitToJson: true)
 class PostMentionNotification extends BasePostInteractionNotification {
   /// Represents the text containing the mention.
-  @JsonKey(name: "text")
+  @JsonKey(name: 'text')
   final String text;
 
   const PostMentionNotification({
@@ -157,7 +157,7 @@ class PostTagNotification extends BasePostInteractionNotification {
 @JsonSerializable(explicitToJson: true)
 class PostReactionNotification extends BasePostInteractionNotification {
   /// Represents the value of the reaction that has been added to the post.
-  @JsonKey(name: "reaction")
+  @JsonKey(name: 'reaction')
   final String reaction;
 
   const PostReactionNotification({

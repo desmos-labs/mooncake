@@ -6,6 +6,6 @@ class GenerateMnemonicUseCase {
   /// Generates a new random 24-word mnemonic.
   Future<List<String>> generate() async {
     final mnemonic = bip39.generateMnemonic(strength: 256);
-    return mnemonic.split(" ");
+    return mnemonic.split(' ');
   }
 }

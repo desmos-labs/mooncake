@@ -22,7 +22,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   final PostsMsgConverter _msgConverter;
 
   // GraphQL
-  GraphQLClient _gqlClient;
+  final GraphQLClient _gqlClient;
 
   /// Public constructor
   RemotePostsSourceImpl({
@@ -57,9 +57,9 @@ class RemotePostsSourceImpl implements RemotePostsSource {
 
   @override
   Stream<dynamic> get homeEventsStream {
-    final query = """subscription HomeEvents {
+    final query = '''subscription HomeEvents {
     ${GqlPostsHelper.homeEvents}
-    }""";
+    }''';
     return _gqlClient.subscribe(SubscriptionOptions(document: gql(query)));
   }
 
@@ -90,7 +90,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     final wallet = await _userSource.getWallet(activeUser.address);
 
     // Get the existing posts list
-    final List<Post> existingPosts = await Future.wait(posts.map((post) {
+    final existingPosts = await Future.wait(posts.map((post) {
       return getPostById(post.id);
     }).toList());
 
@@ -104,7 +104,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
       wallet: wallet,
     );
 
-    int feeAmount = 0;
+    var feeAmount = 0;
     messages.forEach((msg) {
       if (msg is MsgCreatePost) {
         feeAmount += Constants.FEE_POST;
@@ -127,7 +127,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
   /// remote media.
   Future<List<Post>> _uploadMediasIfNecessary(List<Post> posts) async {
     final newPosts = List<Post>(posts.length);
-    for (int index = 0; index < posts.length; index++) {
+    for (var index = 0; index < posts.length; index++) {
       final post = posts[index];
 
       if (!post.containsLocalMedias) {

@@ -12,8 +12,8 @@ class MockBlockUserUseCase extends Mock implements BlockUserUseCase {}
 class MockReportPostUseCase extends Mock implements ReportPostUseCase {}
 
 void main() {
-  MockBlockUserUseCase mockBlockUserUseCase = MockBlockUserUseCase();
-  MockReportPostUseCase mockReportPostUseCase = MockReportPostUseCase();
+  var mockBlockUserUseCase = MockBlockUserUseCase();
+  var mockReportPostUseCase = MockReportPostUseCase();
 
   group(
     'ReportPopupBloc',
@@ -47,7 +47,7 @@ void main() {
               ReportType.ViolentOrProhibited: false,
               ReportType.Other: false,
             },
-            otherText: "",
+            otherText: '',
             blockUser: false,
           ),
         ],
@@ -59,7 +59,7 @@ void main() {
           return reportPopupBloc;
         },
         act: (bloc) async {
-          bloc.add(ChangeOtherText("triggered"));
+          bloc.add(ChangeOtherText('triggered'));
         },
         expect: [
           ReportPopupState(
@@ -70,7 +70,7 @@ void main() {
               ReportType.ViolentOrProhibited: false,
               ReportType.Other: false,
             },
-            otherText: "triggered",
+            otherText: 'triggered',
             blockUser: false,
           ),
         ],
@@ -93,7 +93,7 @@ void main() {
               ReportType.ViolentOrProhibited: false,
               ReportType.Other: false,
             },
-            otherText: "",
+            otherText: '',
             blockUser: true,
           ),
         ],

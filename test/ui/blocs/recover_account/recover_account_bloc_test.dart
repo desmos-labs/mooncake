@@ -11,7 +11,7 @@ void main() {
     'RecoverAccountBloc',
     () {
       RecoverAccountBloc recoverAccountBloc;
-      MockSaveSettingUseCase mockSaveSettingUseCase = MockSaveSettingUseCase();
+      var mockSaveSettingUseCase = MockSaveSettingUseCase();
       setUp(
         () {
           recoverAccountBloc = RecoverAccountBloc(
@@ -39,9 +39,9 @@ void main() {
         ],
       );
 
-      final List<String> typeWordsFirstTest = List(24);
+      final typeWordsFirstTest = List<String>(24);
       typeWordsFirstTest[0] = 'orange';
-      final List<String> typeWordsSecondTest = List(24);
+      final typeWordsSecondTest = List<String>(24);
       typeWordsSecondTest[0] = 'orange';
       typeWordsSecondTest[1] = 'apple';
       blocTest(
@@ -67,7 +67,7 @@ void main() {
         ],
       );
 
-      final List<String> wordSelectedFirstTest = List(24);
+      final wordSelectedFirstTest = List<String>(24);
       wordSelectedFirstTest[0] = 'pineapple';
       blocTest(
         'WordSelected: work properly',

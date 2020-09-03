@@ -11,13 +11,13 @@ import '../../../../../../helper.dart';
 void main() {
   testWidgets('PostLikesCounter: Displays export correctly',
       (WidgetTester tester) async {
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
-    List<Reaction> reactionTest = [
-      Reaction(user: userAccount, value: Constants.LIKE_REACTION, code: "123"),
+    var reactionTest = <Reaction>[
+      Reaction(user: userAccount, value: Constants.LIKE_REACTION, code: '123'),
     ];
     StateSetter setStateController;
 
@@ -41,7 +41,7 @@ void main() {
     setStateController(() {
       reactionTest.add(
         Reaction(
-            user: userAccount, value: Constants.LIKE_REACTION, code: "123"),
+            user: userAccount, value: Constants.LIKE_REACTION, code: '123'),
       );
     });
     await tester.pumpAndSettle();
@@ -50,7 +50,7 @@ void main() {
     setStateController(() {
       reactionTest.add(
         Reaction(
-            user: userAccount, value: Constants.LIKE_REACTION, code: "123"),
+            user: userAccount, value: Constants.LIKE_REACTION, code: '123'),
       );
     });
     await tester.pumpAndSettle();
@@ -60,22 +60,22 @@ void main() {
       reactionTest.add(Reaction(
         user: userAccount,
         value: Constants.LIKE_REACTION,
-        code: "123",
+        code: '123',
       ));
       reactionTest.add(Reaction(
         user: userAccount,
         value: Constants.LIKE_REACTION,
-        code: "123",
+        code: '123',
       ));
       reactionTest.add(Reaction(
         user: userAccount,
         value: Constants.LIKE_REACTION,
-        code: "123",
+        code: '123',
       ));
       reactionTest.add(Reaction(
         user: userAccount,
         value: Constants.LIKE_REACTION,
-        code: "123",
+        code: '123',
       ));
     });
     await tester.pumpAndSettle();

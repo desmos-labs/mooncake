@@ -19,7 +19,7 @@ class SetBiometricBody extends StatelessWidget {
           Text(
             PostsLocalizations.of(context)
                 .translate(Messages.biometricsBody)
-                .replaceAll("\n", " "),
+                .replaceAll('\n', ' '),
             style: Theme.of(context)
                 .textTheme
                 .bodyText2
@@ -64,7 +64,7 @@ class SetBiometricBody extends StatelessWidget {
     );
     localAuth.authenticateWithBiometrics(localizedReason: reason).then((value) {
       if (value) {
-        String userAddress =
+        var userAddress =
             (BlocProvider.of<AccountBloc>(context).state as LoggedIn)
                 .user
                 .address;

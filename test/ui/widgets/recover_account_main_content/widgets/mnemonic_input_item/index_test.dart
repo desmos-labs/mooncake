@@ -9,7 +9,7 @@ import 'package:mooncake/ui/widgets/recover_account_main_content/widgets/export.
 void main() {
   testWidgets('MnemonicInputItem: Displays export correctly',
       (WidgetTester tester) async {
-    MockRecoverAccountBloc mockRecoverAccountBloc = MockRecoverAccountBloc();
+    var mockRecoverAccountBloc = MockRecoverAccountBloc();
     when(mockRecoverAccountBloc.state)
         .thenReturn(RecoverAccountState.initial());
 

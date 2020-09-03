@@ -7,10 +7,10 @@ part 'chain_poll_option.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class ChainPollOption {
-  @JsonKey(name: "id")
+  @JsonKey(name: 'id')
   final String id;
 
-  @JsonKey(name: "text")
+  @JsonKey(name: 'text')
   final String text;
 
   ChainPollOption({

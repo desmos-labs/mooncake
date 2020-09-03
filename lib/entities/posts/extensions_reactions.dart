@@ -14,7 +14,7 @@ extension ReactionsExt on List<Reaction> {
   /// Returns `true` if this list of reactions already contains one having
   /// the specified [reaction] from the specified [address].
   bool containsFromAddress(String address, String reaction) {
-    return this.where((element) {
+    return where((element) {
       return element.user.address == address && element.value == reaction;
     }).isNotEmpty;
   }
@@ -29,7 +29,7 @@ extension ReactionsExt on List<Reaction> {
   /// Once that either one of the two above operations have been performed,
   /// returned the updated list.
   List<Reaction> removeOrAdd(MooncakeAccount account, String reaction) {
-    List<Reaction> reactions = this;
+    var reactions = this;
     if (containsFrom(account, reaction)) {
       reactions = _removeFrom(account, reaction);
     } else {
@@ -39,7 +39,7 @@ extension ReactionsExt on List<Reaction> {
   }
 
   List<Reaction> _removeFrom(MooncakeAccount account, String reaction) {
-    return this.where((element) {
+    return where((element) {
       return element.user.address != account.cosmosAccount.address ||
           element.value != reaction;
     }).toList();

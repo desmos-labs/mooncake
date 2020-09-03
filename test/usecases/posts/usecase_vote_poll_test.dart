@@ -24,14 +24,14 @@ void main() {
   });
 
   group('vote works properly', () {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     final post = testPost.copyWith(
       poll: PostPoll(
-        question: "Do you like black?",
-        endDate: "2020-05-15T20:00:00.000Z",
+        question: 'Do you like black?',
+        endDate: '2020-05-15T20:00:00.000Z',
         options: [
-          PollOption(id: 0, text: "Yes"),
-          PollOption(id: 1, text: "No"),
+          PollOption(id: 0, text: 'Yes'),
+          PollOption(id: 1, text: 'No'),
         ],
         isOpen: true,
         allowsMultipleAnswers: false,

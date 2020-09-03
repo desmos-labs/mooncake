@@ -35,7 +35,7 @@ class MenuDrawer extends StatelessWidget {
   }
 
   List<Widget> _listAccounts(BuildContext context) {
-    final List<Widget> results = [];
+    final results = <Widget>[];
     accounts.forEach(
       (user) {
         results.add(

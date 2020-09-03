@@ -8,7 +8,7 @@ class SavePostUseCase {
 
   SavePostUseCase({@required PostsRepository postsRepository})
       : assert(postsRepository != null),
-        this._postsRepository = postsRepository;
+        _postsRepository = postsRepository;
 
   /// Saves the given [post] inside the repository.
   Future<void> save(Post post) async {

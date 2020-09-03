@@ -18,8 +18,8 @@ void main() {
 
   test('single performs correct calls', () async {
     final data = [
-      TxSuccessfulNotification(date: DateTime.now(), txHash: "hash-1"),
-      TxFailedNotification(date: DateTime.now(), txHash: "hash-2", error: "e"),
+      TxSuccessfulNotification(date: DateTime.now(), txHash: 'hash-1'),
+      TxFailedNotification(date: DateTime.now(), txHash: 'hash-2', error: 'e'),
     ];
     when(repository.getNotifications())
         .thenAnswer((realInvocation) => Future.value(data));

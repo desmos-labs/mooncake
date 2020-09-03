@@ -15,28 +15,28 @@ part 'msg_create_post.g.dart';
 @reflector
 @JsonSerializable(explicitToJson: true)
 class MsgCreatePost extends StdMsg {
-  @JsonKey(name: "parent_id")
+  @JsonKey(name: 'parent_id')
   final String parentId;
 
-  @JsonKey(name: "message")
+  @JsonKey(name: 'message')
   final String message;
 
-  @JsonKey(name: "allows_comments")
+  @JsonKey(name: 'allows_comments')
   final bool allowsComments;
 
-  @JsonKey(name: "subspace")
+  @JsonKey(name: 'subspace')
   final String subspace;
 
-  @JsonKey(name: "optional_data", includeIfNull: false)
+  @JsonKey(name: 'optional_data', includeIfNull: false)
   final Map<String, String> optionalData;
 
-  @JsonKey(name: "creator")
+  @JsonKey(name: 'creator')
   final String creator;
 
-  @JsonKey(name: "attachments", includeIfNull: false)
+  @JsonKey(name: 'attachments', includeIfNull: false)
   final List<PostMedia> medias;
 
-  @JsonKey(name: "poll_data", includeIfNull: false)
+  @JsonKey(name: 'poll_data', includeIfNull: false)
   final ChainPollData poll;
 
   MsgCreatePost({
@@ -79,15 +79,15 @@ class MsgCreatePost extends StdMsg {
   @override
   Exception validate() {
     if (message?.isEmpty == true && poll == null && medias?.isEmpty == true) {
-      return Exception("Message, medias and poll cannot be all empty");
+      return Exception('Message, medias and poll cannot be all empty');
     }
 
     if (subspace.isEmpty) {
-      return Exception("Subspace cannot be empty");
+      return Exception('Subspace cannot be empty');
     }
 
     if (creator.isEmpty) {
-      return Exception("Creator cannot be empty");
+      return Exception('Creator cannot be empty');
     }
 
     return null;

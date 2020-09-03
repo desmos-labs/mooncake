@@ -14,13 +14,13 @@ void main() {
   });
 
   test('get performs correct call', () async {
-    final mnemonic = ["first", "second", "third"];
-    when(repository.getMnemonic("address"))
+    final mnemonic = ['first', 'second', 'third'];
+    when(repository.getMnemonic('address'))
         .thenAnswer((_) => Future.value(mnemonic));
 
-    final result = await getMnemonicUseCase.get("address");
+    final result = await getMnemonicUseCase.get('address');
     expect(result, equals(mnemonic));
 
-    verify(repository.getMnemonic("address")).called(1);
+    verify(repository.getMnemonic('address')).called(1);
   });
 }

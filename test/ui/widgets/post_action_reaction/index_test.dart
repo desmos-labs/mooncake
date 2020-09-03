@@ -12,14 +12,14 @@ import '../../helper.dart';
 void main() {
   testWidgets('PostReactionAction: Displays export correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    String reactionValue = '';
-    String reactionCode = '';
-    int reactionCount = 5;
+    var mockAccountBloc = MockAccountBloc();
+    var reactionValue = '';
+    var reactionCode = '';
+    var reactionCount = 5;
 
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
 

@@ -14,11 +14,11 @@ void main() {
   });
 
   test('refresh performs correct calls', () async {
-    when(repository.refreshAccount("address"))
+    when(repository.refreshAccount('address'))
         .thenAnswer((_) => Future.value(null));
 
-    await refreshAccountUseCase.refresh("address");
+    await refreshAccountUseCase.refresh('address');
 
-    verify(repository.refreshAccount("address")).called(1);
+    verify(repository.refreshAccount('address')).called(1);
   });
 }

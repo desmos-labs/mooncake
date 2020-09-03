@@ -16,7 +16,7 @@ enum AccountOptions {
 class AccountOptionsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Map<AccountOptions, String> titles = {
+    final titles = <AccountOptions, String>{
       AccountOptions.EditAccount:
           PostsLocalizations.of(context).translate(Messages.editAccountOption),
       AccountOptions.ViewMnemonic:
@@ -64,7 +64,7 @@ class AccountOptionsButton extends StatelessWidget {
     if (option == AccountOptions.EditAccount) {
       BlocProvider.of<NavigatorBloc>(context).add(NavigateToEditAccount());
     } else if (option == AccountOptions.ViewMnemonic) {
-      String userAddress =
+      var userAddress =
           (BlocProvider.of<AccountBloc>(context).state as LoggedIn)
               .user
               .address;

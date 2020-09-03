@@ -13,7 +13,7 @@ class EncryptMnemonicUseCase {
   /// All the data necessary to later import the account are returned inside
   /// a [MnemonicData] object.
   Future<MnemonicData> encrypt(List<String> mnemonic, String password) async {
-    final message = mnemonic.join(" ");
+    final message = mnemonic.join(' ');
 
     final keyDerivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
       ..init(Pbkdf2Parameters(Uint8List(0), 1000, 32));

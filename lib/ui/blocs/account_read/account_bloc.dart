@@ -12,7 +12,7 @@ import 'package:mooncake/usecases/usecases.dart';
 
 /// Handles the login events and emits the proper state instances.
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
-  static const SETTING_FIRST_START = "first_start";
+  static const SETTING_FIRST_START = 'first_start';
 
   final FirebaseAnalytics _analytics;
 

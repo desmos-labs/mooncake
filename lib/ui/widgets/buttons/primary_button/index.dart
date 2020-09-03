@@ -22,11 +22,11 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isLight = Theme.of(context).brightness == Brightness.light;
-    LinearGradient disabledGradient = isLight
+    var isLight = Theme.of(context).brightness == Brightness.light;
+    var disabledGradient = isLight
         ? ThemeColors.primaryButtonBackgroundGradientDiabled
         : ThemeColors.primaryButtonFlatDisabled;
-    LinearGradient gradient = isLight
+    var gradient = isLight
         ? ThemeColors.primaryButtonBackgroundGradient
         : ThemeColors.primaryButtonFlat(context);
     return Wrap(

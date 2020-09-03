@@ -7,7 +7,7 @@ class GetAccountUseCase {
   final UserRepository _userRepository;
 
   GetAccountUseCase({@required UserRepository userRepository})
-      : this._userRepository = userRepository;
+      : _userRepository = userRepository;
 
   /// Returns the locally stored [MooncakeAccount] having the given [address].
   Future<MooncakeAccount> single(String address) {
