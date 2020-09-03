@@ -75,12 +75,10 @@ MockHttpClient _createMockImageHttpClient(
   when(response.listen(any)).thenAnswer((Invocation invocation) {
     final onData =
         invocation.positionalArguments[0] as void Function(List<int> p1);
-    final onDone =
-        invocation.namedArguments[#onDone] as void Function();
-    final onError = invocation
-        .namedArguments[#onError] as void Function(Object p1, [StackTrace p2]);
-    final cancelOnError =
-        invocation.namedArguments[#cancelOnError] as bool;
+    final onDone = invocation.namedArguments[#onDone] as void Function();
+    final onError = invocation.namedArguments[#onError] as void
+        Function(Object p1, [StackTrace p2]);
+    final cancelOnError = invocation.namedArguments[#cancelOnError] as bool;
 
     return Stream<List<int>>.fromIterable(<List<int>>[imageBytes]).listen(
         onData,

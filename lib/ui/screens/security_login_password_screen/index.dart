@@ -137,8 +137,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
   }
 
   void _viewMnemonic(BuildContext context) {
-    final user =
-        (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user;
+    final user = (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user;
     BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic(user.address));
   }
 }

@@ -108,8 +108,8 @@ class PostPoll extends Equatable {
   }) {
     return PostPoll(
       question: question ?? this.question,
-      endDate: DateFormat(Post.DATE_FORMAT)
-          .format(endDate?.toUtc() ?? endDateTime),
+      endDate:
+          DateFormat(Post.DATE_FORMAT).format(endDate?.toUtc() ?? endDateTime),
       options: options ?? this.options,
       isOpen: isOpen ?? this.isOpen,
       allowsMultipleAnswers:

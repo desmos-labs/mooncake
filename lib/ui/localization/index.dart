@@ -27,8 +27,7 @@ class PostsLocalizations {
     // Load the language JSON file from the "lang" folder
     var jsonString = await rootBundle.loadString(
         'lib/ui/localization/languages/${locale.languageCode}.json');
-    var jsonMap =
-        json.decode(jsonString) as Map<String, dynamic>;
+    var jsonMap = json.decode(jsonString) as Map<String, dynamic>;
 
     _localizedStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());

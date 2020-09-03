@@ -145,10 +145,7 @@ void main() {
         Reaction(
             user: userAccount, value: Constants.LIKE_REACTION, code: '123'),
       ]);
-      final expectedLikedResults = <Post>[
-        likedPost,
-        ...testPosts.sublist(1)
-      ];
+      final expectedLikedResults = <Post>[likedPost, ...testPosts.sublist(1)];
       blocTest(
         'AddOrRemoveLiked: add work properly',
         build: () async {
