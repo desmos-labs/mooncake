@@ -21,7 +21,7 @@ void main() {
   });
 
   test('save works properly', () async {
-    final not = TxSuccessfulNotification(date: DateTime.now(), txHash: "");
+    final not = TxSuccessfulNotification(date: DateTime.now(), txHash: '');
     await source.saveNotification(not);
 
     final count = await StoreRef.main().count(database);
@@ -31,11 +31,11 @@ void main() {
   test('notifications reading works properly', () async {
     final first = TxSuccessfulNotification(
       date: DateTime.fromMicrosecondsSinceEpoch(10000),
-      txHash: "hash1",
+      txHash: 'hash1',
     );
     final second = TxSuccessfulNotification(
       date: DateTime.fromMicrosecondsSinceEpoch(20000),
-      txHash: "hash2",
+      txHash: 'hash2',
     );
 
     final store = StoreRef.main();
@@ -49,11 +49,11 @@ void main() {
   test('liveNotificationsStream emits valid data', () async {
     final first = TxSuccessfulNotification(
       date: DateTime.fromMicrosecondsSinceEpoch(10000),
-      txHash: "hash1",
+      txHash: 'hash1',
     );
     final second = TxSuccessfulNotification(
       date: DateTime.fromMicrosecondsSinceEpoch(20000),
-      txHash: "hash2",
+      txHash: 'hash2',
     );
 
     // ignore: unawaited_futures
@@ -69,11 +69,11 @@ void main() {
   test('storedNotificationsStream returns valid data', () async {
     final first = TxSuccessfulNotification(
       date: DateTime.fromMicrosecondsSinceEpoch(10000),
-      txHash: "hash1",
+      txHash: 'hash1',
     );
     final second = TxSuccessfulNotification(
       date: DateTime.fromMicrosecondsSinceEpoch(20000),
-      txHash: "hash2",
+      txHash: 'hash2',
     );
 
     final store = StoreRef.main();

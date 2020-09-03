@@ -9,13 +9,13 @@ part 'ipfs_upload_response.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class IpfsUploadResponse extends Equatable {
-  @JsonKey(name: "Name")
+  @JsonKey(name: 'Name')
   final String name;
 
-  @JsonKey(name: "Hash")
+  @JsonKey(name: 'Hash')
   final String hash;
 
-  @JsonKey(name: "Size")
+  @JsonKey(name: 'Size')
   final String size;
 
   IpfsUploadResponse({

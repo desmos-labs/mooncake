@@ -8,7 +8,7 @@ part 'transaction_notifications.g.dart';
 /// Represents a generic notification tied to a specific transaction.
 @immutable
 abstract class TxNotification extends NotificationData {
-  @JsonKey(name: "tx_hash")
+  @JsonKey(name: 'tx_hash')
   final String txHash;
 
   const TxNotification({
@@ -69,7 +69,7 @@ class TxSuccessfulNotification extends TxNotification {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class TxFailedNotification extends TxNotification {
-  @JsonKey(name: "error")
+  @JsonKey(name: 'error')
   final String error;
 
   const TxFailedNotification({

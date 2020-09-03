@@ -9,7 +9,7 @@ void main() {
     await tester.pumpWidget(
       makeTestableWidget(
         child: PrimaryLightButton(
-          child: Text("pineapples"),
+          child: Text('pineapples'),
           onPressed: () {},
         ),
       ),

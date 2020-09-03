@@ -10,8 +10,8 @@ import 'package:mooncake/ui/screens/home_screen/widgets/notifications_main_conte
 void main() {
   testWidgets('NotificationsMainContent: Displays export correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MockNotificationsBloc mockNotificationsBloc = MockNotificationsBloc();
+    var mockAccountBloc = MockAccountBloc();
+    var mockNotificationsBloc = MockNotificationsBloc();
 
     when(mockNotificationsBloc.state).thenReturn(NotificationsLoaded([]));
 
@@ -31,6 +31,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(TabBar), findsOneWidget);
     expect(find.byType(NotificationsList), findsOneWidget);
-    expect(find.text("noNotifications"), findsOneWidget);
+    expect(find.text('noNotifications'), findsOneWidget);
   });
 }

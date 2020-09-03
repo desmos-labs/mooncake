@@ -11,35 +11,35 @@ part 'post_poll.g.dart';
 @JsonSerializable(explicitToJson: true)
 class PostPoll extends Equatable {
   /// Question associated to this poll.
-  @JsonKey(name: "question")
+  @JsonKey(name: 'question')
   final String question;
 
   /// Ending date of the poll. After this date, the user should not be
   /// allowed to answer the poll anymore.
-  @JsonKey(name: "end_date")
+  @JsonKey(name: 'end_date')
   final String endDate;
 
   /// Tells if the the poll is open or not.
-  @JsonKey(name: "open")
+  @JsonKey(name: 'open')
   final bool isOpen;
 
   /// Tells whether the post allows a single user to answer multiple
   /// times to it (so it is a checkbox-based poll) or if it allows only one
   /// answer per user.
-  @JsonKey(name: "allows_multiple_answers")
+  @JsonKey(name: 'allows_multiple_answers')
   final bool allowsMultipleAnswers;
 
   /// Tells whether the user should be allowed to change his mind once he
   /// has voted, or if the answer should be locked when added.
-  @JsonKey(name: "allows_answer_edits")
+  @JsonKey(name: 'allows_answer_edits')
   final bool allowsAnswerEdits;
 
   /// List of all the available options that the user can choose from.
-  @JsonKey(name: "available_answers")
+  @JsonKey(name: 'available_answers')
   final List<PollOption> options;
 
   /// List of all the user answers that have been added to this poll.
-  @JsonKey(name: "user_answers")
+  @JsonKey(name: 'user_answers')
   final List<PollAnswer> userAnswers;
 
   const PostPoll({
@@ -61,12 +61,12 @@ class PostPoll extends Equatable {
   /// Allows to create an empty [PostPoll] object.
   factory PostPoll.empty() {
     return PostPoll(
-      question: "",
+      question: '',
       endDate: DateFormat(Post.DATE_FORMAT)
           .format(DateTime.now().add(Duration(days: 30)).toUtc()),
       options: [
-        PollOption(text: "", id: 0),
-        PollOption(text: "", id: 1),
+        PollOption(text: '', id: 0),
+        PollOption(text: '', id: 1),
       ],
       isOpen: true,
       allowsMultipleAnswers: false,
@@ -108,8 +108,8 @@ class PostPoll extends Equatable {
   }) {
     return PostPoll(
       question: question ?? this.question,
-      endDate: DateFormat(Post.DATE_FORMAT)
-          .format(endDate?.toUtc() ?? this.endDateTime),
+      endDate:
+          DateFormat(Post.DATE_FORMAT).format(endDate?.toUtc() ?? endDateTime),
       options: options ?? this.options,
       isOpen: isOpen ?? this.isOpen,
       allowsMultipleAnswers:

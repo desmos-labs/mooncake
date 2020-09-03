@@ -14,7 +14,7 @@ class MockSetPasswordBloc extends MockBloc<SetPasswordEvent, SetPasswordState>
 void main() {
   testWidgets('SetBiometricTitle: Displays correctly',
       (WidgetTester tester) async {
-    MockSetPasswordBloc mockSetPasswordBloc = MockSetPasswordBloc();
+    var mockSetPasswordBloc = MockSetPasswordBloc();
 
     when(mockSetPasswordBloc.state)
         .thenAnswer((_) => SetPasswordState.initial());

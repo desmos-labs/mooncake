@@ -15,16 +15,16 @@ class MockReportPopupBloc extends MockBloc<ReportPopupEvent, ReportPopupState>
     implements ReportPopupBloc {}
 
 MooncakeAccount userAccount = MooncakeAccount(
-  profilePicUri: "https://example.com/avatar.png",
-  moniker: "john-doe",
+  profilePicUri: 'https://example.com/avatar.png',
+  moniker: 'john-doe',
   cosmosAccount: cosmosAccount,
 );
 
 void main() {
   testWidgets('PostMoreButton: Displays export correctly',
       (WidgetTester tester) async {
-    MockReportPopupBloc mockReportPopupBloc = MockReportPopupBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
+    var mockReportPopupBloc = MockReportPopupBloc();
+    var mockPostsListBloc = MockPostsListBloc();
 
     when(mockReportPopupBloc.state).thenReturn(ReportPopupState.initial());
 
@@ -65,8 +65,8 @@ void main() {
 
   testWidgets('PostMoreButton: Displays onClicks correctly',
       (WidgetTester tester) async {
-    MockReportPopupBloc mockReportPopupBloc = MockReportPopupBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
+    var mockReportPopupBloc = MockReportPopupBloc();
+    var mockPostsListBloc = MockPostsListBloc();
 
     when(mockReportPopupBloc.state).thenReturn(ReportPopupState.initial());
 

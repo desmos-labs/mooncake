@@ -9,8 +9,8 @@ import '../../../../helper.dart';
 
 void main() {
   testWidgets('Displays correctly', (WidgetTester tester) async {
-    MockHomeBloc mockHomeBloc = MockHomeBloc();
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
+    var mockHomeBloc = MockHomeBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
     when(mockHomeBloc.state).thenReturn(HomeState.initial());
 
     await tester.pumpWidget(

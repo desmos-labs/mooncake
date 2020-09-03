@@ -12,8 +12,8 @@ class SecondaryLightButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Colors.white;
-    Color background = Theme.of(context).colorScheme.primary;
+    var color = Colors.white;
+    var background = Theme.of(context).colorScheme.primary;
     if (Theme.of(context).brightness == Brightness.dark) {
       color = Theme.of(context).colorScheme.primary;
       background = Colors.transparent;

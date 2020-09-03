@@ -8,7 +8,7 @@ void main() {
   testWidgets('MnemonicVisualizer: Displays export correctly',
       (WidgetTester tester) async {
     StateSetter setStateController;
-    bool isLiked = false;
+    var isLiked = false;
 
     await tester.pumpWidget(
       makeTestableWidget(

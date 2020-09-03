@@ -30,7 +30,7 @@ class DecryptMnemonicUseCase {
         Encrypted.fromBase64(data.encryptedMnemonicBase64),
         iv: iv,
       );
-      return decrypted.split(" ");
+      return decrypted.split(' ');
     } catch (e) {
       return null;
     }

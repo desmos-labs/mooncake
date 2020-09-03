@@ -18,7 +18,7 @@ class SetPasswordContent extends StatelessWidget {
             Text(
               PostsLocalizations.of(context)
                   .translate(Messages.passwordBody)
-                  .replaceAll("\n", " "),
+                  .replaceAll('\n', ' '),
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 50),

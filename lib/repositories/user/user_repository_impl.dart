@@ -16,7 +16,7 @@ class UserRepositoryImpl extends UserRepository {
   })  : assert(localUserSource != null),
         _localUserSource = localUserSource,
         assert(remoteUserSource != null),
-        this._remoteUserSource = remoteUserSource;
+        _remoteUserSource = remoteUserSource;
 
   @visibleForTesting
   Future<MooncakeAccount> updateAndStoreAccountData(String address) async {
@@ -84,6 +84,7 @@ class UserRepositoryImpl extends UserRepository {
     return updateAndStoreAccountData(address);
   }
 
+  @override
   Future<MooncakeAccount> getActiveAccount() {
     return _localUserSource.getActiveAccount();
   }

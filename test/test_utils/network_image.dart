@@ -41,7 +41,7 @@ import 'package:mockito/mockito.dart';
 ///
 /// The underlying code is taken from the Flutter repo:
 /// https://github.com/flutter/flutter/blob/master/dev/manual_tests/test/mock_image_http.dart
-R provideMockedNetworkImages<R>(R body(),
+R provideMockedNetworkImages<R>(R Function() body,
     {List<int> imageBytes = _transparentImage}) {
   return HttpOverrides.runZoned(
     body,
@@ -60,10 +60,10 @@ class MockHttpHeaders extends Mock implements HttpHeaders {}
 // Returns a mock HTTP client that responds with an image to all requests.
 MockHttpClient _createMockImageHttpClient(
     SecurityContext _, List<int> imageBytes) {
-  final MockHttpClient client = MockHttpClient();
-  final MockHttpClientRequest request = MockHttpClientRequest();
-  final MockHttpClientResponse response = MockHttpClientResponse();
-  final MockHttpHeaders headers = MockHttpHeaders();
+  final client = MockHttpClient();
+  final request = MockHttpClientRequest();
+  final response = MockHttpClientResponse();
+  final headers = MockHttpHeaders();
 
   when(client.getUrl(any))
       .thenAnswer((_) => Future<HttpClientRequest>.value(request));
@@ -73,14 +73,12 @@ MockHttpClient _createMockImageHttpClient(
   when(response.contentLength).thenReturn(_transparentImage.length);
   when(response.statusCode).thenReturn(HttpStatus.ok);
   when(response.listen(any)).thenAnswer((Invocation invocation) {
-    final void Function(List<int>) onData =
+    final onData =
         invocation.positionalArguments[0] as void Function(List<int> p1);
-    final void Function() onDone =
-        invocation.namedArguments[#onDone] as void Function();
-    final void Function(Object, [StackTrace]) onError = invocation
-        .namedArguments[#onError] as void Function(Object p1, [StackTrace p2]);
-    final bool cancelOnError =
-        invocation.namedArguments[#cancelOnError] as bool;
+    final onDone = invocation.namedArguments[#onDone] as void Function();
+    final onError = invocation.namedArguments[#onError] as void
+        Function(Object p1, [StackTrace p2]);
+    final cancelOnError = invocation.namedArguments[#cancelOnError] as bool;
 
     return Stream<List<int>>.fromIterable(<List<int>>[imageBytes]).listen(
         onData,

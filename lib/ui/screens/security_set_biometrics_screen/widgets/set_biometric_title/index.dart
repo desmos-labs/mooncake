@@ -11,7 +11,7 @@ class SetBiometricTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BiometricsBloc, BiometricsState>(
       builder: (context, state) {
-        IconData icon = MooncakeIcons.fingerprint;
+        var icon = MooncakeIcons.fingerprint;
         if (state.availableBiometric == BiometricType.face) {
           icon = defaultTargetPlatform == TargetPlatform.iOS
               ? MooncakeIcons.faceId

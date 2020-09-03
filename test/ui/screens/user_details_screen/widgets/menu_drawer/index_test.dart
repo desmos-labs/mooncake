@@ -11,11 +11,11 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../helper.dart';
 
 void main() {
-  MockAccountBloc mockAccountBloc = MockAccountBloc();
-  MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var mockAccountBloc = MockAccountBloc();
+  var mockNavigatorBloc = MockNavigatorBloc();
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
 
@@ -41,7 +41,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text("logoutAll"), findsOneWidget);
+    expect(find.text('logoutAll'), findsOneWidget);
     expect(find.byType(SingleAccountItem), findsWidgets);
     expect(find.byType(Drawer), findsOneWidget);
   });
@@ -69,7 +69,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text("createAnotherAccount"));
+    await tester.tap(find.text('createAnotherAccount'));
     await tester.pumpAndSettle();
     expect(
         verify(mockAccountBloc.add(GenerateAccountWhileLoggedIn())).callCount,
@@ -98,7 +98,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text("logoutAll"));
+    await tester.tap(find.text('logoutAll'));
     await tester.pumpAndSettle();
     expect(verify(mockAccountBloc.add(LogOutAll())).callCount, 1);
   });
@@ -125,7 +125,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text("importMnemonicPhrase"));
+    await tester.tap(find.text('importMnemonicPhrase'));
     await tester.pumpAndSettle();
     expect(
         verify(mockNavigatorBloc.add(NavigateToRecoverAccount())).callCount, 1);
@@ -153,7 +153,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text("importMnemonicBackup"));
+    await tester.tap(find.text('importMnemonicBackup'));
     await tester.pumpAndSettle();
     expect(
         verify(mockNavigatorBloc.add(NavigateToRestoreBackup())).callCount, 1);

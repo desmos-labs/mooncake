@@ -62,17 +62,17 @@ void main() {
     'AccountBloc',
     () {
       AccountBloc accountBloc;
-      MooncakeAccount userAccount = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
+      var userAccount = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
         cosmosAccount: cosmosAccount,
       );
-      MooncakeAccount userAccountTwo = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
-        cosmosAccount: cosmosAccount.copyWith(address: "another address"),
+      var userAccountTwo = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
+        cosmosAccount: cosmosAccount.copyWith(address: 'another address'),
       );
-      const List<String> mnemonic = [
+      const mnemonic = <String>[
         'frown',
         'spike',
         'buyer',
@@ -122,7 +122,7 @@ void main() {
       blocTest(
         'CheckStatus: Expect check status event to return loggedout state',
         build: () async {
-          when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
+          when(mockGetSettingUseCase.get(key: anyNamed('key'))).thenAnswer((_) {
             return Future.value(null);
           });
           when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
@@ -134,14 +134,14 @@ void main() {
         expect: [LoggedOut()],
         verify: (_) async {
           verify(mockGetActiveAccountUseCase.single()).called(1);
-          verify(mockGetSettingUseCase.get(key: anyNamed("key"))).called(1);
+          verify(mockGetSettingUseCase.get(key: anyNamed('key'))).called(1);
         },
       );
 
       blocTest(
         'CheckStatus: Expect check status event to return loggedIn state',
         build: () async {
-          when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
+          when(mockGetSettingUseCase.get(key: anyNamed('key'))).thenAnswer((_) {
             return Future.value(null);
           });
           when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
@@ -233,7 +233,7 @@ void main() {
         build: () async {
           return accountBloc;
         },
-        act: (bloc) async => bloc.add(LogOut("address")),
+        act: (bloc) async => bloc.add(LogOut('address')),
         expect: [LoggedOut()],
       );
 

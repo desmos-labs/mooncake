@@ -9,19 +9,19 @@ part 'reaction.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class Reaction extends Equatable {
-  @JsonKey(name: "user")
+  @JsonKey(name: 'user')
   final User user;
 
   /// Represents the Unicode character that identifies the emoji.
-  @JsonKey(name: "value")
+  @JsonKey(name: 'value')
   final String value;
 
   /// Represents the shortcode that identifies the emoji.
-  @JsonKey(name: "short_code", nullable: true)
+  @JsonKey(name: 'short_code', nullable: true)
   final String code;
 
   /// Tells whether or not this reaction represents a like.
-  bool get isLike => value.replaceAll("️", "") == Constants.LIKE_REACTION;
+  bool get isLike => value.replaceAll('️', '') == Constants.LIKE_REACTION;
 
   const Reaction({
     @required this.user,
@@ -65,7 +65,7 @@ class Reaction extends Equatable {
 
   @override
   List<Object> get props {
-    return [this.user.address, this.value, this.code];
+    return [user.address, value, code];
   }
 
   @override

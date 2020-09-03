@@ -30,7 +30,7 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
         _localUserSource = localUserSource {
     if (Platform.isIOS) {
       _fcm.onIosSettingsRegistered.listen((data) {
-        print("iOS settings registered");
+        print('iOS settings registered');
       });
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
@@ -49,9 +49,9 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
         _fcm.unsubscribeFromTopic(_lastAddressSubscribedTopic);
       }
 
-      final address = account?.cosmosAccount?.address ?? "";
+      final address = account?.cosmosAccount?.address ?? '';
       if (address.isNotEmpty) {
-        print("Subscribing to FCM topic: $address");
+        print('Subscribing to FCM topic: $address');
         _fcm.subscribeToTopic(address);
         _lastAddressSubscribedTopic = address;
       }

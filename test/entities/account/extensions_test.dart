@@ -4,25 +4,25 @@ import 'package:mooncake/entities/entities.dart';
 void main() {
   final account = MooncakeAccount(
     cosmosAccount: CosmosAccount(
-      sequence: "1",
-      coins: [StdCoin(denom: "desmos", amount: "10000")],
-      address: "desmos1y447pj22mtx5h8tu9m67qer28t7dvzrxc7mxwe",
-      accountNumber: "10",
+      sequence: '1',
+      coins: [StdCoin(denom: 'desmos', amount: '10000')],
+      address: 'desmos1y447pj22mtx5h8tu9m67qer28t7dvzrxc7mxwe',
+      accountNumber: '10',
     ),
-    dtag: "harry_ramsey",
-    moniker: "Harry E. Ramsey",
-    bio: "Textile machine operator",
-    profilePicUri: "shorturl.at/egy49",
-    coverPicUri: "shorturl.at/hsxIK",
+    dtag: 'harry_ramsey',
+    moniker: 'Harry E. Ramsey',
+    bio: 'Textile machine operator',
+    profilePicUri: 'shorturl.at/egy49',
+    coverPicUri: 'shorturl.at/hsxIK',
   );
 
   test('hasLiked works properly', () async {
     final post = Post(
-      id: "1",
-      message: "Test post",
-      created: "2020-05-01T17:00:00Z",
-      subspace: "mooncake",
-      owner: User.fromAddress("address"),
+      id: '1',
+      message: 'Test post',
+      created: '2020-05-01T17:00:00Z',
+      subspace: 'mooncake',
+      owner: User.fromAddress('address'),
     );
     expect(account.hasLiked(post), isFalse);
 

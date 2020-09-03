@@ -14,11 +14,11 @@ void main() {
   });
 
   test('logout performs correct calls', () async {
-    when(repository.logout("address")).thenAnswer((_) => Future.value(null));
+    when(repository.logout('address')).thenAnswer((_) => Future.value(null));
 
-    await logoutUseCase.logout("address");
+    await logoutUseCase.logout('address');
 
-    verify(repository.logout("address")).called(1);
+    verify(repository.logout('address')).called(1);
   });
 
   test('logoutAll performs correct calls', () async {

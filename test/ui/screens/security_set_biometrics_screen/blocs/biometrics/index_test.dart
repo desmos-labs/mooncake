@@ -63,12 +63,12 @@ void main() {
           return biometricsBloc;
         },
         act: (bloc) async {
-          MooncakeAccount userAccount = MooncakeAccount(
-            profilePicUri: "https://example.com/avatar.png",
-            moniker: "john-doe",
+          var userAccount = MooncakeAccount(
+            profilePicUri: 'https://example.com/avatar.png',
+            moniker: 'john-doe',
             cosmosAccount: cosmosAccount,
           );
-          when(mockSetAuthenticationMethodUseCase.biometrics("address"))
+          when(mockSetAuthenticationMethodUseCase.biometrics('address'))
               .thenAnswer((_) => Future.value(null));
           when(mockRecoverAccountBloc.state)
               .thenAnswer((_) => RecoverAccountState.initial());

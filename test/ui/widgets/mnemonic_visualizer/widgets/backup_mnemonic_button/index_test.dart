@@ -6,7 +6,7 @@ import '../../../../helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
+  var mockNavigatorBloc = MockNavigatorBloc();
   testWidgets('BackupMnemonicButton: Displays correctly',
       (WidgetTester tester) async {
     await tester.pumpWidget(

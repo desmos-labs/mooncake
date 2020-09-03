@@ -13,10 +13,10 @@ import '../../helper.dart';
 void main() {
   testWidgets('PostContent: Displays export correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var mockAccountBloc = MockAccountBloc();
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
     when(mockAccountBloc.state)

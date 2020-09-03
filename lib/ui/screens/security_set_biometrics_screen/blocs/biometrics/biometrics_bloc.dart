@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/dependency_injection/dependency_injection.dart';
-import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
@@ -68,7 +67,7 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
 
   Stream<BiometricsState> _mapAuthenticateEventToState() async* {
     yield state.copyWith(saving: true);
-    final bool isLoggedIn = _accountBloc.state is LoggedIn;
+    final isLoggedIn = _accountBloc.state is LoggedIn;
     final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
 
     // Save wallet and get unique address

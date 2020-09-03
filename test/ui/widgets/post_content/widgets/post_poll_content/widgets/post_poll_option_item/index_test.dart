@@ -8,7 +8,7 @@ import 'package:mooncake/ui/widgets/post_content/widgets/post_poll_content/widge
 void main() {
   testWidgets('PostPollOptionItem: Displays export correctly',
       (WidgetTester tester) async {
-    PollOption option = PollOption(id: 1, text: 'apples');
+    var option = PollOption(id: 1, text: 'apples');
 
     await tester.pumpWidget(makeTestableWidget(
       child: PostPollOptionItem(

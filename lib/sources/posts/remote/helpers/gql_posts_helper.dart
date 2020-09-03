@@ -30,7 +30,7 @@ class PostDetailsData {
 
 /// Allows to easily work with GraphQL-related stuff.
 class GqlPostsHelper {
-  static const String _postContents = """
+  static const String _postContents = '''
   id
   parent_id
   subspace
@@ -73,11 +73,11 @@ class GqlPostsHelper {
   comments: comments {
     id
   }
-  """;
+  ''';
 
   /// Represents the GQL query that should be used when wanting to subscribe
   /// to home events such as new post being added.
-  static const String homeEvents = """
+  static const String homeEvents = '''
   post_aggregate(
     where: {
       parent_id: {_is_null: true},
@@ -88,11 +88,11 @@ class GqlPostsHelper {
       count(columns: id)
     }
   }
-  """;
+  ''';
 
   static Map<String, dynamic> _convertFields(Map<String, dynamic> post) {
     // Convert the comments
-    post["children"] = (post["comments"] as List).map((e) => e["id"]).toList();
+    post['children'] = (post['comments'] as List).map((e) => e['id']).toList();
     return post;
   }
 
@@ -118,7 +118,7 @@ class GqlPostsHelper {
     GraphQLClient client,
     HomePostsData queryData,
   ) async {
-    final query = """
+    final query = '''
     query HomePosts {
       posts: post(
         where: {
@@ -132,17 +132,17 @@ class GqlPostsHelper {
         $_postContents
       }
     }
-    """;
+    ''';
     final data = await measureExecTime(() async {
       return client.query(QueryOptions(
         document: gql(query),
         fetchPolicy: FetchPolicy.noCache,
       ));
-    }, name: "Query posts");
+    }, name: 'Query posts');
 
     return await measureExecTime(() async {
-      return await compute(_convertPostsGqlResponse, data.data["posts"]);
-    }, name: "Convert posts");
+      return await compute(_convertPostsGqlResponse, data.data['posts']);
+    }, name: 'Convert posts');
   }
 
   /// Returns the details of the post having the specified id and present
@@ -151,7 +151,7 @@ class GqlPostsHelper {
     GraphQLClient client,
     PostDetailsData queryData,
   ) async {
-    final query = """
+    final query = '''
     query PostById {
       post: post(
         where: {
@@ -162,12 +162,12 @@ class GqlPostsHelper {
         $_postContents
       }
     }
-    """;
+    ''';
     final data = await client.query(QueryOptions(
       document: gql(query),
       fetchPolicy: FetchPolicy.noCache,
     ));
-    final posts = await _convertPostsGqlResponse(data.data["post"]);
+    final posts = await _convertPostsGqlResponse(data.data['post']);
     return posts.isEmpty ? null : posts[0];
   }
 
@@ -177,7 +177,7 @@ class GqlPostsHelper {
     GraphQLClient client,
     PostDetailsData queryData,
   ) async {
-    final query = """
+    final query = '''
     query PostComments {
       comments: post(
         where: {
@@ -189,11 +189,11 @@ class GqlPostsHelper {
         $_postContents
       }
     }
-    """;
+    ''';
     final data = await client.query(QueryOptions(
       document: gql(query),
       fetchPolicy: FetchPolicy.noCache,
     ));
-    return await _convertPostsGqlResponse(data.data["comments"]);
+    return await _convertPostsGqlResponse(data.data['comments']);
   }
 }

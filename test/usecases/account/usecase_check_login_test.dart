@@ -15,7 +15,7 @@ void main() {
   });
 
   test('isLoggedIn returns true when the account exists', () async {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     when(repository.getActiveAccount())
         .thenAnswer((_) => Future.value(account));
 

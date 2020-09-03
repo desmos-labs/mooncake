@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 /// Allows to easily get the list of biometric authentication types
 /// that the current device supports.
 class GetAvailableBiometricsUseCase {
-  LocalAuthentication _localAuthentication;
+  final LocalAuthentication _localAuthentication;
 
   GetAvailableBiometricsUseCase({
     @required LocalAuthentication localAuthentication,

@@ -14,7 +14,7 @@ class PostsListEmptyContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Expanded(child: Center()),
-          Expanded(child: Image.asset("assets/images/sad.png")),
+          Expanded(child: Image.asset('assets/images/sad.png')),
           Expanded(
             child: Center(
               child: Padding(

@@ -8,12 +8,12 @@ extension UserExt on User {
     if (moniker != null && moniker.isNotEmpty) return moniker;
 
     if (address == null) {
-      Logger.log("User $this is invalid");
-      return "<Invalid account>";
+      Logger.log('User $this is invalid');
+      return '<Invalid account>';
     }
 
     return address.substring(0, 10) +
-        "..." +
+        '...' +
         address.substring(address.length - 5, address.length);
   }
 }

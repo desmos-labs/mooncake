@@ -7,13 +7,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user_image.g.dart';
 
 enum AccountImageType {
-  @JsonValue("local")
+  @JsonValue('local')
   LOCAL,
 
-  @JsonValue("network")
+  @JsonValue('network')
   NETWORK,
 
-  @JsonValue("no_image")
+  @JsonValue('no_image')
   NO_IMAGE
 }
 
@@ -23,12 +23,12 @@ enum AccountImageType {
 /// - an object identifying the user has no image.
 @JsonSerializable(explicitToJson: true, createFactory: false)
 abstract class AccountImage extends Equatable {
-  @JsonKey(name: "type")
+  @JsonKey(name: 'type')
   final AccountImageType type;
 
   const AccountImage(this.type);
 
-  @Deprecated("Use toJson instead")
+  @Deprecated('Use toJson instead')
   Map<String, dynamic> asJson();
 
   /// Transforms the given JSO?N [json] into an [AccountImage] instance
@@ -85,7 +85,7 @@ class LocalUserImage extends AccountImage {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class NetworkUserImage extends AccountImage {
-  @JsonKey(name: "url")
+  @JsonKey(name: 'url')
   final String url;
 
   const NetworkUserImage(this.url) : super(AccountImageType.NETWORK);

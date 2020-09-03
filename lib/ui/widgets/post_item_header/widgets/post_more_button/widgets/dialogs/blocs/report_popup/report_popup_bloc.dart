@@ -13,7 +13,7 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
     ReportType.SexuallyInappropriate: "it's sexually inappropriate",
     ReportType.ScamOrMisleading: "it's scam or misleading",
     ReportType.ViolentOrProhibited: "it's violent or misleading",
-    ReportType.Other: "other"
+    ReportType.Other: 'other'
   };
 
   final Post _post;
@@ -80,14 +80,14 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
     final reasonsString = currentState.selectedValues.entries
         .map((entry) => entry.value ? REASONS[entry.key] : null)
         .where((value) => value != null)
-        .join(", ");
+        .join(', ');
 
-    final emailText = """
+    final emailText = '''
 Please review the following post.
 Post id: ${_post.id}
 Reason(s): $reasonsString
 Additional notes: ${currentState.otherText}
-    """;
+    ''';
 
     final email = Email(
       body: emailText,

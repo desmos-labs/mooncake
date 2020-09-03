@@ -12,7 +12,7 @@ class EmptyReactions extends StatelessWidget {
           Expanded(child: Center()),
           Expanded(
             child: Center(
-              child: Image.asset("assets/images/smile.png"),
+              child: Image.asset('assets/images/smile.png'),
             ),
           ),
           Expanded(

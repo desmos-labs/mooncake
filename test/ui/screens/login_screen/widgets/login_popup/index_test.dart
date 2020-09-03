@@ -9,7 +9,7 @@ void main() {
     await tester.pumpWidget(
       makeTestableWidget(
         child: LoginPopup(
-          content: Text("content"),
+          content: Text('content'),
         ),
       ),
     );

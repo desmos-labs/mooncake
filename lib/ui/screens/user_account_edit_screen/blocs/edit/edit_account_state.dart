@@ -30,14 +30,14 @@ class EditAccountState extends Equatable {
 
   /// Returns `true` if the input DTag is valid, `false` otherwise.
   bool get isDTagValid {
-    final originalDTag = originalAccount.dtag?.trim() ?? "";
-    final newDTag = account.dtag?.trim() ?? "";
+    final originalDTag = originalAccount.dtag?.trim() ?? '';
+    final newDTag = account.dtag?.trim() ?? '';
 
     if (originalDTag.isNotEmpty && newDTag.isEmpty) {
       return true;
     }
 
-    return RegExp(r"^[A-Za-z0-9_]+$").hasMatch(newDTag) &&
+    return RegExp(r'^[A-Za-z0-9_]+$').hasMatch(newDTag) &&
         newDTag.length >= 3 &&
         newDTag.length <= 20;
   }
@@ -45,8 +45,8 @@ class EditAccountState extends Equatable {
   /// Returns `true` iff the moniker input by the user is valid,
   /// or `false` otherwise.
   bool get isMonikerValid {
-    final originalMoniker = originalAccount.moniker?.trim() ?? "";
-    final newMoniker = account.moniker?.trim() ?? "";
+    final originalMoniker = originalAccount.moniker?.trim() ?? '';
+    final newMoniker = account.moniker?.trim() ?? '';
 
     if (originalMoniker.isNotEmpty && newMoniker.isEmpty) {
       return true;

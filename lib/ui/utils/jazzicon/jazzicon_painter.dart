@@ -26,7 +26,7 @@ class JazzIconPainter extends CustomPainter {
 
   final String seed;
 
-  JazzIconPainter({@required String seed}) : seed = seed ?? "icon";
+  JazzIconPainter({@required String seed}) : seed = seed ?? 'icon';
 
   @override
   bool shouldRepaint(JazzIconPainter oldDelegate) {
@@ -35,7 +35,7 @@ class JazzIconPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final generator = Random(utf8.encode(this.seed).reduce((a, b) => a + b));
+    final generator = Random(utf8.encode(seed).reduce((a, b) => a + b));
     final colors = hueShift(COLORS, generator);
 
     // Background color
@@ -46,7 +46,7 @@ class JazzIconPainter extends CustomPainter {
     canvas.drawPaint(Paint()..color = genColor(generator, colors));
 
     // Clip to be a circle
-    for (int i = 0; i < SHAPE_COUNT - 1; i++) {
+    for (var i = 0; i < SHAPE_COUNT - 1; i++) {
       genShape(generator, colors, size.width, i, SHAPE_COUNT - 1, canvas);
     }
   }
@@ -99,7 +99,7 @@ class JazzIconPainter extends CustomPainter {
   bool operator ==(Object other) {
     if (other.runtimeType != runtimeType) return false;
 
-    return other is JazzIconPainter && other.seed == this.seed;
+    return other is JazzIconPainter && other.seed == seed;
   }
 
   @override

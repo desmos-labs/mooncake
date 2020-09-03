@@ -34,7 +34,7 @@ class BlocUserDialog extends StatelessWidget {
       title: Text(
           PostsLocalizations.of(context).translate(Messages.blockDialogTitle)),
       content: Text(
-          "${PostsLocalizations.of(context).translate(Messages.blockDialogTextOne)} ${user.address} ${PostsLocalizations.of(context).translate(Messages.blockDialogTextTwo)}"),
+          '${PostsLocalizations.of(context).translate(Messages.blockDialogTextOne)} ${user.address} ${PostsLocalizations.of(context).translate(Messages.blockDialogTextTwo)}'),
       actions: [
         FlatButton(
           child: Text(PostsLocalizations.of(context)

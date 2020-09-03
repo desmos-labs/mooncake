@@ -22,7 +22,7 @@ class VotePollUseCase {
   Future<Post> vote(Post post, PollOption option) async {
     final account = await _userRepository.getActiveAccount();
 
-    final pollAnswers = List<PollAnswer>()..addAll(post.poll.userAnswers);
+    final pollAnswers = <PollAnswer>[...post.poll.userAnswers];
     final userAnswer = pollAnswers.firstWhere(
       (element) => element.user.address == account.address,
       orElse: () => null,

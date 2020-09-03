@@ -116,38 +116,38 @@ void main() {
 
       final expected = [
         Post(
-          id: "76597beaa2698925b5b30fd991d3e8f720fa1a0234ffc6549b61948917ee5bd7",
+          id: '76597beaa2698925b5b30fd991d3e8f720fa1a0234ffc6549b61948917ee5bd7',
           status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
           subspace:
-              "2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88",
+              '2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88',
           allowsComments: true,
-          created: "2020-04-30T09:08:03.746",
-          lastEdited: "0001-01-01T00:00:00",
+          created: '2020-04-30T09:08:03.746',
+          lastEdited: '0001-01-01T00:00:00',
           medias: [],
-          message: "Why people celebrate Buddha and Jesus birthday?",
+          message: 'Why people celebrate Buddha and Jesus birthday?',
           optionalData: {},
           parentId: null,
           reactions: [],
           owner: User(
-            address: "desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u",
+            address: 'desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u',
             moniker: null,
             profilePicUri: null,
           ),
           commentsIds: [],
         ),
         Post(
-          id: "64d6a0562f599a1ebf799748f2ba3c2b27e9b340f59a4d9bbd765940402e00bd",
+          id: '64d6a0562f599a1ebf799748f2ba3c2b27e9b340f59a4d9bbd765940402e00bd',
           status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
           subspace:
-              "2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88",
-          created: "2020-04-30T08:05:46.992",
-          lastEdited: "0001-01-01T00:00:00",
+              '2bdf5932925584b9a86470bea60adce69041608a447f84a3317723aa5678ec88',
+          created: '2020-04-30T08:05:46.992',
+          lastEdited: '0001-01-01T00:00:00',
           allowsComments: false,
           medias: [
             PostMedia(
               uri:
-                  "https://ipfs.desmos.network/ipfs/QmPKQBed922AEDThJ3pVeJPk7B4hm9z8uJxzg4v8EHZGhb",
-              mimeType: "image/jpeg",
+                  'https://ipfs.desmos.network/ipfs/QmPKQBed922AEDThJ3pVeJPk7B4hm9z8uJxzg4v8EHZGhb',
+              mimeType: 'image/jpeg',
             )
           ],
           message:
@@ -156,12 +156,12 @@ void main() {
           parentId: null,
           reactions: [
             Reaction.fromValue(
-              "❤",
-              User.fromAddress("desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u"),
+              '❤',
+              User.fromAddress('desmos1fc3mdf0ue2f4suyg5vjj75jtaer0cl0dgqvy6u'),
             ),
           ],
           owner: User(
-            address: "desmos14dm0zdemeymhayucp7gchuus3k5m344f3v8nln",
+            address: 'desmos14dm0zdemeymhayucp7gchuus3k5m344f3v8nln',
             moniker: null,
           ),
           commentsIds: [],

@@ -52,10 +52,10 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
-          List<Post> erroredPosts = state.erroredPosts
+          var erroredPosts = state.erroredPosts
               .where((post) => post.owner.address == widget.user.address)
               .toList();
-          List<Post> posts = state.nonErroredPosts;
+          var posts = state.nonErroredPosts;
 
           if (!state.refreshing) {
             _refreshCompleter?.complete();
@@ -166,7 +166,7 @@ class _PostsListState extends State<PostsList> {
     if (!_scrollController.hasClients) {
       return null;
     }
-    final bool shouldScroll =
+    final shouldScroll =
         homeState.activeTab == AppTab.home && homeState.scrollToTop;
     // If position is at top refresh posts otherwise scroll to top
     if (_scrollController.position.pixels == 0.0 && shouldScroll) {

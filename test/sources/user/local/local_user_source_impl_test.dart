@@ -19,7 +19,7 @@ void main() {
   LocalUserSourceImpl source;
 
   setUp(() async {
-    networkInfo = NetworkInfo(bech32Hrp: "desmos", lcdUrl: "localhost");
+    networkInfo = NetworkInfo(bech32Hrp: 'desmos', lcdUrl: 'localhost');
     secureStorage = MockSecureStorage();
     database = await databaseFactoryMemory
         .openDatabase(DateTime.now().toIso8601String());
@@ -33,39 +33,39 @@ void main() {
 
   group('Wallet', () {
     test('saveWallet throws error with invalid mnemonic', () async {
-      final mnemonic = "1234567689";
+      final mnemonic = '1234567689';
       expect(() => source.saveWallet(mnemonic), throwsException);
       verifyZeroInteractions(secureStorage);
     });
 
     test('saveWallet works properly with valid mnemonic', () async {
       final mnemonic = [
-        "potato",
-        "already",
-        "proof",
-        "alien",
-        "rent",
-        "hawk",
-        "settle",
-        "settle",
-        "brush",
-        "chase",
-        "cage",
-        "shell",
-        "marriage",
-        "drop",
-        "foil",
-        "garment",
-        "solar",
-        "join",
-        "involve",
-        "stock",
-        "coffee",
-        "toddler",
-        "blur",
-        "pool",
-      ].join(" ");
-      Wallet wallet = await source.saveWallet(mnemonic);
+        'potato',
+        'already',
+        'proof',
+        'alien',
+        'rent',
+        'hawk',
+        'settle',
+        'settle',
+        'brush',
+        'chase',
+        'cage',
+        'shell',
+        'marriage',
+        'drop',
+        'foil',
+        'garment',
+        'solar',
+        'join',
+        'involve',
+        'stock',
+        'coffee',
+        'toddler',
+        'blur',
+        'pool',
+      ].join(' ');
+      var wallet = await source.saveWallet(mnemonic);
       verify(secureStorage.write(
         key: wallet.bech32Address,
         value: mnemonic,
@@ -74,48 +74,48 @@ void main() {
 
     test('getWallet works properly', () async {
       final mnemonic = [
-        "potato",
-        "already",
-        "proof",
-        "alien",
-        "rent",
-        "hawk",
-        "settle",
-        "settle",
-        "brush",
-        "chase",
-        "cage",
-        "shell",
-        "marriage",
-        "drop",
-        "foil",
-        "garment",
-        "solar",
-        "join",
-        "involve",
-        "stock",
-        "coffee",
-        "toddler",
-        "blur",
-        "pool",
-      ].join(" ");
+        'potato',
+        'already',
+        'proof',
+        'alien',
+        'rent',
+        'hawk',
+        'settle',
+        'settle',
+        'brush',
+        'chase',
+        'cage',
+        'shell',
+        'marriage',
+        'drop',
+        'foil',
+        'garment',
+        'solar',
+        'join',
+        'involve',
+        'stock',
+        'coffee',
+        'toddler',
+        'blur',
+        'pool',
+      ].join(' ');
 
       when(secureStorage.read(
-              key: "desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv"))
+              key: 'desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv'))
           .thenAnswer((_) => Future.value(mnemonic));
 
       final wallet = await source
-          .getWallet("desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv");
+          .getWallet('desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv');
       expect(
         wallet?.bech32Address,
-        "desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv",
+        'desmos1zg0dnufdsnua3skd82r0fdv2v92kupc4tyv4fv',
       );
     });
   });
 
   group('Account', () {
     group('saveAccount', () {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
 
       test('stores the account with no existing ones', () async {
         await source.saveAccount(account);
@@ -137,7 +137,7 @@ void main() {
       test('replaces existing account with same address', () async {
         final updatedAccount = account.copyWith(
           cosmosAccount: account.cosmosAccount.copyWith(
-            accountNumber: "20",
+            accountNumber: '20',
           ),
         );
 
@@ -188,7 +188,7 @@ void main() {
     });
 
     group('setActiveAccount', () {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
 
       test('works properly with no prior account stored', () async {
         await source.setActiveAccount(account);
@@ -213,7 +213,7 @@ void main() {
             .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
             .update(database, account.toJson());
 
-        final updatedAccount = account.copyWith(bio: "Updated bio");
+        final updatedAccount = account.copyWith(bio: 'Updated bio');
         await source.setActiveAccount(updatedAccount);
 
         final record = await store.findFirst(
@@ -236,7 +236,7 @@ void main() {
       });
 
       test('returns with account', () async {
-        final account = MooncakeAccount.local("test-address");
+        final account = MooncakeAccount.local('test-address');
 
         final store = StoreRef.main();
         await store
@@ -249,12 +249,12 @@ void main() {
 
     group('getAccount', () {
       test('getAccount returns null when no data is saved', () async {
-        expect(await source.getAccount("account"), isNull);
+        expect(await source.getAccount('account'), isNull);
       });
 
       test('getAccount returns the correctly stored data', () async {
-        final firstAccount = MooncakeAccount.local("test-address");
-        final secondAccount = MooncakeAccount.local("second-address");
+        final firstAccount = MooncakeAccount.local('test-address');
+        final secondAccount = MooncakeAccount.local('second-address');
 
         final store = StoreRef.main();
         await store
@@ -275,8 +275,8 @@ void main() {
       });
 
       test('getAccounts returns list when data is present', () async {
-        final account = MooncakeAccount.local("first-address");
-        final accountTwo = MooncakeAccount.local("second-accounts");
+        final account = MooncakeAccount.local('first-address');
+        final accountTwo = MooncakeAccount.local('second-accounts');
 
         final store = StoreRef.main();
         await store
@@ -293,31 +293,31 @@ void main() {
       test('works with biometric auth', () async {
         final auth = BiometricAuthentication();
         when(secureStorage.write(
-          key: anyNamed("key"),
-          value: anyNamed("value"),
+          key: anyNamed('key'),
+          value: anyNamed('value'),
         )).thenAnswer((_) => null);
 
-        await source.saveAuthenticationMethod("address", auth);
+        await source.saveAuthenticationMethod('address', auth);
 
         verify(secureStorage.write(
-          key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
+          key: 'address.${LocalUserSourceImpl.AUTHENTICATION_KEY}',
           value: jsonEncode(auth.toJson()),
         ));
       });
 
       test('works with password auth', () async {
         final auth = PasswordAuthentication(
-          hashedPassword: "5f4dcc3b5aa765d61d8327deb882cf99",
+          hashedPassword: '5f4dcc3b5aa765d61d8327deb882cf99',
         );
         when(secureStorage.write(
-          key: anyNamed("key"),
-          value: anyNamed("value"),
+          key: anyNamed('key'),
+          value: anyNamed('value'),
         )).thenAnswer((_) => null);
 
-        await source.saveAuthenticationMethod("address", auth);
+        await source.saveAuthenticationMethod('address', auth);
 
         verify(secureStorage.write(
-          key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}",
+          key: 'address.${LocalUserSourceImpl.AUTHENTICATION_KEY}',
           value: jsonEncode(auth.toJson()),
         ));
       });
@@ -325,39 +325,39 @@ void main() {
 
     group('getAuthenticationMethod', () {
       test('returns null whe non existing', () async {
-        final authMethod = await source.getAuthenticationMethod("address");
+        final authMethod = await source.getAuthenticationMethod('address');
         expect(authMethod, isNull);
       });
 
       test('returns valid biometric data', () async {
         final authMethod = BiometricAuthentication();
         when(secureStorage.read(
-                key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
+                key: 'address.${LocalUserSourceImpl.AUTHENTICATION_KEY}'))
             .thenAnswer((realInvocation) async {
           return jsonEncode(authMethod.toJson());
         });
 
-        final stored = await source.getAuthenticationMethod("address");
+        final stored = await source.getAuthenticationMethod('address');
         expect(stored, equals(authMethod));
       });
 
       test('returns valid biometric data', () async {
         final authMethod = PasswordAuthentication(
-            hashedPassword: "202cb962ac59075b964b07152d234b70");
+            hashedPassword: '202cb962ac59075b964b07152d234b70');
         when(secureStorage.read(
-                key: "address.${LocalUserSourceImpl.AUTHENTICATION_KEY}"))
+                key: 'address.${LocalUserSourceImpl.AUTHENTICATION_KEY}'))
             .thenAnswer((realInvocation) async {
           return jsonEncode(authMethod.toJson());
         });
 
-        final stored = await source.getAuthenticationMethod("address");
+        final stored = await source.getAuthenticationMethod('address');
         expect(stored, equals(authMethod));
       });
     });
   });
 
   group('Data wiping and logout', () {
-    final account = MooncakeAccount.local("test-address");
+    final account = MooncakeAccount.local('test-address');
 
     group('wipeData', () {
       test('correctly deletes data', () async {
@@ -388,7 +388,7 @@ void main() {
             .record(LocalUserSourceImpl.ACTIVE_ACCOUNT_KEY)
             .put(database, account.toJson());
 
-        await source.logout("impossibleAddress");
+        await source.logout('impossibleAddress');
         verifyNever(secureStorage.deleteAll());
 
         final active = await store
@@ -420,7 +420,7 @@ void main() {
       test('correctly deletes one user if multiple accounts exist', () async {
         final secondAccount = account.copyWith(
           cosmosAccount: account.cosmosAccount.copyWith(
-            address: "second-address",
+            address: 'second-address',
           ),
         );
 

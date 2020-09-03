@@ -39,8 +39,8 @@ void main() {
   test('get performs correct calls', () async {
     final posts = testPosts;
     when(repository.getHomePosts(
-      start: anyNamed("start"),
-      limit: anyNamed("limit"),
+      start: anyNamed('start'),
+      limit: anyNamed('limit'),
     )).thenAnswer((_) => Future.value(posts));
 
     final start = 10;

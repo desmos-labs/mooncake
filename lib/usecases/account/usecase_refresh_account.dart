@@ -3,7 +3,7 @@ import 'package:mooncake/usecases/usecases.dart';
 
 /// Allows to easily refresh the account.
 class RefreshAccountUseCase {
-  UserRepository _userRepository;
+  final UserRepository _userRepository;
 
   RefreshAccountUseCase({
     @required UserRepository userRepository,

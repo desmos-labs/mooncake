@@ -57,7 +57,7 @@ void main() {
           return postInputBloc;
         },
         act: (bloc) async {
-          bloc.add(MessageChanged("hello world"));
+          bloc.add(MessageChanged('hello world'));
           bloc.add(ResetForm());
         },
         skip: 2,
@@ -81,12 +81,12 @@ void main() {
           return postInputBloc;
         },
         act: (bloc) async {
-          bloc.add(MessageChanged("hello world"));
+          bloc.add(MessageChanged('hello world'));
         },
         expect: [
           PostInputState(
             parentPost: testPost,
-            message: "hello world",
+            message: 'hello world',
             allowsComments: true,
             medias: [],
             poll: null,
@@ -118,8 +118,8 @@ void main() {
           )
         ],
       );
-      final File imageAddedFile = File("assets/images/cry.png");
-      final PostMedia imagePostMedia = PostMedia(
+      final imageAddedFile = File('assets/images/cry.png');
+      final imagePostMedia = PostMedia(
         uri: imageAddedFile.absolute.path,
         mimeType: mime(imageAddedFile.absolute.path),
       );
@@ -205,8 +205,8 @@ void main() {
         },
         act: (bloc) async {
           when(mockSaveSettingUseCase.save(
-            key: anyNamed("key"),
-            value: anyNamed("value"),
+            key: anyNamed('key'),
+            value: anyNamed('value'),
           )).thenAnswer((_) => Future.value(null));
           bloc.add(ChangeWillShowPopup());
         },
@@ -231,7 +231,7 @@ void main() {
         },
         act: (bloc) async {
           when(mockGetSettingUseCase.get(
-            key: anyNamed("key"),
+            key: anyNamed('key'),
           )).thenAnswer((_) => Future.value(false));
           bloc.add(SavePost());
         },
@@ -256,7 +256,7 @@ void main() {
         },
         act: (bloc) async {
           when(mockGetSettingUseCase.get(
-            key: anyNamed("key"),
+            key: anyNamed('key'),
           )).thenAnswer((_) => Future.value(true));
           bloc.add(SavePost());
           bloc.add(HidePopup());
@@ -283,9 +283,9 @@ void main() {
         },
         act: (bloc) async {
           when(mockCreatePostUseCase.create(
-                  message: anyNamed("message"),
-                  allowsComments: anyNamed("allowsComments"),
-                  parentId: anyNamed("parentId")))
+                  message: anyNamed('message'),
+                  allowsComments: anyNamed('allowsComments'),
+                  parentId: anyNamed('parentId')))
               .thenAnswer((_) => Future.value(testPost));
 
           when(mockSavePostUseCase.save(any))

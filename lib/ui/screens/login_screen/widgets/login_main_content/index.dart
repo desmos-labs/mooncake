@@ -19,8 +19,8 @@ class LoginMainContent extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 const SizedBox(height: 32),
-                Text("Decentralized", style: titleTextTheme),
-                Text("Social Network", style: titleTextTheme),
+                Text('Decentralized', style: titleTextTheme),
+                Text('Social Network', style: titleTextTheme),
               ],
             ),
           ),

@@ -19,7 +19,7 @@ void main() {
     when(repository.setActiveAccount(any))
         .thenAnswer((_) => Future.value(null));
 
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     await setAccountActiveUsecase.setActive(account);
 
     verify(repository.setActiveAccount(account)).called(1);

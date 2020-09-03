@@ -18,16 +18,16 @@ class RemoteMediasSourceImpl extends RemoteMediasSource {
 
   @override
   Future<String> uploadMedia(File file) async {
-    final url = "https://put.$_ipfsEndpoint/api/v0/add";
+    final url = 'https://put.$_ipfsEndpoint/api/v0/add';
     final multiPartFile =
         await http.MultipartFile.fromPath('file', file.absolute.path);
-    final request = http.MultipartRequest("POST", Uri.parse(url));
+    final request = http.MultipartRequest('POST', Uri.parse(url));
     request.files.add(multiPartFile);
 
     final response = await request.send();
     if (response.statusCode != 200) {
       throw Exception(
-        "Ivalid IPFS answer. Expected 200, got ${response.statusCode}",
+        'Invalid IPFS answer. Expected 200, got ${response.statusCode}',
       );
     }
 
@@ -35,6 +35,6 @@ class RemoteMediasSourceImpl extends RemoteMediasSource {
     final uploadResponse = IpfsUploadResponse.fromJson(
       jsonDecode(body) as Map<String, dynamic>,
     );
-    return "https://$_ipfsEndpoint/ipfs/${uploadResponse.hash}";
+    return 'https://$_ipfsEndpoint/ipfs/${uploadResponse.hash}';
   }
 }
