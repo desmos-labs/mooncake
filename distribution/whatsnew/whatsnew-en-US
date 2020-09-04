@@ -1,5 +1,5 @@
-• Improved how failed-to-sync posts are displayed
-• Added the possibility of retry the sync or deleting failed-to-sync posts
-• Fixed the mnemonic backup popup from displaying if the user logged in using their mnemonic backup
+• Added the possibility of controlling multiple accounts
+• Changed the reactions and likes visualization
+• Added the possibility of scrolling to the top of the posts list by clicking the bottom button
 • UI and UX improvements
 • Bug fixes and performance improvements

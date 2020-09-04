@@ -1,3 +1,13 @@
+# Version 0.5.0
+## Changes
+- Added the possibility of having multiple accounts at the same time
+- Changed the likes and reactions visualization
+- Added the possibility of scroll to the top of the posts list by clicking the posts list button
+- Improved the editing screen UX  
+
+## Bug fixes
+- Fixed a bug that caused the posts list to jump to the top if the screen switched to the account page and back to the posts list
+
 # Version 0.4.4
 ## Bug fixes
 - Fixed some synchronization bugs
