@@ -17,7 +17,7 @@ void main() {
 
   test('does not calls save post', () async {
     when(repository.savePost(any)).thenAnswer((_) => Future.value(null));
-    final Post post = testPost;
+    final post = testPost;
     await updatePostUseCase.update(post);
 
     verifyNever(repository.savePost(any));

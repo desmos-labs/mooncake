@@ -21,8 +21,13 @@ class UpdateTab extends HomeEvent {
 }
 
 class SignOut extends HomeEvent {
+  final String address;
+  SignOut(this.address);
   @override
   String toString() => 'SignOut';
+
+  @override
+  List<Object> get props => [address];
 }
 
 /// Tells a bloc to show mnemonic backup popup
@@ -33,3 +38,13 @@ class HideBackupMnemonicPhrasePopup extends HomeEvent {}
 
 /// Tells a bloc to turn off mnemonic backup popup permission
 class TurnOffBackupMnemonicPopupPermission extends HomeEvent {}
+
+class SetScrollToTop extends HomeEvent {
+  final bool scroll;
+  SetScrollToTop(this.scroll);
+  @override
+  String toString() => 'ToggleScrollToTop';
+
+  @override
+  List<Object> get props => [scroll];
+}

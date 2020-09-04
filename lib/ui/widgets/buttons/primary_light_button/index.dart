@@ -17,8 +17,8 @@ class PrimaryLightButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = Colors.white;
-    Color textColor = Theme.of(context).colorScheme.primary;
+    var backgroundColor = Colors.white;
+    var textColor = Theme.of(context).colorScheme.primary;
 
     if (Theme.of(context).brightness == Brightness.dark) {
       backgroundColor = Theme.of(context).colorScheme.primary;

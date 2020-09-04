@@ -16,8 +16,8 @@ class MockReportPopupBloc extends MockBloc<ReportPopupEvent, ReportPopupState>
 void main() {
   testWidgets('PostListItem: Displays export correctly',
       (WidgetTester tester) async {
-    MockReportPopupBloc mockReportPopupBloc = MockReportPopupBloc();
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
+    var mockReportPopupBloc = MockReportPopupBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
     when(mockReportPopupBloc.state).thenReturn(ReportPopupState.initial());
 
     await tester.pumpWidget(

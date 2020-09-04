@@ -43,11 +43,11 @@ void main() {
           return restoreBackupBloc;
         },
         act: (bloc) async {
-          bloc.add(BackupTextChanged("hello"));
+          bloc.add(BackupTextChanged('hello'));
         },
         expect: [
           RestoreBackupState(
-            backup: "hello",
+            backup: 'hello',
             password: null,
             isPasswordValid: true,
             restoring: false,
@@ -61,12 +61,12 @@ void main() {
           return restoreBackupBloc;
         },
         act: (bloc) async {
-          bloc.add(EncryptPasswordChanged("hello"));
+          bloc.add(EncryptPasswordChanged('hello'));
         },
         expect: [
           RestoreBackupState(
             backup: null,
-            password: "hello",
+            password: 'hello',
             isPasswordValid: true,
             restoring: false,
           ),

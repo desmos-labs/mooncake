@@ -12,13 +12,14 @@ import '../../../../helper.dart';
 void main() {
   testWidgets('PostActionsBar: Displays export correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var mockAccountBloc = MockAccountBloc();
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
 
     await tester.pumpWidget(
       makeTestableWidget(

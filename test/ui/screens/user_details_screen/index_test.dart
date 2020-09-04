@@ -9,14 +9,14 @@ import '../../../mocks/mocks.dart';
 import '../../helper.dart';
 
 void main() {
-  MockAccountBloc mockAccountBloc = MockAccountBloc();
-  MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-  MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
-  MockHomeBloc mockHomeBloc = MockHomeBloc();
+  var mockAccountBloc = MockAccountBloc();
+  var mockNavigatorBloc = MockNavigatorBloc();
+  var mockPostsListBloc = MockPostsListBloc();
+  var mockHomeBloc = MockHomeBloc();
 
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
 
@@ -24,7 +24,7 @@ void main() {
       (WidgetTester tester) async {
     when(mockHomeBloc.state).thenAnswer((_) => HomeState.initial());
     when(mockAccountBloc.state)
-        .thenAnswer((_) => LoggedIn.initial(userAccount));
+        .thenAnswer((_) => LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(

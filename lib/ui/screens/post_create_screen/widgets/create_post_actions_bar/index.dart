@@ -20,7 +20,7 @@ class PostCreateActions extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PostInputBloc, PostInputState>(
       builder: (context, state) {
-        final Color pollSelectedColor =
+        final pollSelectedColor =
             state.poll != null ? Theme.of(context).colorScheme.primary : null;
         return Container(
           height: height,

@@ -5,7 +5,7 @@ extension PollsExt on PostPoll {
   /// Tells whether `this` [PostPoll] contains an answer from the user
   /// having the given [address] with the given [value].
   bool containsAnswerFrom(String address, int value) {
-    return this.userAnswers.where((element) {
+    return userAnswers.where((element) {
       return element.user.address == address && element.answer == value;
     }).isNotEmpty;
   }

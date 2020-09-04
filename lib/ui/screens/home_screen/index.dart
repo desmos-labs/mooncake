@@ -14,10 +14,28 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeBloc.create(context),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          Widget body = Container();
-          if (state.activeTab == AppTab.home) {
-            final accountState = BlocProvider.of<AccountBloc>(context).state;
-            return Scaffold(
+          List<Widget> optimizedTabView;
+          List<int> optimizedTabViewIndex;
+          var tabIndex = 0;
+          // map of screens that has been loaded
+          var originalDic = <AppTab, bool>{
+            AppTab.home: true,
+            AppTab.account: false,
+            AppTab.notifications: false,
+          };
+
+          // map of screens position
+          const originalIndex = <AppTab, int>{
+            AppTab.home: 0,
+            AppTab.account: 1,
+            AppTab.notifications: 2,
+          };
+
+          final accountState = BlocProvider.of<AccountBloc>(context).state;
+
+          var originalTabView = <Widget>[
+            // home
+            Scaffold(
               body: Stack(
                 children: [
                   Column(
@@ -33,23 +51,39 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               bottomNavigationBar: SafeArea(child: TabSelector()),
-            );
-          } else if (state.activeTab == AppTab.notifications) {
-            body = NotificationsMainContent();
-          } else if (state.activeTab == AppTab.account) {
-            final state = BlocProvider.of<AccountBloc>(context).state;
-            return UserDetailsScreen(
+            ),
+            // account
+            UserDetailsScreen(
               isMyProfile: true,
-              user: (state as LoggedIn).user,
-            );
+              user: (accountState as LoggedIn).user,
+            ),
+            // notification
+            NotificationsMainContent(),
+          ];
+
+          optimizedTabView = [originalTabView.first];
+          optimizedTabViewIndex = [0];
+
+          void _selectedTab(AppTab activeTab) {
+            var index = originalIndex[activeTab];
+            if (originalDic[activeTab] == false) {
+              optimizedTabViewIndex.add(index);
+              originalDic[activeTab] = true;
+              optimizedTabViewIndex.sort();
+              optimizedTabView = optimizedTabViewIndex.map((index) {
+                return originalTabView[index];
+              }).toList();
+            }
+
+            tabIndex = index;
           }
 
-          return Scaffold(
-            appBar: state.activeTab == AppTab.home
-                ? postsAppBar(context)
-                : accountAppBar(context),
-            body: body,
-            bottomNavigationBar: SafeArea(child: TabSelector()),
+          // load the screen if needed
+          _selectedTab(state.activeTab);
+
+          return IndexedStack(
+            index: optimizedTabViewIndex.indexOf(tabIndex),
+            children: optimizedTabView,
           );
         },
       ),

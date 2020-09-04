@@ -10,11 +10,11 @@ part 'mnemonic_data.g.dart';
 @JsonSerializable(explicitToJson: true)
 class MnemonicData extends Equatable {
   /// Represents the IV used during the encryption, in Base64.
-  @JsonKey(name: "ivBase64")
+  @JsonKey(name: 'ivBase64')
   final String ivBase64;
 
   /// Represents the encrypted mnemonic, encoded in Base64.
-  @JsonKey(name: "encryptedMnemonicBase64")
+  @JsonKey(name: 'encryptedMnemonicBase64')
   final String encryptedMnemonicBase64;
 
   const MnemonicData({

@@ -30,7 +30,7 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
         _localUserSource = localUserSource {
     if (Platform.isIOS) {
       _fcm.onIosSettingsRegistered.listen((data) {
-        print("iOS settings registered");
+        print('iOS settings registered');
       });
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
@@ -44,14 +44,14 @@ class RemoteNotificationsSourceImpl extends RemoteNotificationsSource {
   /// that has the value of the user address so that notification directed
   /// to him will be received in the future.
   void _subscribeToAddressTopic() {
-    _localUserSource.accountStream.listen((MooncakeAccount account) {
+    _localUserSource.activeAccountStream.listen((MooncakeAccount account) {
       if (_lastAddressSubscribedTopic != null) {
         _fcm.unsubscribeFromTopic(_lastAddressSubscribedTopic);
       }
 
-      final address = account?.cosmosAccount?.address ?? "";
+      final address = account?.cosmosAccount?.address ?? '';
       if (address.isNotEmpty) {
-        print("Subscribing to FCM topic: $address");
+        print('Subscribing to FCM topic: $address');
         _fcm.subscribeToTopic(address);
         _lastAddressSubscribedTopic = address;
       }

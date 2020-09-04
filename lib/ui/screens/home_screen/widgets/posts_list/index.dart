@@ -52,10 +52,10 @@ class _PostsListState extends State<PostsList> {
 
           // Hide the refresh indicator
           final state = postsState as PostsLoaded;
-          List<Post> erroredPosts = state.erroredPosts
+          var erroredPosts = state.erroredPosts
               .where((post) => post.owner.address == widget.user.address)
               .toList();
-          List<Post> posts = state.nonErroredPosts;
+          var posts = state.nonErroredPosts;
 
           if (!state.refreshing) {
             _refreshCompleter?.complete();
@@ -66,67 +66,71 @@ class _PostsListState extends State<PostsList> {
             return PostsListEmptyContainer();
           }
 
-          return Stack(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  if (state.syncingPosts) PostsListSyncingIndicator(),
-                  Expanded(
-                    child: CustomScrollView(
-                      controller: _scrollController,
-                      slivers: [
-                        if (erroredPosts.isNotEmpty)
-                          SliverList(
-                            delegate: SliverChildListDelegate(
-                              [ErrorPostMessage()],
+          return BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, homeState) {
+            _validateBackToTopStatus(homeState);
+            return Stack(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    if (state.syncingPosts) PostsListSyncingIndicator(),
+                    Expanded(
+                      child: CustomScrollView(
+                        controller: _scrollController,
+                        slivers: [
+                          if (erroredPosts.isNotEmpty)
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                [ErrorPostMessage()],
+                              ),
                             ),
-                          ),
-                        if (erroredPosts.isNotEmpty)
+                          if (erroredPosts.isNotEmpty)
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  return ErrorPost(
+                                      post: erroredPosts[index],
+                                      lastChild:
+                                          index + 1 == erroredPosts.length);
+                                },
+                                childCount: erroredPosts.length,
+                              ),
+                            ),
                           SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
-                                return ErrorPost(
-                                    post: erroredPosts[index],
-                                    lastChild:
-                                        index + 1 == erroredPosts.length);
+                                return index >= posts.length
+                                    ? BottomLoader()
+                                    : PostListItem(post: posts[index]);
                               },
-                              childCount: erroredPosts.length,
+                              childCount: state.hasReachedMax
+                                  ? posts.length
+                                  : posts.length + 1,
                             ),
                           ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return index >= posts.length
-                                  ? BottomLoader()
-                                  : PostListItem(post: posts[index]);
-                            },
-                            childCount: state.hasReachedMax
-                                ? posts.length
-                                : posts.length + 1,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              if (state.shouldRefresh)
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: FlatButton(
-                    textColor: Colors.white,
-                    color: Theme.of(context).colorScheme.secondary,
-                    onPressed: () {
-                      _indicator.currentState.show();
-                    },
-                    child: Text(
-                      PostsLocalizations.of(context)
-                          .translate(Messages.refreshButtonText),
-                    ),
-                  ),
+                  ],
                 ),
-            ],
-          );
+                if (state.shouldRefresh)
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: FlatButton(
+                      textColor: Colors.white,
+                      color: Theme.of(context).colorScheme.secondary,
+                      onPressed: () {
+                        _indicator.currentState.show();
+                      },
+                      child: Text(
+                        PostsLocalizations.of(context)
+                            .translate(Messages.refreshButtonText),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          });
         },
       ),
     );
@@ -147,6 +151,29 @@ class _PostsListState extends State<PostsList> {
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
       _postsListBloc.add(FetchPosts());
+    }
+  }
+
+  void _backToTop() {
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  void _validateBackToTopStatus(HomeState homeState) {
+    if (!_scrollController.hasClients) {
+      return null;
+    }
+    final shouldScroll =
+        homeState.activeTab == AppTab.home && homeState.scrollToTop;
+    // If position is at top refresh posts otherwise scroll to top
+    if (_scrollController.position.pixels == 0.0 && shouldScroll) {
+      _indicator.currentState.show();
+    } else if (shouldScroll) {
+      BlocProvider.of<HomeBloc>(context).add(SetScrollToTop(false));
+      _backToTop();
     }
   }
 }

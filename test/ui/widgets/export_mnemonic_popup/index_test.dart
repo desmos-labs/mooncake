@@ -8,7 +8,7 @@ import '../../helper.dart';
 void main() {
   testWidgets('ExportMnemonicPopup: Displays correctly',
       (WidgetTester tester) async {
-    MockMnemonicBloc mockMnemonicBloc = MockMnemonicBloc();
+    var mockMnemonicBloc = MockMnemonicBloc();
     when(mockMnemonicBloc.state).thenReturn(
       ExportingMnemonic.fromMnemonicState(
         MnemonicState.initial(),

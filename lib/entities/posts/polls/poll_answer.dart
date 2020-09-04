@@ -11,11 +11,11 @@ part 'poll_answer.g.dart';
 class PollAnswer extends Equatable {
   /// Id of the answer that the user has selected.
   /// This id refers to one of the [PostPoll.options]'s `id` field.
-  @JsonKey(name: "answer")
+  @JsonKey(name: 'answer')
   final int answer;
 
   /// User that has created this answer.
-  @JsonKey(name: "user")
+  @JsonKey(name: 'user')
   final User user;
 
   const PollAnswer({

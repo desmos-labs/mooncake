@@ -10,12 +10,12 @@ extension AccountExtensions on MooncakeAccount {
   /// Transforms this instance of [MooncakeAccount] into a [User] instance.
   User toUser() {
     return User(
-      address: this.address,
-      dtag: this.dtag,
-      moniker: this.moniker,
-      bio: this.bio,
-      profilePicUri: this.profilePicUri,
-      coverPicUri: this.coverPicUri,
+      address: address,
+      dtag: dtag,
+      moniker: moniker,
+      bio: bio,
+      profilePicUri: profilePicUri,
+      coverPicUri: coverPicUri,
     );
   }
 }

@@ -5,43 +5,67 @@ import 'package:mooncake/entities/entities.dart';
 abstract class UserRepository {
   /// Saves the given mnemonic inside the secure storage of the device
   /// allowing it to be retrieved later.
-  Future<void> saveWallet(String mnemonic);
+  Future<Wallet> saveWallet(String mnemonic);
 
-  /// Returns the mnemonic that is associated to the current application user.
+  /// Returns the mnemonic associated to the account having the given [address].
   /// If no mnemonic has been saved yet, returns `null`.
-  Future<List<String>> getMnemonic();
+  Future<List<String>> getMnemonic(String address);
 
-  /// Returns the [Wallet] instance of the current application user.
-  /// If no [Wallet] instance has been saved yet, returns `null`.
-  Future<Wallet> getWallet();
-
-  /// Saves the given [account] as the current user object.
+  /// Saves the given [account] as one of the many available accounts that
+  /// can be used.
+  /// If [syncRemote] is true, the account will also saved into the remote
+  /// source as well.
   Future<AccountSaveResult> saveAccount(
     MooncakeAccount account, {
     bool syncRemote = false,
   });
 
-  /// Returns the [AccountData] object containing the info of the current user.
+  /// Sets the given [account] as the currently active one.
+  /// The active account represents the main account that is being used
+  /// by the user inside the whole application.
+  Future<void> setActiveAccount(MooncakeAccount account);
+
+  /// Returns the [MooncakeAccount] having the given [address].
   /// If no [MooncakeAccount] or [Wallet] have been saved using [saveWallet]
   /// and the account data cannot be retrieved, returns `null` instead.
-  Future<MooncakeAccount> getAccount();
+  Future<MooncakeAccount> getAccount(String address);
 
-  /// Refreshes the user account downloading the data from the remote source.
-  /// Returns the updated [MooncakeAccount] value.
-  Future<MooncakeAccount> refreshAccount();
+  /// Returns the list of all the [MooncakeAccount]s that can be switched to
+  /// by the application user.
+  Future<List<MooncakeAccount>> getAccounts();
 
-  /// Returns a stream that emits all the user changes.
-  Stream<MooncakeAccount> get accountStream;
+  /// Returns the [MooncakeAccount] representing the account that is marked
+  /// as being currently active.
+  /// If no account has been marked as such, `null` is returned instead.
+  Future<MooncakeAccount> getActiveAccount();
+
+  /// Refreshes the user account having the given [address] by downloading
+  /// the data from the remote source.
+  /// Returns the updated [MooncakeAccount] object.
+  Future<MooncakeAccount> refreshAccount(String address);
+
+  /// Returns a stream that emits the latest active [MooncakeAccount].
+  Stream<MooncakeAccount> get activeAccountStream;
 
   /// Allows to sends funds from the faucet to the specified [user].
   Future<void> fundAccount(MooncakeAccount user);
 
-  /// Saves the given [method] as the local user authentication method.
-  Future<void> saveAuthenticationMethod(AuthenticationMethod method);
+  /// Saves the given [method] as the local user authentication method for
+  /// the account having the given [address].
+  Future<void> saveAuthenticationMethod(
+    String address,
+    AuthenticationMethod method,
+  );
 
-  /// Returns the currently set authentication method.
-  Future<AuthenticationMethod> getAuthenticationMethod();
+  /// Returns the local authentication method set for the account having
+  /// the given [address].
+  Future<AuthenticationMethod> getAuthenticationMethod(String address);
 
-  /// Deletes entirely the currently stored account data.
+  /// Logouts the account having the given [address].
+  /// After logging out the account, all its data will be deleted from the
+  /// local storage.
+  Future<void> logout(String address);
+
+  /// Removes all the accounts data from the local storage.
   Future<void> deleteData();
 }

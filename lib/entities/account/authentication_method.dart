@@ -8,14 +8,14 @@ part 'authentication_method.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true, createFactory: false)
 abstract class AuthenticationMethod extends Equatable {
-  static const String KEY_TYPE = "type";
+  static const String KEY_TYPE = 'type';
 
   /// Identifies the type of authentication.
   @JsonKey(name: KEY_TYPE)
   final String type;
 
-  static const TYPE_BIOMETRICS = "biometrics";
-  static const TYPE_PASSWORD = "password";
+  static const TYPE_BIOMETRICS = 'biometrics';
+  static const TYPE_PASSWORD = 'password';
 
   const AuthenticationMethod({@required this.type}) : assert(type != null);
 
@@ -27,13 +27,13 @@ abstract class AuthenticationMethod extends Equatable {
       case TYPE_PASSWORD:
         return PasswordAuthentication.fromJson(json);
       default:
-        throw Exception("Authentication type not supported: $type");
+        throw Exception('Authentication type not supported: $type');
     }
   }
 
   /// Converts this object to a JSON [Map].
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> base = _$AuthenticationMethodToJson(this);
+    var base = _$AuthenticationMethodToJson(this);
     base.addAll(asJson());
     return base;
   }
@@ -71,7 +71,7 @@ class BiometricAuthentication extends AuthenticationMethod {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PasswordAuthentication extends AuthenticationMethod {
-  @JsonKey(name: "password")
+  @JsonKey(name: 'password')
   final String hashedPassword;
 
   const PasswordAuthentication({

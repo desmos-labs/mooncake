@@ -16,9 +16,9 @@ class MockRemotePostsSource extends Mock implements RemotePostsSource {}
 class MockLocalSettingsSource extends Mock implements LocalSettingsSource {}
 
 void main() {
-  MockLocalPostsSource localSource = MockLocalPostsSource();
-  MockRemotePostsSource remoteSource = MockRemotePostsSource();
-  MockLocalSettingsSource localSettingsSource = MockLocalSettingsSource();
+  var localSource = MockLocalPostsSource();
+  var remoteSource = MockRemotePostsSource();
+  var localSettingsSource = MockLocalSettingsSource();
 
   PostsRepositoryImpl repository;
 
@@ -65,12 +65,12 @@ void main() {
     final remotesPosts = testPosts.take(5).toList();
     final localPosts = testPosts.reversed.take(3).toList();
     when(remoteSource.getHomePosts(
-            start: anyNamed("start"), limit: anyNamed("limit")))
+            start: anyNamed('start'), limit: anyNamed('limit')))
         .thenAnswer((_) => Future.value(remotesPosts));
-    when(localSource.savePosts(any, merge: anyNamed("merge")))
+    when(localSource.savePosts(any, merge: anyNamed('merge')))
         .thenAnswer((_) => Future.value(null));
     when(localSource.getHomePosts(
-            start: anyNamed("start"), limit: anyNamed("limit")))
+            start: anyNamed('start'), limit: anyNamed('limit')))
         .thenAnswer((_) => Future.value(localPosts));
 
     final result = await repository.getHomePosts(start: start, limit: limit);
@@ -88,17 +88,17 @@ void main() {
     when(localSource.singlePostStream(any))
         .thenAnswer((_) => controller.stream);
 
-    final postId = "post-id";
+    final postId = 'post-id';
     final stream = repository.getPostByIdStream(postId);
     expectLater(
         stream,
         emitsInOrder([
           testPost,
-          testPost.copyWith(parentId: "100"),
+          testPost.copyWith(parentId: '100'),
         ]));
 
     controller.add(testPost);
-    controller.add(testPost.copyWith(parentId: "100"));
+    controller.add(testPost.copyWith(parentId: '100'));
     verify(localSource.singlePostStream(postId)).called(1);
   });
 
@@ -107,7 +107,7 @@ void main() {
       final post = testPost;
       when(localSource.getPostById(any)).thenAnswer((_) => Future.value(post));
 
-      final postId = "post-id";
+      final postId = 'post-id';
       final result = await repository.getPostById(postId);
       expect(result, equals(post));
 
@@ -116,14 +116,14 @@ void main() {
 
     test('when refresh is set to true', () async {
       final remotePost = testPost;
-      final localPost = testPost.copyWith(parentId: "10");
+      final localPost = testPost.copyWith(parentId: '10');
       when(remoteSource.getPostById(any))
           .thenAnswer((_) => Future.value(remotePost));
       when(localSource.savePost(any)).thenAnswer((_) => Future.value(null));
       when(localSource.getPostById(any))
           .thenAnswer((_) => Future.value(localPost));
 
-      final postId = "post-id";
+      final postId = 'post-id';
       final result = await repository.getPostById(postId, refresh: true);
       expect(result, equals(localPost));
 
@@ -140,7 +140,7 @@ void main() {
     when(localSource.getPostsByTxHash(any))
         .thenAnswer((_) => Future.value(posts));
 
-    final txHash = "tx-hash";
+    final txHash = 'tx-hash';
     final result = await repository.getPostsByTxHash(txHash);
     expect(result, equals(posts));
 
@@ -152,7 +152,7 @@ void main() {
     when(localSource.getPostCommentsStream(any))
         .thenAnswer((_) => controller.stream);
 
-    final postId = "post-id";
+    final postId = 'post-id';
     final stream = repository.getPostCommentsStream(postId);
     expectLater(
         stream,
@@ -174,7 +174,7 @@ void main() {
       when(localSource.getPostComments(any))
           .thenAnswer((_) => Future.value(posts));
 
-      final postId = "post-id";
+      final postId = 'post-id';
       final result = await repository.getPostComments(postId);
       expect(result, equals(posts));
 
@@ -183,14 +183,14 @@ void main() {
 
     test('when refresh is set to true', () async {
       final remotePosts = [testPost];
-      final localPosts = [testPost.copyWith(parentId: "10")];
+      final localPosts = [testPost.copyWith(parentId: '10')];
       when(remoteSource.getPostComments(any))
           .thenAnswer((_) => Future.value(remotePosts));
       when(localSource.savePost(any)).thenAnswer((_) => Future.value(null));
       when(localSource.getPostComments(any))
           .thenAnswer((_) => Future.value(localPosts));
 
-      final postId = "post-id";
+      final postId = 'post-id';
       final result = await repository.getPostComments(postId, refresh: true);
       expect(result, equals(localPosts));
 
@@ -212,10 +212,10 @@ void main() {
   });
 
   test('savePosts performs correct calls', () async {
-    when(localSource.savePosts(any, merge: anyNamed("merge")))
+    when(localSource.savePosts(any, merge: anyNamed('merge')))
         .thenAnswer((_) => Future.value(null));
 
-    final posts = [testPost, testPost.copyWith(parentId: "100")];
+    final posts = [testPost, testPost.copyWith(parentId: '100')];
     await repository.savePosts(posts);
 
     verify(localSource.savePosts(posts)).called(1);
@@ -223,13 +223,13 @@ void main() {
 
   group('syncPosts', () {
     test('sync with empty list does nothing', () async {
-      final syncPosts = List<Post>();
-      when(localSource.getPostsToSync())
+      final syncPosts = <Post>[];
+      when(localSource.getPostsToSync('address'))
           .thenAnswer((_) => Future.value(syncPosts));
 
-      await repository.syncPosts();
+      await repository.syncPosts('address');
 
-      verify(localSource.getPostsToSync()).called(1);
+      verify(localSource.getPostsToSync('address')).called(1);
       verifyNever(localSource.savePosts(any));
     });
 
@@ -238,7 +238,7 @@ void main() {
         () async {
       // --- SETUP
       final syncPosts = testPosts.take(2).toList();
-      when(localSource.getPostsToSync())
+      when(localSource.getPostsToSync('address'))
           .thenAnswer((_) => Future.value(syncPosts));
 
       final firstUpdate = syncPosts.map((e) {
@@ -247,7 +247,7 @@ void main() {
         );
       }).toList();
 
-      final hash = "hash";
+      final hash = 'hash';
       final result = TransactionResult(hash: hash, success: true, raw: {});
       when(remoteSource.savePosts(any)).thenAnswer((_) => Future.value(result));
 
@@ -258,7 +258,7 @@ void main() {
       }).toList();
 
       // --- CALL
-      await repository.syncPosts();
+      await repository.syncPosts('address');
 
       // --- VERIFICATION
       verifyInOrder([
@@ -273,7 +273,7 @@ void main() {
     test('failed sync updates correcty the status', () async {
       // --- SETUP
       final syncPosts = testPosts.take(2).toList();
-      when(localSource.getPostsToSync())
+      when(localSource.getPostsToSync('address'))
           .thenAnswer((_) => Future.value(syncPosts));
 
       final firstUpdate = syncPosts.map((e) {
@@ -282,8 +282,8 @@ void main() {
         );
       }).toList();
 
-      final hash = "hash";
-      final error = "error";
+      final hash = 'hash';
+      final error = 'error';
       final result = TransactionResult(
         hash: hash,
         success: false,
@@ -299,7 +299,7 @@ void main() {
       }).toList();
 
       // --- CALL
-      await repository.syncPosts();
+      await repository.syncPosts('address');
 
       // --- VERIFICATION
       verifyInOrder([
@@ -318,7 +318,7 @@ void main() {
 
   group('savePostsAndGetStatus returns the correct result', () {
     test('when the saving is successful', () async {
-      final result = TransactionResult(raw: {}, hash: "tx-hash", success: true);
+      final result = TransactionResult(raw: {}, hash: 'tx-hash', success: true);
       when(remoteSource.savePosts(any)).thenAnswer((_) => Future.value(result));
 
       final posts = [testPost];
@@ -336,9 +336,9 @@ void main() {
     test('when the saving is not successful', () async {
       final result = TransactionResult(
         raw: {},
-        hash: "tx-hash",
+        hash: 'tx-hash',
         success: false,
-        error: TransactionError(errorCode: 0, errorMessage: "error"),
+        error: TransactionError(errorCode: 0, errorMessage: 'error'),
       );
       when(remoteSource.savePosts(any)).thenAnswer((_) => Future.value(result));
 

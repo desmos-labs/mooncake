@@ -9,12 +9,12 @@ import '../../../mocks/mocks.dart';
 import '../../helper.dart';
 
 void main() {
-  MockPostDetailsBloc mockPostDetailsBloc = MockPostDetailsBloc();
-  MockAccountBloc mockAccountBloc = MockAccountBloc();
-  MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var mockPostDetailsBloc = MockPostDetailsBloc();
+  var mockAccountBloc = MockAccountBloc();
+  var mockNavigatorBloc = MockNavigatorBloc();
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
   testWidgets('PostDetailsScreen: Displays correctly',
@@ -25,7 +25,8 @@ void main() {
       comments: testPosts,
     ));
 
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
 
     await tester.pumpWidget(
       makeTestableWidget(

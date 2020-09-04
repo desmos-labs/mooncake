@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 /// operation.
 Future<T> measureExecTime<T>(
   Future<T> Function() function, {
-  String name = "",
+  String name = '',
 }) async {
   if (kReleaseMode) {
     // DO nothing in release mode

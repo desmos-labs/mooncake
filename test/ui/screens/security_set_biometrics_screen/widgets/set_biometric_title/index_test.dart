@@ -13,7 +13,7 @@ class MockBiometricsBloc extends MockBloc<BiometricsEvent, BiometricsState>
 void main() {
   testWidgets('SetBiometricTitle: Displays correctly',
       (WidgetTester tester) async {
-    MockBiometricsBloc mockBiometricsBloc = MockBiometricsBloc();
+    var mockBiometricsBloc = MockBiometricsBloc();
     when(mockBiometricsBloc.state).thenAnswer((_) => BiometricsState.initial());
 
     await tester.pumpWidget(

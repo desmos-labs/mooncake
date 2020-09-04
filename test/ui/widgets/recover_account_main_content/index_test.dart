@@ -8,11 +8,11 @@ import 'package:mooncake/ui/widgets/recover_account_main_content/widgets/export.
 void main() {
   testWidgets('RecoverAccountMainContent: Displays export correctly',
       (WidgetTester tester) async {
-    MockRecoverAccountBloc mockRecoverAccountBloc = MockRecoverAccountBloc();
+    var mockRecoverAccountBloc = MockRecoverAccountBloc();
     when(mockRecoverAccountBloc.state)
         .thenReturn(RecoverAccountState.initial());
 
-    bool backupPhrase = false;
+    var backupPhrase = false;
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
@@ -35,8 +35,8 @@ void main() {
 
   testWidgets('RecoverAccountMainContent: Displays export correctly 2',
       (WidgetTester tester) async {
-    MockRecoverAccountBloc mockRecoverAccountBloc = MockRecoverAccountBloc();
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
+    var mockRecoverAccountBloc = MockRecoverAccountBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
     when(mockRecoverAccountBloc.state).thenReturn(
       RecoverAccountState(
         currentWordIndex: 0,
@@ -45,7 +45,7 @@ void main() {
       ),
     );
 
-    bool backupPhrase = false;
+    var backupPhrase = false;
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(

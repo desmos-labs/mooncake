@@ -10,17 +10,17 @@ import '../../../mocks/mocks.dart';
 import '../../helper.dart';
 
 void main() {
-  MockAccountBloc mockAccountBloc = MockAccountBloc();
+  var mockAccountBloc = MockAccountBloc();
 
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
 
   testWidgets('WalletScreen: Displays correctly', (WidgetTester tester) async {
     when(mockAccountBloc.state)
-        .thenAnswer((_) => LoggedIn.initial(userAccount));
+        .thenAnswer((_) => LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(

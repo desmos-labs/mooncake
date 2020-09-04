@@ -13,7 +13,6 @@ import '../export.dart';
 /// Represents the Bloc associated with the home screen.
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AccountBloc _loginBloc;
-  final LogoutUseCase _logoutUseCase;
   final SaveSettingUseCase _saveSettingUseCase;
   final WatchSettingUseCase _watchSettingUseCase;
   final GetSettingUseCase _getSettingUseCase;
@@ -22,14 +21,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc({
     @required AccountBloc loginBloc,
-    @required LogoutUseCase logoutUseCase,
     @required SaveSettingUseCase saveSettingUseCase,
     @required WatchSettingUseCase watchSettingUseCase,
     @required GetSettingUseCase getSettingUseCase,
   })  : assert(loginBloc != null),
         _loginBloc = loginBloc,
-        assert(logoutUseCase != null),
-        _logoutUseCase = logoutUseCase,
         assert(saveSettingUseCase != null),
         _saveSettingUseCase = saveSettingUseCase,
         assert(watchSettingUseCase != null),
@@ -42,7 +38,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   factory HomeBloc.create(BuildContext context) {
     return HomeBloc(
       loginBloc: BlocProvider.of(context),
-      logoutUseCase: Injector.get(),
       saveSettingUseCase: Injector.get(),
       watchSettingUseCase: Injector.get(),
       getSettingUseCase: Injector.get(),
@@ -57,42 +52,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is UpdateTab) {
-      yield state.copyWith(activeTab: event.tab);
+      yield* _mapUpdateTabToState(event);
     } else if (event is SignOut) {
-      _mapSignOutToState();
-      _loginBloc.add(LogOut());
+      _mapSignOutToState(event);
     } else if (event is ShowBackupMnemonicPhrasePopup) {
       yield* _mapShowBackupMnemonicPhrasePopupToState();
     } else if (event is HideBackupMnemonicPhrasePopup) {
       yield* _mapHideBackupMnemonicPhrasePopupToState();
     } else if (event is TurnOffBackupMnemonicPopupPermission) {
       yield* _mapTurnOffBackupMnemonicPopupPermissionToState();
+    } else if (event is SetScrollToTop) {
+      yield state.copyWith(
+        scrollToTop: event.scroll,
+      );
     }
   }
 
   void _startSubscription() async {
-    if (_watchSettingSubscription == null) {
-      _watchSettingSubscription = _watchSettingUseCase
-          .watch(key: SettingKeys.TX_AMOUNT)
-          .listen((value) async {
-        final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
-        final checkPopupPermission = await _getSettingUseCase.get(
-          key: SettingKeys.BACKUP_POPUP_PERMISSION,
-        );
+    _watchSettingSubscription ??= _watchSettingUseCase
+        .watch(key: SettingKeys.TX_AMOUNT)
+        .listen((value) async {
+      final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
+      final checkPopupPermission = await _getSettingUseCase.get(
+        key: SettingKeys.BACKUP_POPUP_PERMISSION,
+      );
 
-        if (checkTxAmount && checkPopupPermission != false) {
-          add(ShowBackupMnemonicPhrasePopup());
-        } else {
-          add(HideBackupMnemonicPhrasePopup());
-        }
-      });
-    }
+      if (checkTxAmount && checkPopupPermission != false) {
+        add(ShowBackupMnemonicPhrasePopup());
+      } else {
+        add(HideBackupMnemonicPhrasePopup());
+      }
+    });
   }
 
   /// handles SignOut [event]
-  void _mapSignOutToState() async {
-    this._stopSubscription();
-    await _logoutUseCase.logout();
+  void _mapSignOutToState(SignOut event) {
+    _stopSubscription();
+    _loginBloc.add(LogOut(event.address));
   }
 
   /// Stops all valid subscriptions
@@ -118,5 +114,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       value: false,
     );
     yield state.copyWith(showBackupPhrasePopup: false);
+  }
+
+  /// tells screens whether to scroll to top
+  Stream<HomeState> _mapUpdateTabToState(UpdateTab event) async* {
+    yield state.copyWith(
+      activeTab: event.tab,
+      scrollToTop: state.activeTab == event.tab,
+    );
   }
 }

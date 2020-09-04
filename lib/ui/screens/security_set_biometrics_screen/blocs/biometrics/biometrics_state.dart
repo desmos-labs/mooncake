@@ -33,5 +33,15 @@ class BiometricsState extends Equatable {
   }
 
   @override
-  List<Object> get props => [saving, availableBiometric];
+  List<Object> get props {
+    return [saving, availableBiometric];
+  }
+
+  @override
+  String toString() {
+    return 'BiometricsState { '
+        'saving: $saving, '
+        'availableBiometric: $availableBiometric '
+        '}';
+  }
 }

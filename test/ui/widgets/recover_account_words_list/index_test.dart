@@ -8,7 +8,7 @@ import '../../helper.dart';
 void main() {
   testWidgets('RecoverAccountWordsList: Displays export correctly',
       (WidgetTester tester) async {
-    MockRecoverAccountBloc mockRecoverAccountBloc = MockRecoverAccountBloc();
+    var mockRecoverAccountBloc = MockRecoverAccountBloc();
     when(mockRecoverAccountBloc.state)
         .thenReturn(RecoverAccountState.initial());
 

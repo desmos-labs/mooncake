@@ -6,7 +6,7 @@ import '../../helper.dart';
 void main() {
   testWidgets('PasswordStrengthIndicator: Displays correctly',
       (WidgetTester tester) async {
-    PasswordSecurity security = PasswordSecurity.LOW;
+    var security = PasswordSecurity.LOW;
     StateSetter setStateController;
 
     await tester.pumpWidget(
@@ -25,7 +25,7 @@ void main() {
 
     await tester.pumpAndSettle();
     expect(find.byType(Expanded), findsNWidgets(4));
-    expect(find.text("passwordSecurityLow"), findsOneWidget);
+    expect(find.text('passwordSecurityLow'), findsOneWidget);
     expect(
       tester.widget<Text>(find.byType(Text).last).style.color,
       Colors.red,
@@ -36,7 +36,7 @@ void main() {
     });
     await tester.pumpAndSettle();
 
-    expect(find.text("passwordSecurityMedium"), findsOneWidget);
+    expect(find.text('passwordSecurityMedium'), findsOneWidget);
     expect(
       tester.widget<Text>(find.byType(Text).last).style.color,
       Colors.orange,
@@ -47,7 +47,7 @@ void main() {
     });
     await tester.pumpAndSettle();
 
-    expect(find.text("passwordSecurityHigh"), findsOneWidget);
+    expect(find.text('passwordSecurityHigh'), findsOneWidget);
     expect(
       tester.widget<Text>(find.byType(Text).last).style.color,
       Colors.green,

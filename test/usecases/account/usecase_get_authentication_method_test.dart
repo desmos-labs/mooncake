@@ -17,13 +17,13 @@ void main() {
   });
 
   test('get performs proper calls', () async {
-    final authMethod = PasswordAuthentication(hashedPassword: "password");
-    when(repository.getAuthenticationMethod())
+    final authMethod = PasswordAuthentication(hashedPassword: 'password');
+    when(repository.getAuthenticationMethod('address'))
         .thenAnswer((_) => Future.value(authMethod));
 
-    final result = await getAuthenticationMethodUseCase.get();
+    final result = await getAuthenticationMethodUseCase.get('address');
     expect(result, equals(authMethod));
 
-    verify(repository.getAuthenticationMethod()).called(1);
+    verify(repository.getAuthenticationMethod('address')).called(1);
   });
 }

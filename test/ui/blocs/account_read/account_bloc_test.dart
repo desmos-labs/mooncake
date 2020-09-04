@@ -15,7 +15,8 @@ class MockGenerateMnemonicUseCase extends Mock
 
 class MockLogoutUseCase extends Mock implements LogoutUseCase {}
 
-class MockGetAccountUseCase extends Mock implements GetAccountUseCase {}
+class MockGetActiveAccountUseCase extends Mock
+    implements GetActiveAccountUseCase {}
 
 class MockRefreshAccountUseCase extends Mock implements RefreshAccountUseCase {}
 
@@ -27,37 +28,51 @@ class MockNavigatorBloc extends Mock implements NavigatorBloc {}
 
 class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 
+class MockGetAccountsUseCase extends Mock implements GetAccountsUseCase {}
+
+class MockSetAccountActiveUsecase extends Mock
+    implements SetAccountActiveUsecase {}
+
 void main() {
   MockGenerateMnemonicUseCase mockGenerateMnemonicUseCase;
   MockLogoutUseCase mockLogoutUseCase;
-  MockGetAccountUseCase mockGetAccountUseCase;
+  MockGetActiveAccountUseCase mockGetActiveAccountUseCase;
   MockRefreshAccountUseCase mockRefreshAccountUseCase;
   MockGetSettingUseCase mockGetSettingUseCase;
   MockSaveSettingUseCase mockSaveSettingUseCase;
   MockNavigatorBloc mockNavigatorBloc;
   MockFirebaseAnalytics mockFirebaseAnalytics;
+  MockGetAccountsUseCase mockGetAccountsUseCase;
+  MockSetAccountActiveUsecase mockSetAccountActiveUsecase;
 
   setUp(() {
     mockGenerateMnemonicUseCase = MockGenerateMnemonicUseCase();
     mockLogoutUseCase = MockLogoutUseCase();
-    mockGetAccountUseCase = MockGetAccountUseCase();
+    mockGetActiveAccountUseCase = MockGetActiveAccountUseCase();
     mockRefreshAccountUseCase = MockRefreshAccountUseCase();
     mockGetSettingUseCase = MockGetSettingUseCase();
     mockSaveSettingUseCase = MockSaveSettingUseCase();
     mockNavigatorBloc = MockNavigatorBloc();
     mockFirebaseAnalytics = MockFirebaseAnalytics();
+    mockGetAccountsUseCase = MockGetAccountsUseCase();
+    mockSetAccountActiveUsecase = MockSetAccountActiveUsecase();
   });
 
   group(
     'AccountBloc',
     () {
       AccountBloc accountBloc;
-      MooncakeAccount userAccount = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
+      var userAccount = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
         cosmosAccount: cosmosAccount,
       );
-      const List<String> mnemonic = [
+      var userAccountTwo = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
+        cosmosAccount: cosmosAccount.copyWith(address: 'another address'),
+      );
+      const mnemonic = <String>[
         'frown',
         'spike',
         'buyer',
@@ -87,17 +102,19 @@ void main() {
       setUp(
         () {
           final controller = StreamController<MooncakeAccount>();
-          when(mockGetAccountUseCase.stream())
+          when(mockGetActiveAccountUseCase.stream())
               .thenAnswer((_) => controller.stream);
           accountBloc = AccountBloc(
             generateMnemonicUseCase: mockGenerateMnemonicUseCase,
             logoutUseCase: mockLogoutUseCase,
-            getUserUseCase: mockGetAccountUseCase,
+            getActiveAccountUseCase: mockGetActiveAccountUseCase,
             refreshAccountUseCase: mockRefreshAccountUseCase,
             getSettingUseCase: mockGetSettingUseCase,
             saveSettingUseCase: mockSaveSettingUseCase,
             navigatorBloc: mockNavigatorBloc,
             analytics: mockFirebaseAnalytics,
+            getAccountsUseCase: mockGetAccountsUseCase,
+            setAccountActiveUsecase: mockSetAccountActiveUsecase,
           );
         },
       );
@@ -105,10 +122,10 @@ void main() {
       blocTest(
         'CheckStatus: Expect check status event to return loggedout state',
         build: () async {
-          when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
+          when(mockGetSettingUseCase.get(key: anyNamed('key'))).thenAnswer((_) {
             return Future.value(null);
           });
-          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(null);
           });
           return accountBloc;
@@ -116,25 +133,34 @@ void main() {
         act: (bloc) async => bloc.add(CheckStatus()),
         expect: [LoggedOut()],
         verify: (_) async {
-          verify(mockGetAccountUseCase.single()).called(1);
-          verify(mockGetSettingUseCase.get(key: anyNamed("key"))).called(1);
+          verify(mockGetActiveAccountUseCase.single()).called(1);
+          verify(mockGetSettingUseCase.get(key: anyNamed('key'))).called(1);
         },
       );
 
       blocTest(
         'CheckStatus: Expect check status event to return loggedIn state',
         build: () async {
-          when(mockGetSettingUseCase.get(key: anyNamed("key"))).thenAnswer((_) {
+          when(mockGetSettingUseCase.get(key: anyNamed('key'))).thenAnswer((_) {
             return Future.value(null);
           });
-          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
+          });
+
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount]);
           });
 
           return accountBloc;
         },
         act: (bloc) async => bloc.add(CheckStatus()),
-        expect: [LoggedIn.initial(userAccount)],
+        expect: [
+          LoggedIn.initial(userAccount, [userAccount])
+        ],
+        verify: (_) async {
+          verify(mockGetAccountsUseCase.all()).called(1);
+        },
       );
 
       blocTest(
@@ -150,42 +176,107 @@ void main() {
       );
 
       blocTest(
-        'LogIn: to work properly',
+        'GenerateAccountWhileLoggedIn: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
+          });
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount]);
+          });
+          when(mockGenerateMnemonicUseCase.generate()).thenAnswer((_) {
+            return Future.value(mnemonic);
           });
           return accountBloc;
         },
+        act: (bloc) async {
+          bloc.add(LogIn());
+          bloc.add(GenerateAccountWhileLoggedIn());
+        },
+        skip: 2,
+        expect: [
+          CreatingAccountWhileLoggedIn(
+              user: userAccount, accounts: [userAccount], refreshing: false),
+          AccountCreatedWhileLoggedIn(
+            mnemonic,
+            accounts: [userAccount],
+            user: userAccount,
+            refreshing: false,
+          ),
+        ],
+      );
+
+      blocTest(
+        'LogIn: to work properly',
+        build: () async {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
+            return Future.value(userAccount);
+          });
+
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount]);
+          });
+
+          return accountBloc;
+        },
         act: (bloc) async => bloc.add(LogIn()),
-        expect: [LoggedIn.initial(userAccount)],
+        expect: [
+          LoggedIn.initial(userAccount, [userAccount])
+        ],
+        verify: (_) async {
+          verify(mockGetAccountsUseCase.all()).called(1);
+        },
       );
 
       blocTest(
         'LogOut: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+          return accountBloc;
+        },
+        act: (bloc) async => bloc.add(LogOut('address')),
+        expect: [LoggedOut()],
+      );
+
+      blocTest(
+        'LogOutAll: to work properly',
+        build: () async {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;
         },
-        act: (bloc) async => bloc.add(LogOut()),
+        act: (bloc) async => bloc.add(LogOutAll()),
         expect: [LoggedOut()],
       );
 
       blocTest(
         'UserRefreshed: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount, userAccountTwo]);
+          });
+
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;
         },
         act: (bloc) async {
           bloc.add(LogIn());
-          bloc.add(UserRefreshed(userAccount));
+          bloc.add(UserRefreshed(userAccountTwo));
         },
-        expect: [LoggedIn(user: userAccount, refreshing: false)],
+        expect: [
+          LoggedIn(
+            user: userAccount,
+            refreshing: false,
+            accounts: [userAccount, userAccountTwo],
+          ),
+          LoggedIn(
+            user: userAccountTwo,
+            refreshing: false,
+            accounts: [userAccount, userAccountTwo],
+          ),
+        ],
       );
 
       blocTest(
@@ -202,7 +293,11 @@ void main() {
       blocTest(
         'RefreshAccount: to work properly',
         build: () async {
-          when(mockGetAccountUseCase.single()).thenAnswer((_) {
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount]);
+          });
+
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
           return accountBloc;
@@ -212,10 +307,38 @@ void main() {
           bloc.add(RefreshAccount());
         },
         expect: [
-          LoggedIn(user: userAccount, refreshing: false),
-          LoggedIn(user: userAccount, refreshing: true),
-          LoggedIn(user: userAccount, refreshing: false),
+          LoggedIn(
+              user: userAccount, refreshing: false, accounts: [userAccount]),
+          LoggedIn(
+              user: userAccount, refreshing: true, accounts: [userAccount]),
+          LoggedIn(
+              user: userAccount, refreshing: false, accounts: [userAccount]),
         ],
+      );
+
+      blocTest(
+        'SwitchAccount: to work properly',
+        build: () async {
+          when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
+            return Future.value(userAccount);
+          });
+
+          when(mockGetAccountsUseCase.all()).thenAnswer((_) {
+            return Future.value([userAccount]);
+          });
+
+          return accountBloc;
+        },
+        act: (bloc) async {
+          bloc.add(LogIn());
+          bloc.add(SwitchAccount(userAccountTwo));
+        },
+        expect: [
+          LoggedIn.initial(userAccount, [userAccount]),
+        ],
+        verify: (_) async {
+          verify(mockGetAccountsUseCase.all()).called(1);
+        },
       );
     },
   );

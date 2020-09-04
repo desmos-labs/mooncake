@@ -33,7 +33,7 @@ class NotificationsList extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: 50),
                 Image(
-                  image: AssetImage("assets/images/airplane.png"),
+                  image: AssetImage('assets/images/airplane.png'),
                   width: MediaQuery.of(context).size.width * 0.33,
                   errorBuilder: (BuildContext context, Object exception,
                       StackTrace stackTrace) {

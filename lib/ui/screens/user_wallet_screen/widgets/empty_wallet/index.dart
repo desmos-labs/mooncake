@@ -15,11 +15,11 @@ class EmptyWallet extends StatelessWidget {
             PostsLocalizations.of(context).translate(Messages.emptyWalletTitle),
             style: Theme.of(context).textTheme.headline6,
           ),
-          Image.asset("assets/images/frowned.png", height: 150),
+          Image.asset('assets/images/frowned.png', height: 150),
           Text(
             PostsLocalizations.of(context)
                 .translate(Messages.emptyWalletBody)
-                .replaceAll("\n", " "),
+                .replaceAll('\n', ' '),
             textAlign: TextAlign.center,
           ),
         ],

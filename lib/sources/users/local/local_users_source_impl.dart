@@ -5,7 +5,7 @@ import 'package:sembast/sembast.dart';
 
 /// Implements [LocalUsersSource] basing the storing on a local database.
 class LocalUsersSourceImpl extends LocalUsersSource {
-  static const BLOCKED_USERS_KEY = "blocked_users";
+  static const BLOCKED_USERS_KEY = 'blocked_users';
 
   final StoreRef _store = StoreRef.main();
   final Database _database;

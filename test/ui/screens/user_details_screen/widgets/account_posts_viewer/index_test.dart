@@ -10,17 +10,17 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../helper.dart';
 
 void main() {
-  MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
-  MockAccountBloc mockAccountBloc = MockAccountBloc();
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var mockPostsListBloc = MockPostsListBloc();
+  var mockAccountBloc = MockAccountBloc();
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
   testWidgets('AccountPostsViewer: Displays correctly',
       (WidgetTester tester) async {
     when(mockAccountBloc.state)
-        .thenAnswer((_) => LoggedIn.initial(userAccount));
+        .thenAnswer((_) => LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
@@ -47,7 +47,7 @@ void main() {
   testWidgets('AccountPostsViewer: Displays no posts correctly',
       (WidgetTester tester) async {
     when(mockAccountBloc.state)
-        .thenAnswer((_) => LoggedIn.initial(userAccount));
+        .thenAnswer((_) => LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(

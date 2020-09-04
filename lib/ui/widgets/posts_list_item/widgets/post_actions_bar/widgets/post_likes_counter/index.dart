@@ -15,12 +15,12 @@ class PostLikesCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final likes = post.reactions.where((react) => react.isLike).toList();
-    final int likesCount = likes.length;
+    final likesCount = likes.length;
 
     List<Widget> _generateIcons() {
-      List<Widget> finalResults = [];
+      var finalResults = <Widget>[];
       final margin = 15.0;
-      final int count = likesCount > 6 ? 6 : likesCount;
+      final count = likesCount > 6 ? 6 : likesCount;
 
       for (var i = 0; i < count; i++) {
         finalResults.add(

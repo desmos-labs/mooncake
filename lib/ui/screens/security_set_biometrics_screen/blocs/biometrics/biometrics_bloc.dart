@@ -20,6 +20,7 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
   final LoginUseCase _loginUseCase;
   final GetAvailableBiometricsUseCase _getAvailableBiometricsUseCase;
   final SetAuthenticationMethodUseCase _setAuthenticationMethodUseCase;
+  final SaveWalletUseCase _saveWalletUseCase;
 
   BiometricsBloc({
     @required AccountBloc accountBloc,
@@ -27,6 +28,7 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
     @required LoginUseCase loginUseCase,
     @required GetAvailableBiometricsUseCase getAvailableBiometricsUseCase,
     @required SetAuthenticationMethodUseCase setAuthenticationMethodUseCase,
+    @required SaveWalletUseCase saveWalletUseCase,
   })  : assert(recoverAccountBloc != null),
         _recoverAccountBloc = recoverAccountBloc,
         assert(accountBloc != null),
@@ -35,6 +37,8 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
         _loginUseCase = loginUseCase,
         assert(getAvailableBiometricsUseCase != null),
         _getAvailableBiometricsUseCase = getAvailableBiometricsUseCase,
+        assert(saveWalletUseCase != null),
+        _saveWalletUseCase = saveWalletUseCase,
         assert(setAuthenticationMethodUseCase != null),
         _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase;
 
@@ -45,6 +49,7 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
       loginUseCase: Injector.get(),
       getAvailableBiometricsUseCase: Injector.get(),
       setAuthenticationMethodUseCase: Injector.get(),
+      saveWalletUseCase: Injector.get(),
     );
   }
 
@@ -61,13 +66,18 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
   }
 
   Stream<BiometricsState> _mapAuthenticateEventToState() async* {
-    // Set the authentication method
     yield state.copyWith(saving: true);
-    await _setAuthenticationMethodUseCase.biometrics();
+    final isLoggedIn = _accountBloc.state is LoggedIn;
+    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
+
+    // Save wallet and get unique address
+    final wallet = await _saveWalletUseCase.saveWallet(mnemonic);
+
+    // Set the authentication method
+    await _setAuthenticationMethodUseCase.biometrics(wallet.bech32Address);
 
     // Log In
-    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
-    await _loginUseCase.login(mnemonic);
+    await _loginUseCase.login(wallet, setActive: !isLoggedIn);
 
     _recoverAccountBloc.add(ResetRecoverAccountState());
     _accountBloc.add(LogIn());

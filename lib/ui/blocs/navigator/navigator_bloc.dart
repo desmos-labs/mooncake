@@ -16,7 +16,6 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   final CheckLoginUseCase _checkLoginUseCase;
   final CanUseBiometricsUseCase _canUseBiometricsUseCase;
   final GetAuthenticationMethodUseCase _getAuthenticationMethodUseCase;
-
   NavigatorBloc({
     @required CheckLoginUseCase checkLoginUseCase,
     @required CanUseBiometricsUseCase canUseBiometricsUseCase,
@@ -147,8 +146,9 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   }
 
   void _handleNavigateToShowMnemonicAuth(
-      NavigateToShowMnemonicAuth event) async {
-    final method = await _getAuthenticationMethodUseCase.get();
+    NavigateToShowMnemonicAuth event,
+  ) async {
+    final method = await _getAuthenticationMethodUseCase.get(event.address);
 
     if (method is BiometricAuthentication) {
       await _navigatorKey.currentState.push(MaterialPageRoute(

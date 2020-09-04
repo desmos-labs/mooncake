@@ -16,25 +16,25 @@ class Post extends Equatable implements Comparable<Post> {
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
   /// Identifier used to reference posts status value.
-  static const STATUS_VALUE_FIELD = "status.value";
+  static const STATUS_VALUE_FIELD = 'status.value';
 
   /// Identifier used to reference the data associated to the post status.
-  static const STATUS_DATA_FIELD = "status.data";
+  static const STATUS_DATA_FIELD = 'status.data';
 
   /// Identifier used to reference the posts' parent id.
-  static const PARENT_ID_FIELD = "parent_id";
+  static const PARENT_ID_FIELD = 'parent_id';
 
   /// Identifier used to reference the post creation date.
-  static const DATE_FIELD = "created";
+  static const DATE_FIELD = 'created';
 
   /// Identifier used to reference post ids.
-  static const ID_FIELD = "id";
+  static const ID_FIELD = 'id';
 
   /// Identifier used to reference the hidden field or not.
-  static const HIDDEN_FIELD = "hidden";
+  static const HIDDEN_FIELD = 'hidden';
 
   /// Identifier used to reference the user field.
-  static const OWNER_FIELD = "user";
+  static const OWNER_FIELD = 'user';
 
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
@@ -49,42 +49,42 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: PARENT_ID_FIELD, nullable: true)
   final String parentId;
 
-  @JsonKey(name: "message", nullable: true)
+  @JsonKey(name: 'message', nullable: true)
   final String message;
 
   /// RFC3339-formatted creation date
   @JsonKey(name: DATE_FIELD)
   final String created;
 
-  @JsonKey(name: "last_edited")
+  @JsonKey(name: 'last_edited')
   final String lastEdited;
 
-  @JsonKey(name: "allows_comments")
+  @JsonKey(name: 'allows_comments')
   final bool allowsComments;
 
-  @JsonKey(name: "subspace")
+  @JsonKey(name: 'subspace')
   final String subspace;
 
   @JsonKey(name: OWNER_FIELD)
   final User owner;
 
-  @JsonKey(name: "optional_data", defaultValue: {})
+  @JsonKey(name: 'optional_data', defaultValue: {})
   final Map<String, String> optionalData;
 
-  @JsonKey(name: "media", defaultValue: [])
+  @JsonKey(name: 'media', defaultValue: [])
   final List<PostMedia> medias;
 
-  @JsonKey(name: "poll", nullable: true)
+  @JsonKey(name: 'poll', nullable: true)
   final PostPoll poll;
 
-  @JsonKey(name: "reactions", defaultValue: [])
+  @JsonKey(name: 'reactions', defaultValue: [])
   final List<Reaction> reactions;
 
-  @JsonKey(name: "children", defaultValue: [])
+  @JsonKey(name: 'children', defaultValue: [])
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
-  @JsonKey(name: "status", fromJson: _postStatusFromJson)
+  @JsonKey(name: 'status', fromJson: _postStatusFromJson)
   final PostStatus status;
 
   /// Static method used to implement a custom deserialization of posts.
@@ -99,12 +99,12 @@ class Post extends Equatable implements Comparable<Post> {
   final bool hidden;
 
   /// Represents the link preview associated to this post
-  @JsonKey(name: "link_preview", nullable: true)
+  @JsonKey(name: 'link_preview', nullable: true)
   final RichLinkPreview linkPreview;
 
   Post({
     @required this.id,
-    this.parentId = "",
+    this.parentId = '',
     this.message,
     @required this.created,
     this.lastEdited,
@@ -123,13 +123,13 @@ class Post extends Equatable implements Comparable<Post> {
         assert(created != null),
         assert(subspace != null),
         assert(owner != null),
-        this.medias = medias ?? const [],
-        this.reactions = reactions ?? const [],
-        this.reactionsCount = groupBy<Reaction, String>(
+        medias = medias ?? const [],
+        reactions = reactions ?? const [],
+        reactionsCount = groupBy<Reaction, String>(
           (reactions),
           (r) => r.value,
         ).map((rune, reactions) => MapEntry(reactions[0], reactions.length)),
-        this.commentsIds = commentsIds ?? const [],
+        commentsIds = commentsIds ?? const [],
         assert(message != null || medias?.isNotEmpty == true || poll != null);
 
   /// Returns the posts' data as a [DateTime] object.
@@ -182,7 +182,7 @@ class Post extends Equatable implements Comparable<Post> {
   }) {
     return Post(
         status: status ?? this.status,
-        id: this.id,
+        id: id,
         parentId: parentId ?? this.parentId,
         message: message ?? this.message,
         created: created ?? this.created,
@@ -207,22 +207,22 @@ class Post extends Equatable implements Comparable<Post> {
   @override
   List<Object> get props {
     return [
-      this.id,
-      this.parentId,
-      this.message,
-      this.created,
-      this.lastEdited,
-      this.allowsComments,
-      this.subspace,
-      this.owner,
-      this.optionalData,
-      this.medias,
-      this.poll,
-      this.reactions,
-      this.commentsIds,
-      this.status,
-      this.hidden,
-      this.linkPreview,
+      id,
+      parentId,
+      message,
+      created,
+      lastEdited,
+      allowsComments,
+      subspace,
+      owner,
+      optionalData,
+      medias,
+      poll,
+      reactions,
+      commentsIds,
+      status,
+      hidden,
+      linkPreview,
     ];
   }
 

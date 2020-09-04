@@ -8,10 +8,10 @@ part 'post_status.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PostStatus extends Equatable {
-  @JsonKey(name: "value")
+  @JsonKey(name: 'value')
   final PostStatusValue value;
 
-  @JsonKey(name: "data")
+  @JsonKey(name: 'data')
   final String data;
 
   /// Returns true if the status contains an error message.
@@ -52,15 +52,15 @@ class PostStatus extends Equatable {
 
 /// Contains the possible values of a post status.
 enum PostStatusValue {
-  @JsonValue("stored_locally")
+  @JsonValue('stored_locally')
   STORED_LOCALLY,
-  @JsonValue("sending_tx")
+  @JsonValue('sending_tx')
   SENDING_TX,
-  @JsonValue("tx_sent")
+  @JsonValue('tx_sent')
   TX_SENT,
-  @JsonValue("tx_successfull")
+  @JsonValue('tx_successfull')
   TX_SUCCESSFULL,
-  @JsonValue("errored")
+  @JsonValue('errored')
   ERRORED
 }
 

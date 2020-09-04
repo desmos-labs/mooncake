@@ -8,8 +8,6 @@ import 'package:mooncake/ui/ui.dart';
 
 class MockAccountBloc extends Mock implements AccountBloc {}
 
-class MockLogoutUseCase extends Mock implements LogoutUseCase {}
-
 class MockGetSettingUseCase extends Mock implements GetSettingUseCase {}
 
 class MockWatchSettingUseCase extends Mock implements WatchSettingUseCase {}
@@ -18,14 +16,12 @@ class MockSaveSettingUseCase extends Mock implements SaveSettingUseCase {}
 
 void main() {
   MockAccountBloc mockAccountBloc;
-  MockLogoutUseCase mockLogoutUseCase;
   MockGetSettingUseCase mockGetSettingUseCase;
   MockSaveSettingUseCase mockSaveSettingUseCase;
   MockWatchSettingUseCase mockWatchSettingUseCase;
 
   setUp(() {
     mockAccountBloc = MockAccountBloc();
-    mockLogoutUseCase = MockLogoutUseCase();
     mockGetSettingUseCase = MockGetSettingUseCase();
     mockSaveSettingUseCase = MockSaveSettingUseCase();
     mockWatchSettingUseCase = MockWatchSettingUseCase();
@@ -39,14 +35,13 @@ void main() {
       setUp(
         () {
           final controller = StreamController<dynamic>();
-          when(mockWatchSettingUseCase.watch(key: anyNamed("key")))
+          when(mockWatchSettingUseCase.watch(key: anyNamed('key')))
               .thenAnswer((_) => controller.stream);
           homeBloc = HomeBloc(
             getSettingUseCase: mockGetSettingUseCase,
             watchSettingUseCase: mockWatchSettingUseCase,
             saveSettingUseCase: mockSaveSettingUseCase,
             loginBloc: mockAccountBloc,
-            logoutUseCase: mockLogoutUseCase,
           );
         },
       );
@@ -60,19 +55,28 @@ void main() {
           bloc.add(UpdateTab(AppTab.likedPosts));
           bloc.add(UpdateTab(AppTab.home));
           bloc.add(UpdateTab(AppTab.account));
+          bloc.add(UpdateTab(AppTab.account));
         },
         expect: [
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.likedPosts,
+            scrollToTop: false,
           ),
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.account,
+            scrollToTop: false,
+          ),
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.account,
+            scrollToTop: true,
           ),
         ],
       );
@@ -83,7 +87,7 @@ void main() {
           return homeBloc;
         },
         act: (bloc) async {
-          bloc.add(SignOut());
+          bloc.add(SignOut('address'));
         },
         expect: [],
       );
@@ -100,6 +104,7 @@ void main() {
           HomeState(
             showBackupPhrasePopup: true,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
         ],
       );
@@ -118,6 +123,7 @@ void main() {
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
         ],
       );
@@ -133,10 +139,33 @@ void main() {
         expect: [],
         verify: (_) async {
           verify(mockSaveSettingUseCase.save(
-            key: anyNamed("key"),
-            value: anyNamed("value"),
+            key: anyNamed('key'),
+            value: anyNamed('value'),
           )).called(1);
         },
+      );
+
+      blocTest(
+        'SetScrollToTop: correctly updates state',
+        build: () async {
+          return homeBloc;
+        },
+        act: (bloc) async {
+          bloc.add(SetScrollToTop(true));
+          bloc.add(SetScrollToTop(false));
+        },
+        expect: [
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.home,
+            scrollToTop: true,
+          ),
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.home,
+            scrollToTop: false,
+          ),
+        ],
       );
     },
   );

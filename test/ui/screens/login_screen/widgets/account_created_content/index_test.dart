@@ -8,7 +8,7 @@ import 'package:mooncake/ui/screens/login_screen/widgets/export.dart';
 void main() {
   testWidgets('AccountCreatedPopupContent: Displays correctly',
       (WidgetTester tester) async {
-    MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
+    var mockNavigatorBloc = MockNavigatorBloc();
 
     await tester.pumpWidget(
       makeTestableWidget(

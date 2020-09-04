@@ -54,14 +54,14 @@ void main() {
   });
 
   test('getAccountData returns null when response is wrong', () async {
-    final response = LcdResponse(height: "1", result: {});
+    final response = LcdResponse(height: '1', result: {});
     server.enqueue(body: jsonEncode(response.toJson()));
 
-    expect(await source.getAccount(""), isNull);
+    expect(await source.getAccount(''), isNull);
   });
 
   test('getAccountData returns valid data with correct response', () async {
-    final file = File("test_resources/account/account_response.json");
+    final file = File('test_resources/account/account_response.json');
     final json = jsonDecode(file.readAsStringSync());
     final accountResponse = LcdResponse.fromJson(json as Map<String, dynamic>);
 
@@ -69,37 +69,37 @@ void main() {
     when(graphQlClient.query(any)).thenAnswer((_) => Future.value(QueryResult(
           source: QueryResultSource.network,
           data: {
-            "users": [
-              User.fromAddress("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl")
+            'users': [
+              User.fromAddress('desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl')
                   .toJson()
             ]
           },
         )));
 
     final account = await source
-        .getAccount("desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");
+        .getAccount('desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl');
     expect(account, isNotNull);
     expect(account.cosmosAccount.address,
-        "desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl");
-    expect(account.cosmosAccount.sequence, "39");
-    expect(account.cosmosAccount.accountNumber, "54");
+        'desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl');
+    expect(account.cosmosAccount.sequence, '39');
+    expect(account.cosmosAccount.accountNumber, '54');
     expect(account.cosmosAccount.coins,
-        [StdCoin(amount: "10000000", denom: "udaric")]);
+        [StdCoin(amount: '10000000', denom: 'udaric')]);
   });
 
   test('fundAccount completes successfully when no exception', () async {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     server.dispatcher = (HttpRequest request) async {
-      expect(request.method, "POST");
+      expect(request.method, 'POST');
       expect(
-        request.headers.value("Content-Type"),
-        contains("application/json"),
+        request.headers.value('Content-Type'),
+        contains('application/json'),
       );
       expect(request.contentLength, greaterThan(0));
 
       return MockResponse()
         ..httpCode = 200
-        ..body = "Ok";
+        ..body = 'Ok';
     };
 
     expect(source.fundAccount(account), completes);

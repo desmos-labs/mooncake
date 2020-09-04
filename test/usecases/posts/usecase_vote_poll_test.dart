@@ -24,14 +24,14 @@ void main() {
   });
 
   group('vote works properly', () {
-    final account = MooncakeAccount.local("address");
+    final account = MooncakeAccount.local('address');
     final post = testPost.copyWith(
       poll: PostPoll(
-        question: "Do you like black?",
-        endDate: "2020-05-15T20:00:00.000Z",
+        question: 'Do you like black?',
+        endDate: '2020-05-15T20:00:00.000Z',
         options: [
-          PollOption(id: 0, text: "Yes"),
-          PollOption(id: 1, text: "No"),
+          PollOption(id: 0, text: 'Yes'),
+          PollOption(id: 1, text: 'No'),
         ],
         isOpen: true,
         allowsMultipleAnswers: false,
@@ -41,7 +41,7 @@ void main() {
     );
 
     setUp(() {
-      when(userRepository.getAccount())
+      when(userRepository.getActiveAccount())
           .thenAnswer((_) => Future.value(account));
     });
 
@@ -53,7 +53,7 @@ void main() {
       );
       await votePollUseCase.vote(postWithAnswer, post.poll.options[0]);
 
-      verify(userRepository.getAccount());
+      verify(userRepository.getActiveAccount());
       verifyNever(postsRepository.savePost(any));
     });
 
@@ -64,7 +64,7 @@ void main() {
       await votePollUseCase.vote(postWithoutAnswers, post.poll.options[0]);
 
       verifyInOrder([
-        userRepository.getAccount(),
+        userRepository.getActiveAccount(),
         postsRepository.savePost(post.copyWith(
           poll: post.poll.copyWith(userAnswers: [
             PollAnswer(answer: post.poll.options[0].id, user: account)

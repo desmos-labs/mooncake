@@ -7,14 +7,14 @@ class ThemeDecorations {
       case Brightness.light:
         return {
           'colors': [Color(0xFF575FFF), Color(0xFF8655FF)],
-          'pattern': AssetImage("assets/images/pattern.png"),
+          'pattern': AssetImage('assets/images/pattern.png'),
           'opacity': 0.35,
           'alignment': Alignment(0.5, 0.5),
         };
       default:
         return {
           'colors': [Color(0xFF020207), Color(0xFF0D0B21)],
-          'pattern': AssetImage("assets/images/pattern_dark.png"),
+          'pattern': AssetImage('assets/images/pattern_dark.png'),
           'opacity': 0.35,
           'alignment': Alignment.bottomCenter,
         };

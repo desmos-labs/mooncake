@@ -7,9 +7,9 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../helper.dart';
 
 void main() {
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
 

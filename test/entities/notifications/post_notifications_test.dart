@@ -5,12 +5,12 @@ void main() {
   group('PostCommentNotification', () {
     test('toJson and fromJson', () {
       final notification = PostCommentNotification(
-        postId: "1",
-        user: User.fromAddress("address"),
-        comment: "This is my comment",
+        postId: '1',
+        user: User.fromAddress('address'),
+        comment: 'This is my comment',
         date: DateTime.now(),
-        title: "Notification title",
-        body: "Notification body",
+        title: 'Notification title',
+        body: 'Notification body',
       );
       final json = notification.asJson();
       final fromJson = NotificationData.fromJson(json);
@@ -21,12 +21,12 @@ void main() {
   group('PostMentionNotification', () {
     test('toJson and fromJson', () {
       final notification = PostMentionNotification(
-        postId: "1",
-        user: User.fromAddress("address"),
-        text: "This is the mention",
+        postId: '1',
+        user: User.fromAddress('address'),
+        text: 'This is the mention',
         date: DateTime.now(),
-        title: "Notification title",
-        body: "Notification body",
+        title: 'Notification title',
+        body: 'Notification body',
       );
       final json = notification.asJson();
       final fromJson = NotificationData.fromJson(json);
@@ -37,11 +37,11 @@ void main() {
   group('PostTagNotification', () {
     test('toJson and fromJson', () {
       final notification = PostTagNotification(
-        postId: "1",
-        user: User.fromAddress("address"),
+        postId: '1',
+        user: User.fromAddress('address'),
         date: DateTime.now(),
-        title: "Notification title",
-        body: "Notification body",
+        title: 'Notification title',
+        body: 'Notification body',
       );
       final json = notification.asJson();
       final fromJson = NotificationData.fromJson(json);
@@ -52,12 +52,12 @@ void main() {
   group('PostReactionNotification', () {
     test('toJson and fromJson', () {
       final notification = PostReactionNotification(
-        postId: "1",
-        user: User.fromAddress("address"),
+        postId: '1',
+        user: User.fromAddress('address'),
         date: DateTime.now(),
-        title: "Notification title",
-        body: "Notification body",
-        reaction: "This is my reaction",
+        title: 'Notification title',
+        body: 'Notification body',
+        reaction: 'This is my reaction',
       );
       final json = notification.asJson();
       final fromJson = NotificationData.fromJson(json);
@@ -68,11 +68,11 @@ void main() {
   group('PostLikeNotification', () {
     test('toJson and fromJson', () {
       final notification = PostLikeNotification(
-        postId: "1",
-        user: User.fromAddress("address"),
+        postId: '1',
+        user: User.fromAddress('address'),
         date: DateTime.now(),
-        title: "Notification title",
-        body: "Notification body",
+        title: 'Notification title',
+        body: 'Notification body',
       );
       final json = notification.asJson();
       final fromJson = NotificationData.fromJson(json);

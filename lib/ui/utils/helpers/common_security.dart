@@ -8,8 +8,12 @@ String getMnemonic(
   AccountState accountState,
 ) {
   if (accountState is AccountCreated) {
-    return accountState.mnemonic.join(" ");
+    return accountState.mnemonic.join(' ');
   }
 
-  return recoverAccountState.wordsList.join(" ");
+  if (accountState is AccountCreatedWhileLoggedIn) {
+    return accountState.mnemonic.join(' ');
+  }
+
+  return recoverAccountState.wordsList.join(' ');
 }

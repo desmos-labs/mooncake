@@ -16,12 +16,12 @@ void main() {
   });
 
   test('getBlockedUsers returns empty list if empty', () async {
-    final List<String> result = await source.getBlockedUsers();
+    final result = await source.getBlockedUsers();
     expect(result, isEmpty);
   });
 
   test('getBlockedUsers returns correct list', () async {
-    final users = ["first", "second"];
+    final users = ['first', 'second'];
     await StoreRef.main()
         .record(LocalUsersSourceImpl.BLOCKED_USERS_KEY)
         .put(database, users);
@@ -33,24 +33,24 @@ void main() {
   test('blockUser works properly', () async {
     expect(await source.getBlockedUsers(), isEmpty);
 
-    await source.blockUser(User.fromAddress("first"));
-    expect(await source.getBlockedUsers(), equals(["first"]));
+    await source.blockUser(User.fromAddress('first'));
+    expect(await source.getBlockedUsers(), equals(['first']));
 
-    await source.blockUser(User.fromAddress("second"));
-    expect(await source.getBlockedUsers(), equals(["first", "second"]));
+    await source.blockUser(User.fromAddress('second'));
+    expect(await source.getBlockedUsers(), equals(['first', 'second']));
   });
 
   test('unblockUser works properly', () async {
     expect(await source.getBlockedUsers(), isEmpty);
 
-    await source.blockUser(User.fromAddress("first"));
-    await source.blockUser(User.fromAddress("second"));
-    expect(await source.getBlockedUsers(), equals(["first", "second"]));
+    await source.blockUser(User.fromAddress('first'));
+    await source.blockUser(User.fromAddress('second'));
+    expect(await source.getBlockedUsers(), equals(['first', 'second']));
 
-    await source.unblockUser(User.fromAddress("first"));
-    expect(await source.getBlockedUsers(), equals(["second"]));
+    await source.unblockUser(User.fromAddress('first'));
+    expect(await source.getBlockedUsers(), equals(['second']));
 
-    await source.unblockUser(User.fromAddress("second"));
+    await source.unblockUser(User.fromAddress('second'));
     expect(await source.getBlockedUsers(), isEmpty);
   });
 }

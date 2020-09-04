@@ -35,6 +35,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   final BlockUserUseCase _blockUserUseCase;
   final UpdatePostUseCase _updatePostUseCase;
   final DeletePostUseCase _deletePostUseCase;
+  final GetActiveAccountUseCase _getActiveAccountUseCase;
 
   // Subscriptions
   StreamSubscription _eventsSubscription;
@@ -58,6 +59,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     @required BlockUserUseCase blockUserUseCase,
     @required UpdatePostUseCase updatePostUseCase,
     @required DeletePostUseCase deletePostUseCase,
+    @required GetActiveAccountUseCase getActiveAccountUseCase,
   })  : _syncPeriod = syncPeriod,
         assert(getNotificationsUseCase != null),
         _getNotifications = getNotificationsUseCase,
@@ -82,16 +84,18 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(updatePostUseCase != null),
         _updatePostUseCase = updatePostUseCase,
         assert(deletePostUseCase != null),
-        _deletePostUseCase = deletePostUseCase {
+        _deletePostUseCase = deletePostUseCase,
+        assert(getActiveAccountUseCase != null),
+        _getActiveAccountUseCase = getActiveAccountUseCase {
     // Subscribe to account state changes in order to perform setup
-    // operations upon login and cleanup ones upong loggin out
+    // operations upon login and cleanup ones upon logging out
     _logoutSubscription = accountBloc.listen((state) async {
       if (state is LoggedOut) {
-        print("User logged out, stopping sync and deleting posts");
+        print('User logged out, stopping sync and deleting posts');
         _stopListeningToUpdates();
         await _deletePostsUseCase.delete();
       } else if (state is LoggedIn) {
-        print("User logged in, starting posts sync");
+        print('User logged in, starting posts sync');
         _startListeningToUpdates();
       }
     });
@@ -114,6 +118,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       blockUserUseCase: Injector.get(),
       updatePostUseCase: Injector.get(),
       deletePostUseCase: Injector.get(),
+      getActiveAccountUseCase: Injector.get(),
     );
   }
 
@@ -144,7 +149,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     } else if (event is BlockUser) {
       yield* _mapBlockUserEventToState(event);
     } else if (event is SyncPosts) {
-      yield* _mapSyncPostsListEventToState();
+      yield* _mapSyncPostsListEventToState(event);
     } else if (event is SyncPostsCompleted) {
       yield _mapSyncPostsCompletedEventToState();
     } else if (event is ShouldRefreshPosts) {
@@ -178,22 +183,18 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     }
 
     // Subscribe to tell the user he should refresh
-    if (_eventsSubscription == null) {
-      _eventsSubscription = _getHomeEventsUseCase.stream.listen((event) {
-        add(ShouldRefreshPosts());
-      });
-    }
+    _eventsSubscription ??= _getHomeEventsUseCase.stream.listen((event) {
+      add(ShouldRefreshPosts());
+    });
 
     // Subscribe to the transactions notifications
-    if (_txSubscription == null) {
-      _txSubscription = _getNotifications.stream().listen((notification) {
-        if (notification is TxSuccessfulNotification) {
-          add(TxSuccessful(txHash: notification.txHash));
-        } else if (notification is TxFailedNotification) {
-          add(TxFailed(txHash: notification.txHash, error: notification.error));
-        }
-      });
-    }
+    _txSubscription ??= _getNotifications.stream().listen((notification) {
+      if (notification is TxSuccessfulNotification) {
+        add(TxSuccessful(txHash: notification.txHash));
+      } else if (notification is TxFailedNotification) {
+        add(TxFailed(txHash: notification.txHash, error: notification.error));
+      }
+    });
   }
 
   /// Stop all periodic activities as well as all subscriptions.
@@ -246,7 +247,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         (p) => p.id == post.id,
         orElse: () => null,
       );
-      return newPost != null ? newPost : post;
+      return newPost ?? post;
     }).toList();
 
     return posts;
@@ -383,7 +384,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   /// should be updated.
   Stream<PostsListState> _refreshPostsEventToState() async* {
     final currentState = state;
-    int limit = _HOME_LIMIT;
+    var limit = _HOME_LIMIT;
     if (currentState is PostsLoaded) {
       limit = currentState.posts.length;
       yield currentState.copyWith(refreshing: true, shouldRefresh: false);
@@ -403,15 +404,18 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
   /// Handles the event emitted when the posts must be synced uploading
   /// all the changes stored locally to the chain
-  Stream<PostsListState> _mapSyncPostsListEventToState() async* {
+  Stream<PostsListState> _mapSyncPostsListEventToState(SyncPosts event) async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
+      // Fet the current user
+      final user = await _getActiveAccountUseCase.single();
+
       // Show the snackbar
       yield currentState.copyWith(syncingPosts: true);
 
       // Wait for the sync
-      yield await _syncPostsUseCase.sync().catchError((error) {
-        print("Sync error: $error");
+      yield await _syncPostsUseCase.sync(user.address).catchError((error) {
+        print('Sync error: $error');
         return _mapSyncPostsCompletedEventToState();
       }).then((syncedPosts) {
         return _mapSyncPostsCompletedEventToState();
@@ -459,7 +463,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   Stream<PostsListState> _mapRetryPostUploadEventToState(
       RetryPostUpload event) async* {
     final currentState = state;
-    final Post updatePost = event.post.copyWith(
+    final updatePost = event.post.copyWith(
       status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
     );
     if (currentState is PostsLoaded) {

@@ -26,7 +26,7 @@ class RemoteUserSourceImpl implements RemoteUserSource {
     @required LocalUserSource userSource,
     @required RemoteMediasSource remoteMediasSource,
   })  : assert(chainHelper != null),
-        this._chainSource = chainHelper,
+        _chainSource = chainHelper,
         assert(graphQLClient != null),
         _gqlClient = graphQLClient,
         assert(msgConverter != null),
@@ -66,16 +66,16 @@ class RemoteUserSourceImpl implements RemoteUserSource {
 
   @override
   Future<AccountSaveResult> saveAccount(MooncakeAccount account) async {
-    final wallet = await _userSource.getWallet();
+    final wallet = await _userSource.getWallet(account.address);
 
     // Upload the images to IPFS if they need to be uploaded
-    final profilePicFile = File(account.profilePicUri ?? "");
+    final profilePicFile = File(account.profilePicUri ?? '');
     if (profilePicFile.existsSync()) {
       final profilePic = await _remoteMediasSource.uploadMedia(profilePicFile);
       account = account.copyWith(profilePicUri: profilePic);
     }
 
-    final coverPicFile = File(account.coverPicUri ?? "");
+    final coverPicFile = File(account.coverPicUri ?? '');
     if (coverPicFile.existsSync()) {
       final coverPic = await _remoteMediasSource.uploadMedia(coverPicFile);
       account = account.copyWith(coverPicUrl: coverPic);

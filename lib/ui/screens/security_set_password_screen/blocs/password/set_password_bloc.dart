@@ -17,18 +17,21 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
 
   final LoginUseCase _loginUseCase;
   final SetAuthenticationMethodUseCase _setAuthenticationMethodUseCase;
-
+  final SaveWalletUseCase _saveWalletUseCase;
   SetPasswordBloc({
     @required RecoverAccountBloc recoverAccountBloc,
     @required AccountBloc accountBloc,
     @required LoginUseCase loginUseCase,
     @required SetAuthenticationMethodUseCase setAuthenticationMethodUseCase,
+    @required SaveWalletUseCase saveWalletUseCase,
   })  : assert(recoverAccountBloc != null),
         _recoverAccountBloc = recoverAccountBloc,
         assert(accountBloc != null),
         _accountBloc = accountBloc,
         assert(loginUseCase != null),
         _loginUseCase = loginUseCase,
+        assert(saveWalletUseCase != null),
+        _saveWalletUseCase = saveWalletUseCase,
         assert(setAuthenticationMethodUseCase != null),
         _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase;
 
@@ -38,6 +41,7 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
       accountBloc: BlocProvider.of(context),
       loginUseCase: Injector.get(),
       setAuthenticationMethodUseCase: Injector.get(),
+      saveWalletUseCase: Injector.get(),
     );
   }
 
@@ -56,14 +60,20 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
   }
 
   Stream<SetPasswordState> _mapSavePasswordEventToState() async* {
-    // Store authentication method
-    await _setAuthenticationMethodUseCase.password(state.inputPassword);
     yield state.copyWith(savingPassword: true);
+    final isLoggedIn = _accountBloc.state is LoggedIn;
+    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
+    // Save wallet and get unique address
+    final wallet = await _saveWalletUseCase.saveWallet(mnemonic);
+
+    // Store authentication method
+    await _setAuthenticationMethodUseCase.password(
+        wallet.bech32Address, state.inputPassword);
 
     // Log In
-    final mnemonic = getMnemonic(_recoverAccountBloc.state, _accountBloc.state);
-    await _loginUseCase.login(mnemonic);
+    await _loginUseCase.login(wallet, setActive: !isLoggedIn);
 
+    // reset state
     _recoverAccountBloc.add(ResetRecoverAccountState());
     _accountBloc.add(LogIn());
   }

@@ -11,7 +11,7 @@ import 'package:sembast/sembast.dart';
 /// Utility class used to provide instances of different objects.
 class Injector {
   /// Initializes the injector. Should be called inside the main method.
-  static init({
+  static void init({
     @required Database accountDatabase,
     @required Database postsDatabase,
     @required Database notificationDatabase,

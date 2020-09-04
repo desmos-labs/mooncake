@@ -8,7 +8,7 @@ import '../../../test_utils/export.dart';
 
 void main() {
   testWidgets('Local cover image', (WidgetTester tester) async {
-    final file = "file:/home/user/image.png";
+    final file = 'file:/home/user/image.png';
 
     await tester.pumpWidget(MediaQuery(
       data: MediaQueryData(),
@@ -23,7 +23,7 @@ void main() {
 
   testWidgets('Remove cover image', (WidgetTester tester) async {
     await provideMockedNetworkImages(() async {
-      final url = "https://example.com";
+      final url = 'https://example.com';
       await tester.pumpWidget(MediaQuery(
         data: MediaQueryData(),
         child: AccountCoverImageViewer(coverImage: url),

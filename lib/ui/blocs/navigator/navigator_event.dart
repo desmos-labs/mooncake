@@ -73,11 +73,11 @@ class NavigateToWallet extends NavigatorEvent {}
 /// Takes an optional argument [backupPhrase] in the event that this is a backup and not an export event
 class NavigateToShowMnemonicAuth extends NavigatorEvent {
   final bool backupPhrase;
-
-  NavigateToShowMnemonicAuth({this.backupPhrase = false});
+  final String address;
+  NavigateToShowMnemonicAuth(this.address, {this.backupPhrase = false});
 
   @override
-  List<Object> get props => [backupPhrase];
+  List<Object> get props => [address, backupPhrase];
 }
 
 /// Tells the Bloc to navigate to the page that allows the user

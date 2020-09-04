@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 void main() {
   testWidgets('CreatingAccountPopupContent: Displays correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
+    var mockAccountBloc = MockAccountBloc();
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
@@ -41,6 +41,6 @@ void main() {
 
     await tester.tap(find.byType(SecondaryDarkButton));
     await tester.pump(const Duration(seconds: 3));
-    expect(verify(mockAccountBloc.add(LogOut())).callCount, 1);
+    expect(verify(mockAccountBloc.add(LogOutAll())).callCount, 1);
   });
 }

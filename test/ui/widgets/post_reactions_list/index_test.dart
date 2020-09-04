@@ -10,23 +10,24 @@ import 'package:mockito/mockito.dart';
 void main() {
   testWidgets('PostReactionsList: Displays export correctly',
       (WidgetTester tester) async {
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
-    List<Reaction> reactionTest = [
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
-      Reaction(user: userAccount, value: 'laugh', code: "123"),
+    var reactionTest = <Reaction>[
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
+      Reaction(user: userAccount, value: 'laugh', code: '123'),
     ];
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    when(mockAccountBloc.state).thenReturn(LoggedIn.initial(userAccount));
+    var mockAccountBloc = MockAccountBloc();
+    when(mockAccountBloc.state)
+        .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
     await tester.pumpWidget(makeTestableWidget(
       child: MultiBlocProvider(
         providers: [

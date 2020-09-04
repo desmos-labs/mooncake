@@ -25,14 +25,15 @@ class PostPollResultItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double percentage = currentPollLength / poll.userAnswers.length;
-    final BorderRadius borderRadiusResults = percentage >= 0.95
+    final percentage = currentPollLength / poll.userAnswers.length;
+    final borderRadiusResults = percentage >= 0.95
         ? BorderRadius.circular(8)
         : BorderRadius.only(
             topLeft: Radius.circular(8),
             bottomLeft: Radius.circular(8),
           );
-    final Color selectedColor = pollColors[index % pollColors.length];
+    final selectedColor = pollColors[index % pollColors.length];
+
     return Container(
       child: Stack(
         alignment: Alignment.centerLeft,
@@ -48,7 +49,7 @@ class PostPollResultItem extends StatelessWidget {
             ),
           ),
           FractionallySizedBox(
-            widthFactor: percentage <= 0.0 ? null : percentage,
+            widthFactor: percentage <= 0.0 ? 0.0 : percentage,
             child: Container(
               height: 35.0,
               decoration: BoxDecoration(

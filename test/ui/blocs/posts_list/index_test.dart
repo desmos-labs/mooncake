@@ -24,6 +24,9 @@ class MockGetHomeEventsUseCase extends Mock implements GetHomeEventsUseCase {}
 
 class MockSyncPostsUseCase extends Mock implements SyncPostsUseCase {}
 
+class MockGetActiveAccountUseCase extends Mock
+    implements GetActiveAccountUseCase {}
+
 class MockGetNotificationsUseCase extends Mock
     implements GetNotificationsUseCase {}
 
@@ -60,6 +63,7 @@ void main() {
   MockBlockUserUseCase mockBlockUserUseCase;
   MockUpdatePostUseCase mockUpdatePostUseCase;
   MockDeletePostUseCase mockDeletePostUseCase;
+  MockGetActiveAccountUseCase mockGetActiveAccountUseCase;
 
   setUp(() {
     mockAccountBloc = MockAccountBloc();
@@ -76,6 +80,7 @@ void main() {
     mockBlockUserUseCase = MockBlockUserUseCase();
     mockUpdatePostUseCase = MockUpdatePostUseCase();
     mockDeletePostUseCase = MockDeletePostUseCase();
+    mockGetActiveAccountUseCase = MockGetActiveAccountUseCase();
   });
 
   group(
@@ -83,9 +88,9 @@ void main() {
     () {
       PostsListBloc postsListBloc;
       // String postId = '123';
-      MooncakeAccount userAccount = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
+      var userAccount = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
         cosmosAccount: cosmosAccount,
       );
       setUp(
@@ -93,7 +98,7 @@ void main() {
           final postController = StreamController<List<Post>>();
           when(mockGetHomePostsUseCase.stream(any))
               .thenAnswer((_) => postController.stream);
-          when(mockSyncPostsUseCase.sync())
+          when(mockSyncPostsUseCase.sync('address'))
               .thenAnswer((_) => Future.value(null));
 
           postsListBloc = PostsListBloc(
@@ -112,6 +117,7 @@ void main() {
             blockUserUseCase: mockBlockUserUseCase,
             updatePostUseCase: mockUpdatePostUseCase,
             deletePostUseCase: mockDeletePostUseCase,
+            getActiveAccountUseCase: mockGetActiveAccountUseCase,
           );
         },
       );
@@ -135,14 +141,11 @@ void main() {
         ],
       );
 
-      final Post likedPost = testPosts[0].copyWith(reactions: [
+      final likedPost = testPosts[0].copyWith(reactions: [
         Reaction(
-            user: userAccount, value: Constants.LIKE_REACTION, code: "123"),
+            user: userAccount, value: Constants.LIKE_REACTION, code: '123'),
       ]);
-      final List<Post> expectedLikedResults = [
-        likedPost,
-        ...testPosts.sublist(1)
-      ];
+      final expectedLikedResults = <Post>[likedPost, ...testPosts.sublist(1)];
       blocTest(
         'AddOrRemoveLiked: add work properly',
         build: () async {
@@ -150,7 +153,7 @@ void main() {
         },
         act: (bloc) async {
           when(mockManagePostReactionsUseCase.addOrRemove(
-                  post: anyNamed("post"), reaction: anyNamed("reaction")))
+                  post: anyNamed('post'), reaction: anyNamed('reaction')))
               .thenAnswer((_) => Future.value(likedPost));
           bloc.add(PostsUpdated(testPosts));
           bloc.add(AddOrRemoveLike(testPosts[0]));
@@ -167,7 +170,7 @@ void main() {
         ],
       );
 
-      final List<Post> likedTestPosts = [likedPost, ...testPosts.sublist(1)];
+      final likedTestPosts = <Post>[likedPost, ...testPosts.sublist(1)];
       blocTest(
         'AddOrRemoveLiked: remove work properly',
         build: () async {
@@ -175,7 +178,7 @@ void main() {
         },
         act: (bloc) async {
           when(mockManagePostReactionsUseCase.addOrRemove(
-                  post: anyNamed("post"), reaction: anyNamed("reaction")))
+                  post: anyNamed('post'), reaction: anyNamed('reaction')))
               .thenAnswer((_) => Future.value(testPosts[0]));
           bloc.add(PostsUpdated(likedTestPosts));
           bloc.add(AddOrRemoveLike(testPosts[0]));
@@ -192,14 +195,14 @@ void main() {
         ],
       );
 
-      Post emotionPost = testPosts[0].copyWith(reactions: [
+      var emotionPost = testPosts[0].copyWith(reactions: [
         Reaction(
           user: userAccount,
-          value: "happy",
-          code: "123",
+          value: 'happy',
+          code: '123',
         ),
       ]);
-      List<Post> expectedReactionResults = [
+      var expectedReactionResults = <Post>[
         emotionPost,
         ...testPosts.sublist(1)
       ];
@@ -210,10 +213,10 @@ void main() {
         },
         act: (bloc) async {
           when(mockManagePostReactionsUseCase.addOrRemove(
-                  post: anyNamed("post"), reaction: anyNamed("reaction")))
+                  post: anyNamed('post'), reaction: anyNamed('reaction')))
               .thenAnswer((_) => Future.value(emotionPost));
           bloc.add(PostsUpdated(testPosts));
-          bloc.add(AddOrRemovePostReaction(testPosts[0], "happy"));
+          bloc.add(AddOrRemovePostReaction(testPosts[0], 'happy'));
         },
         skip: 2,
         expect: [
@@ -227,9 +230,9 @@ void main() {
         ],
       );
 
-      PollOption option = PollOption(id: 1, text: 'apples');
-      PollOption optionTwo = PollOption(id: 0, text: 'apples');
-      PostPoll poll = PostPoll(
+      var option = PollOption(id: 1, text: 'apples');
+      var optionTwo = PollOption(id: 0, text: 'apples');
+      var poll = PostPoll(
         allowsAnswerEdits: false,
         isOpen: true,
         question: 'favorite snack',
@@ -239,9 +242,9 @@ void main() {
         userAnswers: [],
       );
 
-      Post formattedTestPoll = testPost.copyWith(poll: poll);
+      var formattedTestPoll = testPost.copyWith(poll: poll);
 
-      Post votedTestPoll = testPost.copyWith(
+      var votedTestPoll = testPost.copyWith(
         poll: PostPoll(
           allowsAnswerEdits: false,
           isOpen: true,
@@ -280,7 +283,7 @@ void main() {
         ],
       );
 
-      Post hiddenPost = testPost.copyWith(hidden: true);
+      var hiddenPost = testPost.copyWith(hidden: true);
       blocTest(
         'HidePost: work properly',
         build: () async {
@@ -307,7 +310,7 @@ void main() {
         ],
       );
 
-      final blockUser = User.fromAddress("address");
+      final blockUser = User.fromAddress('address');
       blocTest(
         'BlockUser: work properly',
         build: () async {
@@ -335,10 +338,19 @@ void main() {
       blocTest(
         'SyncPosts: work properly',
         build: () async {
+          var userAccount = MooncakeAccount(
+            profilePicUri: 'https://example.com/avatar.png',
+            moniker: 'john-doe',
+            cosmosAccount: cosmosAccount.copyWith(address: 'address'),
+          );
+
+          when(mockGetActiveAccountUseCase.single())
+              .thenAnswer((_) => Future.value(userAccount));
+
           return postsListBloc;
         },
         act: (bloc) async {
-          when(mockSyncPostsUseCase.sync())
+          when(mockSyncPostsUseCase.sync('address'))
               .thenAnswer((_) => Future.value(null));
           bloc.add(PostsUpdated([testPost]));
           bloc.add(SyncPosts());
@@ -390,7 +402,7 @@ void main() {
         },
         act: (bloc) async {
           when(mockGetHomePostsUseCase.get(
-                  start: anyNamed("start"), limit: anyNamed("limit")))
+                  start: anyNamed('start'), limit: anyNamed('limit')))
               .thenAnswer((_) => Future.value(testPosts));
           bloc.add(PostsUpdated([testPost]));
           bloc.add(RefreshPosts());
@@ -421,7 +433,7 @@ void main() {
         },
         act: (bloc) async {
           when(mockGetHomePostsUseCase.get(
-                  start: anyNamed("start"), limit: anyNamed("limit")))
+                  start: anyNamed('start'), limit: anyNamed('limit')))
               .thenAnswer((_) => Future.value(testPosts));
           bloc.add(FetchPosts());
         },
@@ -436,7 +448,7 @@ void main() {
         ],
       );
 
-      List<Post> expectedUpdatePosts = [
+      var expectedUpdatePosts = <Post>[
         testPost.copyWith(
           status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
         )

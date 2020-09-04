@@ -6,7 +6,7 @@ void main() {
     test('toJson and fromJson', () {
       final notification = TxSuccessfulNotification(
         date: DateTime.now(),
-        txHash: "hash",
+        txHash: 'hash',
       );
       final json = notification.asJson();
       final fromJson = NotificationData.fromJson(json);
@@ -18,8 +18,8 @@ void main() {
     test('toJson and fromJson', () {
       final notification = TxFailedNotification(
         date: DateTime.now(),
-        txHash: "hash",
-        error: "This is the transaction error",
+        txHash: 'hash',
+        error: 'This is the transaction error',
       );
       final json = notification.asJson();
       final fromJson = NotificationData.fromJson(json);

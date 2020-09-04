@@ -17,7 +17,7 @@ void main() {
     expect(find.byType(MarkdownBody), findsOneWidget);
     expect(
       tester.widget<MarkdownBody>(find.byType(MarkdownBody)).data,
-      testPost.message.replaceAll("\n", "  \n"),
+      testPost.message.replaceAll('\n', '  \n'),
     );
   });
 }

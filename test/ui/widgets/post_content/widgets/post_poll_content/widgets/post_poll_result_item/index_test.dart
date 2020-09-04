@@ -9,15 +9,15 @@ import '../../../../../../helper.dart';
 void main() {
   testWidgets('PostPollResultItem: Displays export correctly',
       (WidgetTester tester) async {
-    PollOption option = PollOption(id: 1, text: 'apples');
-    PollOption optionTwo = PollOption(id: 0, text: 'apples');
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var option = PollOption(id: 1, text: 'apples');
+    var optionTwo = PollOption(id: 0, text: 'apples');
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
 
-    PostPoll poll = PostPoll(
+    var poll = PostPoll(
       allowsAnswerEdits: false,
       isOpen: true,
       question: 'favorite snack',
@@ -26,6 +26,7 @@ void main() {
       options: [option, optionTwo],
       userAnswers: [
         PollAnswer(answer: 0, user: userAccount),
+        PollAnswer(answer: 1, user: userAccount),
       ],
     );
     await tester.pumpWidget(

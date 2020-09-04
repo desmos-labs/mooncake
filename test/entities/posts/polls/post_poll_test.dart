@@ -3,11 +3,11 @@ import 'package:mooncake/entities/entities.dart';
 
 void main() {
   final poll = PostPoll(
-    question: "Do you like muffins?",
-    endDate: "2020-05-01T21:00:00Z",
+    question: 'Do you like muffins?',
+    endDate: '2020-05-01T21:00:00Z',
     options: [
-      PollOption(id: 1, text: "Yes"),
-      PollOption(id: 2, text: "No"),
+      PollOption(id: 1, text: 'Yes'),
+      PollOption(id: 2, text: 'No'),
     ],
     isOpen: false,
     allowsMultipleAnswers: false,

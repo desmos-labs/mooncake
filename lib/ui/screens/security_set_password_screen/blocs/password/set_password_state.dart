@@ -22,7 +22,7 @@ class SetPasswordState extends Equatable {
     }
 
     final strength = estimatePasswordStrength(inputPassword);
-    PasswordSecurity security = PasswordSecurity.UNKNOWN;
+    var security = PasswordSecurity.UNKNOWN;
     if (strength < 0.50) {
       security = PasswordSecurity.LOW;
     } else if (strength < 0.75) {
@@ -45,7 +45,7 @@ class SetPasswordState extends Equatable {
   factory SetPasswordState.initial() {
     return SetPasswordState(
       showPassword: false,
-      inputPassword: "",
+      inputPassword: '',
       savingPassword: false,
     );
   }

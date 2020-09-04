@@ -14,7 +14,7 @@ class UpdatePostUseCase {
 
   /// Updates post that has not been posted to the chain
   Future<void> update(Post post) async {
-    List<PostStatusValue> canUpdateStatus = [
+    var canUpdateStatus = <PostStatusValue>[
       PostStatusValue.STORED_LOCALLY,
       PostStatusValue.ERRORED
     ];

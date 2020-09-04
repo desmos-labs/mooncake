@@ -42,21 +42,21 @@ class LoginWithBiometricsScreen extends StatelessWidget {
                             Text(
                               PostsLocalizations.of(context)
                                   .translate(Messages.securityLoginText)
-                                  .replaceAll("\n", " "),
+                                  .replaceAll('\n', ' '),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               PostsLocalizations.of(context)
                                   .translate(Messages.securityLoginWarning)
-                                  .replaceAll("\n", " "),
+                                  .replaceAll('\n', ' '),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               PostsLocalizations.of(context)
                                   .translate(Messages.securityLoginBiometrics)
-                                  .replaceAll("\n", " "),
+                                  .replaceAll('\n', ' '),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 16),
@@ -100,7 +100,9 @@ class LoginWithBiometricsScreen extends StatelessWidget {
         PostsLocalizations.of(context).translate(Messages.biometricsReason);
     localAuth.authenticateWithBiometrics(localizedReason: reason).then((value) {
       if (value) {
-        BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
+        final user =
+            (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user;
+        BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic(user.address));
       }
     }).catchError((error) => print(error));
   }

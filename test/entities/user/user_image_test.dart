@@ -5,7 +5,7 @@ import 'package:mooncake/entities/entities.dart';
 
 void main() {
   group('LocalUserImage', () {
-    final image = LocalUserImage(File("image"));
+    final image = LocalUserImage(File('image'));
 
     test('toJson and fromJson', () {
       final json = image.toJson();
@@ -15,7 +15,7 @@ void main() {
   });
 
   group('NetworkUserImage', () {
-    final image = NetworkUserImage("https://example.com/image");
+    final image = NetworkUserImage('https://example.com/image');
 
     test('toJson and fromJson', () {
       final json = image.toJson();

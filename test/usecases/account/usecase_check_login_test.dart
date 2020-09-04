@@ -15,10 +15,11 @@ void main() {
   });
 
   test('isLoggedIn returns true when the account exists', () async {
-    final account = MooncakeAccount.local("address");
-    when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+    final account = MooncakeAccount.local('address');
+    when(repository.getActiveAccount())
+        .thenAnswer((_) => Future.value(account));
 
     expect(await checkLoginUseCase.isLoggedIn(), isTrue);
-    verify(repository.getAccount()).called(1);
+    verify(repository.getActiveAccount()).called(1);
   });
 }

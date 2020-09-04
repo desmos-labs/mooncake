@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+  pull_request:
 
 jobs:
 
@@ -22,6 +23,7 @@ jobs:
           echo 'mooncake.space' > .docs/.vuepress/dist/CNAME
 
       - name: Deploy 🚀
+        if: github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

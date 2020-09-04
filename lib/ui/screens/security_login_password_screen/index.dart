@@ -59,21 +59,21 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
                               Text(
                                 PostsLocalizations.of(context)
                                     .translate(Messages.securityLoginText)
-                                    .replaceAll("\n", " "),
+                                    .replaceAll('\n', ' '),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
                               Text(
                                 PostsLocalizations.of(context)
                                     .translate(Messages.securityLoginWarning)
-                                    .replaceAll("\n", " "),
+                                    .replaceAll('\n', ' '),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
                               Text(
                                 PostsLocalizations.of(context)
                                     .translate(Messages.securityLoginPassword)
-                                    .replaceAll("\n", " "),
+                                    .replaceAll('\n', ' '),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
@@ -137,6 +137,7 @@ class _LoginWithPasswordScreenState extends State<LoginWithPasswordScreen> {
   }
 
   void _viewMnemonic(BuildContext context) {
-    BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic());
+    final user = (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user;
+    BlocProvider.of<MnemonicBloc>(context).add(ShowMnemonic(user.address));
   }
 }

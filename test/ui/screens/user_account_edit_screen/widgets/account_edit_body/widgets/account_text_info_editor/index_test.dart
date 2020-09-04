@@ -15,15 +15,15 @@ class MockEditAccountBloc extends MockBloc<EditAccountEvent, EditAccountState>
     implements EditAccountBloc {}
 
 void main() {
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
 
   testWidgets('AccountTextInfoEditor: Displays correctly',
       (WidgetTester tester) async {
-    MockEditAccountBloc mockEditAccountBloc = MockEditAccountBloc();
+    var mockEditAccountBloc = MockEditAccountBloc();
     when(mockEditAccountBloc.state)
         .thenAnswer((_) => EditAccountState.initial(userAccount));
     await tester.pumpWidget(
@@ -43,7 +43,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text("dtagLabel"), findsWidgets);
+    expect(find.text('dtagLabel'), findsWidgets);
     expect(find.byType(AccountTextInput), findsWidgets);
   });
 }

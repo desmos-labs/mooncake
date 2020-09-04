@@ -13,11 +13,11 @@ class PollOption extends Equatable {
   /// This same id will be used by users in order to reference this option when
   /// answering the poll. For this reason, it will be used inside
   /// [PollAnswer.id] field.
-  @JsonKey(name: "id")
+  @JsonKey(name: 'id')
   final int id;
 
   /// Textual option that the user will be able to read inside the poll.
-  @JsonKey(name: "text")
+  @JsonKey(name: 'text')
   final String text;
 
   const PollOption({
@@ -39,7 +39,7 @@ class PollOption extends Equatable {
     String text,
   }) {
     return PollOption(
-      id: index ?? this.id,
+      id: index ?? id,
       text: text ?? this.text,
     );
   }

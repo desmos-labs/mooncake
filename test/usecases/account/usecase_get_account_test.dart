@@ -17,33 +17,13 @@ void main() {
   });
 
   test('single performs correct calls', () async {
-    final account = MooncakeAccount.local("address");
-    when(repository.getAccount()).thenAnswer((_) => Future.value(account));
+    final account = MooncakeAccount.local('address');
+    when(repository.getAccount(account.address))
+        .thenAnswer((_) => Future.value(account));
 
-    final result = await getAccountUseCase.single();
+    final result = await getAccountUseCase.single(account.address);
     expect(result, equals(account));
 
-    verify(repository.getAccount()).called(1);
-  });
-
-  test('stream performs correct calls', () {
-    final account = MooncakeAccount.local("address");
-
-    final controller = StreamController<MooncakeAccount>();
-    when(repository.accountStream).thenAnswer((_) => controller.stream);
-
-    final stream = getAccountUseCase.stream();
-    expectLater(
-        stream,
-        emitsInOrder([
-          account,
-          account.copyWith(moniker: "test"),
-        ]));
-
-    controller.add(account);
-    controller.add(account.copyWith(moniker: "test"));
-    controller.close();
-
-    verify(repository.accountStream).called(1);
+    verify(repository.getAccount(account.address)).called(1);
   });
 }

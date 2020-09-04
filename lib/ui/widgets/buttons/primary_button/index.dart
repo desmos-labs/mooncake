@@ -10,6 +10,7 @@ class PrimaryButton extends StatelessWidget {
   final bool enabled;
   final double borderRadius;
   final bool expanded;
+  final double expandedValue;
 
   PrimaryButton({
     Key key,
@@ -18,23 +19,25 @@ class PrimaryButton extends StatelessWidget {
     this.borderRadius = 4.0,
     this.enabled = true,
     this.expanded = true,
+    this.expandedValue = double.infinity,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isLight = Theme.of(context).brightness == Brightness.light;
-    LinearGradient disabledGradient = isLight
+    var isLight = Theme.of(context).brightness == Brightness.light;
+    var disabledGradient = isLight
         ? ThemeColors.primaryButtonBackgroundGradientDiabled
         : ThemeColors.primaryButtonFlatDisabled;
-    LinearGradient gradient = isLight
+    var gradient = isLight
         ? ThemeColors.primaryButtonBackgroundGradient
         : ThemeColors.primaryButtonFlat(context);
+
     return Wrap(
       children: [
         GradientButton(
           disabledGradient: disabledGradient,
           isEnabled: enabled,
-          increaseWidthBy: expanded ? double.infinity : 0,
+          increaseWidthBy: expanded ? expandedValue : 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
