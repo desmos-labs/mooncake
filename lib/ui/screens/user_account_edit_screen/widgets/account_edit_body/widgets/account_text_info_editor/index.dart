@@ -38,6 +38,7 @@ class AccountTextInfoEditor extends StatelessWidget {
                     : PostsLocalizations.of(context)
                         .translate(Messages.errorDTagInvalid),
               ),
+              SizedBox(height: ThemeSpaces.largeGutter),
               AccountTextInput(
                 maxLength: 20,
                 label: PostsLocalizations.of(context)
@@ -49,6 +50,7 @@ class AccountTextInfoEditor extends StatelessWidget {
                     : PostsLocalizations.of(context)
                         .translate(Messages.errorMonikerInvalid),
               ),
+              SizedBox(height: ThemeSpaces.largeGutter),
               AccountTextInput(
                 maxLength: 200,
                 maxLines: 3,

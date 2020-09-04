@@ -23,17 +23,17 @@ class _PostReactionsListState extends State<PostReactionsList> {
 
   @override
   Widget build(BuildContext context) {
-    final int reactsCount = widget.post.reactionsCount.length;
+    final reactsCount = widget.post.reactionsCount.length;
 
     List<Widget> _listReactions() {
-      int count = 0;
+      var count = 0;
       if (actionBarExpanded) {
         count = reactsCount;
       } else {
         count = reactsCount > 5 ? 5 : reactsCount;
       }
 
-      List<Widget> results = [];
+      var results = <Widget>[];
       for (var i = 0; i < count; i++) {
         final entry = widget.post.reactionsCount.entries.toList()[i];
         results.add(

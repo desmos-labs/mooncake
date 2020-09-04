@@ -32,7 +32,7 @@ void main() {
     'MnemonicBloc',
     () {
       MnemonicBloc mnemonicBloc;
-      List<String> mnemonic = ["first", "second", "third"];
+      var mnemonic = <String>['first', 'second', 'third'];
       setUp(
         () {
           mnemonicBloc = MnemonicBloc(
@@ -76,13 +76,13 @@ void main() {
       blocTest(
         'ShowMnemonic: correctly updates tab',
         build: () async {
-          when(mockGetMnemonicUseCase.get("address")).thenAnswer((_) {
+          when(mockGetMnemonicUseCase.get('address')).thenAnswer((_) {
             return Future.value(mnemonic);
           });
           return mnemonicBloc;
         },
         act: (bloc) async {
-          bloc.add(ShowMnemonic("address"));
+          bloc.add(ShowMnemonic('address'));
         },
         expect: [
           MnemonicState(

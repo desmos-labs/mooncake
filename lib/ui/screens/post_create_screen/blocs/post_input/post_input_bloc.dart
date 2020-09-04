@@ -16,7 +16,7 @@ import 'export.dart';
 /// Implementation of [Bloc] that allows to deal with [PostInputEvent]
 /// and [PostInputState] objects.
 class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
-  static const _SHOW_POPUP_KEY = "show_saving_popup";
+  static const _SHOW_POPUP_KEY = 'show_saving_popup';
 
   final Post _parentPost;
 
@@ -154,18 +154,18 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     } else if (event is AddPollOption) {
       // Add the option
       final options = state.poll.options +
-          [PollOption(id: state.poll.options.length, text: "")];
+          [PollOption(id: state.poll.options.length, text: '')];
 
       // Update the state
       final poll = state.poll.copyWith(options: options);
       yield state.copyWith(poll: poll);
     } else if (event is DeletePollOption) {
       // Delete the option
-      List<PollOption> options = List<PollOption>()..addAll(state.poll.options);
+      var options = <PollOption>[...state.poll.options];
       options = options.where((option) => option.id != event.index).toList();
 
       // Update the options indexes
-      for (int i = 0; i < options.length; i++) {
+      for (var i = 0; i < options.length; i++) {
         options[i] = options[i].copyWith(index: i);
       }
 

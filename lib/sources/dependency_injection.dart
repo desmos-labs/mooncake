@@ -34,19 +34,19 @@ class SourcesModule implements Module {
   void configure(Binder binder) {
     // Endpoint to the Desmos chain REST APIs
     final _lcdUrl = _useLocalEndpoints
-        ? "http://10.0.2.2:1317"
-        : "http://lcd.morpheus.desmos.network:1317";
+        ? 'http://10.0.2.2:1317'
+        : 'http://lcd.morpheus.desmos.network:1317';
 
     // GraphQL client
     final _gqlClient = GraphQLClient(
       link: HttpLink(
         _useLocalEndpoints
-            ? "http://10.0.2.2:8080/v1/graphql"
-            : "https://gql.morpheus.desmos.network/v1/graphql",
+            ? 'http://10.0.2.2:8080/v1/graphql'
+            : 'https://gql.morpheus.desmos.network/v1/graphql',
       ).concat(WebSocketLink(
         _useLocalEndpoints
-            ? "ws://10.0.2.2:8080/v1/graphql"
-            : "wss://gql.morpheus.desmos.network/v1/graphql",
+            ? 'ws://10.0.2.2:8080/v1/graphql'
+            : 'wss://gql.morpheus.desmos.network/v1/graphql',
       )),
       cache: GraphQLCache(),
     );
@@ -55,13 +55,13 @@ class SourcesModule implements Module {
       // Chain sources
       ..bindLazySingleton<ChainSource>((injector, params) => ChainSourceImpl(
             lcdEndpoint: _lcdUrl,
-            faucetEndpoint: "https://faucet.desmos.network/airdrop",
+            faucetEndpoint: 'https://faucet.desmos.network/airdrop',
             httpClient: http.Client(),
           ))
       // User sources
       ..bindLazySingleton<LocalUserSource>(
           (injector, params) => LocalUserSourceImpl(
-                networkInfo: NetworkInfo(bech32Hrp: "desmos", lcdUrl: _lcdUrl),
+                networkInfo: NetworkInfo(bech32Hrp: 'desmos', lcdUrl: _lcdUrl),
                 database: accountDatabase,
                 secureStorage: FlutterSecureStorage(),
               ))
@@ -91,7 +91,7 @@ class SourcesModule implements Module {
       // Medias source
       ..bindLazySingleton<RemoteMediasSource>(
           (injector, params) => RemoteMediasSourceImpl(
-                ipfsEndpoint: "ipfs.desmos.network",
+                ipfsEndpoint: 'ipfs.desmos.network',
               ))
       // Notifications source
       ..bindLazySingleton<RemoteNotificationsSource>(

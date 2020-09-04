@@ -18,12 +18,12 @@ void main() {
   group('login works properly', () {
     test('when no funding is necessary', () async {
       final wallet = MockWallet();
-      final account = MooncakeAccount.local("address").copyWith(
+      final account = MooncakeAccount.local('address').copyWith(
         cosmosAccount: CosmosAccount(
-          sequence: "0",
-          accountNumber: "0",
-          address: "address",
-          coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: "10000")],
+          sequence: '0',
+          accountNumber: '0',
+          address: 'address',
+          coins: [StdCoin(denom: Constants.FEE_TOKEN, amount: '10000')],
         ),
       );
       when(repository.refreshAccount(account.address))
@@ -39,7 +39,7 @@ void main() {
 
     test('when funding is required', () async {
       final wallet = MockWallet();
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(repository.saveWallet(any)).thenAnswer((_) => Future.value(wallet));
       when(repository.refreshAccount(account.address))
           .thenAnswer((_) => Future.value(account));

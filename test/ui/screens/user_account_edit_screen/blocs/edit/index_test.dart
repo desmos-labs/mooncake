@@ -29,9 +29,9 @@ void main() {
     () {
       EditAccountBloc editAccountBloc;
 
-      MooncakeAccount userAccount = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
+      var userAccount = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
         cosmosAccount: cosmosAccount,
       );
       setUp(
@@ -44,7 +44,7 @@ void main() {
         },
       );
 
-      final File imageAddedFile = File("assets/images/cry.png");
+      final imageAddedFile = File('assets/images/cry.png');
       blocTest(
         'CoverChanged: work properly',
         build: () async {
@@ -91,13 +91,13 @@ void main() {
           return editAccountBloc;
         },
         act: (bloc) async {
-          bloc.add(DTagChanged("StrawberriesTakeOver"));
+          bloc.add(DTagChanged('StrawberriesTakeOver'));
         },
         expect: [
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
-              dtag: "StrawberriesTakeOver",
+              dtag: 'StrawberriesTakeOver',
             ),
             saving: false,
             savingError: null,
@@ -112,13 +112,13 @@ void main() {
           return editAccountBloc;
         },
         act: (bloc) async {
-          bloc.add(DTagChanged("StrawberriesTakeOver"));
+          bloc.add(DTagChanged('StrawberriesTakeOver'));
         },
         expect: [
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
-              dtag: "StrawberriesTakeOver",
+              dtag: 'StrawberriesTakeOver',
             ),
             saving: false,
             savingError: null,
@@ -133,13 +133,13 @@ void main() {
           return editAccountBloc;
         },
         act: (bloc) async {
-          bloc.add(MonikerChanged("StrawberriesTakeOver"));
+          bloc.add(MonikerChanged('StrawberriesTakeOver'));
         },
         expect: [
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
-              moniker: "StrawberriesTakeOver",
+              moniker: 'StrawberriesTakeOver',
             ),
             saving: false,
             savingError: null,
@@ -154,13 +154,43 @@ void main() {
           return editAccountBloc;
         },
         act: (bloc) async {
-          bloc.add(BioChanged("StrawberriesTakeOver"));
+          bloc.add(BioChanged('StrawberriesTakeOver'));
+          bloc.add(BioChanged(''));
+          bloc.add(BioChanged('again'));
+          bloc.add(BioChanged(null));
         },
         expect: [
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
-              bio: "StrawberriesTakeOver",
+              bio: 'StrawberriesTakeOver',
+            ),
+            saving: false,
+            savingError: null,
+            showErrorPopup: false,
+          ),
+          EditAccountState(
+            originalAccount: userAccount,
+            account: userAccount.copyWith(
+              bio: null,
+            ),
+            saving: false,
+            savingError: null,
+            showErrorPopup: false,
+          ),
+          EditAccountState(
+            originalAccount: userAccount,
+            account: userAccount.copyWith(
+              bio: 'again',
+            ),
+            saving: false,
+            savingError: null,
+            showErrorPopup: false,
+          ),
+          EditAccountState(
+            originalAccount: userAccount,
+            account: userAccount.copyWith(
+              bio: null,
             ),
             saving: false,
             savingError: null,
@@ -176,10 +206,10 @@ void main() {
         },
         act: (bloc) async {
           when(mockSaveAccountUseCase.save(any,
-                  syncRemote: anyNamed("syncRemote")))
+                  syncRemote: anyNamed('syncRemote')))
               .thenAnswer((_) => Future.value(AccountSaveResult.success()));
-          bloc.add(MonikerChanged("StrawberriesTakeOver"));
-          bloc.add(DTagChanged("StrawberriesTakeOver"));
+          bloc.add(MonikerChanged('StrawberriesTakeOver'));
+          bloc.add(DTagChanged('StrawberriesTakeOver'));
           bloc.add(SaveAccount());
         },
         skip: 3,
@@ -187,8 +217,8 @@ void main() {
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
-              dtag: "StrawberriesTakeOver",
-              moniker: "StrawberriesTakeOver",
+              dtag: 'StrawberriesTakeOver',
+              moniker: 'StrawberriesTakeOver',
             ),
             saving: true,
             savingError: null,
@@ -197,8 +227,8 @@ void main() {
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
-              dtag: "StrawberriesTakeOver",
-              moniker: "StrawberriesTakeOver",
+              dtag: 'StrawberriesTakeOver',
+              moniker: 'StrawberriesTakeOver',
             ),
             saving: false,
             savingError: null,
@@ -214,11 +244,11 @@ void main() {
         },
         act: (bloc) async {
           when(mockSaveAccountUseCase.save(any,
-                  syncRemote: anyNamed("syncRemote")))
+                  syncRemote: anyNamed('syncRemote')))
               .thenAnswer(
-                  (_) => Future.value(AccountSaveResult.error("error")));
-          bloc.add(MonikerChanged("StrawberriesTakeOver"));
-          bloc.add(DTagChanged("StrawberriesTakeOver"));
+                  (_) => Future.value(AccountSaveResult.error('error')));
+          bloc.add(MonikerChanged('StrawberriesTakeOver'));
+          bloc.add(DTagChanged('StrawberriesTakeOver'));
           bloc.add(SaveAccount());
           bloc.add(HideErrorPopup());
         },
@@ -227,11 +257,11 @@ void main() {
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
-              dtag: "StrawberriesTakeOver",
-              moniker: "StrawberriesTakeOver",
+              dtag: 'StrawberriesTakeOver',
+              moniker: 'StrawberriesTakeOver',
             ),
             saving: false,
-            savingError: "error",
+            savingError: 'error',
             showErrorPopup: false,
           ),
         ],

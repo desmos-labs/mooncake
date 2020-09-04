@@ -10,15 +10,15 @@ part 'post_media.g.dart';
 class PostMedia extends Equatable {
   /// Contains all the mime types of medias supported
   static const List<String> IMAGES_MIME_TYPES = [
-    "image/jpeg",
-    "image/png",
-    "image/gif"
+    'image/jpeg',
+    'image/png',
+    'image/gif'
   ];
 
-  @JsonKey(name: "uri")
+  @JsonKey(name: 'uri')
   final String uri;
 
-  @JsonKey(name: "mime_type")
+  @JsonKey(name: 'mime_type')
   final String mimeType;
 
   const PostMedia({
@@ -33,7 +33,7 @@ class PostMedia extends Equatable {
 
   /// Tells whether the image is stored only locally or not.
   bool get isLocal {
-    return !uri.startsWith("http");
+    return !uri.startsWith('http');
   }
 
   /// Tells whether this media represents an image or not.

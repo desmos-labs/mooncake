@@ -17,7 +17,7 @@ void main() {
   group('saveWallet works properly', () {
     test('when no funding is necessary', () async {
       final wallet = MockWallet();
-      final String mnemonic = "mnemonic";
+      final mnemonic = 'mnemonic';
       when(repository.saveWallet(mnemonic))
           .thenAnswer((_) => Future.value(wallet));
 

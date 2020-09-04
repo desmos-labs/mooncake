@@ -32,9 +32,9 @@ void main() {
           when(mockGetNotificationsUseCase.single())
               .thenAnswer((_) => Future.value([
                     TxSuccessfulNotification(
-                        date: DateTime.now(), txHash: "hash-1"),
+                        date: DateTime.now(), txHash: 'hash-1'),
                     TxFailedNotification(
-                        date: DateTime.now(), txHash: "hash-2", error: "e"),
+                        date: DateTime.now(), txHash: 'hash-2', error: 'e'),
                   ]));
           return notificationsBloc;
         },

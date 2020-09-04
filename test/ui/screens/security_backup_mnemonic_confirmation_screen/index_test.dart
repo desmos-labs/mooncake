@@ -5,7 +5,7 @@ import 'package:mooncake/ui/ui.dart';
 import '../../helper.dart';
 
 void main() {
-  MockRecoverAccountBloc mockRecoverAccountBloc = MockRecoverAccountBloc();
+  var mockRecoverAccountBloc = MockRecoverAccountBloc();
   testWidgets('BackupMnemonicConfirmationScreen: Displays correctly',
       (WidgetTester tester) async {
     when(mockRecoverAccountBloc.state)
@@ -27,6 +27,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(RecoverAccountMainContent), findsOneWidget);
     expect(find.byType(RecoverAccountWordsList), findsOneWidget);
-    expect(find.text("mnemonicConfirmPhrase"), findsOneWidget);
+    expect(find.text('mnemonicConfirmPhrase'), findsOneWidget);
   });
 }

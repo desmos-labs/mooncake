@@ -11,11 +11,11 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../helper.dart';
 
 void main() {
-  MockAccountBloc mockAccountBloc = MockAccountBloc();
-  MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var mockAccountBloc = MockAccountBloc();
+  var mockNavigatorBloc = MockNavigatorBloc();
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
 
@@ -49,7 +49,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text("walletButtonTooltip"), findsWidgets);
+    expect(find.text('walletButtonTooltip'), findsWidgets);
     expect(find.byType(AccountCoverImageViewer), findsOneWidget);
     expect(find.byType(AnimatedContainer), findsOneWidget);
     expect(find.byType(AccountAvatar), findsOneWidget);
@@ -62,21 +62,21 @@ void main() {
 
     await tester.tap(find.byIcon(MooncakeIcons.settings));
     await tester.pumpAndSettle();
-    expect(find.text("logoutOption"), findsWidgets);
-    expect(find.text("editAccountOption"), findsWidgets);
-    expect(find.text("viewMnemonicOption"), findsWidgets);
+    expect(find.text('logoutOption'), findsWidgets);
+    expect(find.text('editAccountOption'), findsWidgets);
+    expect(find.text('viewMnemonicOption'), findsWidgets);
 
-    await tester.tap(find.text("editAccountOption"));
+    await tester.tap(find.text('editAccountOption'));
     await tester.pumpAndSettle();
     expect(verify(mockNavigatorBloc.add(NavigateToEditAccount())).callCount, 1);
   });
 
   testWidgets('AccountAppBar: Hits logout properly',
       (WidgetTester tester) async {
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
-      cosmosAccount: cosmosAccount.copyWith(address: "address"),
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
+      cosmosAccount: cosmosAccount.copyWith(address: 'address'),
     );
 
     when(mockAccountBloc.state).thenAnswer((_) {
@@ -113,12 +113,12 @@ void main() {
 
     await tester.tap(find.byIcon(MooncakeIcons.settings));
     await tester.pumpAndSettle();
-    expect(find.text("logoutOption"), findsWidgets);
-    expect(find.text("editAccountOption"), findsWidgets);
-    expect(find.text("viewMnemonicOption"), findsWidgets);
+    expect(find.text('logoutOption'), findsWidgets);
+    expect(find.text('editAccountOption'), findsWidgets);
+    expect(find.text('viewMnemonicOption'), findsWidgets);
 
-    await tester.tap(find.text("logoutOption"));
+    await tester.tap(find.text('logoutOption'));
     await tester.pumpAndSettle();
-    expect(verify(mockAccountBloc.add(LogOut("address"))).callCount, 1);
+    expect(verify(mockAccountBloc.add(LogOut('address'))).callCount, 1);
   });
 }

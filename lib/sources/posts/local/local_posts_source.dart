@@ -41,7 +41,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   /// created from a blocked user that is present inside the [users] list.
   Filter _getBlockedUsersFilter(List<String> users) {
     return Filter.custom((record) {
-      return !users.contains(record["user"]["address"]);
+      return !users.contains(record['user']['address']);
     });
   }
 
@@ -70,7 +70,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       filter: Filter.and([
         Filter.or([
           Filter.equals(Post.PARENT_ID_FIELD, null),
-          Filter.equals(Post.PARENT_ID_FIELD, ""),
+          Filter.equals(Post.PARENT_ID_FIELD, ''),
         ]),
         Filter.equals(Post.HIDDEN_FIELD, false),
         _getBlockedUsersFilter(blockedUsers),
@@ -215,7 +215,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   @visibleForTesting
   List<Post> mergePosts(List<Post> existingPosts, List<Post> newPosts) {
     final merged = List<Post>(newPosts.length);
-    for (int index = 0; index < merged.length; index++) {
+    for (var index = 0; index < merged.length; index++) {
       merged[index] = mergePost(existingPosts[index], newPosts[index]);
     }
     return merged;
@@ -234,19 +234,19 @@ class LocalPostsSourceImpl implements LocalPostsSource {
           : existing;
     }
 
-    Set<Reaction> reactions = updated.reactions.toSet();
+    var reactions = updated.reactions.toSet();
     if (existing?.reactions != null) {
       reactions.addAll(existing.reactions);
     }
 
-    Set<String> commentIds = updated.commentsIds.toSet();
+    var commentIds = updated.commentsIds.toSet();
     if (existing?.commentsIds != null) {
       commentIds.addAll(existing.commentsIds);
     }
 
-    PostPoll postPoll = updated.poll;
+    var postPoll = updated.poll;
     if (existing?.poll != null && updated.poll != null) {
-      Set<PollAnswer> answers = (updated.poll.userAnswers ?? []).toSet();
+      var answers = (updated.poll.userAnswers ?? []).toSet();
       answers.addAll(existing.poll.userAnswers ?? []);
       postPoll = postPoll.copyWith(userAnswers: answers.toList());
     }
@@ -268,17 +268,17 @@ class LocalPostsSourceImpl implements LocalPostsSource {
         final existingValues = await measureExecTime(() async {
           final posts = await _store.records(keys).get(txn);
           return PostsConverter.deserializePostsSync(posts);
-        }, name: "Local posts reading");
+        }, name: 'Local posts reading');
         posts = mergePosts(existingValues, posts);
       }
 
       final values = await measureExecTime(() async {
         return PostsConverter.serializePostsSync(posts);
-      }, name: "Local posts conversion");
+      }, name: 'Local posts conversion');
 
       await measureExecTime(() async {
         return _store.records(keys).put(txn, values);
-      }, name: "Local posts storing");
+      }, name: 'Local posts storing');
     });
   }
 

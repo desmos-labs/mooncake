@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 void main() {
   testWidgets('CreatingAccountPopupContent: Displays correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
+    var mockAccountBloc = MockAccountBloc();
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(

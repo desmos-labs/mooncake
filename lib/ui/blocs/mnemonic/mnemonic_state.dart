@@ -73,7 +73,7 @@ class ExportingMnemonic extends MnemonicState {
     }
 
     final strength = estimatePasswordStrength(encryptPassword);
-    PasswordSecurity security = PasswordSecurity.UNKNOWN;
+    var security = PasswordSecurity.UNKNOWN;
     if (strength < 0.50) {
       security = PasswordSecurity.LOW;
     } else if (strength < 0.75) {

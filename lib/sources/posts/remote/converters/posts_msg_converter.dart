@@ -39,8 +39,8 @@ class PostsMsgConverter {
   /// to store such post into the chain.
   MsgCreatePost _toMsgCreatePost(Post post, String creator) {
     return MsgCreatePost(
-      parentId: post.parentId ?? "",
-      message: post.message ?? "",
+      parentId: post.parentId ?? '',
+      message: post.message ?? '',
       allowsComments: post.allowsComments,
       optionalData:
           post.optionalData?.isNotEmpty == true ? post.optionalData : null,
@@ -62,12 +62,12 @@ class PostsMsgConverter {
     // Divide the posts into the ones that need to be created, the
     // ones that need to be liked and the ones from which the like
     // should be removed.
-    final List<Post> postsToCreate = [];
-    final List<ReactionData> reactionsToAdd = [];
-    final List<ReactionData> reactionsToRemove = [];
-    final List<AnswerData> answersToAdd = [];
+    final postsToCreate = <Post>[];
+    final reactionsToAdd = <ReactionData>[];
+    final reactionsToRemove = <ReactionData>[];
+    final answersToAdd = <AnswerData>[];
 
-    for (int index = 0; index < posts.length; index++) {
+    for (var index = 0; index < posts.length; index++) {
       final post = posts[index];
       final existingPost = existingPosts[index];
 
@@ -122,7 +122,7 @@ class PostsMsgConverter {
       }
     }
 
-    final List<StdMsg> messages = [];
+    final messages = <StdMsg>[];
     messages.addAll(postsToCreate
         .map((post) => _toMsgCreatePost(post, wallet.bech32Address))
         .toList());

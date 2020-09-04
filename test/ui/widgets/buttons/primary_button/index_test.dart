@@ -6,7 +6,7 @@ import '../../../helper.dart';
 
 void main() {
   testWidgets('Displays correctly in light mode', (WidgetTester tester) async {
-    bool enabledValue = true;
+    var enabledValue = true;
 
     await tester.pumpWidget(
       makeTestableWidget(
@@ -19,7 +19,7 @@ void main() {
             }
 
             return PrimaryButton(
-                child: Text("pineapples"),
+                child: Text('pineapples'),
                 onPressed: handleOnPressed,
                 enabled: enabledValue);
           },
@@ -39,7 +39,7 @@ void main() {
   });
 
   testWidgets('Displays correctly in dark mode', (WidgetTester tester) async {
-    bool enabledValue = true;
+    var enabledValue = true;
     await tester.pumpWidget(
       makeTestableWidget(
         theme: 'dark',
@@ -52,7 +52,7 @@ void main() {
             }
 
             return PrimaryButton(
-                child: Text("pineapples"),
+                child: Text('pineapples'),
                 onPressed: handleOnPressed,
                 enabled: enabledValue);
           },

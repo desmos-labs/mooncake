@@ -9,13 +9,13 @@ part 'msg_answer_poll.g.dart';
 @reflector
 @JsonSerializable(explicitToJson: true)
 class MsgAnswerPoll extends StdMsg {
-  @JsonKey(name: "post_id")
+  @JsonKey(name: 'post_id')
   final String postId;
 
-  @JsonKey(name: "answers")
+  @JsonKey(name: 'answers')
   final List<String> answers;
 
-  @JsonKey(name: "answerer")
+  @JsonKey(name: 'answerer')
   final String user;
 
   MsgAnswerPoll({
@@ -42,12 +42,12 @@ class MsgAnswerPoll extends StdMsg {
 
   @override
   Exception validate() {
-    if (postId == "") {
-      return Exception("post id cannot be empty");
+    if (postId == '') {
+      return Exception('post id cannot be empty');
     }
 
     if (user.trim().isEmpty) {
-      return Exception("user cannot be empty");
+      return Exception('user cannot be empty');
     }
 
     return null;

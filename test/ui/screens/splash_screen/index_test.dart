@@ -11,7 +11,7 @@ class MockSetPasswordBloc extends MockBloc<SetPasswordEvent, SetPasswordState>
 
 void main() {
   testWidgets('SplashScreen: Displays correctly', (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
+    var mockAccountBloc = MockAccountBloc();
 
     await tester.pumpWidget(
       makeTestableWidget(

@@ -25,10 +25,10 @@ void main() {
     'PostDetailsBloc',
     () {
       PostDetailsBloc postDetailsBloc;
-      String postId = '123';
-      MooncakeAccount userAccount = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
+      var postId = '123';
+      var userAccount = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
         cosmosAccount: cosmosAccount,
       );
       setUp(

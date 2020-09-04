@@ -19,7 +19,7 @@ class SetBiometricBody extends StatelessWidget {
           Text(
             PostsLocalizations.of(context)
                 .translate(Messages.biometricsBody)
-                .replaceAll("\n", " "),
+                .replaceAll('\n', ' '),
             style: Theme.of(context)
                 .textTheme
                 .bodyText2
@@ -59,8 +59,9 @@ class SetBiometricBody extends StatelessWidget {
   }
 
   void _enableButtonClicked(BuildContext context) {
-    final reason =
-        PostsLocalizations.of(context).translate(Messages.biometricsReason);
+    final reason = PostsLocalizations.of(context).translate(
+      Messages.biometricsReason,
+    );
     localAuth.authenticateWithBiometrics(localizedReason: reason).then((value) {
       if (value) {
         BlocProvider.of<BiometricsBloc>(context)

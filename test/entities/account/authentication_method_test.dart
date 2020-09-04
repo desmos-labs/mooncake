@@ -12,7 +12,7 @@ void main() {
 
     test('PasswordAuthentication', () {
       final auth = PasswordAuthentication(
-        hashedPassword: "5f4dcc3b5aa765d61d8327deb882cf99",
+        hashedPassword: '5f4dcc3b5aa765d61d8327deb882cf99',
       );
       final json = auth.toJson();
       final fromJson = PasswordAuthentication.fromJson(json);

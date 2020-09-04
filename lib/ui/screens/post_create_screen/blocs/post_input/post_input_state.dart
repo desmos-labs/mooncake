@@ -111,6 +111,7 @@ class PostInputState extends Equatable {
         willShowPopupAgain,
       ];
 
+  @override
   String toString() {
     return 'PostInputState { '
         'parentPost: $parentPost, '

@@ -16,12 +16,12 @@ void main() {
   });
 
   group('create performs correct calls', () {
-    final message = "This is a post message";
+    final message = 'This is a post message';
     final allowsComments = false;
-    final parentId = "parent-id";
+    final parentId = 'parent-id';
 
     test('with simple post', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(repository.getActiveAccount())
           .thenAnswer((_) => Future.value(account));
 
@@ -42,13 +42,13 @@ void main() {
     });
 
     test('with medias post', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(repository.getActiveAccount())
           .thenAnswer((_) => Future.value(account));
 
       final medias = [
-        PostMedia(mimeType: "text/plain", uri: "https://example.com/test.txt"),
-        PostMedia(mimeType: "image/png", uri: "https://example.com/image.png"),
+        PostMedia(mimeType: 'text/plain', uri: 'https://example.com/test.txt'),
+        PostMedia(mimeType: 'image/png', uri: 'https://example.com/image.png'),
       ];
       final post = await createPostUseCase.create(
         message: message,
@@ -66,16 +66,16 @@ void main() {
     });
 
     test('with poll post', () async {
-      final account = MooncakeAccount.local("address");
+      final account = MooncakeAccount.local('address');
       when(repository.getActiveAccount())
           .thenAnswer((_) => Future.value(account));
 
       final poll = PostPoll(
-        question: "This is a question",
-        endDate: "2020-05-17T21:00:00.000Z",
+        question: 'This is a question',
+        endDate: '2020-05-17T21:00:00.000Z',
         options: [
-          PollOption(id: 1, text: "Option 1"),
-          PollOption(id: 2, text: "Option 2"),
+          PollOption(id: 1, text: 'Option 1'),
+          PollOption(id: 2, text: 'Option 2'),
         ],
         isOpen: false,
         allowsMultipleAnswers: true,

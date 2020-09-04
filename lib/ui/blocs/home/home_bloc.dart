@@ -52,7 +52,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is UpdateTab) {
-      yield state.copyWith(activeTab: event.tab);
+      yield* _mapUpdateTabToState(event);
     } else if (event is SignOut) {
       _mapSignOutToState(event);
     } else if (event is ShowBackupMnemonicPhrasePopup) {
@@ -61,31 +61,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHideBackupMnemonicPhrasePopupToState();
     } else if (event is TurnOffBackupMnemonicPopupPermission) {
       yield* _mapTurnOffBackupMnemonicPopupPermissionToState();
+    } else if (event is SetScrollToTop) {
+      yield state.copyWith(
+        scrollToTop: event.scroll,
+      );
     }
   }
 
   void _startSubscription() async {
-    if (_watchSettingSubscription == null) {
-      _watchSettingSubscription = _watchSettingUseCase
-          .watch(key: SettingKeys.TX_AMOUNT)
-          .listen((value) async {
-        final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
-        final checkPopupPermission = await _getSettingUseCase.get(
-          key: SettingKeys.BACKUP_POPUP_PERMISSION,
-        );
+    _watchSettingSubscription ??= _watchSettingUseCase
+        .watch(key: SettingKeys.TX_AMOUNT)
+        .listen((value) async {
+      final checkTxAmount = (value == 5) || (value != 0 && value % 10 == 0);
+      final checkPopupPermission = await _getSettingUseCase.get(
+        key: SettingKeys.BACKUP_POPUP_PERMISSION,
+      );
 
-        if (checkTxAmount && checkPopupPermission != false) {
-          add(ShowBackupMnemonicPhrasePopup());
-        } else {
-          add(HideBackupMnemonicPhrasePopup());
-        }
-      });
-    }
+      if (checkTxAmount && checkPopupPermission != false) {
+        add(ShowBackupMnemonicPhrasePopup());
+      } else {
+        add(HideBackupMnemonicPhrasePopup());
+      }
+    });
   }
 
   /// handles SignOut [event]
   void _mapSignOutToState(SignOut event) {
-    this._stopSubscription();
+    _stopSubscription();
     _loginBloc.add(LogOut(event.address));
   }
 
@@ -112,5 +114,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       value: false,
     );
     yield state.copyWith(showBackupPhrasePopup: false);
+  }
+
+  /// tells screens whether to scroll to top
+  Stream<HomeState> _mapUpdateTabToState(UpdateTab event) async* {
+    yield state.copyWith(
+      activeTab: event.tab,
+      scrollToTop: state.activeTab == event.tab,
+    );
   }
 }

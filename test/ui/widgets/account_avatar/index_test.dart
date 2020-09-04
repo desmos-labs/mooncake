@@ -9,7 +9,7 @@ import 'package:mooncake/ui/ui.dart';
 
 void main() {
   testWidgets('No avatar', (WidgetTester tester) async {
-    final user = User.fromAddress("address");
+    final user = User.fromAddress('address');
     await tester.pumpWidget(AccountAvatar(user: user));
 
     expect(find.byType(CustomPaint), findsOneWidget);
@@ -19,8 +19,8 @@ void main() {
 
   testWidgets('Remote avatar image', (WidgetTester tester) async {
     final user = User(
-      address: "address",
-      profilePicUri: "https://cutt.ly/wsrqodv",
+      address: 'address',
+      profilePicUri: 'https://cutt.ly/wsrqodv',
     );
     await tester.pumpWidget(AccountAvatar(user: user));
 
@@ -34,8 +34,8 @@ void main() {
 
   testWidgets('Local avatar', (WidgetTester tester) async {
     final user = User(
-      address: "address",
-      profilePicUri: "file:/home/user/image.png",
+      address: 'address',
+      profilePicUri: 'file:/home/user/image.png',
     );
 
     // MediaQuery is required as CircleAvatar requires it to be build correctly

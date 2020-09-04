@@ -10,10 +10,10 @@ part 'fcm_message_data.g.dart';
 @JsonSerializable(explicitToJson: true)
 class FcmMessage extends Equatable {
   /// Represents the key that is used in order to contain the notification data.
-  static const NOTIFICATION_KEY = "notification";
+  static const NOTIFICATION_KEY = 'notification';
 
   /// Represents the key that is used in order to contain custom data.
-  static const DATA_KEY = "data";
+  static const DATA_KEY = 'data';
 
   /// Contains the data of the notification.
   @JsonKey(name: NOTIFICATION_KEY, nullable: true)
@@ -25,11 +25,11 @@ class FcmMessage extends Equatable {
 
   /// Returns the associated action.
   /// If no action is associated, it returns `null` instead.
-  String get action => data["action"] as String;
+  String get action => data['action'] as String;
 
   /// Returns the associated type.
   /// If no type is associated, it returns `null` instead.
-  String get type => data["type"] as String;
+  String get type => data['type'] as String;
 
   FcmMessage({this.notification, this.data});
 
@@ -69,13 +69,13 @@ class FcmMessage extends Equatable {
 @immutable
 @JsonSerializable(explicitToJson: true)
 class FcmNotification extends Equatable {
-  @JsonKey(name: "title", required: false)
+  @JsonKey(name: 'title', required: false)
   final String title;
 
-  @JsonKey(name: "body", required: false)
+  @JsonKey(name: 'body', required: false)
   final String body;
 
-  @JsonKey(name: "image", required: false)
+  @JsonKey(name: 'image', required: false)
   final String imageUrl;
 
   FcmNotification({

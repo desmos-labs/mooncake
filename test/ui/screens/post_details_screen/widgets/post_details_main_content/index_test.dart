@@ -15,12 +15,12 @@ import '../../../../../mocks/mocks.dart';
 import '../../../../helper.dart';
 
 void main() {
-  MockPostDetailsBloc mockPostDetailsBloc = MockPostDetailsBloc();
-  MockAccountBloc mockAccountBloc = MockAccountBloc();
-  MockNavigatorBloc mockNavigatorBloc = MockNavigatorBloc();
-  MooncakeAccount userAccount = MooncakeAccount(
-    profilePicUri: "https://example.com/avatar.png",
-    moniker: "john-doe",
+  var mockPostDetailsBloc = MockPostDetailsBloc();
+  var mockAccountBloc = MockAccountBloc();
+  var mockNavigatorBloc = MockNavigatorBloc();
+  var userAccount = MooncakeAccount(
+    profilePicUri: 'https://example.com/avatar.png',
+    moniker: 'john-doe',
     cosmosAccount: cosmosAccount,
   );
   testWidgets('PostDetailsMainContent: Displays correctly',
@@ -121,16 +121,16 @@ void main() {
 
     expect(find.byType(PostDetailsReactionsList), findsOneWidget);
     expect(find.byType(EmptyReactions), findsOneWidget);
-    expect(find.text("noReactionsYet"), findsOneWidget);
+    expect(find.text('noReactionsYet'), findsOneWidget);
   });
 
   testWidgets('PostDetailsMainContent: Displays reactions correctly',
       (WidgetTester tester) async {
-    List<Reaction> reactionTest = [
-      Reaction(user: userAccount, value: "123", code: "123"),
-      Reaction(user: userAccount, value: "123", code: "123"),
-      Reaction(user: userAccount, value: "123", code: "123"),
-      Reaction(user: userAccount, value: "3", code: "123"),
+    var reactionTest = <Reaction>[
+      Reaction(user: userAccount, value: '123', code: '123'),
+      Reaction(user: userAccount, value: '123', code: '123'),
+      Reaction(user: userAccount, value: '123', code: '123'),
+      Reaction(user: userAccount, value: '3', code: '123'),
     ];
 
     when(mockPostDetailsBloc.state).thenReturn(PostDetailsLoaded.first(
@@ -169,9 +169,9 @@ void main() {
     expect(find.byType(EmptyReactions), findsNothing);
     expect(find.byType(ReactionFilterItem), findsWidgets);
     expect(find.byType(PostReactionItem), findsNWidgets(4));
-    expect(find.text("noReactionsYet"), findsNothing);
+    expect(find.text('noReactionsYet'), findsNothing);
 
-    await tester.tap(find.text("3 1"));
+    await tester.tap(find.text('3 1'));
     await tester.pumpAndSettle();
     expect(find.byType(PostReactionItem), findsNWidgets(1));
     expect(find.byType(AccountAvatar), findsWidgets);

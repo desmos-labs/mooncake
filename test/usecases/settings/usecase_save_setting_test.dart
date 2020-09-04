@@ -16,8 +16,8 @@ void main() {
   test('save performs the correct calls', () async {
     when(repository.save(any, any)).thenAnswer((_) => Future.value(null));
 
-    final key = "key";
-    final value = "value";
+    final key = 'key';
+    final value = 'value';
     await saveSettingUseCase.save(key: key, value: value);
 
     verify(repository.save(key, value)).called(1);

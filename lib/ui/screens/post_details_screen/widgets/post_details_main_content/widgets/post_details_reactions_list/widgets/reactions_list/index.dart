@@ -25,8 +25,8 @@ class _ReactionsListState extends State<ReactionsList> {
 
   @override
   Widget build(BuildContext context) {
-    int listReactionsLength = widget.post.reactions.length;
-    List<Reaction> listReactions = widget.post.reactions.reversed.toList();
+    var listReactionsLength = widget.post.reactions.length;
+    var listReactions = widget.post.reactions.reversed.toList();
 
     if (selectedFilter != SELECTED_ALL) {
       listReactions = widget.post.reactions
@@ -37,7 +37,7 @@ class _ReactionsListState extends State<ReactionsList> {
 
     return CustomScrollView(
       shrinkWrap: true,
-      key: PageStorageKey<String>("reactions"),
+      key: PageStorageKey<String>('reactions'),
       slivers: <Widget>[
         SliverToBoxAdapter(
           child: Container(
@@ -63,7 +63,7 @@ class _ReactionsListState extends State<ReactionsList> {
                   );
                 }
 
-                int reactionIndex = index - 1;
+                var reactionIndex = index - 1;
                 final entry =
                     widget.post.reactionsCount.entries.toList()[reactionIndex];
                 return ReactionFilterItem(

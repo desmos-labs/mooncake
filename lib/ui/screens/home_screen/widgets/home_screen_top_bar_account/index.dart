@@ -12,7 +12,7 @@ AppBar accountAppBar(BuildContext context) {
   ];
 
   void _onSelected(BuildContext context, String option) {
-    String userAddress =
+    var userAddress =
         (BlocProvider.of<AccountBloc>(context).state as LoggedIn).user.address;
 
     if (option == actions[0]) {

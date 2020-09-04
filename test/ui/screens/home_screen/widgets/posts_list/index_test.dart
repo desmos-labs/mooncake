@@ -12,23 +12,26 @@ import '../../../../helper.dart';
 
 void main() {
   testWidgets('PostsList: Displays correctly', (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var mockAccountBloc = MockAccountBloc();
+    var mockPostsListBloc = MockPostsListBloc();
+    var mockHomeBloc = MockHomeBloc();
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
     when(mockPostsListBloc.state)
         .thenReturn(PostsLoaded.first(posts: testPosts));
     when(mockAccountBloc.state)
         .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
+    when(mockHomeBloc.state).thenReturn(HomeState.initial());
     await tester.pumpWidget(
       makeTestableWidget(
         child: MultiBlocProvider(
           providers: [
             BlocProvider<PostsListBloc>(create: (_) => mockPostsListBloc),
             BlocProvider<AccountBloc>(create: (_) => mockAccountBloc),
+            BlocProvider<HomeBloc>(create: (_) => mockHomeBloc),
           ],
           child: PostsList(
             user: userAccount,
@@ -37,7 +40,7 @@ void main() {
       ),
     );
 
-    await tester.pump(const Duration(seconds: 3));
+    await tester.pump(const Duration(seconds: 5));
 
     expect(find.byType(PostsLoadingEmptyContainer), findsNothing);
     expect(find.byType(PostListItem), findsWidgets);
@@ -47,19 +50,20 @@ void main() {
 
   testWidgets('PostsList: Error Displays correctly',
       (WidgetTester tester) async {
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
-    MockPostsListBloc mockPostsListBloc = MockPostsListBloc();
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var mockAccountBloc = MockAccountBloc();
+    var mockPostsListBloc = MockPostsListBloc();
+    var mockHomeBloc = MockHomeBloc();
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
 
-    Post testErrorPost = testPost.copyWith(
+    var testErrorPost = testPost.copyWith(
       status: PostStatus(
         value: PostStatusValue.ERRORED,
       ),
-      owner: User.fromAddress("desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725"),
+      owner: User.fromAddress('desmos1ew60ztvqxlf5kjjyyzxf7hummlwdadgesu3725'),
     );
 
     when(mockPostsListBloc.state)
@@ -73,6 +77,7 @@ void main() {
           providers: [
             BlocProvider<PostsListBloc>(create: (_) => mockPostsListBloc),
             BlocProvider<AccountBloc>(create: (_) => mockAccountBloc),
+            BlocProvider<HomeBloc>(create: (_) => mockHomeBloc),
           ],
           child: PostsList(
             user: userAccount,

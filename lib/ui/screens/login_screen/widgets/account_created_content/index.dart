@@ -7,7 +7,7 @@ import 'package:mooncake/ui/ui.dart';
 class AccountCreatedPopupContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Color textColor = Theme.of(context).brightness == Brightness.light
+    final textColor = Theme.of(context).brightness == Brightness.light
         ? Theme.of(context).colorScheme.primary
         : Colors.white;
     return Column(

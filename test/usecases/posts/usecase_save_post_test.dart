@@ -18,7 +18,7 @@ void main() {
     test('with post without a parent', () async {
       when(repository.savePost(any)).thenAnswer((_) => Future.value(null));
 
-      final post = testPost.copyWith(parentId: "");
+      final post = testPost.copyWith(parentId: '');
       await savePostUseCase.save(post);
 
       verify(repository.savePost(post)).called(1);

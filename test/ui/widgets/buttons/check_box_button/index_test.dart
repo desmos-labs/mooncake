@@ -5,7 +5,7 @@ import '../../../helper.dart';
 
 void main() {
   testWidgets('Displays correctly', (WidgetTester tester) async {
-    bool tapValue = false;
+    var tapValue = false;
 
     await tester.pumpWidget(
       makeTestableWidget(

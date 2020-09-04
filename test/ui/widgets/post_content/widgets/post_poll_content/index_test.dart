@@ -12,15 +12,15 @@ import '../../../../helper.dart';
 void main() {
   testWidgets('PostPollContent: Displays export correctly',
       (WidgetTester tester) async {
-    MooncakeAccount userAccount = MooncakeAccount(
-      profilePicUri: "https://example.com/avatar.png",
-      moniker: "john-doe",
+    var userAccount = MooncakeAccount(
+      profilePicUri: 'https://example.com/avatar.png',
+      moniker: 'john-doe',
       cosmosAccount: cosmosAccount,
     );
 
-    PollOption option = PollOption(id: 1, text: 'apples');
-    PollOption optionTwo = PollOption(id: 0, text: 'apples');
-    PostPoll poll = PostPoll(
+    var option = PollOption(id: 1, text: 'apples');
+    var optionTwo = PollOption(id: 0, text: 'apples');
+    var poll = PostPoll(
       allowsAnswerEdits: false,
       isOpen: true,
       question: 'favorite snack',
@@ -33,9 +33,9 @@ void main() {
       ],
     );
 
-    Post formattedTestPoll = testPost.copyWith(poll: poll);
+    var formattedTestPoll = testPost.copyWith(poll: poll);
 
-    MockAccountBloc mockAccountBloc = MockAccountBloc();
+    var mockAccountBloc = MockAccountBloc();
     when(mockAccountBloc.state)
         .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
 

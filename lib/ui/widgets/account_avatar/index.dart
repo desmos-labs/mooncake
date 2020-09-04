@@ -41,7 +41,7 @@ class AccountAvatar extends StatelessWidget {
   }
 
   Widget _profilePic() {
-    final fromNetwork = user.profilePicUri?.startsWith("http") == true;
+    final fromNetwork = user.profilePicUri?.startsWith('http') == true;
     return fromNetwork
         ? CachedNetworkImage(
             imageUrl: user.profilePicUri,

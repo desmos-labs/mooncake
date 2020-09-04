@@ -14,7 +14,7 @@ class MockPostInputBloc extends MockBloc<PostInputEvent, PostInputState>
 void main() {
   testWidgets('PostCreateActions: Displays correctly',
       (WidgetTester tester) async {
-    MockPostInputBloc mockPostInputBloc = MockPostInputBloc();
+    var mockPostInputBloc = MockPostInputBloc();
 
     when(mockPostInputBloc.state).thenReturn(PostInputState.empty(testPost));
 

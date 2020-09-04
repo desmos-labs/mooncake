@@ -25,13 +25,13 @@ class LocalUserSourceImpl extends LocalUserSource {
   static const _WALLET_DERIVATION_PATH = "m/44'/852'/0'/0/0";
 
   @visibleForTesting
-  static const AUTHENTICATION_KEY = "authentication";
+  static const AUTHENTICATION_KEY = 'authentication';
 
   @visibleForTesting
-  static const ACCOUNTS_LIST_KEY = "accounts";
+  static const ACCOUNTS_LIST_KEY = 'accounts';
 
   @visibleForTesting
-  static const ACTIVE_ACCOUNT_KEY = "active_account";
+  static const ACTIVE_ACCOUNT_KEY = 'active_account';
 
   final Database database;
   final NetworkInfo _networkInfo;
@@ -46,9 +46,9 @@ class LocalUserSourceImpl extends LocalUserSource {
   })  : assert(database != null),
         database = database,
         assert(networkInfo != null),
-        this._networkInfo = networkInfo,
+        _networkInfo = networkInfo,
         assert(secureStorage != null),
-        this._storage = secureStorage;
+        _storage = secureStorage;
 
   // ------------------ MNEMONIC ------------------
 
@@ -59,7 +59,7 @@ class LocalUserSourceImpl extends LocalUserSource {
       // The mnemonic does not exist, no wallet can be created.
       return null;
     }
-    return mnemonic.split(" ");
+    return mnemonic.split(' ');
   }
 
   // ------------------ WALLET ------------------
@@ -88,10 +88,10 @@ class LocalUserSourceImpl extends LocalUserSource {
   Future<Wallet> saveWallet(String mnemonic) async {
     // Make sure the mnemonic is valid
     if (!bip39.validateMnemonic(mnemonic)) {
-      throw Exception("Error while saving wallet: invalid mnemonic.");
+      throw Exception('Error while saving wallet: invalid mnemonic.');
     }
 
-    final wallet = await _generateWalletHelper(mnemonic.split(" "));
+    final wallet = await _generateWalletHelper(mnemonic.split(' '));
     await _storage.write(key: wallet.bech32Address, value: mnemonic.trim());
     return wallet;
   }
@@ -157,7 +157,7 @@ class LocalUserSourceImpl extends LocalUserSource {
       await store.record(ACCOUNTS_LIST_KEY).put(txn, updatedJsonAccounts);
 
       // Update the current active user if needed
-      final MooncakeAccount currentUser = await getActiveAccount();
+      final currentUser = await getActiveAccount();
       if (currentUser?.address == data.address) {
         await _saveActiveAccount(txn, data);
       }

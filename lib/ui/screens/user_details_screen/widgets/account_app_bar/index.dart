@@ -26,7 +26,7 @@ class AccountAppBar extends StatelessWidget {
       elevation: 0,
       stretch: true,
       pinned: true,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       leading: leadingIcon,
       actions: <Widget>[
         // future mile stone with draft posts feature

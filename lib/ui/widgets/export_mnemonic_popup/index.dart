@@ -22,7 +22,7 @@ class ExportMnemonicPopup extends StatelessWidget {
               Text(
                 PostsLocalizations.of(context)
                     .translate(Messages.exportMnemonicDialogText)
-                    .replaceAll("\n", " "),
+                    .replaceAll('\n', ' '),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),

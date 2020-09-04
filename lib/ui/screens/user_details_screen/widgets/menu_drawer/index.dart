@@ -35,7 +35,7 @@ class MenuDrawer extends StatelessWidget {
   }
 
   List<Widget> _listAccounts(BuildContext context) {
-    final List<Widget> results = [];
+    final results = <Widget>[];
     accounts.forEach(
       (user) {
         results.add(
@@ -73,24 +73,35 @@ class MenuDrawer extends StatelessWidget {
                                 children: [
                                   AccountAvatar(user: user, size: 50),
                                   SizedBox(width: 10),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          '${PostsLocalizations.of(context).translate(Messages.hello)},',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline6
-                                              .copyWith(
-                                                fontSize: 16,
-                                              )),
-                                      Text(user.screenName,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5),
-                                    ],
+                                  Flexible(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            '${PostsLocalizations.of(context).translate(Messages.hello)},',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6
+                                                .copyWith(
+                                                  fontSize: 16,
+                                                )),
+                                        FittedBox(
+                                          fit: BoxFit.fitWidth,
+                                          child: Text(
+                                            user.screenName,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5
+                                                .copyWith(
+                                                  fontSize: 22,
+                                                ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),

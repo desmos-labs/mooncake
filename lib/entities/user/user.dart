@@ -9,24 +9,24 @@ part 'user.g.dart';
 @JsonSerializable(explicitToJson: true)
 class User extends Equatable {
   /// Represents the Desmos address of the user
-  @JsonKey(name: "address", nullable: false)
+  @JsonKey(name: 'address', nullable: false)
   final String address;
 
   /// Represents the unique DTag of the user.
-  @JsonKey(name: "dtag", nullable: true)
+  @JsonKey(name: 'dtag', nullable: true)
   final String dtag;
 
   /// Represents the username of the user.
-  @JsonKey(name: "moniker", nullable: true)
+  @JsonKey(name: 'moniker', nullable: true)
   final String moniker;
 
-  @JsonKey(name: "bio", nullable: true)
+  @JsonKey(name: 'bio', nullable: true)
   final String bio;
 
-  @JsonKey(name: "profile_pic")
+  @JsonKey(name: 'profile_pic')
   final String profilePicUri;
 
-  @JsonKey(name: "cover_pic", nullable: true)
+  @JsonKey(name: 'cover_pic', nullable: true)
   final String coverPicUri;
 
   const User({

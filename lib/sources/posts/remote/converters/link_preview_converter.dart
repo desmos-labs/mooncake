@@ -9,9 +9,9 @@ class LinkPreviewConverter {
   /// Takes in a `List<String>` of `urls` and tries to fetch
   /// an url with enough meta data for a preview. Will return `null` if none is found.
   static Future<RichLinkPreview> fetchPreview(Post post) async {
-    List<String> urls = _getUrisToPreview(post);
+    var urls = _getUrisToPreview(post);
     for (var i = urls.length - 1; i >= 0; i--) {
-      RichLinkPreview data = await _fetchSinglePreview(urls[i]);
+      var data = await _fetchSinglePreview(urls[i]);
       if (data != null) return data;
     }
     return null;
@@ -28,8 +28,8 @@ class LinkPreviewConverter {
     }
 
     return post.message
-        .replaceAll("\n", "  \n")
-        .split(" ")
+        .replaceAll('\n', '  \n')
+        .split(' ')
         .where((String x) => isURL(x))
         .toList();
   }

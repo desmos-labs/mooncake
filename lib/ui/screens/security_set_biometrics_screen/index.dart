@@ -25,7 +25,7 @@ class SetBiometricScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     AppBar(
-                      title: Text("Access account"),
+                      title: Text('Access account'),
                       centerTitle: true,
                       backgroundColor: Colors.transparent,
                       iconTheme: IconThemeData(color: Colors.white),

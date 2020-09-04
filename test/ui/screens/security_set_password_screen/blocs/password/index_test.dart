@@ -39,9 +39,9 @@ void main() {
     'RestoreBackupBloc',
     () {
       SetPasswordBloc setPasswordBloc;
-      MooncakeAccount userAccount = MooncakeAccount(
-        profilePicUri: "https://example.com/avatar.png",
-        moniker: "john-doe",
+      var userAccount = MooncakeAccount(
+        profilePicUri: 'https://example.com/avatar.png',
+        moniker: 'john-doe',
         cosmosAccount: cosmosAccount,
       );
       setUp(
@@ -62,12 +62,12 @@ void main() {
           return setPasswordBloc;
         },
         act: (bloc) async {
-          bloc.add(PasswordChanged("password"));
+          bloc.add(PasswordChanged('password'));
         },
         expect: [
           SetPasswordState(
             showPassword: false,
-            inputPassword: "password",
+            inputPassword: 'password',
             savingPassword: false,
           ),
         ],
@@ -85,12 +85,12 @@ void main() {
         expect: [
           SetPasswordState(
             showPassword: true,
-            inputPassword: "",
+            inputPassword: '',
             savingPassword: false,
           ),
           SetPasswordState(
             showPassword: false,
-            inputPassword: "",
+            inputPassword: '',
             savingPassword: false,
           ),
         ],
@@ -106,7 +106,7 @@ void main() {
               .thenAnswer((_) => RecoverAccountState.initial());
           when(mockAccountBloc.state)
               .thenReturn(LoggedIn.initial(userAccount, [userAccount]));
-          when(mockSetAuthenticationMethodUseCase.password("address", any))
+          when(mockSetAuthenticationMethodUseCase.password('address', any))
               .thenAnswer((_) => Future.value(null));
           when(mockLoginUseCase.login(any))
               .thenAnswer((_) => Future.value(null));
@@ -117,7 +117,7 @@ void main() {
         expect: [
           SetPasswordState(
             showPassword: false,
-            inputPassword: "",
+            inputPassword: '',
             savingPassword: true,
           ),
         ],

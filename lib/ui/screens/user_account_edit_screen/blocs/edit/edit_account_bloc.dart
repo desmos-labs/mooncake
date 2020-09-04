@@ -17,11 +17,11 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
 
   final SaveAccountUseCase _saveAccountUseCase;
 
-  EditAccountBloc(
-      {@required MooncakeAccount account,
-      @required NavigatorBloc navigatorBloc,
-      @required SaveAccountUseCase saveAccountUseCase})
-      : assert(account != null),
+  EditAccountBloc({
+    @required MooncakeAccount account,
+    @required NavigatorBloc navigatorBloc,
+    @required SaveAccountUseCase saveAccountUseCase,
+  })  : assert(account != null),
         _account = account,
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
@@ -43,6 +43,10 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
 
   String _firstOrSecond(String first, String second) {
     return (first != null && first.trim().isNotEmpty) ? first : second;
+  }
+
+  String _firstOrNull(String first, String second) {
+    return (first != null && first.trim().isNotEmpty) ? first : null;
   }
 
   @override
@@ -98,7 +102,7 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
   Stream<EditAccountState> _mapBioChangedToState(
     BioChanged event,
   ) async* {
-    final bio = _firstOrSecond(event.bio, _account.bio);
+    final bio = _firstOrNull(event.bio, _account.bio);
     yield state.updateAccount(bio: bio);
   }
 
@@ -107,7 +111,7 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
     yield state.copyWith(saving: true);
 
     // trim spaces
-    MooncakeAccount formattedAccount = state.account.copyWith(
+    final formattedAccount = state.account.copyWith(
       dtag: state.account.dtag.trim(),
       moniker: state.account.moniker.trim(),
       bio: state.account.bio?.trim(),

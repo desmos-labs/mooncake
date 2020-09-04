@@ -17,7 +17,7 @@ void main() {
     final value = 1;
     when(repository.get(any)).thenAnswer((_) => Future.value(value));
 
-    final setting = "setting";
+    final setting = 'setting';
     final result = await getSettingUseCase.get(key: setting);
     expect(result, equals(value));
 

@@ -26,7 +26,7 @@ void main() {
     when(repository.getPostsByTxHash(any))
         .thenAnswer((_) => Future.value(posts));
 
-    final hash = "tx-hash";
+    final hash = 'tx-hash';
     final status = PostStatus(value: PostStatusValue.TX_SUCCESSFULL);
     await updatePostsStatusUseCase.update(hash, status);
 

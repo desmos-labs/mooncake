@@ -65,7 +65,7 @@ Future _setupDependencyInjection() async {
   final factory = createDatabaseFactoryIo(rootPath: path.path);
   Injector.init(
     accountDatabase: await factory.openDatabase(
-      "account.db",
+      'account.db',
       version: 3,
       onVersionChanged: (db, oldVersion, newVersion) async {
         if (oldVersion == 1 && newVersion == 2) {
@@ -77,9 +77,9 @@ Future _setupDependencyInjection() async {
         }
       },
     ),
-    postsDatabase: await factory.openDatabase("posts.db"),
-    notificationDatabase: await factory.openDatabase("notifications.db"),
-    blockedUsersDatabase: await factory.openDatabase("blocked_users.db"),
+    postsDatabase: await factory.openDatabase('posts.db'),
+    notificationDatabase: await factory.openDatabase('notifications.db'),
+    blockedUsersDatabase: await factory.openDatabase('blocked_users.db'),
   );
 }
 

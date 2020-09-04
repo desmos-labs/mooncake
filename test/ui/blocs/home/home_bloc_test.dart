@@ -35,7 +35,7 @@ void main() {
       setUp(
         () {
           final controller = StreamController<dynamic>();
-          when(mockWatchSettingUseCase.watch(key: anyNamed("key")))
+          when(mockWatchSettingUseCase.watch(key: anyNamed('key')))
               .thenAnswer((_) => controller.stream);
           homeBloc = HomeBloc(
             getSettingUseCase: mockGetSettingUseCase,
@@ -55,19 +55,28 @@ void main() {
           bloc.add(UpdateTab(AppTab.likedPosts));
           bloc.add(UpdateTab(AppTab.home));
           bloc.add(UpdateTab(AppTab.account));
+          bloc.add(UpdateTab(AppTab.account));
         },
         expect: [
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.likedPosts,
+            scrollToTop: false,
           ),
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.account,
+            scrollToTop: false,
+          ),
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.account,
+            scrollToTop: true,
           ),
         ],
       );
@@ -78,7 +87,7 @@ void main() {
           return homeBloc;
         },
         act: (bloc) async {
-          bloc.add(SignOut("address"));
+          bloc.add(SignOut('address'));
         },
         expect: [],
       );
@@ -95,6 +104,7 @@ void main() {
           HomeState(
             showBackupPhrasePopup: true,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
         ],
       );
@@ -113,6 +123,7 @@ void main() {
           HomeState(
             showBackupPhrasePopup: false,
             activeTab: AppTab.home,
+            scrollToTop: false,
           ),
         ],
       );
@@ -128,10 +139,33 @@ void main() {
         expect: [],
         verify: (_) async {
           verify(mockSaveSettingUseCase.save(
-            key: anyNamed("key"),
-            value: anyNamed("value"),
+            key: anyNamed('key'),
+            value: anyNamed('value'),
           )).called(1);
         },
+      );
+
+      blocTest(
+        'SetScrollToTop: correctly updates state',
+        build: () async {
+          return homeBloc;
+        },
+        act: (bloc) async {
+          bloc.add(SetScrollToTop(true));
+          bloc.add(SetScrollToTop(false));
+        },
+        expect: [
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.home,
+            scrollToTop: true,
+          ),
+          HomeState(
+            showBackupPhrasePopup: false,
+            activeTab: AppTab.home,
+            scrollToTop: false,
+          ),
+        ],
       );
     },
   );

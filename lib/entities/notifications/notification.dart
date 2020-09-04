@@ -11,8 +11,8 @@ part 'notification.g.dart';
 @immutable
 @JsonSerializable(createFactory: false)
 abstract class NotificationData extends Equatable {
-  static const DATE_TYPE = "type";
-  static const DATE_FIELD = "date";
+  static const DATE_TYPE = 'type';
+  static const DATE_FIELD = 'date';
 
   /// Represents the type of the notification.
   /// It must be one of the values present inside [NotificationTypes].
@@ -28,18 +28,18 @@ abstract class NotificationData extends Equatable {
 
   /// Represents the title of the notification that should be displayed
   /// inside the device.
-  @JsonKey(name: "title", nullable: true)
+  @JsonKey(name: 'title', nullable: true)
   final String title;
 
   /// Represents the body of the notification that should be displayed
   /// to the user.
-  @JsonKey(name: "body", nullable: true)
+  @JsonKey(name: 'body', nullable: true)
   final String body;
 
   /// Represents the action associated to this notification.
   /// If no action is associated, it will be `null`. Otherwise, it
   /// must be a value inside [NotificationActions] to be properly supported.
-  @JsonKey(name: "action", nullable: true)
+  @JsonKey(name: 'action', nullable: true)
   final String action;
 
   static const _DATE_FORMAT = "yyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -76,7 +76,7 @@ abstract class NotificationData extends Equatable {
   /// This relies on the `toJson` implementation to get the serialization
   /// of custom fields.
   Map<String, dynamic> asJson() {
-    Map<String, dynamic> base = _$NotificationDataToJson(this);
+    var base = _$NotificationDataToJson(this);
     // ignore: deprecated_member_use_from_same_package
     base.addAll(toJson());
     return base;
@@ -84,7 +84,7 @@ abstract class NotificationData extends Equatable {
 
   /// Leaves the implementation to the specific classes.
   /// NOTE: Do not use this method directly! Use [asJson] instead.
-  @Deprecated("Use asJson instead")
+  @Deprecated('Use asJson instead')
   Map<String, dynamic> toJson();
 
   /// Calls the inheriting classes to build the correct notification based

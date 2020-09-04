@@ -18,14 +18,14 @@ class AccountCoverImageViewer extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     final coverImage = this.coverImage;
-    if (coverImage?.startsWith("http") == false) {
+    if (coverImage?.startsWith('http') == false) {
       return Image.file(
         File(coverImage),
         width: width,
         height: height,
         fit: BoxFit.cover,
       );
-    } else if (coverImage?.startsWith("http") == true) {
+    } else if (coverImage?.startsWith('http') == true) {
       return Image.network(
         coverImage,
         width: width,
