@@ -45,6 +45,10 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
     return (first != null && first.trim().isNotEmpty) ? first : second;
   }
 
+  String _firstOrNull(String first, String second) {
+    return (first != null && first.trim().isNotEmpty) ? first : null;
+  }
+
   @override
   Stream<EditAccountState> mapEventToState(EditAccountEvent event) async* {
     if (event is CoverChanged) {
@@ -98,7 +102,7 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
   Stream<EditAccountState> _mapBioChangedToState(
     BioChanged event,
   ) async* {
-    final bio = _firstOrSecond(event.bio, _account.bio);
+    final bio = _firstOrNull(event.bio, _account.bio);
     yield state.updateAccount(bio: bio);
   }
 

@@ -75,7 +75,7 @@ class MooncakeAccount extends User {
       cosmosAccount: cosmosAccount ?? this.cosmosAccount,
       dtag: dtag ?? this.dtag,
       moniker: moniker ?? this.moniker,
-      bio: bio ?? this.bio,
+      bio: bio,
       profilePicUri: profilePicUri ?? this.profilePicUri,
       coverPicUri: coverPicUrl ?? coverPicUri,
     );
@@ -94,6 +94,7 @@ class MooncakeAccount extends User {
   @override
   String toString() {
     return 'MooncakeAccount {'
+        'bio: $bio, '
         'cosmosAccount: $cosmosAccount, '
         '}';
   }

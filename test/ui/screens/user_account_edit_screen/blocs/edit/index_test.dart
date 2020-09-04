@@ -155,12 +155,42 @@ void main() {
         },
         act: (bloc) async {
           bloc.add(BioChanged('StrawberriesTakeOver'));
+          bloc.add(BioChanged(''));
+          bloc.add(BioChanged('again'));
+          bloc.add(BioChanged(null));
         },
         expect: [
           EditAccountState(
             originalAccount: userAccount,
             account: userAccount.copyWith(
               bio: 'StrawberriesTakeOver',
+            ),
+            saving: false,
+            savingError: null,
+            showErrorPopup: false,
+          ),
+          EditAccountState(
+            originalAccount: userAccount,
+            account: userAccount.copyWith(
+              bio: null,
+            ),
+            saving: false,
+            savingError: null,
+            showErrorPopup: false,
+          ),
+          EditAccountState(
+            originalAccount: userAccount,
+            account: userAccount.copyWith(
+              bio: 'again',
+            ),
+            saving: false,
+            savingError: null,
+            showErrorPopup: false,
+          ),
+          EditAccountState(
+            originalAccount: userAccount,
+            account: userAccount.copyWith(
+              bio: null,
             ),
             saving: false,
             savingError: null,
