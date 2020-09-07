@@ -22,14 +22,14 @@ void main() {
 
       blocTest(
         'ResetRecoverAccountState: work properly',
-        build: () async {
+        build: () {
           return recoverAccountBloc;
         },
         act: (bloc) async {
           bloc.add(TypeWord(0, 'orange'));
           bloc.add(ResetRecoverAccountState());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           RecoverAccountState(
             currentWordIndex: 0,
@@ -46,7 +46,7 @@ void main() {
       typeWordsSecondTest[1] = 'apple';
       blocTest(
         'TypeWord: work properly',
-        build: () async {
+        build: () {
           return recoverAccountBloc;
         },
         act: (bloc) async {
@@ -71,7 +71,7 @@ void main() {
       wordSelectedFirstTest[0] = 'pineapple';
       blocTest(
         'WordSelected: work properly',
-        build: () async {
+        build: () {
           return recoverAccountBloc;
         },
         act: (bloc) async {
@@ -88,7 +88,7 @@ void main() {
 
       blocTest(
         'ChangeFocus: work properly',
-        build: () async {
+        build: () {
           return recoverAccountBloc;
         },
         act: (bloc) async {

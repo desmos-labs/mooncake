@@ -28,7 +28,8 @@ class RestoreBackupBloc extends Bloc<RestoreBackupEvent, RestoreBackupState> {
         assert(recoverAccountBloc != null),
         _recoverAccountBloc = recoverAccountBloc,
         assert(decryptMnemonicUseCase != null),
-        _decryptMnemonicUseCase = decryptMnemonicUseCase;
+        _decryptMnemonicUseCase = decryptMnemonicUseCase,
+        super(RestoreBackupState.initial());
 
   factory RestoreBackupBloc.create(BuildContext context) {
     return RestoreBackupBloc(
@@ -37,9 +38,6 @@ class RestoreBackupBloc extends Bloc<RestoreBackupEvent, RestoreBackupState> {
       decryptMnemonicUseCase: Injector.get(),
     );
   }
-
-  @override
-  RestoreBackupState get initialState => RestoreBackupState.initial();
 
   @override
   Stream<RestoreBackupState> mapEventToState(RestoreBackupEvent event) async* {

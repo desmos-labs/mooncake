@@ -8,7 +8,7 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/ui/screens/security_set_password_screen/blocs/export.dart';
 import 'package:mooncake/ui/screens/security_set_password_screen/widgets/set_password_content/widgets/export.dart';
 
-class MockSetPasswordBloc extends MockBloc<SetPasswordEvent, SetPasswordState>
+class MockSetPasswordBloc extends MockBloc<SetPasswordState>
     implements SetPasswordBloc {}
 
 void main() {

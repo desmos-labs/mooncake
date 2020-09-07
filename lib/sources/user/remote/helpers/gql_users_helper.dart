@@ -37,7 +37,7 @@ class GqlUsersHelper {
 
     final data = await client.query(
       QueryOptions(
-        document: gql(query),
+        documentNode: gql(query),
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );

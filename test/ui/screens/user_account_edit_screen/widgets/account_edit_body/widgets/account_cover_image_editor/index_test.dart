@@ -10,7 +10,7 @@ import 'package:mooncake/ui/ui.dart';
 import '../../../../../../../mocks/mocks.dart';
 import '../../../../../../helper.dart';
 
-class MockEditAccountBloc extends MockBloc<EditAccountEvent, EditAccountState>
+class MockEditAccountBloc extends MockBloc<EditAccountState>
     implements EditAccountBloc {}
 
 void main() {

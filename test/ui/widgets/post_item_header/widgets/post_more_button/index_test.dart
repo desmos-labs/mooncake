@@ -11,7 +11,7 @@ import 'package:mooncake/ui/widgets/post_item_header/widgets/post_more_button/wi
 import '../../../../../mocks/mocks.dart';
 import '../../../../helper.dart';
 
-class MockReportPopupBloc extends MockBloc<ReportPopupEvent, ReportPopupState>
+class MockReportPopupBloc extends MockBloc<ReportPopupState>
     implements ReportPopupBloc {}
 
 MooncakeAccount userAccount = MooncakeAccount(

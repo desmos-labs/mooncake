@@ -4,29 +4,26 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 
 // mocks
-class MockHomeBloc extends MockBloc<HomeEvent, HomeState> implements HomeBloc {}
+class MockHomeBloc extends MockBloc<HomeState> implements HomeBloc {}
 
-class MockNavigatorBloc extends MockBloc<NavigatorEvent, NavigatorState>
+class MockNavigatorBloc extends MockBloc<NavigatorState>
     implements NavigatorBloc {}
 
-class MockPostsListBloc extends MockBloc<PostsListEvent, PostsListState>
+class MockPostsListBloc extends MockBloc<PostsListState>
     implements PostsListBloc {}
 
-class MockMnemonicBloc extends MockBloc<MnemonicEvent, MnemonicState>
-    implements MnemonicBloc {}
+class MockMnemonicBloc extends MockBloc<MnemonicState> implements MnemonicBloc {
+}
 
-class MockAccountBloc extends MockBloc<AccountEvent, AccountState>
-    implements AccountBloc {}
+class MockAccountBloc extends MockBloc<AccountState> implements AccountBloc {}
 
-class MockRecoverAccountBloc
-    extends MockBloc<RecoverAccountEvent, RecoverAccountState>
+class MockRecoverAccountBloc extends MockBloc<RecoverAccountState>
     implements RecoverAccountBloc {}
 
-class MockNotificationsBloc
-    extends MockBloc<NotificationsEvent, NotificationsState>
+class MockNotificationsBloc extends MockBloc<NotificationsState>
     implements NotificationsBloc {}
 
-class MockPostDetailsBloc extends MockBloc<PostDetailsEvent, PostDetailsState>
+class MockPostDetailsBloc extends MockBloc<PostDetailsState>
     implements PostDetailsBloc {}
 
 /// widget wrapper to make testable

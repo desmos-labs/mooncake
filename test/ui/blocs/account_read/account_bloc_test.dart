@@ -121,7 +121,7 @@ void main() {
 
       blocTest(
         'CheckStatus: Expect check status event to return loggedout state',
-        build: () async {
+        build: () {
           when(mockGetSettingUseCase.get(key: anyNamed('key'))).thenAnswer((_) {
             return Future.value(null);
           });
@@ -140,7 +140,7 @@ void main() {
 
       blocTest(
         'CheckStatus: Expect check status event to return loggedIn state',
-        build: () async {
+        build: () {
           when(mockGetSettingUseCase.get(key: anyNamed('key'))).thenAnswer((_) {
             return Future.value(null);
           });
@@ -165,7 +165,7 @@ void main() {
 
       blocTest(
         'GenerateAccount: to work properly',
-        build: () async {
+        build: () {
           when(mockGenerateMnemonicUseCase.generate()).thenAnswer((_) {
             return Future.value(mnemonic);
           });
@@ -177,7 +177,7 @@ void main() {
 
       blocTest(
         'GenerateAccountWhileLoggedIn: to work properly',
-        build: () async {
+        build: () {
           when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
@@ -193,7 +193,7 @@ void main() {
           bloc.add(LogIn());
           bloc.add(GenerateAccountWhileLoggedIn());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           CreatingAccountWhileLoggedIn(
               user: userAccount, accounts: [userAccount], refreshing: false),
@@ -208,7 +208,7 @@ void main() {
 
       blocTest(
         'LogIn: to work properly',
-        build: () async {
+        build: () {
           when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
@@ -230,7 +230,7 @@ void main() {
 
       blocTest(
         'LogOut: to work properly',
-        build: () async {
+        build: () {
           return accountBloc;
         },
         act: (bloc) async => bloc.add(LogOut('address')),
@@ -239,7 +239,7 @@ void main() {
 
       blocTest(
         'LogOutAll: to work properly',
-        build: () async {
+        build: () {
           when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });
@@ -251,7 +251,7 @@ void main() {
 
       blocTest(
         'UserRefreshed: to work properly',
-        build: () async {
+        build: () {
           when(mockGetAccountsUseCase.all()).thenAnswer((_) {
             return Future.value([userAccount, userAccountTwo]);
           });
@@ -281,7 +281,7 @@ void main() {
 
       blocTest(
         'RefreshAccount: expect no stream',
-        build: () async {
+        build: () {
           return accountBloc;
         },
         act: (bloc) async {
@@ -292,7 +292,7 @@ void main() {
 
       blocTest(
         'RefreshAccount: to work properly',
-        build: () async {
+        build: () {
           when(mockGetAccountsUseCase.all()).thenAnswer((_) {
             return Future.value([userAccount]);
           });
@@ -318,7 +318,7 @@ void main() {
 
       blocTest(
         'SwitchAccount: to work properly',
-        build: () async {
+        build: () {
           when(mockGetActiveAccountUseCase.single()).thenAnswer((_) {
             return Future.value(userAccount);
           });

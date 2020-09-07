@@ -10,7 +10,7 @@ import 'package:mooncake/ui/widgets/post_item_header/widgets/post_more_button/wi
 import '../../../../../../../../helper.dart';
 import '../../../../../../../../../mocks/posts.dart';
 
-class MockReportPopupBloc extends MockBloc<ReportPopupEvent, ReportPopupState>
+class MockReportPopupBloc extends MockBloc<ReportPopupState>
     implements ReportPopupBloc {}
 
 void main() {

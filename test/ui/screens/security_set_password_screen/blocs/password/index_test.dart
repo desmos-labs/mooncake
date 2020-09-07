@@ -58,7 +58,7 @@ void main() {
 
       blocTest(
         'PasswordChanged: work properly',
-        build: () async {
+        build: () {
           return setPasswordBloc;
         },
         act: (bloc) async {
@@ -75,7 +75,7 @@ void main() {
 
       blocTest(
         'PasswordChanged: work properly',
-        build: () async {
+        build: () {
           return setPasswordBloc;
         },
         act: (bloc) async {
@@ -98,7 +98,7 @@ void main() {
 
       blocTest(
         'SavePassword: work properly',
-        build: () async {
+        build: () {
           return setPasswordBloc;
         },
         act: (bloc) async {

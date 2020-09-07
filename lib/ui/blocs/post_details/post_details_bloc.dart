@@ -35,7 +35,8 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
         assert(getPostDetailsUseCase != null),
         _getPostDetailsUseCase = getPostDetailsUseCase,
         assert(getCommentsUseCase != null),
-        _getCommentsUseCase = getCommentsUseCase {
+        _getCommentsUseCase = getCommentsUseCase,
+        super(LoadingPostDetails()) {
     add(LoadPostDetails(postId));
 
     _postSubscription = getPostDetailsUseCase.stream(postId).listen((post) {
@@ -55,9 +56,6 @@ class PostDetailsBloc extends Bloc<PostDetailsEvent, PostDetailsState> {
       getCommentsUseCase: Injector.get(),
     );
   }
-
-  @override
-  PostDetailsState get initialState => LoadingPostDetails();
 
   @override
   Stream<PostDetailsState> mapEventToState(PostDetailsEvent event) async* {

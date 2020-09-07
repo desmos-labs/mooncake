@@ -16,6 +16,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   final CheckLoginUseCase _checkLoginUseCase;
   final CanUseBiometricsUseCase _canUseBiometricsUseCase;
   final GetAuthenticationMethodUseCase _getAuthenticationMethodUseCase;
+
   NavigatorBloc({
     @required CheckLoginUseCase checkLoginUseCase,
     @required CanUseBiometricsUseCase canUseBiometricsUseCase,
@@ -25,7 +26,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
         assert(canUseBiometricsUseCase != null),
         _canUseBiometricsUseCase = canUseBiometricsUseCase,
         assert(getAuthenticationMethodUseCase != null),
-        _getAuthenticationMethodUseCase = getAuthenticationMethodUseCase;
+        _getAuthenticationMethodUseCase = getAuthenticationMethodUseCase,
+        super(null);
 
   factory NavigatorBloc.create() {
     return NavigatorBloc(
@@ -34,9 +36,6 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       getAuthenticationMethodUseCase: Injector.get(),
     );
   }
-
-  @override
-  void get initialState => null;
 
   @override
   Stream<void> mapEventToState(NavigatorEvent event) async* {

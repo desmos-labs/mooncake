@@ -44,7 +44,8 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
         assert(getSettingUseCase != null),
         _getSettingUseCase = getSettingUseCase,
         assert(saveSettingUseCase != null),
-        _saveSettingUseCase = saveSettingUseCase;
+        _saveSettingUseCase = saveSettingUseCase,
+        super(PostInputState.empty(parentPost));
 
   factory PostInputBloc.create(BuildContext context, Post parentPost) {
     return PostInputBloc(
@@ -56,9 +57,6 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
       saveSettingUseCase: Injector.get(),
     );
   }
-
-  @override
-  PostInputState get initialState => PostInputState.empty(_parentPost);
 
   @override
   Stream<PostInputState> mapEventToState(

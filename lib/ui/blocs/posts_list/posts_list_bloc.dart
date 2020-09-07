@@ -86,7 +86,8 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(deletePostUseCase != null),
         _deletePostUseCase = deletePostUseCase,
         assert(getActiveAccountUseCase != null),
-        _getActiveAccountUseCase = getActiveAccountUseCase {
+        _getActiveAccountUseCase = getActiveAccountUseCase,
+        super(PostsLoading()) {
     // Subscribe to account state changes in order to perform setup
     // operations upon login and cleanup ones upon logging out
     _logoutSubscription = accountBloc.listen((state) async {
@@ -121,9 +122,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       getActiveAccountUseCase: Injector.get(),
     );
   }
-
-  @override
-  PostsListState get initialState => PostsLoading();
 
   @override
   Stream<Transition<PostsListEvent, PostsListState>> transformEvents(

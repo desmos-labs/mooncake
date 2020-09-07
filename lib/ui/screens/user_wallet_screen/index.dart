@@ -25,7 +25,7 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(
-      bloc: BlocProvider.of<AccountBloc>(context)..add(RefreshAccount()),
+      cubit: BlocProvider.of<AccountBloc>(context)..add(RefreshAccount()),
       builder: (BuildContext context, AccountState accountState) {
         final state = accountState as LoggedIn;
         final coin = state.user.cosmosAccount.coins.firstWhere(

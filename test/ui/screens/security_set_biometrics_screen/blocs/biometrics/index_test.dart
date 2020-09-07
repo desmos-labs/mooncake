@@ -59,7 +59,7 @@ void main() {
 
       blocTest(
         'AuthenticateWithBiometrics: work properly',
-        build: () async {
+        build: () {
           return biometricsBloc;
         },
         act: (bloc) async {
@@ -90,7 +90,7 @@ void main() {
 
       blocTest(
         'CheckAuthenticationType: work properly',
-        build: () async {
+        build: () {
           return biometricsBloc;
         },
         act: (bloc) async {

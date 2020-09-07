@@ -48,7 +48,7 @@ void main() {
 
       blocTest(
         'UpdateTab: correctly updates tab',
-        build: () async {
+        build: () {
           return homeBloc;
         },
         act: (bloc) async {
@@ -83,7 +83,7 @@ void main() {
 
       blocTest(
         'SignOut: no returns on logout',
-        build: () async {
+        build: () {
           return homeBloc;
         },
         act: (bloc) async {
@@ -94,7 +94,7 @@ void main() {
 
       blocTest(
         'ShowBackupMnemonicPhrasePopup: to work correctly',
-        build: () async {
+        build: () {
           return homeBloc;
         },
         act: (bloc) async {
@@ -111,14 +111,14 @@ void main() {
 
       blocTest(
         'HideBackupMnemonicPhrasePopup: to work correctly',
-        build: () async {
+        build: () {
           return homeBloc;
         },
         act: (bloc) async {
           bloc.add(ShowBackupMnemonicPhrasePopup());
           bloc.add(HideBackupMnemonicPhrasePopup());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           HomeState(
             showBackupPhrasePopup: false,
@@ -130,12 +130,13 @@ void main() {
 
       blocTest(
         'TurnOffBackupMnemonicPopupPermission: no streams',
-        build: () async {
+        build: () {
           return homeBloc;
         },
         act: (bloc) async {
           bloc.add(TurnOffBackupMnemonicPopupPermission());
         },
+        skip: 1,
         expect: [],
         verify: (_) async {
           verify(mockSaveSettingUseCase.save(
@@ -147,7 +148,7 @@ void main() {
 
       blocTest(
         'SetScrollToTop: correctly updates state',
-        build: () async {
+        build: () {
           return homeBloc;
         },
         act: (bloc) async {

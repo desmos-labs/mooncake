@@ -39,7 +39,7 @@ void main() {
 
       blocTest(
         'ResetForm: work properly',
-        build: () async {
+        build: () {
           return restoreBackupBloc;
         },
         act: (bloc) async {
@@ -57,7 +57,7 @@ void main() {
 
       blocTest(
         'EncryptPasswordChanged: work properly',
-        build: () async {
+        build: () {
           return restoreBackupBloc;
         },
         act: (bloc) async {
@@ -75,7 +75,7 @@ void main() {
 
       // blocTest(
       //   'RestoreBackup: work properly',
-      //   build: () async {
+      //   build: () {
       //     return restoreBackupBloc;
       //   },
       //   act: (bloc) async {
@@ -85,7 +85,7 @@ void main() {
       //     bloc.add(BackupTextChanged("Aliquamscelerisquelaciniaoo0"));
       //     bloc.add(RestoreBackup());
       //   },
-      //   skip: 2,
+      //   skip: 1,
       //   expect: [
       //     RestoreBackupState(
       //       backup: null,

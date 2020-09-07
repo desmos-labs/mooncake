@@ -39,7 +39,7 @@ void main() {
 
       blocTest(
         'Expect no streams return for any navigation event',
-        build: () async {
+        build: () {
           return navigatorBloc;
         },
         act: (bloc) async {
