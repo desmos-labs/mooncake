@@ -76,8 +76,6 @@ Future _setupDependencyInjection() async {
         if (oldVersion == 2) {
           await migrateV2Database(db);
         }
-
-        await db.close();
       },
     ),
     postsDatabase: await factory.openDatabase('posts.db'),

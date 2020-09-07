@@ -48,8 +48,8 @@ Future<void> migrateV2Database(DatabaseClient db) async {
   final jsonAccount = account.toJson();
 
   // Save the account inside the list of accounts and as the active one
-  await store.record('accounts').update(db, [jsonAccount]);
-  await store.record('active_account').update(db, jsonAccount);
+  await store.record('accounts').put(db, [jsonAccount]);
+  await store.record('active_account').put(db, jsonAccount);
 
   // --- AUTH METHOD ---
 
