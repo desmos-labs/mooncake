@@ -4,6 +4,7 @@
 - Changed the likes and reactions visualization
 - Added the possibility of scroll to the top of the posts list by clicking the posts list button
 - Improved the editing screen UX  
+- Updated the dependencies
 
 ## Bug fixes
 - Fixed a bug that caused the posts list to jump to the top if the screen switched to the account page and back to the posts list
