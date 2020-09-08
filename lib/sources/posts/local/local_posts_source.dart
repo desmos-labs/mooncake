@@ -33,8 +33,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   /// given [post].
   @visibleForTesting
   String getPostKey(Post post) {
-    return DateFormat(Post.DATE_FORMAT).format(post.dateTime) +
-        post.owner.address;
+    return post.hashContents();
   }
 
   /// Returns a [Filter] that allows to filter out all the posts that are
