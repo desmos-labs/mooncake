@@ -23,15 +23,18 @@ class CreatePostUseCase {
     final account = await _userRepository.getActiveAccount();
     final date = Post.getDateStringNow();
     return Post(
-      id: date,
-      created: date,
-      parentId: parentId,
-      message: message,
-      allowsComments: allowsComments,
-      medias: medias,
-      poll: poll,
-      subspace: Constants.SUBSPACE,
-      owner: account.toUser(),
-    );
+        id: date,
+        created: date,
+        parentId: parentId,
+        message: message,
+        allowsComments: allowsComments,
+        medias: medias,
+        poll: poll,
+        subspace: Constants.SUBSPACE,
+        owner: account.toUser(),
+        // wingman
+        optionalData: {
+          'client_id': date,
+        });
   }
 }
