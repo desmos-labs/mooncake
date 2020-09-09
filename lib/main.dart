@@ -69,16 +69,24 @@ Future _setupDependencyInjection() async {
       version: 3,
       onVersionChanged: (db, oldVersion, newVersion) async {
         if (oldVersion == 1) {
-          await migrateV1Database(db);
+          await migrateV1AccountDatabase(db);
           oldVersion = 2;
         }
 
         if (oldVersion == 2) {
-          await migrateV2Database(db);
+          await migrateV2AccountDatabase(db);
         }
       },
     ),
-    postsDatabase: await factory.openDatabase('posts.db', version: 2),
+    postsDatabase: await factory.openDatabase(
+      'posts.db',
+      version: 3,
+      onVersionChanged: (db, oldVersion, newVersion) async {
+        if (oldVersion < 3) {
+          await migrateV2PostsDatabase(db);
+        }
+      },
+    ),
     notificationDatabase: await factory.openDatabase('notifications.db'),
     blockedUsersDatabase: await factory.openDatabase('blocked_users.db'),
   );
