@@ -14,19 +14,27 @@ class PostStatus extends Equatable {
   @JsonKey(name: 'data')
   final String data;
 
-  /// Returns true if the status contains an error message.
-  bool get hasError => value == PostStatusValue.ERRORED && data != null;
-
-  /// Returns true if the status contains a transaction hash.
-  bool get hasTxHash =>
-      (value == PostStatusValue.TX_SENT ||
-          value == PostStatusValue.TX_SUCCESSFULL) &&
-      data != null;
-
   const PostStatus({
     @required this.value,
     this.data,
   }) : assert(value != null);
+
+  factory PostStatus.storedLocally(String address) {
+    return PostStatus(
+      value: PostStatusValue.STORED_LOCALLY,
+      data: address,
+    );
+  }
+
+  /// Returns true if the status contains an error message.
+  bool get hasError => value == PostStatusValue.ERRORED && data != null;
+
+  /// Returns true if the status contains a transaction hash.
+  bool get hasTxHash {
+    return (value == PostStatusValue.TX_SENT ||
+            value == PostStatusValue.TX_SUCCESSFULL) &&
+        data != null;
+  }
 
   factory PostStatus.fromJson(Map<String, dynamic> json) {
     return _$PostStatusFromJson(json);

@@ -31,7 +31,11 @@ abstract class LocalPostsSource {
   /// the specified [postId].
   Future<List<Post>> getPostComments(String postId);
 
-  /// Returns the list of all the posts to be synced.
+  /// Returns the list of all the posts to be synced that somehow interest
+  /// the user having the given [address].
+  /// This means that the returned posts will be all and only the ones
+  /// that the user has either created or interacted with
+  /// (reacted to, voted to, etc).
   Future<List<Post>> getPostsToSync(String address);
 
   /// Saves the given [post] inside the source.

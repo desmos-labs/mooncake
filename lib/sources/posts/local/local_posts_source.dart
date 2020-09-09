@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -178,9 +179,9 @@ class LocalPostsSourceImpl implements LocalPostsSource {
           PostStatusValue.STORED_LOCALLY.value,
         ),
         Filter.equals(
-          'user.address',
+          Post.STATUS_DATA_FIELD,
           address,
-        )
+        ),
       ]),
     );
 
@@ -198,7 +199,8 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       }
 
       final value = await PostsConverter.serializePost(post);
-      await _store.record(getPostKey(post)).put(txn, value);
+      final key = getPostKey(post);
+      await _store.record(key).put(txn, value);
     });
   }
 

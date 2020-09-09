@@ -5,6 +5,11 @@ import 'package:mooncake/usecases/usecases.dart';
 /// Allows to sync all the posts that have been created offline as well as
 /// all the likes and unlikes that have been set to posts.
 class UpdatePostUseCase {
+  static const canUpdateStatus = <PostStatusValue>[
+    PostStatusValue.STORED_LOCALLY,
+    PostStatusValue.ERRORED
+  ];
+
   final PostsRepository _postsRepository;
 
   UpdatePostUseCase({
@@ -14,11 +19,6 @@ class UpdatePostUseCase {
 
   /// Updates post that has not been posted to the chain
   Future<void> update(Post post) async {
-    var canUpdateStatus = <PostStatusValue>[
-      PostStatusValue.STORED_LOCALLY,
-      PostStatusValue.ERRORED
-    ];
-
     if (canUpdateStatus.contains(post.status.value)) {
       return _postsRepository.savePost(post);
     }

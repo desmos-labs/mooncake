@@ -43,6 +43,10 @@ class Post extends Equatable implements Comparable<Post> {
 
   static const LINK_PREVIEW_FIELD = 'link_preview';
 
+  static const REACTIONS_FIELD = 'reactions';
+
+  static const COMMENTS_FIELD = 'children';
+
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
   static String getDateStringNow() {
@@ -84,10 +88,10 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: 'poll', nullable: true)
   final PostPoll poll;
 
-  @JsonKey(name: 'reactions', defaultValue: [])
+  @JsonKey(name: REACTIONS_FIELD, defaultValue: [])
   final List<Reaction> reactions;
 
-  @JsonKey(name: 'children', defaultValue: [])
+  @JsonKey(name: COMMENTS_FIELD, defaultValue: [])
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
@@ -123,7 +127,7 @@ class Post extends Equatable implements Comparable<Post> {
     this.poll,
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
-    this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
+    @required this.status,
     this.hidden = false,
     this.linkPreview,
   })  : assert(id != null),
@@ -173,13 +177,17 @@ class Post extends Equatable implements Comparable<Post> {
   /// - the date
   /// - the id
   /// - the status
-  ///  - the link preview
+  /// - the link preview
+  /// - the reactions
+  /// - the comments
   String hashContents() {
     final json = toJson();
     json.remove(DATE_FIELD);
     json.remove(ID_FIELD);
     json.remove(STATUS_FIELD);
     json.remove(LINK_PREVIEW_FIELD);
+    json.remove(REACTIONS_FIELD);
+    json.remove(COMMENTS_FIELD);
     return sha256.convert(utf8.encode(jsonEncode(json))).toString();
   }
 
@@ -204,22 +212,23 @@ class Post extends Equatable implements Comparable<Post> {
     RichLinkPreview linkPreview,
   }) {
     return Post(
-        status: status ?? this.status,
-        id: id ?? this.id,
-        parentId: parentId ?? this.parentId,
-        message: message ?? this.message,
-        created: created ?? this.created,
-        lastEdited: lastEdited ?? this.lastEdited,
-        allowsComments: allowsComments ?? this.allowsComments,
-        subspace: subspace ?? this.subspace,
-        optionalData: optionalData ?? this.optionalData,
-        owner: owner ?? this.owner,
-        medias: medias ?? this.medias,
-        poll: poll ?? this.poll,
-        reactions: reactions ?? this.reactions,
-        commentsIds: commentsIds ?? this.commentsIds,
-        hidden: hidden ?? this.hidden,
-        linkPreview: linkPreview ?? this.linkPreview);
+      status: status ?? this.status,
+      id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
+      message: message ?? this.message,
+      created: created ?? this.created,
+      lastEdited: lastEdited ?? this.lastEdited,
+      allowsComments: allowsComments ?? this.allowsComments,
+      subspace: subspace ?? this.subspace,
+      optionalData: optionalData ?? this.optionalData,
+      owner: owner ?? this.owner,
+      medias: medias ?? this.medias,
+      poll: poll ?? this.poll,
+      reactions: reactions ?? this.reactions,
+      commentsIds: commentsIds ?? this.commentsIds,
+      hidden: hidden ?? this.hidden,
+      linkPreview: linkPreview ?? this.linkPreview,
+    );
   }
 
   @override
