@@ -16,6 +16,7 @@ void main() {
       created: DateFormat(Post.DATE_FORMAT).format(DateTime.now()),
       subspace: id,
       owner: User.fromAddress(id),
+      status: PostStatus.storedLocally('address'),
     );
   }
 

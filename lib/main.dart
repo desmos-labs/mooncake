@@ -78,7 +78,7 @@ Future _setupDependencyInjection() async {
         }
       },
     ),
-    postsDatabase: await factory.openDatabase('posts.db'),
+    postsDatabase: await factory.openDatabase('posts.db', version: 2),
     notificationDatabase: await factory.openDatabase('notifications.db'),
     blockedUsersDatabase: await factory.openDatabase('blocked_users.db'),
   );

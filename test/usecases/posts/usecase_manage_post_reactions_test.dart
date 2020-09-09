@@ -34,15 +34,16 @@ void main() {
       post: post,
       reaction: '😊',
     );
-    final savedPost = post.copyWith(
-      status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+
+    final expected = post.copyWith(
+      status: PostStatus.storedLocally(account.address),
       reactions: [Reaction.fromValue('😊', account.toUser())],
     );
-    expect(result, equals(savedPost));
+    expect(result, equals(expected));
 
     verifyInOrder([
       userRepository.getActiveAccount(),
-      postsRepository.savePost(savedPost),
+      postsRepository.savePost(expected),
     ]);
   });
 }

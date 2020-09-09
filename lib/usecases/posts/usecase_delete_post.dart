@@ -4,6 +4,11 @@ import 'package:mooncake/entities/entities.dart';
 
 /// Allows to delete a locally stored post.
 class DeletePostUseCase {
+  static const canDeleteStatus = <PostStatusValue>[
+    PostStatusValue.STORED_LOCALLY,
+    PostStatusValue.ERRORED
+  ];
+
   final PostsRepository _postsRepository;
 
   DeletePostUseCase({
@@ -13,11 +18,6 @@ class DeletePostUseCase {
 
   /// Deletes the locally stored post if it hasn't been posted.
   Future<void> delete(Post post) async {
-    var canDeleteStatus = <PostStatusValue>[
-      PostStatusValue.STORED_LOCALLY,
-      PostStatusValue.ERRORED
-    ];
-
     if (canDeleteStatus.contains(post.status.value)) {
       return _postsRepository.deletePost(post);
     }

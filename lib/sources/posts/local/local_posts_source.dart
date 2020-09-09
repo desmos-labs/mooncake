@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/entities/posts/export.dart';
@@ -33,8 +33,7 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   /// given [post].
   @visibleForTesting
   String getPostKey(Post post) {
-    return DateFormat(Post.DATE_FORMAT).format(post.dateTime) +
-        post.owner.address;
+    return post.hashContents();
   }
 
   /// Returns a [Filter] that allows to filter out all the posts that are
@@ -179,9 +178,9 @@ class LocalPostsSourceImpl implements LocalPostsSource {
           PostStatusValue.STORED_LOCALLY.value,
         ),
         Filter.equals(
-          'user.address',
+          Post.STATUS_DATA_FIELD,
           address,
-        )
+        ),
       ]),
     );
 
@@ -199,7 +198,8 @@ class LocalPostsSourceImpl implements LocalPostsSource {
       }
 
       final value = await PostsConverter.serializePost(post);
-      await _store.record(getPostKey(post)).put(txn, value);
+      final key = getPostKey(post);
+      await _store.record(key).put(txn, value);
     });
   }
 

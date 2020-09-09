@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -15,11 +18,13 @@ class Post extends Equatable implements Comparable<Post> {
   /// post-related date values.
   static const DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
+  static const STATUS_FIELD = 'status';
+
   /// Identifier used to reference posts status value.
-  static const STATUS_VALUE_FIELD = 'status.value';
+  static const STATUS_VALUE_FIELD = '${STATUS_FIELD}.value';
 
   /// Identifier used to reference the data associated to the post status.
-  static const STATUS_DATA_FIELD = 'status.data';
+  static const STATUS_DATA_FIELD = '${STATUS_FIELD}.data';
 
   /// Identifier used to reference the posts' parent id.
   static const PARENT_ID_FIELD = 'parent_id';
@@ -35,6 +40,12 @@ class Post extends Equatable implements Comparable<Post> {
 
   /// Identifier used to reference the user field.
   static const OWNER_FIELD = 'user';
+
+  static const LINK_PREVIEW_FIELD = 'link_preview';
+
+  static const REACTIONS_FIELD = 'reactions';
+
+  static const COMMENTS_FIELD = 'children';
 
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
@@ -77,14 +88,14 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: 'poll', nullable: true)
   final PostPoll poll;
 
-  @JsonKey(name: 'reactions', defaultValue: [])
+  @JsonKey(name: REACTIONS_FIELD, defaultValue: [])
   final List<Reaction> reactions;
 
-  @JsonKey(name: 'children', defaultValue: [])
+  @JsonKey(name: COMMENTS_FIELD, defaultValue: [])
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
-  @JsonKey(name: 'status', fromJson: _postStatusFromJson)
+  @JsonKey(name: STATUS_FIELD, fromJson: _postStatusFromJson)
   final PostStatus status;
 
   /// Static method used to implement a custom deserialization of posts.
@@ -99,7 +110,7 @@ class Post extends Equatable implements Comparable<Post> {
   final bool hidden;
 
   /// Represents the link preview associated to this post
-  @JsonKey(name: 'link_preview', nullable: true)
+  @JsonKey(name: LINK_PREVIEW_FIELD, nullable: true)
   final RichLinkPreview linkPreview;
 
   Post({
@@ -116,7 +127,7 @@ class Post extends Equatable implements Comparable<Post> {
     this.poll,
     List<Reaction> reactions = const [],
     List<String> commentsIds = const [],
-    this.status = const PostStatus(value: PostStatusValue.STORED_LOCALLY),
+    @required this.status,
     this.hidden = false,
     this.linkPreview,
   })  : assert(id != null),
@@ -161,9 +172,29 @@ class Post extends Equatable implements Comparable<Post> {
         [];
   }
 
+  /// Returns the SHA-256 of all the posts contents as a JSON object.
+  /// Some contents are excluded. Such as:
+  /// - the date
+  /// - the id
+  /// - the status
+  /// - the link preview
+  /// - the reactions
+  /// - the comments
+  String hashContents() {
+    final json = toJson();
+    json.remove(DATE_FIELD);
+    json.remove(ID_FIELD);
+    json.remove(STATUS_FIELD);
+    json.remove(LINK_PREVIEW_FIELD);
+    json.remove(REACTIONS_FIELD);
+    json.remove(COMMENTS_FIELD);
+    return sha256.convert(utf8.encode(jsonEncode(json))).toString();
+  }
+
   /// Returns a new [Post] having the same data as `this` one, but
   /// with the specified data replaced.
   Post copyWith({
+    String id,
     PostStatus status,
     String parentId,
     String message,
@@ -181,22 +212,23 @@ class Post extends Equatable implements Comparable<Post> {
     RichLinkPreview linkPreview,
   }) {
     return Post(
-        status: status ?? this.status,
-        id: id,
-        parentId: parentId ?? this.parentId,
-        message: message ?? this.message,
-        created: created ?? this.created,
-        lastEdited: lastEdited ?? this.lastEdited,
-        allowsComments: allowsComments ?? this.allowsComments,
-        subspace: subspace ?? this.subspace,
-        optionalData: optionalData ?? this.optionalData,
-        owner: owner ?? this.owner,
-        medias: medias ?? this.medias,
-        poll: poll ?? this.poll,
-        reactions: reactions ?? this.reactions,
-        commentsIds: commentsIds ?? this.commentsIds,
-        hidden: hidden ?? this.hidden,
-        linkPreview: linkPreview ?? this.linkPreview);
+      status: status ?? this.status,
+      id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
+      message: message ?? this.message,
+      created: created ?? this.created,
+      lastEdited: lastEdited ?? this.lastEdited,
+      allowsComments: allowsComments ?? this.allowsComments,
+      subspace: subspace ?? this.subspace,
+      optionalData: optionalData ?? this.optionalData,
+      owner: owner ?? this.owner,
+      medias: medias ?? this.medias,
+      poll: poll ?? this.poll,
+      reactions: reactions ?? this.reactions,
+      commentsIds: commentsIds ?? this.commentsIds,
+      hidden: hidden ?? this.hidden,
+      linkPreview: linkPreview ?? this.linkPreview,
+    );
   }
 
   @override

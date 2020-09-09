@@ -32,6 +32,7 @@ class CreatePostUseCase {
       poll: poll,
       subspace: Constants.SUBSPACE,
       owner: account.toUser(),
+      status: PostStatus.storedLocally(account.address),
     );
   }
 }

@@ -9,8 +9,6 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 import '../../../mocks/mocks.dart';
-import '../../../mocks/posts.dart';
-// import '../../../mocks/mocks.dart';
 
 const syncPeriod = 30;
 
@@ -450,7 +448,7 @@ void main() {
 
       var expectedUpdatePosts = <Post>[
         testPost.copyWith(
-          status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+          status: PostStatus.storedLocally(userAccount.address),
         )
       ];
       blocTest(
@@ -459,6 +457,8 @@ void main() {
           return postsListBloc;
         },
         act: (bloc) async {
+          when(mockGetActiveAccountUseCase.single())
+              .thenAnswer((_) => Future.value(userAccount));
           when(mockUpdatePostUseCase.update(any))
               .thenAnswer((_) => Future.value(null));
           bloc.add(PostsUpdated([testPost]));

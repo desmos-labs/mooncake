@@ -31,7 +31,7 @@ class ManagePostReactionsUseCase {
     final newReactions = post.reactions.removeOrAdd(account, reaction);
     post = post.copyWith(
       reactions: newReactions,
-      status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+      status: PostStatus.storedLocally(account.address),
     );
     await _postsRepository.savePost(post);
     return post;
