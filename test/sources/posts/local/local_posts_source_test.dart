@@ -395,10 +395,12 @@ void main() {
       final existingPosts = [
         _createPost('1').copyWith(
           commentsIds: ['2', '3'],
+          created: '2020-01-01T12:00:00Z',
         ),
         null,
         _createPost('10').copyWith(
           commentsIds: ['20'],
+          created: '2020-01-01T12:00:01Z',
           reactions: [
             Reaction.fromValue(':smile:', User.fromAddress('address')),
           ],
@@ -419,7 +421,9 @@ void main() {
             Reaction.fromValue(':heart:', User.fromAddress('another-user')),
           ],
         ),
-        _createPost('2'),
+        _createPost('2').copyWith(
+          created: '2020-01-01T12:00:02Z',
+        ),
       ];
       await source.savePosts(newPosts, merge: true);
 
