@@ -400,7 +400,7 @@ void main() {
         null,
         _createPost('10').copyWith(
           commentsIds: ['20'],
-          created: '2020-01-01T12:00:01Z',
+          created: '2020-01-01T13:00:00Z',
           reactions: [
             Reaction.fromValue(':smile:', User.fromAddress('address')),
           ],
@@ -422,7 +422,7 @@ void main() {
           ],
         ),
         _createPost('2').copyWith(
-          created: '2020-01-01T12:00:02Z',
+          created: '2020-01-01T14:00:00Z',
         ),
       ];
       await source.savePosts(newPosts, merge: true);
