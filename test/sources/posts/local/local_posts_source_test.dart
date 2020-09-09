@@ -36,6 +36,7 @@ void main() {
       created: DateFormat(Post.DATE_FORMAT).format(DateTime.now()),
       subspace: id,
       owner: User.fromAddress(id),
+      status: PostStatus.storedLocally('address'),
     );
   }
 
@@ -222,22 +223,28 @@ void main() {
 
   test('getPostsToSync returns the correct list', () async {
     final posts = [
-      _createPost('1')
-          .copyWith(status: PostStatus(value: PostStatusValue.STORED_LOCALLY)),
-      _createPost('2')
-          .copyWith(status: PostStatus(value: PostStatusValue.SENDING_TX)),
-      _createPost('3')
-          .copyWith(status: PostStatus(value: PostStatusValue.TX_SENT)),
-      _createPost('4')
-          .copyWith(status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL)),
-      _createPost('5')
-          .copyWith(status: PostStatus(value: PostStatusValue.ERRORED)),
-      _createPost('6')
-          .copyWith(status: PostStatus(value: PostStatusValue.STORED_LOCALLY)),
+      _createPost('1').copyWith(
+        status: PostStatus.storedLocally('other-address'),
+      ),
+      _createPost('2').copyWith(
+        status: PostStatus(value: PostStatusValue.SENDING_TX),
+      ),
+      _createPost('3').copyWith(
+        status: PostStatus(value: PostStatusValue.TX_SENT),
+      ),
+      _createPost('4').copyWith(
+        status: PostStatus(value: PostStatusValue.TX_SUCCESSFULL),
+      ),
+      _createPost('5').copyWith(
+        status: PostStatus(value: PostStatusValue.ERRORED),
+      ),
+      _createPost('6').copyWith(
+        status: PostStatus.storedLocally('address'),
+      ),
     ];
     await _storePosts(posts);
 
-    final toSync = await source.getPostsToSync('6');
+    final toSync = await source.getPostsToSync('address');
     expect(toSync, [posts[5]]);
   });
 
@@ -341,98 +348,106 @@ void main() {
     expect(merged[2], equals(expected2));
   });
 
-  test('savePosts saves the data properly with merge false', () async {
-    final existingPosts = [
-      _createPost('1').copyWith(
-        commentsIds: ['2', '3'],
-      ),
-      null,
-      _createPost('10').copyWith(
-        commentsIds: ['20'],
-        reactions: [
-          Reaction.fromValue(':smile:', User.fromAddress('address')),
-        ],
-      )
-    ];
-    await _storePosts(existingPosts);
+  group('savePosts saves the data properly', () {
+    test('with merge false', () async {
+      final existingPosts = [
+        _createPost('1').copyWith(
+          commentsIds: ['2', '3'],
+        ),
+        null,
+        _createPost('10').copyWith(
+          commentsIds: ['20'],
+          reactions: [
+            Reaction.fromValue(':smile:', User.fromAddress('address')),
+          ],
+        )
+      ];
+      await _storePosts(existingPosts);
 
-    final newPosts = [
-      existingPosts[0].copyWith(
-        commentsIds: ['5', '9'],
-        reactions: [
-          Reaction.fromValue(':grin:', User.fromAddress('user')),
-        ],
-      ),
-      existingPosts[2].copyWith(
-        commentsIds: ['20', '21'],
-        reactions: [
-          Reaction.fromValue(':heart:', User.fromAddress('another-user')),
-        ],
-      ),
-      _createPost('2'),
-    ];
-    await source.savePosts(newPosts, merge: false);
+      final newPosts = [
+        existingPosts[0].copyWith(
+          commentsIds: ['5', '9'],
+          reactions: [
+            Reaction.fromValue(':grin:', User.fromAddress('user')),
+          ],
+        ),
+        existingPosts[2].copyWith(
+          commentsIds: ['20', '21'],
+          reactions: [
+            Reaction.fromValue(':heart:', User.fromAddress('another-user')),
+          ],
+        ),
+        _createPost('2'),
+      ];
+      await source.savePosts(newPosts, merge: false);
 
-    final store = StoreRef.main();
-    final stored = (await store.find(database))
-        .map((e) => Post.fromJson(e.value as Map<String, dynamic>))
-        .toList();
-    expect(stored, equals(newPosts));
-  });
+      final store = StoreRef.main();
+      final stored = (await store.find(
+        database,
+        finder: Finder(sortOrders: [SortOrder(Post.DATE_FIELD)]),
+      ))
+          .map((e) => Post.fromJson(e.value as Map<String, dynamic>))
+          .toList();
+      expect(stored, equals(newPosts));
+    });
 
-  test('savePosts saves the data properly with merge true', () async {
-    final existingPosts = [
-      _createPost('1').copyWith(
-        commentsIds: ['2', '3'],
-      ),
-      null,
-      _createPost('10').copyWith(
-        commentsIds: ['20'],
-        reactions: [
-          Reaction.fromValue(':smile:', User.fromAddress('address')),
-        ],
-      )
-    ];
-    await _storePosts(existingPosts);
+    test('with merge true', () async {
+      final existingPosts = [
+        _createPost('1').copyWith(
+          commentsIds: ['2', '3'],
+        ),
+        null,
+        _createPost('10').copyWith(
+          commentsIds: ['20'],
+          reactions: [
+            Reaction.fromValue(':smile:', User.fromAddress('address')),
+          ],
+        )
+      ];
+      await _storePosts(existingPosts);
 
-    final newPosts = [
-      existingPosts[0].copyWith(
-        commentsIds: ['5', '9'],
-        reactions: [
-          Reaction.fromValue(':grin:', User.fromAddress('user')),
-        ],
-      ),
-      existingPosts[2].copyWith(
-        commentsIds: ['20', '21'],
-        reactions: [
-          Reaction.fromValue(':heart:', User.fromAddress('another-user')),
-        ],
-      ),
-      _createPost('2'),
-    ];
-    await source.savePosts(newPosts, merge: true);
+      final newPosts = [
+        existingPosts[0].copyWith(
+          commentsIds: ['5', '9'],
+          reactions: [
+            Reaction.fromValue(':grin:', User.fromAddress('user')),
+          ],
+        ),
+        existingPosts[2].copyWith(
+          commentsIds: ['20', '21'],
+          reactions: [
+            Reaction.fromValue(':heart:', User.fromAddress('another-user')),
+          ],
+        ),
+        _createPost('2'),
+      ];
+      await source.savePosts(newPosts, merge: true);
 
-    final store = StoreRef.main();
-    final stored = (await store.find(database))
-        .map((e) => Post.fromJson(e.value as Map<String, dynamic>))
-        .toList();
+      final store = StoreRef.main();
+      final stored = (await store.find(
+        database,
+        finder: Finder(sortOrders: [SortOrder(Post.DATE_FIELD)]),
+      ))
+          .map((e) => Post.fromJson(e.value as Map<String, dynamic>))
+          .toList();
 
-    final expected = [
-      newPosts[0].copyWith(
-        commentsIds: ['5', '9', '2', '3'],
-        reactions: [
-          Reaction.fromValue(':grin:', User.fromAddress('user')),
-        ],
-      ),
-      newPosts[1].copyWith(
-        commentsIds: ['20', '21'],
-        reactions: [
-          Reaction.fromValue(':heart:', User.fromAddress('another-user')),
-          Reaction.fromValue(':smile:', User.fromAddress('address')),
-        ],
-      ),
-      newPosts[2],
-    ];
-    expect(stored, equals(expected));
+      final expected = [
+        newPosts[0].copyWith(
+          commentsIds: ['5', '9', '2', '3'],
+          reactions: [
+            Reaction.fromValue(':grin:', User.fromAddress('user')),
+          ],
+        ),
+        newPosts[1].copyWith(
+          commentsIds: ['20', '21'],
+          reactions: [
+            Reaction.fromValue(':heart:', User.fromAddress('another-user')),
+            Reaction.fromValue(':smile:', User.fromAddress('address')),
+          ],
+        ),
+        newPosts[2],
+      ];
+      expect(stored, equals(expected));
+    });
   });
 }
