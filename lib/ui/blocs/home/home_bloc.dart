@@ -31,7 +31,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         assert(watchSettingUseCase != null),
         _watchSettingUseCase = watchSettingUseCase,
         assert(getSettingUseCase != null),
-        _getSettingUseCase = getSettingUseCase {
+        _getSettingUseCase = getSettingUseCase,
+        super(HomeState.initial()) {
     _startSubscription();
   }
 
@@ -42,11 +43,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       watchSettingUseCase: Injector.get(),
       getSettingUseCase: Injector.get(),
     );
-  }
-
-  @override
-  HomeState get initialState {
-    return HomeState.initial();
   }
 
   @override

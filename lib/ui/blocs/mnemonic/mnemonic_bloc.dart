@@ -34,7 +34,8 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
         assert(encryptMnemonicUseCase != null),
         _encryptMnemonicUseCase = encryptMnemonicUseCase,
         assert(analytics != null),
-        _analytics = analytics;
+        _analytics = analytics,
+        super(MnemonicState.initial());
 
   factory MnemonicBloc.create(BuildContext context) {
     return MnemonicBloc(
@@ -43,11 +44,6 @@ class MnemonicBloc extends Bloc<MnemonicEvent, MnemonicState> {
       encryptMnemonicUseCase: Injector.get(),
       analytics: Injector.get(),
     );
-  }
-
-  @override
-  MnemonicState get initialState {
-    return MnemonicState.initial();
   }
 
   @override

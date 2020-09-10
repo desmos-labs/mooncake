@@ -28,7 +28,7 @@ void main() async {
 
   // Setup the Bloc delegate to observe transitions
   if (foundation.kDebugMode) {
-    BlocSupervisor.delegate = SimpleBlocDelegate();
+    Bloc.observer = SimpleBlocObserver();
   }
 
   // This captures errors reported by the Flutter framework.
@@ -68,16 +68,25 @@ Future _setupDependencyInjection() async {
       'account.db',
       version: 3,
       onVersionChanged: (db, oldVersion, newVersion) async {
-        if (oldVersion == 1 && newVersion == 2) {
-          await migrateV1Database(db);
+        if (oldVersion == 1) {
+          await migrateV1AccountDatabase(db);
+          oldVersion = 2;
         }
 
-        if (newVersion == 3) {
-          await migrateV2Database(db);
+        if (oldVersion == 2) {
+          await migrateV2AccountDatabase(db);
         }
       },
     ),
-    postsDatabase: await factory.openDatabase('posts.db'),
+    postsDatabase: await factory.openDatabase(
+      'posts.db',
+      version: 3,
+      onVersionChanged: (db, oldVersion, newVersion) async {
+        if (oldVersion < 3) {
+          await migrateV2PostsDatabase(db);
+        }
+      },
+    ),
     notificationDatabase: await factory.openDatabase('notifications.db'),
     blockedUsersDatabase: await factory.openDatabase('blocked_users.db'),
   );

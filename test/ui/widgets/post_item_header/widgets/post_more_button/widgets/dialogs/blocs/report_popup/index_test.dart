@@ -32,7 +32,7 @@ void main() {
 
       blocTest(
         'ToggleSelection: correctly updates tab',
-        build: () async {
+        build: () {
           return reportPopupBloc;
         },
         act: (bloc) async {
@@ -55,7 +55,7 @@ void main() {
 
       blocTest(
         'ChangeOtherText: correctly updates tab',
-        build: () async {
+        build: () {
           return reportPopupBloc;
         },
         act: (bloc) async {
@@ -78,7 +78,7 @@ void main() {
 
       blocTest(
         'ToggleBlockUser: correctly updates tab',
-        build: () async {
+        build: () {
           return reportPopupBloc;
         },
         act: (bloc) async {
@@ -101,7 +101,7 @@ void main() {
 
       blocTest(
         'SubmitReport: correctly updates tab',
-        build: () async {
+        build: () {
           return reportPopupBloc;
         },
         act: (bloc) async {
@@ -110,7 +110,7 @@ void main() {
           bloc.add(ToggleBlockUser(true));
           bloc.add(SubmitReport());
         },
-        skip: 2,
+        skip: 1,
         expect: [],
         verify: (_) async {
           verify(mockBlockUserUseCase.block(any)).called(1);

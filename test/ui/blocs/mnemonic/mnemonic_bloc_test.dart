@@ -46,7 +46,7 @@ void main() {
 
       blocTest(
         'ToggleCheckBox: correctly updates tab',
-        build: () async {
+        build: () {
           return mnemonicBloc;
         },
         act: (bloc) async {
@@ -75,7 +75,7 @@ void main() {
 
       blocTest(
         'ShowMnemonic: correctly updates tab',
-        build: () async {
+        build: () {
           when(mockGetMnemonicUseCase.get('address')).thenAnswer((_) {
             return Future.value(mnemonic);
           });
@@ -95,7 +95,7 @@ void main() {
 
       blocTest(
         'ShowExportPopup: correctly updates tab',
-        build: () async {
+        build: () {
           return mnemonicBloc;
         },
         act: (bloc) async {
@@ -114,14 +114,14 @@ void main() {
 
       blocTest(
         'ChangeEncryptPassword: correctly updates tab',
-        build: () async {
+        build: () {
           return mnemonicBloc;
         },
         act: (bloc) async {
           bloc.add(ShowExportPopup());
           bloc.add(ChangeEncryptPassword('123456'));
         },
-        skip: 2,
+        skip: 1,
         expect: [
           ExportingMnemonic(
             encryptPassword: '123456',
@@ -135,21 +135,24 @@ void main() {
 
       blocTest(
         'CloseExportPopup: correctly updates tab',
-        build: () async {
+        build: () {
           return mnemonicBloc;
         },
         act: (bloc) async {
           bloc.add(CloseExportPopup());
         },
+        skip: 1,
         expect: [],
       );
 
       blocTest(
         'ExportMnemonic: correctly updates tab',
-        build: () async {
+        build: () {
           when(mockEncryptMnemonicUseCase.encrypt(any, any)).thenAnswer((_) {
             return Future.value(MnemonicData(
-                ivBase64: 'null', encryptedMnemonicBase64: 'null'));
+              ivBase64: 'null',
+              encryptedMnemonicBase64: 'null',
+            ));
           });
           return mnemonicBloc;
         },
@@ -157,7 +160,7 @@ void main() {
           bloc.add(ShowExportPopup());
           bloc.add(ExportMnemonic());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           ExportingMnemonic(
             encryptPassword: null,

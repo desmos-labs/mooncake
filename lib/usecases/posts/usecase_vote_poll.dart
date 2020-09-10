@@ -41,7 +41,7 @@ class VotePollUseCase {
       // Update the post
       post = post.copyWith(
         poll: post.poll.copyWith(userAnswers: pollAnswers),
-        status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+        status: PostStatus.storedLocally(account.address),
       );
 
       // Store it

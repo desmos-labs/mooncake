@@ -58,7 +58,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         assert(getAccountsUseCase != null),
         _getAccountsUseCase = getAccountsUseCase,
         assert(setAccountActiveUsecase != null),
-        _setAccountActiveUsecase = setAccountActiveUsecase {
+        _setAccountActiveUsecase = setAccountActiveUsecase,
+        super(Loading()) {
     // Listen for account changes so that we know when to refresh
     _accountSubscription = _getActiveAccountUseCase.stream().listen((account) {
       add(UserRefreshed(account));
@@ -79,9 +80,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       setAccountActiveUsecase: Injector.get(),
     );
   }
-
-  @override
-  AccountState get initialState => Loading();
 
   @override
   Stream<AccountState> mapEventToState(AccountEvent event) async* {

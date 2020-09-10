@@ -86,19 +86,28 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
         assert(deletePostUseCase != null),
         _deletePostUseCase = deletePostUseCase,
         assert(getActiveAccountUseCase != null),
-        _getActiveAccountUseCase = getActiveAccountUseCase {
+        _getActiveAccountUseCase = getActiveAccountUseCase,
+        super(PostsLoading()) {
+    // Handle the last account state
+    final accountState = accountBloc.state;
+    _handleAccountStateChange(accountState);
+
     // Subscribe to account state changes in order to perform setup
     // operations upon login and cleanup ones upon logging out
     _logoutSubscription = accountBloc.listen((state) async {
-      if (state is LoggedOut) {
-        print('User logged out, stopping sync and deleting posts');
-        _stopListeningToUpdates();
-        await _deletePostsUseCase.delete();
-      } else if (state is LoggedIn) {
-        print('User logged in, starting posts sync');
-        _startListeningToUpdates();
-      }
+      await _handleAccountStateChange(state);
     });
+  }
+
+  Future<void> _handleAccountStateChange(AccountState state) async {
+    if (state is LoggedOut) {
+      print('User logged out, stopping sync and deleting posts');
+      _stopListeningToUpdates();
+      await _deletePostsUseCase.delete();
+    } else if (state is LoggedIn) {
+      print('User logged in, starting posts sync');
+      _startListeningToUpdates();
+    }
   }
 
   factory PostsListBloc.create(BuildContext context, {int syncPeriod = 30}) {
@@ -121,9 +130,6 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
       getActiveAccountUseCase: Injector.get(),
     );
   }
-
-  @override
-  PostsListState get initialState => PostsLoading();
 
   @override
   Stream<Transition<PostsListEvent, PostsListState>> transformEvents(
@@ -149,7 +155,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
     } else if (event is BlockUser) {
       yield* _mapBlockUserEventToState(event);
     } else if (event is SyncPosts) {
-      yield* _mapSyncPostsListEventToState(event);
+      yield* _mapSyncPostsListEventToState();
     } else if (event is SyncPostsCompleted) {
       yield _mapSyncPostsCompletedEventToState();
     } else if (event is ShouldRefreshPosts) {
@@ -404,7 +410,7 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
 
   /// Handles the event emitted when the posts must be synced uploading
   /// all the changes stored locally to the chain
-  Stream<PostsListState> _mapSyncPostsListEventToState(SyncPosts event) async* {
+  Stream<PostsListState> _mapSyncPostsListEventToState() async* {
     final currentState = state;
     if (currentState is PostsLoaded) {
       // Fet the current user
@@ -461,16 +467,20 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   /// Handles the event that is emitted when the user tries to repost
   /// a failed post attempt
   Stream<PostsListState> _mapRetryPostUploadEventToState(
-      RetryPostUpload event) async* {
-    final currentState = state;
+    RetryPostUpload event,
+  ) async* {
+    final user = await _getActiveAccountUseCase.single();
     final updatePost = event.post.copyWith(
-      status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+      status: PostStatus.storedLocally(user.address),
     );
+
+    final currentState = state;
     if (currentState is PostsLoaded) {
       await _updatePostUseCase.update(updatePost);
 
       yield currentState.copyWith(
-          posts: _mergePosts(currentState.posts, [updatePost]));
+        posts: _mergePosts(currentState.posts, [updatePost]),
+      );
     }
   }
 

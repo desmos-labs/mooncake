@@ -67,7 +67,7 @@ void main() {
 
     server.enqueue(body: jsonEncode(accountResponse));
     when(graphQlClient.query(any)).thenAnswer((_) => Future.value(QueryResult(
-          source: QueryResultSource.network,
+          source: QueryResultSource.Network,
           data: {
             'users': [
               User.fromAddress('desmos16f9wz7yg44pjfhxyn22kycs0qjy778ng877usl')

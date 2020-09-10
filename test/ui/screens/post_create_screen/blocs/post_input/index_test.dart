@@ -53,14 +53,14 @@ void main() {
 
       blocTest(
         'ResetForm: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
           bloc.add(MessageChanged('hello world'));
           bloc.add(ResetForm());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostInputState(
             parentPost: testPost,
@@ -77,7 +77,7 @@ void main() {
 
       blocTest(
         'MessageChanged: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -99,7 +99,7 @@ void main() {
 
       blocTest(
         'ToggleAllowsComments: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -125,7 +125,7 @@ void main() {
       );
       blocTest(
         'ImageAdded: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -149,7 +149,7 @@ void main() {
 
       blocTest(
         'ImageRemoved: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -187,7 +187,7 @@ void main() {
 
       blocTest(
         'PostInputPollEvent: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -200,7 +200,7 @@ void main() {
 
       blocTest(
         'ChangeWillShowPopup: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -226,7 +226,7 @@ void main() {
 
       blocTest(
         'SavePost: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -251,7 +251,7 @@ void main() {
 
       blocTest(
         'HidePopup: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -261,7 +261,7 @@ void main() {
           bloc.add(SavePost());
           bloc.add(HidePopup());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostInputState(
             parentPost: testPost,
@@ -278,7 +278,7 @@ void main() {
 
       blocTest(
         'CreatePost: work properly',
-        build: () async {
+        build: () {
           return postInputBloc;
         },
         act: (bloc) async {
@@ -296,7 +296,7 @@ void main() {
 
           bloc.add(CreatePost());
         },
-        skip: 2,
+        skip: 1,
         expect: [],
         verify: (_) async {
           verify(mockNavigatorBloc.add(any)).called(1);

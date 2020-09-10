@@ -40,7 +40,8 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
         assert(saveWalletUseCase != null),
         _saveWalletUseCase = saveWalletUseCase,
         assert(setAuthenticationMethodUseCase != null),
-        _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase;
+        _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase,
+        super(BiometricsState.initial());
 
   factory BiometricsBloc.create(BuildContext context) {
     return BiometricsBloc(
@@ -52,9 +53,6 @@ class BiometricsBloc extends Bloc<BiometricsEvent, BiometricsState> {
       saveWalletUseCase: Injector.get(),
     );
   }
-
-  @override
-  BiometricsState get initialState => BiometricsState.initial();
 
   @override
   Stream<BiometricsState> mapEventToState(BiometricsEvent event) async* {

@@ -8,7 +8,7 @@ import 'package:mooncake/ui/screens/post_create_screen/widgets/export.dart';
 import '../../../../../mocks/mocks.dart';
 import '../../../../helper.dart';
 
-class MockPostInputBloc extends MockBloc<PostInputEvent, PostInputState>
+class MockPostInputBloc extends MockBloc<PostInputState>
     implements PostInputBloc {}
 
 void main() {

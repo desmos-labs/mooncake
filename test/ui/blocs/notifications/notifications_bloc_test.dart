@@ -28,7 +28,7 @@ void main() {
 
       blocTest(
         'LoadNotifications: work properly',
-        build: () async {
+        build: () {
           when(mockGetNotificationsUseCase.single())
               .thenAnswer((_) => Future.value([
                     TxSuccessfulNotification(

@@ -29,7 +29,8 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
         assert(blockUserUseCase != null),
         _blockUserUseCase = blockUserUseCase,
         assert(reportPostUseCase != null),
-        _reportPostUseCase = reportPostUseCase;
+        _reportPostUseCase = reportPostUseCase,
+        super(ReportPopupState.initial());
 
   factory ReportPopupBloc.create(Post post) {
     return ReportPopupBloc(
@@ -37,9 +38,6 @@ class ReportPopupBloc extends Bloc<ReportPopupEvent, ReportPopupState> {
         blockUserUseCase: Injector.get(),
         reportPostUseCase: Injector.get());
   }
-
-  @override
-  ReportPopupState get initialState => ReportPopupState.initial();
 
   @override
   Stream<ReportPopupState> mapEventToState(ReportPopupEvent event) async* {

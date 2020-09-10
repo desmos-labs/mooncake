@@ -7,7 +7,7 @@ import 'package:mooncake/ui/screens/user_account_edit_screen/widgets/account_edi
 import 'package:mooncake/ui/screens/user_account_edit_screen/blocs/edit/export.dart';
 import 'package:bloc_test/bloc_test.dart';
 
-class MockEditAccountBloc extends MockBloc<EditAccountEvent, EditAccountState>
+class MockEditAccountBloc extends MockBloc<EditAccountState>
     implements EditAccountBloc {}
 
 void main() {

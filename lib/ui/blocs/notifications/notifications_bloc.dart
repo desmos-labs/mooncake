@@ -16,16 +16,14 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   NotificationsBloc({
     @required GetNotificationsUseCase getNotificationsUseCase,
   })  : assert(getNotificationsUseCase != null),
-        _getNotificationsUseCase = getNotificationsUseCase;
+        _getNotificationsUseCase = getNotificationsUseCase,
+        super(NotificationsLoaded.initial());
 
   factory NotificationsBloc.create() {
     return NotificationsBloc(
       getNotificationsUseCase: Injector.get(),
     );
   }
-
-  @override
-  NotificationsState get initialState => NotificationsLoaded([]);
 
   @override
   Stream<NotificationsState> mapEventToState(NotificationsEvent event) async* {

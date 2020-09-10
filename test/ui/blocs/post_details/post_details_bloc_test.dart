@@ -55,7 +55,7 @@ void main() {
 
       blocTest(
         'ShowTab: work properly',
-        build: () async {
+        build: () {
           return postDetailsBloc;
         },
         act: (bloc) async {

@@ -40,15 +40,15 @@ class SourcesModule implements Module {
     // GraphQL client
     final _gqlClient = GraphQLClient(
       link: HttpLink(
-        _useLocalEndpoints
+        uri: _useLocalEndpoints
             ? 'http://10.0.2.2:8080/v1/graphql'
             : 'https://gql.morpheus.desmos.network/v1/graphql',
       ).concat(WebSocketLink(
-        _useLocalEndpoints
+        url: _useLocalEndpoints
             ? 'ws://10.0.2.2:8080/v1/graphql'
             : 'wss://gql.morpheus.desmos.network/v1/graphql',
       )),
-      cache: GraphQLCache(),
+      cache: InMemoryCache(),
     );
 
     binder

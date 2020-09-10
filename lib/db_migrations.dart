@@ -7,7 +7,7 @@ import 'package:sembast/sembast.dart';
 /// This is necessary since from Cosmos v0.38 to v0.39 the serialization of
 /// the account has changed and the account_number and sequence are now string
 /// instead of the previous integers.
-Future<void> migrateV1Database(DatabaseClient db) async {
+Future<void> migrateV1AccountDatabase(DatabaseClient db) async {
   final store = StoreRef.main();
   final record = await store.record('user_data').get(db);
   if (record == null) return;
@@ -34,7 +34,7 @@ Future<void> migrateV1Database(DatabaseClient db) async {
 /// From version 2 of the database to version 3, we changed how the accounts
 /// are stored locally. Instead of having a single account, now we have a list
 /// of them.
-Future<void> migrateV2Database(DatabaseClient db) async {
+Future<void> migrateV2AccountDatabase(DatabaseClient db) async {
   final store = StoreRef.main();
   final storage = FlutterSecureStorage();
 
@@ -48,8 +48,8 @@ Future<void> migrateV2Database(DatabaseClient db) async {
   final jsonAccount = account.toJson();
 
   // Save the account inside the list of accounts and as the active one
-  await store.record('accounts').update(db, [jsonAccount]);
-  await store.record('active_account').update(db, jsonAccount);
+  await store.record('accounts').put(db, [jsonAccount]);
+  await store.record('active_account').put(db, jsonAccount);
 
   // --- AUTH METHOD ---
 
@@ -78,4 +78,12 @@ Future<void> migrateV2Database(DatabaseClient db) async {
   await store.record('user_data').delete(db);
   await storage.delete(key: 'authentication');
   await storage.delete(key: 'mnemonic');
+}
+
+/// Migrates the posts database from version 2 to version 3.
+/// This deletes all the local posts since they need to be re-downloaded
+/// from the remote source.
+Future<void> migrateV2PostsDatabase(DatabaseClient db) async {
+  final store = StoreRef.main();
+  await store.delete(db);
 }

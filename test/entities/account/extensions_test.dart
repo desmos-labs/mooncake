@@ -23,6 +23,7 @@ void main() {
       created: '2020-05-01T17:00:00Z',
       subspace: 'mooncake',
       owner: User.fromAddress('address'),
+      status: PostStatus.storedLocally('address'),
     );
     expect(account.hasLiked(post), isFalse);
 

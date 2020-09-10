@@ -21,6 +21,10 @@ class NotificationsLoaded extends NotificationsState {
 
   NotificationsLoaded(this.notifications);
 
+  factory NotificationsLoaded.initial() {
+    return NotificationsLoaded([]);
+  }
+
   @override
   List<Object> get props => [notifications];
 

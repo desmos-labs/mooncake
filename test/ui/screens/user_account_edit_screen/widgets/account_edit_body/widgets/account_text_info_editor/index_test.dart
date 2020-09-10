@@ -11,7 +11,7 @@ import 'package:mooncake/ui/screens/user_account_edit_screen/widgets/account_edi
 import '../../../../../../../mocks/mocks.dart';
 import '../../../../../../helper.dart';
 
-class MockEditAccountBloc extends MockBloc<EditAccountEvent, EditAccountState>
+class MockEditAccountBloc extends MockBloc<EditAccountState>
     implements EditAccountBloc {}
 
 void main() {

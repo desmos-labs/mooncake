@@ -69,7 +69,7 @@ void main() {
           poll: post.poll.copyWith(userAnswers: [
             PollAnswer(answer: post.poll.options[0].id, user: account)
           ]),
-          status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+          status: PostStatus.storedLocally(account.address),
         ))
       ]);
     });

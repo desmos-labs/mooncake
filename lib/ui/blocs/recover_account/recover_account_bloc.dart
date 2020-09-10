@@ -13,19 +13,18 @@ import 'package:mooncake/dependency_injection/dependency_injection.dart';
 class RecoverAccountBloc
     extends Bloc<RecoverAccountEvent, RecoverAccountState> {
   final SaveSettingUseCase _saveSettingUseCase;
+
   RecoverAccountBloc({
     @required SaveSettingUseCase saveSettingUseCase,
   })  : assert(saveSettingUseCase != null),
-        _saveSettingUseCase = saveSettingUseCase;
+        _saveSettingUseCase = saveSettingUseCase,
+        super(RecoverAccountState.initial());
 
   factory RecoverAccountBloc.create() {
     return RecoverAccountBloc(
       saveSettingUseCase: Injector.get(),
     );
   }
-
-  @override
-  RecoverAccountState get initialState => RecoverAccountState.initial();
 
   @override
   Stream<RecoverAccountState> mapEventToState(

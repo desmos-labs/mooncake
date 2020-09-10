@@ -7,7 +7,7 @@ import 'package:mooncake/ui/screens/security_set_biometrics_screen/widgets/expor
 import 'package:mooncake/ui/screens/security_set_biometrics_screen/blocs/export.dart';
 import 'package:bloc_test/bloc_test.dart';
 
-class MockBiometricsBloc extends MockBloc<BiometricsEvent, BiometricsState>
+class MockBiometricsBloc extends MockBloc<BiometricsState>
     implements BiometricsBloc {}
 
 void main() {

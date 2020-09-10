@@ -60,7 +60,7 @@ class RemotePostsSourceImpl implements RemotePostsSource {
     final query = '''subscription HomeEvents {
     ${GqlPostsHelper.homeEvents}
     }''';
-    return _gqlClient.subscribe(SubscriptionOptions(document: gql(query)));
+    return _gqlClient.subscribe(Operation(documentNode: gql(query)));
   }
 
   /// Returns the [Post] object having the given [postId]

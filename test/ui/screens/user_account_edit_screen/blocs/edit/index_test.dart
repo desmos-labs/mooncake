@@ -47,7 +47,7 @@ void main() {
       final imageAddedFile = File('assets/images/cry.png');
       blocTest(
         'CoverChanged: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -67,7 +67,7 @@ void main() {
 
       blocTest(
         'ProfilePicChanged: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -87,7 +87,7 @@ void main() {
 
       blocTest(
         'DTagChanged: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -108,7 +108,7 @@ void main() {
 
       blocTest(
         'DTagChanged: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -129,7 +129,7 @@ void main() {
 
       blocTest(
         'MonikerChanged: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -150,7 +150,7 @@ void main() {
 
       blocTest(
         'BioChanged: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -201,7 +201,7 @@ void main() {
 
       blocTest(
         'SaveAccount: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -212,7 +212,7 @@ void main() {
           bloc.add(DTagChanged('StrawberriesTakeOver'));
           bloc.add(SaveAccount());
         },
-        skip: 3,
+        skip: 2,
         expect: [
           EditAccountState(
             originalAccount: userAccount,
@@ -239,7 +239,7 @@ void main() {
 
       blocTest(
         'HideErrorPopup: work properly',
-        build: () async {
+        build: () {
           return editAccountBloc;
         },
         act: (bloc) async {
@@ -252,7 +252,7 @@ void main() {
           bloc.add(SaveAccount());
           bloc.add(HideErrorPopup());
         },
-        skip: 5,
+        skip: 4,
         expect: [
           EditAccountState(
             originalAccount: userAccount,

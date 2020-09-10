@@ -26,7 +26,8 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
         assert(navigatorBloc != null),
         _navigatorBloc = navigatorBloc,
         assert(saveAccountUseCase != null),
-        _saveAccountUseCase = saveAccountUseCase;
+        _saveAccountUseCase = saveAccountUseCase,
+        super(EditAccountState.initial(account));
 
   factory EditAccountBloc.create(BuildContext context) {
     return EditAccountBloc(
@@ -34,11 +35,6 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
       navigatorBloc: BlocProvider.of(context),
       saveAccountUseCase: Injector.get(),
     );
-  }
-
-  @override
-  EditAccountState get initialState {
-    return EditAccountState.initial(_account);
   }
 
   String _firstOrSecond(String first, String second) {

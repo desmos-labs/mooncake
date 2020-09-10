@@ -33,7 +33,8 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
         assert(saveWalletUseCase != null),
         _saveWalletUseCase = saveWalletUseCase,
         assert(setAuthenticationMethodUseCase != null),
-        _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase;
+        _setAuthenticationMethodUseCase = setAuthenticationMethodUseCase,
+        super(SetPasswordState.initial());
 
   factory SetPasswordBloc.create(BuildContext context) {
     return SetPasswordBloc(
@@ -44,9 +45,6 @@ class SetPasswordBloc extends Bloc<SetPasswordEvent, SetPasswordState> {
       saveWalletUseCase: Injector.get(),
     );
   }
-
-  @override
-  SetPasswordState get initialState => SetPasswordState.initial();
 
   @override
   Stream<SetPasswordState> mapEventToState(SetPasswordEvent event) async* {

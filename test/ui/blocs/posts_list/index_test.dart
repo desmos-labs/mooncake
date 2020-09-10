@@ -9,8 +9,6 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:mooncake/usecases/usecases.dart';
 
 import '../../../mocks/mocks.dart';
-import '../../../mocks/posts.dart';
-// import '../../../mocks/mocks.dart';
 
 const syncPeriod = 30;
 
@@ -124,7 +122,7 @@ void main() {
 
       blocTest(
         'PostsUpdated: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -148,7 +146,7 @@ void main() {
       final expectedLikedResults = <Post>[likedPost, ...testPosts.sublist(1)];
       blocTest(
         'AddOrRemoveLiked: add work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -158,7 +156,7 @@ void main() {
           bloc.add(PostsUpdated(testPosts));
           bloc.add(AddOrRemoveLike(testPosts[0]));
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: expectedLikedResults,
@@ -173,7 +171,7 @@ void main() {
       final likedTestPosts = <Post>[likedPost, ...testPosts.sublist(1)];
       blocTest(
         'AddOrRemoveLiked: remove work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -183,7 +181,7 @@ void main() {
           bloc.add(PostsUpdated(likedTestPosts));
           bloc.add(AddOrRemoveLike(testPosts[0]));
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: testPosts,
@@ -208,7 +206,7 @@ void main() {
       ];
       blocTest(
         'AddOrRemovePostReaction: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -218,7 +216,7 @@ void main() {
           bloc.add(PostsUpdated(testPosts));
           bloc.add(AddOrRemovePostReaction(testPosts[0], 'happy'));
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: expectedReactionResults,
@@ -259,7 +257,7 @@ void main() {
       );
       blocTest(
         'VotePoll: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -269,7 +267,7 @@ void main() {
           bloc.add(PostsUpdated([formattedTestPoll]));
           bloc.add(VotePoll(formattedTestPoll, option));
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: [
@@ -286,7 +284,7 @@ void main() {
       var hiddenPost = testPost.copyWith(hidden: true);
       blocTest(
         'HidePost: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -296,7 +294,7 @@ void main() {
           bloc.add(PostsUpdated([testPost]));
           bloc.add(HidePost(testPost));
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: [
@@ -313,7 +311,7 @@ void main() {
       final blockUser = User.fromAddress('address');
       blocTest(
         'BlockUser: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -323,7 +321,7 @@ void main() {
           bloc.add(PostsUpdated([testPost.copyWith(owner: blockUser)]));
           bloc.add(BlockUser(blockUser));
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: [],
@@ -337,7 +335,7 @@ void main() {
 
       blocTest(
         'SyncPosts: work properly',
-        build: () async {
+        build: () {
           var userAccount = MooncakeAccount(
             profilePicUri: 'https://example.com/avatar.png',
             moniker: 'john-doe',
@@ -355,7 +353,7 @@ void main() {
           bloc.add(PostsUpdated([testPost]));
           bloc.add(SyncPosts());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: [testPost],
@@ -376,14 +374,14 @@ void main() {
 
       blocTest(
         'ShouldRefreshPosts: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
           bloc.add(PostsUpdated([testPost]));
           bloc.add(ShouldRefreshPosts());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: [testPost],
@@ -397,7 +395,7 @@ void main() {
 
       blocTest(
         'RefreshPosts: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -407,7 +405,7 @@ void main() {
           bloc.add(PostsUpdated([testPost]));
           bloc.add(RefreshPosts());
         },
-        skip: 2,
+        skip: 1,
         expect: [
           PostsLoaded(
             posts: [testPost],
@@ -428,7 +426,7 @@ void main() {
 
       blocTest(
         'FetchPosts: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
@@ -450,15 +448,17 @@ void main() {
 
       var expectedUpdatePosts = <Post>[
         testPost.copyWith(
-          status: PostStatus(value: PostStatusValue.STORED_LOCALLY),
+          status: PostStatus.storedLocally(userAccount.address),
         )
       ];
       blocTest(
         'RetryPostUpload: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {
+          when(mockGetActiveAccountUseCase.single())
+              .thenAnswer((_) => Future.value(userAccount));
           when(mockUpdatePostUseCase.update(any))
               .thenAnswer((_) => Future.value(null));
           bloc.add(PostsUpdated([testPost]));
@@ -484,7 +484,7 @@ void main() {
 
       blocTest(
         'DeletePost: work properly',
-        build: () async {
+        build: () {
           return postsListBloc;
         },
         act: (bloc) async {

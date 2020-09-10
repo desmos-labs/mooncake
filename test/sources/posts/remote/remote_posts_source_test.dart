@@ -38,8 +38,12 @@ void main() {
     // Clean the dispatcher to avoid cross-testing conflicts
     server.dispatcher = null;
 
-    final link = HttpLink(server.url).concat(WebSocketLink(server.url));
-    final graphQlClient = GraphQLClient(link: link, cache: GraphQLCache());
+    final link = HttpLink(
+      uri: server.url,
+    ).concat(WebSocketLink(
+      url: server.url,
+    ));
+    final graphQlClient = GraphQLClient(link: link, cache: InMemoryCache());
 
     chainSource = MockChainSource();
     userSource = MockLocalUserSource();
