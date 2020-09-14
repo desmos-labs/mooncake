@@ -2,7 +2,7 @@
 ## Changes
 - Added the possibility of having multiple accounts at the same time
 - Changed the likes and reactions visualization
-- Added the possibility of scroll to the top of the posts list by clicking the posts list button
+- Added the possibility of scrolling to the top of the posts list by clicking the posts list button
 - Improved the editing screen UX  
 - Updated the dependencies
 
