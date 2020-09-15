@@ -80,10 +80,10 @@ Future _setupDependencyInjection() async {
     ),
     postsDatabase: await factory.openDatabase(
       'posts.db',
-      version: 3,
+      version: 4,
       onVersionChanged: (db, oldVersion, newVersion) async {
-        if (oldVersion < 3) {
-          await migrateV2PostsDatabase(db);
+        if (oldVersion < 4) {
+          await wipePostsDatabase(db);
         }
       },
     ),

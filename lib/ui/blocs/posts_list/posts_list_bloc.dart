@@ -442,20 +442,14 @@ class PostsListBloc extends Bloc<PostsListEvent, PostsListState> {
   /// Handles the event that tells the Bloc that a transaction has
   /// been successful.
   void _handleTxSuccessfulEvent(TxSuccessful event) async {
-    final status = PostStatus(
-      value: PostStatusValue.TX_SUCCESSFULL,
-      data: event.txHash,
-    );
+    final status = PostStatus.txSuccessful(txHash: event.txHash);
     await _updatePostsStatusUseCase.update(event.txHash, status);
   }
 
   /// Handles the event that tells the Bloc that a transaction has not
   /// been successful.
   void _handleTxFailedEvent(TxFailed event) async {
-    final status = PostStatus(
-      value: PostStatusValue.ERRORED,
-      data: event.error,
-    );
+    final status = PostStatus.errored(event.error);
     await _updatePostsStatusUseCase.update(event.txHash, status);
   }
 

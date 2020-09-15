@@ -22,7 +22,6 @@ void main() {
     var optionTwo = PollOption(id: 0, text: 'apples');
     var poll = PostPoll(
       allowsAnswerEdits: false,
-      isOpen: true,
       question: 'favorite snack',
       endDate: '2020-05-01T21:00:00Z',
       allowsMultipleAnswers: false,

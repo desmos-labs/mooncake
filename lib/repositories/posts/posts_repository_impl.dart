@@ -110,16 +110,10 @@ class PostsRepositoryImpl extends PostsRepository {
     PostStatus postStatus;
     switch (result.success) {
       case true:
-        postStatus = PostStatus(
-          value: PostStatusValue.TX_SENT,
-          data: result.hash,
-        );
+        postStatus = PostStatus.txSent(result.hash);
         break;
       case false:
-        postStatus = PostStatus(
-          value: PostStatusValue.ERRORED,
-          data: result.error.errorMessage,
-        );
+        postStatus = PostStatus.errored(result.error.errorMessage);
         break;
     }
 
@@ -136,9 +130,8 @@ class PostsRepositoryImpl extends PostsRepository {
     }
 
     // Set the posts as syncing
-    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
     final syncingPosts = posts.map((post) {
-      return post.copyWith(status: syncingStatus);
+      return post.copyWith(status: PostStatus.sendingTx());
     }).toList();
     await _localPostsSource.savePosts(syncingPosts);
 

@@ -46,4 +46,9 @@ class PollAnswer extends Equatable {
   List<Object> get props {
     return [answer, user.address];
   }
+
+  @override
+  String toString() {
+    return 'PollAnswer { answer: $answer, user: ${user.address} }';
+  }
 }
