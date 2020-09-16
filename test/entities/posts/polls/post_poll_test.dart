@@ -9,7 +9,6 @@ void main() {
       PollOption(id: 1, text: 'Yes'),
       PollOption(id: 2, text: 'No'),
     ],
-    isOpen: false,
     allowsMultipleAnswers: false,
     allowsAnswerEdits: false,
   );

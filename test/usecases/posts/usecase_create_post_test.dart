@@ -77,7 +77,6 @@ void main() {
           PollOption(id: 1, text: 'Option 1'),
           PollOption(id: 2, text: 'Option 2'),
         ],
-        isOpen: false,
         allowsMultipleAnswers: true,
         allowsAnswerEdits: true,
       );

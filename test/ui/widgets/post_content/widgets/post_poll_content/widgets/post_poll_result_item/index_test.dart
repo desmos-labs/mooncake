@@ -19,7 +19,6 @@ void main() {
 
     var poll = PostPoll(
       allowsAnswerEdits: false,
-      isOpen: true,
       question: 'favorite snack',
       endDate: '',
       allowsMultipleAnswers: false,

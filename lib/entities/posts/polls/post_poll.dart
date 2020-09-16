@@ -19,10 +19,6 @@ class PostPoll extends Equatable {
   @JsonKey(name: 'end_date')
   final String endDate;
 
-  /// Tells if the the poll is open or not.
-  @JsonKey(name: 'open')
-  final bool isOpen;
-
   /// Tells whether the post allows a single user to answer multiple
   /// times to it (so it is a checkbox-based poll) or if it allows only one
   /// answer per user.
@@ -46,14 +42,12 @@ class PostPoll extends Equatable {
     @required this.question,
     @required this.endDate,
     @required this.options,
-    @required this.isOpen,
     @required this.allowsMultipleAnswers,
     @required this.allowsAnswerEdits,
     List<PollAnswer> userAnswers = const [],
   })  : assert(question != null),
         assert(endDate != null),
         assert(options != null),
-        assert(isOpen != null),
         assert(allowsMultipleAnswers != null),
         assert(allowsAnswerEdits != null),
         userAnswers = userAnswers ?? const [];
@@ -68,7 +62,6 @@ class PostPoll extends Equatable {
         PollOption(text: '', id: 0),
         PollOption(text: '', id: 1),
       ],
-      isOpen: true,
       allowsMultipleAnswers: false,
       allowsAnswerEdits: false,
     );
@@ -92,6 +85,12 @@ class PostPoll extends Equatable {
         options?.isNotEmpty == true;
   }
 
+  /// Returns `true` is the poll is open considering the current time,
+  /// or `false` otherwise.
+  bool get isOpen {
+    return DateTime.now().isBefore(endDateTime);
+  }
+
   /// Returns the JSON representation of this post poll as a [Map].
   Map<String, dynamic> toJson() {
     return _$PostPollToJson(this);
@@ -111,7 +110,6 @@ class PostPoll extends Equatable {
       endDate:
           DateFormat(Post.DATE_FORMAT).format(endDate?.toUtc() ?? endDateTime),
       options: options ?? this.options,
-      isOpen: isOpen ?? this.isOpen,
       allowsMultipleAnswers:
           allowsMultipleAnswers ?? this.allowsMultipleAnswers,
       allowsAnswerEdits: allowsAnswerEdits ?? this.allowsAnswerEdits,
@@ -125,7 +123,6 @@ class PostPoll extends Equatable {
       question,
       endDate,
       options,
-      isOpen,
       allowsMultipleAnswers,
       allowsAnswerEdits,
       userAnswers,
@@ -138,7 +135,6 @@ class PostPoll extends Equatable {
         'question: $question, '
         'endDate: $endDate, '
         'options: $options, '
-        'isOpen: $isOpen, '
         'allowsMultipleAnswers: $allowsMultipleAnswers, '
         'allowsAnswerEdits: $allowsAnswerEdits,'
         'userAnswers: $userAnswers  '
