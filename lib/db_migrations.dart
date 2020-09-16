@@ -80,10 +80,9 @@ Future<void> migrateV2AccountDatabase(DatabaseClient db) async {
   await storage.delete(key: 'mnemonic');
 }
 
-/// Migrates the posts database from version 2 to version 3.
-/// This deletes all the local posts since they need to be re-downloaded
+/// Deletes all the local posts since they need to be re-downloaded
 /// from the remote source.
-Future<void> migrateV2PostsDatabase(DatabaseClient db) async {
+Future<void> deletePosts(DatabaseClient db) async {
   final store = StoreRef.main();
   await store.delete(db);
 }

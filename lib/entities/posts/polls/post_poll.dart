@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -89,6 +92,14 @@ class PostPoll extends Equatable {
   /// or `false` otherwise.
   bool get isOpen {
     return DateTime.now().isBefore(endDateTime);
+  }
+
+  /// Returns the SHA-256 of all the posts contents as a JSON object.
+  /// Some contents are excluded, such as the user answers.
+  String hashContents() {
+    final json = toJson();
+    json.remove('user_answers');
+    return sha256.convert(utf8.encode(jsonEncode(json))).toString();
   }
 
   /// Returns the JSON representation of this post poll as a [Map].
