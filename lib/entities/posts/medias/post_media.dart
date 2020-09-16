@@ -41,10 +41,6 @@ class PostMedia extends Equatable {
     return IMAGES_MIME_TYPES.contains(mimeType);
   }
 
-  String hashContents() {
-    final json = toJson();
-  }
-
   /// Allows to create a new [PostMedia] instance with the data contained
   /// inside the invoking object replaced with the ones specified as
   /// arguments.
