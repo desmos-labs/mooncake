@@ -32,6 +32,8 @@ class Post extends Equatable implements Comparable<Post> {
   /// Identifier used to reference the post creation date.
   static const DATE_FIELD = 'created';
 
+  static const LAST_EDITED_FIELD = 'last_edited';
+
   /// Identifier used to reference post ids.
   static const ID_FIELD = 'id';
 
@@ -44,6 +46,10 @@ class Post extends Equatable implements Comparable<Post> {
   static const LINK_PREVIEW_FIELD = 'link_preview';
 
   static const REACTIONS_FIELD = 'reactions';
+
+  static const MEDIA_FIELD = 'media';
+
+  static const POLL_FIELD = 'poll';
 
   static const COMMENTS_FIELD = 'children';
 
@@ -67,7 +73,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: DATE_FIELD)
   final String created;
 
-  @JsonKey(name: 'last_edited')
+  @JsonKey(name: LAST_EDITED_FIELD)
   final String lastEdited;
 
   @JsonKey(name: 'allows_comments')
@@ -82,10 +88,10 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: 'optional_data', defaultValue: {})
   final Map<String, String> optionalData;
 
-  @JsonKey(name: 'media', defaultValue: [])
+  @JsonKey(name: MEDIA_FIELD, defaultValue: [])
   final List<PostMedia> medias;
 
-  @JsonKey(name: 'poll', nullable: true)
+  @JsonKey(name: POLL_FIELD, nullable: true)
   final PostPoll poll;
 
   @JsonKey(name: REACTIONS_FIELD, defaultValue: [])
@@ -183,11 +189,17 @@ class Post extends Equatable implements Comparable<Post> {
   String hashContents() {
     final json = toJson();
     json.remove(DATE_FIELD);
+    json.remove(LAST_EDITED_FIELD);
     json.remove(ID_FIELD);
     json.remove(STATUS_FIELD);
     json.remove(LINK_PREVIEW_FIELD);
     json.remove(REACTIONS_FIELD);
     json.remove(COMMENTS_FIELD);
+    json.remove(MEDIA_FIELD);
+
+    json.remove(POLL_FIELD);
+    json['poll_data'] = poll?.hashContents();
+
     return sha256.convert(utf8.encode(jsonEncode(json))).toString();
   }
 

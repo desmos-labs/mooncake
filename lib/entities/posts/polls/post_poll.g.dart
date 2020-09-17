@@ -14,7 +14,6 @@ PostPoll _$PostPollFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : PollOption.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    isOpen: json['open'] as bool,
     allowsMultipleAnswers: json['allows_multiple_answers'] as bool,
     allowsAnswerEdits: json['allows_answer_edits'] as bool,
     userAnswers: (json['user_answers'] as List)
@@ -27,7 +26,6 @@ PostPoll _$PostPollFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PostPollToJson(PostPoll instance) => <String, dynamic>{
       'question': instance.question,
       'end_date': instance.endDate,
-      'open': instance.isOpen,
       'allows_multiple_answers': instance.allowsMultipleAnswers,
       'allows_answer_edits': instance.allowsAnswerEdits,
       'available_answers': instance.options?.map((e) => e?.toJson())?.toList(),

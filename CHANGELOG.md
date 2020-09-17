@@ -1,3 +1,7 @@
+# Version 0.5.1
+## Changes
+- Removed the usage of the `open` field from the poll data since it's no longer going to be used in future Desmos version 
+
 # Version 0.5.0
 ## Changes
 - Added the possibility of having multiple accounts at the same time

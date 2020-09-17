@@ -49,7 +49,6 @@ class GqlPostsHelper {
     end_date
     allows_answer_edits
     allows_multiple_answers
-    open
     available_answers {
       id: answer_id
       text: answer_text

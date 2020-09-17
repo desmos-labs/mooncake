@@ -33,7 +33,6 @@ void main() {
           PollOption(id: 0, text: 'Yes'),
           PollOption(id: 1, text: 'No'),
         ],
-        isOpen: true,
         allowsMultipleAnswers: false,
         allowsAnswerEdits: true,
         userAnswers: [],
