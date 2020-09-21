@@ -23,7 +23,7 @@ class ErrorPost extends StatelessWidget {
                 width: 40,
                 height: 40,
                 child: PostContentImage(media: post.images[0])),
-          if (post.message.isNotEmpty)
+          if (post.message?.isNotEmpty == true)
             Flexible(
               child: Text(
                 post.message,
@@ -33,7 +33,7 @@ class ErrorPost extends StatelessWidget {
                 ),
               ),
             ),
-          if (post.message.isEmpty && post.poll != null)
+          if (post.message?.isEmpty == true && post.poll != null)
             Flexible(
               child: Text(
                 post.poll.question ??

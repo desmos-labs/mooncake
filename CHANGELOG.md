@@ -1,3 +1,8 @@
+# Version 0.5.2
+## Bug fixes
+- Fixed a bug when creating a post
+- Fixed a bug when displaying the error message on posts
+
 # Version 0.5.1
 ## Changes
 - Removed the usage of the `open` field from the poll data since it's no longer going to be used in future Desmos version 
