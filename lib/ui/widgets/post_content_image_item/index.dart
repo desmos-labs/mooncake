@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Represents a single image items that should be displayed as part
 /// of the post content.
@@ -18,7 +19,7 @@ class PostContentImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
-        onTap: _openImage,
+        onTap: () => _openImage(context),
         child: media.isLocal ? _localImage(media.uri) : _remoteImage(media.uri),
       ),
     );
@@ -41,9 +42,10 @@ class PostContentImage extends StatelessWidget {
     );
   }
 
-  void _openImage() async {
-    if (await canLaunch(media.uri)) {
-      await launch(media.uri);
-    }
+  void _openImage(BuildContext context) async {
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox());
+    // if (await canLaunch(media.uri)) {
+    //   await launch(media.uri);
+    // }
   }
 }

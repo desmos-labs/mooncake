@@ -69,6 +69,8 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
       _handleNavigateToUserDetails(event);
     } else if (event is NavigateToConfirmMnemonicBackupPhrase) {
       _handleNavigateToConfirmMnemonicBackupPhrase();
+    } else if (event is NavigateToLightbox) {
+      _handleNavigateToLightbox();
     }
   }
 
@@ -187,5 +189,12 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     _navigatorKey.currentState.push(MaterialPageRoute(builder: (context) {
       return BackupMnemonicConfirmationScreen();
     }));
+  }
+
+  void _handleNavigateToLightbox() {
+    _navigatorKey.currentState.pushReplacement(PageRouteBuilder(
+      transitionDuration: Duration(seconds: 0),
+      pageBuilder: (context, animation1, animation2) => LightboxScreen(),
+    ));
   }
 }

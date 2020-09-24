@@ -110,3 +110,6 @@ class NavigateToUserDetails extends NavigatorEvent {
 
 /// Tells the Bloc to navigate to the screen that asks for confirmation of their mnemonic phrase
 class NavigateToConfirmMnemonicBackupPhrase extends NavigatorEvent {}
+
+/// Tells the Bloc to navigate to the lightbox screen
+class NavigateToLightbox extends NavigatorEvent {}
