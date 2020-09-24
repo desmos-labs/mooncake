@@ -46,8 +46,9 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
       ),
       items: List.generate(widget.post.images.length, (index) {
         return PostContentImage(
+          index: index,
           media: widget.post.images[index],
-          // allMedia: widget.post.images,
+          allMedia: widget.post.images,
         );
       }),
     );

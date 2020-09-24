@@ -112,4 +112,15 @@ class NavigateToUserDetails extends NavigatorEvent {
 class NavigateToConfirmMnemonicBackupPhrase extends NavigatorEvent {}
 
 /// Tells the Bloc to navigate to the lightbox screen
-class NavigateToLightbox extends NavigatorEvent {}
+class NavigateToLightbox extends NavigatorEvent {
+  final List<PostMedia> photos;
+  final int selectedIndex;
+
+  NavigateToLightbox({
+    @required this.photos,
+    @required this.selectedIndex,
+  });
+
+  @override
+  List<Object> get props => [photos, selectedIndex];
+}

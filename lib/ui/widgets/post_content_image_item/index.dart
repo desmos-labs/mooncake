@@ -11,12 +11,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// of the post content.
 class PostContentImage extends StatelessWidget {
   final PostMedia media;
-  // final List<PostMedia> allMedia;
+  final List<PostMedia> allMedia;
+  final int index;
 
   const PostContentImage({
     Key key,
     this.media,
-    // this.allMedia,
+    this.allMedia,
+    this.index,
   }) : super(key: key);
 
   @override
@@ -48,7 +50,10 @@ class PostContentImage extends StatelessWidget {
   }
 
   void _openImage(BuildContext context) async {
-    BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox());
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox(
+      photos: allMedia,
+      selectedIndex: index,
+    ));
     // if (await canLaunch(media.uri)) {
     //   await launch(media.uri);
     // }

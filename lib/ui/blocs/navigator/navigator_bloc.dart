@@ -70,7 +70,7 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     } else if (event is NavigateToConfirmMnemonicBackupPhrase) {
       _handleNavigateToConfirmMnemonicBackupPhrase();
     } else if (event is NavigateToLightbox) {
-      _handleNavigateToLightbox();
+      _handleNavigateToLightbox(event);
     }
   }
 
@@ -191,10 +191,13 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
     }));
   }
 
-  void _handleNavigateToLightbox() {
+  void _handleNavigateToLightbox(NavigateToLightbox event) {
     _navigatorKey.currentState.pushReplacement(PageRouteBuilder(
       transitionDuration: Duration(seconds: 0),
-      pageBuilder: (context, animation1, animation2) => LightboxScreen(),
+      pageBuilder: (context, animation1, animation2) => LightboxScreen(
+        selectedIndex: event.selectedIndex,
+        photos: event.photos,
+      ),
     ));
   }
 }
