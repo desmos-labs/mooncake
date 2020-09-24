@@ -11,13 +11,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// of the post content.
 class PostContentImage extends StatelessWidget {
   final PostMedia media;
-  final List<PostMedia> allMedia;
+  final Function onTap;
   final int index;
 
   const PostContentImage({
     Key key,
     this.media,
-    this.allMedia,
+    this.onTap,
     this.index,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class PostContentImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
-        onTap: () => _openImage(context),
+        onTap: () => onTap(index),
         child: media.isLocal ? _localImage(media.uri) : _remoteImage(media.uri),
       ),
     );
@@ -49,14 +49,16 @@ class PostContentImage extends StatelessWidget {
     );
   }
 
-  void _openImage(BuildContext context) async {
-    // wingman revert later
-    BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox(
-      photos: [...allMedia, ...allMedia],
-      selectedIndex: index,
-    ));
-    // if (await canLaunch(media.uri)) {
-    //   await launch(media.uri);
-    // }
-  }
+  // wingman
+  // void _openImage(BuildContext context) async {
+  // onTap(index);
+  // wingman revert later
+  // BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox(
+  //   photos: [...allMedia, ...allMedia],
+  //   selectedIndex: index,
+  // ));
+  // if (await canLaunch(media.uri)) {
+  //   await launch(media.uri);
+  // }
+  // }
 }

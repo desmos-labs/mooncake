@@ -5,32 +5,48 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class LightboxScreen extends StatelessWidget {
+class LightboxScreen extends StatefulWidget {
   final List<PostMedia> photos;
   final int selectedIndex;
+  final PageController pageController;
 
-  const LightboxScreen({
+  LightboxScreen({
     this.photos,
     this.selectedIndex,
-  });
+  }) : pageController = PageController(
+          initialPage: selectedIndex,
+        );
+
+  @override
+  _LightboxScreenState createState() => _LightboxScreenState();
+}
+
+class _LightboxScreenState extends State<LightboxScreen> {
+  int currentIndex;
+
+  @override
+  void initState() {
+    currentIndex = widget.selectedIndex;
+    super.initState();
+  }
+
+  void onPageChanged(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    print("===photos====");
-    print(photos);
-    print("===photos====");
-    print('===selected index===');
-    print(selectedIndex);
-    print('===selected index===');
     return PhotoViewGallery.builder(
       scrollPhysics: const BouncingScrollPhysics(),
       builder: (BuildContext context, int index) {
         return PhotoViewGalleryPageOptions(
-          imageProvider: CachedNetworkImageProvider(photos[index].uri),
+          imageProvider: CachedNetworkImageProvider(widget.photos[index].uri),
           initialScale: PhotoViewComputedScale.contained * 0.8,
         );
       },
-      itemCount: photos.length,
+      itemCount: widget.photos.length,
       loadingBuilder: (context, event) => Center(
         child: Container(
           width: 20.0,
@@ -42,9 +58,12 @@ class LightboxScreen extends StatelessWidget {
           ),
         ),
       ),
-      // backgroundDecoration: widget.backgroundDecoration,
-      // pageController: widget.pageController,
-      // onPageChanged: onPageChanged,
+      backgroundDecoration: BoxDecoration(
+        color: Colors.pink.withOpacity(0.2),
+      ),
+      pageController: widget.pageController,
+      onPageChanged: onPageChanged,
+      scrollDirection: Axis.horizontal,
     );
     // return Container(
     //     child: PhotoView(
