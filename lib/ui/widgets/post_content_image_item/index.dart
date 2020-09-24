@@ -11,8 +11,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// of the post content.
 class PostContentImage extends StatelessWidget {
   final PostMedia media;
+  // final List<PostMedia> allMedia;
 
-  const PostContentImage({Key key, this.media}) : super(key: key);
+  const PostContentImage({
+    Key key,
+    this.media,
+    // this.allMedia,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

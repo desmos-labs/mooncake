@@ -45,7 +45,10 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
         onPageChanged: (index, _) => _onPageChanged(index),
       ),
       items: List.generate(widget.post.images.length, (index) {
-        return PostContentImage(media: widget.post.images[index]);
+        return PostContentImage(
+          media: widget.post.images[index],
+          // allMedia: widget.post.images,
+        );
       }),
     );
   }
