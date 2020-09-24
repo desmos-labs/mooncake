@@ -83,7 +83,7 @@ Future _setupDependencyInjection() async {
       version: 4,
       onVersionChanged: (db, oldVersion, newVersion) async {
         if (oldVersion < 4) {
-          await wipePostsDatabase(db);
+          await deletePosts(db);
         }
       },
     ),

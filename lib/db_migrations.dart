@@ -82,7 +82,7 @@ Future<void> migrateV2AccountDatabase(DatabaseClient db) async {
 
 /// Deletes all the local posts since they need to be re-downloaded
 /// from the remote source.
-Future<void> wipePostsDatabase(DatabaseClient db) async {
+Future<void> deletePosts(DatabaseClient db) async {
   final store = StoreRef.main();
   await store.delete(db);
 }

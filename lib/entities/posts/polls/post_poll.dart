@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -13,16 +10,13 @@ part 'post_poll.g.dart';
 @immutable
 @JsonSerializable(explicitToJson: true)
 class PostPoll extends Equatable {
-  static const USER_ANSWERS_FIELD = 'user_answers';
-  static const END_DATE_FIELD= 'end_date';
-
   /// Question associated to this poll.
   @JsonKey(name: 'question')
   final String question;
 
   /// Ending date of the poll. After this date, the user should not be
   /// allowed to answer the poll anymore.
-  @JsonKey(name: END_DATE_FIELD)
+  @JsonKey(name: 'end_date')
   final String endDate;
 
   /// Tells whether the post allows a single user to answer multiple
@@ -41,7 +35,7 @@ class PostPoll extends Equatable {
   final List<PollOption> options;
 
   /// List of all the user answers that have been added to this poll.
-  @JsonKey(name: USER_ANSWERS_FIELD)
+  @JsonKey(name: 'user_answers')
   final List<PollAnswer> userAnswers;
 
   const PostPoll({
