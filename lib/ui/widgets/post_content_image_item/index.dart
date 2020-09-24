@@ -50,8 +50,9 @@ class PostContentImage extends StatelessWidget {
   }
 
   void _openImage(BuildContext context) async {
+    // wingman revert later
     BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox(
-      photos: allMedia,
+      photos: [...allMedia, ...allMedia],
       selectedIndex: index,
     ));
     // if (await canLaunch(media.uri)) {

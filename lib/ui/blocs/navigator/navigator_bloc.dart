@@ -192,6 +192,9 @@ class NavigatorBloc extends Bloc<NavigatorEvent, void> {
   }
 
   void _handleNavigateToLightbox(NavigateToLightbox event) {
+    print("==even photos==");
+    print(event.photos);
+    print("==even photos==");
     _navigatorKey.currentState.pushReplacement(PageRouteBuilder(
       transitionDuration: Duration(seconds: 0),
       pageBuilder: (context, animation1, animation2) => LightboxScreen(
