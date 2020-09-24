@@ -29,6 +29,7 @@ selection.json
 build/
 coverage/
 ios/Podfile
+ios/Podfile.lock
 
 # Android releated
 *.apk

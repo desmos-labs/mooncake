@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mooncake/entities/entities.dart';
 import 'package:mooncake/ui/ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Allows to properly visualize the image(s) associated with a post.
 /// If only a single image is present, it will be shown full-width.
@@ -45,7 +46,11 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
         onPageChanged: (index, _) => _onPageChanged(index),
       ),
       items: List.generate(widget.post.images.length, (index) {
-        return PostContentImage(media: widget.post.images[index]);
+        return PostContentImage(
+          index: index,
+          media: widget.post.images[index],
+          onTap: _onShowImage,
+        );
       }),
     );
   }
@@ -79,5 +84,12 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  void _onShowImage(int index) {
+    BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox(
+      photos: widget.post.images,
+      selectedIndex: index,
+    ));
   }
 }

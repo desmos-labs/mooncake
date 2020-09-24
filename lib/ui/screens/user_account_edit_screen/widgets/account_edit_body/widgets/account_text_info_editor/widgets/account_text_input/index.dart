@@ -53,9 +53,6 @@ class _AccountTextInputState extends State<AccountTextInput> {
           onChanged: widget.onChanged,
           controller: _controller,
           decoration: InputDecoration(
-            // wingman
-            // isDense: true,
-            // contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
             hintText: widget.value ?? widget.label,
             errorText: widget.error,
           ),

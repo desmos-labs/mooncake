@@ -14,3 +14,4 @@ export 'security_login_biometrics_screen/index.dart';
 export 'user_wallet_screen/index.dart';
 export 'user_details_screen/index.dart';
 export 'user_account_edit_screen/index.dart';
+export 'lightbox_screen/index.dart';
