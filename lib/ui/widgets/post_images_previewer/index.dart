@@ -88,7 +88,7 @@ class _PostImagesPreviewerState extends State<PostImagesPreviewer> {
 
   void _onShowImage(int index) {
     BlocProvider.of<NavigatorBloc>(context).add(NavigateToLightbox(
-      photos: [...widget.post.images],
+      photos: widget.post.images,
       selectedIndex: index,
     ));
   }
