@@ -7,6 +7,9 @@ import 'package:mooncake/ui/ui.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+/// Takes an array of PostMedia and will
+/// Generate a lightbox at the top of the stack.
+/// Once closed, the screen will be popped
 class LightboxScreen extends StatefulWidget {
   final List<PostMedia> photos;
   final int selectedIndex;
