@@ -34,7 +34,7 @@ class CreatePostUseCase {
       owner: account.toUser(),
       status: PostStatus.storedLocally(account.address),
       optionalData: {
-        Post.LOCAL_ID_KEY: DateTime.now().toIso8601String(),
+        Post.LOCAL_ID_KEY: date,
       },
     );
   }

@@ -1,6 +1,6 @@
 name: mooncake
 description: A decentralized microblogging application based on Desmos
-version: 0.5.1+05100
+version: 0.5.4+05400
 
 environment:
   sdk: ">=2.9.0 <3.0.0"

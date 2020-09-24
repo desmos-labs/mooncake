@@ -23,7 +23,6 @@ class PostsMsgConverter {
     return ChainPollData(
       question: poll.question,
       endDate: poll.endDate,
-      isOpen: true,
       allowsMultipleAnswers: poll.allowsMultipleAnswers,
       allowsAnswerEdits: poll.allowsAnswerEdits,
       options: poll.options.map((e) {
