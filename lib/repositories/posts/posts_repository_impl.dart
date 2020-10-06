@@ -144,10 +144,12 @@ class PostsRepositoryImpl extends PostsRepository {
 
     // emit event that tx has been successfully added to the chain
     if (status.value == PostStatusValue.TX_SENT) {
-      final currentTxAmount =
-          await _localSettingsSource.get(SettingKeys.TX_AMOUNT) ?? 0;
+      final key = SettingKeys.TX_AMOUNT;
+      final currentTxAmount = await _localSettingsSource.get(key) ?? 0;
       await _localSettingsSource.save(
-          SettingKeys.TX_AMOUNT, currentTxAmount + updatedPosts.length);
+        key,
+        currentTxAmount + updatedPosts.length,
+      );
     }
   }
 
