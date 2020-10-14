@@ -19,11 +19,27 @@ class PostStatus extends Equatable {
     this.data,
   }) : assert(value != null);
 
+  /// Builds a [PostStatus] having as value [PostStatusValue.STORED_LOCALLY]
+  /// and as data the given [address].
   factory PostStatus.storedLocally(String address) {
-    return PostStatus(
-      value: PostStatusValue.STORED_LOCALLY,
-      data: address,
-    );
+    return PostStatus(value: PostStatusValue.STORED_LOCALLY, data: address);
+  }
+
+  /// Builds a new [PostStatus] with value [PostStatusValue.SENDING_TX].
+  factory PostStatus.sendingTx() {
+    return PostStatus(value: PostStatusValue.SENDING_TX);
+  }
+
+  factory PostStatus.txSent(String txHash) {
+    return PostStatus(value: PostStatusValue.TX_SENT, data: txHash);
+  }
+
+  factory PostStatus.txSuccessful({String txHash}) {
+    return PostStatus(value: PostStatusValue.TX_SUCCESSFULL, data: txHash);
+  }
+
+  factory PostStatus.errored(String error) {
+    return PostStatus(value: PostStatusValue.ERRORED, data: error);
   }
 
   /// Returns true if the status contains an error message.

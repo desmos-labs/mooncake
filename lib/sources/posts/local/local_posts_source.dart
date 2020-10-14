@@ -33,7 +33,10 @@ class LocalPostsSourceImpl implements LocalPostsSource {
   /// given [post].
   @visibleForTesting
   String getPostKey(Post post) {
-    return post.hashContents();
+    if (post.optionalData.containsKey(Post.LOCAL_ID_KEY)) {
+      return post.optionalData[Post.LOCAL_ID_KEY];
+    }
+    return post.id;
   }
 
   /// Returns a [Filter] that allows to filter out all the posts that are

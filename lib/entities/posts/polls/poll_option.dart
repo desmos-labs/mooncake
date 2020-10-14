@@ -48,4 +48,9 @@ class PollOption extends Equatable {
   List<Object> get props {
     return [id, text];
   }
+
+  @override
+  String toString() {
+    return 'PollOption { id: $id, text: $text }';
+  }
 }

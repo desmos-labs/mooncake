@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:collection/collection.dart';
-import 'package:crypto/crypto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -32,8 +29,6 @@ class Post extends Equatable implements Comparable<Post> {
   /// Identifier used to reference the post creation date.
   static const DATE_FIELD = 'created';
 
-  static const LAST_EDITED_FIELD = 'last_edited';
-
   /// Identifier used to reference post ids.
   static const ID_FIELD = 'id';
 
@@ -43,15 +38,7 @@ class Post extends Equatable implements Comparable<Post> {
   /// Identifier used to reference the user field.
   static const OWNER_FIELD = 'user';
 
-  static const LINK_PREVIEW_FIELD = 'link_preview';
-
-  static const REACTIONS_FIELD = 'reactions';
-
-  static const MEDIA_FIELD = 'media';
-
-  static const POLL_FIELD = 'poll';
-
-  static const COMMENTS_FIELD = 'children';
+  static const LOCAL_ID_KEY = 'local_id';
 
   /// Returns the current date and time in UTC time zone, formatted as
   /// it should be to be used as a post creation date or last edit date.
@@ -73,7 +60,7 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: DATE_FIELD)
   final String created;
 
-  @JsonKey(name: LAST_EDITED_FIELD)
+  @JsonKey(name: 'last_edited')
   final String lastEdited;
 
   @JsonKey(name: 'allows_comments')
@@ -88,16 +75,16 @@ class Post extends Equatable implements Comparable<Post> {
   @JsonKey(name: 'optional_data', defaultValue: {})
   final Map<String, String> optionalData;
 
-  @JsonKey(name: MEDIA_FIELD, defaultValue: [])
+  @JsonKey(name: 'media', defaultValue: [])
   final List<PostMedia> medias;
 
-  @JsonKey(name: POLL_FIELD, nullable: true)
+  @JsonKey(name: 'poll', nullable: true)
   final PostPoll poll;
 
-  @JsonKey(name: REACTIONS_FIELD, defaultValue: [])
+  @JsonKey(name: 'reactions', defaultValue: [])
   final List<Reaction> reactions;
 
-  @JsonKey(name: COMMENTS_FIELD, defaultValue: [])
+  @JsonKey(name: 'children', defaultValue: [])
   final List<String> commentsIds;
 
   /// Tells if the post has been synced with the blockchain or not
@@ -106,9 +93,7 @@ class Post extends Equatable implements Comparable<Post> {
 
   /// Static method used to implement a custom deserialization of posts.
   static PostStatus _postStatusFromJson(Map<String, dynamic> json) {
-    return json == null
-        ? PostStatus(value: PostStatusValue.TX_SUCCESSFULL)
-        : PostStatus.fromJson(json);
+    return json == null ? PostStatus.txSuccessful() : PostStatus.fromJson(json);
   }
 
   /// Tells whether or not the post has been hidden from the user.
@@ -116,13 +101,13 @@ class Post extends Equatable implements Comparable<Post> {
   final bool hidden;
 
   /// Represents the link preview associated to this post
-  @JsonKey(name: LINK_PREVIEW_FIELD, nullable: true)
+  @JsonKey(name: 'link_preview', nullable: true)
   final RichLinkPreview linkPreview;
 
   Post({
     @required this.id,
     this.parentId = '',
-    this.message,
+    @required this.message,
     @required this.created,
     this.lastEdited,
     this.allowsComments = false,
@@ -176,31 +161,6 @@ class Post extends Equatable implements Comparable<Post> {
   List<Reaction> get likes {
     return reactions?.toSet()?.where((reaction) => reaction.isLike)?.toList() ??
         [];
-  }
-
-  /// Returns the SHA-256 of all the posts contents as a JSON object.
-  /// Some contents are excluded. Such as:
-  /// - the date
-  /// - the id
-  /// - the status
-  /// - the link preview
-  /// - the reactions
-  /// - the comments
-  String hashContents() {
-    final json = toJson();
-    json.remove(DATE_FIELD);
-    json.remove(LAST_EDITED_FIELD);
-    json.remove(ID_FIELD);
-    json.remove(STATUS_FIELD);
-    json.remove(LINK_PREVIEW_FIELD);
-    json.remove(REACTIONS_FIELD);
-    json.remove(COMMENTS_FIELD);
-    json.remove(MEDIA_FIELD);
-
-    json.remove(POLL_FIELD);
-    json['poll_data'] = poll?.hashContents();
-
-    return sha256.convert(utf8.encode(jsonEncode(json))).toString();
   }
 
   /// Returns a new [Post] having the same data as `this` one, but

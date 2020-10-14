@@ -110,16 +110,10 @@ class PostsRepositoryImpl extends PostsRepository {
     PostStatus postStatus;
     switch (result.success) {
       case true:
-        postStatus = PostStatus(
-          value: PostStatusValue.TX_SENT,
-          data: result.hash,
-        );
+        postStatus = PostStatus.txSent(result.hash);
         break;
       case false:
-        postStatus = PostStatus(
-          value: PostStatusValue.ERRORED,
-          data: result.error.errorMessage,
-        );
+        postStatus = PostStatus.errored(result.error.errorMessage);
         break;
     }
 
@@ -136,9 +130,8 @@ class PostsRepositoryImpl extends PostsRepository {
     }
 
     // Set the posts as syncing
-    final syncingStatus = PostStatus(value: PostStatusValue.SENDING_TX);
     final syncingPosts = posts.map((post) {
-      return post.copyWith(status: syncingStatus);
+      return post.copyWith(status: PostStatus.sendingTx());
     }).toList();
     await _localPostsSource.savePosts(syncingPosts);
 
@@ -151,10 +144,12 @@ class PostsRepositoryImpl extends PostsRepository {
 
     // emit event that tx has been successfully added to the chain
     if (status.value == PostStatusValue.TX_SENT) {
-      final currentTxAmount =
-          await _localSettingsSource.get(SettingKeys.TX_AMOUNT) ?? 0;
+      final key = SettingKeys.TX_AMOUNT;
+      final currentTxAmount = await _localSettingsSource.get(key) ?? 0;
       await _localSettingsSource.save(
-          SettingKeys.TX_AMOUNT, currentTxAmount + updatedPosts.length);
+        key,
+        currentTxAmount + updatedPosts.length,
+      );
     }
   }
 

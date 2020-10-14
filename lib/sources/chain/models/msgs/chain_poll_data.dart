@@ -16,9 +16,6 @@ class ChainPollData {
   @JsonKey(name: 'end_date')
   final String endDate;
 
-  @JsonKey(name: 'is_open')
-  final bool isOpen;
-
   @JsonKey(name: 'allows_multiple_answers')
   final bool allowsMultipleAnswers;
 
@@ -32,13 +29,11 @@ class ChainPollData {
     @required this.question,
     @required this.endDate,
     @required this.options,
-    @required this.isOpen,
     @required this.allowsMultipleAnswers,
     @required this.allowsAnswerEdits,
   })  : assert(question != null),
         assert(endDate != null),
         assert(options != null),
-        assert(isOpen != null),
         assert(allowsMultipleAnswers != null),
         assert(allowsAnswerEdits != null);
 

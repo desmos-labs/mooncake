@@ -80,9 +80,9 @@ Future _setupDependencyInjection() async {
     ),
     postsDatabase: await factory.openDatabase(
       'posts.db',
-      version: 4,
+      version: 6,
       onVersionChanged: (db, oldVersion, newVersion) async {
-        if (oldVersion < 4) {
+        if (oldVersion < 6) {
           await deletePosts(db);
         }
       },

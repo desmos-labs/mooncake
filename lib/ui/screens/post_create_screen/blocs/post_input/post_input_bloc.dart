@@ -193,7 +193,7 @@ class PostInputBloc extends Bloc<PostInputEvent, PostInputState> {
     final post = await _createPostUseCase.create(
       // If the post has a poll, the entered message should
       // be the poll question instead
-      message: state.hasPoll ? null : state.message,
+      message: state.hasPoll ? '' : state.message,
       allowsComments: state.allowsComments,
       parentId: state.parentPost?.id,
       medias: state.medias,

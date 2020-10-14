@@ -1,3 +1,11 @@
+# Version 0.5.4
+## Bug fixes
+- Fixed posts duplication
+
+# Version 0.5.3
+## Bug fixes
+- Fixed a bug when creating a poll
+
 # Version 0.5.2
 ## Bug fixes
 - Fixed a bug when creating a post

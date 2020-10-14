@@ -33,6 +33,9 @@ class CreatePostUseCase {
       subspace: Constants.SUBSPACE,
       owner: account.toUser(),
       status: PostStatus.storedLocally(account.address),
+      optionalData: {
+        Post.LOCAL_ID_KEY: date,
+      },
     );
   }
 }
